@@ -39,3 +39,11 @@ article h3 { font-size: 1.05rem; margin: 1rem 0 0.3rem; }
 article a { color: var(--accent); word-break: break-all; }
 .date-badge { display: inline-block; background: var(--accent); color: #fff; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.85rem; }
 .empty-notice { color: var(--muted); font-style: italic; }
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; font-size: 0.9rem; }
+.cve-table th, .cve-table td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+.cve-table th { background: var(--border); font-weight: 600; }
+article ul, article ol { margin: 0.5rem 0 1rem 1.5rem; }
+article code { background: var(--border); padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.9em; }
+article hr { border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+article strong { color: var(--text); }
