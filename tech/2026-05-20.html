@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <p class="breadcrumb">
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </p>
+  <h1>🔧 2026-05-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-18 09:00 〜 2026-05-20 09:00 JST（過去48時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔷 GCP — Google I/O 2026 主要発表（5月19日）</h2>
+
+<p>Google I/O 2026 にて、Gemini 3.5 シリーズをはじめとする大規模発表が行われました。GCP および Google Workspace の全ユーザーに影響する内容です。</p>
+
+<ul>
+  <li><strong>Gemini 3.5 Flash リリース</strong>: エージェント・コーディング向けフロンティアモデル。Gemini 3.1 Pro を凌駕するベンチマーク（Terminal-Bench 2.1: 76.2%、MCP Atlas: 83.6%）を達成しつつ、同等モデルの半額以下のコスト</li>
+  <li><strong>Gemini 3.5 Pro</strong>: 現在テスト中、来月提供予定</li>
+  <li><strong>Gemini Omni</strong>: テキスト・音声・画像・動画のマルチモーダル入出力に対応。動画生成・編集が自然言語で可能に（数週間以内にロールアウト）</li>
+  <li><strong>Google Antigravity 2.0</strong>: スタンドアロンデスクトップアプリ + CLI。GCP のデータ保護・利用規約下でエンタープライズ対応</li>
+  <li><strong>Gemini Spark</strong>: Gemini Enterprise / Workspace 向け 24/7 パーソナル AI エージェント</li>
+  <li><strong>Managed Agents API</strong>: Agent Platform 上でカスタムエージェントをセキュアな Google 管理環境で構築・実行可能に</li>
+  <li><strong>CodeMender</strong>: Agent Platform 経由で提供される AI セキュリティエージェント。コードの脆弱性を自動検出・修正</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: Gemini 3.5 Flash は即日利用可能。Gemini Enterprise / Agent Platform ユーザーは 3.5 Flash への移行評価を推奨。Omni リリースに備えた動画コンテンツ戦略の準備を。</p>
+
+<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud">GCP 公式ブログ: Innovations from Google I/O 26 on Google Cloud</a><br>
+🔗 <a href="https://blog.google/innovation-and-ai/sundar-pichai-io-2026/">Google Blog: I/O 2026 Keynote</a><br>
+🔗 <a href="https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/">Google I/O 2026 全発表まとめ</a></p>
+
+<hr>
+
+<h2>🛡️ Hono — セキュリティアドバイザリ 4件（5月19日公開）</h2>
+
+<p>Hono プロジェクトより 4件のセキュリティアドバイザリが公開されました。いずれも <strong>v4.12.19 で修正済み</strong>です。対象ミドルウェアを使用中のプロジェクトは早急なアップデートを推奨します。</p>
+
+<table class="cve-table">
+  <tr><th>GHSA</th><th>影響範囲</th><th>深刻度</th><th>概要</th></tr>
+  <tr>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-2gcr-mfcq-wcc3">GHSA-2gcr-mfcq-wcc3</a></td>
+    <td><code>app.mount()</code></td>
+    <td>Medium</td>
+    <td>パーセントエンコードされたパスでプレフィックス除去が誤動作し、サブアプリケーションのルーティングが不正になる</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-xrhx-7g5j-rcj5">GHSA-xrhx-7g5j-rcj5</a></td>
+    <td><code>hono/ip-restriction</code></td>
+    <td>Medium</td>
+    <td>非正規形 IPv6 表記（圧縮形式・IPv4 マップド等）で静的 deny ルールをバイパス可能</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-3hrh-pfw6-9m5x">GHSA-3hrh-pfw6-9m5x</a></td>
+    <td><code>hono/cookie</code></td>
+    <td>Medium</td>
+    <td><code>sameSite</code> / <code>priority</code> オプションの検証不備により Set-Cookie ヘッダへのインジェクションが可能</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-f577-qrjj-4474">GHSA-f577-qrjj-4474</a></td>
+    <td><code>hono/jwt</code>, <code>hono/jwk</code></td>
+    <td>Medium</td>
+    <td>Authorization ヘッダのスキーム検証欠落により Bearer 以外のスキームでも JWT 認証をパス可能</td>
+  </tr>
+</table>
+
+<p><strong>推奨アクション</strong>: Hono v4.12.19 へアップデートすることですべて解決。該当ミドルウェア未使用でも依存関係の更新を推奨。</p>
+
+<p>🔗 <a href="https://github.com/honojs/hono/releases">Hono v4.12.19 リリースノート</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 新機能・リージョン拡大（5月18-19日）</h2>
+
+<ul>
+  <li><strong>Amazon MWAA が Apache Airflow 3.2 に対応</strong>: データ認識スケジューリング（アセットパーティショニング）、Human-in-the-Loop 機能強化、Grid View 仮想化、非同期 callable 対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-mwaa-now-supports-apache-airflow-3-2/">詳細</a></li>
+  <li><strong>Amazon ECS デプロイの一時停止・再開コントロール</strong>: デプロイ中の任意の段階でポーズし、手動承認や統合テスト後に ContinueServiceDeployment API で再開可能。全リージョン対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-ecs-pause-continue-deployments/">詳細</a></li>
+  <li><strong>Amazon Inspector が台北リージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-inspector-taipei/">詳細</a></li>
+  <li><strong>Amazon Managed Grafana がデュアルスタック（IPv6/IPv4）接続に対応</strong>（Grafana 10.4+）<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-managed-grafana-ipv6/">詳細</a></li>
+  <li><strong>AWS Management Console に Local Zones が Region Selector に表示</strong>: オプトイン済み Local Zones を統合ナビゲーションで確認可能に<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-local-zones-region-selector/">詳細</a></li>
+  <li><strong>AWS Glue zero-ETL がムンバイリージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-glue-zero-etl-mumbai-region/">詳細</a></li>
+</ul>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<h3>⚛️ Next.js</h3>
+<ul>
+  <li>プレリリース (5/19): Turbopack にグラフベース CSS チャンキングアルゴリズム追加（<code>experimental.cssChunking: "graph"</code>）</li>
+  <li>プレリリース (5/15-17): 開発オーバーレイ再設計、Turbopack タスク優先度改善、各種テスト改善</li>
+  <li>いずれもプレリリース（canary）のため本番適用は要検証</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>🍃 Spring</h3>
+<ul>
+  <li><a href="https://spring.io/blog/2026/05/19/this-week-in-spring-may-19-2026">This Week in Spring - May 19th, 2026</a>: 週次まとめ。Spring AI 2.0.0-M6、Spring Cloud CVE 対応、Kotlin Conf 2026 情報など</li>
+</ul>
+
+<p class="empty-notice">React, Python, Django, Java, SpringBoot（個別新リリース）, Azure, Claude, OpenClaw は本日新着なし</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
