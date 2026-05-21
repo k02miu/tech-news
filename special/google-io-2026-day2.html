@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google I/O 2026 Day 2 特別増刊号 — Developer Keynote 全まとめ</title>
+<meta name="description" content="Google I/O 2026 Day 2 Developer Keynote の全発表を詳報。Gemini 3.5、Antigravity 2.0、Android 17、WebMCP、Gemini Spark など開発者向け最新情報をカテゴリ別に解説。">
+<meta property="og:title" content="Google I/O 2026 Day 2 特別増刊号">
+<meta property="og:description" content="Developer Keynote全発表まとめ：Gemini 3.5 / Antigravity 2.0 / Android 17 / WebMCP">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .hero { text-align: center; padding: 2rem 0 1rem; }
+  .hero h1 { font-size: 2rem; line-height: 1.3; }
+  .hero .event-date { color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem; }
+  .toc { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; }
+  .toc h2 { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--accent); }
+  .toc ol { margin-left: 1.2rem; font-size: 0.95rem; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .highlight-box { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .highlight-box strong { display: block; margin-bottom: 0.3rem; }
+  .tag { display: inline-block; background: var(--border); color: var(--text); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.4rem; }
+  .tag-accent { background: var(--accent); color: #fff; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .mini-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .mini-card h4 { color: var(--accent); margin-bottom: 0.4rem; font-size: 0.95rem; }
+  .mini-card p { color: var(--muted); font-size: 0.85rem; }
+  .section-divider { border: 0; border-top: 2px solid var(--border); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<header>
+  <p class="breadcrumb"><a href="../">← Tech News 朝刊ポータル</a> / <a href="./">特別増刊号</a></p>
+  <div class="hero">
+    <h1>🔴🟡🟢🔵 Google I/O 2026 Day 2<br>Developer Keynote 全まとめ</h1>
+    <p class="event-date">2026年5月19日（現地時間）· Mountain View, CA · <span class="tag tag-accent">特別増刊号</span></p>
+  </div>
+</header>
+
+<main>
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>📋 目次</h2>
+  <ol>
+    <li><a href="#gemini35">Gemini 3.5 シリーズ & Gemini Omni</a></li>
+    <li><a href="#antigravity">Google Antigravity — エージェント開発基盤の全貌</a></li>
+    <li><a href="#android">Android 開発 & Android 17</a></li>
+    <li><a href="#web">Web 開発の未来 — WebMCP / Modern Web Guidance / Chrome DevTools for Agents</a></li>
+    <li><a href="#search">Google Search の刷新</a></li>
+    <li><a href="#spark">Gemini Spark — 24/7 パーソナル AI エージェント</a></li>
+    <li><a href="#hardware">ハードウェア・XR — Intelligent Eyewear</a></li>
+    <li><a href="#creative">クリエイティブツール — Google Flow / Google Pics</a></li>
+    <li><a href="#ecosystem">エコシステム — サブスク / Adobe / Science / XPRIZE</a></li>
+    <li><a href="#wrapup">総括</a></li>
+  </ol>
+</nav>
+
+<!-- 1. Gemini 3.5 -->
+<article id="gemini35">
+  <h2>🧠 1. Gemini 3.5 シリーズ & Gemini Omni</h2>
+
+  <p>Google I/O 2026 最大のモデル発表。Day 1 基調講演で発表された内容の詳細が Day 2 で明かされた。</p>
+
+  <h3>Gemini 3.5 Flash</h3>
+  <div class="highlight-box">
+    <strong>⚡ 全ベンチマークで Gemini 3.1 Pro 超え · 他社比 4倍高速</strong>
+    Google 史上最強のエージェント・コーディングモデル。AI Mode / Gemini アプリ / Antigravity / Gemini API で即日利用可能。
+  </div>
+  <ul>
+    <li>データサイエンス分野でパートナーが複雑データからのインサイト抽出に活用中</li>
+    <li>安全性も強化：推論前のチェックで有害出力・不当拒否を低減</li>
+    <li><strong>コスト</strong>：他フロンティアモデルの半額以下でタスク完遂</li>
+  </ul>
+
+  <h3>Gemini 3.5 Pro（6月リリース予定）</h3>
+  <p>Pro モデルは 2026年6月に登場。Flash のスピードと Pro の深い推論を両立する設計。</p>
+
+  <h3>Gemini Omni Flash</h3>
+  <p>「あらゆる入力からあらゆる出力を生成」するマルチモーダルモデル。テキスト・画像・音声・動画 → 動画出力に対応（画像・音声出力も今後対応予定）。</p>
+  <ul>
+    <li>マルチターン会話型の動画編集：環境・スタイル・アングル変更がプロンプトで可能</li>
+    <li>自分の声のアバター生成 → 本人そっくりの動画出力</li>
+    <li>全出力に SynthID デジタル透かし付与</li>
+    <li>Google AI Plus/Pro/Ultra 加入者は Gemini アプリ & Google Flow で利用可能</li>
+    <li>一般ユーザーは YouTube Shorts & YouTube Create App で無料体験（今週から）</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 2. Antigravity -->
+<article id="antigravity">
+  <h2>🤖 2. Google Antigravity — エージェント開発基盤の全貌</h2>
+
+  <p>今年の I/O で最も開発者の注目を集めた発表。Antigravity は「エージェント・ファースト」の開発プラットフォームとして大幅進化した。</p>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>🖥️ Antigravity 2.0</h4>
+      <p>単体デスクトップアプリ。複数エージェントの並列オーケストレーション、動的サブエージェント、バックグラウンド自動化タスク、AI Studio / Android / Firebase 統合。</p>
+    </div>
+    <div class="mini-card">
+      <h4>⌨️ Antigravity CLI</h4>
+      <p>ターミナルから即時エージェント作成。軽量・高速。Gemini CLI ユーザーは移行推奨。GUI不要で CI/CD パイプラインに組み込み可能。</p>
+    </div>
+    <div class="mini-card">
+      <h4>📦 Antigravity SDK</h4>
+      <p>Google 製品を支えるエージェントハーネスをプログラムから制御。Gemini モデルに最適化済み。独自インフラでホスト可能。</p>
+    </div>
+    <div class="mini-card">
+      <h4>☁️ Managed Agents（Gemini API）</h4>
+      <p>API 1コールで sandbox 付きエージェントをスピンアップ。隔離Linux環境、マルチターンセッション、カスタム指示/スキル定義。Gemini 3.5 Flash 採用。</p>
+    </div>
+  </div>
+
+  <h3>料金プラン</h3>
+  <ul>
+    <li><strong>Google AI Ultra</strong>：$100/月 — Antigravity 5倍の利用上限</li>
+    <li>期間限定：新規・既存 Ultra 加入者に <strong>$100 ボーナスクレジット</strong>（5/25まで）</li>
+    <li>Google AI Pro → YouTube Premium Lite 同梱 / AI Ultra → YouTube Premium 同梱</li>
+  </ul>
+
+  <h3>Google AI Studio の進化</h3>
+  <ul>
+    <li>📱 <strong>モバイルアプリ</strong>：今週事前登録開始。外出先でアイデア→プロトタイプ</li>
+    <li>🔗 <strong>Workspace 統合</strong>：エージェントが Gmail/Calendar/Drive などの API をネイティブコール</li>
+    <li>📤 <strong>Antigravity エクスポート</strong>：AI Studio から Antigravity へワンクリック移行</li>
+    <li>📱 <strong>ネイティブ Kotlin 対応</strong>：プロンプトだけで Android アプリ開発（vibe coding）</li>
+    <li>🏪 <strong>Google Play Console 統合</strong>：テストトラックへの直接公開</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 3. Android -->
+<article id="android">
+  <h2>📱 3. Android 開発 & Android 17 "Cinnamon Bin"</h2>
+
+  <p>Android 17 の正式発表は I/O 前週（5/12 The Android Show）だったが、Day 2 では <strong>開発者ツール</strong> に焦点。</p>
+
+  <h3>開発者ツール</h3>
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>🔧 Android CLI（安定版）</h4>
+      <p>AIエージェントが Android Studio の機能を直接利用。SDK ダウンロード、デバイス実行、ビルドなど。あらゆる LLM/ツールと組み合わせ可能。Android Skills もオープンソース化。</p>
+    </div>
+    <div class="mini-card">
+      <h4>📊 Android Bench</h4>
+      <p>Android 開発タスクの LLM リーダーボード。Gemma 4 などオープンウェイトモデルも追加。モデル選定の指標に。</p>
+    </div>
+    <div class="mini-card">
+      <h4>🔄 Migration Agent</h4>
+      <p>React Native / Web フレームワーク / iOS → ネイティブ Kotlin Android アプリに自動変換。<strong>数週間の移行が数時間に</strong>。Android Studio 新機能としてプレビュー。</p>
+    </div>
+    <div class="mini-card">
+      <h4>🧪 Google AI Studio × Android</h4>
+      <p>Kotlin vibe coding 対応。プロンプトから高品質 Android アプリを生成し、Play Console テストトラックに直接公開可能。</p>
+    </div>
+  </div>
+
+  <h3>Android 17 主要機能</h3>
+  <ul>
+    <li>🔒 <strong>ロック画面ウィジェット</strong></li>
+    <li>🫧 <strong>マルチタスクバブル</strong></li>
+    <li>🖥️ <strong>強化デスクトップモード</strong></li>
+    <li>🔄 <strong>Continue On</strong>：Apple Handoff に相当。複数 Android デバイス間でアプリ利用をシームレスに移行</li>
+    <li>🧠 <strong>Gemini システムレベル統合</strong>：アプリではなく OS ネイティブの AI 機能</li>
+    <li>📱 対応デバイス：Pixel 6 〜 Pixel 10 シリーズ</li>
+    <li>📅 安定版リリース：2026年6月〜7月予定</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 4. Web -->
+<article id="web">
+  <h2>🌐 4. Web 開発の未来</h2>
+
+  <div class="highlight-box">
+    <strong>💡 Web を「AI エージェントが操作可能なプラットフォーム」に再定義</strong>
+    3つの大型発表で Web 開発のパラダイムシフトを提示。
+  </div>
+
+  <h3>WebMCP（Web Model Context Protocol）</h3>
+  <ul>
+    <li>📡 ウェブサイトが AI エージェントに <strong>構造化ツール</strong>（JS関数・HTMLフォーム）を公開するオープン標準</li>
+    <li>🎯 従来の「クリック操作の模倣」ではなく、バックエンドAPIを直接クエリ可能に</li>
+    <li>🧪 Chrome 149 で Origin Trial 開始 · Gemini in Chrome 対応予定</li>
+    <li>💬 「複数都市の旅行計画」などの複雑タスクをエージェントが自律実行</li>
+  </ul>
+
+  <h3>Modern Web Guidance</h3>
+  <ul>
+    <li>📚 エキスパートが精査した <strong>パフォーマンス・アクセシビリティ・セキュリティ</strong> ベストプラクティス集</li>
+    <li>📊 100以上のユースケース対応 · Baseline 統合</li>
+    <li>⚡ Antigravity でワンクリック導入 / CLI：<code>npx modern-web-guidance install</code></li>
+  </ul>
+
+  <h3>Chrome DevTools for Agents</h3>
+  <ul>
+    <li>🤖 AI エージェントが Chrome DevTools の全機能を利用可能に</li>
+    <li>✅ コード検証・デバッグ・パフォーマンス最適化を自律実行</li>
+    <li>🔍 品質監査の自動化、実ユーザー体験のエミュレーション</li>
+  </ul>
+
+  <h3>HTML-in-Canvas API</h3>
+  <ul>
+    <li>🎮 WebGL/WebGPU Canvas 内に実際の DOM 要素を統合</li>
+    <li>🔍 検索・アクセシビリティ・インタラクションが可能な没入型3D体験</li>
+    <li>🧪 Origin Trial 開始</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 5. Search -->
+<article id="search">
+  <h2>🔍 5. Google Search 刷新 — 「25年ぶりの最大アップグレード」</h2>
+
+  <h3>AI パワード検索ボックス</h3>
+  <ul>
+    <li>🧠 ユーザーの<strong>意図を先読み</strong>し、オートコンプリートを超えた質問形成を支援</li>
+    <li>📎 テキスト・画像・ファイル・動画・<strong>Chrome タブ</strong>も検索入力に</li>
+    <li>🌍 AI Mode 利用可能な全言語・全地域で即日展開</li>
+  </ul>
+
+  <h3>AI Mode の進化</h3>
+  <ul>
+    <li>⚡ <strong>Gemini 3.5 Flash</strong> がデフォルトモデルに</li>
+    <li>🔗 AI Overview → フォローアップ質問 → AI Mode へのシームレス遷移</li>
+    <li>📊 <strong>Generative UI</strong>：Antigravity が検索結果内にカスタム可視化・シミュレーションを生成（今夏無料提供）</li>
+    <li>📋 <strong>Mini Apps</strong>：結婚式計画・フィットネストラッキングなどのタスク向けダッシュボード（今夏・US AI Pro/Ultra 先行）</li>
+  </ul>
+
+  <h3>AI Agents in Search</h3>
+  <ul>
+    <li>🕵️ <strong>情報エージェント</strong>：ブログ・ニュース・SNS・不動産・金融・スポーツ・ショッピングを常時監視・要約</li>
+    <li>📞 <strong>予約エージェント</strong>：カラオケ・美容・ペットケア・家の修理などで空き状況確認・料金比較・予約代行・電話連絡も</li>
+  </ul>
+
+  <h3>Personal Intelligence 拡大</h3>
+  <ul>
+    <li>🌏 <strong>約200カ国・98言語</strong>に対応（3月のUS無料化に続く）</li>
+    <li>📧 Gmail / Google Photos / Google Calendar から個人コンテキストを取得</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 6. Gemini Spark -->
+<article id="spark">
+  <h2>✨ 6. Gemini Spark — 24/7 パーソナル AI エージェント</h2>
+
+  <div class="highlight-box">
+    <strong>☁️ クラウド常駐型 · デバイス不要で稼働し続ける AI エージェント</strong>
+    あなたの代わりにタスクを遂行する「デジタル分身」。ノートPCやスマホを閉じていても動き続ける。
+  </div>
+  <ul>
+    <li>🔐 信頼できるテスター & Google AI Ultra 加入者向けに順次提供開始</li>
+    <li>📋 日々のデジタルタスクを自律的に管理・ナビゲート</li>
+    <li>🧠 Gemini 3.5 ベースの高度な推論と行動計画</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 7. Hardware / XR -->
+<article id="hardware">
+  <h2>👓 7. ハードウェア・XR — Intelligent Eyewear</h2>
+
+  <ul>
+    <li>🤝 <strong>Samsung × Google</strong> 共同開発の Android XR スマートグラス</li>
+    <li>🕶️ <strong>Gentle Monster / Warby Parker</strong> 製フレーム · オーディオグラス</li>
+    <li>📱 <strong>iOS / Android 両対応</strong></li>
+    <li>🍂 <strong>2026年秋発売予定</strong></li>
+    <li>🧠 Gemini 搭載 · 音声操作・リアルタイム翻訳・通知・ナビゲーション</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 8. Creative Tools -->
+<article id="creative">
+  <h2>🎨 8. クリエイティブツール — Google Flow & Google Pics</h2>
+
+  <h3>Google Flow（AI 動画制作）</h3>
+  <ul>
+    <li>🎬 Gemini Omni Flash 搭載：複雑な編集・シーン変更・視点切替をプロンプトで実行</li>
+    <li>🤖 <strong>Flow Agent</strong>：自律的な編集アシスタント</li>
+    <li>🔧 <strong>Flow Tools</strong>：プロ向け編集機能群</li>
+    <li>🎵 AI 生成音楽も統合</li>
+  </ul>
+
+  <h3>Google Pics（AI 画像生成・編集）</h3>
+  <ul>
+    <li>🖼️ 複雑な画像生成をシンプルにする新ツール</li>
+    <li>✏️ 生成＋編集の統合ワークフロー</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 9. Ecosystem -->
+<article id="ecosystem">
+  <h2>🌍 9. エコシステム — サブスク · Adobe · Science · XPRIZE</h2>
+
+  <h3>Google AI サブスクリプション再編</h3>
+  <ul>
+    <li>💎 <strong>Google AI Pro</strong>：YouTube Premium Lite 同梱</li>
+    <li>👑 <strong>Google AI Ultra（$100/月）</strong>：YouTube Premium 同梱 + Antigravity 5倍上限</li>
+    <li>🎁 期間限定 $100 ボーナスクレジット（5/25まで）</li>
+  </ul>
+
+  <h3>Adobe Creative Connector for Gemini</h3>
+  <ul>
+    <li>🔗 Adobe クリエイティブアプリ群と Gemini を連携</li>
+    <li>🤖 コンテキストプロンプトによる自動化ワークフロー</li>
+  </ul>
+
+  <h3>Gemini for Science</h3>
+  <ul>
+    <li>🔬 科学研究加速のための AI ツール群と実験的プロトタイプ</li>
+    <li>🧪 日々の科学タスクのアシスト</li>
+  </ul>
+
+  <h3>Build with Gemini XPRIZE Hackathon</h3>
+  <div class="highlight-box">
+    <strong>🏆 賞金総額 $2,000,000 — 史上最大規模のハッカソン</strong>
+    食料廃棄削減から科学研究まで、世界の重要課題を解決するアプリを Gemini で構築。9月にロサンゼルスで最終ピッチ。
+  </div>
+
+  <h3>Gemini アプリの UX 刷新</h3>
+  <ul>
+    <li>🎨 <strong>Neural Expressive</strong> デザイン言語：インタラクティブ画像・生成動画タイムライン</li>
+    <li>🗣️ <strong>Gemini Live</strong>：より自然な会話型インタラクション</li>
+    <li>📰 <strong>Daily Brief</strong>：Gmail/Calendar 連携の朝のパーソナルダイジェスト</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 10. Wrap-up -->
+<article id="wrapup">
+  <h2>📝 10. 総括 — Google I/O 2026 の本質</h2>
+
+  <p>今年の Google I/O を一言で表すなら <strong>「Agentic AI の全面展開」</strong>。</p>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>🧠 モデル層</h4>
+      <p>Gemini 3.5 Flash（速度）→ Pro（深度）→ Omni（マルチモーダル生成）。全レイヤーでエージェント最適化。</p>
+    </div>
+    <div class="mini-card">
+      <h4>🔧 インフラ層</h4>
+      <p>Antigravity 2.0 + CLI + SDK + Managed Agents。全開発者がエージェントを構築・運用できる基盤。</p>
+    </div>
+    <div class="mini-card">
+      <h4>📱 プラットフォーム層</h4>
+      <p>Android 17 / Chrome + WebMCP / Google Search。全主要プロダクトに AI エージェントを組込み。</p>
+    </div>
+    <div class="mini-card">
+      <h4>👓 デバイス層</h4>
+      <p>Intelligent Eyewear（Android XR）。AI が現実世界に溶け込む新フォームファクタ。</p>
+    </div>
+  </div>
+
+  <p style="margin-top:1.5rem;">Day 1 が「消費者向け」のビジョン提示だったのに対し、Day 2 は <strong>「開発者が今日から使えるツール」</strong> の具体提示だった。Antigravity の大幅進化と WebMCP の登場は、ソフトウェア開発のあり方を根本から変える可能性を秘めている。</p>
+
+  <p style="margin-top:1rem; color: var(--muted); font-size: 0.9rem;">
+    📅 本記事の情報は 2026年5月19日（現地時間）の Developer Keynote および関連セッションに基づきます。<br>
+    🔗 出典：<a href="https://developers.googleblog.com/all-the-news-from-the-google-io-2026-developer-keynote/" target="_blank" rel="noopener">Google Developers Blog</a> · <a href="https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/" target="_blank" rel="noopener">Google Blog</a> · <a href="https://www.engadget.com/2176896/everything-google-announced-io-2026-gemini-omni-spark/" target="_blank" rel="noopener">Engadget</a> · <a href="https://io.google/2026/" target="_blank" rel="noopener">Google I/O 2026 Official</a>
+  </p>
+</article>
+
+</main>
+
+<footer>
+  <p>📰 <a href="../">Tech News 朝刊ポータル</a> 特別増刊号 · Generated 2026-05-21 · <a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a></p>
+</footer>
+</body>
+</html>
