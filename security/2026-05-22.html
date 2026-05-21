@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-21 08:00 〜 2026-05-22 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. GCP — Apigee SSRF + サービスアカウントトークン流出（CVE-2026-2264 / GCP-2026-034, High）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE / Bulletin</strong></td><td>CVE-2026-2264 / GCP-2026-034</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span></td></tr>
+  <tr><td><strong>影響</strong></td><td>Apigee（Google Cloud 版 + Apigee Hybrid）— <code>SetIntegrationRequest</code> ポリシー</td></tr>
+  <tr><td><strong>修正</strong></td><td>Google Cloud Apigee: 自動パッチ適用済み（1-16-0-apigee-5）。Apigee Hybrid: 1.14.4 / 1.15.2 / 1.16.1 へアップグレード</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-20（GCP Security Bulletin）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>Server-Side Request Forgery (SSRF)</td></tr>
+</table>
+
+<p>Apigee の <code>SetIntegrationRequest</code> ポリシーにおいて、<code>IntegrationRegion</code> パラメータの検証不備により Server-Side Request Forgery (SSRF) が可能となる脆弱性が確認されました。攻撃者がフロー変数を操作できる場合、リクエストが攻撃者の制御するホストに送信され、サービスアカウントトークンが流出する可能性があります。</p>
+
+<p><strong>対応</strong>:</p>
+<ul>
+  <li><strong>Google Cloud 版 Apigee</strong>: 修正はリリース 1-16-0-apigee-5 に適用済み。ユーザー側の対応は不要。</li>
+  <li><strong>Apigee Hybrid</strong>: メジャーバージョンに応じて 1.14.4 / 1.15.2 / 1.16.1 へのアップグレードが必須。</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/support/bulletins#GCP-2026-034">GCP Security Bulletin GCP-2026-034</a> · <a href="https://docs.cloud.google.com/apigee/docs/security-bulletins/security-bulletins">Apigee Security Bulletin</a></p>
+
+<hr>
+
+<h3>2. Azure — Azure Portal Windows Admin Center 権限昇格（CVE-2026-42834, High, CVSS 7.8）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-42834</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span>（CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H — 7.8）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Azure Portal Windows Admin Center（v1.0 〜 0.72.0.0 未満）</td></tr>
+  <tr><td><strong>修正</strong></td><td>バージョン 0.72.0.0 以降へ更新</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-20（NVD / MSRC 公開）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-59（不適切なリンク解決）</td></tr>
+</table>
+
+<p>Azure Portal の Windows Admin Center に、ファイルアクセス前の不適切なリンク解決（CWE-59）に起因するローカル権限昇格の脆弱性が存在します。認可された攻撃者がローカルで SYSTEM 権限を取得できる可能性があります。</p>
+
+<p><strong>対応</strong>: Azure Portal Windows Admin Center をバージョン 0.72.0.0 以降に更新してください。</p>
+
+<p>🔗 <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42834">MSRC アドバイザリ</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-42834">NVD</a></p>
+
+<hr>
+
+<h3>3. Python — ChromaDB 認証バイパスによるリモートコード実行（CVE-2026-45829, Critical）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45829（通称: ChromaToast）</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-critical">Critical</span>（CVSS 4.0: AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H）</td></tr>
+  <tr><td><strong>影響</strong></td><td>ChromaDB Python FastAPI サーバー v1.0.0 〜 v1.5.8</td></tr>
+  <tr><td><strong>修正</strong></td><td>v1.5.8 時点で未パッチ。修正バージョンのリリースを待ち、速やかにアップグレード</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-20（NVD 公開）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-94（コードインジェクション）</td></tr>
+</table>
+
+<p>オープンソースのベクトルデータベース ChromaDB（月間 1,300 万 pip ダウンロード）の Python FastAPI サーバーに、認証前リモートコード実行（Pre-Auth RCE）の脆弱性が発見されました。認証されていない攻撃者が <code>/api/v2/tenants/{tenant}/databases/{db}/collections</code> エンドポイントに対し、悪意ある Hugging Face モデル参照と <code>trust_remote_code: true</code> を送信することで、認証チェック前に任意のコードをサーバー上で実行できます。</p>
+
+<p>HiddenLayer の調査によれば、Shodan で検出されたインターネット公開 ChromaDB インスタンスの 73% が脆弱なバージョン（1.0.0+）を実行中です。</p>
+
+<p><strong>対応</strong>:</p>
+<ul>
+  <li>修正バージョンがリリースされ次第、速やかにアップグレード</li>
+  <li>それまでの間、ChromaDB API を信頼できるネットワークにのみ公開するよう制限</li>
+  <li>インターネットに直接公開しているインスタンスは直ちにアクセス制限を適用</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45829">NVD</a> · <a href="https://www.hiddenlayer.com/research/chromatoast-served-pre-auth">HiddenLayer 詳細レポート</a> · <a href="https://github.com/chroma-core/chroma/issues/6717">GitHub Issue #6717</a></p>
+
+<hr>
+
+<h3>4. Next.js — Turbopack 環境で CVE-2026-44575 修正が不完全（CVE-2026-45109, High）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45109</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span>（NVD CVSS 評価未了。CVE-2026-44575 同等と推定）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Next.js 15.2.0 〜 15.5.17、16.2.0 〜 16.2.5（Turbopack 使用時のみ）</td></tr>
+  <tr><td><strong>修正</strong></td><td>15.5.18 以降 / 16.2.6 以降</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-21（NVD 公開）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-288（代替パスを用いた認証バイパス）</td></tr>
+</table>
+
+<p>先日修正された CVE-2026-44575（Next.js App Router のミドルウェア認証バイパス）の修正が、<strong>Turbopack 環境では不完全</strong>であることが判明しました。<code>middleware.ts</code> を使用した認可チェックが、Turbopack 使用時に <code>.rsc</code> およびセグメントプリフェッチリクエストに対して適切に適用されません。</p>
+
+<p><strong>背景</strong>: CVE-2026-44575（5月11日公開）では、App Router のミドルウェアマッチャーがトランスポート固有のリクエスト（<code>.rsc</code>、セグメントプリフェッチ）を捕捉できず、認可バイパスが発生していました。今回の CVE-2026-45109 は、その修正が Turbopack 環境に正しく反映されていなかった問題です。</p>
+
+<p><strong>対応</strong>:</p>
+<ul>
+  <li>Turbopack 使用環境: Next.js 15.5.18 以降 または 16.2.6 以降へアップグレード</li>
+  <li>Turbopack 非使用環境: 既存の CVE-2026-44575 修正（15.5.16 / 16.2.5）で対応済み</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45109">NVD</a> · <a href="https://github.com/vercel/next.js/security/advisories/GHSA-26hh-7cqf-hhc6">GitHub Advisory GHSA-26hh-7cqf-hhc6</a></p>
+
+<hr>
+
+<p class="empty-notice">Java, SpringBoot, Django, Hono, AWS, React（スタンドアロン）, OpenClaw, Claude に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Microsoft Defender ゼロデイ 2 件がアクティブに悪用 — CISA KEV に追加（5/20）</h3>
+<ul>
+  <li>Microsoft が Microsoft Defender の 2 件のゼロデイ脆弱性が実環境で悪用されていると警告</li>
+  <li><strong>CVE-2026-41091</strong>: Microsoft Malware Protection Engine の権限昇格（CVSS 7.8, High）。ローカルの攻撃者が SYSTEM 権限を取得可能</li>
+  <li><strong>CVE-2026-45498</strong>: Microsoft Defender Antimalware Platform のサービス拒否（DoS）</li>
+  <li>CISA が 5月20日、この 2 件を <strong>Known Exploited Vulnerabilities (KEV) カタログ</strong>に追加。FCEB 機関は 2026年6月3日までの修復を義務付け</li>
+  <li>修正は Microsoft Defender Antimalware Platform v4.18.26040.7 / Malware Protection Engine v1.1.26040.8 で提供。多くの環境では自動更新が適用済みだが、手動確認を推奨</li>
+  <li>🔗 <a href="https://www.cisa.gov/news-events/alerts/2026/05/20/cisa-adds-seven-known-exploited-vulnerabilities-catalog">CISA アラート</a> · <a href="https://www.bleepingcomputer.com/news/security/microsoft-warns-of-new-defender-zero-days-exploited-in-attacks/">BleepingComputer</a> · <a href="https://thehackernews.com/2026/05/microsoft-warns-of-two-actively.html">The Hacker News</a></li>
+</ul>
+
+<h3>⚠️ サイバー犯罪フォーラムで「NATO データベース 3.5TB」と称するデータが出品（5/21）</h3>
+<ul>
+  <li>5月21日、地下サイバー犯罪フォーラムで「NATO Database + Confidential Documents」と称する約 3.5TB のデータが出品されていることが判明</li>
+  <li>サンプルデータには <strong>氏名、国籍、勤務先メールアドレス、電話番号、勤務先住所、役職</strong>などの個人情報が含まれる</li>
+  <li>出品価格は約 $5,000 と比較的低額で、データの真正性や独自性に疑問の声も</li>
+  <li>第三者サービスからの流出の可能性が指摘されている。NATO からの公式発表は未確認</li>
+  <li>🔗 <a href="https://cybernews.com/security/nato-defense-data-leak-hacker-forum/">Cybernews</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
