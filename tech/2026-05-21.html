@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-21 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <p class="breadcrumb">
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </p>
+  <h1>🔧 2026-05-21 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-19 09:00 〜 2026-05-21 09:00 JST（過去48時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🟢 Django 6.1 alpha 1 リリース（5月20日）</h2>
+
+<p>Django 6.1 の最初のアルファ版が公開されました。本番環境向けではなく、新機能のテストとバグ報告を目的としたプレビューリリースです。正式リリースは 2026年8月を予定。</p>
+
+<h3>主要な新機能</h3>
+
+<ul>
+  <li><strong>モデルフィールド フェッチモード</strong>: <code>QuerySet.fetch_mode()</code> でフィールド取得動作を制御可能に。
+    <ul>
+      <li><code>FETCH_ONE</code>（デフォルト・既存動作）: 現在のインスタンスのみフィールド取得</li>
+      <li><code>FETCH_PEERS</code>（新機能）: 同一QuerySetの全インスタンスの不足フィールドを一括取得。N+1問題を2クエリに削減可能</li>
+      <li><code>RAISE</code>（新機能）: 未取得フィールドアクセス時に <code>FieldFetchBlocked</code> 例外を発生。パフォーマンスクリティカルなコードでの意図しないクエリを防止</li>
+    </ul>
+  </li>
+  <li><strong>DBレベル削除オプション</strong>: <code>ForeignKey.on_delete</code> に <code>DB_CASCADE</code>, <code>DB_SET_NULL</code>, <code>DB_SET_DEFAULT</code> を追加。SQLの <code>ON DELETE</code> 句で処理され、Pythonレベルより高効率（pre/post_delete シグナル非発火）</li>
+  <li><strong>MAILERS 設定</strong>: 複数メールバックエンドを <code>CACHES</code>/<code>DATABASES</code> と同様の方式で設定可能に。Django 7.0 で <code>EMAIL_BACKEND</code> を置き換え予定（後方互換性あり）</li>
+  <li><strong>管理画面の改善</strong>: フォームフィールドがラベル下に表示（アクセシビリティ向上）、エラー表示順序の改善、<code>delete_confirmation_max_display</code> オプション追加、アクションの <code>location</code> 指定対応</li>
+  <li><strong>認証</strong>: PBKDF2 イテレーション回数が 1,200,000 → 1,500,000 に増加</li>
+  <li><strong>GIS</strong>: OpenLayers 10.9.0 ベースに更新、SpatiaLite で <code>isempty</code> ルックアップ対応、<code>num_dimensions</code> ルックアップ追加</li>
+  <li><strong>Python互換性</strong>: Python 3.12, 3.13, 3.14 をサポート</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: 本番環境では使用不可。開発環境・CIでのテスト参加を推奨。特に <code>FETCH_PEERS</code> はパフォーマンス改善のインパクトが大きく、フィードバックが求められている。</p>
+
+<p>🔗 <a href="https://www.djangoproject.com/weblog/2026/may/20/django-61-alpha-1-released/">Django 公式ブログ: Django 6.1 alpha 1 released</a><br>
+🔗 <a href="https://docs.djangoproject.com/en/dev/releases/6.1/">Django 6.1 リリースノート（開発版）</a></p>
+
+<hr>
+
+<h2>⚛️ Next.js — プレリリース（5月20日）</h2>
+
+<p>Next.js canary に以下の変更がマージされました。</p>
+
+<ul>
+  <li><strong><code>nextConfig.instrumentationClientInject</code></strong>: クライアントサイドインストルメンテーション注入の設定オプション追加（<a href="https://github.com/vercel/next.js/pull/93785">#93785</a>）</li>
+  <li><strong>MCP <code>compile_route</code> ツール</strong>: AIエージェント向けルートコンパイルツール追加（<a href="https://github.com/vercel/next.js/pull/93337">#93337</a>）</li>
+  <li><strong>Nodeストリームでサーバー挿入HTMLを処理</strong>: Server Inserted HTML に Node.js ストリームを使用（<a href="https://github.com/vercel/next.js/pull/93934">#93934</a>）</li>
+  <li><strong><code>rootParams</code> デフォルト有効化</strong>: ルートパラメータがデフォルトで有効に（<a href="https://github.com/vercel/next.js/pull/93863">#93863</a>）</li>
+  <li><strong><code>prefetch={true}</code> と <code>cachedNavigations</code> のクロスパラメータリーク修正</strong>（<a href="https://github.com/vercel/next.js/pull/93940">#93940</a>）</li>
+  <li><strong>Turbopack 改善</strong>: 永続化サイズのトレースメタデータ追加、<code>rcstrs</code> のメモリ最適化、チャンクバージョン管理改善</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: いずれもプレリリース（canary）のため、本番適用は要検証。<code>rootParams</code> のデフォルト有効化は既存プロジェクトの動作に影響する可能性あり。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 新機能リリース（5月20日）</h2>
+
+<h3>🔐 Security Hub: 未使用IAMアクセスの一元的なIDリスク検出</h3>
+<p>Security Hub が未使用のIAM権限・ロール・認証情報を検出し、脅威・露出・ポスチャーファインディングと統合表示。90日間の実アクセスアクティビティ評価、オンデマンド最小権限ポリシー生成に対応。Security Hub Essentials で追加料金なし。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-security-hub-unused-access/">詳細</a></p>
+
+<h3>🛡️ Security Hub Extended: パートナーソリューションが21製品に拡大</h3>
+<p>SentinelOne（エンドポイント）、CyberArk（ID）、Sublime（メール）、Varonis（データセキュリティ）、LayerX（ブラウザ）、Native Security（クラウド）、Zenity（AIセキュリティ）の7製品が新規参加。全9カテゴリ・21製品に。OCSFスキーマで統合され、従量課金・AWS一括請求対応。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-security-hub-extended/">詳細</a></p>
+
+<h3>🗄️ ExtendDB: オープンソース DynamoDB 互換アダプター v0.1</h3>
+<p>AWS が Apache 2.0 ライセンスで公開。DynamoDB のワイヤープロトコルを実装し、PostgreSQL を参照バックエンドに採用。ローカル開発・CI/CD・オンプレミス・エアギャップ環境で DynamoDB API を利用可能。CRUD、Query、Scan、Batch、Transactions、Streams、TTL、Import/Export に対応。SigV4 認証・Web管理コンソール・Prometheus メトリクスエンドポイントも搭載。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-extenddb-dynamodb/">What's New</a> ·
+🔗 <a href="https://github.com/ExtendDB/extenddb">GitHub: ExtendDB/extenddb</a> ·
+🔗 <a href="https://extenddb.org">extenddb.org</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice">Hono、GCP、Azure、React、SpringBoot、Python、Java、Claude、OpenClaw は本日対象期間内の新着情報なし</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
