@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <p class="breadcrumb">
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </p>
+  <h1>🔧 2026-05-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-20 09:00 〜 2026-05-22 09:00 JST（過去48時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🎯 Google I/O 2026 — Google Cloud 新発表（5月20日〜21日）</h2>
+
+<p>Google I/O 2026 にて、Google Cloud 関連の大型発表が行われました。Gemini 3.5 シリーズを中心に、エージェント開発基盤の大幅強化が発表されています。</p>
+
+<h3>🤖 Gemini 3.5 Flash — リリース</h3>
+<p>Gemini 3.5 シリーズの第一弾として Flash モデルが公開されました。エージェント実行・コーディングに最適化されたフロンティアモデルで、Gemini 3.1 Pro を主要ベンチマークで上回る性能を発揮。</p>
+<ul>
+  <li><strong>Terminal-Bench 2.1</strong>: 76.2%</li>
+  <li><strong>GDPval-AA</strong>: 1656 Elo</li>
+  <li><strong>MCP Atlas</strong>: 83.6%</li>
+  <li><strong>CharXiv（マルチモーダル理解）</strong>: 84.2%</li>
+</ul>
+<p>Gemini Enterprise Agent Platform、Google AI Studio、Antigravity から即日利用可能。Gemini 3.5 Pro は来月提供予定。</p>
+
+<h3>🎬 Gemini Omni — 発表</h3>
+<p>テキスト・音声・画像・動画入力を組み合わせた動画生成モデル。自然言語による直感的な動画作成・編集が可能。Gemini Omni Flash は数週間以内に Gemini API / Agent Platform API 経由で提供開始予定。</p>
+
+<h3>⚡ Antigravity 2.0 — デスクトップアプリ + CLI</h3>
+<p>Google Cloud のエージェント開発プラットフォーム Antigravity が刷新。スタンドアロンのデスクトップアプリと CLI が提供され、エージェントの操作・カスタマイズ・オーケストレーションを一元管理可能に。Google Cloud のデータ保護・利用規約の適用によりエンタープライズセキュリティにも対応。</p>
+
+<h3>🔧 Managed Agents API（Agent Platform）</h3>
+<p>開発者が Google のセキュアなホスト環境でカスタムエージェントを構築・実行できる新 API。Agent Platform とシームレスに統合。</p>
+
+<h3>🛡️ CodeMender — AI セキュリティエージェント</h3>
+<p>Agent Platform 経由で提供される AI セキュリティエージェント。コード内の脆弱性の検出と修正を自動化。</p>
+
+<h3>✨ その他</h3>
+<ul>
+  <li><strong>Gemini Spark</strong>: Gemini Enterprise / Workspace ユーザー向けの 24/7 パーソナル AI エージェント</li>
+  <li><strong>Google Pics</strong>: Workspace 向け画像生成・編集ツール</li>
+  <li><strong>Workspace 音声機能</strong>: Gmail、Docs、Keep に音声入力・対話機能を追加</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: Gemini 3.5 Flash は即日利用可能。エージェント開発プロジェクトでは 3.5 Flash への移行評価を推奨。Antigravity 2.0 はエンタープライズでのエージェント開発ワークフローに大きな影響を与える可能性あり。</p>
+
+<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud">Google Cloud Blog: Innovations from Google I/O 26 on Google Cloud</a><br>
+🔗 <a href="https://aistudio.google.com/">Google AI Studio</a><br>
+🔗 <a href="https://antigravity.google/">Google Antigravity</a></p>
+
+<hr>
+
+<h2>⚛️ Next.js — canary プレリリース（5月21日〜22日）</h2>
+
+<p>Next.js canary ブランチにて、複数の実験的機能がデフォルト有効化されました。安定化に向けた重要なマイルストーンです。</p>
+
+<h3>5月22日の変更</h3>
+<ul>
+  <li><strong><code>experimental.varyParams</code> デフォルト有効化</strong>: 動的パラメータに基づくキャッシュバリエーションがデフォルトで動作（<a href="https://github.com/vercel/next.js/pull/94010">#94010</a>）</li>
+  <li><strong><code>experimental.optimisticRouting</strong> デフォルト有効化</strong>: 楽観的ルーティングが標準動作に（<a href="https://github.com/vercel/next.js/pull/94011">#94011</a>）</li>
+  <li><strong><code>experimental.cachedNavigations</strong> デフォルト有効化（cacheComponents併用時）</strong>: キャッシュナビゲーションが標準で有効に（<a href="https://github.com/vercel/next.js/pull/94012">#94012</a>）</li>
+  <li><strong>App Shell プリフェッチ</strong>: サーバーサイドでの App Shell プリフェッチ対応（<a href="https://github.com/vercel/next.js/pull/93998">#93998</a>）</li>
+  <li><strong>PPR ルートの dynamicRoutes 包含</strong>: revalidate 時間に関わらず PPR ルートを dynamicRoutes に含めるように（<a href="https://github.com/vercel/next.js/pull/94025">#94025</a>）</li>
+  <li><strong>Turbopack</strong>: <code>node_modules/next</code> が一時的に解決不能な場合の dev server クラッシュ防止（<a href="https://github.com/vercel/next.js/pull/93877">#93877</a>）、rustc nightly-2026-05-15 へのアップグレード（<a href="https://github.com/vercel/next.js/pull/94021">#94021</a>）</li>
+  <li><strong><code>--debug-build-paths</code> の src/ 対応</strong>（<a href="https://github.com/vercel/next.js/pull/94016">#94016</a>）</li>
+</ul>
+
+<h3>5月21日の変更</h3>
+<ul>
+  <li><strong><code>experimental.appShells</code> フラグ追加</strong>: App Shell 機能のフィーチャーフラグ（<a href="https://github.com/vercel/next.js/pull/93997">#93997</a>）</li>
+  <li><strong>Prerender HTTP access fallbacks</strong>: Cache Components セマンティクスでのフォールバック対応（<a href="https://github.com/vercel/next.js/pull/93988">#93988</a>）</li>
+  <li><strong>Turbopack</strong>: サブパスインポートの外部パッケージ対応修正（<a href="https://github.com/vercel/next.js/pull/93308">#93308</a>）、クラッシュする webpack loader のエラーレポート改善（<a href="https://github.com/vercel/next.js/pull/93926">#93926</a>）、module-sync エクスポート条件の尊重（<a href="https://github.com/vercel/next.js/pull/93970">#93970</a>）</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: いずれもプレリリース（canary）のため、本番適用は慎重に検証を。<code>varyParams</code>・<code>optimisticRouting</code>・<code>cachedNavigations</code> のデフォルト有効化は既存プロジェクトの挙動に影響を与える可能性があるため、canary での早期テストを推奨。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases（GitHub）</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice">web（一般）、Java、Python、Django、Hono、AWS、Azure、React、SpringBoot、OpenClaw、Claude は本日対象期間内の新着情報なし</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
