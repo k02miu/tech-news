@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-23 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-23 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-22 08:00 〜 2026-05-23 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. NGINX — rewrite モジュールのヒープバッファオーバーフロー（CVE-2026-9256, Critical）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-9256</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-critical">Critical</span>（CVSS 4.0: 9.2 / CVSS 3.1: 8.1 High）</td></tr>
+  <tr><td><strong>影響</strong></td><td>NGINX Plus R32〜R37、NGINX Open Source 1.30.0〜1.31.0（<code>ngx_http_rewrite_module</code>）</td></tr>
+  <tr><td><strong>修正</strong></td><td>NGINX Open Source 1.30.2 / 1.31.1 へアップグレード。NGINX Plus: R32 P7 / R36 P5 / 37.0.1.1</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-22（NVD / F5 Security Advisory）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-122（ヒープベースバッファオーバーフロー）</td></tr>
+</table>
+
+<p>NGINX および NGINX Plus の <code>ngx_http_rewrite_module</code> において、rewrite ディレクティブで重複キャプチャを含む正規表現（例: <code>^/((.*))$</code>）と複数キャプチャを参照する置換文字列（例: <code>$1$2</code>）を redirect または arguments コンテキストで使用した場合に、ヒープバッファオーバーフローが発生する脆弱性が確認されました。認証されていない攻撃者が細工した HTTP リクエストを送信することで、NGINX ワーカープロセスのクラッシュ（DoS）を引き起こし、ASLR が無効または回避可能な環境では任意のコード実行に至る可能性があります。</p>
+
+<p><strong>対応</strong>:</p>
+<ul>
+  <li><strong>NGINX Open Source</strong>: 安定版 1.30.2 またはメインライン 1.31.1 へアップグレード</li>
+  <li><strong>NGINX Plus</strong>: R32 P7 / R36 P5 / 37.0.1.1 へアップグレード</li>
+  <li><strong>暫定緩和策</strong>: rewrite 定義で名前付きキャプチャ（named captures）を使用し、無名キャプチャの使用を避ける</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-9256">NVD</a> · <a href="https://my.f5.com/manage/s/article/K000161377">F5 K000161377</a> · <a href="https://nginx.org/en/security_advisories.html">NGINX Security Advisories</a></p>
+
+<hr>
+
+<h3>2. GCP — 削除済み API キーが最大 23 分間有効であり続ける設計上の問題</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>GCP IAM 設計上の問題（CVE 未割当）</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span>（実運用上のリスク大）</td></tr>
+  <tr><td><strong>影響</strong></td><td>すべての Google API キー（Gemini、BigQuery、Maps 等）。削除操作後も最大 23 分間（中央値 約 16 分）認証成功が継続</td></tr>
+  <tr><td><strong>修正</strong></td><td>Google は当初「won't fix」としていたが、5月22日に P0 バグとして再オープン</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-21（Aikido Security ブログ）、2026-05-22（Google P0 再オープン）</td></tr>
+</table>
+
+<p>セキュリティ企業 Aikido Security の調査により、Google Cloud コンソールで API キーを削除しても、実際の無効化までに最大 23 分（中央値約 16 分）の遅延があることが判明しました。この間、漏洩したキーを保持する攻撃者は Gemini のファイルアクセスや会話履歴、BigQuery、Google Maps などの API に継続してアクセス可能です。</p>
+
+<p>Google の削除ダイアログには「このキーは API リクエストに使用できなくなります」と表示されますが、実際には即時無効化されません。一方、Service Account キーでは約 5 秒、Gemini API 専用キーでは約 1 分で無効化されることから、技術的には高速な無効化が可能であることが示唆されています。</p>
+
+<p><strong>5月22日更新</strong>: Google は当初この報告を「システムの既知の特性であり、セキュリティ問題ではない」としてクローズしていましたが、5月22日に P0（最優先）バグとして再オープンしました。</p>
+
+<p><strong>推奨対応</strong>:</p>
+<ul>
+  <li>API キー削除は最短でも 30 分かかる操作と見なし、その間は GCP コンソールの「有効な API とサービス」で API 使用状況を監視</li>
+  <li>可能な限り、Service Account キーなど無効化が高速な認証方式への移行を検討</li>
+  <li>API キーのローテーション時は、旧キー削除後 30 分間は新キーのみを使用していることを確認</li>
+</ul>
+
+<p>🔗 <a href="https://www.aikido.dev/blog/google-api-keys-deletion">Aikido Security 詳細レポート</a> · <a href="https://www.helpnetsecurity.com/2026/05/22/deleted-google-api-keys-risk/">HelpNetSecurity</a> · <a href="https://www.darkreading.com/identity-access-management-security/google-api-keys-active-after-deletion">Dark Reading</a></p>
+
+<hr>
+
+<h3>3. Python — Crawlee for Python に SSRF 脆弱性（CVE-2026-46497, High）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-46497</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span></td></tr>
+  <tr><td><strong>影響</strong></td><td>Crawlee for Python — サイトマップ由来 URL を介した Server-Side Request Forgery (SSRF)</td></tr>
+  <tr><td><strong>修正</strong></td><td>設定の更新による緩和（修正バージョン情報は CVE 公開時点で未確定）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-22（NVD 公開）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-918（Server-Side Request Forgery）</td></tr>
+</table>
+
+<p>Python の Web スクレイピング・クローリングフレームワーク Crawlee において、サイトマップ（sitemap）から取得した URL の検証が不十分なため、攻撃者が内部ネットワークやローカルホストへのリクエストを誘導できる SSRF 脆弱性が確認されました。</p>
+
+<p><strong>対応</strong>: 修正バージョンがリリースされ次第アップグレード。それまでの間、信頼できるサイトマップのみを処理するよう設定を制限してください。</p>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-46497">NVD</a></p>
+
+<hr>
+
+<p class="empty-notice">Java, SpringBoot, Django, Next.js, Hono, AWS, Azure, React, OpenClaw, Claude に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 CISA 委託業者が AWS GovCloud 認証情報を GitHub で公開 — 議会が説明要求（5/22 進展）</h3>
+<ul>
+  <li>CISA（米サイバーセキュリティ・インフラストラクチャセキュリティ庁）の委託業者 Nightwing の社員が、「Private-CISA」と名付けられた<strong>公開 GitHub リポジトリ</strong>に AWS GovCloud 管理キー、平文パスワード、SSH キー、内部システム認証情報を暴露</li>
+  <li>2025年11月から2026年5月15日（リポジトリ削除日）まで<strong>約6ヶ月間公開状態</strong>。リポジトリ管理者は GitHub のシークレットスキャン機能を無効化していた</li>
+  <li>GitGuardian が5月14日に発見、5月15日に CERT/CC および CISA に通報。KrebsOnSecurity が5月18日に第一報</li>
+  <li>漏洩した AWS GovCloud アカウントの一部はリポジトリ削除後も<strong>約48時間にわたって認証情報が有効</strong>だったことが確認されている</li>
+  <li><strong>5月22日</strong>: 米下院 Homeland Security Committee の民主党議員らが CISA に対し、インシデントの全容と再発防止策について<strong>説明を正式要求</strong></li>
+  <li>CISA は「現時点で機密データが悪用された兆候はない」としつつ、調査継続中</li>
+  <li>🔗 <a href="https://krebsonsecurity.com/2026/05/cisa-admin-leaked-aws-govcloud-keys-on-github/">KrebsOnSecurity</a> · <a href="https://cyberscoop.com/cisa-credential-leak-congress-demands-answers/">CyberScoop</a> · <a href="https://www.esecurityplanet.com/threats/cisa-github-leak-exposes-aws-govcloud-secrets/">eSecurity Planet</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
