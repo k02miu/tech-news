@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-24 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-24 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-23 08:00 〜 2026-05-24 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Azure — 8件のクラウドサービス Critical 脆弱性にサーバーサイドパッチ（CVE-2026-40412 他, CVSS Max 10.0）</h3>
+
+<p>Microsoft は 2026年5月22日（米国時間）、Azure をはじめとするクラウドサービスに対し、8件の Critical 脆弱性アドバイザリを公開しました。いずれも Microsoft 管理のクラウドサービス側で修正済みであり、顧客側のパッチ適用は不要ですが、設定やデータの露出状況の確認が推奨されます。5件が CVSS 10.0、3件が CVSS 9.1 以上と極めて深刻度の高い内容です。</p>
+
+<table class="cve-table">
+  <tr><th>CVE</th><th>対象サービス</th><th>種類</th><th>CVSS</th></tr>
+  <tr><td><strong>CVE-2026-40412</strong></td><td>Azure Orbital Spatio</td><td>リモートコード実行（RCE）</td><td><span class="badge-critical">10.0</span></td></tr>
+  <tr><td><strong>CVE-2026-40411</strong></td><td>Azure Virtual Network Gateway</td><td>リモートコード実行（RCE）</td><td><span class="badge-critical">9.9</span></td></tr>
+  <tr><td><strong>CVE-2026-47280</strong></td><td>Azure Resource Manager</td><td>権限昇格</td><td><span class="badge-critical">10.0</span></td></tr>
+  <tr><td><strong>CVE-2026-42901</strong></td><td>Entra ID</td><td>権限昇格</td><td><span class="badge-critical">10.0</span></td></tr>
+  <tr><td><strong>CVE-2026-33843</strong></td><td>Entra ID / Azure AD B2C</td><td>権限昇格</td><td><span class="badge-critical">9.1</span></td></tr>
+  <tr><td><strong>CVE-2026-23652</strong></td><td>Power Pages</td><td>コマンドインジェクション</td><td><span class="badge-critical">10.0</span></td></tr>
+  <tr><td><strong>CVE-2026-41104</strong></td><td>Planetary Computer Pro</td><td>情報漏洩（安全でないデシリアライゼーション）</td><td><span class="badge-critical">10.0</span></td></tr>
+  <tr><td><strong>CVE-2026-41090</strong></td><td>365 Copilot for iOS</td><td>コマンドインジェクション</td><td><span class="badge-critical">9.3</span></td></tr>
+</table>
+
+<p>本件は従来の Patch Tuesday（5月13日）とは別に、SaaS/クラウドサービス向けのサーバーサイド修正として公開されました。いずれの脆弱性も現時点で実証コード（PoC）や積極的悪用の報告はありませんが、Power Pages のコマンドインジェクション（CVE-2026-23652）は、ローコード/ノーコードプラットフォームが企業内でセキュリティチームの管理外で拡大している現状を踏まえ、特に注意が必要です。</p>
+
+<p><strong>推奨対応</strong>:</p>
+<ul>
+  <li>各 CVE の Microsoft Security Response Center (MSRC) アドバイザリを確認</li>
+  <li>Power Pages 使用者は、公開サイトの設定と Dataverse 連携の見直しを実施</li>
+  <li>Entra ID テナントの監査ログで不審な権限昇格がないか確認</li>
+</ul>
+
+<p>🔗 <a href="https://securitypointbreak.com/2026/05/22/microsoft-quietly-patches-8-critical-cloud-vulnerabilities/">Security Point Break — 8 Critical Cloud Vulnerabilities</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40412">MSRC CVE-2026-40412</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40411">MSRC CVE-2026-40411</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47280">MSRC CVE-2026-47280</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23652">MSRC CVE-2026-23652</a></p>
+
+<hr>
+
+<h3>2. Azure — Privileged Identity Management (PIM) 認可バイパス（CVE-2026-35430）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-35430</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span>（認可バイパス）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Microsoft Azure Privileged Identity Management (PIM)</td></tr>
+  <tr><td><strong>修正</strong></td><td>Microsoft 管理サービス側で修正済み（顧客側対応不要）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-23</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-639（ユーザー制御キーによる認可バイパス）</td></tr>
+</table>
+
+<p>Azure Privileged Identity Management (PIM) において、ユーザーが制御可能なキーを介した認可バイパスの脆弱性が確認されました。認証済みの攻撃者がネットワーク経由で権限を昇格できる可能性があります。本脆弱性も Microsoft 管理サービス側での修正が適用済みです。</p>
+
+<p>🔗 <a href="https://www.cve.org/CVERecord?id=CVE-2026-35430">CVE-2026-35430</a> · <a href="https://vuldb.com/cve/CVE-2026-35430">VulDB</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Java, SpringBoot, Python, Django, Hono, GCP, AWS, OpenClaw, Claude に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 GitHub — 悪意ある VS Code 拡張機能を介した内部リポジトリ侵害（5/23 公表）</h3>
+<ul>
+  <li>GitHub は 5月23日、従業員のデバイスが<strong>悪意ある Visual Studio Code 拡張機能</strong>を介して侵害され、約 <strong>3,800 件の内部コードリポジトリ</strong>が不正アクセスを受けたことを確認</li>
+  <li>サイバー犯罪グループ <strong>TeamPCP</strong> が犯行声明を出し、窃取した内部ソースコードとプロジェクトの売却を試みていると主張</li>
+  <li>GitHub は「顧客プロジェクトおよび公開リポジトリは影響を受けていない」と発表。侵害されたのは内部リポジトリのみ</li>
+  <li>TeamPCP は 5月に npm サプライチェーン攻撃「Mini Shai-Hulud」も展開しており、同一グループによる複合的な攻撃キャンペーンとして注目</li>
+  <li>🔗 <a href="https://www.lowyat.net/2026/393621/github-confirms-major-breach-may-2026/">Lowyat.NET</a> · <a href="https://cyberinsider.com/github-data-breach-may-2026-teampcp/">CyberInsider</a></li>
+</ul>
+
+<h3>🔴 Charter Communications — ShinyHunters が 4,200万件の顧客データ窃取を主張（5/23）</h3>
+<ul>
+  <li>米大手通信事業者 Charter Communications が 5月23日、サイバーセキュリティインシデントの発生を確認</li>
+  <li>恐喝グループ <strong>ShinyHunters</strong> が犯行声明を出し、<strong>4,200万件以上の顧客データ</strong>を窃取したと主張。5月27日までに恐喝に応じなければデータを流出させると警告</li>
+  <li>ShinyHunters は直近でも Canvas LMS（2億7,500万ユーザー）への攻撃に関与しており、教育・通信セクターを標的とした攻勢を強めている</li>
+  <li>Charter Communications（旧 Spectrum）は米国で約3,200万の顧客を抱える大手 ISP。影響範囲の全容は調査中</li>
+  <li>🔗 <a href="https://cyberinsider.com/charter-communications-confirms-data-breach-as-hackers-threaten-leak-of-42-million-records/">CyberInsider</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
