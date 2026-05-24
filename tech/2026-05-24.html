@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-24 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <p class="breadcrumb">
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </p>
+  <h1>🔧 2026-05-24 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-23 09:00 〜 2026-05-24 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🦞 OpenClaw — 2026.5.22 プレリリース（5月23日）</h2>
+
+<p>OpenClaw のプレリリース <strong>2026.5.22</strong> が公開されました。多数の機能強化・ドキュメント改善・バグ修正を含む大型アップデートです。</p>
+
+<h3>🤖 エージェント／サブエージェント</h3>
+<ul>
+  <li><strong>サブエージェントのブートストラップコンテキスト制限</strong>: デフォルトで AGENTS.md と TOOLS.md のみに制限され、ペルソナ・ID・ユーザー情報・メモリ・ハートビート・セットアップファイルが委譲先ワーカーに含まれないようになりました（<a href="https://github.com/openclaw/openclaw/pull/85283">#85283</a>）</li>
+  <li><strong>ツール表示の安定化</strong>: 旧 sender-owner ツールゲーティングパスを削除し、設定されたツールが常に可視化されるように</li>
+</ul>
+
+<h3>🔌 プラグインSDK</h3>
+<ul>
+  <li><strong>チャンネルメッセージポーリング</strong>: 汎用ポーリング送信機能を追加し、チャンネルプラグインがチャンネル固有の SDK ファサードに依存せずにポーリング配信を実装可能に</li>
+  <li><strong>セッションワークフローヘルパー</strong>: 行レベルのセッションワークフロー操作を追加し、プラグインがレガシーなストア全体に依存せずセッションの読み書き・パッチが可能に（<a href="https://github.com/openclaw/openclaw/pull/84693">#84693</a>）</li>
+  <li><strong>Embedding Provider API</strong>: 汎用的な埋め込みプロバイダー機能契約と登録 API を追加</li>
+</ul>
+
+<h3>🎛️ コントロールUI／チャット</h3>
+<ul>
+  <li><strong>セッションピッカー改善</strong>: 検索機能と「さらに読み込む」ページネーションを追加し、古い会話も遡ってアクセス可能に（<a href="https://github.com/openclaw/openclaw/pull/85237">#85237</a>）</li>
+</ul>
+
+<h3>🔧 その他の改善</h3>
+<ul>
+  <li><strong>Discord</strong>: agentComponents のコールバックレジストリに TTL（最大24時間）を設定可能に（<a href="https://github.com/openclaw/openclaw/pull/84189">#84189</a>）</li>
+  <li><strong>xAI/Grok</strong>: xAI OAuth 認証プロファイルの再利用、Grok モデルエイリアスの追加（<a href="https://github.com/openclaw/openclaw/pull/85182">#85182</a>）</li>
+  <li><strong>パッケージング</strong>: npm tarball からドキュメント画像・アセットを除外し、パッケージサイズを削減</li>
+  <li><strong>依存関係更新</strong>: protobufjs 8.4.0 への更新で npm advisory 対応、Claude ACP パッチを @agentclientprotocol/claude-agent-acp 0.36.1 に引き継ぎ</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: OpenClaw ユーザーはリリースノートを確認し、特にサブエージェントのコンテキスト制限変更に注意してください。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/2026.5.22">GitHub Releases: OpenClaw 2026.5.22</a></p>
+
+<hr>
+
+<h2>🍃 Spring AI — 1.0.8 / 1.1.7 / 2.0.0-M7 リリース + セキュリティ修正（5月23日）</h2>
+
+<p>Spring AI の3つのリリースラインが同時更新されました。特に <strong>CVE-2026-41863</strong>（MEDIUM）への対応を含みます。</p>
+
+<h3>⚠️ CVE-2026-41863 — Anthropic Skills API のファイル書き込み脆弱性</h3>
+<p><span class="badge-critical">要対応</span> Spring AI 1.1.x の Anthropic Skills API サポートにおいて、LLM が生成したファイル名が <code>Path.resolve</code> でサニタイズされずにファイル書き込みに使用される脆弱性が修正されました。悪意あるユーザーが意図したディレクトリ外へのファイル書き込みを行う可能性があります。</p>
+<p><strong>影響バージョン</strong>: Spring AI 1.1.0 〜 1.1.6<br>
+<strong>修正バージョン</strong>: 1.1.7</p>
+<p>🔗 <a href="https://spring.io/security/cve-2026-41863">Spring Security Advisory: CVE-2026-41863</a></p>
+
+<h3>🚀 Spring AI 2.0.0-M7 の主な変更点</h3>
+<ul>
+  <li><strong>[破壊的変更] MCP トランスポート</strong>: SSE トランスポートが非推奨に。Streamable HTTP が新しいデフォルトサーバープロトコルに（<a href="https://github.com/spring-projects/spring-ai/pull/5969">#5969</a>）</li>
+  <li><strong>ToolCallAdvisor</strong>: ツール呼び出し処理のデフォルトかつ標準方式に（<a href="https://github.com/spring-projects/spring-ai/issues/5459">#5459</a>）</li>
+  <li><strong>新しい ToolSpec Fluent API</strong>: プログラムによるツール定義が可能に（<a href="https://github.com/spring-projects/spring-ai/pull/6085">#6085</a>）</li>
+  <li><strong>Gemini 2.5 Flash 対応</strong>: Google Client Library BOM を更新（<a href="https://github.com/spring-projects/spring-ai/issues/6003">#6003</a>, <a href="https://github.com/spring-projects/spring-ai/pull/6112">#6112</a>）</li>
+</ul>
+
+<h3>🔧 1.0.8 / 1.1.7 のバグ修正</h3>
+<ul>
+  <li>RedisVectorStore の delete 操作が先頭10件のみを削除していた問題を修正（1.0.8）</li>
+  <li>Ollama の GraalVM ネイティブイメージ互換性を修正（1.1.7）</li>
+  <li>OpenAiChatModel のストリーミングチャンク欠落問題を修正（1.1.7）</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: Spring AI 1.1.x ユーザーは CVE-2026-41863 対応のため 1.1.7 へのアップグレードを推奨。2.0.0-M7 への移行を検討している場合は、MCP トランスポートの破壊的変更に注意。</p>
+<p>🔗 <a href="https://spring.io/blog/2026/05/23/spring-ai-1-0-8-1-1-7-2-0-0-M7-available-now">Spring Blog: Release Announcement</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 複数アップデート（5月22日）</h2>
+
+<p>前回レポートの対象外だった5月22日公開の AWS 新着情報をピックアップします。</p>
+
+<h3>🔐 AWS Security Agent — ペネトレーションテスト検証スクリプト生成</h3>
+<p>AWS Security Agent がペネトレーションテストの検出結果に対して<strong>自動検証スクリプト</strong>を生成するようになりました。セキュリティチームは発見された脆弱性を独立して再現・検証可能になり、トリアージの効率が向上します。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-security-agent/">AWS What's New: Security Agent verification scripts</a></p>
+
+<h3>📊 Amazon SageMaker — ドメイン管理の拡張</h3>
+<p>SageMaker Unified Studio のドメイン管理が Identity Center ベースのドメインにも拡張され、AWS コンソール外からのプロジェクト作成・ユーザー管理・権限制御・ネットワーク設定が可能になりました。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/domain-management-iam-idc/">AWS What's New: SageMaker domain management</a></p>
+
+<h3>🗂️ Amazon SageMaker — IAM ベースドメインでのビジネスメタデータ／ガバナンス</h3>
+<p>IAM ベースドメインで AWS Glue Data Catalog テーブルへのビジネスコンテキスト付与（ビジネス名・説明・README・用語集・メタデータテンプレート）が可能になりました。AI によるメタデータ自動生成もサポート。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/sagemaker-catalog-iam-domains/">AWS What's New: SageMaker business metadata</a></p>
+
+<h3>🚚 AWS Transform — エージェンティック移行評価</h3>
+<p>AWS Transform に What-If シナリオ、カスタマイズ可能な前提条件、複数ファイル形式サポート、TCO 評価機能が追加。RVTools エクスポートや CMDB データなど、手元にあるデータから移行評価を開始できます。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/assessment-capabilities-transform/">AWS What's New: Transform migration assessment</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice">Next.js、React、Python（コア）、Django、Hono、GCP、Azure（新着なし）、Java（コア）、Claude（Anthropic）については、本日対象期間内の新着情報はありません。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
