@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-25 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-25 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-24 08:00 〜 2026-05-25 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CDN — 共有インフラを悪用する「Underminr」脆弱性が活発に悪用（2026-05-24 公表）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>名称</strong></td><td>Underminr（アンダーマイナー）</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-critical">Critical</span>（アーキテクチャ脆弱性）</td></tr>
+  <tr><td><strong>CVE</strong></td><td>なし（ソフトウェアバグではなく CDN アーキテクチャ上の設計悪用）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Cloudflare, Akamai, AWS CloudFront, Fastly など主要 CDN プロバイダー。推定 8,800万ドメインが影響を受ける可能性</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-24（ADAMnetworks が詳細を公表）</td></tr>
+</table>
+
+<p>主要 CDN プロバイダーの共有インフラストラクチャにおけるアーキテクチャ上の脆弱性「Underminr」が公表されました。攻撃者は CDN に自身のドメインを登録し、HTTP Host ヘッダーや TLS SNI（Server Name Indication）を操作することで、<strong>信頼されたドメインの背後に悪意あるトラフィックを隠蔽</strong>できます。これにより C2 通信、マルウェア配信、フィッシングキャンペーンが正当なトラフィックに偽装され、従来のセキュリティ製品による検知が困難になります。</p>
+
+<p>本脆弱性は従来のドメインフロンティング（Domain Fronting）の進化版であり、HTTP/2 多重化や SNI ベースルーティングの悪用により、より大規模かつ検知困難な攻撃を可能にします。ADAMnetworks の調査によれば、すでに<strong>活発な悪用が確認</strong>されています。</p>
+
+<p><strong>推奨対応</strong>:</p>
+<ul>
+  <li>ディープパケットインスペクション（DPI）の導入検討</li>
+  <li>CDN プロバイダーのテナント分離状況を確認</li>
+  <li>SNI ベースのフィルタリングのみに依存しない多層防御の実施</li>
+  <li>WAF で Host ヘッダー検証を強化</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/underminr-vulnerability-lets-attackers-hide-malicious-connections-behind-trusted-domains/">SecurityWeek</a> · <a href="https://www.rescana.com/post/active-exploitation-alert-underminr-vulnerability-in-major-cdn-providers-enables-attackers-to-hide-malicious-traffic-beh">Rescana — 詳細分析</a> · <a href="https://www.darkreading.com/cyber-risk/content-delivery-exploit-websites-brand-hijacking">Dark Reading</a></p>
+
+<hr>
+
+<h3>2. AWS — CISA 請負業者が AWS GovCloud キーを GitHub に公開、議会が説明要求（2026-05-24 追報）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>クラウド認証情報の深刻な露出インシデント</td></tr>
+  <tr><td><strong>影響</strong></td><td>CISA（米国サイバーセキュリティ・社会基盤安全保障庁）の AWS GovCloud 環境、内部 Artifactory システム</td></tr>
+  <tr><td><strong>発生日</strong></td><td>2025年11月〜2026年5月中旬（リポジトリ「Private-CISA」が公開状態）</td></tr>
+  <tr><td><strong>公表</strong></td><td>2026-05-18（KrebsOnSecurity 第一報）→ 2026-05-24（議会追及の続報）</td></tr>
+</table>
+
+<p>CISA の請負業者が <strong>AWS GovCloud の高権限キー、SSH キー、認証トークン、デプロイログ</strong>を含む大量の機密情報を「Private-CISA」という名称の<strong>パブリック GitHub リポジトリ</strong>に誤って公開していたことが判明しました。KrebsOnSecurity の Brian Krebs が5月18日に第一報を報じ、5月24日には上下両院の議員が CISA に対して説明を要求する事態に発展しています。</p>
+
+<p>当該リポジトリは GitHub の認証情報検出保護が無効化されており、2025年11月から約6ヶ月間公開状態でした。一部の AWS キーは CISA への通知後も約48時間有効だったと報告されています。連邦サイバーセキュリティを所管する機関自身の認証情報管理の不備として、厳しい視線が注がれています。</p>
+
+<p><strong>AWS 利用者への教訓</strong>:</p>
+<ul>
+  <li>GitHub Push Protection（シークレットスキャニング）は必ず有効化する</li>
+  <li>AWS IAM アクセスアナライザーで外部公開された認証情報を定期監査</li>
+  <li>認証情報のローテーションと最小権限の原則を徹底</li>
+  <li>開発用スクラッチパッドであってもパブリックリポジトリに認証情報を置かない</li>
+</ul>
+
+<p>🔗 <a href="https://krebsonsecurity.com/2026/05/lawmakers-demand-answers-as-cisa-tries-to-contain-data-leak/">KrebsOnSecurity — Lawmakers Demand Answers</a> · <a href="https://krebsonsecurity.com/2026/05/cisa-admin-leaked-aws-govcloud-keys-on-github/">KrebsOnSecurity — 第一報</a> · <a href="https://www.esecurityplanet.com/threats/cisa-github-leak-exposes-aws-govcloud-secrets/">eSecurity Planet</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Java, SpringBoot, Python, Django, Hono, GCP, Azure, OpenClaw, Claude に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 7-Eleven — ShinyHunters による 185,300 件の顧客データ漏洩（5/24 HIBP 登録）</h3>
+<ul>
+  <li>Have I Been Pwned (HIBP) は 5月24日、<strong>7-Eleven のデータ漏洩</strong>をデータベースに追加。2026年4月に発生したインシデントで、恐喝グループ <strong>ShinyHunters</strong> が関与</li>
+  <li>漏洩データ: メールアドレス、氏名、住所、生年月日、電話番号 — <strong>185,300 アカウント</strong>が影響</li>
+  <li>ShinyHunters は直近で Canvas LMS（2.75億ユーザー）、Charter Communications（4,200万件）にも関与しており、攻勢を強めている</li>
+  <li>🔗 <a href="https://www.neuracybintel.com/articles/hibp-adds-7-eleven-breach-affecting-185300-accounts-after-april-2026-shinyhunters-extortion-leak">Neura Cyber Intel</a> · <a href="https://monitor.mozilla.org/en/breach-details/7-Eleven">Mozilla Monitor</a></li>
+</ul>
+
+<h3>🔴 Megalodon サプライチェーン攻撃 — 5,561 の GitHub リポジトリが悪意ある CI/CD ワークフローで侵害（5/24 詳細判明）</h3>
+<ul>
+  <li>5月18日に発生した大規模サプライチェーン攻撃「<strong>Megalodon キャンペーン</strong>」の詳細が5月24日に公表。5,561 のパブリック GitHub リポジトリが<strong>悪意ある CI/CD ワークフロー</strong>を注入され侵害された</li>
+  <li>攻撃グループ <strong>TeamPCP</strong> が犯行声明。窃取したシークレットや認証情報を販売していると主張</li>
+  <li>TeamPCP は同一キャンペーンで TanStack → Nx Console → GitHub → Grafana と連鎖的に侵害を拡大。サプライチェーンの二次被害・三次被害の深刻さが浮き彫りに</li>
+  <li>GitHub Actions のワークフローを使用する開発者は、リポジトリの CI/CD 設定とシークレットの監査を強く推奨</li>
+  <li>🔗 <a href="https://www.rescana.com/post/megalodon-supply-chain-attack-teampcp-compromises-5-561-github-repositories-via-malicious-ci-cd-workflows">Rescana</a> · <a href="https://www.wiz.io/blog/mini-shai-hulud-teampcp-hits-antv-supply-chain">Wiz — Mini Shai-Hulud 分析</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
