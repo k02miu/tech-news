@@ -54,9 +54,9 @@
 
 <p><strong>推奨アクション</strong>: Gemini 3.5 Flash は即日利用可能。エージェント開発プロジェクトでは 3.5 Flash への移行評価を推奨。Antigravity 2.0 はエンタープライズでのエージェント開発ワークフローに大きな影響を与える可能性あり。</p>
 
-<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud">Google Cloud Blog: Innovations from Google I/O 26 on Google Cloud</a><br>
-🔗 <a href="https://aistudio.google.com/">Google AI Studio</a><br>
-🔗 <a href="https://antigravity.google/">Google Antigravity</a></p>
+<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud" target="_blank" rel="noopener noreferrer">Google Cloud Blog: Innovations from Google I/O 26 on Google Cloud</a><br>
+🔗 <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer">Google AI Studio</a><br>
+🔗 <a href="https://antigravity.google/" target="_blank" rel="noopener noreferrer">Google Antigravity</a></p>
 
 <hr>
 
@@ -66,25 +66,25 @@
 
 <h3>5月22日の変更</h3>
 <ul>
-  <li><strong><code>experimental.varyParams</code> デフォルト有効化</strong>: 動的パラメータに基づくキャッシュバリエーションがデフォルトで動作（<a href="https://github.com/vercel/next.js/pull/94010">#94010</a>）</li>
-  <li><strong><code>experimental.optimisticRouting</strong> デフォルト有効化</strong>: 楽観的ルーティングが標準動作に（<a href="https://github.com/vercel/next.js/pull/94011">#94011</a>）</li>
-  <li><strong><code>experimental.cachedNavigations</strong> デフォルト有効化（cacheComponents併用時）</strong>: キャッシュナビゲーションが標準で有効に（<a href="https://github.com/vercel/next.js/pull/94012">#94012</a>）</li>
-  <li><strong>App Shell プリフェッチ</strong>: サーバーサイドでの App Shell プリフェッチ対応（<a href="https://github.com/vercel/next.js/pull/93998">#93998</a>）</li>
-  <li><strong>PPR ルートの dynamicRoutes 包含</strong>: revalidate 時間に関わらず PPR ルートを dynamicRoutes に含めるように（<a href="https://github.com/vercel/next.js/pull/94025">#94025</a>）</li>
-  <li><strong>Turbopack</strong>: <code>node_modules/next</code> が一時的に解決不能な場合の dev server クラッシュ防止（<a href="https://github.com/vercel/next.js/pull/93877">#93877</a>）、rustc nightly-2026-05-15 へのアップグレード（<a href="https://github.com/vercel/next.js/pull/94021">#94021</a>）</li>
-  <li><strong><code>--debug-build-paths</code> の src/ 対応</strong>（<a href="https://github.com/vercel/next.js/pull/94016">#94016</a>）</li>
+  <li><strong><code>experimental.varyParams</code> デフォルト有効化</strong>: 動的パラメータに基づくキャッシュバリエーションがデフォルトで動作（<a href="https://github.com/vercel/next.js/pull/94010" target="_blank" rel="noopener noreferrer">#94010</a>）</li>
+  <li><strong><code>experimental.optimisticRouting</strong> デフォルト有効化</strong>: 楽観的ルーティングが標準動作に（<a href="https://github.com/vercel/next.js/pull/94011" target="_blank" rel="noopener noreferrer">#94011</a>）</li>
+  <li><strong><code>experimental.cachedNavigations</strong> デフォルト有効化（cacheComponents併用時）</strong>: キャッシュナビゲーションが標準で有効に（<a href="https://github.com/vercel/next.js/pull/94012" target="_blank" rel="noopener noreferrer">#94012</a>）</li>
+  <li><strong>App Shell プリフェッチ</strong>: サーバーサイドでの App Shell プリフェッチ対応（<a href="https://github.com/vercel/next.js/pull/93998" target="_blank" rel="noopener noreferrer">#93998</a>）</li>
+  <li><strong>PPR ルートの dynamicRoutes 包含</strong>: revalidate 時間に関わらず PPR ルートを dynamicRoutes に含めるように（<a href="https://github.com/vercel/next.js/pull/94025" target="_blank" rel="noopener noreferrer">#94025</a>）</li>
+  <li><strong>Turbopack</strong>: <code>node_modules/next</code> が一時的に解決不能な場合の dev server クラッシュ防止（<a href="https://github.com/vercel/next.js/pull/93877" target="_blank" rel="noopener noreferrer">#93877</a>）、rustc nightly-2026-05-15 へのアップグレード（<a href="https://github.com/vercel/next.js/pull/94021" target="_blank" rel="noopener noreferrer">#94021</a>）</li>
+  <li><strong><code>--debug-build-paths</code> の src/ 対応</strong>（<a href="https://github.com/vercel/next.js/pull/94016" target="_blank" rel="noopener noreferrer">#94016</a>）</li>
 </ul>
 
 <h3>5月21日の変更</h3>
 <ul>
-  <li><strong><code>experimental.appShells</code> フラグ追加</strong>: App Shell 機能のフィーチャーフラグ（<a href="https://github.com/vercel/next.js/pull/93997">#93997</a>）</li>
-  <li><strong>Prerender HTTP access fallbacks</strong>: Cache Components セマンティクスでのフォールバック対応（<a href="https://github.com/vercel/next.js/pull/93988">#93988</a>）</li>
-  <li><strong>Turbopack</strong>: サブパスインポートの外部パッケージ対応修正（<a href="https://github.com/vercel/next.js/pull/93308">#93308</a>）、クラッシュする webpack loader のエラーレポート改善（<a href="https://github.com/vercel/next.js/pull/93926">#93926</a>）、module-sync エクスポート条件の尊重（<a href="https://github.com/vercel/next.js/pull/93970">#93970</a>）</li>
+  <li><strong><code>experimental.appShells</code> フラグ追加</strong>: App Shell 機能のフィーチャーフラグ（<a href="https://github.com/vercel/next.js/pull/93997" target="_blank" rel="noopener noreferrer">#93997</a>）</li>
+  <li><strong>Prerender HTTP access fallbacks</strong>: Cache Components セマンティクスでのフォールバック対応（<a href="https://github.com/vercel/next.js/pull/93988" target="_blank" rel="noopener noreferrer">#93988</a>）</li>
+  <li><strong>Turbopack</strong>: サブパスインポートの外部パッケージ対応修正（<a href="https://github.com/vercel/next.js/pull/93308" target="_blank" rel="noopener noreferrer">#93308</a>）、クラッシュする webpack loader のエラーレポート改善（<a href="https://github.com/vercel/next.js/pull/93926" target="_blank" rel="noopener noreferrer">#93926</a>）、module-sync エクスポート条件の尊重（<a href="https://github.com/vercel/next.js/pull/93970" target="_blank" rel="noopener noreferrer">#93970</a>）</li>
 </ul>
 
 <p><strong>推奨アクション</strong>: いずれもプレリリース（canary）のため、本番適用は慎重に検証を。<code>varyParams</code>・<code>optimisticRouting</code>・<code>cachedNavigations</code> のデフォルト有効化は既存プロジェクトの挙動に影響を与える可能性があるため、canary での早期テストを推奨。</p>
 
-<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases（GitHub）</a></p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases（GitHub）</a></p>
 
 <hr>
 
@@ -96,7 +96,7 @@
 </main>
 
 <footer>
-  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
 </footer>
 </body>
 </html>

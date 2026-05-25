@@ -35,9 +35,9 @@
 
 <p><strong>推奨アクション</strong>: Gemini 3.5 Flash は即日利用可能。Gemini Enterprise / Agent Platform ユーザーは 3.5 Flash への移行評価を推奨。Omni リリースに備えた動画コンテンツ戦略の準備を。</p>
 
-<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud">GCP 公式ブログ: Innovations from Google I/O 26 on Google Cloud</a><br>
-🔗 <a href="https://blog.google/innovation-and-ai/sundar-pichai-io-2026/">Google Blog: I/O 2026 Keynote</a><br>
-🔗 <a href="https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/">Google I/O 2026 全発表まとめ</a></p>
+<p>🔗 <a href="https://cloud.google.com/blog/products/ai-machine-learning/innovations-from-google-io-26-on-google-cloud" target="_blank" rel="noopener noreferrer">GCP 公式ブログ: Innovations from Google I/O 26 on Google Cloud</a><br>
+🔗 <a href="https://blog.google/innovation-and-ai/sundar-pichai-io-2026/" target="_blank" rel="noopener noreferrer">Google Blog: I/O 2026 Keynote</a><br>
+🔗 <a href="https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/" target="_blank" rel="noopener noreferrer">Google I/O 2026 全発表まとめ</a></p>
 
 <hr>
 
@@ -48,25 +48,25 @@
 <table class="cve-table">
   <tr><th>GHSA</th><th>影響範囲</th><th>深刻度</th><th>概要</th></tr>
   <tr>
-    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-2gcr-mfcq-wcc3">GHSA-2gcr-mfcq-wcc3</a></td>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-2gcr-mfcq-wcc3" target="_blank" rel="noopener noreferrer">GHSA-2gcr-mfcq-wcc3</a></td>
     <td><code>app.mount()</code></td>
     <td>Medium</td>
     <td>パーセントエンコードされたパスでプレフィックス除去が誤動作し、サブアプリケーションのルーティングが不正になる</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-xrhx-7g5j-rcj5">GHSA-xrhx-7g5j-rcj5</a></td>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-xrhx-7g5j-rcj5" target="_blank" rel="noopener noreferrer">GHSA-xrhx-7g5j-rcj5</a></td>
     <td><code>hono/ip-restriction</code></td>
     <td>Medium</td>
     <td>非正規形 IPv6 表記（圧縮形式・IPv4 マップド等）で静的 deny ルールをバイパス可能</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-3hrh-pfw6-9m5x">GHSA-3hrh-pfw6-9m5x</a></td>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-3hrh-pfw6-9m5x" target="_blank" rel="noopener noreferrer">GHSA-3hrh-pfw6-9m5x</a></td>
     <td><code>hono/cookie</code></td>
     <td>Medium</td>
     <td><code>sameSite</code> / <code>priority</code> オプションの検証不備により Set-Cookie ヘッダへのインジェクションが可能</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-f577-qrjj-4474">GHSA-f577-qrjj-4474</a></td>
+    <td><a href="https://github.com/honojs/hono/security/advisories/GHSA-f577-qrjj-4474" target="_blank" rel="noopener noreferrer">GHSA-f577-qrjj-4474</a></td>
     <td><code>hono/jwt</code>, <code>hono/jwk</code></td>
     <td>Medium</td>
     <td>Authorization ヘッダのスキーム検証欠落により Bearer 以外のスキームでも JWT 認証をパス可能</td>
@@ -75,19 +75,19 @@
 
 <p><strong>推奨アクション</strong>: Hono v4.12.19 へアップデートすることですべて解決。該当ミドルウェア未使用でも依存関係の更新を推奨。</p>
 
-<p>🔗 <a href="https://github.com/honojs/hono/releases">Hono v4.12.19 リリースノート</a></p>
+<p>🔗 <a href="https://github.com/honojs/hono/releases" target="_blank" rel="noopener noreferrer">Hono v4.12.19 リリースノート</a></p>
 
 <hr>
 
 <h2>☁️ AWS — 新機能・リージョン拡大（5月18-19日）</h2>
 
 <ul>
-  <li><strong>Amazon MWAA が Apache Airflow 3.2 に対応</strong>: データ認識スケジューリング（アセットパーティショニング）、Human-in-the-Loop 機能強化、Grid View 仮想化、非同期 callable 対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-mwaa-now-supports-apache-airflow-3-2/">詳細</a></li>
-  <li><strong>Amazon ECS デプロイの一時停止・再開コントロール</strong>: デプロイ中の任意の段階でポーズし、手動承認や統合テスト後に ContinueServiceDeployment API で再開可能。全リージョン対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-ecs-pause-continue-deployments/">詳細</a></li>
-  <li><strong>Amazon Inspector が台北リージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-inspector-taipei/">詳細</a></li>
-  <li><strong>Amazon Managed Grafana がデュアルスタック（IPv6/IPv4）接続に対応</strong>（Grafana 10.4+）<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-managed-grafana-ipv6/">詳細</a></li>
-  <li><strong>AWS Management Console に Local Zones が Region Selector に表示</strong>: オプトイン済み Local Zones を統合ナビゲーションで確認可能に<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-local-zones-region-selector/">詳細</a></li>
-  <li><strong>AWS Glue zero-ETL がムンバイリージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-glue-zero-etl-mumbai-region/">詳細</a></li>
+  <li><strong>Amazon MWAA が Apache Airflow 3.2 に対応</strong>: データ認識スケジューリング（アセットパーティショニング）、Human-in-the-Loop 機能強化、Grid View 仮想化、非同期 callable 対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-mwaa-now-supports-apache-airflow-3-2/" target="_blank" rel="noopener noreferrer">詳細</a></li>
+  <li><strong>Amazon ECS デプロイの一時停止・再開コントロール</strong>: デプロイ中の任意の段階でポーズし、手動承認や統合テスト後に ContinueServiceDeployment API で再開可能。全リージョン対応。<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-ecs-pause-continue-deployments/" target="_blank" rel="noopener noreferrer">詳細</a></li>
+  <li><strong>Amazon Inspector が台北リージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-inspector-taipei/" target="_blank" rel="noopener noreferrer">詳細</a></li>
+  <li><strong>Amazon Managed Grafana がデュアルスタック（IPv6/IPv4）接続に対応</strong>（Grafana 10.4+）<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/amazon-managed-grafana-ipv6/" target="_blank" rel="noopener noreferrer">詳細</a></li>
+  <li><strong>AWS Management Console に Local Zones が Region Selector に表示</strong>: オプトイン済み Local Zones を統合ナビゲーションで確認可能に<br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-local-zones-region-selector/" target="_blank" rel="noopener noreferrer">詳細</a></li>
+  <li><strong>AWS Glue zero-ETL がムンバイリージョンで利用可能に</strong><br>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/05/aws-glue-zero-etl-mumbai-region/" target="_blank" rel="noopener noreferrer">詳細</a></li>
 </ul>
 
 <hr>
@@ -100,11 +100,11 @@
   <li>プレリリース (5/15-17): 開発オーバーレイ再設計、Turbopack タスク優先度改善、各種テスト改善</li>
   <li>いずれもプレリリース（canary）のため本番適用は要検証</li>
 </ul>
-<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
 
 <h3>🍃 Spring</h3>
 <ul>
-  <li><a href="https://spring.io/blog/2026/05/19/this-week-in-spring-may-19-2026">This Week in Spring - May 19th, 2026</a>: 週次まとめ。Spring AI 2.0.0-M6、Spring Cloud CVE 対応、Kotlin Conf 2026 情報など</li>
+  <li><a href="https://spring.io/blog/2026/05/19/this-week-in-spring-may-19-2026" target="_blank" rel="noopener noreferrer">This Week in Spring - May 19th, 2026</a>: 週次まとめ。Spring AI 2.0.0-M6、Spring Cloud CVE 対応、Kotlin Conf 2026 情報など</li>
 </ul>
 
 <p class="empty-notice">React, Python, Django, Java, SpringBoot（個別新リリース）, Azure, Claude, OpenClaw は本日新着なし</p>
@@ -113,7 +113,7 @@
 </main>
 
 <footer>
-  <p><a href="https://github.com/k02miu/tech-news">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
 </footer>
 </body>
 </html>
