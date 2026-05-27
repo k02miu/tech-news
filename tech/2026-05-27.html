@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-27 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-05-27 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-26 09:00 〜 2026-05-27 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🦞 OpenClaw — pre-release 2026.5.26（5月26日）</h2>
+
+<p>大型プレリリース。パフォーマンス改善、チャンネル成熟度向上、セキュリティ強化、可観測性の拡充が中心です。</p>
+
+<h3>⚡ パフォーマンス改善</h3>
+<ul>
+  <li>返信・起動の高速化：ユーザー向け送信を後続処理から分離</li>
+  <li>コマンド/モデル/プラグインのメタデータをホットパスでキャッシュ再利用</li>
+  <li>Gateway 起動時の重複スキャン（プラグイン、チャンネル、セッション、使用量コスト、ファイルシステム）を削減</li>
+</ul>
+
+<h3>🎤 Voice / Talk</h3>
+<ul>
+  <li>リアルタイム Talk 実行を Web UI / Discord ボイスから検査・操作・キャンセル可能に</li>
+  <li>ウェイクネーム処理の改善（周囲の音声でエージェントが誤作動しないよう許容度調整）</li>
+  <li>共有リアルタイムターンコンテキスト追跡を音声 SDK 経由で公開、Discord スピーカー属性とウェイクネームコンテキスト復旧に再利用</li>
+</ul>
+
+<h3>📡 チャンネル対応の成熟</h3>
+<ul>
+  <li><strong>Telegram</strong>: タイピング/進捗表示の保持、フォーラムトピック対応</li>
+  <li><strong>iMessage</strong>: 添付ファイルのルート処理改善、重複ローカル Messages ソース対応</li>
+  <li><strong>WhatsApp</strong>: グループ/メディア動作の復元</li>
+  <li><strong>Discord</strong>: 音声再生・モデル選択の改善</li>
+  <li><strong>Signal / iMessage / WhatsApp</strong>: リアクションによる承認フロー対応（モバイル環境でテキストコマンド不要に）</li>
+</ul>
+
+<h3>🔒 セキュリティ / 堅牢性</h3>
+<ul>
+  <li>Codex アプリサーバー認証の堅牢化</li>
+  <li>コンパクション、ソース返信、サンドボックスパス処理、使用量制限回復の改善</li>
+  <li>OpenAI 互換プロバイダーの空ツール・不正ペイロード障害対応</li>
+</ul>
+
+<h3>📊 可観測性</h3>
+<ul>
+  <li>Activity タブ追加</li>
+  <li>Gateway シークレット準備のトレース対応</li>
+  <li>OpenTelemetry LLM コンテンツスパン対応</li>
+  <li>ブロックされたツール、フェイルオーバー、古いセッション、ライブネス、過大ペイロード、Webhook イングレスなどのアラート用テレメトリ</li>
+</ul>
+
+<h3>🆕 新機能</h3>
+<ul>
+  <li><strong>Transcripts</strong>: コアトランスクリプトキャプチャとソースプロバイダー対応</li>
+  <li><strong>認証</strong>: Hermes / OpenCode / Codex 用の名前付きモデルログインプロファイル。明示的オプトアウトと非インタラクティブ制御に対応</li>
+  <li><strong>Android</strong>: pair-new-gateway アクション、オフライン音声/ゲートウェイ復旧</li>
+  <li><strong>iOS</strong>: リアルタイム Talk モード改善</li>
+  <li><strong>Agents/API</strong>: OpenAI サンプリングパラメータの Gateway 転送、アクティブエージェントのコンテキスト予算状況推定の公開</li>
+</ul>
+
+<h3>🔧 リリース / インストール品質</h3>
+<ul>
+  <li>Alpine インストールの堅牢化</li>
+  <li>安定版アップデートチャンネルの改善</li>
+  <li>Docker/パッケージタイムアウトの強化</li>
+  <li>Windows/macOS 検証レーンの追加</li>
+  <li>Testbox/Crabbox 委任、プラグイン公開チェックの堅牢化</li>
+</ul>
+
+<p><strong>推奨アクション</strong>: OpenClaw ユーザーは最新プレリリースへのアップデートを検討してください。特にマルチチャンネル運用や音声機能を利用している環境では、安定性と機能面での改善が大きいリリースです。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — canary チャンネル開発状況（5月26〜27日）</h2>
+
+<p>Next.js の canary ブランチでは以下の変更が進行中です。安定版リリースではありませんが、今後の方向性を示唆する重要な変更が含まれています。</p>
+
+<h3>主な変更（5月27日）</h3>
+<ul>
+  <li><strong>React アップグレード</strong>: <code>d5736f09-20260507</code> → <code>75b0945b-20260526</code> に更新</li>
+  <li><strong>Firefox 無限リロード修正</strong>: 開発モードでストリーミングページの初回ロード時に無限リロードが発生する Firefox 固有の問題を修正</li>
+  <li><strong>App Shell クライアントプリフェッチ</strong>: クライアントサイドでの App Shell プリフェッチに対応</li>
+  <li><strong>@next/rspack-core 1.0.3</strong>: Rspack コアパッケージのリリース</li>
+  <li><strong>notFound 復旧の改善</strong>: エラー経路での notFound 回復処理を改善</li>
+  <li><strong>pages router export</strong>: サーバーディレクトリへの直接書き込みリファクタリングを再適用</li>
+</ul>
+
+<h3>主な変更（5月26日）</h3>
+<ul>
+  <li><strong>next-cache-components-optimizer</strong>: <code>next-ppr-optimizer</code> スキルを置き換え</li>
+  <li><strong>next-dev-loop スキル</strong>: ログイン状態をループ間で保持するよう改善</li>
+  <li><strong>errors.json マージドライバー修正</strong>: エラーコードのギャップを適切に処理するよう修正</li>
+</ul>
+
+<p class="note">※ これらは canary（pre-release）チャンネルの変更であり、本番環境での利用は推奨されません。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases (GitHub)</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 5月26日付アップデート</h2>
+
+<h3>🆕 Gemini Deep Research Agent（Preview）</h3>
+<p>公開ウェブと社内データを横断して複雑なマルチステップの調査ワークフローを計画・実行・統合し、引用付きの包括的なレポートを生成するマネージド AI エージェントです。Gemini Enterprise Agent Platform 上で提供されます。</p>
+
+<p><strong>推奨アクション</strong>: エンタープライズ環境で AI エージェントによる調査自動化を検討している組織は、Preview 段階での評価をおすすめします。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/agents/use-deep-research" target="_blank" rel="noopener noreferrer">Gemini Deep Research Agent ドキュメント</a></p>
+
+<h3>🆕 Cloud Trace: MCP サーバー呼び出しのトレーススパン自動生成</h3>
+<p>BigQuery MCP サーバーと Cloud SQL MCP サーバーの <code>tools/call</code> 操作に対して自動的にトレーススパンが生成されるようになりました。エージェントアプリケーションの動作分析やデバッグに活用できます。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/stackdriver/docs/instrumentation/trace-remote-mcp-server-calls" target="_blank" rel="noopener noreferrer">MCP 呼び出しのトレース調査</a></p>
+
+<h3>🆕 Cloud CDN: URL マップ単位のキャッシュポリシー（GA）</h3>
+<p>グローバル外部 Application Load Balancer で、ホスト名・URL パス・HTTP ヘッダー・クエリパラメータに基づいたきめ細かなキャッシュ制御が可能になりました。</p>
+
+<h3>🆕 GKE: Cloud Storage FUSE CSI ドライバー Dedicated クラスター対応</h3>
+<p>GKE バージョン 1.36.0-gke.1266000 以降の Dedicated クラスターおよびノードプールで Cloud Storage FUSE CSI ドライバーが利用可能になりました。カスタムエンドポイントのマウントオプション指定が必要です。</p>
+
+<h3>🆕 Colab Enterprise: Data Science Agent（GA）</h3>
+<p>Colab Enterprise ノートブック内で探索的データ分析、機械学習タスクの自動化、インサイト提供を行う Data Science Agent が一般提供開始となりました。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#May_26_2026" target="_blank" rel="noopener noreferrer">GCP リリースノート (May 26)</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice">AWS、Azure、React（コア）、Python（コア）、Django、Hono、Java（JDK）、Spring Boot、Claude（API / SDK / Code）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+<p class="note">※ Hono v4.12.23（5月25日）、Claude Code v2.1.150（5月23日）、Vertex AI Extensions 非推奨化（5月26日）はいずれも前回までのレポートで既報のため再掲しません。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
