@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-28 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-28 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-27 08:00 〜 2026-05-28 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Java — Oracle Critical Security Patch Update (May 2026) 本日リリース</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>定期セキュリティパッチ更新（事前告知）</td></tr>
+  <tr><td><strong>パッチ数</strong></td><td>35件の新規セキュリティパッチ</td></tr>
+  <tr><td><strong>最大深刻度</strong></td><td><span class="badge-critical">CVSS 10.0</span>（Oracle REST Data Services）/ <span class="badge-critical">CVSS 9.9</span>（E-Business Suite）/ <span class="badge-high">CVSS 9.0</span>（Database Server）</td></tr>
+  <tr><td><strong>対象</strong></td><td>Oracle Database Server 23.4.0–23.26.2, Oracle REST Data Services 24.2.0–26.1.0, Oracle E-Business Suite 12.2.3–12.2.15, Oracle Communications ほか</td></tr>
+  <tr><td><strong>リリース日</strong></td><td>2026年5月28日（本日）</td></tr>
+</table>
+
+<p>Oracle は5月28日（本日）、5月の Critical Security Patch Update（CSPU）をリリースします。事前告知によると、<strong>35件の新規セキュリティパッチ</strong>が含まれ、Oracle Database Server（最大 CVSS 9.0）、Oracle REST Data Services（最大 CVSS 10.0）、Oracle E-Business Suite（最大 CVSS 9.9）、Oracle Communications（最大 CVSS 9.1）などが対象です。Java SE 関連の修正も含まれる見込みです。</p>
+
+<p>本アップデートは Oracle が月次 CSPU サイクルに移行してから初回のリリースとなります。本日中のアドバイザリ公開を確認の上、影響を受ける製品の速やかなパッチ適用を推奨します。</p>
+
+<p>🔗 <a href="https://www.oracle.com/security-alerts/cspumay2026.html" target="_blank" rel="noopener noreferrer">Oracle Critical Security Patch Update Pre-Release Announcement</a> · <a href="https://www.oracle.com/security-alerts/" target="_blank" rel="noopener noreferrer">Oracle Security Alerts</a></p>
+
+<hr>
+
+<h3>2. React — CISA KEV 追加: CVE-2026-45321 (TanStack npm サプライチェーン攻撃)</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45321</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-critical">Critical</span>（CVSS 9.6）</td></tr>
+  <tr><td><strong>種別</strong></td><td>npm サプライチェーン攻撃（認証バイパス + クレデンシャル窃取マルウェア）</td></tr>
+  <tr><td><strong>影響</strong></td><td>42 の @tanstack/* パッケージ（React エコシステム）に 84 の悪意あるバージョンが公開</td></tr>
+  <tr><td><strong>発生</strong></td><td>2026年5月11日（インシデント発生）、5月27日（CISA KEV 追加）</td></tr>
+  <tr><td><strong>脅威グループ</strong></td><td>TeamPCP（通称 Mini Shai-Hulud キャンペーン）</td></tr>
+</table>
+
+<p>CISA は5月27日、TanStack の npm パッケージ群に対する大規模サプライチェーン攻撃 <strong>CVE-2026-45321（CVSS 9.6）</strong>を Known Exploited Vulnerabilities（KEV）カタログに追加し、積極的悪用を確認したと発表しました。</p>
+
+<p>本攻撃は、GitHub Actions の <code>pull_request_target</code> 設定不備、キャッシュポイズニング、OIDC トークンの実行時メモリ抽出という3つの脆弱性を連鎖させ、正規の Trusted Publisher 証明書を保持したまま悪意あるパッケージを npm に公開するという極めて高度な手口です。影響を受けるパッケージには <strong>React Router</strong> など React 開発で広く使用されるものも含まれます。</p>
+
+<p>悪意あるバージョンは npm により検出・削除済みであり、TanStack は全パッケージの現在の公開バージョンが安全であることを確認しています。ただし、侵害ウィンドウ（5月11日 19:20〜19:26 UTC）に該当バージョンをインストールした環境は完全な侵害（AWS/GCP クレデンシャル、GitHub トークン、SSH 鍵、暗号通貨ウォレットなどの窃取）を想定し、全クレデンシャルのローテーションを強く推奨します。</p>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://tanstack.com/blog/npm-supply-chain-compromise-postmortem" target="_blank" rel="noopener noreferrer">TanStack 公式ポストモーテム</a> · <a href="https://www.tenable.com/blog/mini-shai-hulud-frequently-asked-questions" target="_blank" rel="noopener noreferrer">Tenable — Mini Shai-Hulud FAQ</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45321" target="_blank" rel="noopener noreferrer">NVD CVE-2026-45321</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, Python, Django, SpringBoot, Hono, GCP, AWS, Azure, OpenClaw, Claude に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Beacon Mutual Insurance — ランサムウェア被害、約16.2万人に通知開始（5/27）</h3>
+<ul>
+  <li>ロードアイランド州の労災保険会社 <strong>Beacon Mutual Insurance Company</strong> が5月27日、1月に検出したランサムウェア攻撃について、影響を受けた<strong>約162,000人</strong>への通知を開始</li>
+  <li>攻撃者は2026年1月7日〜14日の間にシステムにアクセスし、<strong>氏名、社会保障番号、運転免許証番号、金融口座情報、健康保険情報、医療記録</strong>を含むデータファイルを窃取</li>
+  <li>侵害の発見から通知までに約4か月を要しており、フォレンジック調査の長期化が影響</li>
+  <li>🔗 <a href="https://www.kaseya.com/blog/the-week-in-breach-news-05-27-26/" target="_blank" rel="noopener noreferrer">Kaseya — Week in Breach 05/27</a></li>
+</ul>
+
+<h3>🟠 FBI — Silent Ransom Group が法律事務所を対面で標的に（5/27 警告）</h3>
+<ul>
+  <li>FBI は5月27日、<strong>Silent Ransom Group（SRG, 別名 Luna Moth / Chatty Spider / UNC3753）</strong>に対する警告を発出。2023年春以降、法律事務所を標的とした攻撃を継続中</li>
+  <li>特筆すべき手口として、ソーシャルエンジニアリングに加え、<strong>実際に現地に赴いての対面データ窃取</strong>という新手の TTP を確認</li>
+  <li>また FBI は同日、約<strong>25のランサムウェアグループ</strong>が「<strong>First VPN Service</strong>」と呼ばれる犯罪用 VPN サービスを利用してネットワーク侵入や悪意ある活動を行っていることも明らかにした</li>
+  <li>🔗 <a href="https://www.darkreading.com/cyberattacks-data-breaches/ransomware-actors-steal-law-firm-data" target="_blank" rel="noopener noreferrer">Dark Reading</a> · <a href="https://www.scworld.com/brief/fbi-warns-law-firms-of-in-person-data-theft-by-silent-ransom-group" target="_blank" rel="noopener noreferrer">SC World</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
