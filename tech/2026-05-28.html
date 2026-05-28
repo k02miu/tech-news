@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-28 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-05-28 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-27 09:00 〜 2026-05-28 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>☁️ GCP — 5月27日付アップデート</h2>
+
+<h3>🆕 gcloud CLI 570.0.0</h3>
+<p>gcloud CLI の新バージョン 570.0.0 がリリースされました。主な変更点は以下の通りです。</p>
+
+<ul>
+  <li><strong>Windows バンドル Python</strong>: cryptography 46.0.7 / pyOpenSSL 26.0.0 で再ビルド</li>
+  <li><strong>Linux バンドル Python</strong>: 3.14.5 に更新</li>
+  <li><strong>認証キャッシュ</strong>: Regional Access Boundary (RAB) データのネイティブ保存・更新対応</li>
+  <li><strong>Windows PuTTY</strong>: 不具合のため 0.81 に差し戻し</li>
+</ul>
+
+<h3>🆕 Cloud Run — SSH アクセス対応（beta）</h3>
+<p><code>gcloud beta run deploy</code> および <code>gcloud beta run services update</code> に <code>--[no-]ssh</code> フラグが追加され、Cloud Run サービスのコンテナインスタンスへの SSH アクセスを有効化/無効化できるようになりました。また、<code>--domain</code> フラグでデプロイ時にドメインマッピングを同時作成可能に。プロジェクト未指定時にはインタラクティブプロンプトが表示されるように改善されています。</p>
+
+<h3>🆕 Compute Engine — 注目の更新</h3>
+<ul>
+  <li><strong>Post-Quantum Key Exchange (GA)</strong>: SSL ポリシーの <code>--post-quantum-key-exchange</code> フラグが GA 昇格。耐量子暗号対応の強化</li>
+  <li><strong>Resource Manager Tags</strong>: Commitments、Instant Snapshots、Disks、Snapshots、Images、各種 VPN リソースで <code>--resource-manager-tags</code> が beta/GA 対応</li>
+  <li><strong>新OS対応</strong>: CentOS/RHEL/Rocky 10、Debian 13、Ubuntu 24.04/25.10 が Ops Agent ポリシーの OS 指定に追加</li>
+  <li><strong>Autoscaler 改善</strong>: <code>--stabilization-period</code> フラグでスケールイン前の負荷安定化期間を設定可能に</li>
+  <li><strong>Org Rollouts</strong>: <code>gcloud compute org-rollouts</code> / <code>org-rollout-plans</code> が beta 昇格</li>
+  <li><strong>IPv6 セカンダリ範囲</strong>: サブネットの IPv6 セカンダリ範囲関連フラグが beta 昇格</li>
+  <li><strong>インスタンス柔軟性</strong>: MIG の <code>--instance-flexibility-policy</code> が beta 対応</li>
+</ul>
+
+<h3>🆕 GKE — Agent Sandbox (GA)</h3>
+<p><code>--enable-agent-sandbox</code> フラグが GA に昇格しました。GKE クラスターでのエージェントサンドボックスが本番環境で利用可能になりました。</p>
+
+<h3>🆕 BigQuery — CLI 機能強化</h3>
+<ul>
+  <li>テーブル識別子 <code>project.catalog.namespace.table</code> 形式に対応</li>
+  <li>データセット識別子 <code>catalog.namespace</code> 形式に対応</li>
+  <li><code>bq show</code> / <code>bq rm</code> で行アクセスポリシーの表示・削除が可能に</li>
+  <li>予約割り当ての principal フィールド対応、割り当て名の指定対応</li>
+</ul>
+
+<h3>🆕 Cloud KMS — プロジェクトレベル Autokey 設定</h3>
+<p><code>gcloud kms autokey-config</code> コマンドがプロジェクトレベルの Autokey 構成に対応し、<code>key-project-resolution-mode</code> フィールドも設定可能になりました。</p>
+
+<h3>🆕 BigLake — Hive カタログ (beta)</h3>
+<p><code>gcloud biglake hive catalogs</code> および <code>gcloud biglake hive databases</code> が beta に昇格。Iceberg カタログの <code>--primary-location</code> フラグは GA に昇格しました。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#May_27_2026" target="_blank" rel="noopener noreferrer">GCP リリースノート (May 27, 2026)</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 5月26日〜27日付アップデート</h2>
+
+<h3>🆕 Virtual Network Manager + Virtual WAN 統合（Public Preview）</h3>
+<p>Azure Virtual Network Manager と Virtual WAN の統合がパブリックプレビューとなりました。Virtual WAN ハブを Virtual Network Manager のハブ＆スポーク接続構成のハブとして利用できるようになり、大規模ネットワーク管理の柔軟性が向上します。</p>
+
+<p><strong>推奨アクション</strong>: Virtual WAN と Virtual Network Manager を併用している組織は、Preview 段階での検証を推奨します。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/updates?id=564478" target="_blank" rel="noopener noreferrer">Azure Update: Virtual Network Manager integration with Virtual WAN</a></p>
+
+<h3>🆕 Virtual Network Flow Logs + Microsoft Sentinel 連携（GA）</h3>
+<p>Azure Virtual Network Flow Logs と Microsoft Sentinel のコネクターが一般提供開始となりました。ネットワークトラフィックデータを Sentinel にシームレスにエクスポートし、セキュリティ運用ワークフロー内で分析できるようになります。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/updates?id=564689" target="_blank" rel="noopener noreferrer">Azure Update: Virtual network flow logs connector with Microsoft Sentinel</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 5月27日付アップデート</h2>
+
+<h3>🆕 SageMaker Notebook Instances — 新インスタンスタイプ対応（GA）</h3>
+<p>SageMaker Notebook Instances で以下の新インスタンスタイプが利用可能になりました。</p>
+
+<ul>
+  <li><strong>P6-B200</strong>: NVIDIA Blackwell GPU 8基搭載、1440 GB GPU メモリ。P5en 比最大2倍の学習性能。US East (N. Virginia) リージョンで提供開始</li>
+  <li><strong>P5.4xl</strong>: NVIDIA H100 GPU 搭載。前世代比最大4倍の高速化、最大40%のコスト削減。US East、US West、Asia Pacific（東京含む）などで提供</li>
+  <li><strong>P5en.48xl</strong>: NVIDIA H200 GPU 8基搭載、H100 比1.7倍の GPU メモリ。EFA v3 による最大35%のレイテンシ改善。US East、US West、Asia Pacific (Tokyo) で提供</li>
+</ul>
+
+<p class="note">※ 大規模 LLM のファインチューニングや生成 AI 開発を SageMaker 上で行っているチームに関連するアップデートです。</p>
+
+<p>🔗 <a href="https://aws.amazon.com/new/" target="_blank" rel="noopener noreferrer">AWS What's New</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice">Next.js、React（コア）、Python（コア）、Django、Hono、Java（JDK）、Spring Boot、OpenClaw、Claude（API / SDK / Code）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+<p class="note">※ Next.js canary (5月27日)、OpenClaw pre-release 2026.5.26 (5月27日GitHub公開)、Hono v4.12.23 (5月25日) はいずれも前回までのレポートで既報のため再掲しません。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
