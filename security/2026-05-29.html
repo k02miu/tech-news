@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-29 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-29 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-28 08:00 〜 2026-05-29 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw — 2026-05-28 リリース: セキュリティ境界の大幅強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-28 11:41 UTC（日本時間 20:41）</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>—（予防的セキュリティ強化）</td></tr>
+</table>
+
+<p>OpenClaw は5月28日、複数のセキュリティ境界強化を含むリリースを公開しました。主な改善点は以下のとおりです。</p>
+
+<ul>
+  <li><strong>グループプロンプトの分離</strong>: 信頼できないグループプロンプトのメタデータをシステムプロンプトの外部にルーティングし、境界を強化</li>
+  <li><strong>ホスト名の正規化</strong>: 末尾ドットが連続するホスト名を正規化し、偽装を防止</li>
+  <li><strong>コマンドラッパーのブロック</strong>: 副作用を伴うコマンドラッパーをブロック</li>
+  <li><strong>安全でない Node ランタイム環境変数の上書きを拒否</strong></li>
+  <li><strong>認証なし Tailscale 露出の拒否</strong></li>
+  <li><strong>ノード/デバイスロール承認に管理者権限を必須化</strong></li>
+  <li><strong>信頼できない Microsoft Teams サービス URL のブロック</strong></li>
+  <li><strong>/allowlist configWrites オリジンポリシーの強制</strong></li>
+</ul>
+
+<p>本リリースは新規 CVE への対応ではなく、継続的なセキュリティ強化の一環です。OpenClaw をご利用の方は最新版へのアップデートを推奨します。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>2. Claude Code v2.1.154 — データ流出検知の改善と Opus 4.8 対応</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>バージョンアップ（セキュリティ改善を含む）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-28</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>2.1.154（2.1.153 も同日リリース）</td></tr>
+</table>
+
+<p>Anthropic は5月28日、Claude Code v2.1.154 をリリースしました。本リリースには Opus 4.8 対応や動的ワークフロー機能に加え、以下のセキュリティ関連の改善が含まれています。</p>
+
+<ul>
+  <li><strong>データ流出検知の改善</strong>: オートモードの安全分類器が、特にリポジトリ内容の大量転送など、データ持ち出しの検知精度を向上</li>
+  <li><strong><code>rm -rf $HOME</code> のブロック修正</strong>: HOME に末尾スラッシュが付与されている場合にも危険パスとして正しくブロックされるよう修正</li>
+  <li><strong>サンドボックスと非サンドボックスの <code>$TMPDIR</code> 解決の一貫性を修正</strong></li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h3>3. Oracle CSPU May 2026 — アドバイザリ正式公開（続報）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE数</strong></td><td>35件の新規セキュリティパッチ</td></tr>
+  <tr><td><strong>対象</strong></td><td>Oracle Database Server, Oracle REST Data Services (最大 CVSS 10.0), Oracle E-Business Suite (最大 CVSS 9.9), Oracle Hospitality Applications ほか</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-28（アドバイザリ正式公開）</td></tr>
+</table>
+
+<p>前日（5月28日朝刊）で事前告知としてお伝えした Oracle の月次 Critical Security Patch Update（CSPU）が、予定どおり5月28日に正式公開されました。今回が Oracle の月次 CSPU サイクル初回のリリースとなります。35件の新規パッチには、Oracle REST Data Services における CVSS 10.0 の脆弱性を含む複数の Critical 脆弱性が含まれています。影響を受ける製品の速やかなパッチ適用を推奨します。</p>
+
+<p>🔗 <a href="https://www.oracle.com/security-alerts/cspumay2026.html" target="_blank" rel="noopener noreferrer">Oracle CSPU May 2026 アドバイザリ</a> · <a href="https://blogs.oracle.com/security/update-monthly-critical-security-patch-updates-cspus-begin-may-28-2026" target="_blank" rel="noopener noreferrer">Oracle Security Blog</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Hono, Python, Django, Spring Boot, AWS, Azure, GCP に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Carnival Corporation — ShinyHunters による攻撃で約600万人の個人情報が流出（5/27-28 通知開始）</h3>
+<ul>
+  <li>クルーズ大手 <strong>Carnival Corporation</strong> は5月27日より、約 <strong>599.5万人</strong> に影響する大規模データ侵害の通知を開始。4月14日にソーシャルエンジニアリング攻撃により従業員アカウントが侵害され、4月22日までに個人データが窃取された</li>
+  <li>窃取された情報: <strong>氏名、住所、メールアドレス、電話番号、生年月日、運転免許証番号、パスポート番号</strong>、および Mariner Society ロイヤルティプログラム情報（会員ステータス・ティア）</li>
+  <li>恐喝グループ <strong>ShinyHunters</strong> が犯行声明を出し、870万件のレコード窃取を主張（Carnival の公式発表では約600万件）</li>
+  <li>Carnival は影響を受ける米国居住者に対し、TransUnion を通じた2年間の無料クレジットモニタリングを提供</li>
+  <li>Carnival は過去数年間で複数回のサイバーセキュリティインシデントを経験しており、今回が初めてではない</li>
+  <li>🔗 <a href="https://www.malwarebytes.com/blog/data-breaches/2026/05/carnival-confirms-data-breach-impacting-nearly-6-million" target="_blank" rel="noopener noreferrer">Malwarebytes</a> · <a href="https://www.securityweek.com/carnival-data-breach-exposed-6-million-people/" target="_blank" rel="noopener noreferrer">SecurityWeek</a> · <a href="https://www.helpnetsecurity.com/2026/05/28/carnival-corporation-data-breach/" target="_blank" rel="noopener noreferrer">Help Net Security</a></li>
+</ul>
+
+<h3>🟠 NetLine Corporation — Web サーバー不正アクセスで SSN 含む個人情報が流出（5/27 通知開始）</h3>
+<ul>
+  <li>B2B マーケティング企業 <strong>NetLine Corporation</strong> が5月27日、4月20日に発生したデータ侵害の通知を開始。公共向け Web サーバーへの不正アクセスによりデータベースがクエリされ、<strong>氏名、社会保障番号（SSN）、個人納税者番号（ITIN）</strong> が流出</li>
+  <li>NetLine は4月21日に不審な活動を検知しサーバーを保護。4月29日までに影響範囲の特定を完了</li>
+  <li>影響を受けた個人に対し、TransUnion を通じた2年間の無料個人情報監視サービスを提供</li>
+  <li>🔗 <a href="https://www.classaction.org/data-breach-lawsuits/netline-corporation-may-2026" target="_blank" rel="noopener noreferrer">ClassAction.org</a> · <a href="https://www.claimdepot.com/data-breach/netline-corporation-2026" target="_blank" rel="noopener noreferrer">ClaimDepot</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
