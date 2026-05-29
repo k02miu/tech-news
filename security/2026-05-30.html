@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-30 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-30 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-29 08:00 〜 2026-05-30 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CVE-2026-48710 (BadHost) — Starlette / FastAPI 認証バイパス</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE ID</strong></td><td>CVE-2026-48710</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">High</span>（NVD CVSS 未評価、アドバイザリ上は High）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-28</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>Starlette &lt; 1.0.1（FastAPI, vLLM, LiteLLM, MCP サーバー, AI エージェントフレームワーク含む）</td></tr>
+  <tr><td><strong>修正</strong></td><td>Starlette 1.0.1 にアップグレード</td></tr>
+</table>
+
+<p>Python の非同期 Web フレームワーク <strong>Starlette</strong>（FastAPI の基盤）において、HTTP Host ヘッダの検証不備により <code>request.url.path</code> を用いたパスベースのセキュリティチェックをバイパスできる脆弱性が公開されました。</p>
+
+<ul>
+  <li><strong>攻撃手法</strong>: 不正な Host ヘッダ（例: <code>Host: example.com/abc?bar=</code>）を送信することで、<code>request.url.path</code> が実際のリクエストパスと一致しなくなり、認証ミドルウェアやパス制限を迂回</li>
+  <li><strong>特筆すべき影響</strong>: LLM 推論サーバー（vLLM）、AI プロキシ（LiteLLM）、MCP ゲートウェイも影響対象。MCP サーバーは仕様上 非認証 OAuth ディスカバリエンドポイントが必須であるため、特にリスクが高い</li>
+  <li><strong>修正内容</strong>: Starlette 1.0.1 では Host ヘッダを RFC 9112 §3.2 に従って検証し、不正な値の場合は <code>scope["server"]</code> にフォールバック</li>
+  <li><strong>検出方法</strong>: コードベース内の <code>request.url.path</code> をミドルウェア内で grep することを推奨（badhost.org にスキャナあり）</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/Kludex/starlette/security/advisories/GHSA-86qp-5c8j-p5mr" target="_blank" rel="noopener noreferrer">GHSA-86qp-5c8j-p5mr (GitHub Advisory)</a> · <a href="https://badhost.org" target="_blank" rel="noopener noreferrer">badhost.org</a> · <a href="https://www.x41-dsec.de/lab/advisories/x41-2026-002-starlette" target="_blank" rel="noopener noreferrer">X41 D-Sec Advisory</a> · <a href="https://www.csoonline.com/article/4177711/fastapi-based-ai-tools-exposed-to-authentication-bypass-by-flaw-in-starlette-framework.html" target="_blank" rel="noopener noreferrer">CSO Online</a></p>
+
+<hr>
+
+<h3>2. CVE-2026-47675 — Hono serialize() Set-Cookie インジェクション</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE ID</strong></td><td>CVE-2026-47675</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-medium">Medium</span>（NVD CVSS 未評価）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>CVE 番号発行: 2026-05-28（脆弱性修正は 2026-05-19）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>Hono &lt; 4.12.21（hono/cookie モジュール）</td></tr>
+  <tr><td><strong>修正</strong></td><td>Hono 4.12.21 以降にアップグレード</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-113: HTTP ヘッダへの CRLF シーケンスの不適切な無害化</td></tr>
+</table>
+
+<p>Hono の <code>hono/cookie</code> モジュールにおいて、<code>serialize()</code> 関数が <code>sameSite</code> および <code>priority</code> パラメータに対し CRLF インジェクション対策（<code>;</code>, <code>\r</code>, <code>\n</code> のバリデーション）を適用していなかった問題に CVE 番号が正式発行されました。</p>
+
+<ul>
+  <li>脆弱性自体は 2026-05-19 公開の Hono v4.12.22（GHSA-3hrh-pfw6-9m5x）で修正済み。5月28日付で CVE 番号が NVD に登録</li>
+  <li>ユーザー入力由来の値を <code>sameSite</code> または <code>priority</code> オプションに渡しているアプリケーションが影響対象</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-47675" target="_blank" rel="noopener noreferrer">NVD CVE-2026-47675</a> · <a href="https://github.com/honojs/hono/security/advisories/GHSA-3hrh-pfw6-9m5x" target="_blank" rel="noopener noreferrer">GHSA-3hrh-pfw6-9m5x</a></p>
+
+<hr>
+
+<h3>3. OpenClaw — 2026-05-29 pre-release: チャネル配信・セッション境界の強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-29 22:48 UTC（日本時間 5月30日 07:48）</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>—（予防的セキュリティ強化）</td></tr>
+</table>
+
+<p>前日（5月28日）のセキュリティ強化リリースに続き、OpenClaw は5月29日付 pre-release で以下のセキュリティ改善を実施しました。</p>
+
+<ul>
+  <li><strong>チャネル配信とセッション ID の安全性向上</strong>: アウトバウンドプラグインフック、Matrix ルーム ID、iMessage リアクション/承認、Slack 最終返信、Discord ツール警告復旧、WhatsApp プロファイル認証ルート、Telegram ポーリング、Microsoft Teams サービス URL 信頼チェック</li>
+  <li><strong>入力検証の厳格化</strong>: Browser ツールタイムアウト、ビューポート/タブインデックス、Gateway ポート、cron リトライ処理、Discord コンポーネント ID、スキーマ配列参照、Telegram コールバックページ、チャネルプログレスコールバック</li>
+  <li><strong>CLI/認証/Doctor/Provider パスの早期失敗・明確な復旧</strong>: 不正な数値/バージョンオプションの拒否、ワークスペース dotenv プロバイダー認証情報の無視、OAuth/トークン有効期限の制限、レガシー api_key プロファイルの正規化</li>
+  <li><strong>Provider 対応</strong>: Claude Opus 4.8 サポート、Fal Krea 画像モデルスキーマ、NVIDIA 注目モデルカタログ、暗号化PDF抽出</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>4. Claude Code v2.1.157 (2026-05-29) — セキュリティ関連修正を含むアップデート</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>バージョンアップ（セキュリティ改善を含む）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-29</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>2.1.157（2.1.156 も同日リリース）</td></tr>
+</table>
+
+<p>Anthropic は5月29日、Claude Code v2.1.157 をリリースしました。本リリースには以下のセキュリティ関連修正が含まれています。</p>
+
+<ul>
+  <li><strong>破損画像の安全な処理</strong>: ゼロバイトや破損画像がペースト/MCP/ダイアログ経由で添付された際にリクエストがクラッシュするのを防止し、テキストプレースホルダーに変換</li>
+  <li><strong>Sandbox ネットワーク権限プロンプトの修正</strong>: デスクトップアプリ・IDE 拡張・SDK 利用時に auto/bypass-permissions モードで誤表示されていた権限プロンプトを修正</li>
+  <li><strong>managed-settings セキュリティダイアログのフリーズ修正</strong>: 起動時のセキュリティダイアログ承認後にターミナルがフリーズする問題を修正</li>
+  <li><strong>WSL セキュリティ改善</strong>: 画像ペースト（Alt+V）、Windows 11 スクリーンショットペースト、Windows Explorer からの画像ドラッグ対応</li>
+  <li>プラグインの自動ロード（<code>.claude/skills</code> ディレクトリ）機能追加</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Java, Python（コア）, Django, Spring Boot, AWS, Azure, GCP に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Charter Communications (Spectrum) — ShinyHunters が 1,300万件超の顧客レコードを公開</h3>
+<ul>
+  <li>恐喝グループ <strong>ShinyHunters</strong> が、米国大手通信事業者 <strong>Charter Communications</strong>（Spectrum ブランド）から窃取した少なくとも <strong>1,300万件</strong> の顧客レコードをダークウェブ上に公開。5月27日の身代金支払期限を Charter が拒否したため</li>
+  <li>攻撃経路: 4月1日、<strong>音声フィッシング（vishing）</strong> により従業員の <strong>Microsoft Entra アカウント</strong>を侵害 → <strong>Salesforce</strong> インスタンスから顧客データをエクスポート</li>
+  <li>流出データ: 氏名、メールアドレス、住所、電話番号、契約プラン情報、CPNI（顧客専有ネットワーク情報: 通話記録・サービス利用パターン）。約 <strong>27,000人</strong>の従業員情報（勤務先メール・役職・一部住所）も含む</li>
+  <li>4.9M 件のユニークメールアドレスが <strong>Have I Been Pwned</strong> に登録済み。ShinyHunters は 4,200万件のレコード窃取を主張するが、重複を含む可能性あり</li>
+  <li>2026年に入り ShinyHunters は、Panera（500万件超）、Canvas/Instructure（3,000万件超）、Aura（100万件近く）、ADT（550万件）と、大規模なサプライチェーン攻撃を連続して実行</li>
+  <li>🔗 <a href="https://www.techlicious.com/blog/spectrum-charter-data-breach-shinyhunters-2026/" target="_blank" rel="noopener noreferrer">Techlicious</a> · <a href="https://www.bleepingcomputer.com/news/security/charter-communications-data-breach-affects-49-million-accounts/" target="_blank" rel="noopener noreferrer">BleepingComputer</a> · <a href="https://cybernews.com/security/charter-spectrum-data-breach-millions-exposed/" target="_blank" rel="noopener noreferrer">Cybernews</a></li>
+</ul>
+
+<h3>🟠 FBI — Silent Ransom Group（Luna Moth）に関する注意喚起を発出</h3>
+<ul>
+  <li>FBI は5月29日、<strong>Silent Ransom Group</strong>（別名: Luna Moth, Chatty Spider, UNC3753）に関するアラートを発出</li>
+  <li>同グループは 2022年以降、<strong>医療機関を中心に</strong>、IT サポート担当を装った電話（vishing）およびフィッシングメールを用いたソーシャルエンジニアリング攻撃を展開</li>
+  <li>標的組織に電話をかけ、正規の IT スタッフを装ってリモートアクセスツールのインストールを誘導する手口が確認されている</li>
+  <li>🔗 <a href="https://www.aha.org/news/headline/2026-05-29-fbi-issues-alert-cyber-actors-impersonating-it-personnel" target="_blank" rel="noopener noreferrer">AHA (American Hospital Association)</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
