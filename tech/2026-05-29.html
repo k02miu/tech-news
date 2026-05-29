@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-29 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-05-29 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-28 09:00 〜 2026-05-29 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude — Opus 4.8 正式リリース / Claude Code v2.1.154</h2>
+
+<h3>⭐ Claude Opus 4.8 (May 28, 2026)</h3>
+<p>Anthropic が Claude Opus 4.8 を正式リリースしました。Opus 4.7 から約1ヶ月での大型アップデートです。</p>
+
+<ul>
+  <li><strong>ベンチマーク改善</strong>: コーディング 64.3% → 69.2%、Computer Use 82.8% → 83.4%、ナレッジワーク 1753 → 1890、財務分析 51.5% → 53.9%</li>
+  <li><strong> honesty 向上</strong>: 不確実性のシグナルがより正確になり、根拠のない主張が減少</li>
+  <li><strong>価格は据え置き</strong>: $5/M input tokens, $25/M output tokens（Opus 4.7 と同額）</li>
+  <li><strong>Fast Mode</strong>: 2.5倍速で $10/M input, $50/M output（旧Fast Mode比3倍安価）</li>
+  <li><strong>提供先</strong>: Claude API、claude.ai、Amazon Bedrock、Claude Platform on AWS</li>
+</ul>
+
+<h3>🆕 Claude Code v2.1.154</h3>
+<ul>
+  <li><strong>Opus 4.8 対応</strong>: デフォルトで high effort。<code>/effort xhigh</code> で最難タスク向け</li>
+  <li><strong>Dynamic Workflows（Research Preview）</strong>: Claude が自律的にワークフローを作成し、数十〜数百のサブエージェントを並列実行。大規模タスクの自動化が可能に。 <code>/workflows</code> で実行状況を確認</li>
+  <li><strong>Fast Mode on Opus 4.8</strong>: 標準の2倍のコストで2.5倍の速度</li>
+  <li><strong>Lean System Prompt がデフォルトに</strong>: Haiku, Sonnet, Opus 4.7以前を除く全モデルで有効化</li>
+  <li><strong><code>/simplify</code> 改善</strong>: クリーンアップ専用レビュー（再利用性・簡素化・効率性・抽象度）を実行し修正を適用するように</li>
+  <li><strong><code>/effort</code> ラベル変更</strong>: "Speed"/"Intelligence" → "Faster"/"Smarter"</li>
+  <li><strong>Streaming Tool Execution 常時有効化</strong>: telemetry無効時やBedrock/Vertex/Foundryでも利用可能に</li>
+  <li><strong>多数のバグ修正</strong>: サブエージェントのworktree分離違反、バックグラウンドセッションのゾンビ化、VS Codeでの端末描画破損など</li>
+</ul>
+
+<p class="note">⚠️ <code>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE</code> は 2026-06-01 に削除予定。Opus 4.6のFast Mode利用者は <code>/model claude-opus-4-6[1m]</code> → <code>/fast on</code> に移行が必要。</p>
+
+<h3>🆕 Claude Code v2.1.153</h3>
+<ul>
+  <li>Git/GitHubプラグインの <code>skipLfs</code> オプション: Git LFSダウンロードをスキップ可能</li>
+  <li>npmグローバルインストールの自動更新失敗時にワンタイム通知を表示</li>
+  <li><code>claude doctor</code> に最終更新試行結果を表示</li>
+</ul>
+
+<h3>🆕 Anthropic Messages API — インライン System Messages</h3>
+<p>Messages API で、<code>messages</code> 配列内に <code>system</code> エントリを直接含められるようになりました。タスク途中でのインストラクション更新が容易になります。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">Anthropic Blog: Opus 4.8</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 5月28日付リリース</h2>
+
+<h3>🔒 セキュリティ強化</h3>
+<ul>
+  <li>グループプロンプトテキストをシステムプロンプトから分離</li>
+  <li>繰り返しドットを含むホスト名の正規化</li>
+  <li>副作用のあるコマンドラッパーおよび安全でない Node.js ランタイム環境変数の上書きをブロック</li>
+  <li>認証なしの Tailscale 公開を拒否</li>
+  <li>ノード/デバイスロール承認に管理者権限を要求</li>
+</ul>
+
+<h3>🚀 パフォーマンス改善</h3>
+<ul>
+  <li>セッション読み取り、プラグインメタデータフィンガープリント、認証環境スナップショットの高速化</li>
+  <li>ツール検索カタログのホットパス再検出を削減</li>
+  <li>可視返信が非表示のクリーンアップタイムアウトを継承しなくなった</li>
+</ul>
+
+<h3>🔌 プロバイダー対応拡大</h3>
+<ul>
+  <li>OpenAI互換 Embedding プロバイダーをコアに追加</li>
+  <li>Pixverse 動画生成プロバイダー + APIリージョン選択</li>
+  <li>DeepInfra フルモデルカタログブラウジング</li>
+  <li>VLLM thinking パラメータ対応</li>
+  <li>Claude CLI OAuth オーバーレイ対応</li>
+</ul>
+
+<h3>📡 チャンネル配信の安定性向上</h3>
+<ul>
+  <li>Telegram: 永続的アウトバウンド配信</li>
+  <li>iMessage: 重複ネイティブ実行承認プロンプトを抑制</li>
+  <li>Slack: 遅延クリーンアップ時も最終返信を保持</li>
+  <li>Matrix: メンションプレビュー/ファイナルを厳格化</li>
+  <li>Discord: ギルドリクエスターチェックを強化、ツール警告アーティファクトが返信に混入しないよう修正</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 5月28日付アップデート</h2>
+
+<h3>🆕 Gemini Enterprise Agent Platform — 画像生成モデル GA</h3>
+<ul>
+  <li><strong>Gemini 3.1 Flash Image (GA)</strong>: 4K画像出力 (Preview)、動画入力対応 (Preview)</li>
+  <li><strong>Gemini 3 Pro Image (GA)</strong>: 4K画像出力 (Preview)</li>
+  <li>⚠️ <strong>非推奨</strong>: <code>gemini-3.1-flash-image-preview</code> および <code>gemini-3-pro-image-preview</code> エンドポイント。2026-07-19 までに移行が必要</li>
+</ul>
+
+<h3>🆕 GKE — L4LB Cloud Logging (GA)</h3>
+<p>GKE バージョン 1.36.0-gke.2459000 以降で、L4LBConfig CRD を使用して内部L4ロードバランサーおよび外部L4ロードバランサー（RBS有効時）のバックエンドサービスに直接 Cloud Logging を設定可能になりました。</p>
+
+<h3>🆕 Google SecOps — Unified Chronicle API v1</h3>
+<p>Chronicle API がレガシー SOAR API と統合され、多くのリソースが v1beta → v1 に昇格（Alerts、Threat Collections、Dashboards、Data Tables、Ingestion、Detections、Search & Investigation、SOAR Cases など）。API の安定性と本番利用が保証されました。</p>
+
+<h3>🆕 Cloud Logging / Cloud Trace / Error Reporting</h3>
+<p>Observability API、Telemetry API、Error Reporting API の利用可能なリージョナルエンドポイントが REST リファレンスページで確認可能になりました。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#May_28_2026" target="_blank" rel="noopener noreferrer">GCP リリースノート (May 28, 2026)</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 5月28日付アップデート</h2>
+
+<h3>🆕 Next-Gen Amazon OpenSearch Serverless</h3>
+<p>AI エージェント構築向けに設計された次世代 OpenSearch Serverless が発表されました。</p>
+<ul>
+  <li>プロビジョンドクラスター比 <strong>最大60%のコスト削減</strong></li>
+  <li><strong>最大20倍高速なスケーリング</strong></li>
+  <li><strong>OpenSearch Agent Skills</strong>: ドメイン知識をエージェントに埋め込み</li>
+  <li>Vercel、Kiro などの AI 開発プラットフォームとのネイティブ統合</li>
+</ul>
+
+<h3>🆕 Next-Gen AWS Resilience Hub</h3>
+<ul>
+  <li>SRE/開発チーム向けの新しいアプリケーションモデル</li>
+  <li>生成 AI による障害モード分析</li>
+  <li>モジュラー型レジリエンスポリシー</li>
+  <li>依存関係検出評価、組織全体レポート</li>
+</ul>
+
+<h3>🆕 AWS Neuron 2.30.0</h3>
+<ul>
+  <li>NKI 0.4.0: Trainium3 専用ハードウェア機能</li>
+  <li>22個の新 NKI ライブラリカーネル</li>
+  <li>モデル移植・検証向け Neuron Agentic Development スキル拡張</li>
+</ul>
+
+<h3>🆕 Organizations CloudTrail イベント</h3>
+<p>AWS Organizations がアカウント参加/脱退時に <code>AccountJoinedOrganization</code> および <code>AccountDepartedOrganization</code> CloudTrail イベントを管理アカウントに自動発行。メンバーシップ変更の可視性が向上し、不正検知が強化されました。</p>
+
+<h3>🆕 WorkSpaces Applications — Windows Desktop OS (BYOL)</h3>
+<p>BYOL で Windows Desktop OS を使用したストリーミングリソースが設定可能に。既存の Windows Desktop ライセンスを活用し、Microsoft 365 Apps for enterprise に対応。</p>
+
+<p>🔗 <a href="https://aws.amazon.com/new/" target="_blank" rel="noopener noreferrer">AWS What's New</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 5月28日付アップデート</h2>
+
+<h3>🆕 Azure Linux 4.0 Public Preview / Azure Container Linux GA</h3>
+<ul>
+  <li><strong>Azure Linux 4.0 (Public Preview)</strong>: Fedora ベースの汎用サーバー向けディストリビューション。コンテナホスティングを超えた、Microsoft 初の本格的な VM 向けサポート Linux</li>
+  <li><strong>Azure Container Linux (GA)</strong>: Flatcar ベースのイミュータブル・コンテナ最適化ホスト。AKS のデフォルトOSの基盤</li>
+</ul>
+<p><strong>推奨アクション</strong>: AKS および Azure VM で Linux を運用しているチームは、Preview 段階での評価を推奨します。</p>
+
+<h3>🆕 Hotpatching for Windows Server 2025 — Azure Arc 経由で無償提供</h3>
+<p>Windows Server 2025 のホットパッチが Azure Arc 経由で追加費用なしで利用可能に。重要なセキュリティ修正を再起動なしでリアルタイム適用でき、ハイブリッド/マルチクラウド環境でのダウンタイムを最小化します。</p>
+
+<h3>🆕 Azure Front Door — WebSocket GA</h3>
+<p>Azure Front Door Standard/Premium で WebSocket が GA。デフォルト有効で、チャットやライブダッシュボードなどのリアルタイムアプリケーション向けに全二重通信を実現。</p>
+
+<h3>🆕 Azure Functions Flex Consumption — TLS/SSL 証明書 (Public Preview)</h3>
+<p>Flex Consumption プランで TLS/SSL 証明書がサポートされ、サーバーレスアプリケーションのセキュリティとカスタマイズ性が向上。</p>
+
+<h3>🆕 Azure Storage Mover — Blob-to-Blob 移行 GA</h3>
+<p>ストレージアカウント間・リージョン間・サブスクリプション間の BLOB 直接転送が GA。完全マネージドなデータ移行が可能になりました。</h3>
+
+<p>🔗 <a href="https://azure.microsoft.com/updates/" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice">Next.js（canary のみで安定版リリースなし）、React（コア）、Python（コア）、Django、Hono、Java（JDK）、Spring Boot については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+<p class="note">※ Next.js canary (5月27-28日)、Hono v4.12.23 (5月25日) はいずれも前回までのレポートで既報のため再掲しません。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
