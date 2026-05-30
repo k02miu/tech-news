@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-31 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-05-31 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-30 08:00 〜 2026-05-31 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw — 2026-05-30 リリース: エージェント・Codex ランタイム回復性と入力検証の継続的強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-30 20:06 UTC（日本時間 5月31日 05:06）</td></tr>
+</table>
+
+<p>前日（5月29日）のセキュリティ強化リリースに続き、OpenClaw は5月30日付リリースで以下の追加改善を実施しました。</p>
+
+<ul>
+  <li><strong>エージェント・Codex ランタイム回復性の強化</strong>: サブエージェントの cwd/ワークスペース分離の維持、フックコンテキストのプロンプトローカル保持、タイムアウト中断時のセッションロック解放、古い再起動継続の回避、Codex アプリサーバー/ヘルパー障害時の共有ランタイム状態保護</li>
+  <li><strong>チャネル配信・セッションIDの安全性向上</strong>: アウトバウンドプラグインフック、Matrix ルームID、iMessage リアクション/承認、Slack 最終返信、Discord ツール警告復旧、WhatsApp プロファイル認証ルート、Telegram ポーリング、Microsoft Teams サービス URL 信頼チェック</li>
+  <li><strong>入力検証の厳格化</strong>: Browser ツールタイムアウト、ビューポート/タブインデックス、Gateway ポート、cron リトライ処理、Discord コンポーネント ID、スキーマ配列参照、Telegram コールバックページ、チャネルプログレスコールバック — 不正値の早期拒否と配信コンテキストの保護</li>
+  <li><strong>CLI/認証/Doctor/Provider パスの堅牢化</strong>: 不正な数値/バージョンオプションの拒否、ワークスペース dotenv プロバイダー認証情報の無視、OAuth/トークン有効期限の制限、レガシー api_key プロファイルの正規化</li>
+  <li><strong>Provider 対応追加</strong>: Claude Opus 4.8 サポート、Fal Krea 画像モデルスキーマ、NVIDIA 注目モデルカタログ、暗号化PDF抽出</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>2. Claude Code v2.1.158 (2026-05-30) — Bedrock/Vertex/Foundry で Auto Mode が利用可能に</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>機能アップデート（セキュリティ修正の記載なし）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-30</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>2.1.158</td></tr>
+</table>
+
+<p>Anthropic は5月30日、Claude Code v2.1.158 をリリースしました。本リリースでは、Opus 4.7 および Opus 4.8 において、Bedrock、Vertex AI、Foundry 上で Auto Mode が利用可能になりました（<code>CLAUDE_CODE_ENABLE_AUTO_MODE=1</code> でオプトイン）。前日 v2.1.157 に引き続き安定性向上が中心です。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h3>3. 前日までのスタック関連情報の継続注意喚起</h3>
+
+<p>以下の前回報告済みの重要脆弱性は、依然として広範囲に影響を及ぼしており、未対応の場合は早急なアップグレードを推奨します。</p>
+<ul>
+  <li><strong>CVE-2026-48710 (BadHost)</strong>: Starlette 1.0.1 未満（FastAPI, vLLM, LiteLLM, MCP サーバー含む）の認証バイパス。前回（5月30日）報告</li>
+  <li><strong>CVE-2026-47675</strong>: Hono 4.12.21 未満の <code>hono/cookie</code> serialize() Set-Cookie インジェクション。前回（5月30日）報告</li>
+</ul>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Java, Python（コア）, Django, Hono, Spring Boot, AWS, Azure, GCP に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 CVE-2026-0257 — Palo Alto Networks PAN-OS GlobalProtect 認証バイパスが CISA KEV に追加（5月29日）</h3>
+<ul>
+  <li><strong>深刻度</strong>: <span class="badge-medium">Medium</span>（CVSS 7.8）— ただし積極的悪用が確認されているため実質的リスクは高い</li>
+  <li><strong>概要</strong>: PAN-OS GlobalProtect ポータル/ゲートウェイにおいて、認証オーバーライド Cookie が有効で特定の証明書構成が存在する場合、未認証のリモート攻撃者が認証をバイパスし、不正な VPN 接続を確立可能</li>
+  <li><strong>経緯</strong>: 2026-05-13 に Palo Alto Networks がアドバイザリを公開。5月17日以降、Rapid7 が複数顧客環境での積極的悪用を確認。5月29日に CISA が Known Exploited Vulnerabilities (KEV) カタログに追加</li>
+  <li><strong>悪用の実態</strong>: 攻撃者は Cookie 認証後に VPN IP を割り当てられ、一部のケースでは内部ネットワークへのアクセスに成功</li>
+  <li><strong>影響範囲</strong>: GlobalProtect ポータルまたはゲートウェイが構成された PAN-OS ファイアウォール（Panorama および Cloud NGFW は非影響）</li>
+  <li><strong>推奨対応</strong>: 直ちにベンダー提供パッチを適用。暫定対策として認証オーバーライド機能の無効化、または本機能専用の新規証明書発行</li>
+  <li>🔗 <a href="https://security.paloaltonetworks.com/CVE-2026-0257" target="_blank" rel="noopener noreferrer">Palo Alto Networks Advisory</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://www.rapid7.com/blog/post/etr-rapid7-observed-exploitation-of-pan-os-globalprotect-authentication-bypass-vulnerability-cve-2026-0257/" target="_blank" rel="noopener noreferrer">Rapid7 Analysis</a></li>
+</ul>
+
+<h3>🟠 7-Eleven — フランチャイズ応募者 185,000 人超の個人情報流出（ShinyHunters 関与）</h3>
+<ul>
+  <li>7-Eleven は5月30日、<strong>185,000人超</strong>のフランチャイズ応募者の個人情報が流出したことを確認</li>
+  <li>窃取されたデータ: <strong>社会保障番号（SSN）、運転免許証詳細、生年月日、連絡先情報</strong></li>
+  <li>攻撃グループ <strong>ShinyHunters</strong> が関与。2026年4月8日に同社が不正アクセスを検知</li>
+  <li>ShinyHunters は2026年に入り、Charter Communications（1,300万件超）、Canvas/Instructure（3,000万件超）、Panera（500万件超）、ADT（550万件）など大規模侵害を連続して実行</li>
+  <li>🔗 <a href="https://www.bleepingcomputer.com/news/security/7-eleven-confirms-data-breach-affecting-185-000-franchise-applicants/" target="_blank" rel="noopener noreferrer">BleepingComputer</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
