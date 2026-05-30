@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-30 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-05-30 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-29 09:00 〜 2026-05-30 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.157 / v2.1.156</h2>
+
+<h3>🆕 Claude Code v2.1.157 (May 29, 2026)</h3>
+<p>v2.1.154 に続く機能強化と多数のバグ修正を含むリリースです。</p>
+<ul>
+  <li><strong>Skills ディレクトリ自動読み込み</strong>: <code>.claude/skills</code> 配下のプラグインがマーケットプレイス不要で自動ロードされるように</li>
+  <li><strong><code>claude plugin init &lt;name&gt;</code></strong>: <code>.claude/skills</code> に新しいプラグインをスキャフォールドするコマンドを追加</li>
+  <li><strong><code>/plugin</code> 引数の自動補完</strong>: サブコマンド、インストール済みプラグイン名、既知のマーケットプレイスから補完</li>
+  <li><strong><code>claude agents</code></strong>: <code>settings.json</code> の <code>agent</code> フィールドが dispatching セッションで反映されるように（<code>--agent &lt;name&gt;</code> で上書き可）</li>
+  <li><strong>EnterWorktree 改善</strong>: セッション中に Claude 管理のワークツリー間を切り替え可能に</li>
+  <li><strong>破損画像の堅牢化</strong>: ゼロバイトや破損画像（貼り付け/MCP/ダイアログ経由）がクラッシュせずテキストプレースホルダーとして扱われるように</li>
+  <li><strong>WSL 改善</strong>: 画像貼り付け（alt+v）、Windows 11 でのスクリーンショット貼り付け、Windows Explorer からのドラッグ画像に対応</li>
+  <li><strong>パフォーマンス改善</strong>: 長い/再開セッションでの冗長なメッセージ再レンダリングを排除</li>
+  <li><strong>サンドボックスネットワーク許可プロンプト</strong>: デスクトップアプリ・IDE拡張・SDK 利用時の auto/bypass-permissions モードでプロンプトが表示されないよう修正</li>
+  <li><strong>多数のバグ修正</strong>: バックグラウンドエージェントのワークツリー孤立化、クリップボード重複、ターミナルフリーズ、VS Code/Cursor/Windsurf 統合ターミナルの描画破損など</li>
+</ul>
+
+<h3>🔧 Claude Code v2.1.156 (May 29, 2026) — ホットフィックス</h3>
+<ul>
+  <li>Opus 4.8 使用時に thinking blocks が変更されて API エラーが発生する問題を修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 5月29日付 Pre-release</h2>
+
+<h3>🤖 エージェント・Codex ランタイムの復旧強化</h3>
+<ul>
+  <li>サブエージェントの cwd/workspace 分離を維持、フックコンテキストをプロンプトローカルに保持</li>
+  <li>タイムアウトアボート時にセッションロックを解放、古い再起動継続を回避</li>
+  <li>Codex アプリサーバー/ヘルパーの障害が共有ランタイム状態を破壊しないよう修正</li>
+</ul>
+
+<h3>🔌 プロバイダー対応拡大</h3>
+<ul>
+  <li><strong>Claude Opus 4.8 対応</strong></li>
+  <li>Fal Krea 画像モデルスキーマ、NVIDIA フィーチャードモデルカタログ</li>
+  <li>MiniMax ストリーミング音楽レスポンス</li>
+  <li><strong>GitHub Copilot Agent ランタイム</strong> および Codex Supervisor プラグインパッケージ</li>
+  <li>プロバイダー支援の音声モデルカタログ</li>
+</ul>
+
+<h3>📡 チャンネル配信の安全性向上</h3>
+<ul>
+  <li>アウトバウンドプラグインフックに正規セッションキーを伝達</li>
+  <li>Matrix ルーム ID のケースを保持、iMessage のリアクション拒否後もポーリング継続</li>
+  <li>Slack の最終返信を遅延クリーンアップ時も保持</li>
+  <li>Discord の復旧ツール警告を抑制、音声アウトバウンドヘルパーを維持</li>
+  <li>Microsoft Teams の信頼できないサービス URL をブロック</li>
+</ul>
+
+<h3>📱 モバイル・チャットインタフェース刷新</h3>
+<ul>
+  <li>iOS Pro UI、ホスト型プッシュリレー（デフォルト）、リアルタイム Talk タブ再生</li>
+  <li>Gateway チャットトランスポート、オンボーディング改善</li>
+  <li>WebChat 再接続配信、セッションピッカーの状態保持改善</li>
+</ul>
+
+<h3>🔒 ポリシー・セキュリティ</h3>
+<ul>
+  <li>ポリシー比較、イングレスチャンネル適合性、サンドボックス態勢適合性チェックを追加</li>
+  <li>ClawHub: プラグイン表示名 + スキル検証・信頼サーフェス</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 5月29日付アップデート</h2>
+
+<h3>🆕 Gemini Enterprise — Core Assistant GA + 可観測性 (Preview)</h3>
+<ul>
+  <li><strong>Core Assistant (GA)</strong>: Google 提供のルートエージェント。ユーザーがエージェントを明示指定せずに Gemini Enterprise アプリを操作する際の会話を処理</li>
+  <li><strong>Traces (Preview)</strong>: 実行フロー・所要時間・入出力を時系列で可視化。OpenTelemetry 計装時に詳細表示</li>
+  <li><strong>Metrics (Preview)</strong>: デフォルト有効のダッシュボード（セッション数、レイテンシ、エージェント呼び出し、ツール呼び出し数、エラー率）。追加課金なし</li>
+</ul>
+
+<h3>🆕 Apigee X — UI 更新 / Spaces 管理</h3>
+<ul>
+  <li>Apigee UI の更新バージョンがリリース</li>
+  <li>Spaces の作成・表示・更新・削除、IAM ポリシー管理が UI から直接実行可能に（従来は API のみ）</li>
+</ul>
+
+<h3>⚠️ GKE — Workload Identity 接続タイムアウト問題</h3>
+<ul>
+  <li>GKE バージョン 1.35 以降で、Workload Identity を使用するワークロードがノード起動直後に GKE メタデータサーバーへの一時的な接続タイムアウト/拒否を経験する可能性</li>
+  <li>回避策と推奨事項は <a href="https://cloud.google.com/kubernetes-engine/docs/troubleshooting/authentication#troubleshoot-timeout" target="_blank" rel="noopener noreferrer">トラブルシューティングドキュメント</a> を参照</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#May_29_2026" target="_blank" rel="noopener noreferrer">GCP リリースノート (May 29, 2026)</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 5月29日付アップデート</h2>
+
+<h3>🆕 Amazon SES — 受信トレイ配置率・ブロックリスト監視</h3>
+<ul>
+  <li>業界サンプルデータに基づき、迷惑メールフォルダへの配置率を送信ドメイン/キャンペーン別に可視化</li>
+  <li>候補メールコンテンツの事前テストで主要メールボックスプロバイダーでの配置率を推定可能</li>
+  <li>公開ブロックリストへの掲載をパッシブ監視し、レピュテーション変化を早期検知</li>
+  <li>SES 利用可能な全商用リージョンで提供</li>
+</ul>
+
+<h3>🆕 AWS Shield Advanced — DDoS 攻撃フローログ</h3>
+<ul>
+  <li>DDoS 攻撃中のパケットレベルトラフィック情報（送信元/宛先 IP、ポート、プロトコル、パケット数、バイト数、送信元国など）を取得</li>
+  <li>5分間隔で自動的に S3 / CloudWatch Logs / Data Firehose に配信</li>
+  <li>フォレンジック分析・脅威インテリジェンス・コンプライアンス報告に活用可能</li>
+</ul>
+
+<h3>🆕 AWS Interconnect — multicloud 無料枠 (500 Mbps)</h3>
+<ul>
+  <li>AWS Interconnect - multicloud で 500 Mbps の無料相互接続を提供開始</li>
+  <li>Google Cloud、Oracle Cloud がすでにこのオープン仕様を採用</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/feed/" target="_blank" rel="noopener noreferrer">AWS What's New (RSS)</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 5月28–29日付アップデート</h2>
+
+<h3>🆕 Application Gateway for Containers — Istio Service Mesh 統合 (GA) (May 28)</h3>
+<ul>
+  <li>Istio サービスメッシュで動作するワークロードへの North-South トラフィックを安全にルーティング</li>
+  <li>Application Gateway for Containers と Istio 間の相互 TLS (mTLS) 接続を自動化</li>
+  <li>コンテナ化アプリケーションのセキュアなトラフィック管理が簡素化</li>
+</ul>
+
+<h3>🆕 Azure Site Recovery — Performance Plus Managed Disks 対応 (Public Preview) (May 29)</h3>
+<ul>
+  <li>Performance Plus 有効な Premium SSD / Standard SSD / Standard HDD Managed Disk を使用する VM のレプリケーションに対応</li>
+</ul>
+
+<p class="note">※ その他、5月26日以前の Azure アップデート（VPN Gateway 証明書認証 GA、Virtual Network Manager と Virtual WAN 統合 Preview など）は前回レポート以前のため割愛します。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/updates/" target="_blank" rel="noopener noreferrer">Azure Updates</a> · <a href="https://www.microsoft.com/releasecommunications/api/v2/azure/rss" target="_blank" rel="noopener noreferrer">Azure RSS</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice">Next.js（canary のみで安定版リリースなし）、React（コア）、Hono（v4.12.23 は前回既報）、Python（コア）、Django（6.0.6 以前が最新、新規パッチなし）、Java（JDK 26 現行 / 27 EA）、Spring Boot（最新 v4.1.0-RC1 は4月23日付）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
