@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-01 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-01 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-05-31 08:00 〜 2026-06-01 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw — 2026.5.31 pre-release: エージェント・Codex ランタイム回復性、チャネル配信安定性、Skill Workshop</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-31 19:19 UTC（日本時間 6月1日 04:19）</td></tr>
+</table>
+
+<p>前日までの継続的セキュリティ強化に続き、OpenClaw は5月31日付 pre-release で以下の改善を実施しました。</p>
+
+<ul>
+  <li><strong>エージェント・Codex ランタイム回復性の強化</strong>: 中断されたツール呼び出し・古いセッションバインディング・コンパクションハンドオフ・メディア配信リトライからの復旧を改善。Codex アプリサーバーの最終回答ストリーミング・ACP メタデータ永続化・ワークスペース/セッションメタデータ保存を強化</li>
+  <li><strong>チャネル・モバイル配信の安定性向上</strong>: Telegram、WhatsApp、iMessage、Slack、Discord、Microsoft Teams、Google Chat、Google Meet、iOS リアルタイム Talk の各チャネルで配信の堅牢性を改善</li>
+  <li><strong>Gateway 設定とセキュリティ</strong>: Tailscale Serve サービス名バインディングのサポート、Communication 通知設定の追加、エージェント追加時の安全性向上、Discord/Telegram/Slack/Matrix/Teams のプログレスドラフト信頼性改善</li>
+  <li><strong>Provider・プラグインのタイムアウト保護</strong>: タイマー、リトライ、OAuth/デバイスコード有効期限、メディアダウンロード、ローカルサービスプローブ、生成コンテンツポーリングのバウンドを強化し、ハングアップを防止</li>
+  <li><strong>Skill Workshop（新機能）</strong>: ガバナンス付きスキル作成・レビュー・承認フロー。スキル提案の適用/拒否/隔離、サポートファイルのスキャン・ハッシュ・ロールバック保護、バージョン付き提案フロントマター</li>
+  <li><strong>認証・セッション保護</strong>: 認証プロファイルのアトミック書き込み、強制再ログイン回復、OpenAI API キーの Codex アプリサーバー認証との混同防止、OAuth セッション永続化の保護</li>
+  <li><strong>プラグインエコシステム拡張</strong>: Tokenjuice および GitHub Copilot ランタイムを公式 @openclaw プラグインとして外部化、SecretRef プロバイダー統合マニフェストの追加</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>2. Claude Code v2.1.159 (2026-05-31) — 内部インフラ改善</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>マイナーアップデート（セキュリティ修正の記載なし）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-31</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>2.1.159</td></tr>
+</table>
+
+<p>Anthropic は5月31日、Claude Code v2.1.159 をリリースしました。本リリースは内部インフラストラクチャの改善が中心で、ユーザー向けの変更は含まれていません。前日 v2.1.158（Bedrock/Vertex/Foundry での Auto Mode 対応）に続く安定性向上リリースです。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js, React, Java, Python（コア）, Django, Hono, Spring Boot, AWS, Azure, GCP に直接関連する新規脆弱性の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Carnival Corporation — クルーズ大手で約600万人の個人情報流出（ShinyHunters 関与）</h3>
+<ul>
+  <li>Carnival Corporation（カーニバルクルーズ）は5月末、<strong>約600万人</strong>の顧客・従業員の個人情報が流出したことを正式に公表</li>
+  <li>攻撃経路: 4月14日、<strong>ソーシャルエンジニアリング（なりすまし電話）</strong>により従業員アカウントを侵害 → IT システムの一部に不正アクセス → 4月22日までにデータの不正コピーを確認</li>
+  <li>流出データ: <strong>氏名、住所、メールアドレス、電話番号、生年月日、パスポート番号、運転免許証番号</strong>（影響は個人により異なる）</li>
+  <li>攻撃グループ <strong>ShinyHunters</strong> が4月に犯行声明（870万件の窃取を主張）。Carnival の正式届出では約600万人</li>
+  <li>ShinyHunters は2026年に入り、Charter Communications（1,300万件超）、Canvas/Instructure（3,000万件超）、Panera（500万件超）、ADT（550万件）、7-Eleven（18.5万件）と、大規模侵害を連続実行中</li>
+  <li>🔗 <a href="https://www.malwarebytes.com/blog/data-breaches/2026/05/carnival-confirms-data-breach-impacting-nearly-6-million" target="_blank" rel="noopener noreferrer">Malwarebytes</a> · <a href="https://www.securityweek.com/carnival-data-breach-exposed-6-million-people/" target="_blank" rel="noopener noreferrer">SecurityWeek</a> · <a href="https://therecord.media/cruise-giant-carnival-confirms-data-breach-affecting-6-million" target="_blank" rel="noopener noreferrer">The Record</a></li>
+</ul>
+
+<h3>🟠 npm サプライチェーン攻撃 — 「codexui-android」が OpenAI リフレッシュトークンを窃取、OpenClaw/Claude コミュニティも標的</h3>
+<ul>
+  <li>Aikido Security の研究者が5月27日、npm パッケージ <strong>codexui-android</strong>（週間約 <strong>27,000 ダウンロード</strong>）に悪意あるコードが含まれていることを発見</li>
+  <li><strong>攻撃手法</strong>: 正規の有用なツールとしてユーザーベースを構築した後、<code>dist-cli/index.js</code> の先頭行で隠しスクリプトを読み込み、ローカルの <code>auth.json</code> から OpenAI の <strong>access_token、id_token、refresh_token</strong> を窃取。<strong>refresh_token は無期限</strong>であり、攻撃者は被害者に永続的に成りすますことが可能</li>
+  <li>盗んだトークンは <code>sentry.anyclawstore</code> に送信（正規の Sentry エラーレポートを偽装）</li>
+  <li><strong>モバイル展開</strong>: Google Play Store 上の Android アプリ（<strong>「OpenClaw Codex Claude AI Agent」</strong>を含む）に同一のマルウェアが同梱。APK はクリーンに見えるが、インストール後に Node.js を展開し悪意ある npm パッケージを取得</li>
+  <li><strong>開発者コミュニティへの教訓</strong>: AI 開発ツールのトークンは高価値かつ長寿命であるため、攻撃者は正規プロジェクトを偽装して信頼を獲得する手口が増加している</li>
+  <li>🔗 <a href="https://hackread.com/codex-ui-tool-secretly-stole-openai-refresh-tokens/" target="_blank" rel="noopener noreferrer">Hackread</a> · <a href="https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens" target="_blank" rel="noopener noreferrer">Aikido Security (分析ブログ)</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
