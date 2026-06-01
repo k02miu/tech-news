@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-01 08:00 〜 2026-06-02 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw — 2026.6.1 pre-release: エージェント回復性・チャネル安定性・Skill Workshop ガバナンス強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-01 21:56 UTC（日本時間 6月2日 06:56）</td></tr>
+</table>
+
+<p>前日 5.31 pre-release に続き、OpenClaw は 6月1日付で継続的なセキュリティ・安定性強化リリースを公開しました。主な改善点は次のとおりです。</p>
+
+<ul>
+  <li><strong>エージェント・Codex ランタイム回復性</strong>: 中断されたツール呼び出し・古いセッションバインディング・コンパクションハンドオフ・メディア配信リトライからの復旧をさらに改善</li>
+  <li><strong>チャネル・モバイル配信の安定性</strong>: Telegram、WhatsApp、iMessage、Slack、Discord、Microsoft Teams、Google Chat、Google Meet、iOS リアルタイム Talk の各チャネルで配信堅牢性を強化</li>
+  <li><strong>Provider・プラグインのタイムアウト保護</strong>: タイマー、リトライ、OAuth/デバイスコード有効期限、メディアダウンロード、ローカルサービスプローブ、生成コンテンツポーリングのバウンドを強化し、ハングアップを防止</li>
+  <li><strong>Skill Workshop ガバナンス強化</strong>: プロポーザルリスト、今日のアクション、リビジョンハンドオフ、検索可能なファイルプレビュー、レビュー状態、ロケールカバレッジを含む完全な Control UI フロー。スキル提案の適用・拒否・隔離、サポートファイルのスキャン・ハッシュ・ロールバック保護</li>
+  <li><strong>iMessage モニター状態・プラグインインストール台帳の SQLite 移行</strong>: 再起動時のファイルシステムスキャン重複を削減し、ローカルモニターの回復性を向上</li>
+  <li><strong>Chat/Control UI の起動パス改善</strong>: 履歴読み込み中の送信維持、ストリーミング中の Markdown 処理スキップ、ドラフトのローカル保持、ファーストコネクト優先、コンポーザー制御の安定化</li>
+  <li><strong>Provider カバレッジ拡張</strong>: MiniMax M3、アカウント OAuth エンドポイント、Google/Vertex カタログ修正、OpenRouter SQLite モデルキャッシュ、Copilot Claude 1M 対応、Foundry 推論調整、OpenAI レスポンスリプレイガード</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>2. Next.js — v16.2.7 / v15.5.8 バグ修正バックポート</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>バグ修正バックポート（セキュリティ修正の記載なし）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-01（日本時間 6月2日 早朝）</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>v16.2.7（canary 系）, v15.5.8（安定系）</td></tr>
+</table>
+
+<p>Vercel は6月1日、Next.js のバグ修正バックポートをリリースしました。主な修正内容：</p>
+
+<ul>
+  <li><code>FormData</code> エントリが Server Action で欠落する問題を修正（React 側の修正と連動）</li>
+  <li>middleware の rewrite による Server Action 転送ループを修正</li>
+  <li>非ASCII文字を含むキャッシュタグのエンコード問題を修正</li>
+  <li><code>type: module</code> 設定時の standalone/adapters 対応を改善</li>
+  <li>Turbopack: base38 ハッシュエンコーディングに切り替え</li>
+</ul>
+
+<p>本リリースは canary ブランチの機能を安定版にバックポートするもので、新規のセキュリティ脆弱性対応は含まれていません。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases (GitHub)</a></p>
+
+<hr>
+
+<h3>3. React — v19.2.7 / v19.1.8 / v19.0.7: Server Actions の FormData 欠落修正</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>バグ修正（リグレッション修正）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-01 18:04 UTC（日本時間 6月2日 03:04）</td></tr>
+  <tr><td><strong>対象</strong></td><td>React 19.2.6 / 19.1.7 / 19.0.6 で発生したリグレッション</td></tr>
+</table>
+
+<p>React Server Components の Server Actions において、前バージョンで <code>FormData</code> エントリが欠落するリグレッションが修正されました。3つのバージョン系列（19.2.x, 19.1.x, 19.0.x）すべてにパッチが提供されています。Next.js の同日リリース（v16.2.7 / v15.5.8）もこの修正をバックポートしています。</p>
+
+<p>🔗 <a href="https://github.com/facebook/react/releases" target="_blank" rel="noopener noreferrer">React Releases (GitHub)</a></p>
+
+<hr>
+
+<p class="empty-notice">Java、Python（コア）、Django、Hono、Spring Boot、AWS、Azure、GCP に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Red Hat npm サプライチェーン攻撃「Miasma」— 32 パッケージが侵害、クラウド認証情報を窃取</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発見日</strong></td><td>2026-06-01（Wiz Research が検出・公開）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td><code>@redhat-cloud-services</code> 名前空間の少なくとも 32 パッケージリリース（週間約 80,000 DL）</td></tr>
+  <tr><td><strong>攻撃経路</strong></td><td>Red Hat 従業員の GitHub アカウント侵害 → 悪意ある orphan コミットを push → GitHub Actions OIDC 経由でバックドア入りパッケージを npm に公開（SLSA 証明書付き）</td></tr>
+  <tr><td><strong>ペイロード</strong></td><td>TeamPCP の Mini Shai-Hulud マルウェア改変版。GCP/Azure クラウド ID 収集機能が新たに追加。感染ごとに一意の暗号化ペイロードを生成</td></tr>
+</table>
+
+<ul>
+  <li>Wiz Research が6月1日、npm 名前空間 <code>@redhat-cloud-services</code> の少なくとも <strong>32 パッケージリリース</strong>に不正な改変が含まれていることを発見</li>
+  <li><strong>攻撃手法</strong>: Red Hat 従業員の GitHub アカウントを侵害 → 2波にわたり悪意ある orphan コミットを <code>RedHatInsights</code> リポジトリに push → GitHub Actions OIDC トークンを悪用して改変パッケージを npm に公開。有効な SLSA 来歴証明書付きで公開されたため、自動セキュリティチェックを回避</li>
+  <li><strong>窃取対象</strong>: GCP および Azure のクラウド ID（本バリアントで新たに追加）、GitHub トークン、SSH キー、CI/CD シークレット、npm トークン</li>
+  <li><strong>マルウェアの特徴</strong>: TeamPCP が公開した Mini Shai-Hulud の改変版（コードネーム「Miasma」）。感染ごとに一意の暗号化ペイロードを生成し、ハッシュベースの検出を困難化。Dune テーマがギリシャ神話テーマに置き換えられている</li>
+  <li><strong>Red Hat の対応</strong>: 即座に調査を開始し、影響を受けたパッケージを npm レジストリから削除。Red Hat によれば、侵害は内部開発ツールに限定され、顧客向け本番環境（console.redhat.com）への影響は確認されていない</li>
+  <li><strong>推奨アクション</strong>: 6月1日以降に影響パッケージをインストールした組織は、CI シークレット、クラウド認証情報、SSH キー、npm トークンをすべてローテーションすること</li>
+  <li><strong>npm サプライチェーン攻撃の連鎖</strong>: 前日報告の codexui-android（OpenAI トークン窃取）に続き、2日連続で npm エコシステムを標的とした大規模サプライチェーン攻撃が発覚。開発者コミュニティ全体での警戒が必要</li>
+  <li>🔗 <a href="https://www.wiz.io/blog/miasma-supply-chain-attack-targeting-redhat-npm-packages" target="_blank" rel="noopener noreferrer">Wiz Research (分析ブログ)</a> · <a href="https://thehackernews.com/2026/06/miasma-supply-chain-attack-compromises.html" target="_blank" rel="noopener noreferrer">The Hacker News</a> · <a href="https://www.bleepingcomputer.com/news/security/red-hat-npm-packages-compromised-to-steal-developer-credentials/" target="_blank" rel="noopener noreferrer">BleepingComputer</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
