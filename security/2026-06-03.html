@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-03 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-03 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-02 08:00 〜 2026-06-03 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Claude Code — v2.1.160 / v2.1.161: シェル設定ファイル書き込み時の安全確認・シークレット漏洩防止などセキュリティ強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化リリース（新規 CVE の公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-02（v2.1.160 / v2.1.161 同日リリース）</td></tr>
+</table>
+
+<p>Anthropic は6月2日、Claude Code のセキュリティ関連の改善を含む2つのバージョン（v2.1.160、v2.1.161）をリリースしました。</p>
+
+<h4>v2.1.160 — 安全確認プロンプトの追加</h4>
+<ul>
+  <li><strong>シェル起動ファイル書き込み時の確認追加</strong>: <code>~/.zshenv</code>、<code>~/.zlogin</code>、<code>~/.bash_login</code>、<code>~/.config/git/</code> への書き込み前にプロンプトを表示。これにより意図しないコマンド実行のリスクを防止</li>
+  <li><strong>ビルドツール設定ファイル書き込み時の確認追加</strong>: <code>acceptEdits</code> モードにおいて、コード実行権限を付与する設定ファイル（<code>.npmrc</code>、<code>.yarnrc*</code>、<code>bunfig.toml</code>、<code>.bazelrc</code>、<code>.pre-commit-config.yaml</code>、<code>.devcontainer/</code> など）への書き込み前に確認プロンプトを表示</li>
+  <li><strong>grep 実行後の Read 省略</strong>: 単一ファイルへの <code>grep</code>/<code>egrep</code>/<code>fgrep</code> 実行後は、ファイル内容を既読扱いとし Edit 前の Read 要件を満たすように改善</li>
+</ul>
+
+<h4>v2.1.161 — シークレット漏洩防止・各種修正</h4>
+<ul>
+  <li><strong><code>claude mcp</code> コマンドでのシークレット漏洩を修正</strong>: <code>list</code>/<code>get</code>/<code>add</code> で <code>${VAR}</code> 参照の展開を停止し、認証情報ヘッダーと URL シークレットをマスク</li>
+  <li><strong>管理設定ポリシーの修正</strong>: <code>forceLoginOrgUUID</code>/<code>forceLoginMethod</code> がサードパーティプロバイダーセッションを誤ってブロックする不具合を修正（v2.1.146 のリグレッション）</li>
+  <li><strong>OpenTelemetry ログイベントの欠落を修正</strong>: テレメトリ初期化前に発生したログイベントがサイレントにドロップされる問題を修正</li>
+  <li><strong>OTEL_RESOURCE_ATTRIBUTES</strong>: メトリクスデータポイントにラベルとして含まれるようになり、チームやリポジトリなどのカスタムディメンションで使用量をスライス可能に</li>
+  <li>その他多数のバグ修正（Windows フック、ワークツリー編集、ターミナルレンダリングパフォーマンス改善など）</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">CHANGELOG.md (GitHub)</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Django、Java、Spring Boot、AWS、Azure、GCP、OpenClaw に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🛳️ Carnival Corporation データ侵害 — 約600万人の顧客情報が流出</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発生日</strong></td><td>2026年4月14日（侵害発覚）、2026年6月2日（被害通知・公表）</td></tr>
+  <tr><td><strong>影響規模</strong></td><td>約 5,995,277 人（メイン州司法長官への届出）</td></tr>
+  <tr><td><strong>攻撃経路</strong></td><td>従業員アカウントへのソーシャルエンジニアリング → システム侵入 → ファイル窃取</td></tr>
+  <tr><td><strong>流出情報</strong></td><td>氏名、住所、生年月日、メールアドレス、電話番号、政府発行ID番号</td></tr>
+</table>
+
+<ul>
+  <li>クルーズ大手 Carnival Corporation が6月2日、約 <strong>600万人</strong>の顧客個人情報が流出したことを公表</li>
+  <li><strong>攻撃手法</strong>: ソーシャルエンジニアリングにより従業員アカウントを侵害 → システムにアクセスしファイルを窃取</li>
+  <li><strong>犯行声明</strong>: 恐喝グループ <strong>ShinyHunters</strong> が関与を主張。4月下旬に約870万件のレコードをリークサイトで公開</li>
+  <li><strong>HaveIBeenPwned の分析</strong>: Holland America の Mariner Society ロイヤルティプログラムに関連する約750万アカウントが影響を受けた可能性</li>
+  <li><strong>対応</strong>: 影響を受けた顧客に24ヶ月間の無料クレジットモニタリングサービスを提供</li>
+  <li>🔗 <a href="https://www.securityweek.com/carnival-data-breach-exposed-6-million-people/" target="_blank" rel="noopener noreferrer">SecurityWeek</a> · <a href="https://www.usatoday.com/story/travel/cruises/2026/06/01/carnival-data-breach-customer-data/90361396007/" target="_blank" rel="noopener noreferrer">USA Today</a></li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
