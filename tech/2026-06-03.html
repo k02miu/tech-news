@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-03 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-03 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-02 09:00 〜 2026-06-03 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.161 / v2.1.160</h2>
+
+<h3>📦 v2.1.161 (June 2, 2026)</h3>
+<p>テレメトリ・エージェント管理・並列実行・Linux クリップボード対応など多岐にわたる改良が行われました。</p>
+
+<h4>🔧 新機能・改善</h4>
+<ul>
+  <li><strong>OTEL リソース属性</strong>: <code>OTEL_RESOURCE_ATTRIBUTES</code> の値がメトリクスデータポイントのラベルとして含まれるようになり、チームやリポジトリなどのカスタムディメンションで使用量をスライス可能に</li>
+  <li><strong>claude agents 表示改善</strong>: ファンアウト時に <code>done/total</code> を表示、peek で最長実行中のアイテムを表示</li>
+  <li><strong>/mcp 改善</strong>: 一度もサインインしていない claude.ai コネクタを折りたたみ表示に</li>
+  <li><strong>並列ツール呼び出しの独立性</strong>: 同一バッチ内の Bash コマンドが失敗しても他ツールはキャンセルされず、各ツールが独立して結果を返すように</li>
+  <li><strong>Linux クリップボード強化</strong>: フルスクリーンモードで <code>wl-copy</code>/<code>xclip</code>/<code>xsel</code> 対応、クリップボードと PRIMARY selection の両方にコピー、ネイティブ選択キーのヒント表示修正</li>
+</ul>
+
+<h4>🐛 主な修正</h4>
+<ul>
+  <li><strong>Managed Settings 修正</strong>: <code>forceLoginOrgUUID</code>/<code>forceLoginMethod</code> がサードパーティプロバイダー（Bedrock, Vertex, Foundry, Mantle）セッションをブロックしていたリグレッションを修正（v2.1.146 での退行）</li>
+  <li><strong>stdout 破損修正</strong>: バックグラウンドサブエージェントの出力が <code>claude -p</code> の <code>--output-format text</code>/<code>json</code> の stdout を破損していた問題を修正</li>
+  <li><strong>OpenTelemetry ログ</strong>: テレメトリ初期化完了前に <code>user_prompt</code>, <code>api_request</code>, <code>tool_result</code>, <code>tool_decision</code> ログイベントが欠落していた問題を修正</li>
+  <li><strong>/effort ダイアログ修正</strong>: 「Reduce motion」設定が /effort ダイアログ、ワークフローアニメーション、プロンプトキーワードに反映されていなかった問題を修正</li>
+  <li><strong>Windows 修正</strong>: bash を明示的に呼び出すフックの失敗を修正、WSL でのクリップボード修正（PowerShell 相互運用）、IME 表示位置修正</li>
+  <li><strong>セッション復元修正</strong>: <code>--resume</code> で git worktree 外のディレクトリからセッションが表示されない問題を修正、完了済みサブエージェントが実行中表示のままになる競合を修正</li>
+  <li><strong>パフォーマンス</strong>: レイアウトエンジン JIT コンパイルの安定化、大規模ファイル書き込みのレンダリング改善</li>
+  <li><strong>[VSCode]</strong> ターミナル GPU アクセラレーション無効化または <code>/terminal-setup</code> 実行を提案するチップを追加</li>
+</ul>
+
+<h3>📦 v2.1.160 (June 2, 2026)</h3>
+
+<h4>🛡️ セーフティ機能追加</h4>
+<ul>
+  <li><strong>シェル起動ファイル保護</strong>: <code>.zshenv</code>, <code>.zlogin</code>, <code>.bash_login</code> および <code>~/.config/git/</code> への書き込み前にプロンプトを表示（意図しないコマンド実行を防止）</li>
+  <li><strong>ビルドツール設定ファイル保護</strong>: <code>acceptEdits</code> モードで <code>.npmrc</code>, <code>.yarnrc*</code>, <code>bunfig.toml</code>, <code>.bazelrc</code>, <code>.pre-commit-config.yaml</code>, <code>.devcontainer/</code> などコード実行権限を付与するファイルへの書き込み前にプロンプト表示</li>
+  <li><strong>edit 最適化</strong>: grep/egrep/fgrep の単一ファイル検索結果が read-before-edit チェックを満たすように（Read の二度手間を削減）</li>
+</ul>
+
+<h4>🐛 主な修正</h4>
+<ul>
+  <li><strong>バックグラウンドセッション安定性</strong>: 復元済み完了セッションがチャット履歴を失う問題、一晩でリタイア後に復帰したセッションが会話を失う問題、<code>claude --bg</code> のコールドスタート失敗を修正</li>
+  <li><strong>エージェント一覧のフリーズ修正</strong>: auto-updater が毎回再チェックすることで <code>claude agents</code> が数秒フリーズする問題を修正</li>
+  <li><strong>Windows CPU 高負荷時の応答性</strong>: ホストが高 CPU 負荷時の Esc・矢印キー・タイピング無反応を修正</li>
+  <li><strong>音声モード修正</strong>: プロジェクトディレクトリやブランチ名に非ASCII文字や特殊文字が含まれる場合の接続失敗を修正</li>
+  <li><strong>auto mode 改善</strong>: ルーティンアクションの推論を削減しレイテンシ改善、「could not evaluate this action」ブロックを低減</li>
+  <li><strong>バックグラウンドセッション終了改善</strong>: <code>claude rm</code>/<code>stop</code>、アイドル刈り取り時に SIGTERM → SIGKILL の順で子プロセスを終了（クリーンアップハンドラが実行されるように）</li>
+  <li><strong>その他</strong>: CJK IME 表示位置、vim モードの <code>p</code> ペースト位置、<code>file:///C:/...</code> リンクの Windows での破損、CJK 端末での出力マーカー表示の問題など多数の修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 2026年6月2日 大規模アップデート</h2>
+<p>6月2日、Azure 各サービスで多数の GA/Preview が発表されました。以下は本スタックに関連する主な項目です。</p>
+
+<h3>🔵 コンピューティング</h3>
+<ul>
+  <li><strong>Azure Functions Go サポート (Preview)</strong>: Azure Functions で Go 言語がプレビューサポート開始。関数アプリを Go で記述可能に</li>
+  <li><strong>Azure Container Linux (ACL) GA on AKS</strong>: AKS 上で Azure Container Linux が一般提供開始</li>
+  <li><strong>Azure Cobalt 200 Arm-based VM Preview</strong>: Dpsv7, Dplsv7, Epsv7, Mpsv4, Lpsv5 シリーズの Arm ベース VM がプレビュー</li>
+  <li><strong>Rolling updates in Flex Consumption GA</strong>: Azure Functions Flex Consumption プランでローリングアップデートが GA</li>
+</ul>
+
+<h3>🔵 API Management / AI Gateway</h3>
+<ul>
+  <li><strong>Unified Model API for multi-model AI (Preview)</strong>: 複数 AI モデルを統一的に扱う API Management の新機能</li>
+  <li><strong>New AI gateway capabilities in Azure API Management</strong>: AI ゲートウェイ機能の強化</li>
+  <li><strong>API Management Premium v2 / Standard v2 でワイルドカードカスタムホスト名サポート GA</strong></li>
+</ul>
+
+<h3>🔵 データベース</h3>
+<ul>
+  <li><strong>Agent kit for Azure Cosmos DB GA</strong>: エージェントアプリケーション構築キットが一般提供</li>
+  <li><strong>Azure Backup for Cosmos DB (Preview)</strong>: Cosmos DB のボールトバックアップ対応</li>
+</ul>
+
+<h3>🔵 統合・その他</h3>
+<ul>
+  <li><strong>Logic Apps Standard SDK for C#</strong>: C# で Logic Apps を作成可能に</li>
+  <li><strong>Azure Event Grid - MQTT v5 Subscription Identifier GA</strong></li>
+  <li><strong>Code-first observability for Foundry Agents in VS Code (Preview)</strong></li>
+  <li><strong>Dynamic threshold for Log search alerts GA</strong></li>
+</ul>
+
+<p>🔗 <a href="https://azure.microsoft.com/updates/" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 2026年6月2日 リリースノート</h2>
+
+<h3>🔧 Cloud SDK 571.0.0</h3>
+<ul>
+  <li>Windows PuTTY 0.83 へ更新、<code>gcloud compute scp --tunnel-through-iap</code> の Python 3.14 環境での極端な遅延を修正</li>
+  <li>AlloyDB インスタンスラベル操作（create/update）対応、BigLake Hive テーブル beta 昇格</li>
+  <li>Cloud Dataproc の Confidential Computing タイプ指定（SEV, SEV_SNP, TDX）対応</li>
+  <li>Cloud Run リージョナルエンドポイント対応（worker-pools, jobs executions tasks）</li>
+  <li>Cloud SQL Proxy 2.22.0 へ更新</li>
+</ul>
+
+<h3>🔧 その他サービス</h3>
+<ul>
+  <li><strong>Cloud Load Balancing</strong>: TLS ポスト量子鍵交換（post-quantum key exchange）サポート。2026年10月までオプトイン、2027年10月以降デフォルト有効化の3段階ロールアウト</li>
+  <li><strong>BigQuery</strong>: リモート関数でカスタムエンドポイントパス対応 GA。単一の Cloud Run サービスを複数の BigQuery リモート関数で再利用可能に</li>
+  <li><strong>Cloud Monitoring</strong>: カスタムダッシュボードの Histogram ウィジェット GA</li>
+  <li><strong>AlloyDB for PostgreSQL</strong>: リードプールインスタンスのオートスケーリングにクールダウン期間設定が可能に</li>
+  <li><strong>Datastream</strong>: Google Cloud ソースからの CDC データに無料枠（100 GiB/月/請求アカウント）を導入</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice"><strong>Next.js</strong>（6/2付の pre-release は Turbopack アナライザの細かい内部変更のみでユーザー向け変更なし）、<strong>React</strong>（6/1の FormData 修正以降新規リリースなし）、<strong>OpenClaw</strong>（6/1の Pre-release 以降新規リリースなし）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Python</strong>（3.14.5 が最新、新規パッチなし）、<strong>Django</strong>（6.0.6 が最新、新規リリースなし）、<strong>Java/JDK</strong>（JDK 27 EA Build 24 が5/29付）、<strong>Spring Boot</strong>（最新プレリリースは4/23付）、<strong>AWS</strong>（6/2に ElastiCache Valkey 永続化・RDS SQL Server BYOM 発表があったが、データベース特化のため本スタックとの直接関連性は低い）、<strong>Claude API/SDK</strong>（公式リリースノートページ未検出）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
