@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-04 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-04 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-03 08:00 〜 2026-06-04 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. HTTP/2 Bomb (CVE-2026-49975) — 主要Webサーバーに影響するリモートDoS脆弱性 <span class="badge-critical">Critical</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE ID</strong></td><td>CVE-2026-49975</td></tr>
+  <tr><td><strong>CVSS v3</strong></td><td>9.8 (Critical) — NVD 暫定スコア</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-03</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>NGINX, Apache HTTPD, Microsoft IIS, Envoy, Cloudflare Pingora（デフォルトHTTP/2設定）</td></tr>
+  <tr><td><strong>影響規模</strong></td><td>全世界 88万以上の Web サイトが潜在的に影響</td></tr>
+</table>
+
+<p>カリフォルニアのセキュリティ企業 Calif が6月3日、<strong>HTTP/2 Bomb</strong> と名付けられた新たなリモートDoS攻撃手法を公開しました。この攻撃は HTTP/2 のヘッダー圧縮方式 HPACK に対する圧縮爆弾（HPACK Bomb）と Slowloris 型の接続保持を連鎖させ、主要 Web サーバーのメモリを数秒で枯渇させます。</p>
+
+<h4>攻撃の仕組み</h4>
+<ul>
+  <li><strong>HPACK Bomb</strong>: ワイヤ上ではほぼ空のヘッダーが、サーバー側で1エントリごとに完全なメモリ割り当てを発生させる。従来のデコード済みサイズ制限をバイパス</li>
+  <li><strong>Slowloris 型ホールド</strong>: ゼロバイトのフロー制御ウィンドウを広告し、サーバーが確保したメモリを解放できないよう拘束</li>
+  <li>家庭用 100Mbps 回線からでも、脆弱なサーバーを数秒でダウンさせることが可能</li>
+  <li>Apache HTTPD / Envoy に対しては、単一クライアントから約20秒で 32GB のサーバーメモリを消費・保持可能</li>
+</ul>
+
+<h4>修正状況</h4>
+<ul>
+  <li><strong>NGINX</strong>: 1.29.8 以降にアップグレード（<code>max_headers</code> ディレクティブ追加、デフォルト 1000）。アップグレード不可の場合は <code>http2 off;</code> で HTTP/2 無効化</li>
+  <li><strong>Apache HTTPD</strong>: mod_http2 v2.0.41 で修正済み。アップグレード不可の場合は <code>Protocols http/1.1</code> で HTTP/2 無効化</li>
+  <li><strong>Microsoft IIS, Envoy, Cloudflare Pingora</strong>: 本稿執筆時点でパッチ未提供</li>
+</ul>
+
+<p>🔗 <a href="https://blog.calif.io/p/codex-discovered-a-hidden-http2-bomb" target="_blank" rel="noopener noreferrer">Calif 技術ブログ（一次情報）</a> · <a href="https://thehackernews.com/2026/06/new-http2-bomb-vulnerability-allows.html" target="_blank" rel="noopener noreferrer">The Hacker News</a> · <a href="https://www.securityweek.com/http-2-bomb-exploit-knocks-web-servers-offline-in-seconds/" target="_blank" rel="noopener noreferrer">SecurityWeek</a> · <a href="https://www.tenable.com/cve/CVE-2026-49975" target="_blank" rel="noopener noreferrer">Tenable CVE</a> · <a href="https://github.com/califio/publications/tree/main/MADBugs/http2-bomb" target="_blank" rel="noopener noreferrer">PoC (GitHub)</a></p>
+
+<hr>
+
+<h3>2. Django 6.0.6 / 5.2.15 — 5件の脆弱性を修正するセキュリティリリース <span class="badge-low">Low</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-03</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Django 6.0.6, Django 5.2.15</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Django main, 6.1 alpha, 6.0, 5.2</td></tr>
+</table>
+
+<p>Django チームは6月3日、5件のセキュリティ脆弱性を修正するリリースを公開しました。すべて深刻度「Low」ですが、キャッシュ関連のデータ漏洩リスクを含むため、早期のアップグレードが推奨されます。</p>
+
+<h4>修正された脆弱性</h4>
+<ul>
+  <li><strong>CVE-2026-6873</strong>: <code>get_signed_cookie()</code> の署名ソルト連結における名前空間衝突。異なる name/salt ペアが同一の連結文字列を生成した場合、署名されたCookieが意図しないコンテキストで受理される可能性</li>
+  <li><strong>CVE-2026-7666</strong>: SMTP バックエンドの STARTTLS ハンドシェイク失敗時に、暗号化されない状態でメールが送信される可能性（<code>EMAIL_USE_TLS</code> + <code>fail_silently=True</code> 時）</li>
+  <li><strong>CVE-2026-8404</strong>: <code>UpdateCacheMiddleware</code> が <code>Cache-Control: Private</code>（大文字混在）を正しく認識せず、プライベートデータがキャッシュされる可能性</li>
+  <li><strong>CVE-2026-35193</strong>: <code>Authorization</code> ヘッダー付きリクエストのレスポンスに <code>Vary: Authorization</code> が付与されず、キャッシュ汚染の可能性</li>
+  <li><strong>CVE-2026-48587</strong>: <code>Vary</code> ヘッダー値の先頭・末尾の空白が正規化されず、<code>Vary: *</code>（末尾スペースあり）がワイルドカードとして認識されない問題</li>
+</ul>
+
+<p>🔗 <a href="https://www.djangoproject.com/weblog/2026/jun/03/security-releases/" target="_blank" rel="noopener noreferrer">Django 公式ブログ（全CVE詳細・パッチリンク含む）</a></p>
+
+<hr>
+
+<h3>3. Claude Code v2.1.162 — WebFetch権限ルール修正・Windowsパーミッション修正など <span class="badge-medium">Security Fixes</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ関連バグ修正（新規CVEの公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-03</td></tr>
+</table>
+
+<ul>
+  <li><strong>WebFetch 権限ルールの修正</strong>: 組み込みの事前承認ドメインに対して明示的な <code>WebFetch(domain:...)</code> の deny/ask/allow ルールが正しく適用されない問題を修正。ユーザー定義ルールが事前承認より優先されるように</li>
+  <li><strong>Windows パーミッションルールの修正</strong>: バックスラッシュ表記（<code>~\\</code>、<code>\\\\server\\share</code>）や大文字小文字の差異があるパスのルールがマッチしない問題、および Read deny ルールが Glob/Grep 結果からファイルを隠さない問題を修正</li>
+  <li><strong>MCP タイムアウト設定の安全性向上</strong>: 1000ms未満の <code>timeout</code> 設定値が1秒のウォッチドッグとして扱われ全ツール呼び出しが中断される問題を修正（閾値未満は無視されるように）</li>
+  <li><strong>読み取り専用設定ディレクトリでの起動ハング修正</strong>: 設定ディレクトリが読み取り専用でもインメモリ設定で起動し、エラーを表示するように</li>
+  <li><strong>API 400 エラー修正</strong>: 絵文字を含む MCP サーバー説明文が切り詰め境界付近で low surrogate エラー（400）を引き起こす問題を修正</li>
+  <li>その他多数の安定性・UX改善（バックグラウンドセッション、エージェントビュー、クロスセッションメッセージングなど）</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">CHANGELOG.md (GitHub)</a></p>
+
+<hr>
+
+<h3>4. OpenClaw 2026.6.2 — プラグインインストールポリシー刷新・セキュリティ強化</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>プレリリース・セキュリティ強化（新規CVEの公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-03（プレリリース）</td></tr>
+</table>
+
+<ul>
+  <li><strong>プラグイン/スキルインストールの安全性向上</strong>: 旧来の危険コードスキャナー方式を廃止し、オペレーターインストールポリシー方式に移行。パッケージ、アーカイブ、ソース、アップロード、マーケットプレイス経由のインストールをカバー</li>
+  <li><strong>ポリシー・設定の堅牢化</strong>: 破損したシェルスナップショットの拒否、未サポートのポリシーキー拒否、安全でない exec 承認プリチェック環境の防御、不正なスクリプト制限の検出</li>
+  <li><strong>データハンドリング適合性チェックの追加</strong></li>
+  <li><strong>各種メッセージングプラットフォームの安全性向上</strong>: Telegram、Feishu、Discord、WhatsApp の重複トランスクリプトミラーや承認許可リストなどの改善</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Java / Spring Boot、AWS、Azure、GCP に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🇺🇸 CISA、Linuxカーネルのコンテナエスケープ脆弱性 CVE-2022-0492 を KEV カタログに追加（6月2日）</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE ID</strong></td><td>CVE-2022-0492</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.8 (High)</td></tr>
+  <tr><td><strong>対象</strong></td><td>Linux カーネル cgroups v1</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>実環境での悪用を確認（Kaspersky が報告）</td></tr>
+  <tr><td><strong>CISA 期限</strong></td><td>2026年6月5日までにパッチ適用（米国政府機関向け）</td></tr>
+</table>
+
+<p>米国 CISA は6月2日、Linux カーネルの cgroups v1 に存在する不適切な認証の脆弱性 CVE-2022-0492（CVSS 7.8）を Known Exploited Vulnerabilities カタログに追加しました。本脆弱性は約3年前に公開されたものですが、今週に入り <strong>コンテナエスケープ</strong>に実環境で悪用されていることが Kaspersky により報告されました。コンテナ環境（GKE、AWS ECS/EKS、Azure AKS など）を運用している組織は注意が必要です。</p>
+
+<p>🔗 <a href="https://www.securityweek.com/organizations-warned-of-exploited-linux-kernel-vulnerability/" target="_blank" rel="noopener noreferrer">SecurityWeek</a> · <a href="https://www.cisa.gov/news-events/alerts/2026/06/02/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA アラート</a> · <a href="https://securelist.com/container-attack-vectors/120010/" target="_blank" rel="noopener noreferrer">Kaspersky Securelist</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
