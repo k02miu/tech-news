@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 特別増刊号 — v2.1.150 〜 v2.1.162 全まとめ</title>
+<meta name="description" content="Claude Code v2.1.150 から v2.1.162 までの全12バージョンの変更履歴をカテゴリ別に詳報。Opus 4.8、Dynamic Workflows、Background Agents 大改良、セキュリティ強化など注目ポイントを網羅。">
+<meta property="og:title" content="Claude Code 特別増刊号 — v2.1.150 〜 v2.1.162">
+<meta property="og:description" content="Opus 4.8 & Dynamic Workflows / 全12バージョンまとめ 2026-05-24〜06-03">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .hero { text-align: center; padding: 2rem 0 1rem; }
+  .hero h1 { font-size: 2rem; line-height: 1.3; }
+  .hero .event-date { color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem; }
+  .toc { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; }
+  .toc h2 { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--accent); }
+  .toc ol { margin-left: 1.2rem; font-size: 0.95rem; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .highlight-box { background: var(--card-bg); border-left: 4px solid var(--accent); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .highlight-box strong { display: block; margin-bottom: 0.3rem; }
+  .tag { display: inline-block; background: var(--border); color: var(--text); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.4rem; }
+  .tag-accent { background: var(--accent); color: #fff; }
+  .tag-new { background: #16a34a; color: #fff; }
+  .tag-fix { background: #dc2626; color: #fff; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .mini-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .mini-card h4 { color: var(--accent); margin-bottom: 0.4rem; font-size: 0.95rem; }
+  .mini-card p { color: var(--muted); font-size: 0.85rem; }
+  .section-divider { border: 0; border-top: 2px solid var(--border); margin: 2rem 0; }
+  .version-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.5rem; font-size: 0.85rem; }
+  .version-table th, .version-table td { border: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+  .version-table th { background: var(--border); font-weight: 600; white-space: nowrap; }
+  .version-table td:first-child { white-space: nowrap; font-family: monospace; }
+  .version-table td:nth-child(2) { white-space: nowrap; }
+</style>
+</head>
+<body>
+<header>
+  <p class="breadcrumb"><a href="../">← Tech News 朝刊ポータル</a> / <a href="./">特別増刊号</a></p>
+  <div class="hero">
+    <h1>🤖 Claude Code 特別増刊号<br>v2.1.150 〜 v2.1.162 全まとめ</h1>
+    <p class="event-date">2026-05-24 〜 2026-06-03 (11日間) · 全12バージョン · <span class="tag tag-accent">特別増刊号</span></p>
+  </div>
+</header>
+
+<main>
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>📋 目次</h2>
+  <ol>
+    <li><a href="#versions">バージョン一覧 (タイムライン)</a></li>
+    <li><a href="#opus48">🚀 Opus 4.8 登場 + Dynamic Workflows</a></li>
+    <li><a href="#agents">🔧 Agent View &amp; Background Sessions 大改良</a></li>
+    <li><a href="#security">🛡️ セキュリティ・安全強化</a></li>
+    <li><a href="#ui">🎨 UI/UX 改善</a></li>
+    <li><a href="#plugins">🔌 プラグイン・ツール連携</a></li>
+    <li><a href="#windows">🖥️ Windows/WSL 改善</a></li>
+    <li><a href="#misc">📊 その他注目ポイント</a></li>
+  </ol>
+</nav>
+
+<!-- バージョン一覧 -->
+<article id="versions">
+  <h2>📅 1. バージョン一覧 (タイムライン)</h2>
+  <table class="version-table">
+    <tr><th>バージョン</th><th>リリース日</th><th>ハイライト</th></tr>
+    <tr><td>v2.1.150</td><td>2026-05-24</td><td>メモリリーク修正、Opus 4.6 Fast mode 1M コンテキスト対応、<code>CLAUDE_CODE_SIMPLE</code> 強化</td></tr>
+    <tr><td>v2.1.151</td><td>2026-05-26</td><td><code>claude remote-control</code> 追加、プラグイン管理強化、BashTool 高速化</td></tr>
+    <tr><td>v2.1.152</td><td>2026-05-27</td><td><code>/code-review --fix</code> 自動適用、coordinator-mode、<code>SessionStart</code> hook 強化</td></tr>
+    <tr><td>v2.1.153</td><td>2026-05-28</td><td><code>/model</code> 選択の永続化、メモリ使用量改善、Workflow trigger keyword</td></tr>
+    <tr><td><strong>v2.1.154</strong></td><td><strong>2026-05-28</strong></td><td><strong>🆕 Opus 4.8 / Dynamic Workflows / Fast mode 値下げ / Lean prompt デフォルト化</strong></td></tr>
+    <tr><td>v2.1.155</td><td><em>(スキップ)</em></td><td><em>npm 未公開</em></td></tr>
+    <tr><td>v2.1.156</td><td>2026-05-29</td><td>Opus 4.8 thinking blocks 修正 API エラー対策</td></tr>
+    <tr><td>v2.1.157</td><td>2026-05-29</td><td>Plugin 自動ロード、30+ バグ修正（最多項目）</td></tr>
+    <tr><td>v2.1.158</td><td>2026-05-30</td><td>Auto mode が Bedrock/Vertex/Foundry 対応</td></tr>
+    <tr><td>v2.1.159</td><td>2026-05-31</td><td>内部インフラ改善のみ</td></tr>
+    <tr><td>v2.1.160</td><td>2026-06-02</td><td>trigger keyword 変更 <code>workflow</code>→<code>ultracode</code>、シェル起動ファイル書き込み前確認</td></tr>
+    <tr><td>v2.1.161</td><td>2026-06-02</td><td>OTEL カスタムラベル、並列ツール失敗の独立性、シークレット出力修正</td></tr>
+    <tr><td>v2.1.162</td><td>2026-06-03</td><td><code>waitingFor</code> JSON 出力、Grep/Glob ツール名対応、起動UI整理</td></tr>
+  </table>
+</article>
+
+<hr class="section-divider">
+
+<!-- 2. Opus 4.8 -->
+<article id="opus48">
+  <h2>🚀 2. Opus 4.8 登場 + Dynamic Workflows</h2>
+  <p>今回の最大の目玉。v2.1.154 (5/28) で発表され、後続バージョンで安定化が進んだ。</p>
+
+  <div class="highlight-box">
+    <strong>🧠 Claude Opus 4.8 — デフォルト high effort · /effort xhigh で最難タスクに対応</strong>
+    全モデルに Lean system prompt がデフォルト適用。Fast mode は標準の 2x コストで 2.5x 速度に。
+  </div>
+
+  <h3>Dynamic Workflows <span class="tag tag-new">NEW</span></h3>
+  <ul>
+    <li>数十〜数百のエージェントをバックグラウンドで編成し、大規模タスクを自律実行</li>
+    <li><code>/workflows</code> で実行状況を確認可能</li>
+    <li>trigger キーワードは v2.1.160 で <code>workflow</code> → <code>ultracode</code> に変更（プロンプト内の自然な "workflow" が誤発動するのを防止）</li>
+    <li><code>/config</code> に "Workflow keyword trigger" 設定を追加（誤発動オフ可能）</li>
+    <li>Backspace でワークフローリクエストをキャンセル可能</li>
+    <li><code>EnterWorktree</code> で Worktree 間のスイッチが可能に [v2.1.157]</li>
+  </ul>
+
+  <h3>Auto Mode 拡大</h3>
+  <ul>
+    <li>Bedrock / Vertex / Foundry で Opus 4.7 / 4.8 の Auto mode が利用可能に [v2.1.158]</li>
+    <li><code>CLAUDE_CODE_ENABLE_AUTO_MODE=1</code> でオプトイン</li>
+    <li>データ流出検出（特にリポジトリ内容の一括転送）を強化 [v2.1.154]</li>
+    <li>分類器のレイテンシ改善、"could not evaluate" ブロックを低減 [v2.1.160]</li>
+  </ul>
+
+  <h3>Fast mode 変更</h3>
+  <ul>
+    <li><code>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE</code> は非推奨→v2.1.160 で削除</li>
+    <li>Opus 4.6 Fast mode を使うには <code>/model claude-opus-4-6[1m]</code> で切り替え→ <code>/fast on</code> [v2.1.154]</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 3. Agent View & Background Sessions -->
+<article id="agents">
+  <h2>🔧 3. Agent View &amp; Background Sessions 大改良</h2>
+  <p>全12バージョンにわたって継続的に改良。特に v2.1.160 以降に大幅な安定化が進んだ。</p>
+
+  <h3>新機能</h3>
+  <ul>
+    <li><code>claude agents --json</code> に <code>waitingFor</code> フィールド追加（何で待ち状態かを表示）[v2.1.162]</li>
+    <li>行に <code>done/total</code> 進捗表示、peek で最長実行アイテム表示 [v2.1.161]</li>
+    <li><code>! &lt;command&gt;</code> でシェルコマンドをバックグラウンドセッションとして起動 [v2.1.154]</li>
+    <li><code>←←</code> での agents view 起動が Bedrock/Vertex/Foundry/テレメトリ無効時も動作 [v2.1.154]</li>
+    <li><code>/logout</code> がサインアウトとして動作（バックグラウンドセッションに送られない）[v2.1.154]</li>
+    <li><code>settings.json</code> の <code>agent</code> フィールドが dispatched セッションで反映 [v2.1.157]</li>
+  </ul>
+
+  <h3>安定性修正</h3>
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>🔄 セッション復元</h4>
+      <p>完了セッション復元時の履歴消失・プロンプト再実行を修正 [160] / overnight retire 後の復元 [160]</p>
+    </div>
+    <div class="mini-card">
+      <h4>🔌 接続</h4>
+      <p><code>claude --bg</code> のソケット消失エラー修正 [160] / 起動中セッションへの 5秒ストール修正 [162]</p>
+    </div>
+    <div class="mini-card">
+      <h4>🗑️ クリーンアップ</h4>
+      <p>終了済みセッションが完了リストに残留する問題 [157/160] / Worktree 孤児化防止 [157] / idle サブエージェント [157]</p>
+    </div>
+    <div class="mini-card">
+      <h4>⏱️ 状態管理</h4>
+      <p>スリープ復帰後の日付不整合 [157] / pinned セッションの毎分リスポーン [154] / ブロック状態からの復帰 [154]</p>
+    </div>
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- 4. Security -->
+<article id="security">
+  <h2>🛡️ 4. セキュリティ・安全強化</h2>
+
+  <h3>ファイル書き込み前の確認プロンプト <span class="tag tag-new">NEW [v2.1.160]</span></h3>
+  <ul>
+    <li><strong>シェル起動ファイル</strong>: <code>.zshenv</code>, <code>.zlogin</code>, <code>.bash_login</code> 等への書き込み前に確認</li>
+    <li><strong>ビルドツール設定</strong>: <code>.npmrc</code>, <code>.yarnrc*</code>, <code>bunfig.toml</code>, <code>.bazelrc</code>, <code>.pre-commit-config.yaml</code>, <code>.devcontainer/</code> 等</li>
+    <li><code>acceptEdits</code> モード時もこれらのファイルは要確認</li>
+  </ul>
+
+  <h3>危険パス判定</h3>
+  <ul>
+    <li><code>rm -rf $HOME</code> で <code>HOME</code> に末尾スラッシュがある場合のブロック漏れ修正 [v2.1.154]</li>
+  </ul>
+
+  <h3>シークレット管理 <span class="tag tag-fix">FIX [v2.1.161]</span></h3>
+  <ul>
+    <li><code>claude mcp list/get/add</code> が <code>${VAR}</code> 展開・認証ヘッダーを端末に平文出力していた問題を修正</li>
+  </ul>
+
+  <h3>権限・サンドボックス</h3>
+  <ul>
+    <li>Auto/bypass-permissions モード時の sandbox ネットワーク権限プロンプトが誤表示される問題 [v2.1.157]</li>
+    <li>WebFetch の明示的 deny/ask/allow ルールがビルトインの事前承認ドメインより優先されるよう修正 [v2.1.162]</li>
+    <li>Worktree 管理: エージェント終了時に worktree ロック解除 [v2.1.157]</li>
+    <li>バックグラウンドセッションの worktree 分離ガードバイパス修正 [v2.1.154]</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 5. UI/UX -->
+<article id="ui">
+  <h2>🎨 5. UI/UX 改善</h2>
+
+  <h3>起動体験の整理 <span class="tag tag-accent">v2.1.162 中心</span></h3>
+  <ul>
+    <li>起動時の通知を severity 別にグループ化、セッション情報とアナウンスを 1行に統合</li>
+    <li>起動警告を短く明確に、具体的な修正方法を併記</li>
+    <li>Launch-prompt 警告を入力欄下にピン留め（スクロールで消えない）</li>
+    <li>失敗ターンをコンパクトな警告行に（赤い複数行エラーブロックから変更）</li>
+    <li>削除された起動バナー: 「Claude in Chrome enabled」「marketplace installed」「bash commands will be sandboxed」「/ide for …」</li>
+  </ul>
+
+  <h3>入力・操作</h3>
+  <ul>
+    <li>スラッシュコマンドのオートコンプリート: クリックで即実行→プロンプトに入力されるように変更 [v2.1.162]</li>
+    <li>Remote Control が永続フッターピル表示に（起動時メッセージから変更）[v2.1.162]</li>
+    <li><code>/effort</code> ラベル: 「Speed」→「Faster」/ 「Intelligence」→「Smarter」[v2.1.154]</li>
+    <li><code>/effort</code> の選択が新規セッションのデフォルトになることを確認表示 [v2.1.162]</li>
+    <li><code>/model</code> 選択が新規セッションのデフォルトとして保存されるように [v2.1.153]</li>
+    <li>Claude が不必要な多肢選択質問を抑制 [v2.1.154]</li>
+    <li>Feature of the Week のクレジット表示が通知エリアに移動 [v2.1.157]</li>
+  </ul>
+
+  <h3>表示修正</h3>
+  <ul>
+    <li>CJK IME の入力位置が画面左下に飛ぶバグ修正 [v2.1.160]</li>
+    <li><code>/effort</code> ダイアログ等が「Reduce motion」設定を尊重 [v2.1.161]</li>
+    <li>フルスクリーンモードの markdown マーカー（バッククォート等）が生テキストで表示される問題 [v2.1.157]</li>
+    <li>テーマとターミナル背景が合わない場合の highlight 行の可読性修正 [v2.1.154]</li>
+    <li><code>/model</code> ピッカーの「Newer version available」誤表示修正 [v2.1.157]</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 6. Plugins -->
+<article id="plugins">
+  <h2>🔌 6. プラグイン・ツール連携</h2>
+
+  <h3>プラグイン管理の大幅改善</h3>
+  <ul>
+    <li><code>.claude/skills</code> 内のプラグインがマーケットプレイス不要で自動ロード [v2.1.157]</li>
+    <li><code>claude plugin init &lt;name&gt;</code> でプラグイン雛形を生成 [v2.1.157]</li>
+    <li><code>/plugin</code> のサブコマンド・インストール済みプラグイン名のオートコンプリート [v2.1.157]</li>
+    <li>プラグインが <code>defaultEnabled: false</code> を宣言可能（明示的有効化が必要）[v2.1.154]</li>
+    <li><code>/plugin</code> Discover タブに「このディレクトリ向け推奨」アノテーション [v2.1.154]</li>
+    <li>Git プラグインソースの <code>skipLfs</code> オプション追加 [v2.1.153]</li>
+    <li><code>pluginSuggestionMarketplaces</code> managed setting 追加 [v2.1.152]</li>
+  </ul>
+
+  <h3>MCP / ツール修正</h3>
+  <ul>
+    <li>MCP per-server <code>timeout</code> が 1000ms 未満で全ツール呼び出しが中断されていたバグ [v2.1.162]</li>
+    <li>LSP <code>workspaceSymbol</code> が結果を返さない問題（<code>query</code> パラメータ追加）[v2.1.162]</li>
+    <li><code>claude mcp list/get</code> で未承認 <code>.mcp.json</code> サーバーが「⏸ Pending approval」と表示 [v2.1.154]</li>
+    <li>stdio MCP サーバーに <code>CLAUDE_CODE_SESSION_ID</code> と <code>CLAUDECODE=1</code> 環境変数を渡す [v2.1.154]</li>
+    <li><code>/mcp reconnect</code> の存在しないサーバー名指定時のフリーズ修正 [v2.1.150]</li>
+    <li><code>/reload-skills</code> コマンド追加 [v2.1.152]</li>
+  </ul>
+
+  <h3>ツール連携</h3>
+  <ul>
+    <li>Claude in Chrome: 複数ブラウザ接続時の選択機能（<code>/chrome</code> → 「Select browser…」）[v2.1.154]</li>
+    <li>Streaming tool execution が常時有効化（テレメトリ無効/Bedrock/Vertex/Foundry でも）[v2.1.154]</li>
+    <li>フルスクリーンモードの Linux クリップボード対応（wl-copy/xclip/xsel）[v2.1.161]</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 7. Windows/WSL -->
+<article id="windows">
+  <h2>🖥️ 7. Windows/WSL 改善</h2>
+  <p>Windows 環境向けの修正が多数積み重ねられた。特に WSL のクリップボードと画像操作が大きく改善。</p>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>🔐 権限マッチング [162]</h4>
+      <p>バックスラッシュ (<code>~\\</code>) や大文字小文字のパスの不一致、Read deny ルールが Glob/Grep 結果に反映されない問題を修正</p>
+    </div>
+    <div class="mini-card">
+      <h4>📋 クリップボード [160/157]</h4>
+      <p>WSL: PowerShell interop 経由でクリップボード対応 / 画像貼り付け (alt+v)・Win11 スクリーンショット・Explorer からのドラッグ対応</p>
+    </div>
+    <div class="mini-card">
+      <h4>📁 ファイル操作 [160]</h4>
+      <p><code>claude rm</code> 後もディレクトリが削除できない問題 / <code>file:///C:/...</code> リンクが壊れる問題を修正</p>
+    </div>
+    <div class="mini-card">
+      <h4>⌨️ 入力 [160]</h4>
+      <p>高負荷時の Esc/矢印キー/タイピング無反応 / バックグラウンドセッションの端末同期出力マーカーが tmux 等でレンダリングアーティファクトに</p>
+    </div>
+  </div>
+</article>
+
+<hr class="section-divider">
+
+<!-- 8. Misc -->
+<article id="misc">
+  <h2>📊 8. その他注目ポイント</h2>
+
+  <h3>開発者体験</h3>
+  <ul>
+    <li><code>OTEL_RESOURCE_ATTRIBUTES</code> がメトリクスデータポイントのラベルとして利用可能に（チームやリポジトリでスライス可能）[v2.1.161]</li>
+    <li>並列ツール呼び出し: Bash の失敗が他のバッチ内呼び出しをキャンセルしなくなった [v2.1.161]</li>
+    <li><code>grep</code> でファイルを閲覧すれば Edit 前の Read が不要に [v2.1.160]</li>
+    <li><code>/code-review --fix</code> が検出結果を自動適用 [v2.1.152]</li>
+    <li><code>/simplify</code> が cleanup-only review に特化（再利用・簡略化・効率・高度）[v2.1.154]</li>
+    <li><code>SessionStart</code> hook が <code>reloadSkills: true</code> と <code>sessionTitle</code> を返せるように [v2.1.152]</li>
+    <li><code>MessageDisplay</code> hook イベント追加 [v2.1.152]</li>
+    <li>coordinator-mode 指示（ソフトウェアエンジニアリング作業の委任・合成・ライフサイクル管理）[v2.1.152]</li>
+    <li><code>COLUMNS</code> / <code>LINES</code> 環境変数が status line コマンドに渡されるように [v2.1.153]</li>
+  </ul>
+
+  <h3>パフォーマンス</h3>
+  <ul>
+    <li>端末レンダリングエンジンの JIT コンパイルプロファイル安定化 [v2.1.161]</li>
+    <li>大規模ファイル書き込みのレンダリングパフォーマンス改善 [v2.1.161]</li>
+    <li>長い会話・復元セッションの冗長なメッセージ再レンダリングを排除 [v2.1.157]</li>
+    <li>多数の保存セッション復元時のメモリ数GB消費問題修正 [v2.1.153]</li>
+    <li>BashTool: シェルスナップショット利用可能時にログインシェルをスキップ [v2.1.151]</li>
+    <li>ツール結果のディスク永続化閾値を 100K→50K 文字に縮小 [v2.1.151]</li>
+  </ul>
+
+  <h3>その他修正</h3>
+  <ul>
+    <li>破損画像（ゼロバイト等）がリクエストをクラッシュさせずテキストプレースホルダーに [v2.1.157]</li>
+    <li>1M コンテキストモデルの「out of context」早期発生バグ [v2.1.154]</li>
+    <li>バックグラウンドサブエージェント出力が <code>claude -p</code> stdout を破壊する問題 [v2.1.161]</li>
+    <li><code>/autofix-pr</code> が worktree 内で「cannot run on default branch」と誤報告 [v2.1.161]</li>
+    <li>Windsurf → Devin Desktop へのリブランドに対応（<code>/ide</code> メニュー等）[v2.1.162]</li>
+    <li>VSCode 統合端末の文字化け防止のため <code>/terminal-setup</code> が GPU アクセラレーション無効化を提案 [v2.1.161]</li>
+  </ul>
+</article>
+
+<hr class="section-divider">
+
+<!-- 総括 -->
+<article>
+  <h2>📝 総括</h2>
+  <p><strong>11日間で12バージョン</strong>（v2.1.155 はスキップ）というハイペースなリリースサイクル。最大のハイライトは <strong>v2.1.154 の Opus 4.8 + Dynamic Workflows</strong>。Claude Code が単なるコーディングアシスタントから、大規模タスクを自律実行できる「エージェントプラットフォーム」へと進化する転換点となった。</p>
+  <p>v2.1.157 以降は安定化フェーズで、Background Sessions の信頼性向上に多くの工数が割かれた。Windows/WSL 対応も着実に改善。セキュリティ面では、シェル起動ファイルやビルドツール設定への書き込み前確認が導入され、より安全に。</p>
+</article>
+
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Claude Code 公式 Changelog: <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">code.claude.com/docs/en/changelog</a></p>
+</footer>
+</body>
+</html>
