@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-05 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-05 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-04 08:00 〜 2026-06-05 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Claude Code v2.1.163 — 管理バージョン強制・TMPDIRサンドボックス回帰修正・権限ルール修正 <span class="badge-medium">Security Fixes</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ関連バグ修正（新規CVEの公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04</td></tr>
+</table>
+
+<ul>
+  <li><strong>管理バージョン強制</strong>: <code>requiredMinimumVersion</code> / <code>requiredMaximumVersion</code> 管理設定を追加。承認されたバージョン範囲外では起動を拒否し、ユーザーを承認済みバージョンに誘導</li>
+  <li><strong>TMPDIR サンドボックス回帰修正</strong>: v2.1.154 で導入されたリグレッションにより、全 Bash コマンドに <code>$TMPDIR</code> が <code>/tmp/claude-{uid}</code> に上書きされていた問題を修正。サンドボックス化されたコマンドのみに分離を適用するよう修正（bazel や EDR 保護下の Go ワークフローに影響していた）</li>
+  <li><strong>$HOME 経由の Deny ルールバイパス修正</strong>: <code>Read(~/Desktop/**)</code> のようなホームディレクトリパスの deny ルールが <code>$HOME</code> 変数経由で参照される Bash コマンドをブロックしていなかった問題を修正</li>
+  <li><strong>組織管理権限ルールの適用タイミング修正</strong>: 起動時の managed settings 取得が設定ディレクトリ作成中に完了した場合、組織管理の権限ルールがセッション全体に適用されない問題を修正</li>
+  <li><strong>Stop/SubagentStop フック改善</strong>: フックが <code>hookSpecificOutput.additionalContext</code> を返せるようになり、ターンを継続しつつフィードバックを提供可能に</li>
+  <li>その他: <code>--tools</code> で Grep/Glob の明示的指定が機能するよう修正（以前は無視されていた）、読み取り専用設定ディレクトリでの起動ハング修正、MCP タイムアウト設定の安全性向上、Windows パーミッションルールの修正（バックスラッシュ・大文字小文字対応）、WebFetch 権限ルールの修正など</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h3>2. OpenClaw 2026.6.3 — セキュリティ・安定性の継続的改善</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化・バグ修正（新規CVEの公表ではない）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04</td></tr>
+</table>
+
+<ul>
+  <li><strong>セッション書き込みロック解放の回復力向上</strong>: プロンプトリリースフェンス読み取り失敗時のセッション書き込みロック解放を修正</li>
+  <li><strong>Codex アプリサーバー起動の堅牢化</strong>: 放棄された Codex アプリサーバー起動プロセスを適切にクリーンアップ</li>
+  <li><strong>ストリーム・ツー・ペアレント ACP スポーンの登録修正</strong></li>
+  <li><strong>カスタムプロバイダー・ランタイムのファンアウト修正</strong></li>
+  <li><strong>Docker / Testbox / リリース検証レーンのネットワークコール・クリーンアップ改善</strong>: ハング防止のための境界設定</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Django、Java / JDK、Spring Boot、AWS、Azure、GCP に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔓 VS Code (github.dev) GitHub トークン窃取ゼロデイ — 研究者が MSRC をバイパスして完全公開 (6月4日)</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>ゼロデイ脆弱性（パッチ未提供）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>github.dev（ブラウザ版 VS Code）利用者全般</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>Critical（実質） — GitHub OAuth トークンの窃取により全プライベートリポジトリへの read/write アクセスが可能</td></tr>
+</table>
+
+<p>セキュリティ研究者 Ammar Askar が、github.dev に存在する深刻なゼロデイ脆弱性を MSRC（Microsoft Security Response Center）を経由せず一般公開しました。過去の MSRC 対応への不信（脆弱性を無断修正・クレジットなし・セキュリティ影響なしと分類）が理由とされています。</p>
+
+<h4>攻撃の仕組み</h4>
+<ul>
+  <li>攻撃者が細工したリポジトリの <code>.vscode/extensions.json</code> に悪意ある拡張機能を指定</li>
+  <li>被害者が github.dev 上でこのリポジトリを開くと、<strong>悪意ある拡張機能がユーザー確認なしで自動インストール</strong>される（Jupyter Notebook に隠した HTML がキーボードショートカットを自動実行し、インストール承認ダイアログをバイパス）</li>
+  <li>インストールされた拡張機能が GitHub OAuth トークンを窃取 — このトークンは<strong>リポジトリ単位ではなく全プライベートリポジトリ</strong>への read/write 権限を持つ</li>
+</ul>
+
+<h4>影響</h4>
+<p>github.dev を日常的に使用する Web / Next.js / React 開発者に広く影響。攻撃の成立には被害者がリンクをクリックするだけで十分であり、極めて危険な攻撃ベクトルです。</p>
+
+<p>本稿執筆時点で GitHub / Microsoft からのパッチは提供されていません。開発者は github.dev 経由での信頼できないリポジトリの閲覧を避け、通常のローカル VS Code を使用することが推奨されます。</p>
+
+<p>🔗 <a href="https://blog.ammaraskar.com/github-token-stealing/" target="_blank" rel="noopener noreferrer">Ammar Askar 技術ブログ（一次情報・PoC）</a> · <a href="https://securityaffairs.com/193128/security/researcher-drops-a-new-vs-code-zero-day-after-losing-trust-in-microsofts-disclosure-process.html" target="_blank" rel="noopener noreferrer">SecurityAffairs</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by OpenClaw cron</p>
+</footer>
+</body>
+</html>
