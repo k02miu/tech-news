@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-06 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-06 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-05 08:00 〜 2026-06-06 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Netty incubator codec-ohttp に Critical な OOB メモリアクセス脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48040</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.1 (Critical)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>netty-incubator-codec-ohttp &lt; 0.0.22.Final</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04 (NVD 公開: 2026-06-05)</td></tr>
+</table>
+
+<ul>
+  <li>Oblivious HTTP (RFC 9458) 実装ライブラリ <code>netty-incubator-codec-ohttp</code> において、BoringSSL の HPKE C ライブラリを JNI 経由で使用する際にネイティブメモリアドレスを不適切に導出</li>
+  <li><code>sun.misc.Unsafe</code> が利用不可の環境（<code>-Dio.netty.noUnsafe=true</code>、SecurityManager 制限下、非 HotSpot JVM など）で PooledDirectByteBuf のフォールバックパスが発動</li>
+  <li>未認証のネットワーク攻撃者が細工した OHTTP リクエストを送信することで、同じ Netty バッファアリーナを共有する他の接続のメモリを破壊・隣接プールバッファの内容を開示可能</li>
+  <li>情報漏洩により、漏洩データを抽出するための暗号鍵が攻撃者に渡るため、全接続の機密性と完全性が侵害される</li>
+  <li>〈Java / Spring Boot スタックに影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/netty/netty-incubator-codec-ohttp/security/advisories/GHSA-32hf-8jw3-v4qq" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-32hf-8jw3-v4qq</a></p>
+
+<h3>2. Netty incubator codec-ohttp にサイレントゼロ鍵脆弱性 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-41207</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>5.3 (Medium)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>netty-incubator-codec-ohttp &lt; 0.0.21.Final</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04 (NVD 公開: 2026-06-05)</td></tr>
+</table>
+
+<ul>
+  <li><code>HKDF_expand</code> が失敗時に非 NULL を返し、結果の byte[] がゼロで埋められる。成功/失敗の区別がつかないため、サイレントに全ゼロの AEAD 鍵が生成される</li>
+  <li><code>EVP_HPKE_CTX_export</code> 失敗時も同様に空のゼロ埋め byte[] が返り、攻撃者が予測可能な決定論的 AEAD 鍵が生成される</li>
+  <li>同じく Java / Spring Boot スタックに影響</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/netty/netty-incubator-codec-ohttp/security/advisories/GHSA-f659-372h-6x3x" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-f659-372h-6x3x</a></p>
+
+<h3>3. quic-go HTTP/3 実装に QPACK トレイラーベースの DoS 脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-40898</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.5 (High)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>quic-go &lt; 0.59.1</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04 (NVD 公開: 2026-06-05)</td></tr>
+</table>
+
+<ul>
+  <li>quic-go の HTTP/3 実装において、QPACK 圧縮された HEADERS フレームが巨大なトレイラーフィールドセクションに展開される問題</li>
+  <li>エンコードサイズのみ制限され、デコード後のフィールドセクションサイズに制限がないため、<code>http.Header</code> のメモリ割り当てが爆発的に増加</li>
+  <li>悪意のあるピアがサーバー/クライアント双方にメモリ枯渇 DoS 攻撃を仕掛けることが可能</li>
+  <li>CVE-2025-64702（HTTP ヘッダー版）に類似 — 本件は HTTP トレイラーを攻撃ベクトルとする点が異なる</li>
+  <li>〈Go / ネットワークスタックに影響。HTTP/3 を使用するアプリケーション全体に関係〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/quic-go/quic-go/security/advisories/GHSA-vvgj-x9jq-8cj9" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-vvgj-x9jq-8cj9</a></p>
+
+<h3>4. Google Chrome 149.0.7827.53 — 429 件のセキュリティ修正を含む安定版アップデート <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-10891 他 428 件</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>Critical 多数（GFX Use-after-free 等）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Google Chrome (Linux / Windows / macOS) &lt; 149.0.7827.53</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04 (Chrome Releases Blog)</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-10891</strong>: Linux 版 Chrome の GFX コンポーネントに Use-after-free Critical 脆弱性。細工された HTML ページによりヒープ破壊を引き起こす可能性</li>
+  <li>その他 428 件のセキュリティ修正を含む大規模アップデート。内訳は Critical 20+件、High 90+件、Medium 300+件</li>
+  <li>主要な Critical 修正には ANGLE (OOB read/write)、Network (UaF)、Chromecast (UaF)、FileSystem (UaF)、GPU (OOB write)、Printing (UaF)、Ozone (UaF)、Passwords (UaF) など多数</li>
+  <li>〈Web スタックに広く影響 — すべての Chrome / Chromium ベースブラウザユーザーは至急更新推奨〉</li>
+</ul>
+
+<p>🔗 <a href="https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop.html" target="_blank" rel="noopener noreferrer">Chrome Releases Blog</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Django、Spring Boot（コアフレームワーク）、AWS、Azure、GCP に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。Claude Code のセキュリティ関連アップデートの新規リリースも確認されていません。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔓 Silent Ransom Group、Fast Flux インフラストラクチャで米法律事務所・企業を標的に — FBI 警告</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>ランサムウェア / アクティブな攻撃キャンペーン</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05（Security Affairs）</td></tr>
+  <tr><td><strong>標的</strong></td><td>米国法律事務所および企業</td></tr>
+</table>
+
+<ul>
+  <li>Resecurity が Silent Ransom Group の Fast Flux インフラストラクチャを暴露。攻撃者は絶えず変化する IP アドレスとドメインを使用して検知を回避</li>
+  <li>FBI は米国の法律事務所や企業を標的にした進行中の攻撃について警告を発令</li>
+  <li>本グループは二重恐喝（データ暗号化 + 公開脅迫）を用いて身代金を要求</li>
+</ul>
+
+<p>🔗 <a href="https://securityaffairs.com/" target="_blank" rel="noopener noreferrer">Security Affairs</a></p>
+
+<h3>🔓 PCPJack による 230 ノードのクラウドメールリレーネットワーク発覚</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>スパム / ボットネット / クラウドインフラ悪用</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05（Security Affairs）</td></tr>
+</table>
+
+<ul>
+  <li>研究者が「PCPJack」として追跡される脅威アクターの 230 ノードからなるクラウドベースのメールリレーネットワークを発見</li>
+  <li>アクターが誤ってツール、ログ、C2 ファイルをオンラインで露出させたことにより発覚</li>
+  <li>230 のクラウドインスタンスを悪用したスパム・フィッシング展開インフラ</li>
+  <li>〈AWS / Azure / GCP のクラウドインスタンスが悪用される可能性がある点でクラウドスタック全般に関係〉</li>
+</ul>
+
+<h3>🔓 SafeBreach、WhatsApp 通知経由で Gemini AI を操作する攻撃手法を実証</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>AI セキュリティ / ジェイルブレイク</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05（Security Affairs）</td></tr>
+</table>
+
+<ul>
+  <li>SafeBreach Labs が、WhatsApp 通知を悪用して Google Gemini を騙し、攻撃者の指示に従わせる手法を実証</li>
+  <li>隠された外国語テキストを使用して Google の防御機構をバイパス</li>
+  <li>スマートホームデバイスの制御取得にまで至ることが可能</li>
+  <li>AI アシスタントの通知チャネルを介した間接的プロンプトインジェクション攻撃の新たな事例</li>
+</ul>
+
+<h3>🔓 Cisco SD-WAN Manager に root 権限取得の脆弱性 CVE-2026-20245</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20245</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.8 (High)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Cisco Catalyst SD-WAN Manager（旧 SD-WAN vManage）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04</td></tr>
+</table>
+
+<ul>
+  <li>ファイルアップロード時の入力検証不備により、認証済みローカル攻撃者が細工したファイルをアップロードして root 権限で任意のコマンドを実行可能</li>
+  <li>Cisco は 2026 年 5 月 14 日公開の修正済みソフトウェアへのアップグレードを推奨</li>
+  <li>限定的ながら、本脆弱性の悪用によりエッジデバイスの設定変更が行われた事例が確認されている</li>
+  <li>〈ネットワークインフラ・クラウドネットワークスタックに関係〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-20245" target="_blank" rel="noopener noreferrer">NVD Detail</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+
+</body>
+</html>
