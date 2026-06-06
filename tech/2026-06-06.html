@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-06 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-06 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-05 09:00 〜 2026-06-06 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.167 / v2.1.166 / v2.1.165</h2>
+<p>2026年6月5日〜6日にかけて、Claude Code のメンテナンスリリース v2.1.165、 v2.1.166、および v2.1.167 がリリースされました。v2.1.166 には複数の新機能と修正が含まれています。</p>
+
+<h3>🔧 v2.1.166 新機能・改善</h3>
+<ul>
+  <li><strong>fallbackModel 設定</strong>: プライマリモデルが過負荷または利用不可の場合に試行される最大3つのフォールバックモデルを設定可能に。<code>--fallback-model</code> がインタラクティブセッションでも適用</li>
+  <li><strong>Deny ルールの glob パターン対応</strong>: ツール名の位置で <code>"*"</code> ですべてのツールを拒否可能に。Allow ルールは非 MCP glob を拒否、不明なツール名は起動時に警告</li>
+  <li><strong>クロスセッションメッセージングの強化</strong>: <code>SendMessage</code> 経由のメッセージはユーザー権限を持たなくなり、受信側はリレーされた権限リクエストを拒否。Auto モードはブロック</li>
+  <li><strong>Thinking トグルの改善</strong>: <code>MAX_THINKING_TOKENS=***</code> と <code>--thinking disabled</code>、およびモデル別 thinking トグルで、Claude API 経由でデフォルトで思考するモデルの thinking を無効化可能に</li>
+  <li><strong>フォールバックモデルでのリトライ</strong>: API が予期しないリトライ可能エラーを拒否した場合、Claude Code はフォールバックモデルでターンを1回リトライ</li>
+  <li><strong>claude update の改善</strong>: ダウンロード前にターゲットバージョンを通知するように</li>
+  <li><strong>claude agents</strong>: リストに URL を入力すると、最初のプロンプトにその URL を含むセッションにフィルタリング</li>
+</ul>
+
+<h3>🐛 v2.1.166 主な修正</h3>
+<ul>
+  <li>処理不可画像の "image could not be processed" エラーと余分なトークン消費を修正</li>
+  <li>リモートセッションが起動時のワーカー登録中にバックエンド障害で永久スタックする問題を修正</li>
+  <li>JetBrains IDE (IntelliJ, PyCharm, WebStorm) 2026.1+ の flickering を同期出力で修正</li>
+  <li>Kitty キーボードプロトコル（WezTerm, Ghostty, kitty）での Shift+非ASCII文字（Shift+ä→Äなど）が欠落する問題を修正</li>
+  <li>PowerShell コマンドバリデーションが子プロセスによりハングする問題を修正</li>
+  <li>macOS でデーモン死亡後に孤児化した <code>claude --bg-pty-host</code> プロセスの100% CPU 問題を修正</li>
+  <li>管理設定の無効エントリが残りの有効ポリシーの強制を無効化する問題を修正</li>
+  <li><code>${VAR}</code> 参照使用時の managed-settings <code>allowedMcpServers</code>/<code>deniedMcpServers</code> マッチングを修正</li>
+  <li>git worktree に入ったバックグラウンドエージェントセッションが "No conversation found" でクラッシュループする問題を修正</li>
+  <li>Ctrl+O トランスクリプトビューでの thinking テキスト重複を修正</li>
+  <li><code>/doctor</code> がリモートセッション内部でも矛盾した "Not inside a remote session" チェックを表示する問題を修正</li>
+  <li><code>claude agents</code> のマルチラインプロンプトでカーソルが先頭に固定される問題を修正</li>
+  <li>Unicode 未対応端末でのエージェントリストの空白行を修正</li>
+</ul>
+
+<h3>🔧 v2.1.167 / v2.1.165</h3>
+<ul>
+  <li><strong>v2.1.167</strong> (June 6): バグ修正と信頼性の改善</li>
+  <li><strong>v2.1.165</strong> (June 5): バグ修正と信頼性の改善</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — Canary (June 5-6)</h2>
+<p>Next.js カナリーチャンネルで v16.3.0-canary.38〜42 がリリースされました。App Shells 関連の大きな変更が進んでいます。</p>
+
+<h3>🔧 注目の変更</h3>
+<ul>
+  <li><strong>App Shells — Staged Shell Rendering</strong> <a href="https://github.com/vercel/next.js/pull/94441" target="_blank" rel="noopener noreferrer">#94441</a> / <a href="https://github.com/vercel/next.js/pull/94442" target="_blank" rel="noopener noreferrer">#94442</a>: キャッシュナビゲーションおよびビルド時の段階的シェルレンダリングが継続改善。ランタイムプリフェッチ対応も追加 <a href="https://github.com/vercel/next.js/pull/93801" target="_blank" rel="noopener noreferrer">#93801</a></li>
+  <li><strong>App Shells ステージ追加</strong> <a href="https://github.com/vercel/next.js/pull/94438" target="_blank" rel="noopener noreferrer">#94438</a>: CC (Cache Components) に shell stages を追加</li>
+  <li><strong>React アップグレード</strong> <a href="https://github.com/vercel/next.js/pull/94440" target="_blank" rel="noopener noreferrer">#94440</a>: f0dfee38-20260529 → 43bcbf80-20260603</li>
+  <li><strong>lodash を 4.18.1 にアップデート</strong> <a href="https://github.com/vercel/next.js/pull/94473" target="_blank" rel="noopener noreferrer">#94473</a></li>
+  <li><strong>Node streams デバッグチャンネルの永続化</strong> <a href="https://github.com/vercel/next.js/pull/94433" target="_blank" rel="noopener noreferrer">#94433</a> / <a href="https://github.com/vercel/next.js/pull/94462" target="_blank" rel="noopener noreferrer">#94462</a></li>
+  <li><strong>非公開カスタムサーバーメソッドの非推奨化</strong> <a href="https://github.com/vercel/next.js/pull/94348" target="_blank" rel="noopener noreferrer">#94348</a></li>
+  <li><strong>cacheHandler トレース対応</strong> <a href="https://github.com/vercel/next.js/pull/94197" target="_blank" rel="noopener noreferrer">#94197</a>: Adapter 使用時の cacheHandler/cacheHandlers をトレース</li>
+  <li>Turbopack 内部改善: BumpVec 追加、TaskInput 最適化、非同期ランタイムのオンデマンド出荷</li>
+  <li><strong>@vercel/nft 1.10.2</strong> にバンプ <a href="https://github.com/vercel/next.js/pull/93979" target="_blank" rel="noopener noreferrer">#93979</a></li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 2026年6月5日 アップデート</h2>
+
+<h3>🤖 Bedrock AgentCore Runtime — Interactive Shells (GA)</h3>
+<ul>
+  <li><strong>インタラクティブシェル対応</strong>: 新しい InvokeAgentRuntimeCommandShell API により、WebSocket 経由でエージェントセッション内に PTY バックアップの永続ターミナルを開くことが可能に。カラー表示、タブ補完、Ctrl+C、端末リサイズ、自動再接続をサポート</li>
+  <li><strong>ユースケース</strong>: Claude Code、OpenAI Codex、Amazon Kiro などのコーディングエージェントをホストする開発者がエージェントのマイクロVM内で直接操作・デバッグ可能に</li>
+  <li>1つのエージェントランタイムで最大10個の同時シェルをサポート</li>
+</ul>
+
+<h3>🔧 その他の AWS アップデート</h3>
+<ul>
+  <li><strong>AWS MCP Server クロスアカウント対応</strong>: AI コーディングエージェント（Kiro, Claude Code, Codex）が1セッション内で複数の AWS アカウントと IAM ロールを切り替え可能に</li>
+  <li><strong>ECS Fargate 32vCPU 対応</strong>: 新タスクサイズとして 32vCPU + 60/120/244 GiB メモリが利用可能に。x86 および ARM の両方に対応</li>
+  <li><strong>Cognito マルチリージョンレプリケーション</strong>: ユーザー/マシン ID データ（認証情報、ユーザープール設定、フェデレーション設定）をスタンバイリージョンに準リアルタイムで同期</li>
+  <li><strong>SageMaker Data Agent ビジネスコンテキスト統合</strong>: ビジネス用語を使用したデータセットの発見とコード生成が可能に</li>
+  <li><strong>OpenSearch UI GovCloud 対応</strong>: GovCloud (US-East/West) リージョンで OpenSearch アプリケーションが利用可能に</li>
+  <li><strong>S3 Tables / Iceberg マテリアライズドビュー</strong>: AWS IAM ベースの認可が GovCloud で利用可能に</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/" target="_blank" rel="noopener noreferrer">AWS What's New</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 2026年6月5日 リリースノート</h2>
+
+<h3>🔧 注目の更新</h3>
+<ul>
+  <li><strong>Cloud Data Fusion 6.11.1.3 GA</strong>: パイプラインプレビューの InaccessibleObjectException 修正、カスタムプラグインの並列パイプライン実行時ログ欠落修正、セキュリティ脆弱性修正、<code>deployStrategy</code> クエリパラメータの追加</li>
+  <li><strong>カスタムダッシュボードのトレースデータ表示 (Public Preview)</strong>: 個別スパンまたは集計データを表示可能に</li>
+  <li><strong>Anthos Config Management</strong>: 依存関係の更新による複数 CVE 対応</li>
+  <li><strong>カーネル CVE 修正</strong>: 多数の Linux カーネル CVE（CVE-2026-43303, 43499, 43503, 45838〜45844, 45987〜46094 他多数）に対応</li>
+  <li><strong>Customer Care CCaaS</strong>: Salesforce/チャット転送/ACW/レポーティングの不具合修正（20件以上）</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice"><strong>OpenClaw</strong>（前回報告の 2026.6.2-beta.1 以降リリースなし）、<strong>React</strong>（6/1の FormData 修正以降新規リリースなし）、<strong>Python</strong>（3.14.5 が最新、新規パッチなし）、<strong>Django</strong>（6.0.6/5.2.15 セキュリティリリースは6/3付で前号報告済み）、<strong>Java/JDK</strong>（JDK 26.0.1 が4/21、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（最新プレリリースは4/23付）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Azure</strong>（Build 2026 Day 2 のアップデートは前号で報告済み）、<strong>Claude API/SDK</strong>（対象期間内に新規リリースは確認されませんでした）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
