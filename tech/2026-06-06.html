@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-06 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-06 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-05 09:00 〜 2026-06-06 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.165</h2>
+<p>2026年6月5日、Claude Code v2.1.165 がリリースされました。バグ修正と信頼性の改善に焦点を当てたアップデートで、51件の変更が v2.1.162 〜 v2.1.165（6/3〜6/5）の期間にわたって含まれています。</p>
+
+<h3>🔧 主なバグ修正・改善</h3>
+<ul>
+  <li><strong>バックグラウンドエージェントの自動更新対応</strong>: バックグラウンドセッションが新しい Claude Code バージョンに自動更新されるように改善</li>
+  <li><strong>プロンプトキャッシュ TTL 修正</strong>: 1時間のプロンプトキャッシュ TTL が5分に勝手にダウングレードされていた問題を修正</li>
+  <li><strong>端末表示の位置ずれ修正</strong>: ターミナルの位置ずれと数秒間のハングを修正</li>
+  <li><strong>macOS バックグラウンドジョブ修正</strong>: ~/Documents, ~/Desktop, ~/Downloads 配下のファイル読み取りで「Operation not permitted」エラーが発生していた問題を修正（Full Disk Access 付与済みでも発生）</li>
+  <li><strong>Windows Terminal のストロビング修正</strong>: バックグラウンドセッション接続時に Windows Terminal で全画面ストロビングが発生する問題を修正</li>
+  <li><strong>Windows ワークツリー修正</strong>: バックグラウンジョブのワークツリー削除時に NTFS ジャンクションを追跡してメインリポジトリに影響を与える問題を修正</li>
+  <li><strong>ネストされた CLAUDE.md の再注入修正</strong>: CLAUDE.md が何十回も再注入される問題を修正</li>
+  <li><strong>CLAUDE_CODE_OPUS_4_6_FAST_MODE_OVERRIDE 削除</strong>: 環境変数が no-op に（互換性のため残存）</li>
+  <li><strong>パーミッションルールのセキュリティ修正</strong>: セキュリティ上の抜け穴を塞ぐ修正を含む</li>
+  <li><strong>ネイティブターミナルカーソル修正</strong>: ターミナルがフォーカスを失ったときに入力カーソルが正しい位置に留まらない問題を修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://dev.classmethod.jp/en/articles/20260603-cc-updates-v2-1-165/" target="_blank" rel="noopener noreferrer">DevelopersIO まとめ（v2.1.162〜v2.1.165）</a></p>
+
+<hr>
+
+<h2>🧠 Anthropic — 「When AI builds itself」 ブログポスト</h2>
+<p>2026年6月4日、Anthropic Institute が「When AI builds itself（AIが自らを構築するとき）」と題した長編記事を公開しました。再帰的自己改善（Recursive Self-Improvement）への進捗とその影響について詳述されています。</p>
+
+<h3>📋 主なポイント</h3>
+<ul>
+  <li><strong>AI開発の自動化進展</strong>: Claude エンジニアの週間コード出力量が従来の約8倍に増加。2026年4月には Claude が API エラーの1クラスに対して800以上の修正をデプロイし、エラー率を1000分の1に削減</li>
+  <li><strong>再帰的自己改善の実例</strong>: AI が自身のコードや他の AI のコードを修正・改善するサイクルが現実のものに</li>
+  <li><strong>グローバルガバナンスの提案</strong>: 強力な AI 開発に対する協調的ポーズ（一時停止）の可能性を議論するため、国際的な対応を呼びかけ</li>
+</ul>
+
+<p>🔗 <a href="https://www.anthropic.com/institute/recursive-self-improvement" target="_blank" rel="noopener noreferrer">Anthropic Institute — When AI builds itself</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内の新規リリースは確認されませんでした。最新安定版は 2026.5.28、最新β版は 2026.6.2-beta.1（6月3日）です。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内の新規リリースは確認されませんでした。最新安定版は 16.2.7（6月1日）です。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ Azure — Build 2026 継続アップデート</h2>
+<p>Build 2026 の流れを受けて、Azure のいくつかのアップデートが継続して公開されています。</p>
+
+<h3>🔵 主なアップデート</h3>
+<ul>
+  <li><strong>Azure AI Speech — Custom Voice</strong>: Microsoft Foundry ポータルでの Custom Voice 作成エクスペリエンスが GA</li>
+  <li><strong>Microsoft Defender for Cloud</strong>: Azure Container Apps（Serverless Containers Posture）のサポートが Public Preview</li>
+  <li><strong>Azure DocumentDB</strong>: あいまい検索（fuzzy search）、近接検索、BM25 ランキングなどの高度な検索機能が追加</li>
+</ul>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>☁️ GCP</h2>
+<p>対象期間内の特筆すべきアップデートは確認されませんでした。</p>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>⚛️ React — v19.2.7</h2>
+<p>React v19.2.7 は6月1日にリリースされており、対象期間外のため新規情報はありません。</p>
+
+<p>🔗 <a href="https://github.com/facebook/react/releases" target="_blank" rel="noopener noreferrer">React Releases</a></p>
+
+<hr>
+
+<h2>🔥 Hono — セキュリティアドバイザリ CVE-2026-47674</h2>
+<p>Hono チームは6月4日、IP Restriction ミドルウェアの脆弱性 <strong>CVE-2026-47674</strong>（Medium）を修正した v4.12.21 をリリースしました。</p>
+
+<h3>🔴 脆弱性の詳細</h3>
+<ul>
+  <li><strong>CVE-2026-47674</strong> — <code>hono/ip-restriction</code> ミドルウェアが非正規形の IPv6 アドレスを正しく処理できず、deny ルールをバイパスされる脆弱性。攻撃者が特殊な形式の IPv6 アドレスを使用して IP 制限を回避可能</li>
+  <li><strong>影響</strong>: Medium  severity。v4.12.21 未満の全バージョンが影響を受ける</li>
+  <li><strong>推奨アクション</strong>: v4.12.21 以上にアップグレード</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/advisories/GHSA-xrhx-7g5j-rcj5" target="_blank" rel="noopener noreferrer">GitHub Advisory</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice"><strong>AWS</strong>（特筆すべき新規アップデートなし）、<strong>Python</strong>（3.14.5 が最新、新規パッチなし）、<strong>Django</strong>（6/3 のセキュリティリリースが最新）、<strong>Java/JDK</strong>（JDK 26.0.1 が4/21、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（4.0.6 が最新、4.1.0-M4 はマイルストン）、<strong>Claude API/SDK</strong>（新規リリース確認なし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
