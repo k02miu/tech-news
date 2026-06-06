@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-07 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-07 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-06 08:00 〜 2026-06-07 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Kubernetes UDS Identity Config に CVSS 10.0 の認証バイパス脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-46389</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>10.0 (Critical)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Kubernetes UDS (Unix Domain Socket) Identity Config を使用する環境</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-06</td></tr>
+</table>
+
+<ul>
+  <li>Kubernetes の UDS Identity Config コンポーネントに論理エラーがあり、client secret 認証をバイパスして不正な OAuth2 トークンを取得可能</li>
+  <li>攻撃者は認証なしでクラスターへのアクセス権限を不正取得でき、機密情報の完全性・機密性が侵害される</li>
+  <li>GKE、AKS、EKS などクラウドプロバイダーのマネージド Kubernetes サービス全般に影響の可能性</li>
+  <li>公開時点でパッチは未リリース。ベンダーのアドバイザリを待ちつつ、UDS Identity Config のネットワーク露出制限などの緩和策を推奨</li>
+  <li>〈GCP / AWS / Azure スタックに広く関連〉</li>
+</ul>
+
+<h3>2. Microsoft 早期セキュリティ更新 — Azure HorizonDB に認証バイパス（Critical） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>未割当（Azure HorizonDB Auth Bypass）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.8 (Critical)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Azure HorizonDB</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04（Microsoft Early Security Update）</td></tr>
+</table>
+
+<ul>
+  <li>Azure HorizonDB に認証バイパス脆弱性。未認証のリモート攻撃者が認証を偽装し、権限を昇格可能</li>
+  <li>ネットワークベースで攻撃の複雑性は低く、ユーザー操作や認証情報は不要</li>
+  <li>情報の機密性・完全性・可用性すべてに影響。影響を受けるインスタンスは至急パッチ適用推奨</li>
+  <li>〈Azure スタックに直接関連〉</li>
+</ul>
+
+<h3>3. Microsoft Exchange Online に情報漏洩の脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>未割当（Exchange Online Info Disclosure）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.5 (High)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Microsoft Exchange Online</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04（Microsoft Early Security Update）</td></tr>
+</table>
+
+<ul>
+  <li>不適切な認可処理により、未認証のリモート攻撃者が認証なしで機密情報にアクセス可能</li>
+  <li>攻撃の複雑性は低く、特権は不要。影響を受ける組織は Exchange Online の更新を確認</li>
+  <li>〈Azure / Microsoft スタックに関連〉</li>
+</ul>
+
+<h3>4. Microsoft Copilot Chat にインジェクション脆弱性 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47644</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>6.5 (Medium)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Microsoft Copilot Chat</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04（Microsoft Early Security Update）</td></tr>
+</table>
+
+<ul>
+  <li>出力の特殊要素に対する不適切な無害化処理により、ダウンストリームコンポーネントへのインジェクションが生じる</li>
+  <li>〈Azure / AI スタックに関連〉</li>
+</ul>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Django（6/3付のCVE群は既報のため本期間対象外）、Spring Boot（コアフレームワーク）に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。Chrome 149 の大規模セキュリティ修正（429件）は前回既報のため本稿では割愛します。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔓 Claude Code GitHub Action サプライチェーン攻撃の詳細が公開 — 単一の Issue から CI/CD 乗っ取りが可能に <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>AI サプライチェーン攻撃 / Prompt Injection</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05（Microsoft Blog / Flatt Security Research）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Claude Code GitHub Action (claude-code-action) &lt; v1.0.94</td></tr>
+</table>
+
+<ul>
+  <li>GMO Flatt Security の RyotaK 氏が Claude Code GitHub Action の脆弱性を詳細報告。ボット名で終わる Actor を自動的に信頼する判定ロジックの穴を突き、悪意ある GitHub App 経由で任意の Issue からワークフローを起動可能</li>
+  <li>間接的プロンプトインジェクションにより、Claude に <code>/proc/self/environ</code> からシークレットを読み取らせ、Issue 経由で攻撃者に外部送信させるチェーンを実証</li>
+  <li>OIDC トークンを窃取し Anthropic バックエンドと交換することで、リポジトリへの書き込みアクセスを獲得可能。最悪の場合、Action 自体を改ざんしてダウンストリーム全プロジェクトに悪影響</li>
+  <li>Anthropic は v1.0.94 で修正済み。また Anthropic の公式 Issue トリアージワークフロー例が <code>allowed_non_write_users: "*"</code> という危険な設定を含んでいたため、これをコピーした多くのリポジトリに同様の脆弱性</li>
+  <li>Microsoft も 6月5日に本件に関するセキュリティブログを公開。AI エージェントの CI/CD 統合における新たな攻撃面として警鐘</li>
+  <li>〈Claude / AI スタックに関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/" target="_blank" rel="noopener noreferrer">Flatt Security Research — Poisoning Claude Code</a><br>
+🔗 <a href="https://www.microsoft.com/en-us/security/blog/2026/06/05/securing-ci-cd-in-agentic-world-claude-code-github-action-case/" target="_blank" rel="noopener noreferrer">Microsoft Security Blog</a><br>
+🔗 <a href="https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html" target="_blank" rel="noopener noreferrer">The Hacker News</a></p>
+
+<h3>🔓 Termix サーバー管理プラットフォームにリモートコード実行の脆弱性 — パッチ未公開 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45744 / CVE-2026-45748</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.9 / 9.8 (Critical)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Termix（Web-based SSH サーバー管理プラットフォーム）&lt; 2.3</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-06</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-45744</strong>: <code>/ssh/file_manager/ssh/resolvePath</code> エンドポイントで OS コマンドインジェクション。認証済み File Manager セッションが必要だが、コマンド置換により任意の OS コマンドを実行可能</li>
+  <li><strong>CVE-2026-45748</strong>: <code>/connect</code> エンドポイントの SSH トンネル転送機能で永続的な OS コマンドインジェクション。ホストレコードフィールドの入力精査不備により、SSH ホスト上で任意コマンドを実行可能</li>
+  <li>公開時点でパッチ未リリース。ベンダーのアップデートを待ちつつ、管理インターフェースのネットワーク露出を制限するなどの緩和策を推奨</li>
+  <li>〈Web インフラストラクチャ全般に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45748" target="_blank" rel="noopener noreferrer">NVD Detail CVE-2026-45748</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45744" target="_blank" rel="noopener noreferrer">NVD Detail CVE-2026-45744</a></p>
+
+<h3>🔓 PCPJack クラウドワーム、依然活動継続 — 230 ノードのクラウドメールリレーネットワーク</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>スパム / ボットネット / クラウドインフラ悪用</td></tr>
+  <tr><td><strong>標的</strong></td><td>AWS / Azure / GCP クラウドインスタンス</td></tr>
+</table>
+
+<ul>
+  <li>前号で報じた PCPJack 脅威アクターの 230 ノードクラウドメールリレーネットワークは依然活動継続中</li>
+  <li>CISO Daily Briefing (June 5) でも注意喚起 — 2つの AI 固有の脅威として PCPJack と Claude Code の脆弱性が挙げられている</li>
+  <li><a href="https://labs.cloudsecurityalliance.org/research/ciso-daily-briefing-20260605/" target="_blank" rel="noopener noreferrer">CSA CISO Daily Briefing — June 5, 2026</a></li>
+</ul>
+
+<h3>🔓 OpenClaw 2026.6.2 — セキュリティ強化リリース</h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティアップデート</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05 頃</td></tr>
+</table>
+
+<ul>
+  <li>OpenClaw 2026.6.2 がリリースされ、プラグインインストールポリシーの安全策が強化された</li>
+  <li>dangerous-code スキャナーによる強制執行から operator install policy ベースの方式に移行</li>
+  <li>install-policy context、doctor checks、install/update CLI の改善を含む</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases (GitHub)</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+
+</body>
+</html>
