@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-08 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-08 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-07 08:00 〜 2026-06-08 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Progress Kemp LoadMaster に未認証リモートコード実行の脆弱性 — Critical および High <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-8037 / CVE-2026-33691</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.6 (Critical) / High</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Progress Kemp LoadMaster（ADC / WAF 製品）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-04（Progress Security Advisory）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-8037</strong>（CVSS 9.6 Critical）: LoadMaster の API エンドポイントで複数のコマンド実行箇所に入力のサニタイズがなく、未認証のリモート攻撃者がアプライアンス上で任意の OS コマンドを実行可能</li>
+  <li><strong>CVE-2026-33691</strong>（High）: WAF で使用される OWASP Core Rule Set（CRS）の古いバージョンが本脆弱性の影響を受け、WAF バイパスが可能</li>
+  <li>Progress Software はパッチをリリース済み。LoadMaster を使用している環境は至急アップデートを適用すること</li>
+  <li>カナダ Cyber Centre（CCCS）も AV26-552 としてアドバイザリを公開</li>
+  <li>〈Web インフラストラクチャ / AWS / GCP / Azure 負荷分散に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://community.progress.com/s/article/LoadMaster-Critical-Security-Bulletin-June-2026-CVE-2026-8037-CVE-2026-33691" target="_blank" rel="noopener noreferrer">Progress Security Advisory</a></p>
+
+<h3>2. Cisco Unified Communications Manager にCritical SSRF脆弱性 — ルート昇格の可能性 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20230</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.0+ (Critical — Cisco SIR: Critical)</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Cisco Unified Communications Manager (Unified CM) / Unified CM SME</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-03</td></tr>
+</table>
+
+<ul>
+  <li>特定の HTTP リクエストに対する不適切な入力検証により、未認証のリモート攻撃者が SSRF 攻撃を実行可能</li>
+  <li>攻撃者は OS にファイルを書き込むことができ、その後ルートへの権限昇格に利用される可能性</li>
+  <li>Cisco は CVSS スコアが High であるにもかかわらず、ルート昇格の可能性から SIR を Critical と評価</li>
+  <li>攻撃には WebDialer サービスが有効である必要がある（デフォルトでは無効）。実証コードが既に公開済み</li>
+  <li>パッチはリリース済み。Unified CM を使用している環境は至急アップデートを確認のこと</li>
+  <li>〈Web / クラウド UC インフラに関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-cucm-ssrf-cXPnHcW" target="_blank" rel="noopener noreferrer">Cisco Security Advisory</a></p>
+
+<h3>3. Hermes Agent v0.16.0 — セキュリティ強化パッチ含む大型リリース <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティパッチ + 機能リリース</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Hermes Agent（Nous Research）v0.16.0</td></tr>
+</table>
+
+<ul>
+  <li>v0.16.0（v2026.6.5）で 16 件の security タグ付き issue をクローズ。うち 2 P0 + 62 P1</li>
+  <li>セキュリティ修正の主要内容:
+    <ul>
+      <li><strong>CVE-2026-48710</strong>: Starlette 依存関係のピン留め修正</li>
+      <li><strong>SSRF off-loop ハードニング</strong>: ブラウザツールの SSRF ガード強化</li>
+      <li><strong>subprocess credential stripping</strong>: サブプロセス実行時のクレデンシャル露出防止</li>
+    </ul>
+  </li>
+  <li>デスクトップアプリ（macOS / Linux / Windows）のネイティブ版が初登場、OAuth/ユーザー名パスワードによるリモートゲートウェイ接続にも対応</li>
+  <li>アップグレードを推奨。詳細はリリースノートを参照</li>
+  <li>〈Hermes Agent スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases (GitHub)</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js、React、Hono、Python（コア）、Django、Spring Boot（コアフレームワーク）、Java、GCP、AWS、Azure、OpenClaw に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。Django 6.0.6 / 5.2.15 のセキュリティリリース（6/3 公開）、Hono CVE-2026-47674（5/29 公開）、Claude Code GitHub Action の脆弱性（6/5 公開）は既報のため対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 "Miasma" — RedHat npm パッケージを標的とした大規模サプライチェーン攻撃が発覚 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>サプライチェーン攻撃 / npm マルウェア配布</td></tr>
+  <tr><td><strong>標的</strong></td><td>@redhat-cloud-services npm 名前空間（週間約 80,000 ダウンロード）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-01（Wiz Research 発見）、6/4 に追加アドバイザリ</td></tr>
+</table>
+
+<ul>
+  <li>Wiz Research が 6/1 に発見。Red Hat 社員の GitHub アカウントが侵害され、@redhat-cloud-services の npm 名前空間から<strong>32 以上のパッケージリリース</strong>に不正な改ざんが行われた</li>
+  <li>マルウェアのペイロードは TeamPCP の「Mini Shai-Hulud」をベースとした派生版で、<strong>"Miasma: The Spreading Blight"</strong>というリポジトリが作成される</li>
+  <li>先行版と異なる点として、<strong>GCP / Azure のアイデンティティ収集機能</strong>が追加されており、クラウド環境全体へのアクセス拡大を狙う攻撃の進化が見られる</li>
+  <li>感染ごとに<strong>一意の暗号化ペイロード</strong>を生成するため、ハッシュベースの IOC 検出が困難。2 波目の攻撃では binding.gyp を悪用したインストール時実行コードも追加</li>
+  <li>侵害された GitHub アカウント経由で OIDC トークンを取得し、<strong>正当な SLSA provenance 証明付き</strong>で npm パッケージを公開 — TanStack 攻撃と同じ手法</li>
+  <li>影響を受ける環境では、GitHub トークン、SSH 鍵、クラウドクレデンシャル、CI/CD シークレットの露出を前提とした<strong>即座のローテーション</strong>が推奨</li>
+  <li>依存関係の allowlisting、SBOM 生成、パッケージ検証の導入を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://www.wiz.io/blog/miasma-supply-chain-attack-targeting-redhat-npm-packages" target="_blank" rel="noopener noreferrer">Wiz Research — Miasma Advisory</a><br>
+🔗 <a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-006" target="_blank" rel="noopener noreferrer">Red Hat Advisory RHSB-2026-006</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+
+</body>
+</html>
