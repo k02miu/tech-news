@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-09 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-09 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-08 08:00 〜 2026-06-09 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. PyPI サプライチェーン攻撃 — "nhmpy" による NumPy タイポスクワットが発覚 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>サプライチェーン攻撃 / PyPI マルウェア配布</td></tr>
+  <tr><td><strong>アドバイザリ</strong></td><td>GMS-2026-575（GitLab Vulnerability Research）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-07</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Python / PyPI エコシステム（nhmpy パッケージ）</td></tr>
+</table>
+
+<ul>
+  <li>GitLab Vulnerability Research が Shai-Hulud コピーキャット攻撃の一部として <strong>nhmpy</strong> パッケージを検出。NumPy のタイポスクワット</li>
+  <li><code>.pth</code> ファイルを含み、Python 起動時に自動実行。Bun JavaScript ランタイムをダウンロードし、難読化されたクレデンシャル窃取コードを実行</li>
+  <li>窃取対象: <strong>GitHub、AWS、Azure、GCP、HashiCorp Vault、NPM、PyPI、RubyGems、SSH 鍵、Kubernetes、Sigstore</strong></li>
+  <li>ワーム型自己増殖: アクセス可能な GitHub リポジトリへの悪意あるコミット push、他のレジストリへのポイズンパッケージ公開</li>
+  <li>このパッケージがインストールされている環境は<strong>完全に侵害された</strong>とみなすべき。すべてのシークレットと鍵を別マシンから即座にローテーションすること</li>
+  <li>依存関係のピンニング、SBOM 生成、lock ファイル検証の徹底を推奨</li>
+  <li>〈Python / PyPI スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://advisories.gitlab.com/pypi/nhmpy/GMS-2026-575/" target="_blank" rel="noopener noreferrer">GitLab Advisory GMS-2026-575</a></p>
+
+<h3>2. Next.js / React Server Components — 複数の脆弱性が継続的に悪用されるリスク <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-23870 / CVE-2026-44578 / CVE-2026-27979 他</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>最大 8.6（CVE-2026-44578 SSRF）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Next.js 13.x〜16.x（App Router / self-hosted）、React Server Components 19.x</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05（Vercel セキュリティアドバイザリ群）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-44578</strong>（CVSS 8.6）: self-hosted Next.js の WebSocket アップグレードハンドラにおける SSRF。未認証の攻撃者が内部サービスや AWS IMDSv1（169.254.169.254）にリクエストをプロキシ可能。修正: Next.js 15.5.18 / 16.2.6</li>
+  <li><strong>CVE-2026-23870</strong>（CVSS 7.5）: React Server Components の "Flight" プロトコルのデシリアライゼーション欠陥による DoS。細工された HTTP リクエストで過剰な CPU 使用を引き起こす</li>
+  <li><strong>CVE-2026-27979</strong>: Next.js 16.0.1〜16.1.7 における PPR resume リクエストのバッファサイズ制限不備によるメモリ枯渇 DoS</li>
+  <li>その他、ミドルウェアバイパス（GHSA-267c-6grr-h53f 等 3 件）、CSP nonce 経由 XSS、Image Optimization API DoS、キャッシュポイズニングなど計 12 件以上のアドバイザリが公開</li>
+  <li>Vercel ホスティング環境は SSRF の影響外。self-hosted 環境は至急アップデートを適用すること。WebSocket アップグレードをリバースプロキシでブロックする緩和策も有効</li>
+  <li>〈Next.js / React スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cybersecuritynews.com/next-js-react-server-vulnerabilities/" target="_blank" rel="noopener noreferrer">CybersecurityNews — Multiple Critical Vulnerabilities in Next.js and React</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-44578" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-44578</a></p>
+
+<hr>
+
+<h3>3. OpenClaw — サンドボックス内のネイティブプロンプト画像自動ロードがワークスペース制限をバイパス <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>アドバイザリ</strong></td><td>GHSA-9f72-qcpw-2hxc</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.8</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw（tools.fs.workspaceOnly 設定時）</td></tr>
+</table>
+
+<ul>
+  <li>OpenClaw のネイティブプロンプト画像自動ロード機能が、サンドボックスモード実行時に <code>tools.fs.workspaceOnly</code> 設定を尊重しない問題</li>
+  <li>ワークスペース外の画像ファイルがサンドボックス内で自動的に読み込まれる可能性</li>
+  <li>CVSS 7.8（High/Medium 境界）。サンドボックス逸脱の性質上、情報漏洩リスクあり</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.endorlabs.com/research/threat-research" target="_blank" rel="noopener noreferrer">Endor Labs Threat Research</a></p>
+
+<hr>
+
+<p class="empty-notice">Java（コア）、Spring Boot（コアフレームワーク）、Django、Hono、AWS、Azure、Claude Code、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。Hermes Agent v0.16.0 のセキュリティパッチ（6/5 公開、CVE-2026-48710 Starlette pin、SSRF ハードニング、subprocess credential stripping）は既報のため対象外です。GCP の CVE-2026-46300 "Fragnesia" コンテナブレイクアウト（GCP-2026-033）は 5/14 公開のため対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Shai-Hulud コピーキャット攻撃の波 — npm から PyPI へ拡大 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>サプライチェーン攻撃 / ワーム型マルウェア拡散</td></tr>
+  <tr><td><strong>標的</strong></td><td>PyPI（nhmpy）、npm エコシステム</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-07（nhmpy 検出）</td></tr>
+</table>
+
+<ul>
+  <li>2026 年 5 月に発見された Shai-Hulud ワームのソースコードが公開されて以降、コピーキャット攻撃が npm と PyPI の両エコシステムで相次いで発生</li>
+  <li>6/7 に検出された <strong>nhmpy</strong>（NumPy タイポスクワット）は、<code>.pth</code> ファイルによる自動実行、Bun ランタイム経由のクレデンシャル窃取、GitHub リポジトリ経由の自己増殖という攻撃チェーンを実装</li>
+  <li>窃取対象はクラウド（AWS/Azure/GCP）、シークレットマネージャー（HashiCorp Vault）、パッケージレジストリ（npm/PyPI/RubyGems）、CI/CD（Kubernetes/Sigstore）と広範</li>
+  <li>6/1 に発覚した <strong>Miasma</strong> 攻撃（RedHat npm パッケージ標的）と同じ攻撃手法の進化版。GCP/Azure アイデンティティ収集機能が追加されている</li>
+  <li>感染環境では<strong>全クレデンシャルの即座のローテーション</strong>が必要。依存関係の allowlisting、SBOM 生成、パッケージ署名検証の導入を強く推奨</li>
+</ul>
+
+<p>🔗 <a href="https://advisories.gitlab.com/pypi/nhmpy/GMS-2026-575/" target="_blank" rel="noopener noreferrer">GitLab Advisory GMS-2026-575</a><br>
+🔗 <a href="https://www.tenable.com/blog/mini-shai-hulud-frequently-asked-questions" target="_blank" rel="noopener noreferrer">Tenable — Mini Shai-Hulud FAQ</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+
+</body>
+</html>
