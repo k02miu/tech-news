@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-09 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-09 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-08 09:00 〜 2026-06-09 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.169</h2>
+<p>Claude Code v2.1.169 がリリースされました（前号では v2.1.168 を報告）。トラブルシューティング用の <code>--safe-mode</code> フラグ、セッション内でワーキングディレクトリを変更できる <code>/cd</code> コマンド、バンドルスキル非表示設定など、3つの新機能と多数のバグ修正が含まれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong><code>--safe-mode</code> フラグ</strong>: CLAUDE.md、プラグイン、スキル、フック、MCP サーバーといったすべてのカスタマイズを無効化して Claude Code を起動できるトラブルシューティングモード（<code>CLAUDE_CODE_SAFE_MODE</code> 環境変数でも有効化可能）</li>
+  <li><strong><code>/cd</code> コマンド</strong>: プロンプトキャッシュを維持したまま、セッション中のワーキングディレクトリを変更可能に</li>
+  <li><strong><code>disableBundledSkills</code> 設定</strong>: バンドルスキル、ワークフロー、組み込みスラッシュコマンドをモデルから非表示にする設定と <code>CLAUDE_CODE_DISABLE_BUNDLED_SKILLS</code> 環境変数を追加</li>
+  <li><strong>パフォーマンス改善</strong>: レスポンスストリーミング中およびスピナーアニメーション中の CPU 使用率を削減</li>
+  <li><strong><code>/workflows</code> 即時起動</strong>: ターン実行中でも即座にワークフロー画面を開けるように改善</li>
+  <li><strong><code>TaskCreate</code> 信頼性向上</strong>: 不正な入力が自動修復され、未ロードツールのバリデーションエラーにスキーマが含まれるように</li>
+  <li><strong>「CLAUDE.md is too long」警告の動的調整</strong>: 警告しきい値がモデルのコンテキストウィンドウに応じてスケールするように変更</li>
+  <li><strong>Vertex/Foundry アイドルタイムアウト復活</strong>: ストールしたストリームが5分でデフォルト中断（<code>API_FORCE_IDLE_TIMEOUT=0</code> で無効化可能）</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>エンタープライズ MCP ポリシー強化</strong>: 再接続時、IDE 設定、初回インストール後の <code>--mcp-config</code> サーバー、リモート設定読み込み前でも <code>allowedMcpServers</code>/<code>deniedMcpServers</code> が正しく適用されるように修正</li>
+  <li><strong>macOS UI ストール修正</strong>: claude.ai 認証ユーザーで各ターン開始時に発生していた30〜50ms の UI ストールを解消</li>
+  <li><strong>Windows <code>claude -p</code> ハング修正</strong>: スラッシュコマンド/スキルスキャン待ちで遅延またはハングする問題を修正（v2.1.161 のリグレッション）</li>
+  <li><strong>Remote Control 再接続修正</strong>: セッション再開時に OAuth トークンリフレッシュが同時発生すると「reconnecting」で停止する問題を修正</li>
+  <li><strong>Git Credential Manager ポップアップ修正</strong>: Windows 起動時にバックグラウンド git コマンドがキャッシュされていない資格情報で実行されると GitHub 接続ポップアップが表示される問題を修正</li>
+  <li><strong>セキュリティ修正</strong>: 信頼されていないプロジェクト設定が OTEL クライアント証明書パスを設定できてしまう問題を修正</li>
+  <li><strong>MCPB プラグインキャッシュ修正</strong>: Windows で不要な再抽出が発生する問題を修正</li>
+  <li><strong>プラグイン PID ロックファイル肥大化修正</strong>: クラッシュしたセッションのマーカーが無制限に蓄積する問題を修正（1日1回の掃除機構を追加）</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">Claude Code Releases</a> · <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.16.0「The Surface Release」（2026-06-05 リリース）です。ネイティブデスクトップアプリ（Electron）、Web ダッシュボードのフル管理パネル化、簡体中語対応、<code>/undo</code> コマンド、ファジーモデルピッカー、NVIDIA/skills の Skills Hub への追加、Nous Portal によるクイックセットアップなどの主要機能が含まれています。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — v16.3.0-canary.45</h2>
+<p>Next.js カナリーチャンネルで v16.3.0-canary.45 がリリースされました。Partial Prefetching のグローバル設定追加と Turbopack の改善が含まれています。</p>
+
+<h3>🔧 注目の変更</h3>
+<ul>
+  <li><strong>Partial Prefetching グローバル設定の追加</strong> <a href="https://github.com/vercel/next.js/pull/94448" target="_blank" rel="noopener noreferrer">#94448</a>: Partial Prefetching をグローバルに有効化する設定を追加</li>
+  <li><strong>Partial Prefetching: App Shell のみにデフォルト設定</strong> <a href="https://github.com/vercel/next.js/pull/94510" target="_blank" rel="noopener noreferrer">#94510</a>: Partial Prefetching のデフォルト動作を App Shell のみに変更</li>
+  <li><strong>Turbopack: webpack/postcss ローダーのチャンクエントリ名标准化</strong> <a href="https://github.com/vercel/next.js/pull/94256" target="_blank" rel="noopener noreferrer">#94256</a>: webpack と postcss ローダー間でチャンクエントリ名の命名規則を統一</li>
+  <li><strong>Subtree hints の伝播修正</strong> <a href="https://github.com/vercel/next.js/pull/94489" target="_blank" rel="noopener noreferrer">#94489</a>: Subtree hints が正しく伝播されない問題を修正</li>
+  <li><strong>Turbopack: polyfill ソースマップのコンテンツハッシュ</strong> <a href="https://github.com/vercel/next.js/pull/94548" target="_blank" rel="noopener noreferrer">#94548</a>: polyfill ソースマップファイルのコンテンツハッシュを追加</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 2026年6月8日 リリースノート</h2>
+
+<h3>🔧 注目の更新</h3>
+<ul>
+  <li><strong>Gemini 3.5 Flash GA</strong>: Gemini Code Assist ユーザー向けに Gemini 3.5 Flash が VS Code と IntelliJ で一般提供開始。エージェントモード、チャット、コード生成に使用可能</li>
+  <li><strong>Cloud Network Insights GA</strong>: マルチクラウドおよびハイブリッドネットワーク全体のネットワーク・Web アプリケーションパフォーマンス監視と可視化ツールが一般提供開始。Compute Engine VM Monitoring Points、Connectivity Tests サポートを含む</li>
+  <li><strong>BigQuery 生成 AI 関数のトークンベースコスト管理 GA</strong>: BigQuery 生成 AI 関数のコストを日次トークンクォータで管理・制限する機能が一般提供開始</li>
+  <li><strong>BigQuery 共有リソースのカスタム制約 GA</strong>: Organization Policy で BigQuery 共有リソースの特定フィールドに対するきめ細かい制御が可能に</li>
+  <li><strong>FOCUS 請求データエクスポート（プレビュー）</strong>: FinOps Open Cost and Usage Specification（FOCUS v1.2）に基づく請求データの BigQuery エクスポートがプレビュー公開</li>
+  <li><strong>Agent Search: プレフィックス・部分マッチング（プレビュー）</strong>: スキーマフィールドでプレフィックスマッチングと部分マッチングをサポートするフィルタ式を構成可能に</li>
+  <li><strong>Agent Search: EXISTS フィルタ（プレビュー）</strong>: ドキュメントのフィルタ検索に EXISTS フィルタを追加。フィールドに値があるドキュメントのみを返すことが可能に</li>
+  <li><strong>App Hub Memorystore GA</strong>: Memorystore リソースに対する App Hub サポートが一般提供開始</li>
+  <li><strong>Cloud Composer API 依存関係の段階的分離</strong>: Managed Airflow (Gen 3) に不要な API 依存関係（artifactregistry、cloudbuild、container、pubsub）が段階的に分離開始</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice"><strong>OpenClaw</strong>（GitHub リポジトリ nicepkg/openclaw が 404 を返しており、リポジトリの移動・削除の可能性）、<strong>Hermes Agent</strong>（最新 v0.16.0 は6/5付で前号報告済み、新規リリースなし）、<strong>React</strong>（6/1 の 19.2.7/19.1.8/19.0.7 FormData 修正以降新規リリースなし）、<strong>Python</strong>（3.15.0b2 が最新、新規パッチなし）、<strong>Django</strong>（6.0.6/5.2.15 セキュリティリリースは6/3付で前号報告済み）、<strong>Java/JDK</strong>（JDK 26.0.1 が4/21、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（最新プレリリース v4.1.0-RC1 は4/23付）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Azure</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>AWS</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>Claude API/SDK</strong>（Python SDK v0.107.1 は6/6付で前日の報告範囲内）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
