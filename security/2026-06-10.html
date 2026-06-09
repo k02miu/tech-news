@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-10 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-10 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-09 08:00 〜 2026-06-10 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Chrome 149 緊急アップデート — V8 ゼロデイ脆弱性が野良で悪用中 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-11645</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>High（V8 OOB Read/Write）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Google Chrome 149 以前（Windows / Mac / Linux）、Chromium ベース全ブラウザ</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-09</td></tr>
+  <tr><td><strong>バウンティ</strong></td><td>$55,000</td></tr>
+</table>
+
+<ul>
+  <li>Chrome V8 JavaScript エンジンの<strong>越界メモリ読み書き（Out-of-Bounds Read/Write）</strong>脆弱性。攻撃者は悪意ある Web ページに誘導するだけでリモートコード実行の可能性あり</li>
+  <li>Google が「野良での悪用を確認済み」と明示。2026 年 5 件目の Chrome ゼロデイ</li>
+  <li>今回のアップデートでは合計<strong>74 件のセキュリティ修正</strong>（Critical 17 件を含む）が含まれ、UAF（Use-After-Free）欠陥が大量修正</li>
+  <li>修正バージョン: <strong>149.0.7827.102/.103</strong>（Windows/Mac）、<strong>149.0.7827.102</strong>（Linux）。自動配信を待たず手動更新を推奨</li>
+  <li>影響サブシステム: Ozone、Aura、Views、Bluetooth、Gamepad、WebRTC、PDF、ServiceWorker、Extensions、Network、GPU、libyuv など広範</li>
+  <li>〈web スタックに直接関連 — ブラウザセキュリティ〉</li>
+</ul>
+
+<p>🔗 <a href="https://cybersecuritynews.com/google-chrome-0-day-vulnerability-exploited-in-the-wild-update-now/" target="_blank" rel="noopener noreferrer">CybersecurityNews — Google Chrome 0-Day Vulnerability Exploited in the Wild</a><br>
+🔗 <a href="https://chromereleases.googleblog.com/" target="_blank" rel="noopener noreferrer">Chrome Releases Blog</a></p>
+
+<hr>
+
+<h3>2. SolarWinds Serv-U — 認証不要 DoS 脆弱性が CISA KEV に追加、活発な悪用確認 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-28318</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.5（High）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>SolarWinds Serv-U 15.5.4 以前</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05（CISA KEV 追加）</td></tr>
+  <tr><td><strong>CISA 期限</strong></td><td>2026-06-19（FCEB 対応期限）</td></tr>
+</table>
+
+<ul>
+  <li><code>Content-Encoding: deflate</code> を含む細工された POST リクエストにより、<strong>認証なしで Serv-U サービスをクラッシュ</strong>させることが可能なリソース制御不能（Uncontrolled Resource Consumption）脆弱性</li>
+  <li>CISA が Known Exploited Vulnerabilities（KEV）カタログに 6/5 に追加。活発な悪用が確認されている</li>
+  <li>修正: <strong>SolarWinds Serv-U 15.5.4 Hotfix 1</strong>。緩和策として既知アドレスへのアクセス制限、Content-Encoding ヘッダーのブロックが推奨</li>
+  <li>過去にも Serv-U の脆弱性は Cl0p ランサムウェアグループに悪用された実績あり</li>
+  <li>〈web / ファイル転送サーバのセキュリティに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/cisa-adds-actively-exploited-solarwinds.html" target="_blank" rel="noopener noreferrer">The Hacker News — CISA Adds SolarWinds Serv-U DoS Flaw to KEV</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-28318" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-28318</a></p>
+
+<hr>
+
+<h3>3. OpenClaw 2026.6.5 リリース — MCP セキュリティ強化・認証状態の SQLite 移行 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>openclaw 2026.6.5</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-05</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw 全ユーザー</td></tr>
+</table>
+
+<ul>
+  <li>MCP リースタイムスタンプ、プロンプトキャッシュツール名、ローカルツールカタログ、読み取り不能な動的ツール、オーナー限定 HTTP ツール、プロバイダカタログメタデータの検証を強化</li>
+  <li>MCP HTTP リダイレクトのガード、グローバルエージェント設定のデフォルト保護を実装</li>
+  <li>認証プロファイルを SQLite へ移行し、公式 npm プラグインのインストール記録にトラステッドピンを保持</li>
+  <li>エージェントのトランスクリプトでインライン画像ペイロードのデータ URL と修復済み画像の赤塗りを強化し、画像バイトの漏洩を防止</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/2026.6.5" target="_blank" rel="noopener noreferrer">GitHub — openclaw 2026.6.5 Release</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / Spring Boot、Python / Django、Hono、AWS、Azure、GCP、Claude Code、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。Hono の CVE-2026-47675 Cookie ヘッダーインジェクション（5/28 公開）と Hermes Agent v0.16.0 のセキュリティパッチ（6/5 公開）は既報のため対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 2026 年上半期ハック＆ブリーチ総括 — サプライチェーン攻撃と国家系ハッカーの激化 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>複合サイバー脅威 / サプライチェーン攻撃 / 国家系 APT</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-07（TechCrunch 総括記事）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>グローバル — 政府、企業、重要インフラ、OSS エコシステム</td></tr>
+</table>
+
+<ul>
+  <li><strong>OSS サプライチェーン攻撃の波</strong>: Aqua Security Trivy、Bitwarden、Checkmarx など主要 OSS プロジェクトが相次いで侵害。バックドア入りソフトウェア経由で OpenAI、Vercel など大手テック企業にも波及</li>
+  <li><strong>国家系ハッカーの重要インフラ標的化</strong>: ロシア系グループが欧州の電力・水道システムを攻撃（ポーランド電力網、スウェーデン熱プラント、ノルウェー堤防）。米国ではイラン系ハッカーが水道・エネルギーインフラを標的に</li>
+  <li><strong>米 FBI 監視システム侵害</strong>: 4月に「重大サイバーインシデント」宣言。盗聴対象の電話番号などが中国系スパイに漏洩した可能性</li>
+  <li><strong>ShinyHunters キャンペーン</strong>: ボイスフィッシングによる大規模侵害が継続。Instructure（Canvas LMS）から 3,000 万人超の学生・教職員データ窃取、Charter から 4,000 万件、Carnival から 600 万件</li>
+  <li><strong>Hasbro サイバーインシデント</strong>: 3月末に発覚してから数週間のオフライン状態が継続。Web サイト不通、財務報告の延期</li>
+  <li><strong>DOGE / SSA データ論争</strong>: Social Security データベースが第三者サーバにアップロードされた疑惑。「米国史上最大のデータブリーチ」の可能性</li>
+  <li>2026 年はサイバー攻撃が物理世界への影響をますます増大させている年。サプライチェーンの信頼性確保とゼロトラスト導入が急務</li>
+</ul>
+
+<p>🔗 <a href="https://techcrunch.com/2026/06/07/the-worst-hacks-and-breaches-of-2026-so-far/" target="_blank" rel="noopener noreferrer">TechCrunch — The worst hacks and breaches of 2026 so far</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+
+</body>
+</html>
