@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-11 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-11 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-10 08:00 〜 2026-06-11 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Spring Security / Spring Framework — 一斉公開 12 CVE（RCE・SSRF・XXE・XSS 含む） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE 数</strong></td><td>12 件（June 9-10 公開）</td></tr>
+  <tr><td><strong>最高深刻度</strong></td><td>HIGH（CVSS 7.x–8.x 系複数）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Spring Security 5.7–7.1、Spring Web Services、Spring Web Flow、Spring Integration、Spring Boot</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-09 / 2026-06-10</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-40993（MEDIUM）</strong>— SAML 2.0 の <code>JdbcAssertingPartyMetadataRepository</code> が検証・暗号化資格情報のデシリアライズをフィルタリングしない。攻撃者がデータベースに悪意あるシリアライズ済みペイロードを挿入すると<strong>リモートコード実行</strong>の可能性</li>
+  <li><strong>CVE-2026-41003（HIGH）</strong>— <code>RelyingPartyRegistration</code> の値を操作できる攻撃者が、Spring Security フィルタ生成の HTML フォーム上で<strong>任意コード実行</strong>可能な XSS 脆弱性</li>
+  <li><strong>CVE-2026-40987（HIGH）</strong>— 悪意ある FTP/SFTP/SMB サーバが、設定されたローカルディレクトリ外のクライアントファイルシステム上の<strong>任意ファイルを書き込み可能</strong>（Spring Integration）</li>
+  <li><strong>CVE-2026-40998（HIGH）</strong>— <code>Jaxp13XPathTemplate</code> がデフォルトの <code>DocumentBuilderFactory</code> を使用し、攻撃者制御 XML に対して<strong>XXE 攻撃</strong>（SSRF・機密ファイル漏洩）が可能</li>
+  <li><strong>CVE-2026-40999（HIGH）</strong>— WS-Addressing 使用時、非匿名 <code>ReplyTo</code>/<code>FaultTo</code> アドレスから<strong>SSRF</strong>が発生。内部ホストやクラウドメタデータエンドポイントへの接続を誘発</li>
+  <li><strong>CVE-2026-40994（HIGH）</strong>— <code>Wss4jSecurityInterceptor</code> の BSP 準拠フラグ初期化不備により、受信検証時の WSS4J BSP 強制が無効化</li>
+  <li>その他: CVE-2026-40985（EL 式インジェクション）、CVE-2026-40992（メール送信時ホスト名検証欠如）、CVE-2026-40986（Web Flow XSS）、CVE-2026-40996（RSA-1.5 キー輸送既定許可）、CVE-2026-40997（アカウント状態情報漏洩）、CVE-2026-41000（ReplayCache バイパス）</li>
+  <li>修正バージョン: Spring Security <strong>6.5.11 / 7.0.6 / 7.1.0</strong>、Spring Boot <strong>3.5.14.2 / 4.0.6.1</strong> 等。速やかなアップデートを推奨</li>
+  <li>〈Java / Spring Boot スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://spring.io/security" target="_blank" rel="noopener noreferrer">Spring Security Advisories</a><br>
+🔗 <a href="https://spring.io/blog/2026/06/09/spring-security-releases-2026-06" target="_blank" rel="noopener noreferrer">Spring Security 2026.06 Releases Blog</a></p>
+
+<hr>
+
+<h3>2. OpenClaw 2026.6.6-beta.1 — セキュリティバウンダリ大幅強化（トランスクリプト・サンドボックス・MCP・実行承認） <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>OpenClaw 2026.6.6-beta.1（プレリリース）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-06 頃</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw 全ユーザー（特にセキュリティ設定を強化したいユーザー）</td></tr>
+</table>
+
+<ul>
+  <li>トランスクリプト、サンドボックスバインド、ホスト環境継承、MCP stdio、Codex HTTP アクセス、ネイティブ検索ポリシー、昇格送信者チェックなど<strong>セキュリティバウンダリを大幅に強化</strong></li>
+  <li>実行承認（exec approvals）が<strong>タイムアウト時に fail closed</strong> に変更 — 以前は fail open のリスクあり</li>
+  <li>削除エージェントの ACP バイパス、ループバックツール、Discord モデレーション、Teams グループアクションのセキュリティ強化</li>
+  <li>Telegram 配信の安全性向上: アカウントスコープトピックルーティング、ストリームテキストのツールコール耐性、キャッシュ・プロンプトコンテキストからの未承認 DM テキスト除外</li>
+  <li>iMessage の回復性・配信改善: 常時オン受信再起動、耐久性エコーマーカー、ブロックストリーミング、アイドル承認検出</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/2026.6.6-beta.1" target="_blank" rel="noopener noreferrer">GitHub — OpenClaw 2026.6.6-beta.1 Release</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Python / Django、Hono、AWS、Azure、GCP、Claude Code、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の Next.js CVE-2026-44578 SSRF（5/20 公開）、Django CVE-2026-6873 / CVE-2026-7666（6/3 公開）、Hono CVE-2026-47675 Cookie インジェクション（5/28 公開）、Hermes Agent v0.16.0 セキュリティパッチ（6/5 公開）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Megalodon サプライチェーン攻撃 — 5,500 超の GitHub リポジトリに悪意ある CI ワークフロー注入 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>サプライチェーン攻撃 / CI/CD セキュリティ</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（CM-Alliance 解説記事公開）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>5,561 の GitHub リポジトリ（5,718 の悪意あるコミット）</td></tr>
+  <tr><td><strong>攻撃手法</strong></td><td>GitHub Actions ワークフロー注入 / workflow_dispatch 悪用</td></tr>
+</table>
+
+<ul>
+  <li>2026 年 5 月 18 日に大規模な自動化キャンペーンが実行。攻撃者は<strong>偽の「build-bot」アイデンティティ</strong>を使用し、<code>workflow_dispatch</code> トリガーを悪用して GitHub リポジトリに悪意あるワークフローを注入</li>
+  <li>悪意あるワークフローは<strong>認証トークン、API キー、クラウド資格情報を窃取</strong>するよう設計。GitHub Actions が自動実行・信頼されるプロセスであるため、開発者の注意を引かずに実行</li>
+  <li>CI/CD パイプラインは「特権を持つ信頼された従業員」のような役割を持つため、攻撃者にとって格好の標的。侵害されたワークフローを通じて<strong>クラウドインフラ、本番環境、顧客データ</strong>にアクセスされるリスク</li>
+  <li><strong>対策推奨</strong>: ワークフロー権限の見直し、トークン使用の最小化、自動化アカウントの監視、サードパーティ統合の監査、リポジトリアクセス制御の強化</li>
+  <li>2026 年に入り npm サプライチェーン攻撃（Axios 事件、TanStack 事件）と並んで、ソフトウェア開発プロセス自体への攻撃が加速。開発パイプラインを<strong>重要インフラ</strong>として扱う意識が求められる</li>
+</ul>
+
+<p>🔗 <a href="https://www.cm-alliance.com/cybersecurity-blog/the-megalodon-supply-chain-attack-campaign-explained" target="_blank" rel="noopener noreferrer">CM-Alliance — The Megalodon Supply Chain Attack Campaign Explained</a><br>
+🔗 <a href="https://thehackernews.com/2026/05/megalodon-github-attack-targets-5561.html" target="_blank" rel="noopener noreferrer">The Hacker News — Megalodon GitHub Attack Targets 5,561 Repos</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
