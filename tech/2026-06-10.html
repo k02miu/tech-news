@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-10 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-10 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-09 09:00 〜 2026-06-10 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.170</h2>
+<p>Claude Code v2.1.170 がリリースされました。Anthropic が「Claude Fable 5」と名付けた Mythos クラスの新モデルへのアクセスが可能になります。Fable 5 は Anthropic が一般公開した中で最も強力なモデルと位置づけられています。加えて、セッション保存不具合の修正やバックグラウンドエージェントの改善、多数のバグフィックスが含まれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Fable 5 モデル対応</strong>: v2.1.170 への更新で Mythos クラスの新モデル「Claude Fable 5」にアクセス可能に。Anthropic が一般公開した中で最も能力の高いモデル</li>
+  <li><strong><code>fallbackModel</code> 設定</strong>: プライマリモデルが過負荷または利用不可の場合に順番に試す最大3つのフォールバックモデルを設定可能に。<code>--fallback-model</code> は対話型セッションにも適用</li>
+  <li><strong>deny ルールの glob パターンサポート</strong>: ツール名の位置にglobパターン（<code>"*"</code> で全ツール拒否）を使用可能に。allow ルールは非 MCP glob を拒否し、deny ルールの未知ツール名は起動時に警告</li>
+  <li><strong>クロスセッションメッセージング強化</strong>: 他の Claude セッションからの <code>SendMessage</code> 中継がユーザー権限を持たないように変更。受信側は中継された権限リクエストを拒否し、自動モードではブロック</li>
+  <li><strong>思考制御の改善</strong>: <code>MAX_THINKING_TOKENS=0</code>、<code>--thinking disabled</code>、モデルごとの思考トグルが Claude API 経由でデフォルト思考のモデルでも思考を無効化可能に（サードパーティプロバイダーは変更なし）</li>
+  <li><strong>フォールバックモデル自動リトライ</strong>: API が予期しない非リトライ可能エラーを返した場合、フォールバックモデルで1回リトライ。認証・レート制限・リクエストサイズ・トランスポートエラーは即座に通知</li>
+  <li><strong><code>requiredMinimumVersion</code> / <code>requiredMaximumVersion</code> 管理設定</strong>: Claude Code がバージョンが許容範囲外の場合に起動を拒否し、承認されたバージョンを案内</li>
+  <li><strong><code>/plugin list</code> コマンド</strong>: インストール済みプラグインを一覧表示。<code>--enabled</code> / <code>--disabled</code> フィルタ付き</li>
+  <li><strong><code>/btw</code> のコピー機能</strong>: マークダウン回答をクリップボードにコピーするショートカット「c to copy」を追加</li>
+  <li><strong>Hooks の <code>additionalContext</code></strong>: Stop / SubagentStop フックが <code>hookSpecificOutput.additionalContext</code> を返して Claude にフィードバック可能に。ターンをフックエラー扱いせずに継続</li>
+  <li><strong>スキルの <code>\$</code> エスケープ構文</strong>: コマンド本文で数字の前にリテラル <code>$</code> を含めるためのエスケープ構文を追加</li>
+  <li><strong>stdio MCP サーバーのセッション ID 継承</strong>: <code>--resume</code> 時に hooks/Bash と同じ <code>CLAUDE_CODE_SESSION_ID</code> を受信</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セッション保存不具合修正</strong>: VS Code 統合ターミナルや Claude Code 環境変数を継承したシェルから起動した場合にセッションがトランスクリプトに保存されない（<code>--resume</code> に表示されない）問題を修正</li>
+  <li><strong><code>claude -p</code> ハング修正</strong>: バックグラウンドコマンドが終了しない場合の最終結果後に永久にハングする問題を修正。stdin クローズ後約5秒でバックグラウンドシェルを停止</li>
+  <li><strong>Bedrock/Vertex/Foundry の <code>claude -p</code> 修正</strong>: <code>CI=true</code> で Anthropic API キー未設定時の「ANTHROPIC_API_KEY required」エラーを修正</li>
+  <li><strong>Bazel / EDR 保護 Go ワークフロー修正</strong>: <code>$TMPDIR</code> がサンドボックス化コマンドのみではなく全コマンドに上書きされていた問題を修正（v2.1.154 のリグレッション）</li>
+  <li><strong>Windows <code>EEXIST</code> エラー修正</strong>: OneDrive 内や読み取り専用属性を持つセッション環境ディレクトリでの「file already exists」エラーを修正</li>
+  <li><strong>WebFetch 権限ルール修正</strong>: 組み込み承認済みドメインに明示的な <code>WebFetch(domain:...)</code> deny/ask/allow ルールが適用されるように修正</li>
+  <li><strong>Windows パス権限修正</strong>: バックスラッシュや大文字小文字の異なるパスで権限ルールが一致しない問題を修正</li>
+  <li><strong>JetBrains ツールバーちらつき修正</strong>: 2026.1+ の IntelliJ/PyCharm/WebStorm で同期出力を有効化しちらつきを解消</li>
+  <li><strong>Kitty キーボードプロトコル修正</strong>: WezTerm/Ghostty/kitty で Shift+非ASCII文字がドロップされる問題を修正</li>
+  <li><strong>並列ツール呼び出し改善</strong>: 同一バッチ内の Bash コマンド失敗が他の呼び出しをキャンセルしなくなり、各ツールが独立して結果を返すように</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">Claude Code Releases</a> · <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.16.0「The Surface Release」（2026-06-05 リリース）です。ネイティブデスクトップアプリ（Electron）、Web ダッシュボードのフル管理パネル化、簡体中語対応、<code>/undo</code> コマンド、ファジーモデルピッカー、NVIDIA/skills の Skills Hub への追加、Nous Portal によるクイックセットアップなどの主要機能が含まれています。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.6.5</h2>
+<p>OpenClaw の最新安定版 v2026.6.5 は2026-06-05にリリースされており、対象期間内の新規リリースは確認されませんでした。最新リリースの主要内容は以下の通りです。</p>
+
+<h3>🔧 注目の改善（v2026.6.5 より）</h3>
+<ul>
+  <li><strong>Parallel Web Search プラグイン</strong>: <code>PARALLEL_API_KEY</code> 検出付きのバンドル Web 検索プロバイダーとして Parallel を追加</li>
+  <li><strong>QQBot 思考タグ除去</strong>: モデルの reasoning/thinking スキャフォールディングをネイティブ配信前に除去し、チャット返信への漏洩を防止</li>
+  <li><strong>MCP ツール結果の型強制</strong>: <code>resource_link</code>、<code>resource</code>、<code>audio</code>、不正な画像ブロックをテキストに変換し、Anthropic 400 エラーを防止</li>
+  <li><strong>Matrix 音声メッセージ対応</strong>: mention ゲーティング前の音声メッセージプレフライトとスレッド対応の読み/返信動作を追加</li>
+  <li><strong>Google Chat ネイティブ承認カード</strong>: プラットフォームネイティブのカードアクションとクリック処理を追加</li>
+  <li><strong>リリース番号体系変更</strong>: <code>YYYY.M.PATCH</code> 月次パッチ番号体系に移行</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — v16.3.0-preview.2 / v16.3.0-canary.46</h2>
+<p>Next.js はカナリーチャンネルで v16.3.0-canary.46、さらにプレビューチャンネルで v16.3.0-preview.0〜2 をリリースしました。前号で報告した canary.45 以降の主要な変更が含まれています。</p>
+
+<h3>🔧 注目の変更</h3>
+<ul>
+  <li><strong>プリフェッチオプション名変更</strong> <a href="https://github.com/vercel/next.js/pull/94568" target="_blank" rel="noopener noreferrer">#94568</a>: <code>force-runtime</code> を <code>allow-runtime</code> にリネーム</li>
+  <li><strong><code>export const prefetch</code> の安定化</strong> <a href="https://github.com/vercel/next.js/pull/94571" target="_blank" rel="noopener noreferrer">#94571</a>: プリフェッチのエクスポート構文が安定版に昇格</li>
+  <li><strong>エビクションのデフォルト有効化</strong> <a href="https://github.com/vercel/next.js/pull/94452" target="_blank" rel="noopener noreferrer">#94452</a>: Turbopack のメモリエビクション機能がデフォルトで有効に</li>
+  <li><strong>node:stream リーク修正</strong> <a href="https://github.com/vercel/next.js/pull/94585" target="_blank" rel="noopener noreferrer">#94585</a>: webpack エッジバンドルでの node:stream リークを修正</li>
+  <li><strong>Turbopack: WebAssembly ヘルパー除去</strong> <a href="https://github.com/vercel/next.js/pull/94373" target="_blank" rel="noopener noreferrer">#94373</a>: デフォルトランタイムから WebAssembly ヘルパーを削除しバンドルサイズ削減</li>
+  <li><strong>Cache Components のストリーミング開発レンダリング</strong> <a href="https://github.com/vercel/next.js/pull/94457" target="_blank" rel="noopener noreferrer">#94457</a>: キャッシュミス時に再起動する代わりにストリーミング開発レンダリングを実装</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 2026年6月9日 リリースノート</h2>
+
+<h3>🔧 注目の更新</h3>
+<ul>
+  <li><strong>Anthropic Claude Fable 5（Model Garden）</strong>: Anthropic の Claude Fable 5 が Model Garden で利用可能に。Claude Code v2.1.170 と連携する Mythos クラスモデル</li>
+  <li><strong>Cloud SDK 572.0.0</strong>: macOS Python Virtualenv を 3.14.5 に更新（pyOpenSSL 26.0.0、cryptography 46.0.7）</li>
+  <li><strong>Cloud Service Mesh 1.29.4-asm.0</strong>: Istio 1.29.4 をベースにしたインクラウド版が利用可能に。Envoy v1.37.4-dev を使用</li>
+  <li><strong>GKE メンテナンスウィンドウ改善</strong>: <code>--maintenance-window-duration</code> フラグを <code>gcloud container clusters create/update</code> コマンドに追加</li>
+  <li><strong>Compute Engine: EXTERNAL_PASSTHROUGH</strong>: forwarding-rules と backend-services の <code>--load-balancing-scheme</code> フラグに <code>EXTERNAL_PASSTHROUGH</code> オプションをベータ追加</li>
+  <li><strong>Network Connectivity Center (NCC) Gateway GA</strong>: クロスクラウドネットワークトラフィックに対するセキュリティ機能（SSE 等）が利用可能に</li>
+  <li><strong>NetApp Volumes リモート MCP サーバー GA</strong>: LLM/AI アプリからストレージプール、ボリューム、バックアップを管理可能に</li>
+  <li><strong>Database Migration 機能強化</strong>: Cloud Storage からの変換ワークシード、<code>--dry-run</code> フラグ、接続プロファイル作成の柔軟性向上</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p>以下の技術スタックについては、本日対象期間内の新着情報はありません。</p>
+
+<p class="empty-notice"><strong>React</strong>（6/1 の 19.2.7/19.1.8/19.0.7 FormData 修正以降新規リリースなし）、<strong>Python</strong>（3.15.0b2 が最新、新規パッチなし）、<strong>Django</strong>（6.0.6/5.2.15 セキュリティリリースは6/3付で前号報告済み）、<strong>Java/JDK</strong>（JDK 26.0.1 が4/21、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（最新プレリリース v4.1.0-RC1 は4/23付）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Azure</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>AWS</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>Claude API/SDK</strong>（Python SDK v0.107.1 は6/6付で前日の報告範囲内）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
