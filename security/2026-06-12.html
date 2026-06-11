@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-12 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-12 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-11 08:00 〜 2026-06-12 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Claude Code GitHub Action — 間接プロンプトインジェクションでCI/CDシークレット漏洩の脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>分類</strong></td><td>Indirect Prompt Injection / Sandbox Bypass</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（DevOps.com 記事公開、Microsoft 研究者による報告）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Claude Code GitHub Action ユーザー（CI/CD ワークフロー統合環境）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Claude Code v2.1.128（Read ツールによる /proc/ ファイルアクセスを制限）</td></tr>
+</table>
+
+<ul>
+  <li>Microsoft セキュリティ研究者（Dor Edry、Amit Eliahu）が <strong>Claude Code の GitHub Action</strong>における間接プロンプトインジェクション脆弱性を発見。攻撃者が GitHub Issues・PR の本文・コメントに悪意あるプロンプトを埋め込むことで、AI エージェントが秘密情報を窃取</li>
+  <li><strong>Read ツールが Bubblewrap サンドボックスをバイパス</strong> — Bash 実行パスはサンドボックスで分離されていたが、Read ツールはプロセス内直接呼び出しとして動作し、環境変数（API キー、クラウド資格情報など）にフルアクセス可能だった</li>
+  <li>実証テストでは、<strong>Claude の安全性レイヤと GitHub Secret Scanner の両方を回避</strong>し、Read ツール経由で API キーの取得に成功</li>
+  <li>Anthropic は 2026年4月下旬に報告を受け、Claude Code v2.1.128 で <code>/proc/</code> 配下のファイルへの Read アクセスを無条件拒否する修正を適用</li>
+  <li>研究者は「<strong>自然言語が実行可能コードとなる時代に入っている</strong>。GitHub Issues のような信頼できない入力は、デフォルトで敵対的として扱うべきだ」と警告</li>
+  <li>〈Claude Code スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://devops.com/security-flaw-in-claude-code-illustrates-the-risk-of-ai-in-developer-workflows/" target="_blank" rel="noopener noreferrer">DevOps.com — Security Flaw in Claude Code Illustrates the Risk of AI in Developer Workflows</a></p>
+
+<hr>
+
+<h3>2. ServiceNow — 未認証エンドポイント設定不備による顧客データへの不正アクセス <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>未割り当て（2026-06-10 時点）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（ServiceNow 公開アドバイザリ）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Australia プラットフォームリリースまたは特定の設定変更を行った ServiceNow インスタンス</td></tr>
+  <tr><td><strong>攻撃期間</strong></td><td>2026-06-02 から不正活動を確認。6/5 にセキュリティ更新適用</td></tr>
+</table>
+
+<ul>
+  <li>ServiceNow が<strong>未認証ユーザーがインスタンステーブルに不正アクセス可能だった</strong>セキュリティインシデントを公開。エンドポイント設定の不備により、認証不要で顧客データへのクエリが実行可能だった</li>
+  <li>2026-04-07 に社内報告あり、4/22 にバウンティプログラム経由の報告もあったが、<strong>約2ヶ月間「非緊急」と分類</strong>されていた（Reddit ユーザー「d3s7iny」の主張）</li>
+  <li>6/2 に不正活動開始、6/3-4 にバウンティプログラム経由の複数報告、6/5 にホストインスタンスへのセキュリティ更新適用</li>
+  <li><strong>サブセットの顧客インスタンスでテーブルクエリの成功を確認</strong>。影響を受けた顧客には直接通知済み</li>
+  <li>企業向け ITSM/ワークフローオートメーション基盤での認証・認可の設定不備は、サプライチェーン全体への影響が大きいため注意が必要</li>
+  <li>〈AWS / Azure / GCP — クラウドベース ITSM として広く利用〉</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/servicenow-flaw-exploited-to-gain.html" target="_blank" rel="noopener noreferrer">The Hacker News — ServiceNow Flaw Exploited to Gain Unauthorized Access</a><br>
+🔗 <a href="https://www.bleepingcomputer.com/news/security/servicenow-discloses-security-incident-exposing-customer-data/" target="_blank" rel="noopener noreferrer">BleepingComputer — ServiceNow discloses security incident exposing customer data</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Python / Django、Hono、SpringBoot、AWS、Azure、GCP、Hermes Agent、OpenClaw に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の Django 6.0.6 / 5.2.15 セキュリティリリース（6/3 公開）、Hermes Agent v0.16.0 セキュリティパッチ含むリリース（6/5 公開）、OpenClaw 2026.6.6-beta.1 セキュリティバウンダリ強化（6/6 公開）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Microsoft Patch Tuesday 2026年6月 — 記録的 208 CVE・ゼロデイ3件・Critical 33件 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE 数</strong></td><td>208 件（過去最高。前回記録は2025年10月の170件）</td></tr>
+  <tr><td><strong>深刻度内訳</strong></td><td>Critical 33 件（RCE 28、EoP 4、情報漏洩 1）、他に公開済ゼロデイ 3 件</td></tr>
+  <tr><td><strong>ゼロデイ</strong></td><td>CVE-2026-45586（CTFMON 権限昇格）、CVE-2026-49160（HTTP/2 Bomb DoS）、CVE-2026-50507（BitLocker バイパス / YellowKey）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Patch Tuesday）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-45586（Windows CTFMON 権限昇格）</strong>— Windows Collaborative Translation Framework のリンク解決不備。認証認証済みローカル攻撃者が<strong>SYSTEM 権限まで昇格可能</strong>。公開済みゼロデイ</li>
+  <li><strong>CVE-2026-49160（HTTP/2 Bomb DoS）</strong>— HTTP.sys カーネルドライバの脆弱性。小規模リクエストで<strong>サーバーに過大なメモリ割り当てを強制</strong>し、リソース枯渇・サービス停止を引き起こす「HTTP/2 Bomb」。フロー制御設定の悪用で攻撃増幅が可能</li>
+  <li><strong>CVE-2026-50507（BitLocker バイパス / YellowKey）</strong>— 物理アクセスを持つ攻撃者が BitLocker 暗号化をバイパス。<strong>TPM のみ認証構成が主な影響範囲</strong>。USB デバイスに特殊ファイルを配置し Windows RE 起動時に CTRL キーでコマンドシェルを起動する攻撃手法</li>
+  <li>Critical 33 件中 28 件が<strong>リモートコード実行（RCE）</strong>。インターネット公開サーバー、ドメインコントローラー、管理端末への早急なパッチ適用を推奨</li>
+  <li>Windows、Office、Edge（Chromium）、Azure、SQL Server など Microsoft 製品全般に影響。企業環境でのパッチ管理負荷が過去最大規模に</li>
+  <li>影響を受ける主要環境: Windows Server、Azure Virtual Desktop、Azure Arc 接続マシン、AWS/GCP 上の Windows Server インスタンス</li>
+</ul>
+
+<p>🔗 <a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-june-2026-patch-tuesday-fixes-6-zero-days-200-flaws/" target="_blank" rel="noopener noreferrer">BleepingComputer — Microsoft June 2026 Patch Tuesday fixes 6 zero-days, 200 flaws</a><br>
+🔗 <a href="https://msrc.microsoft.com/update-guide/releaseNote/2026-Jun" target="_blank" rel="noopener noreferrer">MSRC — June 2026 Security Updates</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
