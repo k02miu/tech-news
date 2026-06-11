@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-11 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-11 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-10 09:00 〜 2026-06-11 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.170（追加ドキュメント公開）</h2>
+<p>Claude Code v2.1.170（Claude Fable 5 対応リリース）の公式 changelog に、前号で未報告の多数の新機能・修正エントリが追加で確認されました。新規バージョンのリリースはありませんが、<code>--safe-mode</code> フラグや <code>/cd</code> コマンドなど注目すべき改善が含まれています。</p>
+
+<h3>🔧 追加確認された新機能・改善</h3>
+<ul>
+  <li><strong><code>--safe-mode</code> フラグ</strong>: トラブルシューティング用に、すべてのカスタマイズ（CLAUDE.md、プラグイン、スキル、フック、MCP サーバー）を無効化して Claude Code を起動可能に。環境変数 <code>CLAUDE_CODE_SAFE_MODE</code> でも設定可能</li>
+  <li><strong><code>/cd</code> コマンド</strong>: プロンプトキャッシュを壊さずに、セッション中に作業ディレクトリを移動可能に</li>
+  <li><strong><code>disableBundledSkills</code> 設定</strong>: モデルにバンドルスキル・ワークフロー・組み込みスラッシュコマンドを非表示にする設定と <code>CLAUDE_CODE_DISABLE_BUNDLED_SKILLS</code> 環境変数を追加</li>
+  <li><strong>Self-hosted Runner の <code>post-session</code> ライフサイクルフック</strong>: セッション終了後・ワークスペース削除前にスナップショットやログ出力を実行可能に。子プロセスの SIGTERM→SIGKILL ウィンドウも設定可能に</li>
+  <li><strong>アップデーター改善</strong>: <code>claude update</code> がダウンロード前にターゲットバージョンを表示するように変更</li>
+  <li><strong><code>claude agents</code> URL フィルタ</strong>: リストに URL を入力すると、最初のプロンプトにその URL を含むセッションにフィルタ可能に</li>
+  <li><strong><code>/workflows</code> 即時起動</strong>: ターン実行中でもワークフローが即座に開くように改善</li>
+  <li><strong><code>TaskCreate</code> 信頼性向上</strong>: 不正な入力が自動修復され、未ロードツールのバリデーションエラーにスキーマが含まれるように</li>
+  <li><strong>Vertex/Foundry アイドルタイムアウト復元</strong>: デフォルト5分のアイドルタイムアウトを復元。<code>API_FORCE_IDLE_TIMEOUT=0</code> で無効化可能</li>
+  <li><strong>リモート管理設定の検証エラー処理改善</strong>: 無効なエントリがあっても残りの有効なポリシーを適用し、検証エラーを表示するように変更</li>
+  <li><strong>CLAUDE.md 長さ警告の動的調整</strong>: 「CLAUDE.md is too long」警告の閾値がモデルのコンテキストウィンドウに応じてスケールするように</li>
+  <li><strong><code>OTEL_RESOURCE_ATTRIBUTES</code> メトリクスラベル</strong>: OpenTelemetry リソース属性値がメトリックデータポイントのラベルとして使用可能に</li>
+  <li><strong><code>claude agents</code> 行の進捗表示</strong>: 作業分散時に詳細の前に <code>done/total</code> を表示</li>
+</ul>
+
+<h3>🐛 追加確認された主な修正</h3>
+<ul>
+  <li><strong>矢印キーの長い入力行修正</strong>: 折り返された長い入力行で Up/Down 矢印がコマンド履歴にジャンプしていた問題を修正。各行を順に移動してから履歴にアクセスするように変更</li>
+  <li><strong>エンタープライズ MCP ポリシー修正</strong>: <code>allowedMcpServers</code>/<code>deniedMcpServers</code> の管理ポリシーが再接続時・IDE 設定・初回セッション時に正しく適用されない問題を修正</li>
+  <li><strong>macOS UI ストール修正</strong>: claude.ai 資格情報でログインした macOS ユーザーに各ターン開始時に30〜50ms の UI ストールが発生していた問題を修正</li>
+  <li><strong><code>claude -p</code> Windows 遅延修正</strong>: スラッシュコマンド/スキルスキャン待機中の Windows での遏延・ハングを修正（v2.1.161 のリグレッション）</li>
+  <li><strong>Remote Control 再接続修正</strong>: セッション再開時に OAuth トークン更新が同時発生すると Remote Control が「reconnecting」で停止する問題を修正</li>
+  <li><strong>Git Credential Manager ポップアップ修正</strong>: キャッシュされていない資格情報でバックグラウンド git コマンドを実行した際の Windows スタートアップ時の GitHub 接続ポップアップを修正</li>
+  <li><strong>フッターヒント表示修正</strong>: カスタムステータスラインを持つユーザーに「esc to interrupt」等のフッターヒントが表示されない問題を修正</li>
+  <li><strong>リモートセッション承認プロンプト修正</strong>: ワーカーがプロンプトを待機中に停止したリモートセッションに再接続するたびに古い承認・ダイアログが再表示される問題を修正</li>
+  <li><strong><code>claude agents --json</code> 出力修正</strong>: ブロックされたセッションと直前にディスパッチされたバックグラウンドセッションが省略される問題を修正。<code>--all</code> フラグで完了済みセッションも含め、<code>id</code> と <code>state</code> フィールドを追加</li>
+  <li><strong>バックグラウンドエージェントのプロジェクト設定修正</strong>: プリウォームされたワーカーにディスパッチされたバックグラウンドエージェントがプロジェクトレベルの <code>env</code> 値（例: <code>ANTHROPIC_MODEL</code>）を無視していた問題を修正</li>
+  <li><strong>MCPB プラグインキャッシュ修正</strong>: Windows で MCPB プラグインキャッシュが誤って無効化され、不要な再展開が発生していた問題を修正</li>
+  <li><strong>プラグイン <code>.in_use</code> PID ロック修正</strong>: <code>.in_use</code> PID ロックファイルが無制限に蓄積する問題を修正。クラッシュしたセッションのマーカーは1日1回掃除</li>
+  <li><strong>OTEL クライアント証明書パス修正</strong>: 信頼確認なしで OTEL クライアント証明書パスを設定できる非信頼プロジェクト設定を修正</li>
+  <li><strong>Windows の自動更新修正</strong>: <code>claude.exe</code> が別のプロセスによって保持されている場合、セッション内でリトライを停止するように修正</li>
+  <li><strong>モーション設定の適用修正</strong>: <code>/effort</code> ダイアログ・ワークフロー动画・プロンプトキーワード shimmer が「Reduce motion」設定を遵守しない問題を修正</li>
+  <li><strong><code>forceLoginOrgUUID</code>/<code>forceLoginMethod</code> ポリシー修正</strong>: サードパーティプロバイダーのセッション（Bedrock/Vertex/Foundry/Mantle）を誤ってブロックする問題を修正（v2.1.146 のリグレッション）</li>
+  <li><strong>バックグラウンドサブエージェント出力修正</strong>: <code>--output-format text</code> または <code>json</code> 使用時の <code>claude -p</code> stdout がバックグラウンドサブエージェント出力で破損する問題を修正</li>
+  <li><strong><code>acceptEdits</code> モードのビルドツール設定確認</strong>: コード実行を許可するビルドツール設定ファイル（<code>.npmrc</code>、<code>.yarnrc*</code>、<code>bunfig.toml</code> 等）への書き込み前にプロンプトを表示するように</li>
+  <li><strong><code>grep</code> 後の <code>Read</code> 不要化</strong>: 単一ファイルの <code>grep</code>/<code>egrep</code>/<code>fgrep</code> コマンドが「読み取り-before-編集」チェックを満たすように。ファイル表示後に別途 Read が不要に</li>
+  <li><strong>WSL クリップボード修正</strong>: WSL で copy-on-select が Windows クリップボードに書き込まれない問題を修正。MobaXterm 等で動作しない OSC 52 の代わりに PowerShell インターオップを使用</li>
+  <li><strong>シェルスタートアップファイル書き込み確認</strong>: <code>.zshenv</code>、<code>.zlogin</code>、<code>.bash_login</code>、<code>~/.config/git/</code> への書き込み前にプロンプトを表示するように</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">Claude Code Releases</a> · <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.16.0「The Surface Release」（2026-06-05 リリース）です。ネイティブデスクトップアプリ（Electron）、Web ダッシュボードのフル管理パネル化、簡体中語対応、<code>/undo</code> コマンド、ファジーモデルピッカー、NVIDIA/skills の Skills Hub への追加、Nous Portal によるクイックセットアップなどの主要機能が含まれています。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.6.6-beta.1</h2>
+<p>OpenClaw がベータ版 v2026.6.6-beta.1 をリリースしました。大幅なセキュリティ強化が中心で、トランスクリプト、サンドバイド、ホスト環境継承、MCP stdio、Codex HTTP アクセス、ネイティブ検索ポリシー、Discord モデレーション、Teams グループアクションなど、広範囲にわたるセキュリティ境界の強化が行われています。安定版は引き続き v2026.6.5 です。</p>
+
+<h3>🔧 注目の改善（v2026.6.6-beta.1）</h3>
+<ul>
+  <li><strong>セキュリティ境界の大幅強化</strong>: トランスクリプト、サンドバイドバインド、ホスト環境継承、MCP stdio、Codex HTTP アクセス、ネイティブ検索ポリシー、昇格された送信者チェック、削除エージェントの ACP バイパス、ループバックツール、Discord モデレーション、Teams グループアクションにおけるセキュリティが大幅に強化。承認の実行はタイムアウト時に fail closed</li>
+  <li><strong>Telegram 配信の安全性・一貫性向上</strong>: アカウントスコープのトピックルーティング、ストリームテキストのツールコール間生存、<code>/compact</code> の汎用イングレス対応、コールバック処理の具体 API 使用、下書きチャンクの共有</li>
+  <li><strong>iMessage リカバリ・配信強化</strong>: 常時オン受信再起動、耐久性エコーマーカー、ブロックストリーミング、アイドル承認検出、強化された送信トランスポート</li>
+  <li><strong>ブラウザ・MCP 接続性改善</strong>: 既存セッション CDP サポート、発見 WebSocket 検証、デフォルトプロファイル <code>cdpUrl</code> 処理、Streamable HTTP ループバックトランスポート、OAuth/SSE 認証処理の修正</li>
+  <li><strong>Control UI スタートアップ・初回応答レイテンシ低減</strong>: キャッシュされたモデルメタデータ、スタートアップカタログ待機の除去、遅延スラッシュコマンドロード、初回イベントトレースと遅延応答診断</li>
+  <li><strong>プロバイダー拡張</strong>: OpenRouter OAuth オンボーディング、Claude Fable 5 アダプティブ思考対応</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — v16.3.0-canary.48 / v16.3.0-preview.3</h2>
+<p>Next.js がカナリーチャンネルで v16.3.0-canary.48、プレビューチャンネルで v16.3.0-preview.3 をリリースしました。Turbopack のビルド時ファイルシステムキャッシュデフォルト有効化やコールドキャッシュ開発インジケーターなどの改善が含まれています。</p>
+
+<h3>🔧 注目の変更</h3>
+<ul>
+  <li><strong>Turbopack ファイルシステムキャッシュのデフォルト有効化</strong> <a href="https://github.com/vercel/next.js/pull/94616" target="_blank" rel="noopener noreferrer">#94616</a>: 非安定版リリースで <code>turbopackFileSystemCacheForBuild</code> をデフォルトで有効に</li>
+  <li><strong>コールドキャッシュ開発インジケーター</strong> <a href="https://github.com/vercel/next.js/pull/94611" target="_blank" rel="noopener noreferrer">#94611</a>: 開発時のキャッシュ未ヒット状態を視覚的に通知するインジケーターを追加</li>
+  <li><strong><code>'use cache'</code> エントリの開発時ステージング修正</strong> <a href="https://github.com/vercel/next.js/pull/94645" target="_blank" rel="noopener noreferrer">#94645</a>: 開発時に短命の <code>'use cache'</code> エントリを正しくステージングするように修正</li>
+  <li><strong>Node ストリーム再開時のシェルエラー処理</strong> <a href="https://github.com/vercel/next.js/pull/94668" target="_blank" rel="noopener noreferrer">#94668</a>: Node ストリーム再開時のシェルエラーを適切に処理するように修正</li>
+  <li><strong><code>unstable_instant</code> の安定化</strong> <a href="https://github.com/vercel/next.js/pull/94578" target="_blank" rel="noopener noreferrer">#94578</a>: <code>unstable_</code> プレフィックスを削除して <code>instant</code> ナビゲーションが安定版に昇格</li>
+  <li><strong><code>catchError</code> と <code>retry</code> の安定化</strong> <a href="https://github.com/vercel/next.js/pull/94623" target="_blank" rel="noopener noreferrer">#94623</a>: <code>unstable_</code> プレフィックスを削除して安定版に昇格（一度リバート後に再適用）</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 2026年6月10日 リリースノート</h2>
+
+<h3>🔧 注目の更新</h3>
+<ul>
+  <li><strong>BigQuery 継続クエリの集約関数拡張（Preview）</strong>: BigQuery 継続クエリで新たに集約関数がサポートされ、リアルタイムデータ処理の幅が拡大</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">GCP Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（6/1 の 19.2.7/19.1.8/19.0.7 FormData 修正以降新規リリースなし）、<strong>Python</strong>（3.15.0b2 が最新、新規パッチなし）、<strong>Django</strong>（6.0.6/5.2.15 セキュリティリリースは6/3付で前号報告済み）、<strong>Java/JDK</strong>（JDK 26.0.1 が4/21、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（最新プレリリース v4.1.0-RC1 は4/23付）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Azure</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>AWS</strong>（対象期間内の個別アップデートは確認されませんでした）、<strong>Claude API/SDK</strong>（Python SDK v0.107.1 は6/6付で前日の報告範囲内）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
