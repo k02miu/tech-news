@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-13 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-13 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-12 08:00 〜 2026-06-13 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Spring Cloud Sleuth — Spring TX 計装経由の DoS 脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-41708</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-11（Spring Security Advisory）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>org.springframework.cloud:spring-cloud-sleuth-instrumentation を使用するアプリケーション</td></tr>
+  <tr><td><strong>修正</strong></td><td>影響を受けるバージョンから対応する修正バージョンへアップグレード</td></tr>
+</table>
+
+<ul>
+  <li>Spring Cloud Sleuth の Spring TX 計装において、<strong>攻撃者が細工された呼び出しを提供することで DoS（サービス拒否）状態を引き起こせる</strong>脆弱性</li>
+  <li><code>spring-cloud-sleuth-instrumentation</code> を利用するアプリケーションが影響を受ける。トレーシング計装を有効にしている Spring Boot アプリケーション全般が対象</li>
+  <li>Spring 公式アドバイザリで「追加の緩和策は不要、影響を受けるバージョンから修正バージョンへアップグレードせよ」と明記</li>
+  <li>CERT-Bund（ドイツ連邦情報セキュリティ局）でも 2026-06-12 に複数脆弱性として警告公開（CVE-2026-41708 と CVE-2026-47825 を同時掲載）</li>
+  <li>〈SpringBoot / Java スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://spring.io/security/cve-2026-41708" target="_blank" rel="noopener noreferrer">Spring Security Advisory — CVE-2026-41708</a></p>
+
+<hr>
+
+<h3>2. Spring Cloud Gateway — 信頼できないプロキシからのヘッダ転送による IP スプーフィング <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47825</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High（CVSS 7.0）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-11（Spring Security Advisory）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Spring Cloud Gateway Server（WebMVC / WebFlux 両方）</td></tr>
+  <tr><td><strong>修正</strong></td><td>影響を受けるバージョンへアップグレード。WebFlux の NettyServerCustomizer はデフォルトで無効化</td></tr>
+</table>
+
+<ul>
+  <li>Spring Cloud Gateway Server が、<strong>特定の設定シナリオで信頼できないプロキシからの <code>X-Forwarded-For</code> および <code>Forwarded</code> ヘッダをそのまま転送</strong>する脆弱性</li>
+  <li>攻撃者はこの脆弱性を利用し、<strong>送信元 IP アドレスを偽装</strong>可能。IP ベースのアクセス制御やレート制限をバイパスできるリスク</li>
+  <li>WebMVC と WebFlux 両方の Gateway Server が影響を受ける</li>
+  <li>修正後、WebFlux の <code>NettyServerCustomizer</code> はデフォルトで無効化される。必要に応じて <code>spring.cloud.gateway.server.webflux.httpserver.customizer-enabled=true</code> で明示的に有効化が必要</li>
+  <li>報告者: samarthd（責任ある開示）</li>
+  <li>〈SpringBoot / Java スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://spring.io/security/cve-2026-47825" target="_blank" rel="noopener noreferrer">Spring Security Advisory — CVE-2026-47825</a></p>
+
+<hr>
+
+<h3>3. Claude Code v2.1.176 — availableModels バイパス修正とセキュリティ強化 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>Claude Code v2.1.176（2026-06-13 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティポリシー強化 / 設定バイパス修正</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>企業向け Claude Code デプロイメント（managed settings 利用環境）</td></tr>
+</table>
+
+<ul>
+  <li><strong><code>availableModels</code> 制限のバイパスを修正</strong> — <code>ANTHROPIC_DEFAULT_*_MODEL</code> 環境変数経由で、ブロックされたモデルにエイリアスモデルピックをリダイレクト可能だった脆弱性を修正。また <code>/fast</code> が許可リスト外のモデルへの切り替えを拒否するように</li>
+  <li><strong><code>enforceAvailableModels</code> managed setting</strong>（v2.1.175）— 有効化すると、<code>availableModels</code> 許可リストが Default モデルにも適用される。不許可モデルに解決される Default は最初の許可モデルにフォールバック。ユーザー/プロジェクト設定が managed リストを拡張できなくなる</li>
+  <li>hook <code>if</code> 条件のパスマッチ修正 — <code>Edit(src/**)</code>、<code>Read(~/.ssh/**)</code>、<code>Read(.env)</code> のようなドキュメント化されたパターンが正しくマッチするように</li>
+  <li>サンドボックス起動時のシンボリックリンク処理修正（Linux）、Remote Control のモデル切り替え防止</li>
+  <li>〈Claude Code スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">GitHub Releases — anthropics/claude-code</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Python / Django、Hono、AWS、Azure、GCP、Hermes Agent、OpenClaw に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の OpenClaw 2026.6.6 セキュリティ境界強化（6/6 公開）、Hermes Agent v0.16.0 セキュリティパッチ含むリリース（6/5 公開）、Hono CVE-2026-47676（6/4 公開）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Microsoft Patch Tuesday 2026年6月 — 記録的 208 CVE・ゼロデイ3件・Critical 33件 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE 数</strong></td><td>208 件（過去最高。前回記録は2025年10月の170件）</td></tr>
+  <tr><td><strong>深刻度内訳</strong></td><td>Critical 33 件（RCE 28、EoP 4、情報漏洩 1）、公開済ゼロデイ 3 件</td></tr>
+  <tr><td><strong>ゼロデイ</strong></td><td>CVE-2026-45586（CTFMON 権限昇格）、CVE-2026-49160（HTTP/2 Bomb DoS）、CVE-2026-50507（BitLocker バイパス / YellowKey）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Patch Tuesday）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-45586（Windows CTFMON 権限昇格）</strong>— Windows Collaborative Translation Framework のリンク解決不備。認証済みローカル攻撃者が<strong>SYSTEM 権限まで昇格可能</strong>。公開済みゼロデイ</li>
+  <li><strong>CVE-2026-49160（HTTP/2 Bomb DoS）</strong>— HTTP.sys カーネルドライバの脆弱性。小規模リクエストで<strong>サーバーに過大なメモリ割り当てを強制</strong>し、リソース枯渇・サービス停止を引き起こす「HTTP/2 Bomb」</li>
+  <li><strong>CVE-2026-50507（BitLocker バイパス / YellowKey）</strong>— 物理アクセスを持つ攻撃者が BitLocker 暗号化をバイパス。<strong>TPM のみ認証構成が主な影響範囲</strong></li>
+  <li>Critical 33 件中 28 件が<strong>リモートコード実行（RCE）</strong>。インターネット公開サーバー、ドメインコントローラー、管理端末への早急なパッチ適用を推奨</li>
+  <li>Windows、Office、Edge（Chromium）、Azure、SQL Server など Microsoft 製品全般に影響。企業環境でのパッチ管理負荷が過去最大規模に</li>
+  <li>※前号（6/12 朝刊）で初回報道。本日も引き続き各ベンダーからの詳細分析・PoC 情報が続報として公開されている状況</li>
+</ul>
+
+<p>🔗 <a href="https://msrc.microsoft.com/update-guide/releaseNote/2026-Jun" target="_blank" rel="noopener noreferrer">MSRC — June 2026 Security Updates</a><br>
+🔗 <a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-june-2026-patch-tuesday-fixes-6-zero-days-200-flaws/" target="_blank" rel="noopener noreferrer">BleepingComputer — Microsoft June 2026 Patch Tuesday fixes 6 zero-days, 200 flaws</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
