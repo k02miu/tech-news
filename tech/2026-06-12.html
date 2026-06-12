@@ -19,10 +19,36 @@
 <main>
 <article>
 
-<h2>🧠 Claude Code</h2>
-<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.170（Claude Fable 5 対応リリース）です。前号で報告した <code>--safe-mode</code> フラグ、<code>/cd</code> コマンド、<code>disableBundledSkills</code> 設定などの追加ドキュメント公開に引き続き、新規アップデートは発表されていません。</p>
+<h2>🧠 Claude Code — v2.1.173</h2>
+<p>対象期間中に v2.1.172（06/11 09:39 JST）と v2.1.173（06/11 16:39 JST）の2リリースが公開されました。サブエージェントのネスト化、Bedrock region 改善、パフォーマンス最適化、多数のバグ修正が含まれます。</p>
 
-<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a></p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>サブエージェントの再帰的ネスト</strong>: サブエージェントがさらにサブエージェントをspawn可能に（最大5段階）。複雑なタスクの委譲が大幅に柔軟化</li>
+  <li><strong>Amazon Bedrock region 自動検出</strong>: <code>AWS_REGION</code> 未設定時に <code>~/.aws</code> config からregionを読み込むように。SDKと同じ優先順位に。<code>/status</code> で取得元を表示</li>
+  <li><strong><code>/plugin</code> 検索バー追加</strong>: マーケットプレイスのプラグイン一覧に検索バーが追加</li>
+  <li><strong>OTELメトリクスに <code>model</code> 属性追加</strong>: <code>claude_code.lines_of_code.count</code> にモデル情報が付与</li>
+  <li><strong>パフォーマンス改善</strong>: 長い会話での冗長なメッセージ正規化を排除、ストリーミング中の不要な変換を削減</li>
+  <li><strong>CPU使用率削減</strong>: <code>/goal</code> ステータスチップのアイドル時5Hz再描画を停止、サブエージェント並行時の不要な再描画を削減</li>
+  <li><strong>Claude in Chrome 改善</strong>: ブラウザツールのロードを各ツール個別から単一バッチ呼び出しに変更</li>
+  <li><strong>Remote Control 表示短縮</strong>: フッターインジケータを「/rc active」に短縮、狭いターミナルでは非表示</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Fable 5モデル名 suffix 修正</strong>: <code>[1m]</code> suffixの正規化が行われていなかった問題を修正。Fable 5はデフォルト1M contextのためsuffixは自動除去</li>
+  <li><strong>Windows sandbox 警告修正</strong>: sandbox有効時に「sandbox dependencies missing」の誤った警告が表示される問題を修正</li>
+  <li><strong>1M context 使用量クレジットなしセッション修正</strong>: 1M context使用時に永続的に固まる問題を修正。自動的に標準context limit内にcompaction</li>
+  <li><strong>複数画像エラー修正</strong>: 会話に複数の画像を含む場合の「an image could not be processed」の繰り返しエラーを修正</li>
+  <li><strong>エージェントビューbusy表示修正</strong>: ワーカー応答後30秒間busyスピナーが残る問題を修正</li>
+  <li><strong>バックグラウンドエージェントのプロジェクト設定修正</strong>: プレウォームワーカーにディスパッチ時、他ディレクトリの設定(.mcp.json)を読み込む問題を修正</li>
+  <li><strong>EAUTH修正</strong>: Claude Code自動アップデート後に開始されたセッションのバックグラウンドセッション接続失敗を修正</li>
+  <li><strong><code>/model</code> ピッカー多数修正</strong>: Bedrockでプロバイダが提供しないモデルが表示される問題、利用可能モデル制限がサブエージェントに適用されない問題、1M suffixの二重付与を修正</li>
+  <li><strong>WebFetchワイルドカード修正</strong>: <code>*.example.com</code> がサブドメインにマッチしない問題、<code>Read(secrets-*/config.json)</code> 等のミドパターンワイルドカードが起動時に拒否される問題を修正</li>
+  <li><strong>メモリrecall修正</strong>: リモートセッションでマウントされたチームメモリストアが見つからない問題を修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
 
 <hr>
 
