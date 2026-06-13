@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-14 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-14 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-13 08:00 〜 2026-06-14 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Claude Code v2.1.176 — availableModels バイパス修正と Remote Control モデル切替防止 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>Claude Code v2.1.176（2026-06-12 リリース）、v2.1.177（2026-06-13 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティポリシー強化 / モデルガバナンス修正</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>企業向け Claude Code デプロイメント（managed settings 利用環境）</td></tr>
+</table>
+
+<ul>
+  <li><strong><code>availableModels</code> 制限のバイパスを修正</strong> — <code>ANTHROPIC_DEFAULT_*_MODEL</code> 環境変数経由で、ブロックされたモデルにエイリアスモデルピックをリダイレクト可能だった脆弱性を修正。<code>/fast</code> が許可リスト外のモデルへの切り替えを拒否するように</li>
+  <li><strong>Remote Control の暗黙的モデル切替を修正</strong> — Web/モバイルから Remote Control 経由で接続した際に、セッションのモデルが暗黙的に切り替わっていた問題を修正。セキュリティ上重要な修正</li>
+  <li>hook <code>if</code> 条件のパスマッチ修正 — <code>Edit(src/**)</code>、<code>Read(~/.ssh/**)</code>、<code>Read(.env)</code> のようなパターンが正しくマッチするように</li>
+  <li>Bedrock 認証情報キャッシュの改善 — <code>awsCredentialExport</code> で取得した認証情報を固定1時間ではなく <code>credentialExpiration</code> まで保持</li>
+  <li>米国政府指令により Claude Fable 5 が一時停止中。選択しても Claude Opus 4.8 にフォールバック</li>
+  <li>〈Claude Code スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">GitHub Releases — anthropics/claude-code</a></p>
+
+<hr>
+
+<h3>2. Apache CXF — アタッチメントヘッダー無制限による DoS 脆弱性 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-50645</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>Medium（CVSS 5.3 前後）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-11（Apache Security Advisory / oss-security ML）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Apache CXF を利用する Java Web Services アプリケーション（SOAP/RESTful）</td></tr>
+  <tr><td><strong>修正</strong></td><td>CXF 4.2.2 または 4.1.7 へアップグレード</td></tr>
+</table>
+
+<ul>
+  <li>Apache CXF の <code>AttachmentDeserializerUtil</code> クラスで、MIME マルチパートメッセージのアタッチメントヘッダー数に<strong>制限がない</strong>問題。攻撃者が大量のヘッダーを含むメッセージを送信することでリソース枯渇（DoS）を引き起こせる</li>
+  <li>Java Web Services スタック（Spring Boot + CXF、Jakarta EE + CXF 等）に直接影響。Apache CXF を利用する SOAP サービスや JAX-RS エンドポイントが対象</li>
+  <li>INCIBE（スペインサイバーセキュリティ機関）でも 2026-06-12 に警告公開</li>
+  <li>〈SpringBoot / Java スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cxf.apache.org/security-advisories.html" target="_blank" rel="noopener noreferrer">Apache CXF — Security Advisories</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-50645" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-50645</a></p>
+
+<hr>
+
+<h3>3. Vim — netrw プラグイン Vimscript コードインジェクション <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47162</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High（CVSS 8.8）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-11（NVD）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Vim 9.2.0495 以前（netrw プラグイン利用時）</td></tr>
+  <tr><td><strong>修正</strong></td><td>Vim 9.2.0495 以降へアップデート</td></tr>
+</table>
+
+<ul>
+  <li>Vim の netrw プラグイン（<code>autoload/netrw.vim</code>）の <code>s:NetrwBookHistSave()</code> 関数で、<strong>細工されたディレクトリ名を含むファイルをブラウズした際に Vimscript コードがインジェクション可能</strong>な脆弱性</li>
+  <li>開発者が信頼できないリポジトリをブラウズする際や、攻撃者が仕掛けたディレクトリ構造を Vim で開いた際に任意コード実行のリスク</li>
+  <li>CVSS 8.8（High）と高評価。開発環境全般に影響するため早急な更新を推奨</li>
+  <li>Amazon Linux Security Center でも 2026-06-11 にアドバイザリ公開</li>
+  <li>〈web 開発ツールチェーンに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-47162" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-47162</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Django、Hono、AWS、Azure、GCP、Hermes Agent、OpenClaw に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の Spring Cloud Sleuth CVE-2026-41708、Spring Cloud Gateway CVE-2026-47825（6/11 公開）、Hermes Agent v0.16.0（6/5 公開）、OpenClaw 2026.6.6 セキュリティ境界強化（6/6 公開）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Linux カーネル nf_tables ルートエクスプロイト公開 — CVE-2026-23111 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-23111</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High〜Critical（ローカル権限昇格）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-08（The Hacker News / Ars Technica / Security Affairs）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>nf_tables を有効にした Linux カーネル（RHEL、Ubuntu、Debian 等すべての主要ディストリビューション）</td></tr>
+  <tr><td><strong>PoC</strong></td><td>公開済み</td></tr>
+</table>
+
+<ul>
+  <li><strong>1文字の誤りが引き起こした深刻な脆弱性</strong> — Linux カーネルの nf_tables パケットフィルタリングサブシステムで、論理演算子「<code>!</code>」が余計に入った1文字のバグにより、use-after-free が発生。ローカル攻撃者が<strong>root 権限を取得可能</strong></li>
+  <li>2026-06-08 に複数の主要セキュリティメディア（The Hacker News、Ars Technica、Security Affairs）が報道。<strong>PoC（概念実証コード）が公開済み</strong>の状態</li>
+  <li>コンテナ環境でも影響 — Kubernetes ノードや CI/CD ランナー上で nf_tables が有効な場合、<strong>コンテナブレイクアウト</strong>のリスクあり</li>
+  <li>Google Cloud（GKE）でも CVE-2026-46300（Fragnesia）と合わせてセキュリティアドバイザリを公開中。AWS / Azure のコンテナ環境も影響範囲</li>
+  <li>既存パッチが適用されているか <code>/proc/config.gz</code> またはカーネルビルド設定で nf_tables の状態を確認することを推奨</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/one-character-linux-kernel-flaw-enables.html" target="_blank" rel="noopener noreferrer">The Hacker News — One-Character Linux Kernel Flaw Enables Local Root Access</a><br>
+🔗 <a href="https://securityaffairs.com/193352/hacking/cve-2026-23111-linux-nf_tables-flaw-enables-root-exploits.html" target="_blank" rel="noopener noreferrer">Security Affairs — CVE-2026-23111</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
