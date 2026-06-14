@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-15 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-15 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-14 08:00 〜 2026-06-15 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CVE-2026-11527 — Perl Config::IniFiles OSコマンドインジェクション <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-11527</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High（CVSS 未評価、CWE-78 OS Command Injection / CWE-73 External Control of File Name）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-14（CPANSec / NVD）</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Config::IniFiles 3.001000 未満の Perl モジュール利用アプリケーション</td></tr>
+  <tr><td><strong>修正</strong></td><td>Config::IniFiles 3.001000 へアップグレード</td></tr>
+</table>
+
+<ul>
+  <li><strong>2引数 <code>open()</code> によるコマンドインジェクション</strong> — <code>Config::IniFiles::_make_filehandle</code> 関数が Perl の2引数 <code>open()</code> を使用しており、ファイル名がパイプ（<code>| cmd</code>、<code>cmd |</code>）で始まる/終わる場合、またはリダイレクト（<code>&gt; path</code>、<code>&gt;&gt; path</code>）で始まる場合、コマンドとして実行されてしまう</li>
+  <li><strong>影響範囲</strong> — <code>new(-file =&gt; $thing)</code> 経由で <code>ReadConfig</code> に到達するすべての呼び出し元。信頼できない入力を <code>-file</code> 引数に渡すアプリケーションは、任意コマンド実行やファイル上書きのリスクあり</li>
+  <li><strong>修正内容</strong> — 3引数 <code>open()</code> への移行。GitHub コミット <code>3e48f962</code> で修正</li>
+  <li>CPANSec が 2026-06-14 08:16 UTC に CVE を登録。WebアプリケーションやCLIツールで Perl の INI ファイル処理を利用している場合は早急な更新を推奨</li>
+  <li>〈web / Python スタック間接関連 — Perl ベースのツールチェーンに影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11527" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-11527</a><br>
+🔗 <a href="https://github.com/shlomif/perl-Config-IniFiles/commit/3e48f9627fbba4dae5de35be1f735cdeb7e47fb8.patch" target="_blank" rel="noopener noreferrer">GitHub — 修正コミット</a></p>
+
+<hr>
+
+<h3>2. OpenClaw 2026.6.8 — HTTPセッション/モデル上書きの管理者権限要求とツールスキーマ検疫 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>OpenClaw 2026.6.8-beta.1（2026-06-15 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティガバナンス強化 / アクセス制御</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw を HTTP 経由で操作する環境（管理UI、API連携）</td></tr>
+</table>
+
+<ul>
+  <li><strong>HTTP セッション/モデル上書きに管理者権限を要求</strong> — 以前は認証済みユーザーであれば HTTP 経由でセッションやモデルを上書き可能だったが、2026.6.8 では管理者権限を要求するように変更。不正なモデル切替やセッションハイジャックのリスクを低減</li>
+  <li><strong>読み取り不可能・ポストフック後の OpenAI/Anthropic ファミリーツールスキーマを検疫</strong> — 正常にパースできないツールスキーマや、フック実行後にスキーマが壊れた場合、それらを隔離してエラーの伝播を防止</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">GitHub Releases — openclaw/openclaw</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Python / Django、Hono、AWS、Azure、GCP、Claude Code、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の Claude Code v2.1.177（6/13）、Hermes Agent v0.16.0（6/5）、OpenClaw 2026.6.6 セキュリティ境界強化（6/6）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Meta (Instagram) AI支援アカウント回復システムの認証バイパス — 20,225アカウント乗っ取り <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発表日</strong></td><td>2026-06-14（Meta / HelpNet Security / TechJack Solutions）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>Instagram アカウント 20,225 件</td></tr>
+  <tr><td><strong>攻撃手法</strong></td><td>AI支援 High Touch Support (HTS) アカウント回復システムの認証バイパス</td></tr>
+  <tr><td><strong>ステータス</strong></td><td>修正済み（Meta が脆弱性を是正）</td></tr>
+</table>
+
+<ul>
+  <li><strong>AI支援回復システムの認証バイパス</strong> — Meta の AI を活用した High Touch Support (HTS) アカウント回復システムに認証バイパスの脆弱性が存在。攻撃者が所有権検証をバイパスして不正なパスワードリセットをトリガーし、Instagram アカウントを乗っ取ることが可能だった</li>
+  <li><strong>20,225アカウントが影響</strong> — 本脆弱性により 20,225 件の Instagram アカウントが乗っ取られたと確認。従来の回復フローには存在しない攻撃経路を AI が導入した事例</li>
+  <li><strong>AI支援アイデンティティシステムの新たな脅威モデル</strong> — セキュリティチームは AI を活用した認証・回復システムを「独立した信頼境界」として扱い、専用の認証レビューが必要。従来の回復フローと同じ信頼モデルでは不十分</li>
+  <li>Meta は脆弱性を修正済みだが、AI 搭載サポート自動化がアカウント乗っ取り経路を生み出すリスクが顕在化した事例として注目</li>
+</ul>
+
+<p>🔗 <a href="https://www.helpnetsecurity.com/2026/06/08/instagram-ai-support-vulnerability-account-takeovers/" target="_blank" rel="noopener noreferrer">HelpNet Security — Instagram AI Support Vulnerability</a><br>
+🔗 <a href="https://techjacksolutions.com/scc-vendor-rollup/meta-instagram-vulnerability-rollup-2026-06-14/" target="_blank" rel="noopener noreferrer">TechJack Solutions — Meta Vulnerability Rollup 2026-06-14</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
