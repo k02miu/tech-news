@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-16 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-16 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-15 08:00 〜 2026-06-16 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw 2026.6.8 — HTTPセッション/モデル上書きの管理者権限要求とツールスキーマ検疫 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>OpenClaw 2026.6.8-beta.1（2026-06-15 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティガバナンス強化 / アクセス制御</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw を HTTP 経由で操作する環境（管理UI、API連携）</td></tr>
+</table>
+
+<ul>
+  <li><strong>HTTP セッション/モデル上書きに管理者権限を要求</strong> — 以前は認証済みユーザーであれば HTTP 経由でセッションやモデルを上書き可能だったが、2026.6.8 では管理者権限を要求するように変更。不正なモデル切替やセッションハイジャックのリスクを低減</li>
+  <li><strong>読み取り不可能・ポストフック後の OpenAI/Anthropic ファミリーツールスキーマを検疫</strong> — 正常にパースできないツールスキーマや、フック実行後にスキーマが壊れた場合、それらを隔離してエラーの伝播を防止</li>
+  <li><strong>WebSocket ペイロード処理の強化</strong> — WebSocket 接続のペイロード処理がハードニングされ、不正なペイロードによる攻撃ベクターを低減</li>
+  <li><strong>Skill Workshop シンボリックリンク書き込みの検証強化</strong> — シンボリックリンクの書き込み前にゲート・検証が行われるようになり、ロールバックメタデータの不正操作を防止</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/2026.6.8-beta.1" target="_blank" rel="noopener noreferrer">GitHub Releases — OpenClaw 2026.6.8-beta.1</a></p>
+
+<hr>
+
+<h3>2. Spring Framework エコシステム大量CVE一斉公開 — 14件以上の脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-09〜10（Spring.io / NVD）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Spring Security、Spring Web Services、Spring Web Flow、Spring for GraphQL</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Spring Security 6.5.11 / 7.0.6 / 7.1.0、Spring WS 5.0.2 / 4.1.4</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-40993（HIGH）SAML 2.0 アサーションパーティ資格情報BLOBのフィルタリングなしJavaネイティブデシリアライゼーション</strong> — <code>JdbcAssertingPartyMetadataRepository</code>で、データベーステーブルへの書き込み権限を持つ攻撃者が不正なシリアライズデータを挿入し、デシリアライゼーション時に任意コード実行が可能な脆弱性（CWE-502）</li>
+  <li><strong>CVE-2026-41856（HIGH）Spring GraphQL アノテーション検出の脆弱性</strong> — <code>@Controller</code>データフェッチャーのアノテーション検出が型階層内のメソッドを正しく解決せず、<code>@EnableMethodSecurity</code>併用時にセキュリティアノテーションが無視される可能性。認可バイパスのリスク</li>
+  <li><strong>CVE-2026-40998（HIGH）Spring Web Services XXEインジェクション</strong> — <code>Jaxp13XPathTemplate</code>が<code>StreamSource</code>/<code>SAXSource</code>入力に対して攻撃者制御下のXMLをJDKデフォルトの<code>DocumentBuilderFactory</code>で処理し、XXE攻撃が可能</li>
+  <li><strong>CVE-2026-40999（HIGH）Spring Web Services SSRF</strong> — WS-Addressing使用時、非匿名の<code>ReplyTo</code>/<code>FaultTo</code>アドレスに対してSpring WSがリクエストヘッダー由来の宛先へ直接外部接続を開始し、SSRFが発生</li>
+  <li><strong>CVE-2026-41003（MEDIUM〜HIGH）Spring Security SAML2 XSS</strong> — <code>RelyingPartyRegistration</code>の値を操作できる攻撃者が、Spring Securityフィルターが生成するHTMLフォーム上で任意のコードを実行可能</li>
+  <li><strong>CVE-2026-40995（MEDIUM）X.509認証がアカウントチェックをバイパス</strong> — <code>X509AuthenticationProvider</code>が証明書から<code>UserDetails</code>を取得した際、無効・ロック・期限切れなどの標準アカウントライフサイクルチェックを適用せずに完全認証トークンを発行</li>
+  <li><strong>CVE-2026-40994（HIGH）Wss4jSecurityInterceptor BSP適合フラグの問題</strong> — BSP（WS-I Basic Security Profile）適合フラグの初期化が不正で、受信検証時にWSS4JのBSP強制が無効化される</li>
+  <li><strong>CVE-2026-40996（MEDIUM）RSA PKCS#1 v1.5鍵トランスポートの既定許可</strong> — <code>allowRSA15KeyTransportAlgorithm</code>がデフォルトでtrueに設定され、安全でないRSA v1.5暗号化鍵素材の受信を許可</li>
+  <li><strong>CVE-2026-40988（MEDIUM）SAML 2.0 REDIRECTバインディング経由のDoS</strong> — 圧縮されたSAMLペイロードがメモリ上で無制限に展開される可能性</li>
+  <li>Spring Security 6.5.11 / 7.0.6 / 7.1.0、Spring WS 5.0.2 / 4.1.4へアップグレード推奨。Spring Boot 3.5.14.2 / 4.0.6.1に含まれる</li>
+  <li>〈Java / SpringBoot スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://spring.io/blog/2026/06/09/spring-security-releases-2026-06" target="_blank" rel="noopener noreferrer">Spring Security 2026.06 Releases</a><br>
+🔗 <a href="https://spring.io/security/page-2/" target="_blank" rel="noopener noreferrer">Spring Security Advisories</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Python / Django（6/3発表分は対象外）、Hono、AWS、Azure、GCP、Claude Code、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。既報の Spring Security/WS CVE（6/9-10）、Django 6.0.6/5.2.15（6/3）、Hermes Agent v0.16.0（6/5）は対象外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Oracle 2026年6月 CSPU（Critical Security Patch Update）リリース — 251件のセキュリティパッチ <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発表日</strong></td><td>2026-06-16（Oracle）</td></tr>
+  <tr><td><strong>パッチ数</strong></td><td>251件の新規セキュリティパッチ</td></tr>
+  <tr><td><strong>最高CVSS</strong></td><td>10.0（Oracle Fusion Middleware）</td></tr>
+  <tr><td><strong>主要影響製品</strong></td><td>Fusion Middleware（106件）、E-Business Suite（60件）、Enterprise Manager（16件）</td></tr>
+</table>
+
+<ul>
+  <li><strong>史上2回目の月次CSPU</strong> — Oracleは2026年5月から月次Critical Security Patch Update（CSPU）を開始。今月が2回目のリリース。従来の四半期CPUと並行して提供</li>
+  <li><strong>Oracle Fusion Middlewareが最多の106件</strong> — そのうち53件が認証なしでリモートから悪用可能。最高CVSS 10.0。WebLogic Server、Coherence、SOA Suiteなどに影響</li>
+  <li><strong>Oracle E-Business Suiteに60件</strong> — 7件がリモートから認証なしで悪用可能。最高CVSS 9.9</li>
+  <li><strong>Oracle MySQLに8件</strong> — 4件がリモートから認証なしで悪用可能。最高CVSS 9.9</li>
+  <li><strong>Oracle GoldenGateに2件</strong> — 1件がリモートから認証なしで悪用可能。最高CVSS 7.8</li>
+  <li>Java / SpringBoot スタック利用者は Oracle JDK/Fusion Middleware 経由で間接的に影響を受ける可能性あり。早急なパッチ適用を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://www.oracle.com/security-alerts/cspujun2026.html" target="_blank" rel="noopener noreferrer">Oracle Critical Security Patch Update Advisory — June 2026</a></p>
+
+<hr>
+
+<h3>🔴 Microsoft 2026年6月 Patch Tuesday — 史上最多206件修正、HTTP.sysのワーム可能なRCE <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発表日</strong></td><td>2026-06-09（Microsoft Patch Tuesday）</td></tr>
+  <tr><td><strong>脆弱性総数</strong></td><td>206件（Critical 33件、Important 167件）</td></tr>
+  <tr><td><strong>ゼロデイ</strong></td><td>3件公開済みゼロデイ</td></tr>
+  <tr><td><strong>最優先CVE</strong></td><td>CVE-2026-47291（CVSS 9.8）HTTP.sys RCE — 認証不要、ワーム可</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-47291（CVSS 9.8）HTTP.sys リモートコード実行</strong> — Windows HTTP.sysのHTTP/2実装に存在する脆弱性。認証不要、ユーザーアクション不要、ネットワーク経由で悪用可能。Microsoftはワーム可能性（wormable）として分類しており、SMBGhost級の深刻度。Windows Server環境で最も優先度の高いパッチ</li>
+  <li><strong>CVE-2026-49160（CVSS 7.5）HTTP.sys DoS — ゼロデイ</strong> — HTTP/2のリソース消費の制御不能により、認証なし攻撃者がネットワーク経由でサービス拒否を引き起こす。公開済みゼロデイ</li>
+  <li><strong>CVE-2026-45586（ゼロデイ）Windows CTFMON 特権昇格</strong> — リンク追跡脆弱性により、認証済み攻撃者がSYSTEM権限を取得可能</li>
+  <li><strong>CVE-2026-50507（ゼロデイ）Windows BitLocker セキュリティ機能バイパス</strong> — 保護メカニズムの欠陥により、物理アクセスを持つ攻撃者がBitLockerをバイパス</li>
+  <li><strong>CVE-2026-32193（CVSS 8.8）Azure Kubernetes Service RCE</strong> — パストラバーサル脆弱性により、認証済み攻撃者がローカルでコード実行可能</li>
+  <li><strong>追加: Edge/Chromium由来360件の脆弱性も修正</strong></li>
+  <li>Windows Server、Azure、Office環境を利用中の組織は至急パッチ適用を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://www.crowdstrike.com/en-us/blog/patch-tuesday-analysis-june-2026/" target="_blank" rel="noopener noreferrer">CrowdStrike — Patch Tuesday Analysis June 2026</a><br>
+🔗 <a href="https://blog.qualys.com/vulnerabilities-threat-research/2026/06/09/microsoft-and-adobe-patch-tuesday-june-2026-security-update-review" target="_blank" rel="noopener noreferrer">Qualys — Microsoft Patch Tuesday June 2026 Review</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
