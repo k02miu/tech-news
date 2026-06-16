@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-16 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-16 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-15 09:00 〜 2026-06-16 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.178</h2>
+<p>6月16日 07:12 JST にリリースされた v2.1.178 では、サブエージェント制御の強化、ネイティブスキルの階層化対応、および多数のバグ修正が含まれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Tool パラメータベースのパーミッションルール</strong>: <code>Tool(param:value)</code> 構文でツールの入力パラメータにマッチするパーミッションルールを設定可能に（例: <code>Agent(model:opus)</code> で Opus サブエージェントをブロック）。ワイルドカード <code>*</code> にも対応</li>
+  <li><strong>ネストされた <code>.claude/skills</code> 対応</strong>: サブディレクトリ内のスキルがそのディレクトリで作業時に自動ロード。名前衝突時は <code>&lt;dir&gt;:&lt;name&gt;</code> 形式で両方を保持</li>
+  <li><strong>ネストされた <code>.claude/</code> ディレクトリの優先順位</strong>: 作業ディレクトリに近い方のエージェント・ワークフロー・出力スタイルが名前衝突時に優先</li>
+  <li><strong>Auto モード改善</strong>: サブエージェントの起動前に分類器による評価が実行され、ブロックされたアクションを要求するサブエージェントがレビューなしで起動するギャップを解消</li>
+  <li><strong><code>/doctor</code> 改善</strong>: 全セクションで統一されたフラットツリーレイアウト、明確なステータスアイコン、コマンド名のハイライト表示</li>
+  <li><strong>Remote Control エラーメッセージ改善</strong>: 接続失敗時にフッターに赤い "/rc failed" インジケーターを永続表示。エラー種別（ゲート・チェック失敗・期限切れエンタイトルメント・組織ポリシー）を明示</li>
+  <li><strong>ワークフロープロンプトキーワード変更</strong>: 紫のシマーハイライト表示に変更。「run a workflow」や「workflow:」といった明示的なフレーズでのみトリガー（「workflow」単語の出現では発火しなくなった）</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>OOM クラッシュ修正</strong>: 親プロセスから継承した古い websocket/OAuth ファイル記述子環境変数によるメモリ枯渇を修正</li>
+  <li><strong>Chrome OAuth 接続修正</strong>: Claude Code ロインと異なるアカウントの OAuth トークンによる Chrome 接続のサイレント失敗を修正</li>
+  <li><strong>サブエージェント関連の複数修正</strong>: トランスクリプト表示でツール結果とライブ進行状況が表示されるように、処理完了中に送信されたメッセージがドロップされないように、ctrl+b でのバックグラウンド化が再起動を引き起こさないように修正</li>
+  <li><strong><code>claude agents</code> 401 エラー修正</strong>: カスタム API ゲートウェイ経由でデーモン起動時のワーカー 401 Invalid bearer token エラーを修正</li>
+  <li><strong>コンパクション修正</strong>: <code>--fallback-model</code> を正しくフォールバックチェーンに従うように修正</li>
+  <li><strong>認証リフレッシュ修正</strong>: セッション外で資格情報が更新された後の認証エラー持続問題を修正</li>
+  <li><strong>バックグラウンドセッション "Working" 永久表示修正</strong>: <code>/bg</code> や <code>←←</code> で作成したバックグラウンドセッションがエージェント一覧で永久に「Working」と表示される問題を修正</li>
+  <li><strong>MCP サーバーレベル仕様修正</strong>: サブエージェント <code>disallowedTools</code> での MCP サーバー仕様（<code>mcp__server</code> 等）がサイレントに無視される問題を修正</li>
+  <li><strong>vim モード undo 修正</strong>: <code>u</code> が素早く連続したコマンドを単一の undo ステップにマージしていた問題を修正</li>
+  <li><strong>[VSCode] CJK IME 修正</strong>: Esc キーで CJK IME 候補ウィンドウを閉じた際に Claude タスクがキャンセルされる問題を修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-178" target="_blank" rel="noopener noreferrer">Claude Code Changelog v2.1.178</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.16.0「The Surface Release」（2026-06-05 リリース）です。ネイティブデスクトップアプリ（Electron）、Web ダッシュボードのフル管理パネル化、簡体中国語対応、<code>/undo</code> コマンド、ファジーモデルピッカー、NVIDIA/skills の Skills Hub への追加、Nous Portal によるクイックセットアップなどの主要機能が含まれています。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内（06/15 09:00 〜 06/16 09:00 JST）に新規リリースは確認されませんでした。最新ベータ版は v2026.6.8-beta.1（06/15 07:45 JST 公開）で、前回の朝刊の対象期間直前にリリースされたものです。Telegram・WhatsApp のリッチメッセージ配信強化、GLM-5.2・Claude Haiku 4.5 カタログ対応、エージェント・ゲートウェイ回復の堅牢化、メモリ・状態管理の改善、<code>/usage</code> フッターレンダラー追加などの変更が含まれています。最新安定版は v2026.6.6（06/12 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に新規安定版リリースは確認されませんでした。最新安定版は v16.2.9（06/10 リリース）です。カナリーチャンネルでは v16.3.0-canary.51 が継続中で、App Shell の Suspense フォールバック改善や turbopack のビルド時シリアライズ最適化などが含まれています。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ AWS — Weekly Roundup（June 15, 2026）</h2>
+<p>AWS Summit NYC（6/17 開催）に合わせ、多数の発表がありました。</p>
+<ul>
+  <li><strong>AWS FinOps Agent（プレビュー）</strong>: FinOps 担当者向けの新エージェント。コスト照会・最適化提案・異常検知・Jira チケット作成・Slack 通知を自動化。Cost Optimization Hub および Compute Optimizer と連携</li>
+  <li><strong>Amazon EC2 M9g / M9gd インスタンス GA</strong>: AWS Graviton5 搭載。Graviton4 比で最大 25% コンピュート性能向上、PCIe Gen6 / DDR5-8800 対応、Nitro Isolation Engine（形式検証による VM 隔離の数学的証明）を初搭載</li>
+  <li><strong>Gemma 4 モデル Amazon Bedrock 対応</strong>: 31B（dense / 256K コンテキスト）、26B-A4B（MoE）、E2B の3バリアント。関数呼び出し・構造化出力・マルチモーダル対応</li>
+  <li><strong>Amazon OpenSearch Service MCP Apps</strong>: Claude Desktop・VS Code 等のエージェント IDE から OpenSearch のログ・トレース・メトリクスを AI で調査可能に</li>
+  <li><strong>AWS CLI v1 メンテナンスモード移行</strong>: 新リリースはバグ修正・セキュリティ修正のみ。v2 への移行を推奨</li>
+  <li><strong>AWS Workload Credentials Provider</strong>: AWS 外のワークロード向け短期資格情報発行。長期アクセスキー不要で最小権限パターンを実現</li>
+  <li><strong>Kiro Pro Max</strong>: 最新フロンティアモデルへのアクセスと高用量制限を提供する新ティア</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-finops-agent-in-preview-gemma-4-on-bedrock-kiro-pro-max-and-more-june-15-2026/" target="_blank" rel="noopener noreferrer">AWS Weekly Roundup</a></p>
+
+<hr>
+
+<h2>☁️ GCP — June 15 アップデート</h2>
+<ul>
+  <li><strong>AlloyDB Database Insights MCP Server</strong>: リモート MCP サーバーが AlloyDB 向けの高度なクエリインサイトツール（<code>get_advanced_aggregated_query_stats</code>、<code>get_index_recommendations</code> 等）をサポート開始</li>
+  <li><strong>BigQuery Studio</strong>: テーブル列幅のドラッグリサイズが可能に</li>
+  <li><strong>Blockchain Node Engine</strong>: 6/15 から限定サポートに移行。新規ノード作成・RPC エンドポイントプロビジョニングは無効化。Quicknode への移行を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 注目のGAリリース</h2>
+<ul>
+  <li><strong>Azure SQL MCP Server（GA）</strong>: Azure SQL Database 向け MCP サーバーが GA 化。エージェント IDE から直接 Azure SQL データベースへの操作が可能に</li>
+  <li><strong>Azure NC RTX PRO 6000 Blackwell Server Edition v6 Series VMs（GA）</strong>: NVIDIA RTX PRO 6000 Blackwell 搭載の GPU VM。AI ワークロード向け</li>
+</ul>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>🔥 注目トピック — Claude Fable 5 / Mythos 5 利用停止（継続中）</h2>
+<p>6/9 にリリースされた Claude Fable 5 / Mythos 5 は、米国政府の輸出管理指令を受け 6/12 に全ユーザー向けアクセスが停止されて以来、復旧の公式発表は確認されていません（停止から4日目）。AWS Bedrock 経由の利用も同様に停止中です。Anthropic は利用停止期間中の利用分に対する返金手続きを進めており、一部ユーザーは Max プランの全額返金を報告しています。Claude Code v2.1.178 の changelog には Fable 5 関連の修正（自動モードのフォールバック等）が含まれており、復旧に向けた調整が続いている可能性があります。</p>
+
+<p>🔗 <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noopener noreferrer">Anthropic 公式発表</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（6/1 の 19.1.8 FormData 修正以降新規リリースなし）、<strong>Python</strong>（3.14.6 は6/10付で報告済み）、<strong>Django</strong>（6.0.6/5.2.15 セキュリティリリースは6/3付で報告済み）、<strong>Java/JDK</strong>（JDK 26 GA は3/18、次回 CPU は7/21予定）、<strong>Spring Boot</strong>（3.5.15 は6/10付で報告済み）、<strong>Hono</strong>（v4.12.23 が5/25付で最新）、<strong>Claude API/SDK</strong>（Python SDK v0.107.1 は6/6付で報告済み。Agent SDK 課金分離は6/15 施行済み・前回の朝刊で解説済み）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
