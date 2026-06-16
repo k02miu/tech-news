@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-16 08:00 〜 2026-06-17 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CVE-2026-47835 — Spring AI Vector Store メタデータフィルタインジェクション <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47835</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>8.6（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-15（VMware / Spring.io）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-943: Improper Neutralization of Special Elements in Data Query Logic</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>spring-ai-elasticsearch-store、spring-ai-opensearch-store、spring-ai-gemfire-store</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Spring AI 1.0.9 / 1.1.8</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Spring AI の Vector Store 実装（Elasticsearch / OpenSearch / GemFire）で、メタデータフィルタの特殊文字サニタイズが不十分。攻撃者は特殊文字を含むメタデータクエリを細工することで、任意クエリの実行を強制可能</li>
+  <li><strong>影響</strong> — 認証不要、ネットワーク経由で悪用可能。Spring AI を利用した RAG（検索拡張生成）アプリケーションの機密性・整合性・可用性に影響</li>
+  <li><strong>対応</strong> — Spring AI 1.0.x → 1.0.9、1.1.x → 1.1.8 にアップグレード。追加の緩和策は不要</li>
+  <li><strong>報告者</strong> — Nitro Cao（@NitroCao、Alibaba Cloud）による責任ある開示</li>
+  <li>〈Java / SpringBoot スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://spring.io/security/cve-2026-47835" target="_blank" rel="noopener noreferrer">Spring Security Advisory — CVE-2026-47835</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-47835" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-47835</a></p>
+
+<hr>
+
+<h3>2. OpenClaw 2026.6.8 — セキュリティ境界強化と Hono 4.12.25 アップデート <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>OpenClaw 2026.6.8（2026-06-16 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティガバナンス強化 / 依存関係更新</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>OpenClaw を HTTP / WebSocket 経由で操作する環境</td></tr>
+</table>
+
+<ul>
+  <li><strong>HTTP セッション/モデル上書きに管理者権限を要求</strong> — 以前は認証済みユーザーであれば HTTP 経由でセッションやモデルを上書き可能だったが、2026.6.8 では管理者権限を要求するように変更</li>
+  <li><strong>WebSocket ペイロード処理の強化</strong> — WebSocket 接続のペイロード処理がハードニングされ、不正なペイロードによる攻撃ベクターを低減</li>
+  <li><strong>Skill Workshop シンボリックリンク書き込みの検証強化</strong> — シンボリックリンクの書き込み前にゲート・検証が行われるようになり、ロールバックメタデータの不正操作を防止</li>
+  <li><strong>OpenAI/Anthropic ファミリーツールスキーマ検疫</strong> — 正常にパースできないツールスキーマや、フック実行後にスキーマが壊れた場合、それらを隔離してエラーの伝播を防止</li>
+  <li><strong>Hono 4.12.25 へ依存関係更新</strong> — 公開される OpenClaw / ACPX パッケージがセキュリティ修正済みの Hono ランタイムを使用</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/2026.6.8" target="_blank" rel="noopener noreferrer">GitHub Releases — OpenClaw 2026.6.8</a></p>
+
+<hr>
+
+<h3>3. Claude Code v2.1.178 — オートモードのサブエージェント起動前分類評価でセキュリティホールを修正 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>バージョン</strong></td><td>Claude Code v2.1.178（2026-06-15 リリース）</td></tr>
+  <tr><td><strong>分類</strong></td><td>セキュリティ強化 / アクセス制御</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Claude Code の auto mode を使用する環境</td></tr>
+</table>
+
+<ul>
+  <li><strong>オートモードのサブエージェント起動前分類評価</strong> — auto mode でサブエージェントを起動する前に分類器（classifier）による評価が行われるようになった。これにより、ブロックされたアクションをレビューなしにリクエストできたセキュリティホールを閉鎖</li>
+  <li><strong>サブエージェント disallowedTools での MCP サーバ指定が動作するように修正</strong> — <code>mcp__server</code>、<code>mcp__server__*</code>、<code>mcp__*</code> がサブエージェントの <code>disallowedTools</code> で指定された際、以前はサイレントに無視されていた問題を修正</li>
+  <li><strong>新機能: Tool(param:value) 構文</strong> — パラメータレベルの許可/拒否ルールが可能に。例: <code>Agent(model:opus)</code> で特定モデルのサブエージェント起動をブロック</li>
+  <li>〈Claude スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a><br>
+🔗 <a href="https://dev.classmethod.jp/en/articles/20260616-cc-updates-v2-1-178/" target="_blank" rel="noopener noreferrer">Claude Code v2.1.178 解説（DevelopersIO）</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Python / Django、Hono、AWS、Azure、GCP、Hermes Agent に直接関連する新規セキュリティ情報（脆弱性・アドバイザリ）の公開は、本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Atlassian 2026年6月セキュリティバレチン — 100件の脆弱性（Critical 24件）、Apache Tomcat CVE-2026-41293（CVSS 9.8）含む <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発表日</strong></td><td>2026-06-16（Atlassian）</td></tr>
+  <tr><td><strong>脆弱性総数</strong></td><td>100件（High 76件、Critical 24件）</td></tr>
+  <tr><td><strong>最優先CVE</strong></td><td>CVE-2026-41293（CVSS 9.8）Apache Tomcat 入力検証不備</td></tr>
+  <tr><td><strong>影響製品</strong></td><td>Confluence Data Center、Bamboo、他 Atlassian 製品</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-41293（CVSS 9.8）Apache Tomcat 入力検証不備</strong> — Tomcat 11.0.0-M1〜11.0.21、10.1.0-M1〜10.1.54、9.0.0.M1〜9.0.117 に影響。Confluence Data Center の依存コンポーネントとして存在し、認証不要・ネットワーク経由で悪用可能</li>
+  <li><strong>月次バレチンの増加理由</strong> — 外部調整されたセキュリティリサーチと、広く使用されているオープンソースライブラリのパッチ活動によるもの。Atlassian 自体のセキュリティ態勢の変化を示すものではないと説明</li>
+  <li><strong>対応</strong> — 各製品の最新バージョンまたは LTS バージョンへのアップデートを推奨</li>
+</ul>
+
+<p>🔗 <a href="https://confluence.atlassian.com/security/security-bulletin-june-16-2026-1796309326.html" target="_blank" rel="noopener noreferrer">Atlassian Security Bulletin — June 16, 2026</a></p>
+
+<hr>
+
+<h3>🔴 ShinyHunters、ヨーロッパ評議会（Council of Europe）へのハッキングを主張 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-16（SecurityWeek 報道）</td></tr>
+  <tr><td><strong>攻撃グループ</strong></td><td>ShinyHunters</td></tr>
+  <tr><td><strong>交渉期限</strong></td><td>2026-06-16 に交渉開始要求</td></tr>
+  <tr><td><strong>対象</strong></td><td>ヨーロッパ評議会（Council of Europe）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — サイバー犯罪グループ ShinyHunters がヨーロッパ評議会へのハッキングを主張。6月16日から交渉を開始するよう要求</li>
+  <li><strong>ShinyHunters</strong> — 過去に Microsoft、Ticketmaster、Santander 等の大規模データ侵害に関与した実績を持つ攻撃グループ。近年は Snowflake 経由のクラウドデータ侵害でも名前が上がっている</li>
+  <li><strong>影響</strong> — 国際機関を標的とした攻撃であり、政府・公共セクターのセキュリティ態勢への警鐘</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/shinyhunters-claims-council-of-europe-hack/" target="_blank" rel="noopener noreferrer">SecurityWeek — ShinyHunters Claims Council of Europe Hack</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
