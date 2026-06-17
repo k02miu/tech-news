@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-17 08:00 〜 2026-06-18 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CVE-2026-47774 — Envoy HTTP/2 HPACK メモリ枯渇 DoS <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47774</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>7.5（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-17（NVD / GitHub Advisory）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-405: Asymmetric Resource Consumption (Amplification)、CWE-770: Allocation of Resources Without Limits or Throttling</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Envoy Proxy（HTTP/2 downstream リクエスト処理）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>1.35.11 / 1.36.7 / 1.37.3 / 1.38.1</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Envoy の HTTP/2 downstream リクエスト処理において、Cookie ヘッダのバイト数がリクエストヘッダサイズ検証に完全に計上されない問題と、oghttp2/quiche の HPACK ヘッダブロック制限がエンコード済みバイトに対してのみ適用されデコード済みサイズに制限がない問題が組み合わせることで、攻撃者は細工した HTTP/2 Cookie ヘッダにより Envoy プロセスのメモリ枯渇（OOM）を引き起こせる</li>
+  <li><strong>影響</strong> — 認証不要、ネットワーク経由で悪用可能。テストでは 3GiB メモリ制限の Envoy エッジプロセスが数秒で OOM キルされた。フローコントロールの停滞により攻撃効果が増幅される</li>
+  <li><strong>対応</strong> — 影響を受けるバージョン（&lt;1.35.11、1.36.0〜1.36.6、1.37.0〜1.37.2、1.38.0）をアップグレード。一時緩和策として downstream HTTP/2 の無効化、リクエストヘッダ／Cookie の厳格な制限設定が可能</li>
+  <li><strong>報告者</strong> — Ryoga Yamashita</li>
+  <li>〈AWS / GCP スタックに直接関連 — Envoy は Istio、Google Cloud Load Balancing、AWS App Mesh 等で広く使用〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/envoyproxy/envoy/security/advisories/GHSA-22m2-hvr2-xqc8" target="_blank" rel="noopener noreferrer">GitHub Advisory — GHSA-22m2-hvr2-xqc8</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-47774" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-47774</a></p>
+
+<hr>
+
+<h3>2. CVE-2026-48710 — Starlette "BadHost" Host ヘッダ検証バイパス <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48710</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>6.5（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-05-26（GitHub）/ NVD 最終更新: 2026-06-17</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-444: Inconsistent Interpretation of HTTP Requests、CWE-1289: Improper Validation of Unsafe Equivalence in Input</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Starlette（Python ASGI フレームワーク）0.8.3 〜 1.0.0</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Starlette ≥ 1.0.1</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Starlette の HTTP <code>Host</code> リクエストヘッダが <code>request.url</code> の再構築前に検証されないため、不正な形式の Host ヘッダにより <code>request.url.path</code> が実際にリクエストされたパスと異なる値になる。これにより、<code>request.url</code> ベースのセキュリティ制限（CSP、リダイレクト検証、CSRF 保護等）をバイパス可能</li>
+  <li><strong>影響</strong> — 認証不要、ネットワーク経由で悪用可能。FastAPI、Litestar 等の Starlette ベースフレームワーク全般に影響。RFC 9112 §3.2 / RFC 3986 §3.2.2 に準拠する Host ヘッダ検証で修正</li>
+  <li><strong>Hermes Agent への影響</strong> — Hermes Agent v0.16.0 で Starlette のバージョンをピン留めし、本脆弱性への対応を完了</li>
+  <li>〈Python / web スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/Kludex/starlette/security/advisories/GHSA-86qp-5c8j-p5mr" target="_blank" rel="noopener noreferrer">GitHub Advisory — GHSA-86qp-5c8j-p5mr</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48710" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48710</a><br>
+🔗 <a href="https://badhost.org" target="_blank" rel="noopener noreferrer">badhost.org — 詳細解説</a></p>
+
+<hr>
+
+<h3>3. CVE-2026-7397 — Hermes Agent シンボリックリンク追跡脆弱性 <span class="badge-low">LOW</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-7397</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>4.4（CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:L）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-04-29（VulDB）/ NVD 最終更新: 2026-06-17</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-59: Improper Link Resolution Before File Access、CWE-61: UNIX Symbolic Link (Symlink) Following</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>NousResearch hermes-agent 0.8.0（tools/file_tools.py — _check_sensitive_path 関数）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>0.9.0+（パッチコミット: 311dac19）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Hermes Agent 0.8.0 の <code>_check_sensitive_path</code> 関数でシンボリックリンクの追跡前にパス検証が行われるため、ローカル攻撃者が細工したシンボリックリンクを介してセキュリティ制限を回避可能</li>
+  <li><strong>影響</strong> — ローカルアクセス必須、低権限で悪用可能。PoC が公開済み。整合性・可用性に低影響</li>
+  <li><strong>対応</strong> — v0.9.0 以降にアップグレード済みであれば影響なし。現在の Hermes Agent（v0.16.0）は修正済み</li>
+  <li>〈Hermes Agent スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/commit/311dac197145e19e07df68feba2cd55d896a3cd1" target="_blank" rel="noopener noreferrer">GitHub — 修正コミット</a><br>
+🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-7397" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-7397</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono、Claude、OpenClaw に直接関連する新規セキュリティ情報（本対象期間内の脆弱性・アドバイザリ公開）は確認されませんでした。<br>※ Spring エコシステムの8件の CVE（CVE-2026-40987 等）は 2026-06-10 公開、Chrome V8 zero-day（CVE-2026-11645）は 2026-06-08 公開であり、本対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Miasma サプライチェーン攻撃 第3波 — Azure リポジトリ注入 + Hades PyPI ウェーブ <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-05〜07（Socket / StepSecurity / Phoenix Security）</td></tr>
+  <tr><td><strong>攻撃手法</strong></td><td>サプライチェーン攻撃（リポジトリ設定ファイル注入 + Python .pth フック）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>73 Microsoft リポジトリ無効化、37 悪意ある PyPI ホイール、448 アーティファクト累計</td></tr>
+  <tr><td><strong>CVE</strong></td><td>ゼロ（どのアーティファクトにも CVE は存在しない）</td></tr>
+</table>
+
+<ul>
+  <li><strong>Azure リポジトリ注入（6月5日）</strong> — 再侵害された貢献者アカウントが <code>Azure/durabletask</code> リポジトリに悪意あるコミットを push。Claude Code、Gemini CLI、Cursor、VS Code でリポジトリを開いた瞬間に credential harvesting ペイロードが実行される設定ファイル（<code>.claude/settings.json</code>、<code>.gemini/settings.json</code>、<code>.cursor/rules/setup.mdc</code>、<code>.vscode/tasks.json</code>）を配置。GitHub の自動検知が105秒で73リポジトリを無効化</li>
+  <li><strong>Hades PyPI ウェーブ（6月7日）</strong> — 19 PyPI パッケージから37個の悪意ある wheel が検出。Python の <code>.pth</code> スタートアップフックを利用し、パッケージを import しなくても Python インタプリタ起動時に Bun ベースの credential stealer が実行される</li>
+  <li><strong>CI/CD への影響</strong> — <code>Azure/functions-action@v1</code> が参照していたリポジトリが無効化され、GitHub Actions ワークフローが世界的に停止。フローティングタグの危険性が再浮き彫りに</li>
+  <li><strong>防御者の教訓</strong> — 「パッケージインストール時の実行」から「フォルダを開いた時の実行」へ攻撃ベクターが進化。従来の registry レベルの脅威検知では不十分</li>
+</ul>
+
+<p>🔗 <a href="https://phoenix.security/miasma-azure-hades-pypi-supply-chain-worm-2026/" target="_blank" rel="noopener noreferrer">Phoenix Security — Miasma Supply Chain Attack Phase 3</a></p>
+
+<hr>
+
+<h3>🔴 Chrome V8 Zero-Day CVE-2026-11645 — CISA KEV 登録済み・活発に悪用中 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-11645</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>8.8（CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-08（Chrome）/ CISA ADP 最終更新: 2026-06-17</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>登録日: 2026-06-09、期限: 2026-06-23</td></tr>
+  <tr><td><strong>影響</strong></td><td>Google Chrome &lt; 149.0.7827.103（Windows / macOS / Linux）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Chrome の V8 JavaScript エンジンに境界外読み書きの脆弱性。細工した HTML ページを通じてサンドボックス内で任意コード実行が可能</li>
+  <li><strong>悪用状況</strong> — CISA の SSVC 評価で「exploitation: active」に分類。Exodus Intelligence が6月8日にフルワーキングエクスプロイトを公開し、即座に悪用開始</li>
+  <li><strong>対応</strong> — Chrome を 149.0.7827.103 以降に更新。CISA BOD 22-01 の期限（6月23日）までに適用が必要</li>
+  <li><strong>web スタックへの影響</strong> — 開発者のブラウザが侵害されることで、Web アプリ開発ワークフロー全体にリスクが波及</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11645" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-11645</a><br>
+🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-11645" target="_blank" rel="noopener noreferrer">CISA KEV — CVE-2026-11645</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
