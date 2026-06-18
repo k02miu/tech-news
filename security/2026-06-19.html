@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-19 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-19 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-18 08:00 〜 2026-06-19 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. CVE-2026-32193 — Azure Kubernetes Service コンテナブレイクアウト（Path Traversal） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-32193</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>8.8（CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-22: Path Traversal</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Azure Kubernetes Service（AKS）ワーカーノード</td></tr>
+  <tr><td><strong>修正状況</strong></td><td>Microsoft がクラウド基盤側で自動修正済み（顧客アクション不要）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — AKS で hostNetwork 構成の信頼されていないコンテナから、パストラバーサル攻撃によりホストレベルの非認証サービスへ細工したリクエストを送信可能。これによりコンテナから脱出し、AKS ワーカーノードを制御可能</li>
+  <li><strong>影響</strong> — スコープ変更あり（コンテナ外のリソースへの影響が波及）。低権限のローカル攻撃者で悪用可能</li>
+  <li><strong>対応</strong> — Microsoft がクラウド基盤側で修正済み。GKE / EKS ユーザーも同等の hostNetwork コンテナ構成を見直すことを推奨</li>
+  <li>〈AWS / Azure スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-32193" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-32193</a></p>
+
+<hr>
+
+<h3>2. CVE-2026-47291 — Windows HTTP.sys リモートコード実行 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47291</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.8（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-190: Integer Overflow, CWE-122: Heap-based Buffer Overflow</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Windows HTTP.sys（IIS および HTTP/HTTPS を公開する Windows サーバー）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>2026年6月 Patch Tuesday 累積更新</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — HTTP Protocol Stack の整数オーバーフローおよびヒープベースバッファオーバーフローにより、認証不要のリモート攻撃者が特別に細工したパケットを送信するだけでコード実行が可能</li>
+  <li><strong>影響</strong> — デフォルト MaxRequestBytes 値（16KB）のシステムは影響なし。値が 65,534 バイトを超える場合に脆弱</li>
+  <li><strong>対応</strong> — 6月累積更新の適用。暫定対策として MaxRequestBytes を 65,534 バイト以下に設定</li>
+  <li>〈web スタックに直接関連 — IIS / Windows Server で Web サービスを公開する環境に影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-47291" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-47291</a></p>
+
+<hr>
+
+<h3>3. CVE-2026-48567 — Azure HorizonDB 認証バイパス（特権昇格） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48567</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>10.0（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-287: Improper Authentication</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Azure HorizonDB（クラウドネイティブ分散データベースサービス）</td></tr>
+  <tr><td><strong>修正状況</strong></td><td>Microsoft がクラウド基盤側で自動修正済み（顧客アクション不要）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Azure HorizonDB の認証バイパスにより、攻撃者がデータベースリソースへの不正アクセスおよび制御が可能。CVSS 10.0 の最高深刻度</li>
+  <li><strong>影響</strong> — 認証不要、ネットワーク経由で悪用可能。データの機密性・完全性・可用性に最大影響</li>
+  <li><strong>対応</strong> — Microsoft がクラウド基盤側で事前修正済み。顧客側のアクションは不要</li>
+  <li>〈Azure スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48567" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48567</a></p>
+
+<hr>
+
+<h3>4. CVE-2026-48579 — Microsoft Exchange Online 情報漏洩 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48579</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.1（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-285: Improper Authorization</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Microsoft Exchange Online</td></tr>
+  <tr><td><strong>修正状況</strong></td><td>Microsoft がクラウド基盤側で自動修正済み</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Exchange Online の認可不備により、認証不要のリモート攻撃者が機密情報をネットワーク経由で漏洩可能。機密性・完全性に高い影響</li>
+  <li><strong>影響</strong> — 認証不要、ユーザー操作不要。組織のメールデータへの不正アクセスリスク</li>
+  <li><strong>対応</strong> — Microsoft がクラウド基盤側で事前修正済み</li>
+  <li>〈web / Azure スタックに間接関連 — Exchange Online を利用する組織に影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48579" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48579</a></p>
+
+<hr>
+
+<h3>5. CVE-2026-45648 — Windows Active Directory Domain Services RCE <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45648</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>8.8（CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-121: Stack-based Buffer Overflow</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Windows Active Directory Domain Services（NSPI RPC インターフェース）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>2026年6月 Patch Tuesday 累積更新</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Active Directory の NSPI RPC インターフェースに対するスタックベースバッファオーバーフローにより、ドメイン認証済みの攻撃者がネットワーク経由でコード実行可能。標準的なドメイン資格情報で悪用可能</li>
+  <li><strong>影響</strong> — ドメインコントローラーへの RCE。組織全体の認証基盤が脅かされる</li>
+  <li><strong>対応</strong> — 6月累積更新の適用</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45648" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-45648</a></p>
+
+<hr>
+
+<h3>6. CVE-2026-45657 — Windows Kernel TCP/IP リモートコード実行 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45657</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.8（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-10（Microsoft Patch Tuesday / NVD）</td></tr>
+  <tr><td><strong>CWE</strong></td><td>CWE-416: Use After Free, CWE-122: Heap-based Buffer Overflow</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Windows Kernel（TCP/IP スタック処理）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>2026年6月 Patch Tuesday 累積更新</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Windows カーネルの TCP/IP データ処理における UAF およびヒープバッファオーバーフローにより、認証不要のリモート攻撃者が特別に細工したネットワークトラフィックで SYSTEM レベルのコード実行が可能</li>
+  <li><strong>影響</strong> — 認証不要、ユーザー操作不要。ネットワーク経由で直接悪用可能なワーム可能な脆弱性</li>
+  <li><strong>対応</strong> — 6月累積更新の至急適用を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45657" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-45657</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono（OpenClaw での 4.12.25 アップデートはセキュリティ修正を含むが個別 CVE は未公表）、Claude、Hermes Agent（v0.16.0 は 6月5日リリースで本対象期間外）に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>※ GCP-2026-036（ARM CVE-2025-10263）は 6月9日公開、GCP-2026-035（Envoy CVE-2026-47774）は 6月8日公開であり、本対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Microsoft 6月 Patch Tuesday — 206件の脆弱性修正（3件のゼロデイ含む） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-10（Microsoft）/ CrowdStrike 分析: 2026-06-18</td></tr>
+  <tr><td><strong>規模</strong></td><td>206件の脆弱性、うち Critical 30件超、Important 150件超</td></tr>
+  <tr><td><strong>ゼロデイ</strong></td><td>3件（公開済みゼロデイ）</td></tr>
+  <tr><td><strong>最大CVSS</strong></td><td>10.0（CVE-2026-48567 Azure HorizonDB）</td></tr>
+</table>
+
+<ul>
+  <li><strong>主要な CVSS 9.8 脆弱性</strong> — HTTP.sys RCE（CVE-2026-47291）、Windows Kernel TCP/IP RCE（CVE-2026-45657）、DHCP Client RCE（CVE-2026-44815）、Nuance PowerScribe RCE（CVE-2026-26142）の4件が CVSS 9.8。いずれも認証不要・リモートから悪用可能</li>
+  <li><strong>CVSS 10.0</strong> — Azure HorizonDB 認証バイパス（CVE-2026-48567）。Microsoft がクラウド基盤側で事前修正済み</li>
+  <li><strong>クラウド影響</strong> — Azure AKS コンテナブレイクアウト（CVE-2026-32193）、Exchange Online 情報漏洩（CVE-2026-48579）、M365 Copilot コマンドインジェクション（CVE-2026-45497）など、Microsoft クラウドサービスに複数の Critical 脆弱性</li>
+  <li><strong>Active Directory</strong> — CVE-2026-45648（CVSS 8.8）でドメイン認証済み攻撃者による DC への RCE。標準ドメイン資格情報で悪用可能なため、内部脅威リスクが高い</li>
+  <li><strong>Office / Outlook</strong> — Preview Pane 攻撃ベクターを持つ複数の Critical RCE（CVE-2026-45456, CVE-2026-45458, CVE-2026-47635 等）。メール閲覧だけでコード実行のリスク</li>
+  <li><strong>推奨</strong> — CVSS 9.8 以上のネットワーク経由脆弱性（HTTP.sys、Kernel TCP/IP、DHCP）を優先してパッチ適用。Azure / Exchange Online は Microsoft 側修正済みだが、M365 Copilot の影響範囲を確認すること</li>
+</ul>
+
+<p>🔗 <a href="https://www.crowdstrike.com/en-us/blog/patch-tuesday-analysis-june-2026/" target="_blank" rel="noopener noreferrer">CrowdStrike — June 2026 Patch Tuesday Analysis</a></p>
+
+<hr>
+
+<h3>🔴 GCP-2026-036 — ARM アーキテクチャ脆弱性 CVE-2025-10263 の GCP インパクト <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-09（Google Cloud Security Bulletin）</td></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2025-10263</td></tr>
+  <tr><td><strong>深刻度</strong></td><td>High</td></tr>
+  <tr><td><strong>影響</strong></td><td>一部の Arm コアを搭載する GCP インスタンス</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — ARM が公開したアーキテクチャレベルの脆弱性。特定条件下で例外レベルの低い攻撃者が、より高い例外レベルが所有するメモリへの書き込みが可能（翻訳ステージまたは GPT 保護のバイパス）。メモリ読み取りは影響なし</li>
+  <li><strong>GCP への影響</strong> — Google Cloud の Arm ベースインスタンス（Tau T2A 等）で特権昇格のリスク</li>
+  <li><strong>対応</strong> — Google がインフラ側で対応中。Arm ベースの GCP インスタンス利用者はセキュリティバナーを継続監視</li>
+  <li>〈GCP スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/support/bulletins#GCP-2026-036" target="_blank" rel="noopener noreferrer">GCP Security Bulletin — GCP-2026-036</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
