@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-20 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-20 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-19 08:00 〜 2026-06-20 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Node.js セキュリティリリース（12件の脆弱性修正、最高 HIGH） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-18（Node.js Project）</td></tr>
+  <tr><td><strong>対象バージョン</strong></td><td>Node.js 26.3.1 / 24.17.0 / 22.23.0</td></tr>
+  <tr><td><strong>最大深刻度</strong></td><td>HIGH</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Node.js（WebCrypto、TLS、HTTP/2、Permission Model 等）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-48933（HIGH）</strong> — WebCrypto AES 整数オーバーフローによるリモートプロセス停止（DoS）。subtle.encrypt() に 2GiB の倍数を渡すとクラッシュ</li>
+  <li><strong>CVE-2026-48618（HIGH）</strong> — Unicode ドットセパレータの不整合により TLS ワイルドカード深度認証バイパスが発生。機密性への影響あり</li>
+  <li><strong>CVE-2026-48615（MEDIUM）</strong> — ERR_PROXY_TUNNEL エラーメッセージでプロキシ資格情報を漏洩</li>
+  <li><strong>CVE-2026-48617（LOW）</strong> — process.report.writeReport() 経由で Permission Model をバイパス</li>
+  <li><strong>CVE-2026-48619（MEDIUM）</strong> — HTTP/2 クライアントで ORIGIN フレームによるメモリ枯渇（DoS）</li>
+  <li><strong>CVE-2026-48937（MEDIUM）</strong> — HTTP/2 サーバーで GOAWAY 後もセッションがクリーンアップされない</li>
+  <li><strong>CVE-2026-48928（MEDIUM）</strong> — 大文字 SNI コンテキスト一致による mTLS 認可バイパス</li>
+  <li><strong>CVE-2026-48930（MEDIUM）</strong> — NUL 文字を含むホスト名によるサイレントオーソリティバインド</li>
+  <li><strong>CVE-2026-48934（MEDIUM）</strong> — TLS セッション再利用時のホスト ID 検証バイパス</li>
+  <li>依存ライブラリ更新: llhttp 9.4.2、nghttp2 1.69.0、openssl 3.5.7、undici 更新</li>
+  <li>〈web / Next.js / Hono / Java 等 Node.js をランタイムとして使用する全スタックに影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://nodejs.org/en/blog/vulnerability/june-2026-security-releases" target="_blank" rel="noopener noreferrer">Node.js — June 18, 2026 Security Releases</a></p>
+
+<hr>
+
+<h3>2. Hermes Agent v0.17.0 リリース — セキュリティ強化を含む <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース日</strong></td><td>2026-06-19</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>v0.17.0 (v2026.6.19)</td></tr>
+  <tr><td><strong>規模</strong></td><td>~1,475 commits / ~800 merged PRs / 300+ issues closed</td></tr>
+  <tr><td><strong>セキュリティ</strong></td><td>セキュリティラウンド含む（SSRF オフループ強化、サブプロセス資格情報ストリッピング等）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — v0.16.0 のセキュリティラウンド（CVE-2026-48710 Starlette ピン、SSRF オフループ強化、サブプロセス資格情報ストリッピング）に続き、v0.17.0 でもセキュリティ強化が継続。ダッシュボードの OAuth 認証強化、WebSocket トークン検証、public_url オーバーライドの警告追加を含む</li>
+  <li><strong>新機能関連のセキュリティ考慮</strong> — iMessage（Photon Spectrum）統合、Raft エージェントネットワーク接続、WhatsApp Business Cloud API アダプターなど新しい通信チャネルが追加され、各チャネルの認証・認可の設計が重要</li>
+  <li><strong>対応</strong> — v0.17.0 にアップグレード推奨。pip install --upgrade hermes-agent</li>
+  <li>〈Hermes Agent スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.6.19" target="_blank" rel="noopener noreferrer">GitHub — Hermes Agent v0.17.0</a></p>
+
+<hr>
+
+<h3>3. OpenClaw 2026.6.9-beta.1 — セキュリティ修正複数含む <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース日</strong></td><td>2026-06-19（beta）</td></tr>
+  <tr><td><strong>バージョン</strong></td><td>2026.6.9-beta.1</td></tr>
+  <tr><td><strong>セキュリティ修正</strong></td><td>デバッグ/設定出力からのシークレット再編集、内部 HTTP セッション上書きのブロック、オープン DM ツール露出の監査、プラグイン書き込み所有権チェックの保持</td></tr>
+</ul>
+
+<ul>
+  <li><strong>概要</strong> — 375 merged PRs を含む beta リリース。セキュリティ修正として、デバッグ・設定出力からのシークレット再編集、内部 HTTP セッション上書きのブロック、open-DM ツール露出の監査、プラグイン書き込み所有権チェックの保持が含まれる</li>
+  <li><strong>Hono 依存更新</strong> — v2026.6.8 で Hono を 4.12.25 に更新し、CVE-2026-47675（HTTP Response Splitting）および CVE-2026-54290 を修正済み</li>
+  <li><strong>対応</strong> — beta 利用者は openclaw update --channel dev で更新可能</li>
+  <li>〈OpenClaw / Hono スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">GitHub — OpenClaw Releases</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Python、GCP、AWS、Azure、Claude Code に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>※ Django CVE-2026-6873（6/3 公開）、Spring Framework CVE-2026-41841（6/8 公開）、Next.js CVE-2026-44578（5/18 公開）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 LiteLLM CVE-2026-42271 + CVE-2026-48710 連鎖 — AI API ゲートウェイでの認証不要 RCE（CVSS 10.0） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-42271（LiteLLM コマンドインジェクション）+ CVE-2026-48710（Starlette ホストヘッダー認証バイパス）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>10.0（連鎖時）</td></tr>
+  <tr><td><strong>CISA KEV 追加日</strong></td><td>2026-06-08（連邦修正期限: 2026-06-22）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>LiteLLM 1.74.2 〜 1.83.7 前、Starlette 1.0.1 前</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>LiteLLM 1.83.7 / Starlette 1.0.1</td></tr>
+  <tr><td><strong>実害状況</strong></td><td>能動的悪用確認済み</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — LiteLLM の MCP サーバープレビュー エンドポイント（/mcp-rest/test/connection、/mcp-rest/test/tools/list）がリクエストボディ内のコマンドをそのままサブプロセスとして実行するコマンドインジェクション。単体では認証が必要だが、CVE-2026-48710（Starlette の Host ヘッダー検証不備による認証バイパス）と連鎖することで、認証不要のフル RCE が可能</li>
+  <li><strong>影響</strong> — LiteLLM は OpenAI、Anthropic、Azure OpenAI、Google Gemini 等への AI API トラフィックをルーティングするゲートウェイ。侵入された場合、設定済みの全 AI プロバイダーの API キーにアクセス可能</li>
+  <li><strong>対応</strong> — LiteLLM を 1.83.7 以上に、Starlette を 1.0.1 以上に即座に更新。インターネット公開されている LiteLLM インスタンスの緊急確認を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://horizon3.ai/attack-research/vulnerabilities/cve-2026-42271-chained-with-cve-2026-48710/" target="_blank" rel="noopener noreferrer">Horizon3.ai — CVE-2026-42271 chained with CVE-2026-48710</a></p>
+
+<hr>
+
+<h3>🔴 JetBrains Marketplace サプライチェーン攻撃 — 15個の悪意あるプラグインが8ヶ月間 AI API キーを窃取 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-16（JetBrains）/ 2026-06-19 報道</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>15 プラグイン（うち2つが 25,000 ダウンロード超）、合計 70,000+ インストール</td></tr>
+  <tr><td><strong>窃取対象</strong></td><td>OpenAI、Anthropic、DeepSeek 等の AI プロバイダー API キー</td></tr>
+  <tr><td><strong>潜伏期間</strong></td><td>2025年10月〜2026年6月（約8ヶ月間）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CodeGPT AI Assistant、DeepSeek AI Assist を含む15個のサードパーティ JetBrains プラグインが、開発者が API キーを設定して「Apply」を押した瞬間に、キーをプレーンテキストの JSON ペイロードとして HTTP（非暗号化）で C2 サーバー（39.107.60[.]51）に送信。検出回避のため JVM レベルの X509TrustManager をインストールして TLS 証明書警告を無効化</li>
+  <li><strong>影響</strong> — 窃取された API キーは LLM 使用量の請求不正利用、AI 統合ワークフローへの侵入、処理データへのアクセスに悪用可能</li>
+  <li><strong>対応</strong> — JetBrains が6月16日に全15プラグインを削除・無効化済み。IDE 内で該当プラグインを確認し、API キーをローテーションすること</li>
+</ul>
+
+<p>🔗 <a href="https://www.bleepingcomputer.com/news/security/jetbrains-marketplace-ai-plugins-caught-stealing-developers-api-keys/" target="_blank" rel="noopener noreferrer">BleepingComputer — JetBrains Marketplace AI Plugins Caught Stealing API Keys</a></p>
+
+<hr>
+
+<h3>🔴 Cisco ISE CVE-2026-20181 — リモートコード実行（CVSS 9.1） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20181（RCE）/ CVE-2026-20190（情報漏洩）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.1（RCE）/ 7.5（情報漏洩）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-17（Cisco Security Advisory）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Cisco Identity Services Engine (ISE) / ISE-PIC</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE-2026-20181: ユーザー入力の検証不備により、管理者資格情報を保有する攻撃者が細工した HTTP リクエストで RCE が可能。root 権限への昇格を含む。単一ノード構成では DoS も発生。CVE-2026-20190: 認可チェックの不備により、認証不要の攻撃者がハッシュ化された資格情報を含む機密情報にアクセス可能</li>
+  <li><strong>影響</strong> — ISE はネットワークアクセス制御の基盤システム。侵入された場合、ネットワーク全体のデバイス認証・認可が脅かされる</li>
+  <li><strong>対応</strong> — Cisco が修正版をリリース済み。アドバイザリ cisco-sa-ise-multi-G5WP8vv を確認し即座に適用</li>
+</ul>
+
+<p>🔗 <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ise-multi-G5WP8vv" target="_blank" rel="noopener noreferrer">Cisco Security Advisory — cisco-sa-ise-multi-G5WP8vv</a></p>
+
+<hr>
+
+<h3>🔴 FortiBleed — 74,000件の Fortinet 管理者資格情報がクラックされる <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-18（Australian Cyber Security Centre）</td></tr>
+  <tr><td><strong>CVE</strong></td><td>該当なし（設計上の問題）</td></tr>
+  <tr><td><strong>影響規模</strong></td><td>73,932 件の管理者資格情報、194カ国</td></tr>
+  <tr><td><strong>攻撃手法</strong></td><td>SSL VPN 設定ファイルの抽出 → SHA-256 ハッシュの GPU クラック（45 GPU Hashtopolis クラスター、11.6億回試行）</td></tr>
+</ul>
+
+<ul>
+  <li><strong>概要</strong> — ロシア語話者の犯罪グループが FortiGate デバイスから SSL VPN 設定ファイルを体系的に抽出し、GPU クラスターで管理者資格情報のハッシュをクラック。FortiOS 7.2.11/7.4.8/7.6.1 以降にアップグレードしても、管理者が再認証しない限り従来の SHA-256 ハッシュが残存するという設計上の問題を悪用</li>
+  <li><strong>影響</strong> — クラックされた資格情報で FortiGate のフル管理者権限を取得可能。LDAP/RADIUS/AD ネットワークスニッファーの投入が確認されている</li>
+  <li><strong>対応</strong> — 全 Fortinet 管理者アカウントに強制再認証を実施し、PBKDF2 への移行を完了確認。Hudson Rock の無料資格情報ルックアップツールで自組織の影響を確認</li>
+</ul>
+
+<p>🔗 <a href="https://www.helpnetsecurity.com/2026/06/18/" target="_blank" rel="noopener noreferrer">Help Net Security — FortiBleed</a></p>
+
+<hr>
+
+<h3>🔴 Arista EOS CVE-2026-7473 — CISA KEV 追加、ベンダーがパッチ拒否 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-7473</td></tr>
+  <tr><td><strong>CISA KEV 追加日</strong></td><td>2026-06-09（連邦修正期限: 2026-06-23）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Arista EOS（7020R、7280R/R2、7500R/R2 データセンター スイッチ）</td></tr>
+  <tr><td><strong>パッチ状況</strong></td><td>なし — Arista が修正を明示的に拒否</td></tr>
+</ul>
+
+<ul>
+  <li><strong>概要</strong> — VXLAN/decap-groups/GRE トンネル構成がある場合、スイッチがトンネルプロトコルタイプを検証せずに予期しないトンネル化パケットをデカプセル化・転送する論理欠陥。信頼されていない外部トンネルトラフィックを内部ネットワークセグメントに注入可能</li>
+  <li><strong>影響</strong> — ハイパースケールデータセンター、大規模エンタープライズコアネットワーク、金融インフラに影響。Arista は「ファームウェア修正が本番構成を壊すリスク」を理由にパッチ拒否</li>
+  <li><strong>対応</strong> — 上流デバイスまたは影響を受けるスイッチ自体に ACL を実装して予期しないトンネルトラフィックを選択的にブロック</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/" target="_blank" rel="noopener noreferrer">SecurityWeek — Arista EOS CVE-2026-7473</a></p>
+
+<hr>
+
+<h3>🔴 Vertiv UPS 管理カード — 認証バイパス + RCE（CVSS 9.8 × 2） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2025-46412（認証バイパス）/ CVE-2025-41426（RCE）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.8（各々）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-12（Claroty Team82）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>Vertiv Liebert IS-UNITY-DP / RDU101 ネットワーク管理カード</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>RDU101 v1.9.1.2_0000001 / IS-UNITY v8.4.3.1_00160</td></tr>
+</ul>
+
+<ul>
+  <li><strong>概要</strong> — CVE-2025-46412: 認証バイパスで UPS 管理 Web インターフェースに資格情報なしでアクセス可能。CVE-2025-41426: 管理モジュール上のスタックベースバッファオーバーフローによる RCE。両者を組み合わせることで、認証不要の攻撃者が UPS 制御デバイス上で任意コード実行が可能</li>
+  <li><strong>影響</strong> — サーバーラックの強制シャットダウン、電力イベント時の UPS 状態操作による機器損傷や制御不能な停電の引き起こしが可能</li>
+  <li><strong>対応</strong> — Vertiv が修正済みファームウェアをリリース。至急アップデートを推奨</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/" target="_blank" rel="noopener noreferrer">SecurityWeek — Vertiv UPS Management Card Vulnerabilities</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
