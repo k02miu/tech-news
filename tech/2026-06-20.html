@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-19 09:00 〜 2026-06-20 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.183</h2>
+<p>6/19 10:27 JST にリリースされた v2.1.183 では、auto モードのセキュリティ強化と多数のバグ修正が含まれます。破壊的な git コマンドや IaC の destroy 操作に対する安全ブロックが導入されたことがハイライトです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>auto モードのセキュリティ強化</strong>: <code>git reset --hard</code>、<code>git checkout -- .</code>、<code>git clean -fd</code>、<code>git stash drop</code> など、ローカル作業の破棄を伴う git コマンドが auto モードでブロックされます。また、<code>git commit --amend</code> はエージェントが作成したコミットでない場合にブロック、<code>terraform destroy</code>/<code>pulumi destroy</code>/<code>cdk destroy</code> は明示的な指定がない限りブロックされます</li>
+  <li><strong>非推奨モデルの警告</strong>: リクエストされたモデルが非推奨、または新しいモデルに自動更新された場合に stderr に警告を表示。print モード（<code>-p</code>）および agent frontmatter のモデル設定にも対応</li>
+  <li><strong><code>attribution.sessionUrl</code> 設定</strong>: Web や Remote Control セッションでコミット・PR から claude.ai セッションリンクを省略可能に</li>
+  <li><strong><code>/config --help</code></strong>: <code>/config key=value</code> の利用可能なショートカットキー一覧を表示</li>
+  <li><strong><code>/config</code> トグル動作変更</strong>: Enter と Space 両方で設定変更、Esc で保存して閉じる（以前はリバート）</li>
+  <li><strong>スタートアップ簡素化</strong>: ロゴ下の「setup issues」行を削除。代わりに <code>/doctor</code> で確認可能に</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>サブエージェント spawn 時の 400 エラー修正</strong>: <code>thinking.disabled.display</code> 設定に起因する「Extra inputs are not permitted」エラーを解決</li>
+  <li><strong>サブエージェントの WebSearch 空結果修正</strong>: サブエージェントで WebSearch が空の結果を返す問題を修正</li>
+  <li><strong>Windows Terminal の TUI 腐敗修正</strong>: ネストされたサブエージェント負荷時のステータスライン中間表示、スピナー行の重複、テキストのマージを修正</li>
+  <li><strong>thinking ブロックのみのターン修正</strong>: モデルが thinking ブロックのみ返した場合にターンがサイレントに完了する問題を解決。Claude が再プロンプトするように</li>
+  <li><strong>tmux チームメイトペイン修正</strong>: シェルの rc ファイル初期化が遅い場合のペイン起動失敗と、エージェント spawn 中のキーストロークリークを修正</li>
+  <li><strong>スケジュールタスク/Webhook トリガー修正</strong>: auto モードで保留中のアクション承認やセッションタイトル設定ができなくなるよう、キーボード入力として分類されないように修正</li>
+  <li><strong>MCP 認証サーバー修正</strong>: ヘッドレス/SDK モードで auth-stub ツールがモデルに公開される問題を修正</li>
+  <li><strong>vim モードのヒストリカーソル修正</strong>: ネイティブカーソル有効時、vim モードでヒストリナビゲーション後にプロンプト上にカーソルが残る問題を修正</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-183" target="_blank" rel="noopener noreferrer">Claude Code Changelog v2.1.183</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — v0.17.0「The Reach Release」</h2>
+<p>6/19 リリースの v0.17.0 は、v0.16.0 から約1,475コミット・800マージPRに及ぶ大規模アップデートです。iMessage 対応、Raft エージェントネットワーク統合、デスクトップアプリの大幅強化、バックグラウンドサブエージェント、画像編集機能、Automation Blueprints など多数の新機能が含まれます。</p>
+
+<h3>✨ ハイライト</h3>
+<ul>
+  <li><strong>iMessage 対応（Photon Spectrum）</strong>: Mac リレー不要で iMessage の送受信が可能に。Photon のマネージドラインプールを利用し、<code>hermes photon login</code> でデバイスコード認証のみ。BlueBubbles の後継として位置づけ</li>
+  <li><strong>Raft エージェントネットワーク</strong>: Raft へのゲートウェイチャネルとして参加。Wake チャネルブリッジ経由で外部エージェントとして接続し、プライバシー契約設計でメッセージ本文は送信されない</li>
+  <li><strong>デスクトップアプリの大幅強化</strong>: リバインド可能なキーボードショートカット、ネイティブ OS 通知、ライブサブエージェントウォッチウインドウ、コンポーザーモデルセレクター、自動 RTL/双方向テキスト、リサイズ可能な VS Code テーマターミナルパネル、VS Code Marketplace テーマのインストール対応</li>
+  <li><strong>バックグラウンド/非同期サブエージェント</strong>: <code>delegate_task(background=true)</code> でサブエージェントをバックグラウンドで即座にディスパッチ。完了時に結果が会話に新しいターンとして戻る</li>
+  <li><strong>画像編集（image-to-image）</strong>: <code>image_generate</code> がソース画像の編集・変換に対応。背景除去、スケッチからレンダリングへの変換などが同じツールで可能に</li>
+  <li><strong>Automation Blueprints</strong>: cron 構文を学ぶことなく自動化をスケジュール。名前を選択するだけで必要な情報を Hermes が質問。ダッシュボード、CLI、メッセンジャー、ドキュメントで統一的に表示</li>
+  <li><strong>Cursor Composer モデル対応</strong>: xAI Grok サブスクリプション経由で <code>grok-composer-2.5-fast</code>（200k コンテキスト）を利用可能に</li>
+  <li><strong>ダッシュボードのフルプロファイルビルダー</strong>: ブラウザからモデル選択、スキル設定、MCP サーバー接続を完結。マルチプロファイル管理をワンビューに統合</li>
+  <li><strong>Skills Hub ブラウザ刷新</strong>: 接続ハブ、Featured セクション、インストール前のフルプレビュー、セキュリティスキャンを搭載した新 UI</li>
+  <li><strong>memory ツールのバッチ操作</strong>: <code>operations</code> 配列によるアトミックな一括編集（add/replace/remove）。文字数制限を超過してもスペースを確保しつつ新規追加が可能に</li>
+  <li><strong>セキュアなダッシュボードログイン</strong>: OAuth ゲート、WebSocket 認証の強化、<code>public_url</code> オーバーライドの警告追加</li>
+  <li><strong>WhatsApp Business Cloud API 公式対応</strong>: Meta の第一者 API 経由で WhatsApp に対応。QR スキャン不要</li>
+  <li><strong>Telegram リッチテキスト（Bot API 10.1）</strong>: ネイティブマークアップでのリッチメッセージ配信。デフォルトで有効</li>
+  <li><strong>キュレーターコスト最適化</strong>: 通常のバックグラウンド運用品キュレーションがゼロトークンに。LLM による統合パスは opt-in に変更</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.6.19" target="_blank" rel="noopener noreferrer">Hermes Agent v0.17.0 リリース</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.6.9-beta.1</h2>
+<p>6/19 にベータリリース v2026.6.9-beta.1 が公開されました。安定版の最新は引き続き v2026.6.8（前回の朝刊で報告済み）です。ベータでは Telegram 配信のリッチ化、エージェント回復性の強化、Codex 統合の改善が進んでいます。</p>
+
+<h3>🔧 主な改善（ベータ）</h3>
+<ul>
+  <li><strong>Telegram リッチ配信の強化</strong>: HTML 形式のリッチメッセージ送信、リッチ Markdown とステッカーパスの保持、進捗ドラフトとコマンド出力の忠実なレンダリング</li>
+  <li><strong>エージェント回復性の向上</strong>: リトライ、ターミナル結果、コンパクション後の usage、セッション履歴修復、リプライ調整により、中断・部分ターンの可視化を改善（375マージPR）</li>
+  <li><strong>Codex 統合強化</strong>: 自動プラグイン承認、GPT-5.3 Spark OAuth ルーティング、リモートノード <code>exec</code> の動的ツール化</li>
+  <li><strong>公式プロバイダープラグインの独立</strong>: 外部プロバイダーパッケージが npm リリースとして第一級対応に。ステップファンは npm 専用に</li>
+  <li><strong>Web・ネイティブクライアント改善</strong>: Control UI にセッションワークスペースレールとエクステンションヘルス追加、iOS に Watch コントロール、Android にチャットコンテキスト表示</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.9-beta.1" target="_blank" rel="noopener noreferrer">OpenClaw v2026.6.9-beta.1</a></p>
+
+<hr>
+
+<h2>☁️ AWS — Amazon EC2 G7 Instances GA</h2>
+<p>6/19 に AWS が <strong>Amazon EC2 G7 インスタンス</strong>の一般提供を発表しました。NVIDIA RTX Pro 4500 Blackwell Server Edition GPU を搭載し、AI/ML 推論、グラフィックス、仮想ワークステーション向けの次世代 GPU インスタンスです。</p>
+
+<ul>
+  <li><strong>NVIDIA RTX Pro 4500 Blackwell GPU</strong>: Blackwell アーキテクチャに基づくサーバー向け GPU を採用。AI 推論ワークロードとグラフィックス処理の両方に対応</li>
+  <li><strong>ユースケース</strong>: 生成 AI 推論、3D レンダリング、仮想ワークステーション、ゲーム開発、ビデオ処理など</li>
+</ul>
+
+<p>🔗 <a href="https://www.hpcwire.com/bigdatawire/this-just-in/aws-announces-amazon-ec2-g7-instances-accelerated-by-nvidia-rtx-pro-4500-blackwell-server-edition-gpus/" target="_blank" rel="noopener noreferrer">HPC Wire 記事</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>Azure</strong>（6/18 の一括更新で前回報告済み。6/19 に John Savill の週次動画が公開されたが新規 GA/プレビュー発表は確認されず）、<strong>GCP</strong>（来週の週次アップデート予定）、<strong>Next.js</strong>（最新安定版 v16.2.9 は6/10リリース、canary は v16.3.0-canary.58 まで進行中だが新規安定版なし）、<strong>React</strong>（6/1 の 19.1.8 以降新規リリースなし。React Foundation 設立の動きが6月に発表されたが詳細は未公表）、<strong>Python</strong>（3.14.6 は6/10付で報告済み）、<strong>Django</strong>、<strong>Java/JDK</strong>（次回 CPU は7/21予定）、<strong>Spring Boot</strong>、<strong>Hono</strong>（OpenClaw v2026.6.8 で 4.12.25 に更新済み）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
