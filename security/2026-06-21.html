@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-21 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-21 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-20 08:00 〜 2026-06-21 08:00 JST 公開分</p>
+</header>
+
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Gravity SMTP (WordPress) CVE-2026-4020 — 大規模能動悪用、API鍵・OAuthトークンを流出 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-4020（CVSS 5.3、情報公開）</td></tr>
+  <tr><td><strong>公表・報道</strong></td><td>2026-06-20（The Hacker News / Wordfence）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Gravity SMTP WordPress プラグイン（約10万サイト導入）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>v2.1.5</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用確認済み（Wordfence が1700万件超ブロック）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 認証不要の REST API エンドポイント <code>/wp-json/gravitysmtp/v1/tests/mock-data</code> で <code>permission_callback</code> が無条件で true を返す欠陥。<code>?page=gravitysmtp-settings</code> を付与すると約365KBのシステムレポート（PHP/拡張/ウェブサーバ/DB種別と版/WordPress版/アクティブプラグイン一式/DBテーブル名）と、Amazon SES・Google・Mailjet・Resend・Zoho 等のAPI鍵・OAuthトークンを認証なしで取得可能</li>
+  <li><strong>被害状況</strong> — Wordfence が1700万件超の攻撃試行をブロック。2026年5月初旬から活動開始、6月6日頃に急増（1日400万件超）。主な攻撃元IP: 45.148.10.95・193.32.162.60・176.65.148.139・173.199.90.188・185.8.106.x 系等</li>
+  <li><strong>影響</strong> — 流出したメール統合資格情報でサイトを騙って送信可能。詳細なシステムレポートにより追加攻撃の調査コストが大幅に低下</li>
+  <li><strong>対応</strong> — v2.1.5 に即時更新。第三者メール統合のAPI鍵・OAuthトークンをローテーション。サーバログを上記IPからの <code>/wp-json/gravitysmtp/v1/tests/mock-data</code> アクセスで監査し、侵害を疑う</li>
+  <li>〈web / WordPress スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/hackers-exploit-gravity-smtp-wordpress.html" target="_blank" rel="noopener noreferrer">The Hacker News — Gravity SMTP CVE-2026-4020</a></p>
+
+<hr>
+
+<h3>2. libheif CVE-2026-47178 — 非圧縮HEIF画像処理のヒープバッファオーバーフロー（RCE可能性） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-47178</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-20（Amazon Linux ALAS / Project Zero）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>libheif v1.21.2 以前</td></tr>
+  <tr><td><strong>最大深刻度</strong></td><td>Critical（ヒープベースバッファオーバーフロー、RCE可能性）</td></tr>
+  <tr><td><strong>影響コンポーネント</strong></td><td>非圧縮HEIF画像（ISO/IEC 23001-17, unci item type）のデコード処理</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — クロマサブサンプリング（4:2:0 / 4:2:2）を伴うタイル化HEIF画像を処理する際、クロマプレーンの空間オフセットのスケーリングを行わないため、左上以外のタイルをデコードすると範囲外メモリ書き込み（ヒープバッファオーバーフロー）が発生。リモートコード実行に至る可能性</li>
+  <li><strong>発見元</strong> — Google Project Zero（issue 507396184）。Amazon Linux 向け ALAS アドバイザリとして6月20日に公開された</li>
+  <li><strong>影響</strong> — ユーザー任意のHEIF画像をアップロード・処理するウェブサービスや画像処理パイプラインで、細工した画像によるRCEが成立し得る。Amazon Linux（AWS）上で libheif を利用するコンテナ/サービスが直接対象</li>
+  <li><strong>対応</strong> — libheif を修正版に更新。ユーザーアップロードHEIF画像の処理経路を確認し、未修正版での外部画像処理を停止</li>
+  <li>〈AWS (Amazon Linux) / web 画像処理スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://explore.alas.aws.amazon.com/CVE-2026-47178.html" target="_blank" rel="noopener noreferrer">Amazon Linux Security Center — CVE-2026-47178</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Python、Hono、GCP、Azure、Claude Code に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>Hermes Agent は v0.17.0（2026-06-19 リリース）、OpenClaw は 2026.6.9-beta.1（2026-06-19）がそれぞれ前号で取り上げた最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした。<br>※ Django CVE-2026-6873（6/3 公開）、Spring Framework CVE-2026-41841（6/8 公開）、Next.js CVE-2026-44578（5/18 公開）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Splunk Enterprise CVE-2026-20253 — CISA KEV修正期限が本日6月21日、認証不要RCE（CVSS 9.8） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20253</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>9.8</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>2026-06-18 追加 / 連邦修正期限: 2026-06-21（本日）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Splunk Enterprise 10.0.0〜10.0.6 / 10.2.0〜10.2.3</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>10.0.7 / 10.2.4（10.4 は非影響、Splunk Cloud は非影響）</td></tr>
+  <tr><td><strong>実害状況</strong></td><td>限定的な能動的悪用を Splunk PSIRT が6月18日に確認</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — PostgreSQL サイドカーサービスの <code>/v1/postgres/recovery/backup</code> および <code>/v1/postgres/recovery/restore</code> エンドポイントに認証制御がなく、ネットワーク到達可能な認証不要攻撃者が任意のファイル作成・切り詰めを実行可能</li>
+  <li><strong>攻撃チェーン（watchTowr Labs が6月19日に技術詳細公開）</strong> — 攻撃者管理DBのダンプを任意ファイルに書き出し（backup）→ <code>.pgpass</code> でローカルPostgreSQLにリストア（restore）→ SQL関数 <code>lo_export</code> で任意ファイル書き込み → Splunk が定期実行するPythonスクリプト（例: <code>ssg_enable_modular_input.py</code>）を上書きしてRCE成立</li>
+  <li><strong>影響</strong> — Splunk はCisco傘下のSIEM基盤。侵入されれば監視インフラ自体が盲点化し、検知能力が消失する</li>
+  <li><strong>対応</strong> — 10.0.7 / 10.2.4 に即時更新（本日がCISA修正期限）。管理インターフェースとPostgreSQLサイドカーエンドポイントのネットワークアクセスを制限。未認証ファイル操作のログ監査を実施</li>
+  <li><strong>注記</strong> — 本脆弱性の初出は6月17-18日だが、CISA KEVの連邦修正期限が本日6月21日に設定されており、前号で未取り上げのため緊急掲載</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/critical-splunk-enterprise-flaw-lets.html" target="_blank" rel="noopener noreferrer">The Hacker News — Splunk Enterprise CVE-2026-20253</a> · <a href="https://www.cisa.gov/news-events/alerts/2026/06/18/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener noreferrer">CISA KEV追加アラート</a></p>
+
+<hr>
+
+<h3>🔴 The Gentlemen RaaS — GentleKiller EDRキラーフレームワーク、48製品400プロセスを標的 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-20（ESET Research / Broadcom Protection Bulletin）</td></tr>
+  <tr><td><strong>脅威アクター</strong></td><td>The Gentlemen RaaS（リーダー: ロシア人 Alexander Andreevich Yapaev / "hastalamuerte"、元Qilinアフィリエイト）</td></tr>
+  <tr><td><strong>被害規模</strong></td><td>504件の被害を主張（Ransomware.live、主に東南アジア/南米/西欧）</td></tr>
+  <tr><td><strong>主な手法</strong></td><td>BYOVD（脆弱ドライバ持ち込み）によるEDR無効化 → 暗号化</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — GentleKiller は8つのバリアントで構成されるEDRキラーフレームワーク。各バリアントが異なる脆弱または悪意あるドライバを BYOVD 攻撃で悪用し、48のセキュリティ製品に関連する400プロセスを終了対象とする。悪用ドライバ: Kaspersky (eb.sys)・FACEIT Anti-Cheat (nseckrnl.sys)・Valorant (GameDriverX64.sys)・Javelin (stpm_old/new.sys)・WatchDog (dmx.sys)・Network Blocker (360netmon_wfp.sys)・Cleaner (IMFForceDelete.sys)・G11 (PoisonX.sys)</li>
+  <li><strong>特徴</strong> — 新規公開の BYOVD PoC を数日以内に実戦化する異常な敏捷性。第三製/リークツール（HexKiller・ThrottleBlood・HavocKiller）も統合。バイナリ保護に Enigma/Themida を使用し、正規セキュリティベンダを模倣したファイル名・バージョン情報・デジタル署名・アイコンで検出回避</li>
+  <li><strong>追加ツール</strong> — Rust製クレデンシャルスティーラー OxideHarvest（buildx641）も検出。Chrome・Edge・Firefox・Brave・Opera 等16種のブラウザからデータ収集</li>
+  <li><strong>関連（CERT/CC UEFI Secure Boot バイパス警告）</strong> — 同時期に CERT/CC が複数ベンダ署名UEFIアプリの BYOVD 経由 Secure Boot バイパス警告を発令（Acer・AMD・ASUS・ECS・Getac・GIGABYTE・Toshiba・Uniwill）。管理者権限/物理アクセスでプレブート段階の任意コード実行が可能。UEFI Forbidden Signature Database (DBX) の更新で信頼を失効させる必要</li>
+  <li><strong>対応</strong> — EDR のタンパープロテクションを最大設定、BYOVD 緩和（Microsoft Vulnerable Driver Blocklist の有効化）、DBX 更新の適用、EDRキラー検出のテスト</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/the-gentlemen-raas-uses-gentlekiller.html" target="_blank" rel="noopener noreferrer">The Hacker News — The Gentlemen RaaS / GentleKiller</a> · <a href="https://securityaffairs.com/193941/uncategorized/inside-gentlekiller-the-edr-killer-powering-the-gentlemen.html" target="_blank" rel="noopener noreferrer">Security Affairs — Inside GentleKiller</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
