@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-21 08:00 〜 2026-06-22 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Prefect CVE-2026-5366 — Git引数インジェクションでワーカー上の任意コマンド実行（CVSS 9.9） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-5366（CVSS 3.0: 9.9 / AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-20（米国時間）／2026-06-21 JST（NVD 登録）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Prefect 3.6.23 以前（GitRepository ストレージクラス）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>3.6.25.dev7 以降（PR #21384）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-94 コード生成の不適切な制御（引数インジェクション）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA KEV 未登録（公開PoCなし、内部関係者・乗っ取りアカウントからの悪用が現実的）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Pythonデータパイプライン自動化ツール「Prefect」の <code>GitRepository</code> ストレージクラス（<code>src/prefect/runner/storage.py</code>）において、gitリポジトリからコードを取得する際の <code>commit_sha</code> パラメータが検証されず、そのままgitコマンドの引数に渡される。攻撃者は <code>--upload-pack=touch /tmp/pwned</code> のようなgitオプションを <code>commit_sha</code> に紛れ込ませることで、ワーカー（作業マシン）上で任意のコマンドを実行可能。また <code>directories</code> パラメータも sparse-checkout 操作で同様にgitフラグインジェクションに悪用可能</li>
+  <li><strong>被害シナリオ</strong> — 複数人・チームで共有するセルフホストPrefect環境では「デプロイを登録できる」程度の低権限ユーザーがこの穴を突ける。しかもCVSS評価でスコープ変更（S:C）が含まれており、自分の枠を越えて共有ワーカーや他チームの処理基盤にまで侵入が及ぶ。ワーカーはデータ倉庫（Snowflake等）・AWS/GCPアクセスキー・各種トークンを握る立場にあり、乗っ取られれば全社のデータへの最短経路になる</li>
+  <li><strong>修正内容</strong> — PR #21384 で <code>commit_sha</code> を正規表現 <code>^[0-9a-fA-F]{4,64}$</code>（16進数4〜64文字）に限定し、<code>directories</code> に <code>--</code> セパレータを追加。この修正PRはAIエージェント「Devin」が自動生成し、2026年4月2日にメンテナがマージ。修正版は 3.6.25.dev7 として配布</li>
+  <li><strong>対応</strong> — セルフホストPrefectのサーバーとワーカーの両方を 3.6.25.dev7 以降（できれば安定版）に更新。デプロイ登録権限を見直し最小化。対象バージョンを共有環境で運用していた場合はワーカーがアクセスできたクラウドキー・DB接続情報・トークンを漏洩前提でローテーション。ワーカーの権限を処理ごとに最小限に縮小</li>
+  <li>〈Python スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-5366" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-5366</a> · <a href="https://github.com/PrefectHQ/prefect/pull/21384" target="_blank" rel="noopener noreferrer">GitHub PR #21384（修正）</a></p>
+
+<hr>
+
+<h3>2. BerriAI litellm CVE-2026-12770 / 12771 / 12772 — LLMプロキシの認可制御欠陥3件、非管理者の権限昇格 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-12770（CVSS 5.3 Medium）／CVE-2026-12771（Critical）／CVE-2026-12772</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-21（3件連続公開、UTC 1時〜2時＝JST 10時〜11時）</td></tr>
+  <tr><td><strong>影響</strong></td><td>BerriAI litellm（Python LLMプロキシサーバー）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>12770: 1.63.1 以前 ／ 12771・12772: 1.82.2 以前</td></tr>
+  <tr><td><strong>修正</strong></td><td>12770: PR #23781 ／ 12772: 1.83.0 以降</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>3件ともリモート攻撃可能、PoC公開済み（12771は高複雑度・悪用困難との評価）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — LLM APIプロキシとして広く使われる「litellm」に、6月21日に認可制御の欠陥3件が連続公開された。<strong>CVE-2026-12770</strong>はAdmin Key Handler（<code>key_management_endpoints.py</code>）の不適切な認可。INTERNAL_USER権限のユーザーが <code>/key/block</code>・<code>/key/unblock</code> で他ユーザーのキーをブロック/ブロック解除でき、<code>/key/update</code> で自分のキーの <code>max_budget</code> を管理者権限なしに引き上げ可能。<strong>CVE-2026-12771</strong>はM2M JWT Handler（<code>user_api_key_auth.py</code>）の不適切な認可（Critical、ただし高複雑度・悪用困難）。<strong>CVE-2026-12772</strong>はPROXY_ADMIN DB API Key Generator（<code>login_utils.py</code> の <code>authenticate_user</code>）でセッション有効期限の問題</li>
+  <li><strong>影響</strong> — litellmプロキシは複数LLMプロバイダーのAPIキーを一元管理する役割を持つ。認可制御の欠陥により、低権限ユーザーが他ユーザーのAPIキーを操作・予算上限を回避でき、AI推論コストの不正増大やサービス妨害が可能。マルチテナント環境での影響が大きい</li>
+  <li><strong>修正内容（PR #23781）</strong> — <code>_check_key_admin_access()</code> ヘルパーを追加し、呼び出しがproxy admin / team admin / org admin であることを検証。<code>block_key</code>・<code>unblock_key</code> はDB変更前にチェック、<code>update_key_fn</code> は <code>max_budget</code> 変更時に管理者チェックを強制。非管理者は自分のキーの非予算フィールド更新のみ可能</li>
+  <li><strong>対応</strong> — litellm を最新版（1.83.0 以降推奨）に更新。PR #23781 の修正が含まれるバージョンにアップグレード。プロキシの管理エンドポイントへのアクセスをネットワークレベルで制限し、INTERNAL_USER権限の付与を最小化</li>
+  <li>〈Python / AI プロキシスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.tenable.com/cve/CVE-2026-12770" target="_blank" rel="noopener noreferrer">Tenable — CVE-2026-12770</a> · <a href="https://github.com/BerriAI/litellm/pull/23781" target="_blank" rel="noopener noreferrer">GitHub PR #23781（修正）</a> · <a href="https://cvefeed.io/vuln/detail/CVE-2026-12771" target="_blank" rel="noopener noreferrer">CVEFeed — CVE-2026-12771</a> · <a href="https://cvefeed.io/vuln/detail/CVE-2026-12772" target="_blank" rel="noopener noreferrer">CVEFeed — CVE-2026-12772</a></p>
+
+<hr>
+
+<h3>3. OpenClaw 2026.6.10-beta.1 — セキュリティハードニングベータリリース <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース日</strong></td><td>2026-06-21 09:12 UTC（JST 18:12）</td></tr>
+  <tr><td><strong>タイプ</strong></td><td>ベータリリース（pre-release）</td></tr>
+  <tr><td><strong>前版</strong></td><td>2026.6.9（stable）／2026.6.9-beta.1（2026-06-19）</td></tr>
+  <tr><td><strong>セキュリティ変更</strong></td><td>SSHトンネンループバックスコープ化、入力長上限検証、デバイスペアリング削除</td></tr>
+</table>
+
+<ul>
+  <li><strong>セキュリティ関連変更</strong> — (1) SSHトンネンプレフライトチェックをループバック（localhost）のみにスコープ化し、意図しないリモート転送を防止 (#94607)。(2) チャット/ツール/パッケージ/レスポンスの不正な長さを拒否する bounded input handling を追加 (#95066, #95078, #95085, #95090)。(3) デバイスバックドノードペアリングを削除し、不要な認証経路を排除 (#90373)。(4) 古いアボートマーカーが新しいチャットイベントに影響しないよう修正 (#91013)</li>
+  <li><strong>その他の改善</strong> — エージェントターン・セッション状態の信頼性向上（保留中のサブエージェント完了通知の保持、空履歴の防止）、Codex連携の強化（SecretRefs・承認フロー）、Telegram/Discord/Slackのリッチ配信改善</li>
+  <li><strong>対応</strong> — ベータ版のため本番環境での即時適用は推奨されないが、SSHトンネンと入力長のハードニングが含まれるため stable 版 2026.6.9 からの取り込みを待つか、検証環境で 2026.6.10-beta.1 の評価を推奨</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.10-beta.1" target="_blank" rel="noopener noreferrer">GitHub — OpenClaw 2026.6.10-beta.1</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Python（Prefect・litellm以外）、Hono、GCP、AWS、Azure、Claude Code に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>Hermes Agent は v0.17.0（2026-06-19 リリース）が前号で取り上げた最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした。<br>※ Django CVE-2026-6873（6/3 公開）、Spring Framework CVE-2026-41841（6/8 公開）、Next.js CVE-2026-44578（5/18 公開）、Oracle June 2026 CSPU（6/16 リリース・243 CVE）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 Flowise CVE-2024-58351 — AIワークフロービルダーのoverrideConfig経由RCE（CVSS 9.8） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2024-58351（CVSS 3.1: 9.8 ／ CVSS 4.0: 9.3）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-20（NVD公開）／2026-06-21 CVE Brief で注目 CVE として取り上げ</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Flowise 2.1.4 未満</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>2.1.4 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>設定インジェクション → リモートコード実行（vm2サンドボックスエスケープ）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — オープンソースのAIワークフロー/LangChainビジュアルビルダー「Flowise」において、<code>overrideConfig</code> オプション経由で設定が Chainflow 実行プロセスにインジェクション可能。攻撃者が悪意のある設定を注入することで vm2 サンドボックスをエスケープし、サーバー上で任意のコードを実行できる。Flowiseはブラウザからドラッグ＆ドロップでAIエージェントやRAGパイプラインを構築できるツールで、社内AI基盤として導入する組織が増加中</li>
+  <li><strong>背景</strong> — CVE ID は2024年代だが、NVDへの本格公開は2026年6月20日。6月21日の CVE Brief で「5つのCritical CVE」のひとつとして取り上げられた。同種の「外部入力をそのまま実行してしまう」型の脆弱性は Prefect（CVE-2026-5366）や Langflow などデータ・AI系ツールで繰り返し発生しており、AI基盤のサプライチェーンリスクとして注目すべきパターン</li>
+  <li><strong>影響</strong> — Flowise をインターネット公開している環境では、認証なしまたは低権限でRCEが成立し得る。AIワークフロービルダーはLLM APIキー・ベクトルDB接続情報・プロンプトテンプレート等の機密情報を保持するため、乗っ取られればAIインフラ全体が侵害される</li>
+  <li><strong>対応</strong> — Flowise を 2.1.4 以降に更新。インターネット公開している場合は即座にアクセス制限（リバースプロキシ・認証）を確認。<code>overrideConfig</code> の入力検証とサンドボックス設定を監査</li>
+</ul>
+
+<p>🔗 <a href="https://www.tenable.com/cve/CVE-2024-58351" target="_blank" rel="noopener noreferrer">Tenable — CVE-2024-58351</a> · <a href="https://vulnerability.circl.lu/recent" target="_blank" rel="noopener noreferrer">Vulnerability-Lookup（参照）</a></p>
+
+<hr>
+
+<h3>🟠 Splunk Enterprise CVE-2026-20253 — CISA KEV連邦修正期限（6月21日）経過、技術詳細が追加公開 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20253（CVSS 9.8）</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>2026-06-18 追加 ／ 連邦修正期限: 2026-06-21（経過済み）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Splunk Enterprise 10.0.0〜10.0.6 / 10.2.0〜10.2.3</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>10.0.7 / 10.2.4（10.4・Splunk Cloud は非影響）</td></tr>
+  <tr><td><strong>実害状況</strong></td><td>限定的な能動的悪用を Splunk PSIRT が確認（6月15日頃から）</td></tr>
+  <tr><td><strong>本号の追加情報</strong></td><td>2026-06-21 に Penligent が攻撃チェーンの技術詳細を追加公開</td></tr>
+</table>
+
+<ul>
+  <li><strong>前号からのフォローアップ</strong> — 前号（6月21日朝刊）で「CISA KEV修正期限が本日6月21日」と緊急掲載した Splunk Enterprise の認証不要RCE。連邦機関の修正期限は6月21日（日）で経過済み。未修正の Splunk Enterprise は BOD 26-04（3日パッチ義務）に違反している状態</li>
+  <li><strong>追加公開された技術詳細（Penligent, 6月21日）</strong> — PostgreSQLサイドカーの <code>/v1/postgres/recovery/backup</code>・<code>/v1/postgres/recovery/restore</code> エンドポイントの認証不在を悪用する攻撃チェーンの詳細が追加で公開された。攻撃者管理DBダンプを任意ファイルに書き出し → <code>.pgpass</code> でローカルPostgreSQLにリストア → <code>lo_export</code> で任意ファイル書き込み → Splunk定期実行Pythonスクリプトを上書きしてRCE成立、という流れが技術文書として整理されている</li>
+  <li><strong>対応</strong> — 未修正の場合は即座に 10.0.7 / 10.2.4 に更新。管理インターフェースとPostgreSQLサイドカーエンドポイントのネットワークアクセスを制限。6月15日以降の未認証ファイル操作ログを監査</li>
+</ul>
+
+<p>🔗 <a href="https://www.penligent.ai/hackinglabs/splunk-cve-2026-20253/" target="_blank" rel="noopener noreferrer">Penligent — Splunk CVE-2026-20253 技術詳細（6/21公開）</a> · <a href="https://www.cisa.gov/news-events/alerts/2026/06/18/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener noreferrer">CISA KEV追加アラート</a></p>
+
+<hr>
+
+<h3>📋 6月21日 CVE Brief — 5件のCritical CVE・67件のHigh・4件の能動的悪用確認 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-21（CVE Brief 日次サマリー）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>5件（前日比 -37%）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>67件（前日比 +43%）</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>4件（LiteSpeed cPanel・Joomla・Splunk・Cisco SD-WAN Manager）</td></tr>
+  <tr><td><strong>注目CVE</strong></td><td>CVE-2026-5366 Prefect CVSS 9.9 ／ CVE-2022-50972 WooCommerce CVSS 9.8 ／ CVE-2024-58351 Flowise CVSS 9.8</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月21日のCVE Brief はウェブアプリケーションと開発者インフラに焦点が当てられた。Critical 5件はWooCommerce・Prefect・Flowise等、コンテンツ管理・ワークフロー・データ基盤システムの未認証侵害を晒す内容。4件の能動的悪用確認CVEは LiteSpeed cPanel プラグイン（CVE-2026-54420、シンボリックリンク権限昇格）、Joomla Widget Factory Content Editor（認可バイパス）、Splunk Enterprise（CVE-2026-20253）、Cisco Catalyst SD-WAN Manager（CVE-2026-20262、認証付きファイル書き込み→root権限昇格）</li>
+  <li><strong>パッチ状況</strong> — 公開時点でスコア付きCVEセットに対するパッチ参照がなし。WAFルールの適用、管理・インターネット向けアクセスの制限、ベンダーアドバイザリの継続監視を推奨</li>
+  <li><strong>対応</strong> — WordPress/WooCommerce環境、Prefect・Flowiseデプロイ、能動的悪用中のSplunk・Cisco SD-WAN Manager・LiteSpeed・Joomlaシステムを優先的にレビューし、インターネット露出がある場合は隔離を検討</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 21, 2026</a> · <a href="https://securityaffairs.com/193693/security/cve-2026-20262-cisco-catalyst-sd-wan-flaw-under-active-targeted-exploitation.html" target="_blank" rel="noopener noreferrer">Security Affairs — Cisco SD-WAN CVE-2026-20262</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
