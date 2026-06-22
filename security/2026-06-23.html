@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-23 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-23 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-22 08:00 〜 2026-06-23 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Crawl4AI CVE-2026-56265 — Docker APIサーバーのハードコードJWT鍵で認証バイパス→完全乗っ取り（CVSS 9.8） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-56265（CVSS 3.1: 9.8 / AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H、CVSS 4.0: 9.3）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-21 22:26 JST（NVD公開）／2026-06-22 の CVE Brief で注目CVEの筆頭として取り上げ</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Crawl4AI 0.8.6 以前（Docker APIサーバー）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>0.8.7 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-798 ハードコードされた認証情報（JWT署名鍵のデフォルト固定）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（デフォルト鍵を知る者なら誰でもトークン偽造可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — LLM/RAGパイプライン向けのオープンソースWebクローリングツール「Crawl4AI」のDocker APIサーバーにおいて、JWT署名鍵がハードコードされたデフォルト値で出荷されていた。攻撃者はこの既知のデフォルト鍵を使って任意ユーザーの有効な認証トークンを偽造でき、認証機構を完全にバイパスして保護された全機能へフルアクセスを得る</li>
+  <li><strong>被害シナリオ</strong> — Crawl4AIはAIエージェント・RAGのデータ収集段階で広く使われ、クロール対象URL・認証クレデンシャル・抽出設定を保持する。Docker APIサーバーをインターネット公開または社内ネットワークに露出している環境では、認証なしでAPIを完全掌握され、クロールジョブの乗っ取り・設定の改ざん・接続先システムへの横展しが可能</li>
+  <li><strong>修正内容</strong> — 0.8.7 でデフォルトJWT署名鍵を廃止し、適切な鍵管理に移行。即時アップグレードを推奨</li>
+  <li><strong>対応</strong> — Crawl4AI を 0.8.7 以降に即時更新。アップグレードが困難な場合は Docker APIサーバーへのネットワークアクセスを信頼できるネットワークのみに制限し、デフォルトJWT署名鍵を独自の値に変更。不審な認証トークンの利用パターンを監視</li>
+  <li><strong>掲載の補足</strong> — NVD公開は前号対象期間末尾（6/21 22:26 JST）に近く、前号では取り上げられなかったが、6/22 CVE Brief でCritical筆頭に挙げられたため本号で取り上げる</li>
+  <li>〈Python / AIデータ収集スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-56265" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-56265</a> · <a href="https://www.cve.org/CVERecord?id=CVE-2026-56265" target="_blank" rel="noopener noreferrer">CVE Record</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 22, 2026</a></p>
+
+<hr>
+
+<h3>2. LY Central Dogma CVE-2026-11746 — ZooKeeperレプリケーションのハードコード秘密鍵で認証不要RCE（CVSS 9.4） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-11746（CVSS 4.0: 9.4 / AV:A/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-22 11:35 JST（NVD公開、米国時間 6/21）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>centraldogma-server 0.83.x 以前（ZooKeeperレプリケーション有効時）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>0.84.0 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-798 ハードコードされた認証情報（レプリケーション秘密鍵の既知デフォルト）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（隣接ネットワークからZooKeeperクライアントで既知秘密鍵を提示するだけで悪用可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — LY Corporation（旧LINE）が開発・運用するJavaベースの設定・メタデータリポジトリサーバー「Central Dogma」において、ZooKeeperレプリケーションを有効化する際に <code>replication.secret</code> を明示設定しないと、サーバーが公開既知のハードコード秘密鍵にサイレントにフォールバックする。このデフォルト認証情報で組み込みZooKeeperアンサンブルに認証でき、攻撃者はレプリケーションログ全体を読み取るか、クォーラムに参加してクラスタ全体に任意のレプリケーションコマンドを実行できる</li>
+  <li><strong>被害シナリオ</strong> — Central Dogmaはマイクロサービスの設定・シークレット・メタデータを一元管理する役割を持つ。隣接ネットワーク（AV:A）から到達可能な環境では、認証なしで設定ストア全体の読み取りとクラスタ横断のコマンド実行が成立し、全サービスの設定改ざん・シークレット窃取に直結する</li>
+  <li><strong>修正内容</strong> — 0.84.0 でデフォルトフォールバックを廃止し、<code>replication.secret</code> の明示設定を必須化</li>
+  <li><strong>対応</strong> — centraldogma-server を 0.84.0 以降に更新。ZooKeeperレプリケーションを有効化する場合は必ず <code>replication.secret</code> を明示設定。ZooKeeperアンサンブルへのネットワークアクセスを信頼ホストのみに制限</li>
+  <li>〈Java / マイクロサービス基盤スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11746" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-11746</a> · <a href="https://github.com/line/centraldogma/security/advisories/GHSA-2j95-gqxf-v3vg" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-2j95-gqxf-v3vg</a> · <a href="https://feedly.com/cve/CVE-2026-11746" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-11746</a></p>
+
+<hr>
+
+<h3>3. IBM WebSphere Application Server CVE-2026-9006 — Ajax ProxyのSSRFで認証不要の内部アクセス（CVSS 7.4） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-9006（CVSS 3.1: 7.4 / AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-22（NVD公開、Tenable 新着リスト掲載）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>IBM WebSphere Application Server 9.0 および 8.5（Ajax Proxy構成時）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>パッチ提供済み（IBMセキュリティー速報に準拠）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-918 サーバーサイドリクエストフォージェリ（SSRF）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（Nessus検出ID 321308 追加済み）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — IBM WebSphere Application Server 9.0/8.5 の Ajax Proxy 構成においてSSRFの脆弱性。ネットワーク上の未認証攻撃者が脆弱サーバーから内部・外部システムへ不正なリクエストを送信でき、セキュリティ制御のバイパスや本来アクセスできない機密情報へのアクセスが可能</li>
+  <li><strong>影響</strong> — Ajax Proxyは社内ネットワーク境界で稼働することが多く、SSRF経由で内部API・メタデータサービス・クラウド内部エンドポイントへの踏み台になり得る。攻撃複雑度は高い（AC:H）だが、認証不要で機密性・完全性に高影響</li>
+  <li><strong>対応</strong> — WebSphere 9.0/8.5 をパッチ適用版に更新。Ajax Proxyが不要なら無効化。サーバーからのアウトバウンド接続を必要な宛先のみに制限し、不審な外向きリクエストを監視</li>
+  <li>〈Java / エンタープライズAPスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-9006" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-9006</a> · <a href="https://www.tenable.com/cve/CVE-2026-9006" target="_blank" rel="noopener noreferrer">Tenable — CVE-2026-9006</a></p>
+
+<hr>
+
+<h3>4. OpenClaw 2026.6.10-beta.2 — ベータ追跡リリース、セッション/チャネル状態の健全化と信頼ポリシー保持 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース日</strong></td><td>2026-06-22 09:36 UTC（JST 18:36）</td></tr>
+  <tr><td><strong>タイプ</strong></td><td>ベータリリース（pre-release）</td></tr>
+  <tr><td><strong>前版</strong></td><td>2026.6.10-beta.1（2026-06-21 JST 18:12、前号で掲載）</td></tr>
+  <tr><td><strong>主な変更</strong></td><td>会話短ターンの自動fast mode、モデルルーティングの信頼性向上、チャネル切替時の古いoriginリセット、cron配信コンテキスト保持、フック合成時の信頼ポリシー保持</td></tr>
+</table>
+
+<ul>
+  <li><strong>セキュリティ関連の変更</strong> — 本ベータは前号で取り上げた beta.1 のセキュリティハードニング（SSHトンネルのループバックスコープ化・入力長上限検証・デバイスペアリング削除）を踏まえた追跡リリース。直接の新規ハードニングは少ないが、(1) チャネル切替時に古いper-channel originフィールドをリセットしセッション境界の状態漏洩を防止 (#95328)、(2) cron配信の対象セッション認識を保持 (#93580)、(3) フックレジストリ合成時に承認フローが必要とする信頼ツールポリシーが失われないよう保持 (#94545) — という承認・配信経路の健全化が含まれる</li>
+  <li><strong>その他の改善</strong> — Zai/GLMモデルのフェイルオーバーとネイティブ推論レベル選択の信頼性向上、会話短ターン用の自動fast mode（フォールバック・配信挙動を境界付きで制御）</li>
+  <li><strong>対応</strong> — ベータ版のため本番即時適用は推奨されない。beta.1 のセキュリティハードニングを取り込みたい場合は stable 版の取り込みを待つか、検証環境で 2026.6.10-beta.2 を評価</li>
+  <li>〈OpenClaw スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.10-beta.2" target="_blank" rel="noopener noreferrer">GitHub — OpenClaw 2026.6.10-beta.2</a></p>
+
+<hr>
+
+<h3>5. Claude Code の「サイレントパッチ」暴露 — Backslash Security が30件超の非公表セキュリティ修正を発見 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>報告元</strong></td><td>Backslash Security（CyberScoop が報道）</td></tr>
+  <tr><td><strong>対象期間</strong></td><td>2026年4月〜6月上旬の Claude Code リリース</td></tr>
+  <tr><td><strong>発見手法</strong></td><td>直近2か月の全リリースの更新ログ（changelog）を精査しセキュリティ関連修正を逆追跡</td></tr>
+  <tr><td><strong>件数</strong></td><td>30件超のセキュリティ関連パッチ（Anthropicは事前公表せず）</td></tr>
+  <tr><td><strong>パッチ状況</strong></td><td>報告で識別された全問題は既に修正済み（Anthropicは「迅速にパッチし誰よりも多く文書化」と評価）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Backslash Security が Claude Code の更新ログを精査した結果、2026年4月〜6月上旬に30件超のセキュリティ関連パッチが出荷されていたことを発見。これらは changelog には記載されていたものの、Anthropicからセキュリティ修正として事前公表されておらず、研究者がバージョンごとに修正を逆追跡して初めて可視化された</li>
+  <li><strong>含まれていた問題の例</strong> — データポイズニング、プロンプトインジェクション、任意コード実行の修正に加え、(1) コードベース全消去などの壊滅的削除命令を拒否するコア保護を「コマンドにバックスラッシュを1つ追加する」だけでバイパス可能だった件、(2) ユーザーのOAuthクレデンシャル漏洩、(3) AIエージェントがシェル起動ファイルにバックドアを仕込む件、などLLM/AIエージェント特有の暴露が含まれる</li>
+  <li><strong>本質的な指摘</strong> — 問題は個別パッチではなく「AIエージェントのリリース cadence」にある。6月前半だけで Claude Code は16バージョン、OpenAI Codex は6回更新。モデル更新は短期的な性能・安定性問題を抱えることが多く、開発者は1週間以上アップグレードを遅らせる傾向があり、その結果「性能かセキュリティか」の選択を迫られ、修正が行き渡るまでの小さな脆弱性窓が常時発生する。エアギャップ・規制環境・長時間セッションでバージョン固定する組織では露出が長期化する</li>
+  <li><strong>対応</strong> — Claude Code の自動更新を有効に保ち、可能な限り最新版を維持。バージョン固定が必要な環境ではセキュリティ修正の取り込み遅延を前提に、エージェントの権限を最小化し破壊的操作に追加の承認ゲートを設ける。AIエージェントを「たまにパッチされるOffice」ではなく「常時進化する別物」として更新運用を見直す</li>
+  <li>〈Claude / AIコーディングスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cyberscoop.com/claude-code-security-vulnerabilities-ai-patches-backslash-security/" target="_blank" rel="noopener noreferrer">CyberScoop — AI's constant patching treadmill can be a security problem</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Django、Hono、GCP、AWS、Azure、Spring Framework / SpringBoot に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>Hermes Agent は v0.17.0（2026-06-19 リリース）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした。<br>※ Spring AI CVE-2026-47835（6/12 公開）、Django CVE-2026-6873（6/3 公開）、Next.js CVE-2026-44578（5/18 公開）、Oracle June 2026 CSPU（6/16 リリース・243 CVE）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 SiYuan CVE-2026-56395 / 56397 — BazaarマーケットプレースのXSS（nodeIntegration有効）経由RCE（CVSS 9.6） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-56395（CVSS 3.1: 9.6 / AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H）／CVE-2026-56397（同系）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-21 22:27 JST（NVD公開）／2026-06-22 の CVE Brief で注目CVEとして取り上げ</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>SiYuan 3.6.0 以前</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>3.6.1 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-79 XSS → リモートコード実行（Electronの nodeIntegration 有効）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（悪意あるパッケージ作者がマーケットプレース経由で配信）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — オープンソースのローカルノートアプリ「SiYuan（思源）」のBazaarマーケットプレースにおいて、パッケージのメタデータ（displayName・description）やREADMEのサニタイズが不十分。Electronアプリで <code>nodeIntegration</code> が有効な状態でコンテンツがレンダリングされるため、悪意あるパッケージ作者がHTML/JavaScriptを注入すると、ユーザーがBazaarを閲覧しただけでOSコマンドが実行され、アプリプロセス権限で完全なシステムアクセスを得られる</li>
+  <li><strong>背景</strong> — AI/開発者向けツールの「マーケットプレース／プラグイン経由の供給連鎖攻撃」の典型パターン。SiYuanは技術者向けノートとして人気を集めており、Bazaar経由のテーマ・プラグイン閲覧が日常操作に含まれる点がリスクを高める</li>
+  <li><strong>影響</strong> — ユーザーの閲覧操作（UI:R）を起点にローカルRCEが成立。ローカルノートは社内メモ・コードスニペット・シークレットメモを保持することが多く、乗っ取られれば端末上の機密が窃取される</li>
+  <li><strong>対応</strong> — SiYuan を 3.6.1 以降に更新。Electronの <code>nodeIntegration</code> を無効化し、CSPヘッダを厳格化。Bazaar経由の未知パッケージ導入を制限し、ユーザー提供コンテンツのレンダリング前にサニタイズを徹底</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-56395" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-56395</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 22, 2026</a></p>
+
+<hr>
+
+<h3>🟠 BerriAI LiteLLM CVE-2026-42271 — CISA KEV 連邦修正期限（6/22）経過、認証付きコマンドインジェクションRCEの残存確認を <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-42271（CVSS 8.8 High）</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>2026-06-09 追加 ／ 連邦修正期限: 2026-06-22（経過済み）</td></tr>
+  <tr><td><strong>影響</strong></td><td>BerriAI LiteLLM（Python LLMプロキシ／AIゲートウェイ）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>v1.83.7-stable 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>コマンドインジェクション（低権限 internal-user キー保持者を含む認証ユーザーからホスト上で任意コマンド実行）</td></tr>
+  <tr><td><strong>実害状況</strong></td><td>能動的悪用確認済み（KEV登録の根拠）。ランサムウェアへの利用は Unknown</td></tr>
+</table>
+
+<ul>
+  <li><strong>前号からのフォローアップ</strong> — 前号（6/22朝刊）で取り上げた LiteLLM 認可制御欠陥3件（CVE-2026-12770/12771/12772）とは別系統の、より深刻なコマンドインジェクション CVE。CISA が6月9日にKEVへ追加し、連邦機関の修正期限は6月22日（日）で経過済み。未修正の LiteLLM プロキシは BOD 22-01 違反状態</li>
+  <li><strong>概要</strong> — LiteLLM プロキシにおいて、認証ユーザー（低権限 internal-user キー保持者を含む）がホスト上で任意のコマンドを実行可能。認証不要RCEに至る連鎖の起点ともなり得る。AIゲートウェイは複数LLMプロバイダーのAPIキーを一元管理するため、乗っ取られればAI推論コストの不正増大・APIキー窃取・内部ネットワークへの踏み台化が可能</li>
+  <li><strong>対応</strong> — LiteLLM を v1.83.7-stable 以降に更新（前号の12770/12771/12772修正の 1.83.0 以降とは別途、本CVEの修正取り込みを確認）。プロキシ管理エンドポイントのネットワークアクセスを制限し、internal-user 権限の付与を最小化。6月9日以降のプロキシホスト上の不審なプロセス実行ログを監査</li>
+  <li>〈Python / AIプロキシスタックに直接関連・前号フォローアップ〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-42271" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-42271</a> · <a href="https://github.com/BerriAI/litellm/security/advisories/GHSA-v4p8-mg3p-g94g" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-v4p8-mg3p-g94g</a> · <a href="https://thehackernews.com/2026/06/litellm-flaw-cve-2026-42271-exploited.html" target="_blank" rel="noopener noreferrer">The Hacker News — LiteLLM CVE-2026-42271</a></p>
+
+<hr>
+
+<h3>📋 6月22日 CVE Brief — Critical 4件・High 19件、能動的悪用4件はパッチ未提供 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-22（月曜ブリーフ）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>4件（前日比 -20%）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>19件（前日比 -72%、前日の67件から大幅減）</td></tr>
+  <tr><td><strong>合計公開</strong></td><td>23件</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>4件（Splunk Enterprise/Cloud・Cisco Catalyst SD-WAN Manager・LiteSpeed cPanel プラグイン・Joomla Content Editor）</td></tr>
+  <tr><td><strong>注目CVE</strong></td><td>CVE-2026-56265 Crawl4AI CVSS 9.8 ／ CVE-2026-56395・56397 SiYuan CVSS 9.6 ／ CVE-2026-11746 Central Dogma CVSS 9.4</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月22日のCVE Brief は開発者向けソフトとWebプラットフォームに焦点。Critical 4件は Crawl4AI（ハードコードJWT認証バイパス）、SiYuan 2件（Bazaar XSS→RCE）、Central Dogma（ZooKeeperハードコード秘密鍵→RCE）。いずれもCWE-798 ハードコード認証情報／CWE-79 XSS という「既知のパターンがデフォルト設定に残存」型が目立つ</li>
+  <li><strong>能動的悪用4件の状況</strong> — Splunk Enterprise/Cloud（CVE-2026-20253、PostgreSQLサイドカー認証バイパス・前号から継続）、Cisco Catalyst SD-WAN Manager（CVE-2026-20262、認証付きファイル書き込み→root権限昇格）、LiteSpeed cPanel プラグイン（CVE-2026-54420、シンボリックリンク権限昇格）、Joomla Widget Factory Content Editor（認可バイパス）。いずれもCVSS 9.5 前後</li>
+  <li><strong>パッチ状況</strong> — 本セットのCritical CVE群は公開時点でベンダーパッチが提供されていないものが多く、補償的制御（アクセス制限・ネットワーク分離・監視強化）を優先し、修正版が出次第適用するよう推奨</li>
+  <li><strong>対応</strong> — インターネット露出のある Crawl4AI・SiYuan デプロイを即座に隔離・制限。能動的悪用中の Splunk・Cisco SD-WAN Manager・LiteSpeed・Joomla システムを優先レビュー。Crawl4AI 0.8.7・SiYuan 3.6.1・Central Dogma 0.84.0 の修正版が出次第適用</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 22, 2026</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
