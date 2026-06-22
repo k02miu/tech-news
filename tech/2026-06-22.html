@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-21 09:00 〜 2026-06-22 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし</h2>
+<p>対象期間内に Claude Code の新規リリースはありませんでした。最新版は引き続き <strong>v2.1.185</strong>（6/21 06:04 JST 公開、前回の朝刊で報告済み）です。同バージョンではストリーム停止時のヒントメッセージ改善（「No response from API」→「Waiting for API response」、トリガー猶予 10s→20s）が行われました。RSS フィードの最終更新は 6/22 00:00 UTC で、新しい item の追加は確認されませんでした。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に Hermes Agent の新規リリースはありませんでした。最新版は引き続き <strong>v0.17.0「The Reach Release」</strong>（v2026.6.19、6/20 04:39 JST 公開、前回の朝刊で詳細を報告済み）です。iMessage 対応（Photon Spectrum）、Raft エージェントネットワーク統合、バックグラウンドサブエージェント、画像編集機能（image-to-image）、Automation Blueprints、デスクトップアプリの大幅強化などが含まれる大規模リリースです。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.6.9（安定版）＋ v2026.6.10-beta.1（ベータ）</h2>
+<p>対象期間内に OpenClaw の<strong>2件</strong>のリリースが公開されました。6/21 10:44 JST に安定版 <strong>v2026.6.9</strong> が、同日 18:12 JST には後継ベータ <strong>v2026.6.10-beta.1</strong> が立て続けに公開されています。安定版は v2026.6.8 から 422 PR を統合した大規模リリースで、Telegram リッチ配信、エージェント回復性、Codex 統合、プロバイダプラグインの独立 npm 化が主な特徴です。ベータ版はそこからさらに 109 PR を重ね、セッション状態の堅牢化とチャネル配信の強化に焦点を当てています。</p>
+
+<h3>✨ v2026.6.9（安定版）— 主なハイライト</h3>
+<ul>
+  <li><strong>Telegram リッチ配信の強化</strong>: Telegram がリッチ HTML を送信し、リッチ Markdown・ステッカーパスを保持、進捗ドラフトとコマンド出力をより忠実にレンダリング、HTML テーブルを安全に正規化、メンションとスプールハンドラを正しい配信パスに維持するようになりました</li>
+  <li><strong>エージェント回復性の向上</strong>: リトライ、ターミナルアウトカム、コンパクション後の使用量保持、セッション履歴修復、応答調整（reply reconciliation）により、中断・部分的なターンがより確実に最終結果に到達するよう改善されました</li>
+  <li><strong>Codex 統合の強化</strong>: Codex が自動プラグイン承認、GPT-5.3 Spark OAuth ルーティング、リモートノード <code>exec</code> の動的ツール化、app-server ティアダウンとターミナルアウトカムの信頼性向上を獲得しました</li>
+  <li><strong>公式プロバイダプラグインの独立化</strong>: 外部プロバイダパッケージがファーストクラスの npm リリースになり、外部インストールのチャネルプラグインが Gateway 起動時にロードされるようになりました。StepFun は npm および ClawHub から利用可能です</li>
+  <li><strong>Web・ネイティブクライアントの強化</strong>: Control UI にセッションワークスペースレールと拡張機能ヘルスを追加、iOS に Watch コントロールを追加、Android にチャットコンテキスト表示を追加しました</li>
+  <li><strong>検索・スキルの改善</strong>: Codex Hosted Search が利用可能になり、ClawHub スキルインストールが検証済みソース来歴を保持するようになりました</li>
+</ul>
+
+<h3>🐛 v2026.6.9 — 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ・プライバシー</strong>: デバッグ/設定出力からのシークレットリダクション、内部 HTTP セッションオーバーライドのブロック、オープン DM ツール露出の監査、プラグイン書き込み権限チェックの保持</li>
+  <li><strong>ストレージ・マイグレーション</strong>: ネットワークファイルシステムでの SQLite WAL 回避、インデックス再構築アーティファクトのクリーンアップ、デフォルトエージェント認証プロファイルの SQLite インポート</li>
+  <li><strong>チャネル・応答</strong>: Telegram リッチ配信・テーブルレンダリング修正、WhatsApp メディア失敗後の冒頭テキスト保持、Mattermost スレッド返信の保持、Discord アクションハンドリングの強化</li>
+  <li><strong>プロバイダ・モデル</strong>: Gemini CLI プロキシ OAuth 修正、Codex Spark OAuth ルーティング復元、Bedrock 埋め込みモデル ID 修正</li>
+  <li><strong>CLI・TUI・アプリ</strong>: サブコマンド後のグローバルフラグ受付、CJK IME 入力合成の保持、ターミナル出力・アクティビティインジケータの可視性維持</li>
+</ul>
+
+<h3>🔧 v2026.6.10-beta.1（ベータ）— 主なハイライト</h3>
+<ul>
+  <li><strong>エージェントターン・セッション状態の信頼性向上</strong>: 保留中のサブエージェント完了通知の保持、チャット履歴トランスクリプトの非空維持、メディアインデックス整合性の維持、休止フォローアップドレインの再起動、コンパクションモデルエイリアスの一貫解決</li>
+  <li><strong>Codex・承認フローの強化</strong>: Codex app-server SecretRefs、スレッドコンテキスト、ターンテキストのバウンド、ルーティング承認コンテキスト、型付き SDK 承認/セッションヘルパーが連携して予測可能に動作するようになりました</li>
+  <li><strong>チャネル配信の強化</strong>: Telegram・Discord・Slack がより豊富な進捗/推論/スレッド出力を保持、構造化送信エラーの処理、Slack ショートカットのサポート、正規送信スレッドのより確実な記録</li>
+  <li><strong>リリース・ネットワーク境界の安全性</strong>: SSH トンネルプレフライトがループバックスコープ化、デバイスバックドノードペアリングの削除、揮発性 SQLite 状態の doctor 表示、レガシー Codex ルートの修復</li>
+  <li><strong>新しい CLI・ステータスワークフロー</strong>: チャットからのセッションリネーム（<code>/name</code>）、明示的セッションコンパクション、セッション duration 表示、メッセージ送信/ポールのドライランプレビュー</li>
+  <li><strong>モバイル・デスクトップクライアント</strong>: Android 設定のインテント別グループ化、iOS 通知状態のクリーンアップ、Watch アプリの Xcode 27 互換ターゲットレイアウト、macOS ファイル入力のネイティブパネル使用</li>
+  <li><strong>プラグイン・スキカバレッジの拡大</strong>: Zalo が外部チャネルエントリとして利用可能、Trello スキルの curl 依存宣言、古い管理スキルリンクの再ターゲット、ツール検出がアクティブプロバイダをクリアしない修正</li>
+</ul>
+
+<h3>🔒 v2026.6.10-beta.1 — 主な修正</h3>
+<ul>
+  <li><strong>応答・トランスクリプトの正確性</strong>: 保留中の完了、非空履歴、メディアフィールド、キューイングされたフォローアップ、バッファ済み Slack 返信、推論配信をリトライ・部分ターン間で保持</li>
+  <li><strong>セキュリティ・入力バウンド処理</strong>: SSH トンネルチェックのループバック維持、安全でないチャット/ツール/パッケージ/応答長の拒否、デバイスバックドペアリングの削除</li>
+  <li><strong>Cron・キューセーフティ</strong>: 定期エラーバックオフが設定済み下限を尊重、分離された配信に明示的ターゲットを要求、休止フォローアップドレインの再起動</li>
+  <li><strong>SDK・リリースツール</strong>: 承認/セッション RPC パラメータのより厳格な型付け、古いパック済み tarball の無視、DMG 出力ディレクトリの確実な作成</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.9" target="_blank" rel="noopener noreferrer">OpenClaw v2026.6.9 Release Notes</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.10-beta.1" target="_blank" rel="noopener noreferrer">v2026.6.10-beta.1 Release Notes</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — canary のみ</h2>
+<p>対象期間内に新規安定版リリースはありませんでした。最新安定版は引き続き <strong>v16.2.7</strong>（6/10 公開）です。対象期間内に canary <strong>v16.3.0-canary.60</strong>（6/21 09:03 JST 公開）がリリースされましたが、canary は日次のプレリリースビルドであり、安定版リリースとしては前回から変化ありません。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>（日曜〜月曜朝の週末枠のため新規発表なし。AWS・Azure は週明けの更新予定、GCP の最新リリースノートは6/18付）、<strong>React</strong>（最新は 19.2.7 / 19.1.8、ともに6/1公開で以降の新規リリースなし）、<strong>Python</strong>（3.14.6 / 3.13.14 は6/10付で報告済み）、<strong>Django</strong>、<strong>Java/JDK</strong>（次回 CPU は7/21予定）、<strong>Spring Boot</strong>、<strong>Hono</strong>（最新 v4.12.26 は6/18付で報告済み）、<strong>Claude API/SDK</strong>（6/15の料金体系変更以降、対象期間内の新規アップデートなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
