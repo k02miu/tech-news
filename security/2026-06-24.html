@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-24 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-24 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-23 08:00 〜 2026-06-24 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. IBM Langflow OSS CVE-2026-10561 — PythonREPLComponentの組み込み関数インジェクション＋自動ログインで認証不要RCE（CVSS 10.0） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-10561（CVSS 3.1: 10.0 / AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-21（IBMセキュリティ速報）／2026-06-22 NVD公開（US時間）＝ 2026-06-23 JST／6月23日 CVE Brief でCritical筆頭</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>IBM Langflow OSS 1.0.0 〜 1.9.3</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>1.9.4 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-94 コードインジェクション（Python実行隔離の不備 ＋ 認証バイパス）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（LANGFLOW_AUTO_LOGIN=true デフォルトで認証不要攻撃経路が成立）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — AIエージェントをGUIで構築できるOSS「Langflow」の PythonREPLComponent（Python Interpreter）において、<code>get_globals()</code> が制限付き globals 辞書を構築する際に <code>globals_["__builtins__"] = {}</code> を設定しない。CPythonの <code>exec()</code> は builtins が不在の場合に完全な builtins モジュールを自動挿入するため、import・open・eval などの組み込み関数がホワイトリストに関わらず全て利用可能になる。これに <code>LANGFLOW_AUTO_LOGIN=true</code> デフォルト（GET <code>/api/v1/auto_login</code> でクレデンシャルなしにスーパーユーザーJWT発行）が組み合わさり、完全な認証不要RCEが成立する</li>
+  <li><strong>被害シナリオ</strong> — LangflowはRAG・AIエージェントのプロトタイピング・本番運用に広く使われる。インターネット公開環境では、攻撃者が認証なしでバックエンドプロセス権限（Dockerデフォルトではroot）で任意OSコマンドを実行でき、LLMプロバイダーのAPIキー（OpenAI/Anthropic）窃取・フロー定義の盗取・改ざん・ベクトルストアのクレデンシャル（Chroma/Pinecone/Weaviate）アクセス・cronやバックドアファイルによる永続化が可能</li>
+  <li><strong>修正内容</strong> — 1.9.4 でPython実行の隔離を修正し、builtins の明示的空設定を追加。ワークアラウンドは「なし」（IBM公式見解）</li>
+  <li><strong>対応</strong> — Langflow OSS を 1.9.4 以降に即時更新。インターネット公開している場合は直ちにアクセスを制限。<code>LANGFLOW_AUTO_LOGIN</code> を無効化し、認証を必須化。プロバイダーAPIキーのローテーションを検討</li>
+  <li>〈Python / AIエージェント構築スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.ibm.com/support/pages/security-bulletin-unauthenticated-remote-code-execution-langflow-oss-pythonreplcomponent-builtins-injection" target="_blank" rel="noopener noreferrer">IBM Security Bulletin — CVE-2026-10561</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-10561" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-10561</a> · <a href="https://feedly.com/cve/CVE-2026-10561" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-10561</a></p>
+
+<hr>
+
+<h3>2. expr-eval CVE-2026-12866 — toJSFunction() APIのサンドボックス逃脱で任意JavaScriptコード実行（CVSS 9.8） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-12866（CVSS 3.1: 9.8 / AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H、CVSS 4.0: 9.8）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-22 〜 23 NVD公開（6月23日 CVE Brief でCriticalとして取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>expr-eval の全バージョン（npm パッケージ）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>パッチ未提供（公開時点）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-94 コードインジェクション（<code>Function()</code> コンストラクタ経由のサンドボックス逃脱）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（ネットワーク経由の未認証攻撃者が実行可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — JavaScript の数式評価ライブラリ「expr-eval」の <code>toJSFunction()</code> APIにおいて、ユーザー制御の式がネイティブ <code>Function()</code> コンストラクタで直接コンパイルされる。サンドボックスが不十分なため、攻撃者は意図された数式サンドボックスを逃れてアプリケーションコンテキスト内で任意のJavaScriptコードを実行できる</li>
+  <li><strong>被害シナリオ</strong> — expr-eval はWebアプリケーションの動的計算フィールド・フォームバリデーション・設定UIなどで広く使われる。ユーザー入力を式として受け付ける箇所で <code>toJSFunction()</code> を使用している場合、未認証のネットワーク攻撃者がアプリケーションのセキュリティコンテキスト内で任意コードを実行可能</li>
+  <li><strong>修正内容</strong> — パッチ未提供（CVE Brief でも「No vendor patches were available at disclosure」と記載）。代替ライブラリの使用や、<code>toJSFunction()</code> APIへの信頼できない入力の受け入れを停止することが推奨される</li>
+  <li><strong>対応</strong> — <code>toJSFunction()</code> API に信頼できない入力を渡さない。入力バリデーション・サニタイズを厳格化し、より強力なサンドボックス保証を持つ代替式評価ライブラリへの移行を検討。パッチが出次第即時適用</li>
+  <li>〈web / Node.js / JavaScript ライブラリスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-12866" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-12866</a> · <a href="https://github.com/advisories/GHSA-q9v2-7m5w-4693" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-q9v2-7m5w-4693</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 23, 2026</a></p>
+
+<hr>
+
+<h3>3. BerriAI LiteLLM CVE-2026-49468 — Hostヘッダーインジェクションで認証バイパス、AIゲートウェイの管理ルートが露出（CVSS 9.5） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-49468（CVSS 4.0: 9.5 / AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-22 〜 23 NVD公開（6月23日 CVE Brief で取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>BerriAI LiteLLM 1.83.x 以前</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>1.84.0 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-290 認証バイパス（Host ヘッダー偽装によるルーティング不一致）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（上流のCDN/WAF/リバースプロキシでHostを検証・正規化している場合は影響なし）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — LiteLLMプロキシの認証レイヤーが <code>request.url.path</code> から有効ルートを導出する際、StarletteがHostヘッダーからURLを再構築する仕様を利用。偽装されたHostヘッダーにより、認証ゲートがFastAPIが実際にディスパッチしたルートとは異なるルートを評価し、保護された管理ルートへの認証なしアクセスが可能になる</li>
+  <li><strong>被害シナリオ</strong> — LiteLLMは複数LLMプロバイダーのAPIキーを一元管理するAIゲートウェイ。管理ルートへの認証バイパスが成立すると、APIキーの窃取・AI推論コストの不正増大・内部ネットワークへの踏み台化が可能。ただしCloudflare等のCDN/WAFや <code>server_name</code> 許可リストを持つリバースプロキシ・ホストベースのロードバランサーでHostを検証している場合はバイパスがブロックされる。LiteLLM Cloudの顧客は影響なし</li>
+  <li><strong>前号からのフォローアップ</strong> — 前号（6/22朝刊）で取り上げた LiteLLM 認可制御欠陥3件（CVE-2026-12770/12771/12772）および CVE-2026-42271（KEV登録・コマンドインジェクションRCE）に続く、別系統の認証バイパス。連続してLiteLLMのセキュリティ問題が公開されており、AIゲートウェイの攻撃対象化が継続している</li>
+  <li><strong>修正内容</strong> — 1.84.0 で認証レイヤーのルート導出ロジックを修正。アップグレードが困難な場合は上流でのHostヘッダー検証・正規化を確実に実施</li>
+  <li><strong>対応</strong> — LiteLLM を 1.84.0 以降に更新。上流のCDN/WAF/リバースプロキシでHostヘッダーの検証・正規化を確認。プロキシ管理エンドポイントへのネットワークアクセスを制限</li>
+  <li>〈Python / AIプロキシスタックに直接関連・前号フォローアップ〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-49468" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-49468</a> · <a href="https://advisories.gitlab.com/pypi/litellm/CVE-2026-49468/" target="_blank" rel="noopener noreferrer">GitLab Advisory — CVE-2026-49468</a> · <a href="https://github.com/advisories/GHSA-4xpc-pv4p-pm3w" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-4xpc-pv4p-pm3w</a></p>
+
+<hr>
+
+<h3>4. Hono CVE-2026-56762 / CVE-2026-47676 — Cookieヘッダー不正文字によるレスポンス分割 ＋ app.mount() のパス解析不一致でアクセス制御バイパス <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-56762（CVSS 3.1: 5.3 / AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L）／CVE-2026-47676（CVSS 3.1: 5.3 / AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>CVE-2026-56762: 2026-06-23 NVD公開／CVE-2026-47676: NVD公開（6月23日 CVE Brief で取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>CVE-2026-56762: Hono 4.12.11 以前／CVE-2026-47676: Hono 4.12.20 以前</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>CVE-2026-56762: 4.12.12 以降／CVE-2026-47676: 4.12.21 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CVE-2026-56762: CWE-113 HTTPレスポンス分割（Cookie名の不正文字検証欠如）／CVE-2026-47676: CWE-444 HTTPリクエストスマグリング（マウントプレフィックスの未デコードパス切り取り）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（いずれも未認証のネットワーク攻撃者が実行可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-56762 概要</strong> — Hono の <code>setCookie()</code>・<code>serialize()</code>・<code>serializeSigned()</code> 関数がCookie名の書き込みパスで不正文字（<code>\r</code>・<code>\n</code> 等の制御文字）を検証しない。ユーザー制御のCookie名を渡すと不正な Set-Cookie ヘッダー値が生成される。Node.js・Cloudflare Workers 等のモダンランタイムでは不正ヘッダー値は拒否されてランタイムエラーとなり、アプリケーションのクラッシュ・サービス停止（DoS）を引き起こす</li>
+  <li><strong>CVE-2026-47676 概要</strong> — <code>app.mount()</code> がマウントプレフィックスを生URLパス名から切り取る一方、ルートマッチングはパーセントデコード後のパスに対して行われる。パスにパーセントエンコードされたマルチバイト文字が含まれる場合、この不一致によりプレフィックスが誤った位置で切り取られ、マウントされたサブアプリケーションが誤ったパスを受信する。攻撃者はパーセントエンコードされたマルチバイト文字を用いて、マウントプレフィックスによるパスベースのアクセス制御をバイパスし、保護されたリソースやサブアプリケーションにアクセス可能</li>
+  <li><strong>影響</strong> — Hono はCloudflare Workers・Bun・Deno・Node.js 等の多様なJavaScriptランタイムで動作する軽量Webフレームワーク。Cookie名の制御文字注入はDoS、パス解析不一致はアクセス制御バイパスにつながり、エッジサーバー・APIゲートウェイでの利用時に特に注意が必要</li>
+  <li><strong>対応</strong> — CVE-2026-56762 は Hono 4.12.12 以降に更新。Cookie名にユーザー入力を使用する場合は不正文字を拒否する入力バリデーションを実装。CVE-2026-47676 は Hono 4.12.21 以降に更新。<code>app.mount()</code> でセキュリティ感受性の高いパスプレフィックスを使用している場合は修正後に再テストを実施</li>
+  <li>〈Hono / web フレームワークスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-56762" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-56762</a> · <a href="https://feedly.com/cve/CVE-2026-47676" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-47676</a> · <a href="https://github.com/advisories/GHSA-26pp-8wgv-hjvm" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-26pp-8wgv-hjvm</a> · <a href="https://github.com/advisories/GHSA-2gcr-mfcq-wcc3" target="_blank" rel="noopener noreferrer">GitHub Advisory GHSA-2gcr-mfcq-wcc3</a></p>
+
+<hr>
+
+<h3>5. vLLM 複数CVE — マルチテナント推論でのGPUメモリ情報漏洩・DoS・活性化関数ロードでのコード実行バイパス <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-53923（GPUメモリ情報漏洩）／CVE-2026-54235（temperature=NaN/Infinity バリデーションバイパス）／GHSA-q8gq-377p-jq3r（活性化関数ロードのセキュリティチェックバイパス→任意コード実行）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>CVE-2026-53923・54235: 2026-06-22 NVD公開（US時間）＝ 2026-06-23 JST／GHSA-q8gq-377p-jq3r: 2026-06-14 GitHub公開</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>CVE-2026-53923: vLLM 0.5.5 〜 0.23.1rc0未満／CVE-2026-54235: 0.23.1rc0未満／GHSA-q8gq-377p-jq3r: 該当バージョン</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>CVE-2026-53923・54235: 0.23.1rc0 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-200 情報漏洩（GPU未初期化メモリ）／CWE-1287 入力型検証不備／CWE-94 コードインジェクション（assert文バイパス）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（6月23日 CVE Brief でCritical/Highとして取り上げ）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-53923 概要</strong> — vLLM の GGUF デ量子化CUDAカーネルが tensor 次元を int64_t から int に切り詰めることで、出力テンソルの一部のみが処理される。未処理部分はGPUの未初期化メモリを保持し、マルチテナント推論環境では他ユーザーの推論リクエストのテンソルデータが漏洩する可能性がある</li>
+  <li><strong>CVE-2026-54235 概要</strong> — temperature のバリデーションが比較演算子（<code>&lt;</code> <code>&gt;</code>）を使用しており、Python の IEEE 754 浮動小数点セマンティクスで NaN と正の Infinity は全ての比較で <code>False</code> と評価される。これによりバリデーションをすり抜けた値がGPUサンプリングカーネルに伝播し、未定義動作やCUDAエラーで推論ワーカーをクラッシュさせる</li>
+  <li><strong>GHSA-q8gq-377p-jq3r 概要</strong> — 活性化関数のロード時のセキュリティチェックが <code>assert</code> 文で実装されており、Pythonの最適化モード（<code>-O</code>）で実行された場合に assert が無効化されてセキュリティチェックがバイパスされる。結果として任意のコード実行が可能になる</li>
+  <li><strong>被害シナリオ</strong> — vLLM は大規模LLM推論サービングのデファクトスタンダード。マルチテナント環境（共有GPU・推論API提供）でのGPUメモリ漏洩はテナント間のデータ分離を破り、DoS・コード実行は推論インフラ全体の乗っ取りにつながる</li>
+  <li><strong>対応</strong> — vLLM を 0.23.1rc0 以降に更新。マルチテナント推論環境では特に CVE-2026-53923 の修正を優先。Python最適化モード（<code>-O</code>）での運用は避け、GHSA-q8gq-377p-jq3r の修正を確認</li>
+  <li>〈Python / AI推論サービングスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-53923" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-53923</a> · <a href="https://feedly.com/cve/CVE-2026-54235" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-54235</a> · <a href="https://github.com/vllm-project/vllm/security/advisories" target="_blank" rel="noopener noreferrer">vLLM Security Advisories</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Django、Spring Framework / SpringBoot、GCP、AWS、Azure に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>Hermes Agent は v0.17.0（2026-06-19 リリース）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした。v0.17.0 にはダッシュボード認証ハードニング・Starlette CVE-2026-48710 ピン・SSRF ハードニング等のセキュリティ修正が含まれます。<br>OpenClaw は 2026.6.10-beta.2（2026-06-22 リリース）が最新のベータ版であり、本対象期間内に新規リリースは発表されませんでした。<br>※ Spring AI CVE-2026-47835（6/12 公開）、Django CVE-2026-6873（6/3 公開）、Next.js CVE-2026-44578（5/18 公開）、Oracle June 2026 CSPU（6/16 リリース）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 6月23日 CVE Brief — Critical 17件（前日比+325%）・High 81件（+326%）、AI/MLインフラが露出の中心 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-23（月曜ブリーフ）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>17件（前日比 +325%、前日の4件から急増）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>81件（前日比 +326%、前日の19件から急増）</td></tr>
+  <tr><td><strong>パッチ提供率</strong></td><td>0%（公開時点でベンダーパッチが一切提供されていない）</td></tr>
+  <tr><td><strong>注目CVE</strong></td><td>CVE-2026-10561 Langflow CVSS 10 ／ CVE-2026-12866 expr-eval CVSS 9.8 ／ CVE-2026-49468 LiteLLM CVSS 9.5 ／ CVE-2026-56422/56423/56425 MISP</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>Splunk Enterprise/Cloud CVE-2026-20253（前号から継続）・Joomla Content Editor CVE-2026-48907</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月23日のCVE Briefは「AI/MLインフラが昨日の開示を支配した」と題し、IBM Langflow・vLLM・BerriAI LiteLLM・expr-eval の重大脆弱性がモデルサービング・オーケストレーションスタックをリモート侵害に晒す状況を報告。Critical 17件・High 81件と前日から3倍以上の急増。RCEと認証の弱さが繰り返し現れるパターン</li>
+  <li><strong>AI/MLパイプラインの攻撃対象化</strong> — Langflow（CVSS 10の認証不要RCE）、vLLM（GPUメモリ漏洩・DoS・コード実行）、LiteLLM（Hostヘッダー認証バイパス）、expr-eval（サンドボックス逃脱）が全て同日に開示。AI推論基盤・RAGパイプライン・AIゲートウェイが一斉に攻撃対象化されており、AIインフラのセキュリティ成熟度が追いついていないことが浮き彫り</li>
+  <li><strong>MISP脅威インテリジェンスプラットフォームのクラスター</strong> — CVE-2026-56422/56423/56425 の3件が一括開示。コアのアクセス制御欠陥（オブジェクトの所有権検証不備・バルク削除の認可バイパス）に加え、Azure AD認証プラグインのOAuth 2.0実装不備（セッショントークン漏洩・HTTPS強制欠如）、管理者によるKafka設定ファイルパス経由のRCEが含まれる。脅威インテリジェンス基盤自体が侵害されると防御全体が機能不全に陥る</li>
+  <li><strong>パッチ提供率0%の意味</strong> — 本セットのCritical CVE群は公開時点でベンダーパッチが一切提供されていない。補償的制御（ネットワーク分離・アクセス制限・監視強化）を優先し、修正版が出次第適用する運用が必須</li>
+  <li><strong>対応</strong> — インターネット露出のある Langflow・vLLM・LiteLLM デプロイを即座に隔離・制限。MISP デプロイのアクセス制限とAzure ADプラグインの見直し。expr-eval を使用するアプリケーションの <code>toJSFunction()</code> APIの入力経路を確認。PhpSpreadsheet（phar逆シリアライズRCE）をバンドルするPHPアプリの確認</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 23, 2026</a></p>
+
+<hr>
+
+<h3>🟠 Splunk Enterprise/Cloud CVE-2026-20253 — PostgreSQLサイドカーの認証バイパス、能動的悪用継続中・PoC公開済み <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20253（認証バイパス・任意ファイル作成/切り詰め）</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>2026-06-09 追加 ／ 連邦修正期限: 2026-06-22（経過済み）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Splunk Enterprise および Splunk Cloud Platform（PostgreSQLサイドカーサービス）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>認証バイパス — 未認証ユーザーが任意のファイルを作成・切り詰め可能</td></tr>
+  <tr><td><strong>実害状況</strong></td><td>能動的悪用確認済み（KEV登録の根拠）・PoC公開済み</td></tr>
+</table>
+
+<ul>
+  <li><strong>前号からのフォローアップ</strong> — 前号（6/23朝刊）の CVE Brief でも能動的悪用4件の筆頭として取り上げ。CISA KEV の連邦修正期限（6/22）が経過済みであり、未修正の Splunk は BOD 22-01 違反状態。PoCが公開されているため、パッチ未適用の環境では即時の悪用リスクが高い</li>
+  <li><strong>概要</strong> — Splunk Enterprise/Cloud Platform の PostgreSQL サイドカーサービスに認証バイパス脆弱性。未認証ユーザーが任意のファイルを作成・切り詰め可能で、これを起点にシステムの完全掌握につながる連鎖が可能</li>
+  <li><strong>対応</strong> — Splunk をパッチ適用版に即時更新。PostgreSQLサイドカーへのネットワークアクセスを制限。6月9日以降の不審なファイル作成・切り詰めのログを監査</li>
+</ul>
+
+<p>🔗 <a href="https://digital.nhs.uk/cyber-alerts/2026/cc-4798" target="_blank" rel="noopener noreferrer">NHS Cyber Alert — Splunk CVE-2026-20253</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 23, 2026</a></p>
+
+<hr>
+
+<h3>🟠 Jupyter Server CVE — ノートブックの格納型XSS経由でRCE・完全API権限奪取 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-23 CVE Brief で取り上げ</td></tr>
+  <tr><td><strong>影響</strong></td><td>Jupyter Server（Runtime コンポーネント）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-79 格納型XSS → リモートコード実行</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（悪意あるノートブックHTMLペイロード経由）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Jupyter Server の Runtime コンポーネントに格納型XSS脆弱性。攻撃者が悪意あるHTMLペイロードをノートブックに埋め込むことで、他ユーザーがノートブックを開いた際にリモートコード実行が成立し、Jupyter Server の完全なAPI権限を奪取される</li>
+  <li><strong>被害シナリオ</strong> — Jupyter はデータサイエンス・ML実験・共有分析環境で広く使用される。共有ノートブック環境では、悪意あるノートブックの閲覧だけでホストの完全掌握につながり、データ・モデル・クレデンシャルの窃取が可能</li>
+  <li><strong>対応</strong> — Jupyter Server を最新版に更新。信頼できない出典のノートブックを開く前にHTMLサニタイズを実施。共有環境でのノートブック配信経路を制限</li>
+  <li>〈Python / データサイエンス・ML スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 23, 2026</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
