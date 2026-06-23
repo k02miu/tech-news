@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-23 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-23 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-22 09:00 〜 2026-06-23 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.186</h2>
+<p>対象期間内に <strong>v2.1.186</strong>（2026-06-23 05:45 JST 公開）がリリースされました。MCP サーバの CLI 認証、ワークフローのステータスフィルタ、プラグインタブの Skills セクション追加など、多数の新機能と修正が含まれる大型リリースです。</p>
+
+<h3>✨ 新機能・改善</h3>
+<ul>
+  <li><strong>MCP 認証の CLI 化</strong>: <code>claude mcp login &lt;name&gt;</code> と <code>claude mcp logout &lt;name&gt;</code> を追加。対話型 <code>/mcp</code> メニューを開かずに CLI から MCP サーバの認証が可能。<code>--no-browser</code> で SSH 経由の stdin リダイレクトにも対応</li>
+  <li><strong>ワークフローのステータスフィルタ</strong>: <code>/workflows</code> エージェント詳細ビューで <code>f</code> キーによるステータスフィルタリングを追加</li>
+  <li><strong>プラグインタブに Skills セクション</strong>: <code>/plugin</code> の Installed タブに Skills セクションを追加</li>
+  <li><strong>iTerm2 チームメイトモード</strong>: <code>teammateMode: "iterm2"</code> 設定を追加。<code>it2</code> CLI が見つからない場合は警告を表示</li>
+  <li><strong>AWS 認証情報リフレッシュ</strong>: <code>awsAuthRefresh</code> 設定時に <code>/login</code> に「Claude Platform on AWS - refresh credentials」オプションを追加</li>
+  <li><strong>! bash コマンドの自動応答</strong>: <code>!</code> bash コマンドが Claude の自動応答をトリガーするよう変更。従来の context-only 動作に戻すには <code>"respondToBashCommands": false</code> を設定</li>
+  <li><strong>メモリの圧縮リマインダー</strong>: <code>MEMORY.md</code> インデックスがサイズ上限に近づくと、エージェントに圧縮を促すリマインダーを追加</li>
+  <li><strong>スキルフロントマターの柔軟化</strong>: <code>display-name</code>、<code>default-enabled</code>、<code>fallback</code>、<code>metadata.*</code> が kebab-case、snake_case、camelCase いずれも受け付けるよう改善</li>
+  <li><strong>不正な SKILL.md のハンドリング改善</strong>: YAML フロントマターが不正な場合、空のメタデータでスキル本体を読み込むよう改善（サイレント失敗を回避）</li>
+  <li><strong>MCP コマンドの改善</strong>: <code>claude mcp get</code> と <code>claude mcp remove</code> がタイプミス時に最も近いサーバ名を提案し、長いサーバリストをtruncate</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>スリープ復帰後のストリーミングリクエスト失敗（「Content block not found」や JSON パースエラー）を修正</li>
+  <li>サブエージェントのトランスクリプトスクロール位置が終了時にメイントランスクリプトに漏れ出す問題を修正</li>
+  <li>バックグラウンドタスクプレビューがエージェントのプラン読み込み前に生のツール名をちらつかせる問題を修正</li>
+  <li>Chrome タブグループ分離がプロダクト内パーミッションゲート無効時に並行 CLI セッションで適用されない問題を修正</li>
+  <li>バックグラウンドセッションの要約（recap）が重複する問題を修正。エージェント自身のターン終了要約が recap 行として表示されるように</li>
+  <li><code>Agent(type)</code> 否認ルールと <code>Agent(x,y)</code> 許可タイプ制限が名前付きサブエージェント起動時に適用されない問題を修正</li>
+  <li>バックグラウンドエージェント実行中に Esc と Ctrl+C が応答しない問題を修正</li>
+  <li>パーミッションプロンプトのオプション番号がテキスト溢れ時にずれる問題を修正</li>
+  <li>終了したサブエージェントで <code>x</code> を押しても閉じられない問題を修正</li>
+  <li><code>~~strikethrough~~</code> が取り消し線ではなくリテラルチルダとして表示される問題を修正</li>
+  <li><code>--tools</code> がコールド起動時にフィーチャーゲート前のツールを通過させる問題を修正</li>
+  <li>使用量ベースの Enterprise/Team 加入者にセッションコストが表示されない問題を修正</li>
+  <li>エージェントチーム: tmux/pane バックエンド経由のチームメイトがリーダーの <code>--effort</code> レベルを継承するよう修正</li>
+  <li>Workflow <code>agent({schema})</code> サブエージェントがスキーマ検証失敗時に無限ループする問題を修正（5回で中断）</li>
+</ul>
+
+<h3>🔄 主な変更</h3>
+<ul>
+  <li><strong>リトライ上限</strong>: <code>CLAUDE_CODE_MAX_RETRIES</code> の上限を15にキャップ。無人セッションには <code>CLAUDE_CODE_RETRY_WATCHDOG</code> を推奨</li>
+  <li><strong>バックグラウンドサブエージェントのパーミッション</strong>: バックグラウンドサブエージェントが自動拒否ではなくメインセッションにパーミッションプロンプトを表示するよう変更。Esc でそのツールのみ拒否可能</li>
+  <li><strong>/review の統一</strong>: <code>/review &lt;pr&gt;</code> が <code>/code-review medium</code> と同じレビューエンジンを使用するよう変更</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-186" target="_blank" rel="noopener noreferrer">Claude Code v2.1.186 Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に Hermes Agent の新規リリースはありませんでした。最新版は引き続き <strong>v0.17.0「The Reach Release」</strong>（v2026.6.19、6/20 04:39 JST 公開、前回の朝刊で詳細を報告済み）です。iMessage 対応（Photon Spectrum）、Raft エージェントネットワーク統合、バックグラウンドサブエージェント、画像編集機能（image-to-image）、Automation Blueprints、デスクトップアプリの大幅強化などが含まれる大規模リリースです。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.6.10-beta.2（ベータ）</h2>
+<p>対象期間内に OpenClaw のベータ <strong>v2026.6.10-beta.2</strong>（2026-06-22 18:36 JST 公開）がリリースされました。前回のベータ v2026.6.10-beta.1（6/21 18:12 JST）から11 PR を統合した小規模リリースで、会話ターンの高速モード自動切替、モデルルーティングの信頼性向上、セッション/チャネル状態の安全性強化に焦点を当てています。</p>
+
+<h3>✨ 主なハイライト</h3>
+<ul>
+  <li><strong>会話の自動ファストモード</strong>: OpenClaw が短い会話ターンで自動的にファストモードを有効化し、長い実行では通常モードに戻るようになりました。バウンドされたフォールバックと配信動作を伴います（#85104）</li>
+  <li><strong>モデルルーティングの信頼性向上</strong>: Zai モデル合成、GLM オーバーロードフェイルオーバー、ネイティブ推論レベル選択がアクティブなモデルカタログにより一貫して追従するよう改善（#94461, #93241, #94067, #94136）</li>
+  <li><strong>セッション・チャネル状態の安全性</strong>: チャネル切替時に古いオリジンフィールドをリセット、cron 配信認識がターゲットセッションに維持されるよう改善（#95328, #93580）</li>
+  <li><strong>フック構成時の信頼ポリシー保持</strong>: 構成されたフックレジストリが承認フローに必要な信頼ツールポリシーを保持するよう修正（#94545）</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>ファストモードのフォールバックカットオフとリセット通知がバウンドされ、繰り返し進捗イベントが可視化を維持</li>
+  <li>Codex サービスティア状態が正規化され、信頼ポリシーがフックレジストリ構成時に失われないよう修正</li>
+  <li>Zai・GLM フェイルオーバーパスが正しいランタイムメタデータを使用し、古いチャネルオリジン状態がセッション変更時に漏れないよう修正</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.10-beta.2" target="_blank" rel="noopener noreferrer">OpenClaw v2026.6.10-beta.2 Release Notes</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — 新規リリースなし</h2>
+<p>対象期間内に新規安定版・canary リリースはありませんでした。最新安定版は引き続き <strong>v16.2.7</strong>（6/10 公開）、最新 canary は <strong>v16.3.0-canary.60</strong>（6/21 公開、前回の朝刊で報告済み）です。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ AWS — Weekly Roundup（6/22公開、NY Summit リキャップ）</h2>
+<p>2026年6月22日に <strong>AWS Weekly Roundup</strong> が公開され、前週の AWS Summit New York City の主要発表と新サービスがまとめられました。キーノートでは「時間とともに価値を複利で増やすエージェント」をテーマに、Agentic AI スタックの大型発表が行われました。</p>
+
+<h3>✨ 主要ローンチ</h3>
+<ul>
+  <li><strong>Grok 4.3 from xAI in Amazon Bedrock</strong>: 新推論エンジン上で動作する Grok 4.3 が Bedrock で利用可能に。ツール呼び出し、構造化出力、レスポンスストリーミングをサポート</li>
+  <li><strong>AWS Local Zone in Hanoi, Vietnam</strong>: アジア太平洋で初めて S3 と EBS Local Snapshots をサポートする Local Zone。データ居住要件への対応（<code>ap-southeast-1-han-1a</code>）</li>
+  <li><strong>AWS Blocks（プレビュー）</strong>: オープンソースの TypeScript フレームワーク。Postgres、認証、リアルタイムメッセージングを含むローカル環境を AWS アカウントなしで実行。本番デプロイ時もコード変更ゼロ</li>
+  <li><strong>Amazon S3 annotations</strong>: オブジェクトに最大1GBのリッチ・クエリ可能なコンテキストを直接添付可能に。AI エージェントや自律ワークフロー向け</li>
+  <li><strong>Amazon EC2 G7 instances</strong>: NVIDIA RTX PRO 4500 Blackwell Server Edition GPU 搭載。AWS が同 GPU をサポートする初の主要クラウドプロバイダ。G6 と比べ AI 推論性能最大4.6倍、グラフィックス性能最大2.1倍</li>
+  <li><strong>Amazon ECS 高速オートスケーリング</strong>: 20秒メトリクス対応でスケールアウトトリガ時間が363秒→86秒（76%高速化）、タスクプロビジョニング全体で386秒→109秒（72%高速化）</li>
+  <li><strong>Strands Agents 新機能</strong>: Harness SDK のコンテキスト管理改善、Strands Shell での分離実行環境、Strands Evals でのカオステスト・レッドチーミング</li>
+  <li><strong>AWS Management Console Private Access</strong>: インターネット接続のない VPC から AWS コンソールにアクセス可能に。エアギャップ環境での管理を実現</li>
+  <li><strong>AWS Marketplace Storefront GA</strong>: パートナーが独自ブランドのソリューションカタログを数時間で作成・デプロイ可能に</li>
+</ul>
+
+<h3>📉 価格削減</h3>
+<ul>
+  <li><strong>Amazon S3 Vectors</strong>: 大規模ベクトルインデックスのクエリ料金を最大80%削減。アプリケーション変更不要で自動適用</li>
+  <li><strong>Amazon GameLift Servers</strong>: 世代6以降の全インスタンスタイプでネットワーク帯域幅が無料化</li>
+  <li><strong>AWS Marketplace</strong>: プロフェッショナルサービスのリスティング手数料を2.5%→0.5%に削減</li>
+</ul>
+
+<h3>🔐 AWS Summit NY — Agentic AI ハイライト</h3>
+<ul>
+  <li><strong>Amazon Quick</strong>: デスクトップアプリでマルチステップエージェントを直接作成・実行。メール、Slack、カレンダー、タスクを一元管理</li>
+  <li><strong>AWS Continuum</strong>: AI ネイティブセキュリティサービス。脅威モデリング、PR コードスキャン、Kiro/Claude Code プラグイン/MCP 経由の IDE 統合</li>
+  <li><strong>Amazon Bedrock AgentCore GA</strong>: インフラ・オーケストレーションハーネス、Web Search、Managed Knowledge Base、Guardrails ポリシー統合、AWS Context サービス</li>
+  <li><strong>Kiro</strong>: ネイティブ iOS アプリ追加。AWS DevOps Agent にリリース管理機能、AWS Transform で自律的な技術負債削減</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/aws-weekly-roundup-ny-summit-recap-local-zone-in-hanoi-grok-4-3-in-bedrock-price-reductions-and-more-june-22-2026/" target="_blank" rel="noopener noreferrer">AWS Weekly Roundup (June 22, 2026)</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 軽微な更新のみ</h2>
+<p>対象期間内（6/22）の Azure 関連更新は軽微でした。Microsoft 公式ブログでテキサス州 Pecos の新データセンター建設に関する発表がありましたが、Azure Updates および Azure Blog に目立った新規発表は確認されませんでした。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>☁️ GCP — リリースノート更新（6/22）</h2>
+<p>2026年6月22日付の Google Cloud リリースノートで複数の機能追加・GA 化が発表されました。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>BigQuery Metrics Explorer</strong>: チャートをラベルキーごとのタイルに自動分割し、集計設定で隠れるスパイク・ディップ・トレンドを特定しやすく改善</li>
+  <li><strong>Cloud SQL 強化バックアップの CMEK サポート（GA）</strong>: CMEK 有効化済み Cloud SQL インスタンスを Google Cloud Backup and DR Service で保護可能に</li>
+  <li><strong>リージョナル MIG の一括インスタンス作成（GA）</strong>: リージョナルマネージドインスタンスグループで resize リクエストによりインスタンスを一括作成可能に</li>
+  <li><strong>Looker 26.10 ロールアウト開始</strong>: モデルローカライゼーション（プレビュー）、デスクトップレイアウト保持設定、拡張検索（GA）、ダッシュボード/Look の説明文字数上限2,000文字へ引き上げ、Google Maps 拡張機能（プレビュー）など</li>
+  <li><strong>CCAI Platform</strong>: PDF アップロード時のセッション履歴消失、SMS 終了通知、ボイスメール転送、IVR/SIP コール失敗など多数のバグ修正</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（最新は 19.2.7 / 19.1.8、ともに6/1公開で以降の新規リリースなし）、<strong>Python</strong>（3.14.6 / 3.13.14 は6/10付で報告済み）、<strong>Django</strong>（最新は 6.0.6 / 5.2.15、6/3のセキュリティリリースで報告済み）、<strong>Java/JDK</strong>（次回 CPU は7/21予定）、<strong>Spring Boot</strong>、<strong>Hono</strong>（最新 v4.12.26 は6/18付で報告済み）、<strong>Claude API/SDK</strong>（6/15の料金体系変更以降、対象期間内の新規アップデートなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
