@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-24 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-24 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-23 09:00 〜 2026-06-24 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし</h2>
+<p>対象期間内（2026-06-23 09:00 〜 2026-06-24 09:00 JST）に Claude Code の新規リリースはありませんでした。RSS フィードを確認したところ、直近のリリースは <strong>v2.1.186</strong>（pubDate: 2026-06-22 20:45 UTC = <strong>2026-06-23 05:45 JST</strong>）で、本号の対象期間開始（09:00 JST）より前の公開であり、前回号（6/23 朝刊）で既に詳細を報告済みです。MCP 認証の CLI 化、ワークフローステータスフィルタ、プラグインタブの Skills セクション追加などを含む大型リリースでしたが、今回の24時間枠に含まれる新規 changelog エントリはありません。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に Hermes Agent の新規リリースはありませんでした。GitHub Releases を確認したところ、最新版は引き続き <strong>v0.17.0「The Reach Release」</strong>（v2026.6.19、2026-06-19 19:39 UTC = <strong>6/20 04:39 JST</strong> 公開、前回の朝刊で詳細を報告済み）です。iMessage 対応（Photon Spectrum）、Raft エージェントネットワーク統合、バックグラウンドサブエージェント、画像編集機能（image-to-image）、Automation Blueprints、デスクトップアプリの大幅強化、memory ツールの原子バッチ操作などが含まれる大規模リリースです。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に OpenClaw の新規リリース（安定版・ベータ）はありませんでした。GitHub Releases を確認したところ、最新はベータ <strong>v2026.6.10-beta.2</strong>（2026-06-22 09:36 UTC = <strong>6/22 18:36 JST</strong> 公開、前回号で報告済み）です。その前の安定版は <strong>v2026.6.9</strong>（6/21 10:44 JST 公開）。本号の24時間枠に該当する新規タグは発行されていません。ベータ.2 は会話ターンの自動ファストモード切替、モデルルーティング（Zai・GLM）の信頼性向上、セッション/チャネル状態の安全性強化に焦点を当てた小規模リリースでした。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚛️ Hono — v4.12.27（セキュリティリリース）</h2>
+<p>対象期間内に Hono の <strong>v4.12.27</strong>（2026-06-23 02:51 UTC = <strong>2026-06-23 11:51 JST</strong> 公開）がリリースされました。本リリースは<strong>セキュリティ修正のみ</strong>で、3件の脆弱性（GHSA）に対処しています。前回の v4.12.26（6/18 公開）からの後継です。</p>
+
+<h3>🔐 セキュリティ修正</h3>
+<ul>
+  <li><strong>hono/jsx のリクエスト間コンテキスト非分離</strong>（GHSA-hvrm-45r6-mjfj）: <code>hono/jsx</code>・<code>hono/jsx-renderer</code> で、SSR 時にコンテキストがリクエスト単位ではなくプロセス全体で保持されていた。非同期コンポーネント内の <code>await</code> 後に <code>useContext()</code> / <code>useRequestContext()</code> を呼ぶと、別の同時実行リクエストの値を返す可能性があり、<strong>リクエスト間のデータ漏洩</strong>や誤ったリクエストに対する認可チェックにつながる</li>
+  <li><strong>cx() における JSX エスケープバイパス経由のサーバーサイド XSS</strong>（GHSA-w62v-xxxg-mg59）: <code>hono/css</code> の <code>cx()</code> が入力をエスケープせずに合成クラス名を「既にエスケープ済み」とマークしていた。信頼できない入力をクラス名として渡すと SSR 時に JSX の <code>class</code> 属性から脱出してマークアップを注入（XSS）可能</li>
+  <li><strong>API Gateway v1 アダプタが重複ヘッダ値を欠落</strong>（GHSA-xgm2-5f3f-mvvc）: <code>hono/aws-lambda</code> の API Gateway v1（および VPC Lattice）アダプタが、重複ヘッダ値を部分文字列一致ではなく完全一致でなく部分一致で de-dup していた。ある値が別の値の部分文字列の場合に欠落（例: <code>203.0.113.10</code> 存在時に <code>203.0.113.1</code> が消失）し、<code>X-Forwarded-For</code> ベースの IP 制限などに影響</li>
+</ul>
+<p><code>hono/jsx</code> / <code>hono/jsx-renderer</code>、<code>hono/css</code>（<code>cx()</code>）、または <code>hono/aws-lambda</code> の API Gateway v1 / VPC Lattice アダプタを利用している場合はアップグレードが推奨されます。</p>
+
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.12.27" target="_blank" rel="noopener noreferrer">Hono v4.12.27 Release Notes</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — canary v16.3.0-canary.61 / .62</h2>
+<p>対象期間内に Next.js の canary が2本リリースされました。<strong>v16.3.0-canary.61</strong>（2026-06-23 00:10 UTC = <strong>6/23 09:10 JST</strong>）と <strong>v16.3.0-canary.62</strong>（2026-06-23 15:22 UTC = <strong>6/24 00:22 JST</strong>）です。最新の安定版は引き続き <strong>v16.2.9</strong>（6/10 公開、dist-tag 調整用の空リリース）で、意味のある最新安定版は v16.2.7/8 系（6/10）のままです。なお v16.3.0-canary.63 は 6/24 09:00:39 JST 公開で、本号の対象期間末尾から約39秒だけ外れています。</p>
+
+<h3>✨ canary.61 の主な変更</h3>
+<ul>
+  <li><strong>React アップグレード</strong>: <code>b1786c31-20260618</code> → <code>247fbb45-20260622</code> へ更新</li>
+  <li><strong>レガシー PPR コードパスを削除</strong>: 従来の Partial Prerendering の古い実装を除去</li>
+  <li><strong>Turbopack: edge ランタイムを「self-contained runtime」にリネーム</strong></li>
+  <li><strong>Cache Components 下のメタデータ画像ルートを静的プリレンダ</strong></li>
+  <li><strong>Cached Navigations のランタイムステージに対するグローバル opt-in 追加</strong></li>
+  <li><strong>codemod</strong>: <code>cache-components-instant-false</code> + <code>next-cache-components-adoption</code> skill を追加</li>
+  <li><strong>[otel]</strong>: App API ルートのエラーコード属性を修正</li>
+  <li>pnpm プロジェクト向けに pack/patch ヘルパで pnpm overrides を書き出すよう修正</li>
+</ul>
+
+<h3>✨ canary.62 の主な変更</h3>
+<ul>
+  <li><code>insight-error-page</code> と <code>next-rspack</code> を internal にマーク</li>
+  <li>Turbopack: React 18 でのログボックステストを修正、モジュールファイルパスでソートする際の clone を回避</li>
+  <li>Cache Components 検出における <code>export const dynamic</code> の誤検知を修正</li>
+  <li>docs: Interactive Apps ガイドを追加</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — リリースノート更新（6/23）</h2>
+<p>2026年6月23日付の Google Cloud リリースノートで、AI/Hypercomputer・BigQuery 関連の機能追加・GA 化と、gcloud CLI 574.0.0、Cloud Service Mesh のセキュリティパッチが発表されました。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>AI Hypercomputer で Gemini を利用（プレビュー）</strong>: Google Cloud コンソール内で Gemini を AI インターフェースとして使用し、ハードウェアオプションの評価、デプロイコストの見積もり、クラスタの推奨構成の確認が可能に。プロンプトでクラスタの最適構成に到達できる</li>
+  <li><strong>BigQuery トリガーベーススケジューリング（プレビュー）</strong>: 特定の BigQuery テーブルの更新に基づいてパイプライン実行を自動トリガー可能に</li>
+  <li><strong>BigQuery Conversational Analytics が GA</strong>: GA モデルのみ、またはプレビュー+GA モデルの混在を選択可能、会話内で thinking モードを変更、エージェントが明確化質問、コンテキスト引用、検証済みクエリでのパラメータサポート。US MREP / EU MREP ロケーションに対応。データセットからの会話作成はプレビュー</li>
+  <li><strong>gcloud CLI 574.0.0（2026-06-23）</strong>: AI Platform の semantic-governance-policy-engine deprovision、Agent Identity の IAM ポリシーコマンド、<strong>Agent Registry</strong> 新コマンドグループ、Backup for GKE の非デフォルト universe domain 対応、Cloud Memorystore/Redis の <code>--zone-distribution-config-zones</code>（MULTI_ZONE）、Cluster Director の <code>--quickstart-cluster</code>、Compute Engine の <code>--vsock-mode</code>（ALPHA）、GKE のデフォルト kubectl を 1.35.3→1.35.6 に更新しつつ 1.36.2（RAPID）を追加、Network Security の mirroring コマンドを beta/GA 昇格など</li>
+  <li><strong>Cloud Service Mesh セキュリティパッチ</strong>: 1.29.5-asm.3 / 1.28.9-asm.2 / 1.27.9-asm.8 をリリース。脆弱性 <strong>GCP-2026-040</strong> の修正を含む</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ AWS — Lambda MicroVMs 発表（6/23 07:40 JST）</h2>
+<p>対象期間内に AWS News Blog の新規投稿はありませんでした（RSS 確認済み、直近の Weekly Roundup は 6/22 公開で前回号報告済み）。ただし、<strong>AWS Lambda MicroVMs</strong> の発表ブログが <strong>2026-06-23 07:40 JST</strong>（Mon, 22 Jun 2026 22:40 UTC）に公開されており、本号の対象期間開始（09:00 JST）の約80分前にあたるため、前回号（Weekly Roundup レキャプ中心で個別投稿を未取り上げ）からの補足として重要度が高く掲載します。</p>
+
+<h3>✨ AWS Lambda MicroVMs — 新サーバーレス計算プリミティブ</h3>
+<ul>
+  <li><strong>概要</strong>: AWS Lambda に新しいサーバーレス計算プリミティブ「Lambda MicroVMs」を追加。ユーザー生成コードや AI 生成コードを<strong>VM レベルの分離</strong>のあるステートフル実行環境で実行可能</li>
+  <li><strong>Firecracker 採用</strong>: Lambda Functions を支えるのと同じ軽量仮想化技術（月15兆回超の Lambda 呼び出しを支える）を使用。コンテナのような共有カーネルではなく、セッション間でカーネル/リソースを共有しない</li>
+  <li><strong>ライフサイクル制御</strong>: ほぼ瞬時の起動・レジューム、環境ライフサイクルと状態の直接制御、最大8時間の状態保持。ユーザー離席時は低アイドルコストで一時停止し <code>autoResumeEnabled</code> で自動再開</li>
+  <li><strong>ユースケース</strong>: AI コーディングアシスタント、インタラクティブなコード環境、データ分析プラットフォーム、脆弱性スキャナー、ユーザー提供スクリプトを実行するゲームサーバーなど、信頼できないコードを安全に実行するマルチテナントアプリ</li>
+  <li><strong>使い方</strong>: アプリ+Dockerfile の zip を S3 にアップロードし <code>aws lambda-microvms create-microvm-image</code> でイメージ作成（Firecracker スナップショット）、<code>run-microvm</code> で起動。Claude Managed Agents のマネージドサンドボックスプロバイダとしても利用可能</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/" target="_blank" rel="noopener noreferrer">AWS Lambda MicroVMs 公式ブログ</a> · <a href="https://aws.amazon.com/blogs/aws/feed/" target="_blank" rel="noopener noreferrer">AWS News Blog RSS</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 軽微な更新のみ</h2>
+<p>対象期間内（6/23〜6/24）の Azure クラウド関連の目立った新規発表は確認されませんでした。Azure Updates フィードに本枠内の新規エントリはなく、Microsoft 公式ブログは引き続き Microsoft Build 2026 関連コンテンツ（Azure Cobalt 200 VMs プレビュー、Foundry IQ、Claude Opus 4.8 in Foundry など、既に先週報告済み）が中心でした。クライアントOS 側では Windows 11 向け累積更新プログラムのプレビュー（KB5095093 / KB5095091、6/23 公開）が公開されましたが、Azure クラウドサービスのアップデートではありません。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（最新は 19.2.7 / 19.1.8、ともに6/1公開で以降の新規リリースなし）、<strong>Python</strong>（3.14.6 / 3.13.14 は6/10付で報告済み）、<strong>Django</strong>（GitHub Releases に新規エントリなく、最新は 6.0.6 / 5.2.15 の6/3セキュリティリリースで報告済み）、<strong>Java/JDK</strong>（次回 CPU は7/21予定）、<strong>Spring Boot</strong>、<strong>Claude API/SDK</strong>（6/15の料金体系変更以降、対象期間内の新規アップデートなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
