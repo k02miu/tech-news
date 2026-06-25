@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-26 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-26 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-25 08:00 〜 2026-06-26 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Google Gemini CLI / run-gemini-cli CVE-2026-12537 — コンテナランチャーでのOSコマンドインジェクション、悪意ある <code>.gemini/.env</code> 経由でCI/CD実行前にホストレベルRCE（CVSS 4.0: 10.0） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-12537（CVSS 4.0: 10.0 / AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-24 21:38 UTC（NVD公開）＝ 2026-06-25 06:38 JST／6月25日 CVE Brief でCritical筆頭として取り上げ</td></tr>
+  <tr><td><strong>影響対象</strong></td><td>Google Gemini CLI（<code>gemini</code> コマンド） バージョン 0.39.1 未満／run-gemini-cli GitHub Action バージョン 0.1.22 未満（ヘッドレスCIプラットフォーム上で動作するコンテナランチャー）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Gemini CLI 0.39.1 以降／run-gemini-cli GitHub Action 0.1.22 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-78 OSコマンドインジェクション（CWE-20 不正入力検証としても分類）— コンテナランチャーが <code>.gemini/.env</code> をロードする際、agentのサンドボックス初期化より前にホスト上で任意OSコマンドが実行される</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（未認証の攻撃者が <code>.gemini/.env</code> 経由でホストレベル任意コード実行可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Google Cloud が公開しているオープンソースのAIコーディングエージェントCLI「<a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener noreferrer">Gemini CLI</a>」および公式GitHub Action「<code>run-gemini-cli</code>」のコンテナランチャーにおいて、<code>.gemini/.env</code> 設定ファイルの入力検証が不十分。攻撃者が悪意ある <code>.gemini/.env</code> をリポジトリに仕込んだ状態でCI/CDワークフローを起動すると、agent のサンドボックスが初期化される<strong>前に</strong>ホストOS上で任意のコマンドが実行される。CI/CDという信頼された実行コンテキスト上で動作するため、CIランナーのトークン・クラウドクレデンシャル・成果物アーティファクトへのアクセスが一举に可能になる</li>
+  <li><strong>被害シナリオ</strong> — Gemini CLI はAnthropic社のClaude Codeと同位置づけの対話型コーディングエージェント。PR経由で <code>.gemini/.env</code> を書き換えられる権限を持つ攻撃者（フォークPR・メンテナ権限奪取・依存リポジトリの改ざん等）は、CI/CDの実行直後に任意コマンドを実行してランナーを制御し、シークレット窃取・本番デプロイ汚染・サプライチェーン下流汚染を実行できる。<code>gemini/.env</code> を信頼せずにCIを実行していた組織は影響を受けないが、多くのテンプレートでは <code>.gemini/</code> ディレクトリ内のファイルを透過的にCIに読み込ませる設定がなされている</li>
+  <li><strong>修正内容</strong> — 0.39.1 / 0.1.22 でコンテナランチャーの <code>.env</code> 解析ロジックを修正し、コマンド注入経路を除去。修正版への即時更新が推奨される</li>
+  <li><strong>対応</strong> — Gemini CLI を 0.39.1 以降、run-gemini-cli GitHub Action を 0.1.22 以降に即時更新。CI/CD環境上の <code>.gemini/.env</code> は信頼できないソース由来のファイルを取り込まない設定に変更し、ファイル完全性監視を有効化。CIランナー上のシークレット権限を最小化し、PRオーサーに <code>.gemini/.env</code> 編集権限を与えない運用に見直し。Anthropic Claude Code を使用する場合は同種の <code>.env</code> / 設定ファイル読み込み経路について、信頼できないPRのCIでの読み込みを停止することを推奨</li>
+  <li>〈GCP / Claude・開発エージェントスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-12537" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-12537</a> · <a href="https://www.tenable.com/cve/CVE-2026-12537" target="_blank" rel="noopener noreferrer">Tenable — CVE-2026-12537</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 25, 2026</a></p>
+
+<hr>
+
+<h3>2. Mistune CVE-2026-49851 — Python Markdown パーサーの <code>parse_link_text()</code> で二次時間CPU枯渇DoS（CVSS 8.7） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-49851（CVSS 3.1: 8.7 / AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H、CVSS 4.0: 8.7）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD: 2026-06-24（6月25日 CVE Brief / Amazon Linux Security Center で取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Mistune &lt; 3.3.0（3.2.x 以前）— Python Markdown パーサ</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>Mistune 3.3.0 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-400 制御不能な資源消費（<code>parse_link_text()</code> 内の正規表現ループによる O(n²) 動作）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（未認証のネットワーク攻撃者がMarkdown入力経由で実行可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Python 用 Markdown パーサ「<a href="https://github.com/lepture/mistune" target="_blank" rel="noopener noreferrer">Mistune</a>」は FastAPI・Django・Flask・静的サイト生成器などWebアプリケーションのMarkdownレンダリングで広く使用。今CVEは <code>parse_link_text()</code> 関数が連続する <code>[</code> 文字を含む入力を処理する際、ループ内部で同じ正規表現による部分文字列の再スキャンを繰り返し、概ね O(n²) のCPU時間を要する。攻撃者が短いMarkdownペイロード（多数の連続 <code>[</code>）を投稿するだけでサービス停止が成立する</li>
+  <li><strong>被害シナリオ</strong> — Markdown をユーザー入力として受け付けるWebサービス（コメント欄、Wiki、フォーラム、ドキュメントサイト、RAGパイプラインのテキスト正規化処理）では、未認証のリクエスト1つでワーカースレッドを長時間専有し、サービス全体の劣化・停止を引き起こし得る</li>
+  <li><strong>修正内容</strong> — 3.3.0 で <code>parse_link_text()</code> のスキャン戦略を修正し、線形時間動作に変更。修正版への即時更新が推奨される</li>
+  <li><strong>対応</strong> — Mistune を 3.3.0 以降に更新。即時適用が困難な場合は、ユーザー入力のMarkdownサイズ上限・連続 <code>[</code> の上限を設ける入力バリデーションを補償的制御として実装。レンダリングを専用ワーカーで実行しタイムアウトを設ける設計も有効</li>
+  <li>〈Python / Web アプリMarkdown処理スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-49851" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-49851</a> · <a href="https://explore.alas.aws.amazon.com/" target="_blank" rel="noopener noreferrer">Amazon Linux Security Center</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 25, 2026</a></p>
+
+<hr>
+
+<h3>3. Appsmith CVE-2026-55454 / CVE-2026-55455 — バンドルCaddy管理APIの無認証露出とSSRFで認証済低権限ユーザーがリバースプロキシを完全乗っ取り（CVSS 9.9 / 9.8） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-55454（CVSS 3.1: 9.9 / AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）／CVE-2026-55455（CVSS 9.8 / SSRF）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-24 21:38 UTC NVD公開（6月25日 CVE Brief でCriticalとして取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Appsmith &lt; 2.1（Docker Compose 標準構成）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>2.1 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CVE-2026-55454: CWE-749 危険なメソッド/関数の露出（Caddy admin API の無認証バインド）／CVE-2026-55455: CWE-918 SSRF</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（認証済低権限ユーザーからの攻撃経路）</td></tr>
+</table>
+
+<ul>
+  <li><strong>CVE-2026-55454 概要</strong> — Appsmith はオープンソースの社内ツール・管理画面ビルドプラットフォーム。標準Docker Compose構成ではバンドルCaddyリバースプロキシの管理APIが <code>0.0.0.0:2019</code> 上で<strong>認証なし</strong>で listen する。<code>docker-compose.yml</code> はこのポートをホスト公開しないものの、Appsmithサーバープロセス自身または SSRF脆弱性（CVE-2026-55455）経由で <code>http://0.0.0.0:2019/</code> に POST <code>/load</code> を発行すると、実行中のCaddy設定を完全に置き換え、リバースプロキシを攻撃者が掌握できる</li>
+  <li><strong>CVE-2026-55455 概要</strong> — Appsmith のHTTPリクエスト機能においてSSRF。CVE-2026-55454 と連鎖することで、低権限の認証済ユーザーが前段のCaddy管理APIに到達し、プロキシの完全乗っ取りに至る。CVE-2026-55454単独でも Caddy設定を書き換えることで内部サービス横断アクセス・トラフィック傍受・不正ルーティングが成立</li>
+  <li><strong>被害シナリオ</strong> — Appsmithは社内管理画面で広く使われる。低権限ユーザー（一般従業員・請負業者・外部テナント）からの攻撃経路が成立する環境では、バックエンドAPI・DB・社内サービスへのプロキシ化・認可の迂回が可能。テナント分離がAppsmith上で設計されているSaaSではテナント間渗透リスク</li>
+  <li><strong>修正内容</strong> — 2.1 でCaddy管理APIのバインドアドレス・認証を修正し、SSRF 入力検証を強化。アップデートが第一対応</li>
+  <li><strong>対応</strong> — Appsmith を 2.1 以降に更新。即時更新が困難な場合は、コンテナ内部からの <code>2019</code> ポートへのアクセスを拒否するネットワークポリシーを適用し、低権限ユーザーのHTTPリクエストプラグイン権限を見直し</li>
+  <li>〈Web ローコードプラットフォームスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-55454" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-55454</a> · <a href="https://avd.aliyun.com/nvd/list" target="_blank" rel="noopener noreferrer">Aliyun NVD — CVE-2026-55454 / 555</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 25, 2026</a></p>
+
+<hr>
+
+<h3>4. SiYuan CVE-2026-54158 — データベース属性ビューセルレンダラでの格納型XSS、Electronで <code>nodeIntegration</code> が有効な場合RCEに昇格（CVSS 9.9） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-54158（CVSS 3.1: 9.9 / AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-24 21:19 UTC NVD公開（6月25日 CVE Brief でCritical 3件のSiYuanクラスターとして取り上げ）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>SiYuan &lt; 3.7.0（オープンソース個人向けナレッジ管理システム）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>3.7.0 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-79 格納型XSS（<code>genAVValueHTML()</code> で text/url/phone/mAsset ブランチのエスケープ不備）→ Electron で <code>nodeIntegration</code> 有効の場合RCE</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（データベース属性への書き込み権限を持つ攻撃者が起点）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — オープンソースの個人向けナレッジマネジメントツール「SiYuan（思源笔记）」のデータベース属性ビュー属性セルレンダラ <code>genAVValueHTML()</code> において、text/url/phone/mAsset 各ブランチで補間されるセル内容のHTMLエスケープが不適切。攻撃者が供給した属性値が周囲のHTMLから脱出し、ユーザーが block-attribute パネルを開いた際に任意のJavaScriptが実行される。Electronデスクトップ版で <code>nodeIntegration</code> が有効な場合はホスト上の任意コード実行（RCE）に昇格</li>
+  <li><strong>同日同クラスター</strong> — 6月25日 CVE Brief はSiYuanクラスターとして、ブラウザ拡張オリジンを不当に信頼しユーザー操作不要で管理APIにアクセスできるカーネルHTTPサーバの不備、CSS snippetレンダリングでのXSS→RCE、属性ビューセルレンダラでのXSS→RCEを一括して取り上げ。電子ノートプラットフォームが攻撃対象化されており、Electronアプリの <code>nodeIntegration</code> は従来通りの昇格ベクトルとして継続利用</li>
+  <li><strong>修正内容</strong> — 3.7.0 で <code>genAVValueHTML()</code> のHTMLエスケープを修正。Electron版では可能な限り <code>nodeIntegration</code> を無効化することが推奨される</li>
+  <li><strong>対応</strong> — SiYuan を 3.7.0 以降に更新。Electron版デスクトップ利用者は同アップデートで <code>nodeIntegration</code> が無効化されることを確認。データベース属性への書き込み権限を信頼できるユーザーのみに制限し、スクリプトタグを含む不審な属性値を監視</li>
+  <li>〈Web / Electron アプリスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://feedly.com/cve/CVE-2026-54158" target="_blank" rel="noopener noreferrer">Feedly — CVE-2026-54158</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief June 25, 2026</a></p>
+
+<hr>
+
+<h3>5. OpenClaw 2026.6.10（安定版）／2026.6.11-beta.1（ベータ版）— 新リリースにDOMPurifyパッチ適用・メモリアーティファクトのサニタイズ・TLS設定検証の強化 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース日</strong></td><td>OpenClaw 2026.6.10 安定版: 2026-06-25／2026.6.11-beta.1: 2026-06-25（GitHub Releases）</td></tr>
+  <tr><td><strong>前回比較</strong></td><td>6月24日朝刊時点では 2026.6.10-beta.2（6/22）が最新ベータ。2026.6.10 安定版と 2026.6.11-beta.1 は本対象期間内の新規リリース</td></tr>
+  <tr><td><strong>セキュリティ関連修正</strong></td><td>(1) UI 修正版 DOMPurify リリースへの更新（DOMPurify 由来のXSSパッチ適用）(2) メモリアーティファクトのサニタイズ追加 (3) TLSパスで空値を拒否 (4) ClawHub アップデートポリシーのハードニング (5) 非対話型 <code>configure</code> はフェイルクローズ動作 (6) SSHターゲットのパース検証（余分なコロンの拒否）</td></tr>
+  <tr><td><strong>影響</strong></td><td>OpenClaw を管理・運用する環境は全て。新規CVEの割り当てはされていないが、補償的セキュリティ制御の追加・既知サードパーティライブラリのパッチ取り込みを含む</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — OpenClaw は個人AIアシスタントOSS。本対象期間内に安定版 2026.6.10 およびベータ版 2026.6.11-beta.1 が連続リリースされた。本来はチャネル・エージェント挙動・プロバイダ連携の改善が主体だが、設定ファイルベースの入力検証とフロントエンドのDOMPurify依存パッチ適用、メモリアーティファクトのサニタイズ、TLS空値拒否等、ハードニングを含む復数のセキュリティ関連修正が行われている</li>
+  <li><strong>DOMPurifyパッチの重要性</strong> — OpenClaw の管理UIはブラウザベース。DOMPurify のパッチ適用は、既知のXSS脆弱性をする同ライブラリ由来の汚染経路を除去するもので、運用者自身がOpenClaw管理画面を使用する際の保護に直結する</li>
+  <li><strong>対応</strong> — OpenClaw を 2026.6.10 安定版以降に更新。UI をホスト版で動かしている場合はDOMPurifyパッチ取り込みを確認。TLS設定で空値を明示的に拒否するようになったため、旧版の空TLS値設定は設定ファイルを再検証</li>
+  <li>〈OpenClaw / AIエージェント運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a> · <a href="https://releasebot.io/updates/openclaw" target="_blank" rel="noopener noreferrer">Releasebot — OpenClaw Release Notes</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、AWS、Azure に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。<br>Hermes Agent は v0.17.0（2026-06-19 リリース）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした。v0.17.0 にはダッシュボード認証ハードニング・Starlette CVE-2026-48710 ピン・SSRF ハードニング等のセキュリティ修正が含まれます（前号から更新なし）。<br>Anthropic Claude Code については、本対象期間内に新規セキュリティ関連アップデート・CVEは発表されませんでした。<br>※ Spring Boot CVE-2026-40976（4/23）、Django CVE-2026-6873（6/3）、Next.js CVE-2026-44578（5/18）、Oracle June 2026 CSPU（6/16）は対象期間外です。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 6月25日 CVE Brief — Critical 24件（前日比-20%）・High 65件（前日比+14%）、開発ツールとコラボ基盤が中心、能動的悪用5件 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-25（木曜ブリーフ）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>24件（前日比 -20%、前日の30件から減少）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>65件（前日比 +14%、前日の57件から増加）</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>5件 — 主にUbiquiti UniFi OS三連、Lantronix EDS5000、Splunk CVE-2026-20253（継続）</td></tr>
+  <tr><td><strong>注目CVE</strong></td><td>CVE-2026-12537 Gemini CLI CVSS 10 ／ CVE-2026-54158 SiYuan CVSS 9.9 ／ CVE-2026-55454 Appsmith CVSS 9.9 ／ CVE-2026-39948 Cacti CVSS 9.3 ／ CVE-2026-13028 Chrome WebGL CVSS 9.6</td></tr>
+  <tr><td><strong>パッチ提供率</strong></td><td>Critical群は公開時点でベンダーパッチが未反映のもの多数 — 補償的制御を併用</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月25日のCVE Briefは「木曜の開示は開発者およびコラボレーションツールが中心」と題し、Google Cloud製AIコーディングエージェントCLIのGemini CLI（CVSS 10のOSコマンドインジェクション）を筆頭に、SiYuanノートプラットフォームのクラスター（3件のCritical）、AppsmithのCaddy管理API無認証露出＋SSRF（CVSS 9.9）を並べた。Criticalは前日30件から24件へ20%減少した一方、Highは57件から65件へ14%増加。自己ホスト型Webアプリとインフラ監視ツール（Cacti・Rocket.Chat・Appsmith）がCritical層を占め、Chrome 149 の2件（CVE-2026-13028/13032、共にCVSS 9.6）でブラウザエンドポイントへの露出が広がる</li>
+  <li><strong>注目パターン</strong> — (1) Electronベースのデスクトップアプリで <code>nodeIntegration</code> 有効時にXSS→RCEに昇格するSiYuanクラスター (2) バンドルCaddy管理APIの無認証バインドとSSRFの連鎖でプロキシ掌握されるAppsmith (3) AIコーディングエージェントCLIのCI/CDプロセス外でホストOSコマンド実行ができるGemini CLI。開発者室温圏のツールが継続して攻撃対象化されている</li>
+  <li><strong>対応</strong> — インターネット露出Gemini CLI / run-gemini-cli GitHub Action・SiYuan・Cacti・Rocket.Chat・Appsmith・Unraidデプロイを直ちにインベントリ化し、アクセス制限を実施。Chromeは149系への自動更新完了をfleet-wideで確認。Critical群のベンダーパッチ未対応分についてはネットワーク分離・監視強化で補償</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 25, 2026</a></p>
+
+<hr>
+
+<h3>🔴 CISA KEV 6月25日追加2件 — PTC Windchill/FlexPLM（CVE-2026-12569）とCisco Unified Communications Manager SSRF（CVE-2026-20230）が能動的悪用でKEV登録 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>KEV追加日</strong></td><td>2026-06-25（CISA）</td></tr>
+  <tr><td><strong>追加CVE</strong></td><td>CVE-2026-12569（PTC Windchill / FlexPLM 不正入力検証）／CVE-2026-20230（Cisco Unified CM SSRF、CVSS 8.6）</td></tr>
+  <tr><td><strong>Cisco UCM</strong></td><td>未認証の遠隔攻撃者がHTTPリクエストでSSRF→ファイル書き込み→rootレベルRCE。前提はWebDialer有効化（デフォルト無効）。6月3日にアドバイザリ公開済み、Defusedが6月21-22日から能動的悪用を観測と報告（Ciscoは未確認）</td></tr>
+  <tr><td><strong>BOD 26-04</strong></td><td>FCEB機関はKEV登録から3日以内の修正义务。Cisco UCM は追加日（6/25）から6/28が期限</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CISAは6月25日に2件の能動的悪用確認済脆弱性をKEVカタログへ追加。PTC Windchill / FlexPLM の不正入力検証（CVE-2026-12569）は製造業のPLM基盤を標的にしうる経路。Cisco Unified Communications Manager（UCM）の CVE-2026-20230 はCVSS 8.6のSSRF→ファイル書き込み→rootレベルRCE。6月3日のCisco公式アドバイザリでPoC公開済みをCiscoが言及していた本CVEについて、セキュリティ企業Defusedが6月21-22日の週末から能動的悪用を確認したと6月25日に報告。Cisco自身はまだ能動的悪用を確認していない</li>
+  <li><strong>被害シナリオ</strong> — Cisco UCM は世界中の企業VoIPインフラの中核。WebDialer（クリックツーコール用機能）が有効化されている環境では、未認証のインターネット側攻撃者がルート権限のRCEに到達しうる。デフォルトではWebDialer は無効だが、ユニファイドコミュニケーション用途で有効化している企業は影響を受ける可能性</li>
+  <li><strong>対応</strong> — Cisco UCM を6月初旬のパッチ適用版へ即時更新。WebDialer が不要な場合は無効化を補償的制御として実施。UCM アクセスログのWebDialerエンドポイントへの異常HTTPリクエストを監査。PTC Windchill/FlexPLM を使用する環境はベンダーアドバイザリに従いパッチを適用</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/news-events/alerts/2026/06/25/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA — 2026-06-25 KEV 追加</a></p>
+
+<hr>
+
+<h3>🔴 KEV修正期限6月26日 — Ubiquiti UniFi OS三連CVSS 10.0 + Lantronix EDS5000 cvSS 9.8 のBOD 26-04 3日期限が本日到達、最終24時間 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>修正期限</strong></td><td>2026-06-26（BOD 26-04 3日モデル）— 当朝刊配信時点で最終24時間</td></tr>
+  <tr><td><strong>Ubiquiti UniFi OS</strong></td><td>CVE-2026-34908（アクセス制御バイパス、CVSS 10.0）／CVE-2026-34909（パストラバーサル、CVSS 10.0）／CVE-2026-34910（コマンドインジェクション、CVSS 10.0）の3件。全てネットワーク隣接の未認証攻撃者で完全デバイス掌握が可能</td></tr>
+  <tr><td><strong>Lantronix EDS5000</strong></td><td>CVE-2025-67038（コードインジェクション、CVSS 9.8）— OT/ICS環境のシリアル-IP変換ゲートウェイ</td></tr>
+  <tr><td><strong>能動的悪用</strong></td><td>両者とも CISA とオランダNCSC が能動的悪用を確認</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 本日6月26日はCISA KEVに追加された4件の最優先CVEのBOD 26-04期限日。Ubiquiti UniFi OSはクラウドゲートウェイ・ネットワークコントローラ・Protect NVR・Access Hub・Talk等、SMBからエンタープライズまで広く導入される。3件とも未認証のネットワーク隣接攻撃者でデバイスの完全掌握（ルート実行・機密ファイル読み出し・設定改ざん）が可能。Lantronix EDS5000 はOT/ICS環境のシリアルベース機器とIPネットワークの橋渡しに位置し、産業制御系の足掛かりとなりうる</li>
+  <li><strong>対応</strong> — Ubiquitiは Security Advisory Bulletin 064 に従い全 UniFi OS デバイスを今日中にパッチ適用。LantronixはEDS5000ファームウェアを更新。修正が直ちに困難な場合はデバイスのネットワーク分離・切断を優先。BOD 26-04の3日期限は連邦機関に法的義務だが、CISAは全ての組織に同様の対応を推奨</li>
+</ul>
+
+<p>🔗 <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 FortiBleed再集計 — 70,000+のFortinetファイアウォールが侵害確認、報告期間中の単一ベンダ侵害で最大規模 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>被害規模</strong></td><td>70,000台以上のFortinet FortiGate ファイアウォールが侵害確認（初期報告から大幅上方再集計）</td></tr>
+  <tr><td><strong>攻撃構成</strong></td><td>FortiSandbox 悪用 + FortiBleed クレデンシャルリーク + カスタム構築のFortiGate スニファー（VPNクレデンシャルをリアルタイム傍受）の複合キャンペーン</td></tr>
+  <tr><td><strong>位置づけ</strong></td><td>報告期間（6/1-6/25）中で最大規模の単一ベンダ侵害イベント</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — FortiBleedキャンペーンの被害規模が再集計され、初期報告の「未特定多数」から「70,000台以上のFortinetファイアウォールが侵害確認」へ大幅上方修正された。FortiSandbox の悪用、FortiBleed と呼ばれるクレデンシャルリーク、および攻撃者独自のカスタムFortiGate スニファーを組み合わせたキャンペーンで、VPNクレデンシャルをリアルタイムに傍受する構成。70,000台規模は、Fortinet VPN アプライアンスを稼働している事業者は全て侵害可能性を前提に対応すべき規模</li>
+  <li><strong>被害シナリオ</strong> — エンタープライズVPN Concentrator・ブランチオフィスファイアウォール・MSP の CPE まで広範囲が対象。スニファーで傍受されたVPNクレデンシャルは、攻撃者側で長期に再利用されうる</li>
+  <li><strong>対応</strong> — Fortinet FortiGate アプライアンスを持つ全ての事業者が (1) 利用可能な全ファームウェア更新の即時適用 (2) 全VPNクレデンシャル・事前共有鍵のローテーション (3) 構成の不正変更監査 (4) スニファーIoCのログ点検 (5) 侵害期間中に作成・変更されたVPNユーザーアカウントのレビュー を実施すべき。もはや標的型ではなく大規模攻撃であり、 Including small/medium businesses が前提</li>
+</ul>
+
+<p>🔗 <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a> · <a href="https://www.cybersecuritynews.com/" target="_blank" rel="noopener noreferrer">CybersecurityNews Report</a></p>
+
+<hr>
+
+<h3>🟠 Cisco SD-WAN CVE-2026-20245 — Mandiantがゼロデー攻撃のルート奪取詳細を公開、公開2ヶ月前から悪用 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20245（CVSS 7.8／CWE-269 権限管理不適切）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Cisco Catalyst SD-WAN — 認証済ローカル攻撃者が権限昇格でroot権限のコマンド実行</td></tr>
+  <tr><td><strong>KEV</strong></td><td>既にCISA KEV登録済、期限は6/23経過済み（+3日OVERDUE）</td></tr>
+  <tr><td><strong>新情報</strong></td><td>Google傘下Mandiantが、公開の2ヶ月以上前からゼロデーとして悪用され、ルート権限で不正アカウントを作成されていたとの詳細を公開</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Cisco Catalyst SD-WAN の認証済ローカル攻撃者による権限昇格脆弱性 CVE-2026-20245 について、Mandiant が6月25日に侵入詳細を公開。公開の2ヶ月以上前から高度な脅威アクターがゼロデーで本脆弱性を悪用し、ルート権限で疑似的なアカウントを作成していた。修正はすでにCiscoから提供されている</li>
+  <li><strong>被害シナリオ</strong> — SD-WAN基盤が掌握されると、攻撃者はネットワークルーティングの操作・トラフィックの傍受・永続的インプラントの設置が可能。ネットワークバックボーン侵害は規制業種や稼働敏感環境で壊滅的影響</li>
+  <li><strong>対応</strong> — Ciscoファームウェアを即時適用。SD-WANデバイス上の root/adminアカウントの完全監査を実施し、説明不能なエントリ・活動の有無を確認。バンド外ネットワーク監視で不正設定変更を検知</li>
+</ul>
+
+<p>🔗 <a href="https://techmaniacs.com/2026/06/25/cybersecurity-daily-briefing-june-25-2026/" target="_blank" rel="noopener noreferrer">techmaniacs — Cisco SD-WAN Zero-Day Root Access</a> · <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report June 25, 2026</a></p>
+
+<hr>
+
+<h3>🟠 Google Chrome 149 — 10件のCVEをパッチ、CVE-2026-13028（WebGL use-after-free、Android、CVSS 9.6）が筆頭 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>Chrome 149.0.7827.197（安定版）</td></tr>
+  <tr><td><strong>CVE数</strong></td><td>10件（パッチ適用）</td></tr>
+  <tr><td><strong>主要CVE</strong></td><td>CVE-2026-13028（WebGL use-after-free on Android、CVSS 9.6）／CVE-2026-13026（Digital Credentials use-after-free on Mac、CVSS 8.8）／CVE-2026-13027（FileSystem use-after-free、CVSS 8.8）／CVE-2026-13025（DevTools race condition、CVSS 8.3）</td></tr>
+  <tr><td><strong>関連KEV</strong></td><td>Chrome V8 CVE-2026-11645 はKEV期限6/23経過で+2日OVERDUE — fleet-wideの自動更新完了を要確認</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Google は Chrome 149 安定版で10件の脆弱性をパッチ。CVE-2026-13028 は Android 版Chrome のWebGL コンポーネントの use-after-free で、悪意あるHTMLページ経由で遠隔のsandboxエスケープ/RCE を引き起こしうる。CVE-2026-13026 は macOS の Digital Credentials コンポーネント、CVE-2026-13027 は FileSystem コンポーネントの use-after-free</li>
+  <li><strong>対応</strong> — Chrome は通常自動更新。 fleet-wide で自動更新完了を確認し、Chromiumベースの派生ブラウザ（Edge・Opera・Brave等）の更新も追従。Chrome V8 KEV（CVE-2026-11645）が2日OVERDUEの状態なので、エンドポイント管理チームは優先的に更新完了を確証</li>
+</ul>
+
+<p>🔗 <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a></p>
+
+<hr>
+
+<h3>🟠 libssh2 クリティカルRCE — 悪意あるSSHパケット経由で広範なSSH統合アプリが遠隔コード実行の露出 <span class="badge-high">HIGH</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — SSH2 プロトコルを実装するCライブラリ libssh2 にクリティカルなRCE脆弱性が発見され、悪意ある SSH パケット経由で遠隔コード実行が成立する。libssh2 は多数のSSHクライアント・サーバ・ファイル転送ツール・IoT/組込みシステム・CI/CDパイプラインコンポーネントに組み込まれており、SSHベースの連携を持つあらゆるアプリが潜在的に影響を受ける。CVE識別子およびCVSS値は NVD公開待ち</li>
+  <li><strong>被害シナリオ</strong> — libssh2 に依存する curl（SSHサポート有り）、カスタムSSHツール、組み込みデバイスファームウェア、CI/CDパイプラインコンポーネントなど広範囲が影響対象。 SSH クライアントが悪意あるSSHサーバに接続する経路、またはSSHサーバが悪意あるクライアントを受け入れる経路で成立する</li>
+  <li><strong>対応</strong> — libssh2 を全依存アプリでパッチ。curl（SSHサポート有り）、カスタムSSHツール、組込みデバイスファームウェア、CI/CDパイプラインコンポーネントを含めてSBOMベースでインベントリを取り依存関係を特定</li>
+</ul>
+
+<p>🔗 <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a></p>
+
+<hr>
+
+<h3>🟡 Five Eyes共同勧告 — AI Enabled脅威に対しパッチサイクルの大幅加速を要求、BOD 26-04の3日モデルが新基準 <span class="badge-medium">MEDIUM</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — Five Eyes同盟（米・英・加・豪・NZ）が、AI対応脅威が脆弱性の公開から能動的悪用までの時間を劇的に圧縮しているとの共同勧告を公表。エンタープライズのパッチサイクルは、3日・または24時間以内の修正を目標とする新たな運用基準への移行を明示的に求めており、CISAの BOD 26-04（連邦機関に3日以内の修正を義務付ける）を新しい基準として参照。AI支援の脆弱性発見・エクスプロイト生成が従来の脆弱性ライフサイクルを圧縮しており、月次・四半期パッチに依存する組織は容認できないリスク水準で運用していると警告</li>
+  <li><strong>本報告期間との関係</strong> — 6/1〜6/25 でKEV追加20件。BOD 26-04の3日期限モデルが期間を定義した。Ubiquiti三連・Lantronix（期限当日6/26）・Cisco UCM（期限6/28）など、加速パッチサイクルが運用基準になりつつある具体例が継続提示されている</li>
+  <li><strong>対応</strong> — エンタープライズのパッチ管理SLAを見直し、Critical/High脆弱性に対して継続的パッチ適用を目指す運用へ移行。同日のアラートを自動脆弱性スキャンに統合</li>
+</ul>
+
+<p>🔗 <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
