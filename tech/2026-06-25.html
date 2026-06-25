@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-25 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-25 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-24 09:00 〜 2026-06-25 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.187 + v2.1.190（2回リリース）</h2>
+<p>対象期間内に Claude Code が2バージョン連続でリリースされました。まず <strong>v2.1.187</strong>（pubDate: 2026-06-24 00:12 UTC = <strong>2026-06-24 09:12 JST</strong>、対象期間開始直後）がセキュリティ・組織設定・操作体験・多数のバグ修正を束ねた大型リリースとして公開され、その後 <strong>v2.1.190</strong>（pubDate: 2026-06-24 16:18 UTC = <strong>2026-06-25 01:18 JST</strong>）が後追いで「Bug fixes and reliability improvements」のみのマイナーパッチとして発行されました。</p>
+
+<h3>✨ v2.1.187 の新機能・改善</h3>
+<ul>
+  <li><strong><code>sandbox.credentials</code> 設定</strong>: サンドボックス実行コマンドが認証情報ファイルやシークレット環境変数を読めないようにブロックできる新設定。信頼できない/サンドボックス化したコマンドからクレデンシャルを守る</li>
+  <li><strong>組織設定によるモデル制限をモデルピッカー全経路に反映</strong>: org-configured model restrictions が <code>--model</code>、<code>/model</code>、<code>ANTHROPIC_MODEL</code> の全ピッカー経路に適用され、制限モデルを選んだ場合は "restricted by your organization's settings" のメッセージを表示</li>
+  <li><strong>フルスクリーンモードで選択メニューをマウスクリック可能に</strong>: パーミッションプロンプト、<code>/model</code>、<code>/config</code> などをマウスで操作可能</li>
+  <li><strong><code>/install-github-app</code> 改善</strong>: GitHub Actions workflow セットアップをスキップ可能になり、GitHub App のインストールだけを単独で行えるように</li>
+  <li><strong><code>/btw</code> に ←/→ 矢印ナビゲーション</strong>: 前の回答を順にステップスルー</li>
+  <li><strong><code>/plugin</code> 改善</strong>: 最近使っていないプラグインを上位に表示し、クリーンアップを促進</li>
+</ul>
+
+<h3>🐛 v2.1.187 の主な修正</h3>
+<ul>
+  <li><strong>リモート MCP ツール呼び出しが無応答のまま5分間ハング</strong> — タイムアウトでエラー中断するよう変更（環境変数 <code>CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT</code> で上書き可能）</li>
+  <li><strong><code>--json-schema</code>・Workflow <code>agent({schema})</code> 構造化出力</strong>: 成功済み呼び出しの後にモデルが <code>StructuredOutput</code> を無限再呼出しせず、追補ターンでも確実に構造化出力を返すよう修正</li>
+  <li><strong><code>--resume</code> が "No conversation found" で失敗</strong> — 元の <code>-p</code> 実行が1回もモデル返答を生まなかった場合に生じていた</li>
+  <li><strong>Claude Code Remote 起動が約2.7秒遅延</strong> — agent proxy CA system-trust install 追加後のリグレッションを解消</li>
+  <li><strong>韓国語 / CJK のペーストが文字化け</strong> — ターミナルがペーストを per-byte 拡張キーイベントで渡す場合の修正</li>
+  <li><strong><code>/update</code> が Remote Control 上でハング</strong> — 起動時のトラストダイアログが表示される状況で</li>
+  <li><strong>agents view のバックグラウンドジョブが "working" で永遠にスタック</strong> — 構造化出力未生成でターンを終えた場合</li>
+  <li><strong>チャンネル接続のドロップ</strong> — agents view への移動と復帰、および <code>/bg</code>/<code>/tui</code>/<code>/update</code> 実行後</li>
+  <li><strong>サブエージェントの depth 追跡</strong>: resumed サブエージェントは元の spawn depth を復元、forked サブエージェントも depth cap にカウントされるよう修正</li>
+  <li><strong>リークした worktree 登録の自動クリーンアップ</strong> — kill されたエージェントが残した <code>.git/worktrees/</code> のロックを自動解放</li>
+  <li><strong>macOS Ghostty 上のフルスクリーンで Cmd+click が URL を開かない</strong></li>
+  <li><strong><code>claude --help</code> に <code>--bg</code>/<code>--background</code> フラグが載らない</strong></li>
+  <li><strong>Esc / Ctrl-C / Ctrl-D が <code>/share</code> のアップロード中に効かない</strong></li>
+  <li><strong>VSCode 拡張が大きなセッションを resume すると無応答に</strong></li>
+  <li>エージェント停止通知の帰属を修正し、「finished」/「stopped」という用語へ改善</li>
+</ul>
+
+<h3>🔖 v2.1.190</h3>
+<ul>
+  <li>公式 changelog は「Bug fixes and reliability improvements」のみ。v2.1.187 で取り込んだ2.1.188・2.1.189 期間分を含む後追いパッチ</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に Hermes Agent の新規リリースはありませんでした。GitHub Releases を確認したところ、最新版は引き続き <strong>v0.17.0「The Reach Release」</strong>（v2026.6.19、公開 2026-06-19 19:39 UTC = <strong>6/20 04:39 JST</strong>、前回の朝刊で詳細を報告済み）です。iMessage（Photon Spectrum）、Raft エージェントネットワーク統合、バックグラウンドサブエージェント、image-to-image 画像編集、Automation Blueprints、デスクトップアプリ大幅強化、memory ツールの原子バッチ操作などを含む大規模リリースで、本号の24時間枠に該当する新規リリースは確認されませんでした。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 安定版 v2026.6.10 + 新ベータ v2026.6.11-beta.1</h2>
+<p>対象期間内に2本のリリースが発行されました。<strong>v2026.6.10</strong>（公開 2026-06-24 03:06 UTC = <strong>6/24 12:06 JST</strong>）は先週のベータ v2026.6.10-beta.1/.2 を安定化したもので、会話ターンの自動ファストモード切替と Zai・GLM のモデルルーティング信頼性向上に焦点を当てた12 PR の小規模リリースです。その後 <strong>v2026.6.11-beta.1</strong>（公開 2026-06-24 23:37 UTC = <strong>6/25 08:37 JST</strong>、本号対象期間末の約23分前）が公開され、こちらは <strong>305 のマージされた PR</strong> を含む大型ベータです。</p>
+
+<h3>✨ v2026.6.11-beta.1 のハイライト</h3>
+<ul>
+  <li><strong>チャネル制御の強化</strong>: Slack リレーモード、Mattermost ネイティブ <code>/oc_queue</code>、DM 単位のモデルオーバーライドが追加されチャネル運用の自動化とチューニングが容易に（#94707, #95546, #95120）</li>
+  <li><strong>オペレータワークフロー充実</strong>: <code>openclaw agent --message-file</code> と RAFT CLI wake bridge でファイル駆動・遠隔からの wake-up 経路を追加（#93351, #95497）</li>
+  <li><strong>プラグン配布の安全性</strong>: 追加の公式プラグインを外部化、同梱プラグインのアイコンメタデータをインストール済みクライアントへ提供（#95683, #95845）</li>
+  <li><strong>モバイル操作の強化</strong>: Android 設定の詳細パネルでモバイルの可視性と制御を改善（#95148）</li>
+  <li><strong>エージェントターンの信頼性</strong>: Codex partial deltas、harness activation、長文脈プロンプトキャッシュ安定化により、進捗消失や一貫性のない実行を削減（#95404, #95652, #95624）</li>
+  <li><strong>Integration / 運用精度</strong>: チャネルアイデンティティの hook コンテキスト、per-agent usage-cost 報告、provider 切替時の routing / accounting 向上（#91903, #94483）</li>
+</ul>
+
+<h3>🐛 v2026.6.11-beta.1 の主な修正</h3>
+<ul>
+  <li><strong>チャネル配信</strong>: Telegram プログレス描画、webhook ライフサイクル、リアクション指示、重複ミラーライトの防止、queued update の draining、WhatsApp durable reply ターゲットなど多数の信頼性修正</li>
+  <li><strong>WhatsApp / メッセージ ID 保全</strong>: ネイティブ引用、Baileys グループ信頼性、JID ドリフトを跨ぐ approval reaction の会話文脈維持</li>
+  <li><strong>Gateway / セッションの安全性</strong>: stuck release claim、draining-state 報告、remote probe タイムアウト、malformed paired access list、non-delivery session identity のサイレント消失回避</li>
+  <li><strong>エージェント / フォールバック挙動</strong>: abort 時のクリーン停止、provider response のサイズ上限、Claude CLI クレジット枯渇時のフォールバック継続、Codex usage-limit の正しい分類</li>
+  <li><strong>Provider / モデル境界</strong>: OpenRouter IDs、Ollama discovery/embeddings、Gemini freshness、model-catalog プレフィックス解決の改善</li>
+  <li><strong>UI / 設定ガード</strong>: 非対話 configure が fail closed、TLS パスが空値を拒否、memory artifact のサニタイズ、DOMPurify のパッチ済みリリース採用</li>
+</ul>
+
+<h3>✨ v2026.6.10（安定版）</h3>
+<ul>
+  <li><strong>トークの自動ファストモード</strong>: 短い会話ターンで自動的に fast mode を有効化し、長い実行では通常モードに戻る。bounded fallback と配信挙動を備える（#85104）</li>
+  <li><strong>モデルルーティング信頼性</strong>: Zai モデル合成、GLM 過負荷フェイルオーバー、ネイティブ reasoning レベル選択がアクティブカタログに追従（#94461, #93241, #94067, #94136）</li>
+  <li><strong>セッション/チャネル状態の安全性</strong>: チャネル切替で stale origin フィールドをリセット、cron 配信 awareness をターゲットセッションに紐付け維持（#95328, #93580）</li>
+  <li><strong>信頼ポリシーの保全</strong>: hook 合成時も信頼された tool policy が失われない（#94545）</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>🐍 Anthropic SDK Python — v0.112.0</h2>
+<p>対象期間内に Anthropic Python SDK の <strong>v0.112.0</strong>（公開 2026-06-24 18:45 UTC = <strong>2026-06-25 03:45 JST</strong>）がリリースされました。</p>
+
+<h3>✨ 新機能・API 対応</h3>
+<ul>
+  <li><strong><code>system.message</code> のストリーミングイベント対応</strong>: クライアントが system メッセージのストリーミングイベントをサポート</li>
+  <li><strong>API: 新しい refusal カテゴリのサポート</strong>（chore/api）</li>
+  <li><strong>API: User Profile ID をリクエストヘッダで送信可能</strong>に対応</li>
+</ul>
+
+<h3>🐛 修正</h3>
+<ul>
+  <li><strong>memory tool</strong>: 親ディレクトリを正しいパーミッションで作成するよう修正</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.112.0" target="_blank" rel="noopener noreferrer">Anthropic SDK Python v0.112.0 Release Notes</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — canary v16.3.0-canary.63 / .64 / .65 / .66</h2>
+<p>対象期間内に Next.js の canary が4本発行されました。対象期間開始直後の <strong>v16.3.0-canary.63</strong>（npm publish 2026-06-24 00:00 UTC = <strong>09:00:22 JST</strong>、期間開始から22秒後）以降、<strong>.64</strong>（16:46 JST）、<strong>.65</strong>（20:16 JST）、<strong>.66</strong>（翌 04:18 JST）と24時間以内に4リリースが連続公開されました。最新の意味のある安定版は引き続き <strong>v16.2.9</strong>（6/10 公開、dist-tag 調整用の空リリース）のままで、機能的に意味のある最新安定版は v16.2.7/8 系（6/10）です。</p>
+
+<h3>✨ canary.63（2026-06-24 09:00:22 JST）</h3>
+<ul>
+  <li><strong>prefetch リクエストへ ISR フォールバックシェルを提供</strong> (#94534)</li>
+  <li><strong>Insights</strong>: instant error から無関係な修正カードを除去（#94926）</li>
+  <li><strong>Navigation inspector UI 更新</strong>（#94959）</li>
+  <li><strong>skill(next-cache-components-adoption)</strong>: 前提条件を明示（#95082）</li>
+  <li><strong>Turbopack</strong>: dead AttachedFileSystem 型を削除（#94960）</li>
+  <li><strong>Cached Navigations のランタイムステージへ Partial Prefetching ルートを最適化組込</strong>（#95097）</li>
+  <li>scattered-collect の修正を取り込み #95015 を解消（#95098）</li>
+  <li><strong>instant navs のロック</strong>: cookie jar を全消去せずに解放（#94947）</li>
+  <li>最も具体的なプリレンダ済みルートから dev fallback params を計算（#95066）</li>
+</ul>
+
+<h3>✨ canary.64（10:46 JST）</h3>
+<ul>
+  <li><strong>Turbopack</strong>: <code>overlap == 1</code> のときチャンクをマージする検討（#95102）</li>
+  <li><strong>Turbopack</strong>: single-entry chunks のサポートを追加（#94727）</li>
+  <li><strong>Turbopack</strong>: <code>TURBOPACK_DEBUG_CSS_CHUNKING</code> env var を追加（#95080）</li>
+  <li>[cd] branch push でなく release tag で公開（#95085）</li>
+</ul>
+
+<h3>✨ canary.65（20:16 JST）</h3>
+<ul>
+  <li><strong>docs(cache-components)</strong>: <code>allow-runtime</code>・<code>sync-IO</code>・<code>instant=false</code>・CLS フォールバックを明確化（#94997）</li>
+  <li><strong><code>cacheMaxMemorySize: 0</code> の dev キャッシュ</strong>: 解決済みキャッシュ寿命を保持するよう変更（#95100）</li>
+  <li><strong>内部ヘッダを除去する際 <code>req.headers</code> を mutate しない</strong>よう修正（#95116）</li>
+</ul>
+
+<h3>✨ canary.66（翌 04:18 JST）</h3>
+<ul>
+  <li><strong>「Remove legacy PPR codepaths」を revert</strong>（#95113）</li>
+  <li><strong>dev-overlay</strong>: <code>Link prefetch={'{true}'}</code> Partial Prefetching 警告を Insights に接続（#94798）</li>
+  <li>docs/partial prefetching を追加（#94855）</li>
+  <li>[ci] 新しい Canary 公開中に preview tarball を並行して利用可能に（#95112）</li>
+  <li>[cd] ad-hoc preview release を canary から切り出す仕組み（#95086）</li>
+  <li>Navigation Inspector のダークモードスタイル修正（#95126）</li>
+  <li><strong>Link prefetch={true} Partial Prefetching 警告</strong>を Insights へ接続（#94798）</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — リリースノート更新（6/24）</h2>
+<p>2026年6月24日付の Google Cloud リリースノートで、BigQuery・Bigtable・Cloud Build・Cortex Framework・Gemini Enterprise の機能追加・GA 化と、Cloud Build の権限ベストプラクティス改善が発表されました。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>BigQuery が gemini-3.1-flash-lite / gemini-3.5-flash GA モデルをサポート</strong>: us / eu / global のマルチリージョナルエンドポイントで利用可能。全 generative AI 関数で呼び出し可能</li>
+  <li><strong>Bigtable Studio のホットバックアップ</strong>: Bigtable でホットバックアップの作成と全バックアップの編集が可能に。詳細は <code>Manage backups</code></li>
+  <li><strong>Cloud Build セキュリティ強化</strong>: GitLab Enterprise（GLE）と Bitbucket Data Center（BBDC）の接続において、参照先の Secret Manager シークレットが <strong>呼び出し元 principal と P4SA の両方</strong>に <code>secretmanager.versions.access</code> IAM 権限があるかをチェックするよう変更。最小権限の原則に沿った跨権限アクセスの是正（Cloud Build security bulletin 参照）</li>
+  <li><strong>Cortex Framework Release 7.0.0-preview.2（Public Preview）</strong>: <strong>SAP ERP 向けデータプロダクト</strong>加速材を多数追加（勘定伝票、買掛/売掛、住所、請求書、ビジネスパートナー、条件契約、統制領域/原価要素、原価/利益センター、通貨換算、財務諸表構造、会計年度バリアント、固定資産、総勘定元帳、汎用設定、プラント/保管、プロジェクト構造、単位、Universal Journal、仕入先請求書 等）。3 ステップの <strong>Extensibility guide</strong>（Custom namespace setup / Data foundation module / Data product module creation）も追加</li>
+  <li><strong>Gemini Enterprise: Observability for agents（GA）</strong>: アプリレベルの observability 設定、個々のエージェント向け設定など、Observability for Gemini Enterprise が一般提供化。詳細は Gemini Enterprise の Observability のドキュメントを参照</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ Azure — Copilot 機能層の GA 連発（6/24）</h2>
+<p>2026年6月24日付の Microsoft 公式ブログ/Tech Community/Azure Updates で、エージェント型運用（Agentic Cloud Operations）を軸にした GA アナウンスが複数発表されました。</p>
+
+<h3>✨ 主なアナウンス</h3>
+<ul>
+  <li><strong>Azure Copilot Observability Agent が GA（自律運用はプレビュー）</strong>: 観測・分析・最適化を AI エージェントが自動連携させる "agentic observability" の中核エージェントが一般提供へ。「From insight to action」を掲げ、ガバナンス下でクラウド運用を継続改善するエージェント型運用モデルへの移行を提唱</li>
+  <li><strong>Mistral Document AI（OCR 4）と Mistral Medium 3.5 が Microsoft Foundry に追加</strong>: OCR 4 を備えた Mistral Document AI と高性能 LLM Mistral Medium 3.5 が Foundry 経路で利用可能に</li>
+  <li><strong>Windows 11 の Point-in-time restore が GA</strong>: 数分で PC 全体を過去の状態に戻せる高速かつ包括的な回復機能が正式提供</li>
+  <li><strong>GA: Azure NetApp Files migration assistant</strong>: SnapMirror を活用し、低コストかつ低ダウンタイムでオンプレ等から安全にデータ移行できる移行アシスタントが一般提供</li>
+  <li><strong>Agentic DevOps specialization</strong>（2027年1月予定）の audit checklist 更新</li>
+  <li>Post-Quantum Cryptography と Crypto-Agility、Secure Boot 証明書更新のデプロイベストプラクティス、Sentinel custom graph での脅威ハンティング革新ガイド、App Service における MCP 2026 Spec のステートレス化と安全な OAuth ホスティングに関する記事など</li>
+</ul>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 新規発表なし（前号報済み事項の再確認）</h2>
+<p>対象期間内に AWS News Blog の新規投稿（RSS）はありませんでした。直近の投稿は <strong>AWS Lambda MicroVMs</strong>（2026-06-23 07:40 JST 公開）と <strong>AWS Weekly Roundup Jun 22</strong>（2026-06-22 23:46 JST 公開）で、どちらも本号の対象期間開始（6/24 09:00 JST）より前の公開であり、前号の朝刊で詳細を報告済みです。今号はこれらを補足する新規発表は確認されませんでした。</p>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/feed/" target="_blank" rel="noopener noreferrer">AWS News Blog RSS</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>Hono</strong>（最新 v4.12.27 は 6/23 公開で前回号で報告済み、今号の24時間以内に追加リリースなし）、<strong>React</strong>（最新は 19.2.7 / 19.1.8、ともに6/1公開で以降の新規リリースなし）、<strong>Python/Cython</strong>（3.14.6 / 3.13.14 は6/10付6/3報告済み）、<strong>Django</strong>（新規 GitHub Releases エントリなし）、<strong>Java/JDK</strong>（次回 CPU は7/21予定）、<strong>Spring Boot</strong>（最新は v4.1.0 の6/10付で以後なし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
