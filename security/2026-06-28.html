@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-28 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-28 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-27 08:00 〜 2026-06-28 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. pnpm 連続セキュリティアドバイザリ（6件）— ロックファイル由来の任意コード実行・パストラバーサル・bin 削除攻撃、<code>--ignore-scripts</code> でも成立 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE／GHSA</strong></td><td>CVE-2026-55698（CVSS 3.1: 8.1 AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H）／CVE-2026-55700（CVSS 7.3 パストラバーサル）／CVE-2026-55699（PNPM_HOME 削除、A:H）／GHSA-fr4h-3cph-29xv／GHSA-72r4-9c5j-mj57／GHSA-qrv3-253h-g69c（CVE未割当、High）</td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-06-26〜27（GitHub Advisory Database／NVD）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>pnpm &lt; 10.34.2, pnpm 11.3.0〜11.5.3 等（各アドバイザリの対象範囲で異なる）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>pnpm 10.34.2／11.5.3（CVE-55698/55699/55700）、11.7.0 および 10.34.4（GHSA-72r4-9c5j-mj57）、11.5.3 以降（GHSA-fr4h-3cph-29xv、GHSA-qrv3-253h-g69c 検証含む）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-22 パストラバーサル／CWE-345 データ真正性検証不備／CWE-94 コードインジェクション／CWE-22 bin名パストラバーサル</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用の証拠なし・PoCはアドバイザリ本文中に記載（ユーザーが `pnpm install` を実行することがトリガ）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — npm 互換の高速パッケージマネージャ <a href="https://github.com/pnpm/pnpm" target="_blank" rel="noopener noreferrer">pnpm</a> に対し、2026-06-26〜27 に6件の High/Critical 級アドバイザリが連続公開された。全て <code>pnpm-lock.yaml</code> に細工された値を仕込んだ悪意ある／汚染されたリポジトリをユーザーが <code>pnpm install</code> することで成立し、<code>--ignore-scripts</code> を指定しても lifecycle script に依存せず発火する点が共通。</li>
+  <li><strong>CVE-2026-55698（CRITICAL 相当）env lockfile 由来の package-manager 切替で攻撃者選択バイナリ実行</strong> — pnpm は <code>pnpm-lock.yaml</code> の第1 YAML ドキュメントに package-manager ブートストラップメタデータを保持可能。修正前はコミット済み env lockfile に合致する <code>pnpm</code>／<code>@pnpm/exe</code> バージョンが存在する場合、鮮度解決をバイパスし、ロックファイルが選んだ bytes を自動バージョン切替時にインストール・実行しうる。悪意あるリポジトリは <code>packageManagerDependencies</code> records/snapshots をコミットし、fresh package-manager resolution を迂回して pnpm 自体を乗っ取ることが可能。CI での自動 <code>pnpm install</code> が実行コンテキストに乗るためシークレット窃取起点になる</li>
+  <li><strong>CVE-2026-55700（HIGH）stage download のパストラバーサルで任意上書き</strong> — <code>pnpm stage download</code> がレジストリ由来の package name/version からローカル filename を派生し、細工された manifest でダウンロード先ディレクトリを越えて別ファイルを上書き可能。修正版は name/version を検証し実パスを検証後に書き込み</li>
+  <li><strong>CVE-2026-55699（HIGH）bin 名パストラバーサルで PNPM_HOME 削除</strong> — manifest bin object のキーとして <code>""</code>／<code>.</code>／<code>..</code> が bin-name guard をすり抜け、悪意あるパッケージを global install した後に remove/update/add-replacement で <code>path.join(globalBinDir, ".")</code>／<code>".."</code> が <code>removeBin</code> に渡り global bin dir やその親（PNPM_HOME 等）が削除される</li>
+  <li><strong>GHSA-fr4h-3cph-29xv（High）hoisted install の alias → node_modules 外インポート</strong> — 細工された lockfile alias が hoisted <code>node_modules</code> 直下に結合され、traversal alias はディレクトリを脱出、<code>.bin</code>／<code>.pnpm</code> 等の予約 alias は pnpm 所有レイアウトを上書きしうる。pacquet (Rust) 側にも影響</li>
+  <li><strong>GHSA-72r4-9c5j-mj57（High）patch-remove の任意ファイル削除</strong> — 細工された patch entry が patches ディレクトリ外に解決し、<code>pnpm patch-remove</code> が任意の到達可能ファイルを削除しうる。シンボリックリンク／dangling victim の再現も報告</li>
+  <li><strong>GHSA-qrv3-253h-g69c（High）configDependencies 由来のシンボリックリンク書き出し</strong> — env lockfile の <code>configDependencies</code> package name をそのまま <code>node_modules/.pnpm-config/</code> 下のシンボリックリンク作成に使用。traversal-shaped 名（<code>../../PWNED_CFGDEP</code>）でプロジェクト外に symlink を作成。<code>--ignore-scripts</code> でも発火</li>
+  <li><strong>被害シナリオ</strong> — Next.js / React / Hono / Node.js 系スタックで pnpm を採用し、CI で <code>pnpm install</code> を実行する全環境が対象。DER依存・PR 由来の fork-build・CodeSandbox 的な sandbox・生成 AI agent の一時 checkout（OpenClaw・Claude Code・Hermes Agent 等のエージェントが外部リポジトリを <code>pnpm install</code> する運用）でも credential 窃取や ホスト汚染に直結しうる</li>
+  <li><strong>対応</strong> — pnpm を 10.34.2／11.5.3（可能なら 11.7.0）以降に即時更新。CI 上で <code>pnpm install</code> が実行される全 workflow で pnpm バージョンを pinning し、lockfile の差分（特に <code>packageManagerDependencies</code>・<code>configDependencies</code>・hoisted aliases・patchedDependencies）を PR review で精査。信頼できない PR 由来の <code>pnpm-lock.yaml</code> を CI で再現せず <code>--frozen-lockfile</code>／ <code>pnpm install --prod</code> の検証も活用。pacquet 利用環境も最新パッチへ</li>
+  <li>〈Web / Next.js / React / Node.js・エージェント運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/pnpm/pnpm/security/advisories" target="_blank" rel="noopener noreferrer">pnpm Security Advisories</a> · <a href="https://github.com/advisories?sort=published&direction=desc" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-55698" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-55698</a></p>
+
+<hr>
+
+<h3>2. Budibase CVE-2026-54350 — 公開アプリの全データ参照／更新、未認証のクエリインジェクション（CVSS 4.0 評価 10 相当） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-54350（CVSS 3.1: 9.1 AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:N、CVE Brief は CVSS 4.0 10 と評価）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-26 21:16 UTC（NVD 受領）＝ 2026-06-27 06:16 JST</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Budibase &lt; 3.39.12（OSS 低コードプラットフォーム）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>3.39.12 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-89 SQL Injection／CWE-943 データクエリロジックの特殊文字処理不備</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（未認訪問者による攻撃経路）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — オープンソースの低コードプラットフォーム <a href="https://github.com/Budibase/budibase" target="_blank" rel="noopener noreferrer">Budibase</a> において、公開済み（PUBLIC）アプリの未認証訪問者が backing store（MongoDB／CouchDB／Elasticsearch／DynamoDB-PartiQL／REST+JSON ボディ）の全ドキュメントを読み出せる脆弱性。クエリ builder が公開した write query が存在する場合は全ドキュメントの一斉変更も可能。<code>enrichContext</code> がパラメタ値を raw JSON body に注入して <code>JSON.parse</code> するが、入力検証は Handlebars marker（<code>{{</code>／<code>}}</code>）のみを拒否し、JSON メタ文字（<code>"</code>, <code>\</code>, <code>}</code>）のエスケープを行わない。パラメタ値に終端クォート + 追加キーを含めることで攻撃者が filter object に任意フィールドを持ち込み、MongoDB の <code>collection.find()</code> では <code>{name: {$exists: true}}</code> のような上書きで全件取得、<code>updateMany</code> では filter を全件に拡張しつつ builder 制御の <code>$set</code> を全件に適用</li>
+  <li><strong>被害シナリオ</strong> — 認可ミドルウェア <code>authorized.ts</code> は query role が PUBLIC の場合に short-circuit し、CSRF も未適用。<code>POST /api/v2/queries/:queryId</code> はセッション不要で <code>x-budibase-app-id</code> ヘッダのみ（公開アプリ URL から抽出可）で呼び出し可能。社内ツール・顧客ポータル・公開ダッシュボード構築で Budibase を使っている場合、公開アプリの背後にある全データが未認証で漏えい・改ざんされる</li>
+  <li><strong>修正内容</strong> — 3.39.12 で入力検証・JSON エスケープロジックを修正</li>
+  <li><strong>対応</strong> — Budibase を 3.39.12 以降に即時更新。即時適用が困難な場合は、公開アプリの PUBLIC write query を無効化し、公開アプリ全体を認証後ろに退避させ、未認証状態での <code>/api/v2/queries/*</code> アクセスを WAF／リバースプロキシで遮断</li>
+  <li>〈Web / 低コードアプリ基盤スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/Budibase/budibase/security/advisories/GHSA-8qv3-p479-cj62" target="_blank" rel="noopener noreferrer">GHSA-8qv3-p479-cj62</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-54350" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-54350</a></p>
+
+<hr>
+
+<h3>3. Kestra CVE-2026-53576 / CVE-2026-49869 — 認証バイパス（<code>/configs</code> suffix 一致）から未認証 root RCE、<code>docker.sock</code> マウントでホスト掌握も（CVSS 10 相当） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-53576（CVSS 3.1: 9.8 AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H）／CVE-2026-49869（CVSS 3.1: 9.8、同一エンドポイント別経路、CVE Brief は CVSS 4.0 10 と評価）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-26 22:16 UTC（NVD 受領）＝ 2026-06-27 07:16 JST</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Kestra &lt; 1.0.45／1.3.21（OSS イベント駆動オーケストレーションプラットフォーム）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>1.0.45／1.3.21 以降</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-288 認証バイパス（迂回経路）／CWE-287 不適切な認証／CWE-78 OS コマンドインジェクション／CWE-918 SSRF／CWE-94 コードインジェクション／CWE-184 不完全な拒否リスト</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（未認証のネットワーク攻撃者が RCE まで到達可能）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Kestra はオープンソースのイベント駆動型ワークフローオーケストレーションプラットフォーム。REST API の認証フィルタ <code>@Filter("/api/v1/**")</code> は <code>/configs</code> で終わる任意の path を public な instance-config エンドポイントと誤認し、Basic-Auth をバイパスして転送する。Kestra はパスセグメントを呼び出し側が選ぶ URL 構造（<code>/api/v1/{tenant}/flows/{namespace}</code> 等）を採用するため、匿名呼び出し元は末尾セグメントに <code>configs</code> を選ぶだけで任意テナントの flow-create／execution-trigger ルートに到達可能。Shell／Process タスクを含む flow を作成して実行すると worker コンテナ内で root として任意コード実行が成立</li>
+  <li><strong>被害シナリオ</strong> — 公式 <code>docker-compose.yml</code> は <code>/var/run/docker.sock</code> をマウントするため、root 化した worker がホスト Docker daemon にも到達し、ホスト側コンテナ・シークレット・ネットワークを掌握する</li>
+  <li><strong>修正内容</strong> — 1.0.45／1.3.21 で suffix 一致を exact 一致に修正し、認証バイパス経路を除去。シェル／プロセス系スクリプトプラグインの既定有効化は据え置きだが、未認証経路からの flow 実行を遮断</li>
+  <li><strong>対応</strong> — Kestra を 1.0.45／1.3.21 以降に即時更新。即時適用が困難な場合は、Kestra をインターネットに直接露出させず、認証プロキシ／VPN 背後に退避。<code>/var/run/docker.sock</code> の Kestra コンテナへのマウントを再検討し、可能なら読取専用または破棄。CI/CD 基盤としてインターネット公開しているセルフホスト Kestra が最優先</li>
+  <li>〈Web / クラウド・オーケストレーション基盤スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-53576" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-53576</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-49869" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-49869</a></p>
+
+<hr>
+
+<h3>4. OpenProject CVE-2026-46386 — 公式 Docker イメージのデフォルト <code>SECRET_KEY_BASE</code> + Marshal cookie でログインユーザーから RCE（CVSS 9.9） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-46386（CVSS 3.1: 9.9 AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 受領: 2026-06-26〜27。CISA-ADP は 2026-06-27 00:17 UTC にレコード追記</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>公式 <code>openproject/openproject</code> Docker イメージ全既定構成（修正版未公表の記載あり、最新パッチ追跡必要）</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>修正版はアドバイザリ本文中で空白。後続の OpenProject 17.3.3／17.4.1 に同梱の関連修正（CVE-2026-52780 cache store poisoning RCE）と併せて最新版への更新を推奨</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-502 信頼できないデータのデシリアライゼーション／CWE-798 ハードコード認証情報／CWE-1392 デフォルト認証情報の使用／CWE-1188 リソースの安全でない既定初期化</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（ログイン済ユーザーから攻撃起点）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — オープンソースのプロジェクト管理ソフト <a href="https://github.com/opf/openproject" target="_blank" rel="noopener noreferrer">OpenProject</a> の公式 Docker イメージは <code>ENV SECRET_KEY_BASE=***</code> をデフォルトの Rails master key として出荷。さらに <code>cookies_serializer = :marshal</code> と組合わることで、ログイン済み任意のユーザーが <code>/my/two_factor_devices</code> の cookie reader 経由で決定論的に Marshal デシリアライゼーションを起こし、RCE に到達しうる</li>
+  <li><strong>同日同クラスター</strong> — CVE Brief 6/27 版は OpenProject クラスターとして、本件（CVE-2026-46386）、cache store poisoning からの RCE（CVE-2026-52780、修正 17.3.3／17.4.1）、SQL injection（<code>timestamps</code> パラメタ、CVE-2026-52680 系）、IDOR（プロジェクト管理者権限で他プロジェクトフォルダACL乗っ取り）を一括取り上げ。ログインユーザーを起点に据え置いた OS コマンド実行／DB 操作権限の取得が開示</li>
+  <li><strong>被害シナリオ</strong> — 公式 Docker イメージを変更せずに運用している全 OpenProject デプロイが脆弱。<code>SECRET_KEY_BASE</code> が共通値であるため、攻撃者は自環境で cookie を forge し、外部から直接 RCE 起点フローを整えることも可能。オープンなテナント・サンプルアカウントがある構成では越権リスク高い</li>
+  <li><strong>修正内容</strong> — <code>SECRET_KEY_BASE</code> を起動時に強制的に生成／外部注入する運用に変更し、<code>cookies_serializer</code> はハイブリッド／JSON に移行することが期待される。2026-06-28 朝時点で修正版は README 文中は空白、最新リリース 17.3.3／17.4.1 で関連修正 CVE-2026-52780 が含まれるため、最新版の追従を必須とする</li>
+  <li><strong>対応</strong> — OpenProject を最新安定版（17.4.x 系推奨）に更新。デプロイ時に <code>SECRET_KEY_BASE</code> を独自の強力な値で明示上書きし、再生成・ローテーションを実施。Docker compose の env を確認しデフォルト値 <code>***</code> が残っていないことを検査。不要ユーザー／外部公開アカウントを閉鎖し、2FA 認証デバイス経路を監査</li>
+  <li>〈Web / Docker プロジェクト管理プラットフォームスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-46386" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-46386</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-52780" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-52780（cache poisoning RCE）</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono、AWS、Azure、GCP について、本対象期間（2026-06-27 08:00〜2026-06-28 08:00 JST）で直接関連する新規CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>既報: Spring Security 6.5.11／7.x（6/9-10）、Django 6.0.6／5.2.15（6/3）、Next.js CVE-2026-44576 系 RSC cache poisoning（5月王政）、Hermes Agent v0.17.0（6/19、CVE-2026-48710 Starlette ピン・SSRF ハードニング含む）は対象外目。<br>Hermes Agent は v0.17.0（2026-06-19）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした（前号から更新なし）。<br>OpenClaw は 2026.6.11-beta.1（2026-06-25 GitHub リリース公開）が最新であり、本対象期間内の新規リリースはありませんでした。次リリースまで既報の DOMPurify パッチ・メモリアーティファクトサニタイズ・TLS 空値拒否・SSH ターゲット検証等のハードニングを維持してください。<br>Anthropic Claude Code は CVE-2026-46406（<code>/copy</code> 不安全一時ファイル、NVD では RESERVED／GitHub Advisory では 2026-06-25 公開扱い）が直近の話題ですが、本対象期間中の新規アップデートは確認されませんでした。引き続き Claude Code 用一時ファイル退避場所の権限分離を推奨。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 6月27日 CVE Brief（Saturday） — Critical 31件（前日比+24%）・High 60件（前日比+43%）、能動的悪用 6件、OSS Web プラットフォームと開発者ツールが中心 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-27（Saturday Brief）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>31件（前日25件から+24%）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>60件（前日42件から+43%）</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>6件 — Ubiquiti UniFi OS 三連（CVE-2026-34908/34909/34910）、Cisco Unified CM（CVE-2026-20230）、PTC Windchill/FlexPLM（CVE-2026-12569）、Lantronix EDS5000（CVE-2025-67038）。全件 CISA KEV 既登録、4件は 6/26 期限経過／Cisco UCM は 6/28 期限日</td></tr>
+  <tr><td><strong>注目 CVE</strong></td><td>CVE-2026-54350 Budibase CVSS 10 ／ CVE-2026-53576+49869 Kestra 認証バイパス→root RCE CVSS 10 ／ CVE-2026-46386 OpenProject デフォルト鍵→Marshal RCE CVSS 9.9 ／ CVE-2026-52780 OpenProject cache poisoning RCE CVSS 9.6 ／ mise .tool-versions Tera RCE ／ pnpm 6件連続アドバイザリ</td></tr>
+  <tr><td><strong>パッチ提供率</strong></td><td>Critical 群は一部ベンダーパッチ未反映 — 補償的制御（公開範囲縮小・認証プロキシ化・一時停止）を併用</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月27日（Saturday）の CVE Brief は「土曜の開示は OSS Web プラットフォームと開発者ツールが中心」と題し、Budibase（CVSS 10 未認証クエリ注入）、Kestra（CVSS 10 認証バイパス→root RCE）、OpenProject クラスター（CVSS 9.9 デフォルト秘密鍵→Marshal RCE、+ cache store poisoning RCE・SQL injection・IDOR）、mise 開発ツールマネージャの <code>.tool-versions</code> Tera テンプレートエンジン経由任意コマンド実行を筆頭に並べた。土日はCVE公開数が平日より膨らむ傾向にあり、Critical は前日25件→31件＋24%、High は42件→60件＋43%と同時に拡大。WordPress エコシステムプラグイン群（未認証SQL注入・特権昇格・PHP Object Injection）も多数追加され、自己ホスト Web の広範囲露出継続を示唆</li>
+  <li><strong>注目パターン</strong> — (1) 公式 Docker イメージのデフォルト鍵 + Marshal cookie serializer の組合せで認証済低権限ユーザーから RCE（OpenProject）(2) URL サフィックス一致による認証バイパス + worker root + <code>docker.sock</code> マウントでホスト掌握（Kestra）(3)公開アプリの未認証クエリ endpoint に JSON メタ文字を持ち込んで全件取得／全件更新（Budibase）。開発者室温圏のセルフホストツールが継続して筆頭攻撃対象</li>
+  <li><strong>対応</strong> — 自己ホストしている Budibase／Kestra／OpenProject／WordPress プラグイン環境を直ちにインベントリ化し、外部公開を止める。Critical群のベンダーパッチ未反映分はネットワーク分離・監視強化・WAF で補償。Ubiquiti UniFi OS／Cisco UCM／Lantronix EDS5000／PTC Windchill は KEV 期限が到来しているため今日中以内の修正完了を確証</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 27, 2026（Saturday）</a> · <a href="https://cvebrief.com/archive/" target="_blank" rel="noopener noreferrer">CVE Brief Archive</a></p>
+
+<hr>
+
+<h3>🔴 pnpm 連続アドバイザリ波及 — npm ロックファイル汚染によるサプライチェーン攻撃の「新人」大量投入、AI エージェントが <code>pnpm install</code> する運用の急所 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>期間内公開件数</strong></td><td>6件（CVE-2026-55698／55699／55700＋GHSA-fr4h-3cph-29xv／GHSA-72r4-9c5j-mj57／GHSA-qrv3-253h-g69c）</td></tr>
+  <tr><td><strong>波及範囲</strong></td><td>Next.js／React／Hono／Node.js エコシステム全般で pnpm を採用する全プロジェクト。CI、生成AIコーディングエージェント（OpenClaw／Claude Code／Hermes Agent 等）が外部リポジトリで <code>pnpm install</code> を実行する全運用</td></tr>
+  <tr><td><strong> sequential 攻撃 </strong></td><td>ロックファイル単体で成立（<code>--ignore-scripts</code> でも発火するものが複数）し、<code>packageManagerDependencies</code>・<code>configDependencies</code>・hoisted alias・patchedDependencies の各 section がそれぞれ攻撃 primitive</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — npm package manager のロックファイルは従来も <code>preinstall</code>／<code>postinstall</code> lifecycle script 経由で攻撃起点になってきたが、今回の pnpm クラスターは script 実行に頼らない純粋な lockfile primitive（package-manager 切替の bytes すり替え、<code>configDependencies</code> の symlink traversal、<code>patch-remove</code> の任意削除、hoisted alias のディレクトリ脱出）を突く点で設計層のハードニングが必要。CVE Brief Saturday は開発者ツールが中心と掲げた中で最重要群</li>
+  <li><strong>被害シナリオ</strong> — PR 由来／fork-build／依存リポジトリ改ざん／テンプレートリポジトリ汚染／生成 AI agent の一時 checkout 上で <code>pnpm install</code> を実行するだけで、CI runner のシークレット・クラウドクレデンシャル・成果物アーティファクトが漏洩・汚染される。<code>--frozen-lockfile</code> を併用してもロックファイル自体が細工済みの場合は防げないため、信頼不能な PR 由来 lockfile は再現しない運用が必須</li>
+  <li><strong>対応</strong> — pnpm を 10.34.2／11.5.3（可能なら 11.7.0）以降に即時更新。CI での pnpm バージョンは <code>packageManager</code> フィールド／<code>corepack</code> で pinning。<code>pnpm-lock.yaml</code> の diff は PR review で必ず精査（特に env lockfile・configDependencies・hoisted aliases・patchedDependencies）。信頼できない PR 由来の lockfile を CI で再利用しない。AI エージェント運用では <code>pnpm install</code> を実行するサンドボックスのネットワーク出口・ファイルシステム書き込み範囲を制限</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/pnpm/pnpm/security/advisories" target="_blank" rel="noopener noreferrer">pnpm Security Advisories</a> · <a href="https://github.com/advisories?sort=published&direction=desc" target="_blank" rel="noopener noreferrer">GitHub Advisory Database — Recent</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-55698" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-55698</a></p>
+
+<hr>
+
+<h3>🔴 mise <code>.tool-versions</code> Tera テンプレートエンジン RCE — 未認証任意コマンド実行、開発環境汚染起点 <span class="badge-critical">CRITICAL</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — Rust 製の開発ツールバージョンマネージャ <a href="https://github.com/jdx/mise" target="_blank" rel="noopener noreferrer">mise</a>（旧 rtx）が <code>.tool-versions</code> ファイルの解析に Tera テンプレートエンジンを使用し、未認証の遠隔攻撃者が細工したファイルを通じて任意コマンドを実行できる。CVE Brief Saturday 6/27 で Critical 級として挙げられている。NVD 上の CVE 識別子は本朝刊時点で未確定／未公開</li>
+  <li><strong>被害シナリオ</strong> — <code>.tool-versions</code> はリポジトリルートに置かれ、チームメンバーや CI が mise で同等のtool chain を setup する際に読み込まれる。PR 経由で細工されたファイルを仕込まれたリポジトリを clone／<code>mise install</code>／<code>cd</code> した瞬間にホスト上でコマンドが実行される。 mise は direnv 連携・CI での tool 切替で利用されており、CI runner credentials の窃取起点になりうる</li>
+  <li><strong>対応</strong> — mise を最新安定版に即時更新。CVE 識別子が確定次第 NVD／GitHub Release Note を追跡。<code>.tool-versions</code> の diff を PR review で必ず精査し、CI 上の mise 実行を信頼できる PR 由来に限定</li>
+  <li>〈Web / Python / Node.js・CI・エージェント運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 27, 2026</a> · <a href="https://github.com/jdx/mise" target="_blank" rel="noopener noreferrer">mise (jdx/mise)</a></p>
+
+<hr>
+
+<h3>🟠 CISA KEV 期限集中 — Cisco Unified Communications Manager（CVE-2026-20230、期限 6/28 本日到達）＋ Ubiquiti UniFi OS 三連・Lantronix EDS5000・PTC Windchill/FlexPLM（6/26 期限経過、OVERDUE） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>KEV 期限</strong></td><td>Cisco UCM CVE-2026-20230: 2026-06-28（BOD 26-04 3日期限、本日到達）／Ubiquiti UniFi OS 三連 CVE-2026-34908/34909/34910: 6/26 期限経過（+2日 OVERDUE）／Lantronix EDS5000 CVE-2025-67038: 6/26 期限経過／PTC Windchill・FlexPLM CVE-2026-12569: 6/28 期限（推定）</td></tr>
+  <tr><td><strong>Ubiquiti UniFi OS 三連</strong></td><td>アクセス制御バイパス／パストラバーサル／コマンドインジェクション。全てネットワーク隣接の未認証攻撃者でデバイス完全掌握（CVSS 10.0）</td></tr>
+  <tr><td><strong>Lantronix EDS5000</strong></td><td>コードインジェクション（CVSS 9.8）。OT/ICS のシリアル-IP 変換ゲートウェイ</td></tr>
+  <tr><td><strong>Cisco UCM</strong></td><td>SSRF→ファイル書き込み→root RCE。前提は WebDialer 有効化。Defused が6/21-22 から能動的悪用観測と6/25 報告、Cisco は未確認</td></tr>
+  <tr><td><strong>PTC Windchill/FlexPLM</strong></td><td>製造業のPLM 基盤を標的化する不正入力検証。能動的悪用確認済</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CISA KEV カタログ上の能動的悪用確認済6件が土日に集中して期限到達。連邦機関は BOD 26-04 で3日以内の修正義務だが、民間組織にも同等対応を推奨。Ubiquiti UniFi OS 三連は SMB～エンタープライズまで広く導入され、LAN 隣接で root 権限掌握が可能。Lantronix EDS5000 は OT/ICS 足掛かり経路</li>
+  <li><strong>Cisco UCM 期限日</strong> — CVE-2026-20230 は 6/3 のCisco公式アドバイザリ公開、6/25 KEV 登録で 6/28 期限。本朝刊配信時点で最終24時間以内。世界中の企業 VoIP インフラ中核だけに、WebDialer 有効化の有無を至急確認し無効化／パッチ適用を実施</li>
+  <li><strong>対応</strong> — Ubiquiti は Security Advisory Bulletin 064 のパッチ適用済みデバイスを全_PLATFORM で確証。Lantronix は EDS5000 ファームウェア更新。Cisco UCM は6月初旬パッチ適用版へ即時更新、WebDialer 不要なら無効化。PTC Windchill/FlexPLM はベンダーアドバイザリに従いパッチ適用。期限経過分は修了時にバンド外ネットワーク監視で不正設定変更がないか再点検</li>
+  <li>〈AWS / Azure / GCP でこれらアプライアンスを IaC 管理している場合も一定関係〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://threat-modeling.com/vulnerability-intelligence-report-june-25-2026/" target="_blank" rel="noopener noreferrer">Vulnerability Intelligence Report — June 25, 2026</a></p>
+
+<hr>
+
+<h3>🟠 WordPress エコシステム大量Critical — 未認証SQL注入・特権昇格・PHP Object Injection が集中公開 <span class="badge-high">HIGH</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief Saturday は自己ホスト型 WordPress プラグインの Critical 級脆弱性を多数列挙：<strong>Booster for WooCommerce</strong>（任意ファイルアップロード→未認証RCE）、<strong>BuddyBoss Platform</strong>（PHP Object Injection→未認証／低権限で任意コード実行）、<strong>Uncanny Automator Pro</strong>（PHP Object Injection→任意コード実行）、<strong>Invoice Generator</strong>（未認証特権昇格・任意ユーザーアカウント改ざん・管理者 session 乗っ取り）、<strong>Dokan Pro</strong>／<strong>Paytium</strong>／<strong>Easy Elements for Elementor</strong>（未認証特権昇格）、<strong>JetBooking</strong>／<strong>wpDataTables</strong>／<strong>Real Estate 7</strong>／<strong>GeoDirectory</strong>／<strong>JetEngine</strong>／<strong>JetSmartFilters</strong>／<strong>Advance Product Search</strong>／<strong>Quform</strong>／<strong>Travel Booking</strong>／<strong>Blocksy Companion Pro</strong>／<strong>Fusion Builder</strong>（特権昇格・SQL注入・ファイルアップロード）等多数</li>
+  <li><strong>注目パターン</strong> — (1) 未認証のリモート攻撃者で管理者権限を奪取できる単純な特権昇格が複数 (2) PHP Object Injection (CWE-1321) 経由のRCEが BuddyBoss・Uncanny Automator Pro で出現 (3) WooCommerce 拡張の改ざんでプラグインが正規販売されていても汚染されていない問題 (4) Jet* 系プラグイン（Crocoblock シリーズ）が連鎖的に SQL injection を出している。多くが公開PoC待ちだが根本的対処はプラグイン停止または更新</li>
+  <li><strong>対応</strong> — 自己ホスト WordPress 上で上記プラグインを運用している場合は直ちに最新版へ更新、不要なら無効化。WAF で未認証の <code>admin-ajax.php</code>・REST API への異常リクエストを遮断。管理者権限アカウントの不正作成・編集履歴を監視。WooCommerce 拡張は公式 marketplace 由来であることを再確認</li>
+  <li>〈Web / CMS 運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 27, 2026</a></p>
+
+<hr>
+
+<h3>🟡 その他 Saturday Brief 注目 CVE — extract-zip シンボリックリンク越境／OWASP ZAP ViewState デシリアライゼーション RCE／wolfSSL ML-KEM AVX2 比較不備／FreeBSD KTLS in-place 復号／AutoGPT・LibreChat・Notepad++ 複数脆弱 <span class="badge-medium">MEDIUM</span></h3>
+
+<ul>
+  <li><strong>extract-zip シンボリックリンク越境</strong> — zip 抽出ライブラリ <code>extract-zip</code> がシンボリックリンクの target を検証せず、任意のファイルシステムアクセスに至る（npm エコシステム・Electron アプリの自己アップデータ等で広範影響）</li>
+  <li><strong>OWASP ZAP ViewState アドオンのデシリアライゼーション RCE</strong> — セキュリティテストツール OWASP ZAP 自身の拡張が悪意あるシリアライズ Java オブジェクト経由で任意コード実行起点になる皮肉なCVE。開発者環境上の ZAP 実行ユーザー権限で攻撃成立</li>
+  <li><strong>wolfSSL ML-KEM AVX2 実装の比較不備</strong> — AVX2 最適化の ML-KEM (Kyber) 実装の decapsulation で comparison flaw が存在し、セキュリティ成果を妥協しうる。PQC 暗号ライブラリのハードウェアアクセラレーション経路として注視必要</li>
+  <li><strong>FreeBSD KTLS 受信パスの in-place 復号</strong> — KTLS 受信パスがレコードを in-place で復号し、unsafe mbuf 変更でメモリ破モリ破壊を起こしうる。FreeBSD サーバのネットワークスタック安定性・機密性に影響</li>
+  <li><strong>AutoGPT／LibreChat／Notepad++ 複数脆弱</strong> — AutoGPT（継続的 AI agent の不正操作）、LibreChat（AI インターフェースの Unauthorized access、vendor セキュリティ更新の即時確認を要請）、Notepad++（複数のソースコードエディタ脆弱性）。エンドユーザー/OpenSource ツール群にも Critical が漏れなく付与される傾向が継続</li>
+  <li>〈Web / Python・AI エージェント運用スタックに直接関連のものあり〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 27, 2026</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
