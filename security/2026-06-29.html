@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-29 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-29 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-28 08:00 〜 2026-06-29 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Gitea <code>act_runner</code> CVE-2026-58053 — Docker backend の <code>container.options</code> マージで <code>privileged: false</code> のみ OFF 化、<code>--pid=host</code>／<code>--cap-add</code> 等はそのまま通過しワークフロー実行ユーザーからホスト root へ脱出（CVSS 9.9） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-58053（CVSS 3.1: 9.1 AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H、CVSS 4.0 Vector: CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 受領: 2026-06-27 22:16:32 UTC = 2026-06-28 07:16 JST（本対象期間先頭付近）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Gitea <code>act_runner</code> の Docker backend、<= <code>act</code> 0.262.0 (defaultStatus: affected)。CI/CD 自動化基盤として self-hosted Gitea を使う全環境</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>本朝刊時点でパッチ未公開（CVE Brief も "no patches were available at disclosure time" と明記）。VulnCheck アドバイザリ／PoC は公開済み</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-269 不適切な権限管理／CWE-250 権限過剰な実行／CWE-263 レビュー不十分なパス信頼</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用の証拠なし・<a href="https://github.com/bikini/exploitarium/tree/main/gitea-act-runner-container-options-poc" target="_blank" rel="noopener noreferrer">PoC リポジトリ公開済み</a></td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — OSS Git サーバ <a href="https://github.com/go-gitea/gitea" target="_blank" rel="noopener noreferrer">Gitea</a> の GitHub Actions 互換ランナー <code>act_runner</code> は、workflow の <code>container.options</code> 文字列を Docker ジョブコンテナの <code>HostConfig</code> に流し込む。運用者が安全側に倒すため <code>privileged: false</code> を指定しても、その単一フラグのみを OFF にし、<code>--pid=host</code>／<code>--cap-add</code>／<code>--security-opt</code> などの危険な他オプションは <em>マージされたまま</em> 通過させる。結果としてワークフロー実行権限を持つユーザーは、ホストの namespace と広い capabilities を持つジョブコンテナを起動でき、<code>privileged</code> モードを無効化していてもホストの root 権限へ脱出可能</li>
+  <li><strong>被害シナリオ</strong> — Next.js／React／Hono／Node.js／Python／Java・SpringBoot 系を問わず、self-hosted Gitea 上で PR 由来のコードを <code>act_runner</code> でビルド・テストしている全 CI 環境が該当。前号で取り上げた pnpm ロックファイル汚染クラスターと同じ<code>PR 由来の workflow を実行するだけ</code>という低い敷居で、CI runner のシークレット・クラウドクレデンシャル・ホスト Docker daemon が掌握される。外部 PR を無審査で回している Gitea インスタンスは即危険領域</li>
+  <li><strong>修正内容</strong> — 修正パッチは本日朝時点で未公開。VulnCheck アドバイザリ本文は <code>container.options</code> を <code>HostConfig</code> にマージする前に denylist／allowlist で危険フラグを剥がすハードニングを推奨</li>
+  <li><strong>対応</strong> — (1) self-hosted Gitea 上で Docker backend で <code>act_runner</code> を運用している場合は、外部寄稿ワークフロー実行を即時停止するか、Pull Request 由来の workflow 実行を禁止 (2) <code>runs-on</code>／<code>container.options</code> の受け入れを静的バリデーションで制限し、<code>--pid</code>／<code>--cap-add</code>／<code>--security-opt</code>／<code>--privileged</code> を含む workflow を拒否 (3) runner ホストは ephemeral VM／コンテナに置き、ホストの <code>/var/run/docker.sock</code> をマウントしない (4) パッチ公開まで監視を継続。CVE-2026-58053 の NVD／VulnCheck を毎朝確認</li>
+  <li>〈Web / Next.js / React / Hono / Python / Java・CI-CD 運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-58053" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-58053</a> · <a href="https://www.vulncheck.com/advisories/gitea-act-runner-container-hardening-bypass-via-workflow-container-options" target="_blank" rel="noopener noreferrer">VulnCheck Advisory</a> · <a href="https://github.com/bikini/exploitarium/tree/main/gitea-act-runner-container-options-poc" target="_blank" rel="noopener noreferrer">PoC Repository</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono、AWS、Azure、GCP について、本対象期間（2026-06-28 08:00〜2026-06-29 08:00 JST）で直接関連する新規CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>既報: Spring Security 6.5.11／7.x（6/9-10）、Django 6.0.6／5.2.15（6/3）、Next.js CVE-2026-44576 系 RSC cache poisoning（5月王政）、Envoy Proxy 6/23 公開アドバイザリ群（GHSA-p7c7-7c47-pwch HTTP/3 QPACK DoS、GHSA-8phg-2h2q-jgxf HTTP/3 request smuggling 等は対象期間外ですが、CVE Brief Sunday でも再強調されています）は対象外目。<br>Hermes Agent は v0.17.0（2026-06-19）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした（前号から更新なし）。<br>OpenClaw は 2026.6.11-beta.1（2026-06-25 GitHub リリース公開）が最新であり、本対象期間内に新規リリースはありませんでした。次リリースまで既報の DOMPurify パッチ・TLS 空値拒否・メモリアーティファクトサニタイズ・SSH ターゲット検証等のハードニングを維持してください。<br>Anthropic Claude Code は CVE-2026-46406（<code>/copy</code> 不安全一時ファイル、NVD では RESERVED／GitHub Advisory では 2026-06-25 公開扱い）が直近の話題ですが、本対象期間中の新規アップデートは確認されませんでした。引き続き Claude Code 用一時ファイル退避場所の権限分離を推奨。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 6月28日 CVE Brief（Sunday） — Critical 1件（前日31件から-97%）・High 55件（前日60件から-8%）・能動的悪用 6件継続、Gitea act_runner の container escape がデーヘッド <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-28（Sunday Brief）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>1件（前日31件から-97%）— CVE-2026-58053 Gitea act_runner container escape CVSS 9.9</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>55件（前日60件から-8%）</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>6件（前日と同顔ぶれ） — Ubiquiti UniFi OS 三連（CVE-2026-34908／34909／34910、CVSS 9.5）／Cisco Unified CM CVE-2026-20230（SSRF→root RCE、CVSS 9.5）／PTC Windchill・FlexPLM CVE-2026-12569／Lantronix EDS5000 CVE-2025-67038。Ubiquiti 三連と Lantronix・PTC は 6/26 KEV 期限経過、Cisco UCM は 6/28 期限到達</td></tr>
+  <tr><td><strong>注目 CVE</strong></td><td>CVE-2026-58053 Gitea act_runner（上記記載）／Apache Kerby CVE-2026-57915 pre-auth bypass／Envoy proxy 4件／Ollama heap memory unauthenticated access／Podman／RustFS／Labstack Echo／Enable CORS Plugin backdoor／RustDesk capability flags 残存／WordPress プラグイン大量 broken access control</td></tr>
+  <tr><td><strong>パッチ提供率</strong></td><td>CVE Brief は「No patches were available at disclosure time」と明記 — Compensating control／監視強化が必須</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月28日（Sunday）の CVE Brief は「日曜の開示は Gitea act_runner 1件のみが Critical、土曜31件の猛吹雪が止まった一日」と題し、Critical 1件・High 55件という構成。能動的悪用確認6件は前日 Saturday と同顔ぶれで、Ubiquiti UniFi OS 三連・Cisco UCM・PTC Windchill・Lantronix EDS5000 が継続。CVE Brief は「No patches were available at disclosure time」を本日見出しに据え、ベンダーパッチ未公開の Critical を抱える環境ではネットワーク分離と監視強化を最優先と警告</li>
+  <li><strong>注目パターン</strong> — (1) <code>privileged: false</code> の単一フラグ無効化だけで「安全」と思い込む運用の罠（Gitea act_runner）— pnpm ロックファイル汚染と同じく PR 由来の CI 実行という開発者室温圏が引き金 (2) Apache Kerby CVE-2026-57915 は unsupported PA-DATA type で Kerberos pre-auth をバイパスし認証基盤を握る。Internet Endpoint で直接晒す Kerby サーバは稀だが Java 系 SASL／Kerberos SPNEGO 依存の社内 IdP では広範影響 (3) Enable CORS WordPress Plugin が未認証バックドアとして remote attacker に制御を開ける。CORS 設定プラグイン自体が攻撃通路になる皮肉</li>
+  <li><strong>対応</strong> — (a) Ubiquiti UniFi OS／Cisco UCM／PTC Windchill／Lantronix EDS5000 は KEV 期限が既に到達／経過済のため、本日中以内にパッチ適用完了を確証 (b) Gitea self-hosted CI を運用している場合は外部 PR 由来の workflow 実行を即時停止するか <code>container.options</code> を静的バリデーションで制限（上記 Stack 関連併せて参照） (c) Apache Kerby を社内認証で利用している場合は最新 snapshot／パッチ公開までネットワーク位置を再点検 (d) Enable CORS プラグイン利用環境は即時無効化し代替手段へ移行。Critical 群のベンダーパッチ未反映分はネットワーク分離・監視強化・WAF／認証プロキシで補償</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 28, 2026（Sunday）</a> · <a href="https://cvebrief.com/archive/" target="_blank" rel="noopener noreferrer">CVE Brief Archive</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 Apache Kerby CVE-2026-57915 — unsupported PA-DATA type で Kerberos pre-auth bypass、認証基盤の握られ起点 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-57915（CVSS 7.3、CVE Brief Sunday 評価）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>oss-security 投稿: 2026-06-26／CVE Brief Sunday で再強調（2026-06-28）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Apache Kerby の pre-auth check 実装全バージョン（advisory 本文待ち）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>CWE-287 不適切な認証／CWE-345 データ真正性検証不備</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>公開PoCなし・能動的悪用の証拠なし（pre-auth bypass のため偽装成りすまし起点）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Apache Directory プロジェクトの純 Java Kerberos 実装 <a href="https://github.com/apache/directory-kerby" target="_blank" rel="noopener noreferrer">Apache Kerby</a> は、AS-REQ の <code>PA-DATA</code> にライブラリが<em>未対応または未サポート</em>の type を送り込まれた場合、pre-auth check を回避しリクエストを受け付けてしまう。攻撃者は認証ステップを抜けて就能erator principal として TGT を取得しうる</li>
+  <li><strong>被害シナリオ</strong> — Kerby を社内 IdP／SASL GSSAPI／Java Spring Security Kerberos 拡張で利用する環境で、pre-auth bypass は対象アカウントへの偽装成りすまし起点になる。Java/SpringBoot アプリで SPNEGO／Kerberos 認証を利用している場合は直接関連。直接インターネット露出は稀だが社内横展開で権限昇格の触媒</li>
+  <li><strong>対応</strong> — Apache Kerby の最新安定版／スナップショットに追従（advisory 本文確認）。pre-auth strict モード／未対応 PA-DATA の拒否設定があれば有効化。Kerberos 認証経路を audit し exploited principal 痕跡を検査</li>
+  <li>〈Java / SpringBoot・認証基盤スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cve.org/CVERecord?id=CVE-2026-57915" target="_blank" rel="noopener noreferrer">CVE-2026-57915 Record</a> · <a href="https://www.openwall.com/lists/oss-security/" target="_blank" rel="noopener noreferrer">oss-security — Apache Kerby announcement</a></p>
+
+<hr>
+
+<h3>🟠 Envoy Proxy 6/23 公開アドバイザリ群を CVE Brief Sunday が再強調 — HTTP/3 QPACK DoS・HTTP/3 request smuggling・OAuth2 filter UAF・Zstd memory explosion 等 11件 <span class="badge-high">HIGH</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — 2026-06-23公開の <a href="https://github.com/envoyproxy/envoy/security/advisories" target="_blank" rel="noopener noreferrer">Envoy Security Advisories</a> 計11件が、CVE Brief Sunday (6/28) でも再強調対象になっている。CVE 番号は未公表のまま GHSA で公開。High 相当は <strong>GHSA-p7c7-7c47-pwch</strong>（HTTP/3 QPACK blocked decoding で DoS）、<strong>GHSA-8phg-2h2q-jgxf</strong>（HTTP/3→HTTP/1 request smuggling via headers-only request with nonzero Content-Length）、<strong>GHSA-f24p-rxw2-g6pv</strong>（highly nested JSON 破棄子で stack overflow）、<strong>GHSA-m3p9-47wh-88wg</strong>（Zstd decompressor の ratio check at wrong loop depth で memory explosion）の4件。Moderate は <strong>GHSA-7q3f-gwg7-j8g4</strong>（TcpStatsdSink heap buffer overflow）、<strong>GHSA-f8x4-rw5x-f3r7</strong>（TLS DNS SAN に embedded NUL が入ると truncation で auth bypass）、<strong>GHSA-3cj2-c63f-q26f</strong>（OAuth2 filter late async token completion で UAF）、<strong>GHSA-mvh9-767w-x47j</strong>（ext_authz UAF during stream teardown with per-route overrides）、<strong>GHSA-3jxh-8p6x-7pf6</strong>（grpc_stats filter segfault on Connect protocol）、<strong>GHSA-wh36-hm39-mm3r</strong>（PROXY protocol v2 skipped TLVs で 65KB attacker-controlled spillover into upstream）</li>
+  <li><strong>被害シナリオ</strong> — Envoy は AWS App Mesh／GCP Traffic Director／Azure Defender for Cloud／Istio data plane など三大クラウドの service mesh 基盤として広範採用。HTTP/3（QUIC）front gate、OAuth2／ext_authz／Connect protocol（Connect-RPC）を有効化している Envoy edge は request smuggling・DoS・UAF の起点に直接 載る</li>
+  <li><strong>修正内容</strong> — 各 GHSA 本文で Envoy 安定版の修正 tag を指定（latest 1.x／2026年6月以降の patch tag へ即時更新を推奨）</li>
+  <li><strong>対応</strong> — Envoy を edge／sidecar で運用している場合は最新安定版へ即時更新。HTTP/3 を公開している front gate は patch 適用まで HTTP/3 を無効化し HTTP/2 にフォールバックする選択肢（F5 Labs も推奨）。OAuth2 filter／ext_authz を有効化している場合は per-route override を見直し stream teardown 時の token 完了ハンドリングを監視</li>
+  <li>〈AWS / Azure / GCP・service mesh 基盤に直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/envoyproxy/envoy/security/advisories" target="_blank" rel="noopener noreferrer">Envoy Security Advisories</a> · <a href="https://www.f5.com/labs/articles/weekly-threat-bulletin-june-10th-2026" target="_blank" rel="noopener noreferrer">F5 Labs Weekly Threat Bulletin — HTTP/2 mitigations</a></p>
+
+<hr>
+
+<h3>🟡 Sunday Brief 注目ハイライト群 — Podman／RustFS／Dragonfly／Ollama／Labstack Echo／Enable CORS Plugin backdoor／RustDesk capability flags 残存／WordPress プラグイン大量 broken access control <span class="badge-medium">MEDIUM</span></h3>
+
+<ul>
+  <li><strong>Podman 未特定の High 級脆弱性</strong> — OCI container/pod 管理ツール。未認証の system interaction 起点として CI/CD 系で alive な運用に影響。CVE 詳細は CVE Brief Sunday 待ち</li>
+  <li><strong>RustFS Distributed Object Storage High 級</strong> — Rust 製の分散オブジェクトストレージ。data security 直接影響。minio 代替で GCP／AWS 互換 API を掲げる新興 OSS のため採用環境は patch 追従を必須</li>
+  <li><strong>Dragonfly in-memory data store</strong> — Redis 互換 High 級。キャッシュ層の confidentiality／integrity 影響</li>
+  <li><strong>Ollama unauthenticated heap memory disclosure</strong> — model quantization engine に未認証の remote heap 不正アクセス。<code>/api/create</code> 経由の GGUF loader 脆弱（CVE-2026-7482、5月公表）の系譜と推測。ローカル AI モデル運用スタックに継続影響</li>
+  <li><strong>Labstack Echo（Go web framework）未認証のアクセス制御系</strong> — Go 製 Hono 並の薄型 Web フレームワーク。Go 系のプロダクション運用があれば調査対象</li>
+  <li><strong>Enable CORS WordPress Plugin 未認証 backdoor</strong> — CORS 設定プラグイン自体が backdoor になるという皮肉な High 級。即時無効化・代替 CORS 設定手法への移行を推奨</li>
+  <li><strong>RustDesk capability flags 残存</strong> — file-transfer セッション中に capability flags を正しくクリアせず、権限を保持したまま control message が実行可能になる High 級</li>
+  <li><strong>WordPress プラグイン大量 broken access control</strong> — Gutenverse Companion・Five Star Restaurant Menu・All-In-One Intranet・Syncee Premium Dropshipping・Stylish Cost Calculator・Paymob for WooCommerce・Print Invoice & Delivery Notes・Subscriptions for WooCommerce・Toolset Forms・Trinity Backup・Tribulant Newsletters・Ads by WPQuads・Object Cache 4 everyone・Frontend File Manager・Panorama Viewer・Splash Sport Club・WP All Import・Ays Popup box・CorvusPay WooCommerce PG が一斉に unauthenticated broken access／data exposure／LFI／SQL injection を出す。自己ホスト WordPress 運用環境は即時精査</li>
+  <li>〈Web / CMS・AI エージェント運用スタックに直接関連のものあり〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 28, 2026</a></p>
+
+<hr>
+
+<h3>🟡 CISA KEV 期限集中 状況継続 — Cisco UCM CVE-2026-20230 6/28本日期限到達・Ubiquiti UniFi OS 三連・Lantronix EDS5000・PTC Windchill 全件 OVERDUE <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>KEV 期限</strong></td><td>Cisco UCM CVE-2026-20230: 2026-06-28 期限（本日到達、BOD 26-04 3日期限）／Ubiquiti UniFi OS 三連 CVE-2026-34908/34909/34910: 6/26 期限経過（+3日 OVERDUE）／Lantronix EDS5000 CVE-2025-67038: 6/26 期限経過／PTC Windchill・FlexPLM CVE-2026-12569: 6/28 期限（推定）</td></tr>
+  <tr><td><strong>Ubiquiti UniFi OS 三連</strong></td><td>アクセス制御バイパス／パストラバーサル／コマンドインジェクション。ネットワーク隣接の未認証攻撃者でデバイス完全掌握（CVSS 9.5相相当）</td></tr>
+  <tr><td><strong>Lantronix EDS5000</strong></td><td>コードインジェクション（CVSS 9.8）。OT/ICS シリアル-IP 変換ゲートウェイ。能動的悪用確認済</td></tr>
+  <tr><td><strong>Cisco UCM</strong></td><td>SSRF→ファイル書き込み→root RCE。前提は WebDialer 有効化。Defused が6/21-22 から能動的悪用観測と6/25 報告、Cisco は未確認</td></tr>
+  <tr><td><strong>PTC Windchill/FlexPLM</strong></td><td>製造業 PLM 基盤を標的化する不正入力検証。能動的悪用確認済</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 土曜 Saturday Brief で集中した KEV 期限6件が本日6/28までに EITHER 期限到達または OVERDUE 状態に。Cisco UCM は本日期限到達で、Ubuntu／企業 VoIP 中核パッチ適用を本日中に完了する必要あり。Ubiquiti 三連・Lantronix・PTC は +2〜3日 OVERDUE で、世界中の境界アプライアンス／PLM に手付かずの資産が残存している可能性が高い</li>
+  <li><strong>対応</strong> — Ubiquiti は Security Advisory Bulletin 064 のパッチ適用済みデバイスを全 _PLATFORM_ で確証。Lantronix は EDS5000 ファームウェア更新。Cisco UCM は6月初旬パッチ適用版へ即時更新、WebDialer 不要なら無効化。PTC Windchill/FlexPLM はベンダーアドバイザリに従いパッチ適用。期限経過分は修了時にバンド外ネットワーク監視で不正設定変更がないか再点検</li>
+  <li>〈AWS / Azure / GCP でこれらアプライアンスを IaC 管理している場合も一定関係〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
