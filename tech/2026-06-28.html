@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-28 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-06-28 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-27 09:00 〜 2026-06-28 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.195</h2>
+<p>対象期間内に Claude Code の <strong>v2.1.195</strong>（pubDate: 2026-06-27 00:32:40 UTC = <strong>2026-06-27 09:32:40 JST</strong>、期間開始から32分後）がリリースされました。前号後半に続いて v2.1.193（auto-mode classifier 拡張・OTel 応答ロギング・バックグラウンドエージェント信頼性向上）の内容を踏まえ、今号の1本は「異文化対応」の脆さを直す破綻修正が主役です。日本語など空白区切りでない言語の音声入力 auto-submit が発火しないバグ、macOS で入力デバイス切替後に沈黙を拾くバグ、ハイフン入り MCP / プラグイン ID が部分 match して hook が誤発火するバグなど、日本語使用者にとって直効のある修正が並びます。加えて <code>CLAUDE_CODE_DISABLE_MOUSE_CLICKS</code> でフルスクリーンモード時のマウス操作を無効化、<code>claude agents</code> のレイアウト改善、Remote プロビジョニングチェックリスト導入が入りました。</p>
+
+<h3>✨ 新機能・改善</h3>
+<ul>
+  <li><strong><code>CLAUDE_CODE_DISABLE_MOUSE_CLICKS</code> 設定を追加</strong>: フルスクリーンモードでマウスのクリック / ドラッグ / ホバーを無効化し、ホイールスクロールのみ残すことが可能に。マウス操作が邪魔なターミナル環境・誤操作回避に有効</li>
+  <li><strong>Linux の voice mode で SoX 検出を改善</strong>: SoX 自体は置いているが audio capture デバイスがないケースを「マイク無し」と「SoX 未導入」で正しく区別するようメッセージを切り分け</li>
+  <li><strong><code>claude agents</code> 完了リストの表示を改善</strong>: 利用可能な縦幅を自動で埋めるようになり、短いターミナルではヘッダーが縮退して live session が常に見える状態を維持</li>
+  <li><strong>Remote session 起動時に provisioning checklist を表示</strong>: コンテナ起動待ちの間にプロビジョニング手順を順表示し、進捗を追えるように</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>ハイフン入り ID の hook matcher が部分 match していた問題を exact match 化</strong>（<code>code-reviewer</code>, <code>mcp__brave-search</code> などが意図せず他の matcher も引いていた）。特定 MCP サーバ全部出したい場合は <code>mcp__brave-search__.*</code> と明示する運用に変更</li>
+  <li><strong>macOS で長時間実行中にデフォルト入力デバイスが変わると音声入力が沈黙を拾き続ける問題を修正</strong></li>
+  <li><strong>日本語・中国語・タイ語など空白区切りでない言語で音声入力の auto-submit が発火しない問題を修正</strong> — 日本語話者に直接効く fix</li>
+  <li><strong>プロジェクト <code>.claude/settings.json</code> でのみ有効化した外部プラグインがローダーごとに install consent を要求していた問題を修正</strong></li>
+  <li><strong><code>/plugin</code> の Enable/Disable が <code>plugin.json</code> の <code>name</code> と marketplace entry name 異なるプラグインで効かない問題を修正</strong></li>
+  <li><strong>新 Claude Code バージョンが書いた background jobs が <code>claude agents</code> から消えたりデータ欠損する問題を修正</strong></li>
+  <li><strong>クラッシュした background task を再開すると再起動でなく白画面が最大5秒出る問題を修正</strong></li>
+  <li><strong>制御ソケットの起動に失敗した background agent daemon が到達不能のまま停止し restart を block していた問題を修正</strong></li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に Hermes Agent の新規リリースはありませんでした。GitHub Releases API で時刻を確認したところ、最新版は引き続き <strong>v0.17.0「The Reach Release」</strong>（v2026.6.19、公開 2026-06-19 19:39 UTC = <strong>6/20 04:39 JST</strong>）です。iMessage（Photon Spectrum）、Raft エージェントネットワーク統合、バックグラウンドサブエージェント、image-to-image 画像編集、Automation Blueprints、デスクトップアプリ大幅強化、memory ツールの原子バッチ操作などを含む大規模リリースで、本号の24時間枠に該当する新規リリースは確認されませんでした。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に OpenClaw の新規リリースは確認されませんでした。GitHub Releases API で時刻を確認したところ、最新版は引き続き <strong>v2026.6.11-beta.1</strong>（prerelease、GitHub 公開 2026-06-24 23:37:32 UTC = <strong>6/25 08:37:32 JST</strong>）、安定版は <strong>v2026.6.10</strong>（6/24 12:06 JST）のままで、いずれも本号対象期間開始（6/27 09:00 JST）より前の公開でした。前号の朝刊で v2026.6.11-beta.1 の詳細（Slack relay mode, native Mattermost <code>/oc_queue</code>, RAFT CLI wake bridge, Codex partial delta 安定化, DOMPurify パッチなど）を報告済みです。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — canary v16.3.0-canary.69</h2>
+<p>対象期間内に Next.js は1本のリリースを発行しました。<strong>v16.3.0-canary.69</strong>（npm publish 2026-06-27 00:08:10 UTC = <strong>09:08:10 JST</strong>、期間開始から8分後）で、前号で詳報した <strong>v16.3.0-preview.5</strong>（Service Worker サポート・PPR shell 周り等の大型追加を含む）以降のデイリービルドです。canary.68（前号期間内）から差分14コミットを含み、Turbopack のタスクストレージ可否方式の見直し・Pages API での middleware rewrite query 保持・shadowed する app routes の hard-navigate 修正・dev overlay の Copy-as-prompt 再構成などが中心です。最新の意味のある安定版は引き続き <strong>v16.2.9</strong>（6/10 公開）のままです。</p>
+
+<h3>✨ v16.3.0-canary.69 の主な差分（canary.68 以降14コミット）</h3>
+<ul>
+  <li><strong>[turbopack] <code>TaskStorage</code> で多くのフィールド型に対し undoable modifications をサポート</strong>（#95180）</li>
+  <li><strong>[turbopack] transient data の変更を追跡しないよう変更</strong>（#95133）— 不必要な再計算を回避</li>
+  <li><strong>compaction / persistence spans に size メトリクスを記録</strong>（#94977）</li>
+  <li><strong>Pages API routes で middleware rewrite の query を保持するよう修正</strong>（#94905）</li>
+  <li><strong>pages dynamic route に shadowed される app routes で hard-navigate を実施</strong>（#95185）</li>
+  <li><strong>dev overlay の Copy-as-prompt body を step-by-step checklist 構成に再構成</strong>（#95186）</li>
+  <li><strong>Rust toolchain バンプ</strong>（#95205）, <strong>next-dev-loop で <code>agent-browser &gt;= 0.31.1</code> を要求</strong>（#95209）, <strong>docs(insights) の error pages 構成見直し</strong>（#95193）、<strong>blocking-prerender-dynamic fixes を Stream→Cache→Block の順に並び替え</strong>（#95198）など</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>☁️ GCP — リリースノート更新（6/27）</h2>
+<p>2026年6月27日付の Google Cloud リリースノートで、Google SecOps SOAR Release 6.3.90 の全リージョン提供開始が発表されました。前日6/26付で既に報じた Compute Engine カレンダーモード予約キャンセル（GA）・MIG で autoheal を切るヘルスチェック運用（GA）・Gemini Enterprise Confluence Data Center 連携データストア（GA）・Provisioned Throughput 注文管理機能 GA・SecOps ドキュメントポータルのリニューアル・Firebase Web SDK v2 サポート終了に加えて、本号24時間枠で新たに表出したのは今号分1本のみです。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>Google SecOps SOAR Release 6.3.90 が全リージョンで利用可能に</strong>: 6/27付リリースノートで全リージョン展開完了が発表された。SOAR（Security Orchestration, Automation and Response）の最新 maintenance release</li>
+</ul>
+
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 新規発表なし（週末）</h2>
+<p>対象期間（6/27 09:00 〜 6/28 09:00 JST）は土曜〜日曜にまたがる週末にあたり、AWS News Blog RSS の <code>lastBuildDate</code> は Fri, 26 Jun 2026 03:14:14 +0000 のままで新規記事なし、Microsoft Azure 系と同様に What's New フィードでも今号24時間枠に該当する個別発表は確認されませんでした。直近は Weekly Roundup Jun 22、Lambda MicroVMs（6/22 公開）の 2 件が News Blog の最新記事で、いずれも前号対象期間前〜前々号で触れている内容です。</p>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/feed/" target="_blank" rel="noopener noreferrer">AWS News Blog RSS</a> · <a href="https://aws.amazon.com/about-aws/whats-new/recent/" target="_blank" rel="noopener noreferrer">AWS What's New</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 今号の公式アップデート可視化対象なし</h2>
+<p>対象期間内の Azure 公式アップデートで、本号で可視化・引用可能な個別発表は確認されませんでした。Azure Charts の6月統合フィードで確認した直近項目は 2026-06-26 16:53 UTC（6/27 01:53 JST、Azure SDK Blog の <strong>Azure Developer CLI（azd）- May and June 2026</strong>）で号期間開始前。それ以降も週末にあたり新規発表は出ていません。Microsoft Azure Blog の直近記事は引き続き「From insight to action: The next phase of agentic cloud operations」（6/23 公開）のままです。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a> · <a href="https://azure.microsoft.com/en-us/blog/" target="_blank" rel="noopener noreferrer">Azure Blog</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（安定版は 19.2.7 のまま。対象期間に npm への publish なし、直近の <code>0.0.0-experimental-68631c04-20260626</code> と <code>19.3.0-canary-68631c04-20260626</code> は 6/26 16:51 UTC = 6/27 01:51 JST 公開で本号枠開始前、土日自動ビルドもなく追加分なし）、<strong>Spring Boot</strong>（最新は <strong>v3.5.16</strong>、問い合わせ依存アップグレードのみ、公開 6/25 11:00 UTC = 6/25 20:00 JST で前号で既報、今号24時間内に追加リリースなし）、<strong>Hono</strong>（<strong>v4.12.27</strong>、6/23 公開、前号で既報、追加分なし）、<strong>Anthropic SDK Python</strong>（最新 <strong>v0.112.0</strong> 6/24 18:45 UTC 公開、前号で既報、追加分なし）、<strong>Python/Cython</strong>（3.14.6 / 3.13.14 は 6/10 付で以後なし、次回 CPU は 7/21 予定）、<strong>Django</strong>（最新安定版は 6.0.6 の 6/3 付のまま、PyPI の <code>6.1b1</code> は 6/24 17:34 UTC = 6/25 02:34 JST 公開で前号枠末に相当し今号新規性なし）、<strong>Java/JDK</strong>（次回 CPU は 7/21 予定）、<strong>NestJS</strong>（最新 <strong>v11.1.27</strong> 6/15 公開のまま）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
