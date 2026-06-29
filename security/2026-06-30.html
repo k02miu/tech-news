@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-30 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-06-30 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-29 08:00 〜 2026-06-30 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw <code>2026.6.11-beta.2</code> リリース — DOMPurify パッチ適用・TLS 空値拒否・メモリアーティファクトサニタイズ・SSH ターゲット検証強化等のセキュリティハードニング <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>openclaw <code>2026.6.11-beta.2</code>（Pre-release）— GitHub リリース公開: 2026-06-28 23:19 UTC = 2026-06-29 08:19 JST（本対象期間内）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>OpenClaw の当該 beta.1／beta.2 以前版。Configuration and UI guardrails・Cron and delivery validation 改善の恩恵を受ける全環境</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>openclaw <code>2026.6.11-beta.2</code>（最新 pre-release）。安定版は <code>2026.6.10</code> に次回取り込み予定</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>ハードニング群（CVE 個別割り当てなし）— DOMPurify 既知脆弱性対策・TLS パス空値拒否・メモリアーティファクトサニタイズ・SSH ターゲット構文検証・MCP サーバ stdio トランスポート型解決・ trusted package redirect での認証トークン漏洩防止</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用の証拠なし・予防的ハードニング</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw</a> が 2026-06-29 JST に pre-release <code>2026.6.11-beta.2</code> を公開。本対象期間内の新規リリースであり、<code>2026.6.10</code> から 634 commits を超える変更が含まれる。セキュリティ関連は <em>Configuration and UI guardrails</em> と <em>Cron and delivery validation</em> 中心</li>
+  <li><strong>ハードニング詳細</strong> — (1) UI が <a href="https://github.com/cure53/DOMPurify" target="_blank" rel="noopener noreferrer">DOMPurify</a> のパッチ済みリリースを使用 (#95691) (2) TLS 証明書パスの空値を拒否 (#94054) (3) メモリアーティファクトのサニタイズ (#95791) (4) SSH ターゲット <code>parseSshTarget</code> が前後余分コロンを拒否 (#93887) (5) 非対話型 <code>configure</code> が fail-closed で安全側に倒す (#94238) (6) <code>McpServerSchema</code> に <code>stdio</code> トランスポートを型解決 (#95102) (7) 認証パッケージソースのトークンが別 origin への許可リダイレクトに送信されないよう保持 (#b0df6dc) (8) Cron の no-config delivery check・thread-aware dedupe・pending recurring run の宛先保持 (#95754, #95794, #94323)</li>
+  <li><strong>被害シナリオ</strong> — DOMPurify 未パッチ版は OpenClaw UI での XSS 起点。TLS 空値／SSH ターゲット構文不備は設定ミス由来の接続先汚染・中間者経路化を許しうる。MCP サーバの stdio 型未解決は起動失敗とフォールバック挙動の不整合に繋がる。direct exploit というより設定・運用安全性の底上げ</li>
+  <li><strong>対応</strong> — OpenClaw を <code>2026.6.11-beta.2</code> に更新可能な環境は pre-release を試験導入し、安定運用環境は次の安定版取り込みを待ちつつ DOMPurify パッチ・TLS 空値拒否・メモリサニタイズ・SSH 検証の各 fix を changelog で確認次第アップデート。<code>openclaw configure</code> を非対話で実行する CI は fail-closed 挙動に留意し、明示的な設定値を渡す</li>
+  <li>〈Hermes Agent 類縁のエージェント基盤・CI/CD・UI セキュリティに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.11-beta.2" target="_blank" rel="noopener noreferrer">v2026.6.11-beta.2 Release Notes</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono、Python、AWS / Azure / GCP について、本対象期間（2026-06-29 08:00〜2026-06-30 08:00 JST）で直接関連する新規CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>既報の継続参照事項: Spring Security 6.5.11／7.x（6/9-10）、Django 6.0.6／5.2.15（6/3）、Next.js CVE-2026-44576 系 RSC cache poisoning（5月中旬）、Envoy Proxy 6/23 公開アドバイザリ群（GHSA-p7c7-7c47-pwch HTTP/3 QPACK DoS、GHSA-8phg-2h2q-jgxf HTTP/3 request smuggling 等計11件）。Squid SQUID-2026:4（FTP gateway Out-of-Bounds Read、GHSA-8c37-pxjq-qwrg、6/23 公開・Squid 7.6 で修正済）および SQUID-2026:5（cache_digest Heap Buffer Overflow、GHSA-5vmx-9x64-9284、6/23 公開・7.6 で修正済、<code>--enable-cache-digests</code> ビルドのみ該当）は Netizen Monday Brief (6/29) で再強調されましたが、アドバイザリ公開日自体は対象期間外です。<br>Hermes Agent は v0.17.0（2026-06-19）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正は発表されませんでした（前号から更新なし）。v0.17.0 には secure dashboard login ハードニング・Starlette pin 由来 CVE-2026-48710 修正系のセキュリティ改善が含まれています。<br>Anthropic Claude Code は CVE-2026-46406（<code>/copy</code> 不安全一時ファイル、NVD では RESERVED／GitHub Advisory では 2026-06-25 公開扱い）が直近の話題ですが、本対象期間中の新規アップデートは確認されませんでした。引き続き Claude Code 用一時ファイル退避場所の権限分離を推奨。<br>libssh2 脆弱性が CVE Brief Monday (6/29) で言及されましたが、NVD 上で個別CVEの公開は未確認です。SSH 通信を依存するシステムで影響を注視。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 6月29日 Decryption Digest Weekly Threat Brief — 5大脅威の収束: FortiBleed 73,932 Fortinet FW 漏露継続・24B 認証情報漏洩・Sapphire Sleet npm サプライチェーン・Ubiquiti UniFi 三連(KEV期限経過)・ShinyHunters PeopleSoft キャンペーン継続 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>Decryption Digest Weekly Threat Brief: 2026-06-29 Monday Intel Drop</td></tr>
+  <tr><td><strong>脅威1</strong></td><td><strong>FortiBleed</strong> — ロシア語圏犯罪グループが internet-facing FortiGate から設定ファイルを抽出し 45-GPU クラスタで SHA-228 管理者ハッシュをクラック。<strong>73,932</strong> 台の FortiGate/VPN/SSL-VPN に動作する管理者資格情報を確認（194カ国・1.16B 認証試行・320k+)。被害確認組織: Samsung/Siemens/Foxconn/Oracle/Accenture/DHL/Infosys/Fortinet 自身。CISA 6/18 advisory、Fortinet PSIRT 確認済</td></tr>
+  <tr><td><strong>脅威2</strong></td><td><strong>24B 認証情報漏洩</strong> — 認証なし Elasticsearch サーバ上に 240億件の username/password 組が公開。過去数百件の漏洩統合。VPN/クラウドコンソール/SSO 対する credential stuffing 起点。FortiBleed との複合リスク（FW管理者資格 + 従業員アカウント）に注意</td></tr>
+  <tr><td><strong>脅威3</strong></td><td><strong>Sapphire Slet (北朝鮮 APT / BlueNoroff / UNC4899)</strong> — 偽 LinkedIn 採用メッセージで開発者を誘導し npm パッケージに <code>Mastra</code> backdoor を埋め込み。Mini Shai-Hulud / Miasma / Hades マルウェア族、Go ecosystem への transitive 伝播。暗号資金 wallet・ソースコード・認証トークン窃取</td></tr>
+  <tr><td><strong>脅威4</strong></td><td><strong>Ubiquiti UniFi OS 三連 CVE-2026-34908/34909/34910 (CVSS 10.0 各)</strong> — CISA KEV 6/23 追加・6/26 連邦期限<strong>経過済</strong>。パッチは 5/22 公開済み (UniFi OS Server 5.0.8+ / firmware 5.1.12+)。Mirai/Gafgyt botnet が 443/8444 でスキャン中</td></tr>
+  <tr><td><strong>脅威5</strong></td><td><strong>ShinyHunters Oracle PeopleSoft CVE-2026-35273 (CVSS 9.8)</strong> — PeopleTools 8.61/8.62 の未認証 RCE。5/27 から能動的悪用・100+ 組織侵害・68% が高等教育。6/10 Oracle 緊急パッチ。6/28 新たな被害者リスト公開。MeshCentral を Microsoft Azure 伪装で持続侵害</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月22-29日の週の5大同時進行脅威を Decryption Digest が ranking。FortiBleed は 73,932 台の動作する管理者資格が犯罪者の手元にあり 1.16 billion の認証試行が進行中。24B 認証情報漏洩は credential stuffing の効率化。Sapphire Slet は LinkedIn 偽採用経由の npm サプライチェーンで開発者端末掌握。Ubiquiti 三連は KEV 期限既経過でパッチ未適用の資産は即危険領域。ShinyHunters は 6/28 に新たな被害者リストを公開し PeopleSoft 緊急パッチ未適用組織への攻撃継続を明示</li>
+  <li><strong>注目パターン</strong> — (1) <strong>ネットワーク境界インフラ標的化の加速</strong> — FortiBleed は SHA-228 の弱いハッシュ残留を GPU で mass-crack。デバイス upgrade 後の初回ログインを怠ると弱ハッシュが残る手落ちを悪用 (2) <strong>credential aggregation と境界侵害の複合</strong> — 24B leakage + FortiBleed FW 資格 = 外部境界突破後の内部アカウント横展開が容易になる組合せ (3) <strong>開発者端末を足掛かりにしたサプライチェーン</strong> — Sapphire Slet は LinkedIn 偽採用面接 → npm インストール → Go transitive dependency 経由で CI・ソースコード・クラウドクレデンシャル掌握 (4) <strong>教育機関集中</strong> — ShinyHunters の被害者 68% が higher ed。PeopleSoft の PSEMHub endpoint が未認証で露出する構成に依存</li>
+  <li><strong>対応</strong> — (a) <strong>FortiBleed</strong>: internet-facing FortiGate 全台でセッション終了・管理者/PVN クレデンシャル全リセット・FortiOS 7.2.11/7.4.8/7.6.1+ へ更新・MFA 有効化・<code>diagnose sys admin list</code> で未知アカウント検査 (b) <strong>24B 漏洩</strong>: HIBP で自組ドメイン検索・マッチ全アカウント強制パスワードリセット・SSO プロバイダ監査・ダークウェブ監視有効化 (c) <strong>Sapphire Slet</strong>: 開発端末で <code>npm audit</code> 実行・Task Scheduler に <code>SvcUpdateHelper</code>／<code>WindowsDefenderCache</code> の未知エントリがないか検査・LinkedIn/GitHub での偽採用者に注意喚起・EDR で Mastra C2 callback パターン探索 (d) <strong>Ubiquiti UniFi</strong>: UniFi OS Server 5.0.8+／firmware 5.1.12+ へ即時更新・管理ポート 443/8444/9080 を既知管理 IP に限定・outbound 通信で botnet C2 指標検査 (e) <strong>ShinyHunters / PeopleSoft</strong>: 6/10 Oracle 緊急パッチを重ねて確認・<code>/PSEMHUB/</code>・<code>/PSIGW/HttpListeningConnector</code> をインターネットから遮断・5/27 以降のアクセスログで POST 要求を監査・MeshCentral <code>meshagent64-azure-ops.exe</code>／<code>meshagent64-v2.exe</code> 検索・<code>README-IF-YOU-SEE-THIS-YOUVE-BEEN-HACKED.TXT</code> のファイルシステム検索・<code>azurenetfiles.net</code> と <code>142.11.200.186/29</code> を境界でブロック</li>
+  <li>〈AWS / Azure / GCP で FortiGate／UniFi／PeopleSoft を IaC 管理する環境・Node.js/npm・CI/CD 運用スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.decryptiondigest.com/blog/weekly-cyber-threat-brief-june-29-2026" target="_blank" rel="noopener noreferrer">Decryption Digest — Weekly Threat Brief June 29, 2026</a> · <a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener noreferrer">CISA Advisory — FortiBleed (June 18)</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-35273" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-35273 (PeopleSoft)</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-20253" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-20253 (Splunk)</a></p>
+
+<hr>
+
+<h3>🟠 CISA KEV 期限状況 — Ubiquiti UniFi 三連(+4日 OVERDUE)・Cisco UCM(6/28期限到達)・Lantronix EDS5000・PTC Windchill 全件 OVERDUE 継続・Splunk Enterprise 新規追加(6/18) <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>KEV 期限</strong></td><td>Ubiquiti UniFi OS 三連 CVE-2026-34908/34909/34910: 6/26 期限経過（+4日 OVERDUE）／Lantronix EDS5000 CVE-2025-67038: 6/26 期限経過（+4日 OVERDUE）／Cisco UCM CVE-2026-20230: 6/28 期限到達（+2日 OVERDUE）／PTC Windchill/FlexPLM CVE-2026-12569: 6/28 期限（推定・+2日 OVERDUE）／Splunk Enterprise CVE-2026-20253: 6/18 KEV 追加、能動的悪用確認</td></tr>
+  <tr><td><strong>Ubiquiti 三連</strong></td><td>CVE-2026-34908 アクセス制御バイパス／CVE-2026-34909 パストラバーサル／CVE-2026-34910 コマンドインジェクション（各 CVSS 10.0）。ネットワーク隣接の未認証攻撃者でデバイス完全掌握。パッチは 5/22 公開済みだが未適用資産残存</td></tr>
+  <tr><td><strong>Cisco UCM</strong></td><td>CVE-2026-20230 SSRF→ファイル書き込み→root RCE（CVSS 9.5）。前提は WebDialer 有効化。Defused が能動的悪用観測 (6/21-22) と 6/25 報告、Cisco は未確認</td></tr>
+  <tr><td><strong>Lantronix EDS5000</strong></td><td>CVE-2025-67038 コードインジェクション（CVSS 9.8）。OT/ICS シリアル-IP 変換ゲートウェイ。能動的悪用確認済</td></tr>
+  <tr><td><strong>Splunk Enterprise</strong></td><td>CVE-2026-20253 未認証ファイル作成/切詰め（CVSS 9.8相当）— PostgreSQL sidecar service endpoint に認証欠損。Enterprise 10.2 (&lt; 10.2.4) と 10.x (&lt; 10.0.7) が該当、9.4 以前は影響なし。6/18 KEV 追加・能動的悪用確認。軽減策: PostgreSQL sidecar service の無効化</td></tr>
+  <tr><td><strong>PTC Windchill/FlexPLM</strong></td><td>CVE-2026-12569 不正入力検証（CVSS 9.5）。製造業 PLM 基盤を標的化。能動的悪用確認済</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 前週 Saturday Brief で集中した KEV 期限群が本日 6/30 時点で全件 OVERDUE 状態に。Ubiquiti 三連と Lantronix は +4日経過、Cisco UCM と PTC は +2日経過。Splunk Enterprise は 6/18 に KEV 追加され能動的悪用確認済。CVE Brief Monday (6/29) は「No patches were available across the disclosed set at publication time」と継続警告し、能動的悪用 6件（前日と同顔ぶれ）は Ubiquiti 三連・Cisco UCM・PTC Windchill・Lantronix EDS5000</li>
+  <li><strong>対応</strong> — Ubiquiti は UniFi OS Server 5.0.8+／firmware 5.1.12+ の適用を全デバイスで確証・管理ポートの internet 公開を停止。Lantronix は EDS5000 ファーム更新。Cisco UCM は 6月初旬パッチ適用版へ即時更新、WebDialer が不要なら無効化。PTC Windchill/FlexPLM はベンダーアドバイザリに従いパッチ適用。Splunk Enterprise は 10.2.4+／10.0.7+ へ更新、即時不能なら PostgreSQL sidecar service を無効化。期限経過分はバンド外ネットワーク監視で不正設定変更がないか再点検</li>
+  <li>〈AWS / Azure / GCP でこれらアプライアンス・エンタープライズアプリを IaC 管理する場合も一定関係〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-20253" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-20253 (Splunk)</a></p>
+
+<hr>
+
+<h3>🟡 CVE Brief Monday (6/29) — Critical 0件・High 24件(前日55件から-56%)・能動的悪用6件継続、月曜はじまりは PTC Windchill/Ubiquiti/Cisco UCM など既報継続主体 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-29（Monday Brief）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>0件（前日1件から-100%）— 前日の Gitea act_runner CVE-2026-58053 container escape は一過性、月曜は新規 Critical なし</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>24件（前日55件から-56%）</td></tr>
+  <tr><td><strong>能動的悪用確認</strong></td><td>6件 — Ubiquiti UniFi OS 三連（CVE-2026-34908/34909/34910、CVSS 9.5-10.0）／Cisco UCM CVE-2026-20230（SSRF→root RCE、CVSS 9.5）／PTC Windchill/FlexPLM CVE-2026-12569／Lantronix EDS5000 CVE-2025-67038</td></tr>
+  <tr><td><strong>注目 CVE</strong></td><td>libssh2 脆弱性（CVE Brief が言及、個別CVEは未公表）／ANTLR4 parser generator 関連／Squid CVE-2026-47729 FTP gateway Out-of-Bounds Read（Netizen Monday Brief で再強調・元アドバイザリは6/23 公開）／yashpokharna25255 Restaurant Management System／D-Link DCS-935L／Wavlink WL-NU516U1-A／Tenda JD-12LRouter 多 数／Hitachi Virtual Storage Platform／O+ Connect IPC service 認証欠損／Feehi CMS／Hanwang e-Face General Management Platform</td></tr>
+  <tr><td><strong>パッチ提供率</strong></td><td>「No patches were available across the disclosed set at publication time」— 能動的悪用6件のパッチ未公開群は補償的統制・監視強化が必須。Ubiquiti 三連はパッチ公開済み (5/22) だが未適用資産残存</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 6月29日（Monday）の CVE Brief は「月曜の開示は脅威レベルが下がり、ネットワーク境界・エンタープライズ通信プラットフォーム中心」と題し、Critical 0件・High 24件。能動的悪用6件は前日 Saturday と同顔ぶれで継続。CVE Brief は「No patches were available」と繰り返し強調</li>
+  <li><strong>注目パターン</strong> — (1) <strong>libssh2 脆弱性</strong> — CVE Brief が言及するも NVD 上で個別CVE未公表。SSH 通信を依存する全システムで影響を注視 (2) <strong>ANTLR4 parser generator 関連</strong> — Java/Python/C# 等で使われるパーサ生成器。Hibernate HQL 等 Spring Boot 系内部依存もあり、Java エコシステムで潜在的影響 (3) <strong>Squid CVE-2026-47729</strong> — FTP gateway で Out-of-Bounds Read、他トランザクションのプロトジメモリを heap から読み出し Authorization ヘッダ/Bearer token/API key 等のリーク起点。本対象期間内で Netizen Monday Brief が再強調（元 GHSA 6/23 公開・Squid 7.6 で修正済） (4) <strong>Hitachi Virtual Storage Platform</strong> — 管理ユーティリティの improper authorization。ストレージ基盤管理面の権限分離確認が必要 (5) <strong>O+ Connect IPC service 認証欠損</strong> — 外部アプリが権限昇格・機密操作を実行可能</li>
+  <li><strong>対応</strong> — 能動的悪用6件のパッチ未公開分はネットワーク分離・監視強化・WAF／認証プロキシで補償。Ubiquiti 三連は 5/22 公開済パッチ（UniFi OS Server 5.0.8+／firmware 5.1.12+）を即時適用。libssh2・ANTLR4・Squid は次回パッチ／CVE 公表を監視。Squid は FTP gateway 未使用なら ACL で <code>proto FTP</code> を拒否、使用時は trusted server のみ allowlist で限定（Squid 7.6+ へ更新理想）</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 29, 2026（Monday）</a> · <a href="https://cvebrief.com/archive/" target="_blank" rel="noopener noreferrer">CVE Brief Archive</a> · <a href="https://blog.netizen.net/2026/06/29/netizen-monday-security-brief-6-29-2026/" target="_blank" rel="noopener noreferrer">Netizen Monday Security Brief</a> · <a href="https://github.com/squid-cache/squid/security/advisories/GHSA-8c37-pxjq-qwrg" target="_blank" rel="noopener noreferrer">Squid SQUID-2026:4 GHSA</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
