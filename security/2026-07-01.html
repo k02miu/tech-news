@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-01 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-01 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-06-30 08:00 〜 2026-07-01 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 -->
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw <code>2026.6.11</code> 安定版リリース — DOMPurify パッチ適用・TLS 空値拒否・メモリアーティファクトサニタイズ・SSH ターゲット検証強化・Cron/delivery 検証のセキュリティハードニング <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>OpenClaw <code>2026.6.11</code>（安定版）— GitHub 公開: 2026-06-30 16:06 UTC = 2026-07-01 01:06 JST（本対象期間内）。前安定版 <code>2026.6.10</code> から 308 merged PRs</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>OpenClaw <code>2026.6.10</code> 以前版。Configuration and UI guardrails・Cron and delivery validation 改善の恩恵を受ける全環境</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>OpenClaw <code>2026.6.11</code> 安定版（Beta.2 で検証済みのハードニングを取り込み安定チャンネルへ到達）</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>ハードニング群（CVE 個別割り当てなし）— DOMPurify 既知脆弱性対策・TLS パス空値拒否・メモリアーティファクトサニタイズ・SSH ターゲット構文検証・MCP <code>stdio</code> トランスポート型解決・非対話 configure fail-closed・Cron delivery 検証</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用の証拠なし・予防的ハードニング</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw</a> が 2026-07-01 01:06 JST に安定版 <code>2026.6.11</code> を公開。前日号で報じた Beta.2 のハードニング群が安定チャンネルへ到達。セキュリティ関連は <em>Configuration and UI guardrails</em>・<em>Cron and delivery validation</em>・<em>Gateway and session safety</em> 中心</li>
+  <li><strong>ハードニング詳細</strong> — (1) UI が <a href="https://github.com/cure53/DOMPurify" target="_blank" rel="noopener noreferrer">DOMPurify</a> のパッチ済みリリースを使用 (#95691) (2) TLS 証明書パスの空値を拒否 (#94054) (3) メモリアーティファクトのサニタイズ (#95791) (4) SSH ターゲット <code>parseSshTarget</code> が前後余分コロンを拒否 (#93887) (5) 非対話型 <code>configure</code> が fail-closed で安全側に倒す (#94238) (6) <code>McpServerSchema</code> に <code>stdio</code> トランスポートを型解決 (#95102) (7) Cron no-config delivery check・thread-aware dedupe・pending recurring run 宛先保持 (#95754, #95794, #94323) (8) CI で ClawSweeper comment dispatch を token minting 前に filter (#95308)</li>
+  <li><strong>被害シナリオ</strong> — DOMPurify 未パッチ版は OpenClaw UI での XSS 起点。TLS 空値・SSH ターゲット構文不備は設定ミス由来の接続先汚染・中間者経路化を許しうる。MCP <code>stdio</code> 型未解決は起動失敗とフォールバック挙動の不整合に繋がる。direct exploit というより設定・運用安全性の底上げ</li>
+  <li><strong>対応</strong> — OpenClaw を <code>2026.6.11</code> 安定版へ更新可能な環境は即時適用。Beta.2 を試験導入していた環境は安定版へ切り替え。<code>openclaw configure</code> を非対話で実行する CI は fail-closed 挙動に留意し、明示的な設定値を渡す</li>
+  <li>〈Hermes Agent 類縁のエージェント基盤・CI/CD・UI セキュリティに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.6.11" target="_blank" rel="noopener noreferrer">v2026.6.11 Release Notes</a></p>
+
+<hr>
+
+<h3>2. AWS Application Load Balancer / Amazon CloudFront + AWS WAF — HTTP/2 リクエストボディ断片化による WAF body inspection バイパス <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-13763（AWS ALB + WAF、CVSS 3.1 9.8 相当）／CVE-2026-13762（Amazon CloudFront + WAF、CVSS 3.1 9.8 相当）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 受領: 2026-06-29 16:17 UTC（= 2026-07-01 01:17 JST 境界付近）。CISA ADP SSVC エンリッチ: 2026-06-29 20:50 UTC。CVE Brief Tuesday (6/30) で広く表面化</td></tr>
+  <tr><td><strong>影響</strong></td><td>CVE-2026-13763: AWS WAF 有効な ALB で HTTP/2 target group 使用時、リクエストボディを複数フレームに断片化することで WAF managed rule body inspection を部分的にバイパス可能。CVE-2026-13762: CloudFront + WAF で同種の HTTP/2 frame fragmentation による body inspection バイパス</td></tr>
+  <tr><td><strong>修正</strong></td><td><strong>CVE-2026-13763</strong>: 顧客側 action 必要 — ALB target group で <code>"Inspect after sufficient data"</code> 設定を有効化（<a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html#waf-http2-inspection" target="_blank" rel="noopener noreferrer">AWS ドキュメント</a> 参照）。<strong>CVE-2026-13762</strong>: <strong>サーバー側で修復済み・顧客の action 不要</strong></td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CVE-2026-13763: CISA SSVC exploitation=none。CVE-2026-13762: CISA SSVC exploitation=poc</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — AWS が 2 件の HTTP/2 request body inspection バイパス脆弱性を NVD に登録。いずれも AWS WAF が有効な ALB / CloudFront で、HTTP/2 の request body を意図的に複数フレームに断片化することで WAF の body inspection ルールを回避する攻撃手法。CWE-444 (Inconsistent Interpretation of HTTP Requests / Request Smuggling 系)</li>
+  <li><strong>被害シナリオ</strong> — WAF managed rules が malicious payload を含む request body を完全検査せず、バックエンドへ到達させてしまう。WAF bypass → SQL injection / XSS / command injection ペイロードが WAF を通過する余地</li>
+  <li><strong>対応</strong> — <strong>&#9888; CVE-2026-13763 は顧客 action 必須</strong>: ALB HTTP/2 target group を使用する全環境で <code>"Inspect after sufficient data"</code> target group attribute を有効化。Terraform / CloudFormation IaC で一斉適用を推奨。CVE-2026-13762 (CloudFront) は AWS 側で修復済みのため action 不要。両 CVE とも NVD enrichment 待ち状態で CVSS の NVD 公式評価は未出 — ベクトルから 9.8 相当と推定</li>
+  <li>〈AWS スタックの WAF / ALB / CloudFront を利用する全環境に直接関連。IaC (Terraform / CloudFormation) 管理環境で即時対応可能〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-13763" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-13763 (ALB WAF)</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-13762" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-13762 (CloudFront WAF)</a> · <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html#waf-http2-inspection" target="_blank" rel="noopener noreferrer">AWS ドキュメント — Target Group WAF HTTP/2 Inspection</a></p>
+
+<hr>
+
+<h3>3. Google MCP Toolbox for Databases — URL builder パストラバーサル（設定クレデンシャル漏洩） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-11720（CVSS 4.0 評価: VC:H/VI:H/VA:N — CVSS 3.x 提供なし、概ね 9.3 相当）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 受領: 2026-06-29。CISA ADP エンリッチ: 2026-06-29 15:16 UTC。CVE Brief Tuesday (6/30) で表面化</td></tr>
+  <tr><td><strong>影響</strong></td><td><code>googleapis/mcp-toolbox</code> の HTTP tool URL builder が user-controlled <code>pathParams</code> を tool path に展開後、<code>ResolveReference</code> で解決。dot segments (<code>../</code>) が正規化されるため、攻撃者は directory traversal で operator 設定の path scope を逸脱して同一 host 上の意図しない endpoint にリクエストを送出可能。toolbox に設定された credentials（API key / Bearer token 等）を forward したまま</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>NVD・GitHub Advisory ともに未公開（パッチ待ち）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA SSVC: exploitation=none, automatable=yes</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Google が提供する <a href="https://github.com/googleapis/mcp-toolbox" target="_blank" rel="noopener noreferrer">MCP Toolbox for Databases</a> に path traversal 脆弱性。tool path template に渡す <code>pathParams</code> で <code>../</code> を使い、制限された API path（例: <code>/api/v1/users/{{.id}}</code>）から権限外 endpoint（例: <code>/admin/secrets</code>）へのアクセスが可能。toolbox が保持する認証情報を付与したままリクエストが送られるため、機密 endpoint への認証付きアクセス漏洩</li>
+  <li><strong>被害シナリオ</strong> — MCP-based agent が toolbox を経由して DB/API にアクセスする構成で、path param を攻撃者が制御可能な場合、toolbox の credentials を使って管理 endpoint へアクセス。agent 経由の transitive credential leak</li>
+  <li><strong>対応</strong> — パッチ未公開。暫定対処: toolbox に渡す <code>pathParams</code> の入力検証を upstream で強化（<code>../</code> 文字列の拒否・URL path の allowlist 化）。toolbox credentials の最小権限化・scope 限定。MCP agent 構成で user-controlled path param が toolbox に到達しないよう入力ルーティングを見直し</li>
+  <li>〈MCP / agent tooling スタック・Hermes Agent / OpenClaw の MCP server 利用構成に直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11720" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-11720 (Google MCP Toolbox)</a></p>
+
+<hr>
+
+<h3>4. SUSE Rancher — SAML 認証リプレイ（Okta/Ping/ADFS/Keycloak/Shibboleth 全 SAML provider 影響）・Stale PSA ClusterRoleBinding 残存 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>Advisory</strong></td><td>GHSA-c5jm-xcmq-9j95（High — SAML Authentication Replay）／GHSA-c4rp-wgqc-mfhc（Moderate — Stale PSA ClusterRoleBinding）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>GitHub Security Advisory 公開: 2026-06-29（CVE Brief Tuesday 6/30 で表面化）</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>GHSA-c5jm: SAML 認証を利用する Rancher 全バージョン（Okta/Ping/ADFS/Keycloak/Shibboleth 共通 ACS handler）。GHSA-c4rp: <code>aggregated-roletemplates</code> feature flag が無効（デフォルト）の環境</td></tr>
+  <tr><td><strong>修正バージョン</strong></td><td>GHSA-c5jm: <strong>Rancher v2.14.3 / v2.13.7 / v2.12.11 / v2.11.15</strong>（SAML assertion ID サーバー側追跡 + NotBefore/NotOnOrAfter 厳格検証を追加）。GHSA-c4rp: <strong>Rancher v2.14.3 / v2.13.7</strong>（v2.12/v2.11 はパッチ提供なし・workaround のみ）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>能動的悪用の証拠なし・責任ある開示（U.C. Berkeley security research project による報告）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要 — SAML Replay</strong> — Rancher の SAML Assertion Consumer Service (ACS) handler が SAML assertion の one-time use を強制していなかった。攻撃者が victim の SAML response + pre-auth state cookie を取得（network interception / log access / XSS 経由）すれば、同一 signed response を再提出して victim として別 session を確立可能。全 SAML provider 共通 handler (<code>pkg/auth/providers/saml/saml_client.go</code>) で影響</li>
+  <li><strong>概要 — Stale PSA</strong> — legacy PRTB reconciler で <code>updatepsa</code> 権限を RoleTemplate から削除しても PSA ClusterRole/ClusterRoleBinding が cleanup されず、ユーザーが PSA enforcement level 変更権限を永続的に保持。<code>aggregated-roletemplates</code> が有効なら不受影響</li>
+  <li><strong>対応</strong> — <strong>SAML</strong>: Rancher を v2.14.3 / v2.13.7 / v2.12.11 / v2.11.15 へ即時更新。無理な場合は IdP 側で SAML assertion validity window を短縮し、Rancher SAML ACS endpoint への network access を制限。<strong>Stale PSA</strong>: v2.14.3 / v2.13.7 へ更新。upgrade 不可の場合、<code>&lt;projectID&gt;-namespaces-psa</code> 形式の ClusterRole と参照 ClusterRoleBinding を手動で特定・削除</li>
+  <li>〈AWS / Azure / GCP 上で Rancher で Kubernetes クラスタを管理する環境に直接関連。SAML SSO を利用する全 Rancher 環境で要即時対応〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/rancher/rancher/security/advisories/GHSA-c5jm-xcmq-9j95" target="_blank" rel="noopener noreferrer">GHSA-c5jm-xcmq-9j95 (SAML Replay)</a> · <a href="https://github.com/rancher/rancher/security/advisories/GHSA-c4rp-wgqc-mfhc" target="_blank" rel="noopener noreferrer">GHSA-c4rp-wgqc-mfhc (Stale PSA)</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Java / SpringBoot、Django、Hono、Python について、本対象期間（2026-06-30 08:00〜2026-07-01 08:00 JST）で直接関連する新規CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>Twig (PHP) sandbox bypass CVE-2026-48806/48807/48808 が 6/30 に GitHub Advisory で公開されましたが、本朝刊の対象スタック（PHP 含まず）の直接対象外のため参照留めとします。Symfony/Silex 系で Twig sandbox を利用する場合は各 GHSA の確認を推奨。<br><strong>Hermes Agent</strong> は v0.17.0（v2026.6.19、2026-06-19 リリース）が直近の最新版であり、本対象期間内に新規リリース・セキュリティ修正はありませんでした。v0.17.0 には secure dashboard login ハードニング・Starlette pin 由来 CVE-2026-48710 修正系のセキュリティ改善が含まれています。<br><strong>Claude Code</strong> は CVE-2026-46406（<code>/copy</code> 不安全一時ファイル）が直近の話題ですが、本対象期間中の新規アップデートは確認されませんでした。引き続き Claude Code 用一時ファイル退避場所の権限分離を推奨。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 SimpleHelp CVE-2026-48558 — OIDC 認証バイパス（MFA バイパス含む）・CISA KEV 期限 2026-07-02（翌日到達） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48558 — SimpleHelp Authentication Bypass（OIDC flow、CWE-347 Unverified Signature）</td></tr>
+  <tr><td><strong>KEV 追加日</strong></td><td>2026-06-29（CISA KEV Catalog v2026.06.29）</td></tr>
+  <tr><td><strong>KEV 期限</strong></td><td><strong>2026-07-02</strong>（本日時点で翌日到達・連邦機関は要即時対応）</td></tr>
+  <tr><td><strong>影響</strong></td><td>SimpleHelp 5.5.15 以前。OIDC 認証が設定されている場合、login 時の identity token の暗号署名を検証せずに受領。リモート・未認証の攻撃者が任意の identity claims を含む偽造 token を提出し、完全に認証された technician session を取得可能。構成によっては MFA をもバイパス</td></tr>
+  <tr><td><strong>修正</strong></td><td><strong>SimpleHelp 5.5.16</strong>（v5.5.x 向け）／<strong>SimpleHelp 6.0 RC2</strong>（v6.0 向け）。SHA256 hash 提供済み</td></tr>
+  <tr><td><strong>能動的悪用</strong></td><td>KEV 登録 = 能動的悪用確認。ransomware 悪用 "Unknown" だが KEV への掲載は攻撃観測を意味</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — SimpleHelp（リモートサポートツール）に OIDC 認証バイパス。CISA が 6/29 に KEV へ追加し、連邦機関の対応期限は <strong>2026-07-02</strong>＝翌日。OIDC 認証設定環境では偽造 token で完全認証 session が取得でき、MFA の bypass も可能。リモートサポートツールの性質上、侵害されると社内端末への跳板として悪用可能</li>
+  <li><strong>対応</strong> — 使用中の SimpleHelp バージョンを確認し 5.5.16 (v5.5.x) または 6.0 RC2 (v6.0) へ即時更新。SimpleSetup を使用する場合は update URL <code>https://simple-help.com/releases/5.5.16_202605</code> を指定。OIDC 認証未使用でもパッチ適用を推奨（exploit の前提条件が server config 依存であり全環境での安全確保）。更新後は全 technician session の再認証・不要 session 終了を推奨</li>
+  <li>〈リモートサポートツールを運用する全組織に緊急関連。KEV 期限 2026-07-02 は本日から翌日到達〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://simple-help.com/security/simplehelp-security-update-2026-05" target="_blank" rel="noopener noreferrer">SimpleHelp Security Update</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48558" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48558</a></p>
+
+<hr>
+
+<h3>🔴 Joomla Page Builder CK CVE-2026-56290 — 未認証任意ファイルアップロード RCE（CVSS 4.0 満点） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-56290 — Page Builder CK (Joomla extension) Unauthenticated Arbitrary File Upload → RCE（CWE-284 Improper Access Control）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD: CISA ADP エンリッチ 2026-06-30 14:16 UTC（= 2026-06-30 23:16 JST、本対象期間内）</td></tr>
+  <tr><td><strong>CVSS</strong></td><td>CVSS 4.0: <strong>AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H/E:A/AU:Y/U:Red</strong>（満点相当）</td></tr>
+  <tr><td><strong>影響</strong></td><td>Page Builder CK 拡張を導入した Joomla サイト。未認証の攻撃者が実行可能ファイルをアップロードし、サーバー上で任意コード実行（full RCE）</td></tr>
+  <tr><td><strong>修正</strong></td><td>NVD・GitHub Advisory ともにパッチ版未公開（確認時点）</td></tr>
+  <tr><td><strong>能動的悪用</strong></td><td>CISA ADP SSVC exploitation 判定未確定だが automatable=yes</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Joomla の Page Builder CK 拡張に未認証の任意ファイルアップロード脆弱性。実行可能ファイルをアップロードしてサーバー上で直接コード実行可能。CVSS 4.0 で満点評価。CVE Brief Tuesday (6/30) の critical CVE 12 件中の一つ</li>
+  <li><strong>被害シナシナリオ</strong> — 公開 Joomla サイトが Page Builder CK を使用している場合、未認証で webshell や PHP バックドアをアップロード・実行。完全なサーバー制御・データ流出・持続的アクセス</li>
+  <li><strong>対応</strong> — パッチ未公開時点では Page Builder CK 拡張を無効化するか、WAF でアップロードエンドポイントを保護、当該 Joomla サイトを可能な限り offline / index 不可に。Page Builder CK の最新版 / 開発元 advisory を監視してパッチ版が出次第適用。Joomla サイトで Page Builder CK を使用しているか全資産で普查</li>
+  <li>〈Web / CMS 運用スタック全般・Joomla を使用するパブリックサイトに緊急関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-56290" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-56290 (Page Builder CK)</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 30, 2026（Tuesday）</a></p>
+
+<hr>
+
+<h3>🟠 CVE Brief Tuesday (6/30) — Critical 12件・High 69件・能動的悪用7件（SimpleHelp 新規 KEV）、cloud / database infrastructure に集中 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-30（Tuesday Brief）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td>12件（前日 0件から大幅上昇）。急上昇の原資: AWS ALB+CloudFront WAF bypass 2件・Google MCP Toolbox path traversal・JoomlaCK Page Builder CK RCE・SUSE Rancher・その他 cloud/database infrastructure</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>69件（前日 24件から +188%）</td></tr>
+  <tr><td><strong>能動的悪用 (KEV）</strong></td><td>7件 — SimpleHelp CVE-2026-48558（新規 KEV 追加 6/29）／Ubiquiti UniFi OS 三連 CVE-2026-34908/34909/34910／Cisco UCM CVE-2026-20230／PTC Windchill/FlexPLM CVE-2026-12569／Lantronix EDS5000 CVE-2025-67038</td></tr>
+  <tr><td><strong>傾向</strong></td><td>Tuesday は cloud / database infrastructure に集中。AWS edge (ALB/CloudFront WAF)・Google MCP Toolbox・SUSE Rancher・JoomlaCK が critical の主体。No patches available at disclosure の状態が継続し compensating controls 中心の対応</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 6/30 (Tuesday) は Critical 12件・High 69件で前日 0/24 から大幅上昇。「cloud and database infrastructure」を中心とした開示ラッシュ。CISA KEV 能動的悪用 7件に SimpleHelp が新規追加。CVE Brief は「No vendor patches were reflected in the data at disclosure time」で compensating controls / network restrictions を優先対応と指導</li>
+  <li><strong>能動的悪用7件の現状</strong> — Ubiquiti 三連・Cisco UCM・PTC Windchill・Lantronix は前週から継続（全件 KEV 期限 OVERDUE）。SimpleHelp は 6/29 新規 KEV 追加、期限 7/2（翌日到達）。これらはパッチが公開されている SimpleHelp・Ubiquiti 以外は未パッチ状態が継続しネットワーク分離・監視強化が必須</li>
+  <li><strong>一月はじまりの動向</strong> — 7月1日時点で、6月末からの cloud / database infrastructure 開示ラッシュと KEV OVERDUE 群の未解決が並存。AWS WAF HTTP/2 bypass・Google MCP Toolbox・Rancher SAML replay は本日号で個別に拾いましたが、今後業界機関の公開する vendor patch と advisory 追追跡を継続</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — June 30, 2026（Tuesday）</a> · <a href="https://cvebrief.com/archive/" target="_blank" rel="noopener noreferrer">CVE Brief Archive</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog (v2026.06.29)</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
