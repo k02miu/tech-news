@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-01 08:00 〜 2026-07-02 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 -->
+<h2>🔴 スタック関連</h2>
+
+<h3>1. Hermes Agent <code>v0.18.0</code> (The Judgment Release) — 認証情報漏洩ハードニング・MCP 設定攻撃面の固定・cron <code>base_url</code> exfil ブロック・IDOR 修正・browser クラウドメタデータ床・<code>aiohttp</code> CVE 床のセキュリティ roundup <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>Hermes Agent <code>v0.18.0 (v2026.7.1)</code> — GitHub 公開: 2026-07-01 20:08 UTC = <strong>2026-07-02 05:08 JST</strong>（本対象期間内）。前安定版 <code>v0.17.0</code> から約 1,720 commits / 998 merged PRs / 949 issues closed</td></tr>
+  <tr><td><strong>位置付け</strong></td><td>The Judgment Release。全 P0/P1 issue・PR を 100% 解消（open P0 = 0, open P1 = 0）し、verification evidence ledger・Mixture-of-Agents first-class 化・background fan-out subagents・scale-to-zero gateway・Google Vertex AI provider 等の機能群と並行して実施された包括的セキュリティ roundup</td></tr>
+  <tr><td><strong>脆弱性種別</strong></td><td>ハードニング群（個別 CVE 割り当てなし）— credential-exfil hardening / MCP-config persistence attack surface / cron <code>base_url</code> override exfil block / Slack <code>xapp-</code> token redaction / browser cloud-metadata floor / IDOR (resume, sessions) / <code>aiohttp</code> 3.14.1 CVE 床と pin-drift guard</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>予防的ハードニング。能動的悪用の証拠なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">Hermes Agent</a> が 2026-07-02 05:08 JST に <code>v0.18.0</code> を公開。前版 <code>v0.17.0</code> からの半週間で約 700 件の最高優先度 P0/P1 issue・PR を全解消し、その中の <em>Security &amp; Reliability</em> 区分で複数の認証情報漏洩硬化・IDOR 修正・browser クラウドメタデータ床を取り込んでいる</li>
+  <li><strong>ハードニング詳細</strong> — (1) cron <code>base_url</code> override を通じた provider 認証情報の exfiltration を block (#56196) (2) MCP-config persistence attack surface を harden (#50476) (3) prefix secret の file read に対する再利用不能 sentinel (#54166) (4) Slack App-Level <code>xapp-</code> token の redaction (#56227) (5) 全 backend で browser cloud-metadata floor を enforcement (CDP non-local)・<code>browser_back</code> 後の private network guard 再検証 (#52349, #56526) (6) <code>/resume</code> と <code>/sessions</code> を caller origin に scope (IDOR) (#56378) (7) <code>aiohttp</code> 3.14.1 CVE floor を lazy messaging paths に適用 + pin-drift guard (#56237) (8) cron 信頼性 wave: unpinned job の provider drift で fail-closed・missed-grace jobs を 1 回だけ実行・ticker の <code>BaseException</code> alive (#51051, #50062, #50016, #50117, #56240)</li>
+  <li><strong>被害シナリオ</strong> — cron <code>base_url</code> override は prompt injection 経由で provider 認証情報を外部 URL へ送出する経路になり得た。browser tool のクラウドメタデータ floor は agent が <code>169.254.169.254</code> 等 (GCP / AWS / Azure metadata endpoint) へアクセスし session token を奪取する経路を遮断するもの。IDOR (/resume, /sessions) は他 origin からの session 乗っ取りを防止。これらの硬化で「prompt injection → credential exfil」の典型的な agent 攻撃モデルを顕著に縮小</li>
+  <li><strong>対応</strong> — Hermes Agent を <code>v0.18.0</code> へ即時更新。cron job で <code>base_url</code> override を使用していた場合は新しい fail-closed 挙動に留意し、明示的な URL を指定。MCP server 設定の persistence を独自に audit していた環境は hardened config schema へ追従</li>
+  <li>〈Hermes Agent は本朝刊の対象スタック。agent security / prompt injection / MCP 安全性の先行事例〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">Hermes Agent v0.18.0 Release Notes</a> · <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Releases List</a></p>
+
+<hr>
+
+<h3>2. Adobe ColdFusion — 4 件の未認証 RCE / Path Traversal（CVE-2026-48276 / -48277 / -48314 / -48312、うち 2 件 CVSS 3.1 <strong>10.0 満点</strong>） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48276 (Unrestricted File Upload → RCE, CVSS 3.1 <strong>10.0</strong>) ・ CVE-2026-48277 (Improper Input Validation → RCE, CVSS 3.1 <strong>10.0</strong>) ・ CVE-2026-48314 (Path Traversal, CVSS 3.1 6.5) ・ CVE-2026-48312 (Improper Input Validation → RCE, Adobe 公告に基づく高深刻度)</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD Initial Analysis: 2026-06-30 16:44 UTC。CISA ADP SSVC 添加: 2026-07-01 01:16 UTC（= 2026-07-01 10:16 JST、本対象期間内）。CVE Brief Wednesday (7/1) で広く表面化</td></tr>
+  <tr><td><strong>影響</strong></td><td>ColdFusion <code>2025.9</code>・<code>2023.20</code> およびそれ以前。未認証・リモート・ユーザー操作不要 (<code>AV:N/AC:L/PR:N/UI:N</code>)。CVE-2026-48276 は任意のファイル種別をアップロードして任意コード実行。CVE-2026-48277 は入力検証不備で任意コード実行。CVE-2026-48314 は path traversal で認可外のファイル読み書き (security feature bypass)。いずれも Scope: Changed</td></tr>
+  <tr><td><strong>修正</strong></td><td>Adobe <a href="https://helpx.adobe.com/security/products/coldfusion/apsb26-30.html" target="_blank" rel="noopener noreferrer">APSB26-30</a> でパッチ提供。ColdFusion 2025 / 2023 line の最新版へ即時更新</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA ADP SSVC: exploitation=none, automatable=yes, technicalImpact=total。 CVE Brief は即時優先対応を推奨</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Adobe ColdFusion に 4 件の未認証 RCE 群。CVE Brief Wednesday (7/1) は critical CVE 39 件のうち本 ColdFusion 群を CVSS 満点として優先度トップに位置付け。RCE 系 (CVE-2026-48276 / -48277) は <code>Unrestricted Upload of File with Dangerous Type (CWE-434)</code> と <code>Improper Input Validation (CWE-20)</code>。CVE-2026-48314 は ColdFusion 自身の path traversal</li>
+  <li><strong>被害シナリオ</strong> — 公開 ColdFusion サーバーに対し未認証で malicious ファイルをアップロード、もしくは入力検証不備経由で任意 OS コマンド実行。Web アプリサーバーとしてインターネット露出することが多い性質上、即時の mass scanning が予想される</li>
+  <li><strong>対応</strong> — ColdFusion を Adobe APSB26-30 修正版へ即時更新。露出 ColdFusion 管配下の全資産を普查し、WAF で upload endpoint および <code>/cfadmin</code> 系 admin path を保護。直接インターネット露出を廃止し reverse proxy 越し のみとする MTTF 低減措置を推奨</li>
+  <li>〈Java アプリケーションサーバー ColdFusion は本朝刊の Java/Web スタックに直接関連。CVE Brief の critical ラッシュを牽引する最重要項目〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48276" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48276</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48277" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48277</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48314" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48314</a> · <a href="https://helpx.adobe.com/security/products/coldfusion/apsb26-30.html" target="_blank" rel="noopener noreferrer">Adobe APSB26-30</a></p>
+
+<hr>
+
+<h3>3. IBM Langflow OSS — 全シークレット漏洩・全 flow 変更・cloud metadata 経由 SSRF・multi-tenant 横展開・持続化 RCE（CVE-2026-10134, CVSS 3.1 <strong>10.0 満点</strong>） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-10134 — IBM Langflow OSS Improper Control of Generation of Code (CWE-94)、CVSS 3.1 <strong>10.0</strong> (<code>AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H</code>)</td></tr>
+  <tr><td><strong>公表日</strong></td><td>CISA ADP SSVC 追加: 2026-07-01 01:16 UTC（= 2026-07-01 10:16 JST、本対象期間内）。CVE Brief Wednesday (7/1) の critical リスト筆頭</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>IBM Langflow OSS <code>1.0.0</code> through <code>1.9.3</code></td></tr>
+  <tr><td><strong>影響</strong></td><td>Langflow プロセスが参照可能な全 secret の読み取り・全 flow/conversation/message/file upload/saved component の読み書き・internal services への接続・<strong>cloud metadata endpoint 悪用 (GCP/AWS/Azure IMDS)</strong>・同一 Langflow instance 上の他テナントへの横展開・public flow の <code>tool_code</code> を改変することで任意ユーザーの build 呼出時に攻撃コードが再実行される持続的 backdoor</td></tr>
+  <tr><td><strong>修正</strong></td><td>パッチ版は NVD・GitHub Advisory ともに未公開（確認時点）。Langflow OSS 1.9.4 以降の advisory 発表を監視</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA ADP SSVC: exploitation=none, automatable=yes, technicalImpact=total</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://github.com/langflow-ai/langflow" target="_blank" rel="noopener noreferrer">IBM Langflow OSS</a>（Python 製の LLM flow builder、AI/LLM ジェネレーティブ AI ワークフロー可視化ツール）に CVSS 満点の critical 脆弱性。Langflow の public flow を外部公開する構成では、攻撃者・他テナントが flow 編集で <code>tool_code</code> に任意の Python コードを仕込み、一般ユーザーの <code>/api/v1/build/...</code> 呼び出し毎に攻撃コードを再実行する持続化も可能</li>
+  <li><strong>被害シナリオ</strong> — (a) Langflow が保持する LLM provider API key・DB credentials・クラウドクレデンシャルが全件漏洩 (b) cloud metadata endpoint (AWS <code>169.254.169.254</code> 等) を叩いて instance IAM token を奪取 → クラウド横展開 (c) flow data を改ざんで attacker 制御下の外部 endpoint へ data 流出 (d) multi-tenant SaaS 構成では他テナントの flow/conversation にも到達</li>
+  <li><strong>対応</strong> — パッチ未公開時点では Langflow をインターネット露出させない・public flow 機能を無効化・network egress を厳格に制限して cloud metadata endpoint を遮断 (proxy 設定で <code>169.254.169.254</code> を deny) ・IAM role は最小権限に・LLM provider API key の定期的なローテーション。Langflow OSS 1.9.4+ パッチ公開を見通し監視</li>
+  <li>〈Python / AI-ML / GCP / AWS / Azure スタックに直接関連。LLM オーケストレーションツールの多テナント侵害リスク〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-10134" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-10134 (IBM Langflow OSS)</a> · <a href="https://github.com/langflow-ai/langflow" target="_blank" rel="noopener noreferrer">langflow-ai/langflow (GitHub)</a></p>
+
+<hr>
+
+<h3>4. Orkes Conductor — 未認証 GraalVM evaluator 経由 RCE（CVE-2026-58138, CVSS 4.0/3.1 <strong>9.8</strong>） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-58138 — Improper Control of Generation of Code (CWE-94)。CVSS 4.0: <code>AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N</code>。CVSS 3.1: <code>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</code> = <strong>9.8</strong></td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 受領 (VulnCheck CNA): 2026-06-30 15:17 UTC。CISA ADP SSVC 追加: 2026-07-01 12:16 UTC（= 2026-07-01 21:16 JST、本対象期間内）。CVE Brief Wednesday (7/1) で表面化</td></tr>
+  <tr><td><strong>影響バージョン</strong></td><td>Orkes Conductor <code>3.21.21</code> (before <code>3.30.2</code>)</td></tr>
+  <tr><td><strong>影響</strong></td><td>認証前の攻撃者が workflow API endpoint に inline workflow 定義を提出し、<code>INLINE</code>・<code>LAMBDA</code>・<code>DO_WHILE</code>・<code>SWITCH</code> task type から <code>HostAccess.ALL</code> または <code>allowAllAccess(true)</code> で設定された unsandboxed GraalVM JavaScript/Python evaluator を叩く。Java reflection または直接 subprocess 呼出で任意 OS コマンドを実行</td></tr>
+  <tr><td><strong>修正</strong></td><td><strong>Orkes Conductor 3.30.2</strong> 以降へ更新</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA ADP SSVC: exploitation=none, automatable=yes, technicalImpact=total</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Orkes Conductor は Java 製の workflow orchestration platform (Netflix Conductor fork)。GraalVM polyglot evaluator が workflow definition 内の JS/Python 式を実行するが、sandbox 設定が緩い (<code>HostAccess.ALL</code> もしくは <code>allowAllAccess(true)</code>) 状態で 未認証の workflow API に悪意ある inline 定義を渡すことで任意コード実行</li>
+  <li><strong>被害シナリオ</strong> — Conductor をインターネット露出する構成で未認証 RCE。GraalVM から Java reflection 経由で <code>Runtime.exec</code> 系を叩き、host の OS を完全制御。CI/CD パイプライン上で workflow を処理する worker node が標的となり得る</li>
+  <li><strong>対応</strong> — Orkes Conductor を <code>3.30.2</code> 以降へ即時更新。GraalVM evaluator を sandbox strict 設定 (<code>HostAccess.NONE</code> または明示的な allowlist) に縮小。workflow API endpoint を一般的インターネットに露出しない・API gateway で認証必須化</li>
+  <li>〈Java / workflow orchestration / GraalVM polyglot スタックに直接関連。AI/LLM pipeline を Conductor で構成する環境で要即時対応〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-58138" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-58138 (Orkes Conductor)</a> · <a href="https://github.com/orkes-io/conductor" target="_blank" rel="noopener noreferrer">orkes-io/conductor (GitHub)</a></p>
+
+<hr>
+
+<h3>5. StoneFly Storage Concentrator — 認証不要 SQL Injection + 硬化デフォルト credential (CVE-2026-55721 / -55722 / -55724) <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-55721 (login.pl / debug.pl の cookie 値 SQL injection, CVSS 3.1 <strong>9.3</strong>) ・ CVE-2026-55722 (hardcoded reversible credentials for internal services) ・ CVE-2026-55724 (unauthenticated command injection via <code>ms_service.pl</code>, root 権限 RCE)</td></tr>
+  <tr><td><strong>公表日</strong></td><td>CISA ADP SSVC 追加: 2026-07-01 13:16 UTC（= 2026-07-01 22:16 JST、本対象期間内）。CVE Brief Wednesday (7/1) で表面化</td></tr>
+  <tr><td><strong>影響</strong></td><td>StoneFly Storage Concentrator (SC &amp; SCVM)。未認証・リモート attackers が cookie 値を通じ SQL injection で session token / password hash / secret key を抽出。内蔵サービスに hardcoded な可逆 credential が存在し、相互接続 system への不正アクセス経路。<code>ms_service.pl</code> を通じた未認証 command injection で root-level RCE</td></tr>
+  <tr><td><strong>修正</strong></td><td>StoneFly 公式 advisory / パッチ版未公開（確認時点）。CVE Brief は network 暴露制限と vendor advisory 追追を推奨</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CVE-2026-55721: CISA ADP SSVC exploitation=none, automatable=yes, technicalImpact=partial</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — StoneFly Storage Concentrator (統合ストレージアプライアンス) に SQL injection・hardcoded credentials・command injection の 3 点セット。CVE Brief Wednesday は critical 9.3 の SQL injection を critical ランドスケープの一つとして surface 化</li>
+  <li><strong>被害シナリオ</strong> — アプライアンスの管理 web UI (login.pl / debug.pl) が未認証で SQL injection を受け入れ、cookie 経由で DB を extract。次いで hardcoded credential でバックエンド相互接続 service に侵入。最終的に <code>ms_service.pl</code> 経由で root RCE</li>
+  <li><strong>対応</strong> — StoneFly Storage Concentrator 管理インタフェースをインターネット露出から即時隔離。vendor パッチ公開まで管理 LAN 内 limiting・IP allowlist で対処。.log 系 debug endpoint (debug.pl) は無効化</li>
+  <li>〈AWS / Azure / GCP 上で仮想アプライアンスとして稼働する Storage Concentrator SCVM 構成に直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-55721" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-55721 (StoneFly SQLi)</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 1, 2026（Wednesday）</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React、Hono、Django、SpringBoot について、本対象期間（2026-07-01 08:00 〜 2026-07-02 08:00 JST）で直接関連する新規 CVE／アドバイザリ・パッチリリースは確認されませんでした。<br><strong>OpenClaw</strong> は安定版 <code>2026.6.11</code> が 2026-07-01 01:06 JST に公開済み（昨日号で詳報）。本対象期間中に <code>2026.6.11</code> 以降の新規リリース・セキュリティ修正は確認されませんでした。DOMPurify パッチ適用・TLS 空値拒否・SSH ターゲット検証強化・Cron delivery 検証のハードニングは <code>2026.6.11</code> 安定版に引き続き含まれます。<br><strong>Claude Code</strong> は CVE-2026-46406（<code>/copy</code> 不安全一時ファイル）が直近の話題ですが、本対象期間中の新規アップデートは確認されませんでした。引き続き Claude Code 用一時ファイル退避場所の権限分離を推奨。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 SimpleHelp CVE-2026-48558 — CISA KEV 期限 2026-07-02 <strong>本日到達</strong>・連邦機関は要即時対応 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48558 — SimpleHelp Authentication Bypass（OIDC flow、CWE-347 Unverified Signature）</td></tr>
+  <tr><td><strong>KEV 追加日</strong></td><td>2026-06-29</td></tr>
+  <tr><td><strong>KEV 期限</strong></td><td><strong>2026-07-02（本日）</strong>。連邦機関は本日中に修正・緩和措置を適用必須</td></tr>
+  <tr><td><strong>影響</strong></td><td>SimpleHelp 5.5.15 以前。OIDC 認証設定環境で偽造 identity token により完全認証 technician session を取得、MFA bypass も可能</td></tr>
+  <tr><td><strong>修正</strong></td><td><strong>SimpleHelp 5.5.16</strong>（v5.5.x 向け）／<strong>SimpleHelp 6.0 RC2</strong>（v6.0 向け）</td></tr>
+  <tr><td><strong>能動的悪用</strong></td><td>KEV 登録済み = 能動的悪用確認</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — SimpleHelp（リモートサポートツール）の OIDC 認証バイパス CVE-2026-48558 は CISA KEV の対応期限が <strong>2026-07-02（本日）</strong>。期限が本日到達したことで連邦機関のみならず民間でも早急対応が求められる。前日号で予告済みの項目</li>
+  <li><strong>対応</strong> — 使用中の SimpleHelp を 5.5.16 または 6.0 RC2 へ即時更新（KEV 期限当日）。更新後は全 technician session の再認証を実施。SimpleSetup を使用する場合は update URL <code>https://simple-help.com/releases/5.5.16_202605</code> を指定</li>
+  <li>〈リモートサポートツール運用組織に緊急関連。KEV 期限内対応実績の有無を社内監査要点に〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> · <a href="https://simple-help.com/security/simplehelp-security-update-2026-05" target="_blank" rel="noopener noreferrer">SimpleHelp Security Update</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48558" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48558</a></p>
+
+<hr>
+
+<h3>🟠 CVE Brief Wednesday (7/1) — Critical <strong>39 件</strong>（前日 12 件から +225%）・高 CVSS ランドスケープは <strong>Adobe ColdFusion × 2 + IBM Langflow OSS + Orkes Conductor + StoneFly</strong> に集中 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-07-01（Wednesday Brief、Tuesday 6/30 公開分を curate）</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td><strong>39 件</strong>（前日 12 件から 225% 増）。筆頭は Adobe ColdFusion <code>CVE-2026-48276 / -48277</code>（CVSS 10 ×2）・IBM Langflow OSS <code>CVE-2026-10134</code>（CVSS 10）・Orkes Conductor <code>CVE-2026-58138</code>（CVSS 9.8）・StoneFly Storage Concentrator <code>CVE-2026-55721</code>（CVSS 9.3）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>66 件（前日 69 件から -4%）</td></tr>
+  <tr><td><strong>能動的悪用 (KEV）</strong></td><td>3 件を active exploitation として明示 — <strong>PTC Windchill / FlexPLM CVE-2026-12569</strong>・<strong>Cisco UCM CVE-2026-20230</strong>（SSRF → root 権限昇格）・<strong>SimpleHelp CVE-2026-48558</strong>（OIDC bypass、KEV 期限 7/2 本日）</td></tr>
+  <tr><td><strong>傾向</strong></td><td>RCE 系と authentication bypass が dominant。対象は application server (ColdFusion)・AI/ML tooling (Langflow)・workflow orchestrator (Conductor)・storage appliance (StoneFly) と enterprise infrastructure に広がり。CVE Brief は「No vendor patches are currently reflected for these new disclosures」で vendor advisory 追追と network exposure 制限を推奨</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 7/1 (Wednesday) は Critical CVE 39 件で前日 12 件から大幅上昇。Adobe ColdFusion 4 件 + IBM Langflow OSS 群 + Orkes Conductor + StoneFly 群が critical ランドスケープの中心。前日号で拾った AWS WAF HTTP/2 bypass・Google MCP Toolbox path traversal・SUSE Rancher SAML replay・Joomla Page Builder CK RCE は Tuesday 6/30 brief の critical 12 件に集計されていた</li>
+  <li><strong>能動的悪用 3 件</strong> — PTC Windchill/FlexPLM・Cisco UCM・SimpleHelp は KEV リスト上で継続。SimpleHelp は本日 7/2 で KEV 期限に到達。PTC / Cisco UCM は前日号で OVERDUE 状態を指摘済み</li>
+  <li><strong>2 日連続の傾向</strong> — 6/30 brief は cloud/database infrastructure 中心（AWS edge・Google MCP Toolbox・SUSE Rancher・JoomlaCK）。7/1 brief は application server・AI/ML tooling・storage appliance 層に広がり。enterprise IT が広く標的化されており、エッジ (ALB/WAF) → app server (ColdFusion) → AI pipeline (Langflow/Conductor) → storage appliance (StoneFly) という層別攻撃サーフェスの接近が見える</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 1, 2026（Wednesday）</a> · <a href="https://cvebrief.com/archive/" target="_blank" rel="noopener noreferrer">CVE Brief Archive</a> · <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 Check Point Quantum Security Gateway CVE-2026-50751 — deprecated IKEv1 VPN 認証バイパス・能動的悪用確認中（KEV 期限 OVERDUE 状態継続） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-50751 — Check Point Security Gateway Improper Authentication（CWE-287）。CVSS 3.1 <code>AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:L/A:N</code></td></tr>
+  <tr><td><strong>KEV 期限</strong></td><td>2026-06-11（<strong>OVERDUE</strong>）。2026-06-08 KEV 追加。CISA ADP SSVC: exploitation=<strong>active</strong>, automatable=yes, technicalImpact=total</td></tr>
+  <tr><td><strong>影響</strong></td><td>Check Point Quantum Security Gateway R82.10 / R82 / R81.20 / R81.10 / R81 / R80.40、および Spark Firewalls R80.20.X / R81.10.X / R82.00.X。deprecated な IKEv1 key exchange で未認証 remote attacker が user password 無しに remote access VPN 接続を確立可能</td></tr>
+  <tr><td><strong>修正</strong></td><td>Check Point が <a href="https://blog.checkpoint.com/security/check-point-releases-important-hotfix-for-vulnerabilities-in-deprecated-ikev1-vpn-protocol/" target="_blank" rel="noopener noreferrer">IKEv1 hotfix</a> を公開。各バージョン向け Jumbo Hotfix 適用</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Check Point Quantum Security Gateway の deprecated IKEv1 key exchange における認証バイパス。能動的悪用確認（KEV 期限は 2026-06-11 で OVERDUE）。CVE Brief Wednesday も active exploitation として参照。本日もなお未 patch 環境が残存している可能性があり再掲</li>
+  <li><strong>対応</strong> — IKEv1 自体を disable し IKEv2 に移行することが根本解決。各バージョン向け Jumbo Hotfix を適用。VPN endpoint の認証 log を精査し不審な認証成功を検出</li>
+  <li>〈VPN gateway を exposing する全組織に継続関連。OVERDUE 状態解消まで社内 audit で監視継続を推奨〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-50751" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-50751 (Check Point IKEv1)</a> · <a href="https://blog.checkpoint.com/security/check-point-releases-important-hotfix-for-vulnerabilities-in-deprecated-ikev1-vpn-protocol/" target="_blank" rel="noopener noreferrer">Check Point Hotfix Announcement</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
