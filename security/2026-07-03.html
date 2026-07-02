@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-03 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-03 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-02 08:00 〜 2026-07-03 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 -->
+<h2>🔴 スタック関連</h2>
+
+<h3>1. OpenClaw <code>2026.7.1-beta.1</code> — スコープ会話のcapability profiles・provider/network safety bounds・MCP permission 修正群 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>リリース</strong></td><td>OpenClaw <code>2026.7.1-beta.1</code> — GitHub 公開: 2026-07-02 07:25 UTC = <strong>2026-07-02 16:25 JST</strong>（本対象期間内）。直前安定版 <code>2026.6.11</code> から 222 merged PRs</td></tr>
+  <tr><td><strong>セキュリティ関連</strong></td><td>scope conversation capability profiles / provider &amp; network safety bounds（Moonshot, MiniMax, Anthropic OAuth, Discord, Matrix, SMS, browser 他） / TLS paths 空値拒否 / DOMPurify パッチ適用 / MCP permission owner 要求 / memory artifacts サニタイズ / cron 配送検証強化</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>予防的ハードニング。能動的悪用の証拠なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw</a> が <code>2026.7.1-beta.1</code> を公開（本対象期間中）。GPT-5.6 サポート、Telegram Codex ペアリングフロー、イベント駆動 cron（<code>on-exit</code> schedule kind）などの機能追加に加え、スコープ会話用の capability profiles による per-conversation tool/access boundary、全 provider パスでの oversized/malformed response バウンド、TLS paths の空値拒否、DOMPurify パッチ適用、memory artifacts サニタイズ、cron 配送検証強化などのセキュリティ改善を含む</li>
+  <li><strong>セキュリティ詳細</strong> — (1) スコープ会話能力: 会話ごとのツール・アクセス境界を設定する capability profiles (#98536) (2) provider/network safety: Moonshot, MiniMax, Anthropic OAuth, Discord, Matrix, SMS, browser, update, embeddings, Tlön, Inworld 各パスの oversized/malformed response バウンド (#96502, #96322, #96644, #97693, #97889, #97662, #97999, #98455, #98508, #98554, #98496, #98660) (3) MCP permission: 応答許可に owner 要求 (#98256) (4) DOMPurify: パッチ適用版で UI 出力 (#95691) (5) TLS 設定: paths 空値拒否 (#94054) (6) memory artifacts: サニタイズ処理 (#95791) (7) cron 配送: no-config delivery checks, thread-aware dedupe, pending recurring runs の配送先保持 (#95754, #95794, #94323)</li>
+  <li><strong>被害シナリオ</strong> — scope conversation profiles は multi-tenant 構成での tenant 間権限昇格の予防。provider path の oversized response バウンドは悪意ある provider や中間者攻撃による buffer-based な悪用を防止。TLS 空値拒否は設定ミスによる平文経路への fallback を防止</li>
+  <li><strong>対応</strong> — beta 版につきテスト環境での検証後、scope conversation capability profiles の導入を評価。provider network bounds は自動適用。MCP 設定の owner 要件に注意</li>
+  <li>〈OpenClaw は本朝刊の対象スタック〉</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.1-beta.1" target="_blank" rel="noopener noreferrer">OpenClaw 2026.7.1-beta.1 Release</a> · <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">All Releases</a></p>
+
+<hr>
+
+<h3>2. CVE Brief Thursday (7/2) — Critical <strong>28 件</strong>（前日 39 件から -28%）・Guardian language-system ×7 SQLi/RCE・Control Web Panel・Hoppscotch CVSS 10 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-07-02（Thursday Brief、Wednesday 7/1 公開分を curate）。本対象期間内</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td><strong>28 件</strong>（前日 39 件から -28%）。筆頭は Guardian language-system <code>CVE-2026-34099〜34105</code>（CVSS 9.8 SQLi + RCE + CMDi ×7）・Control Web Panel <code>CVE-2026-57517</code>（CVSS 9.8 未認証 SQLi→RCE）・Hoppscotch <code>CVE-2026-50160</code>（CVSS 10 mass assignment→JWT secret overwrite）・Hyland PACSgear <code>CVE-2026-58126</code>（CVSS 9.8 未認証 RCE）</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>78 件（前日 66 件から +18%）</td></tr>
+  <tr><td><strong>能動的悪用 (KEV）</strong></td><td>4 件を active exploitation として継続 — Cisco UCM <code>CVE-2026-20230</code>（SSRF→root）・SimpleHelp <code>CVE-2026-48558</code>（OIDC bypass）・PTC Windchill/FlexPLM <code>CVE-2026-12569</code>・Microsoft SharePoint（insecure deserialization）</td></tr>
+  <tr><td><strong>傾向</strong></td><td>RCE 系と SQL injection が dominant。PHP アプリケーション（Guardian language-system, Control Web Panel）の未認証脆弱性が集中。CVE Brief は「No vendor patches are currently reflected for these new disclosures」で vendor advisory 追跡と network exposure 制限を推奨</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 7/2 (Thursday) は Critical CVE 28 件。Wednesday 7/1 の 39 件から減少したものの、Guardian language-system（言語教育・翻訳システム）に 7 件の未認証 SQLi + RCE + CMDi（CVE-2026-34099〜34105、各 CVSS 9.8）が見つかり、同一システムの全層に脆弱性が集中。Control Web Panel（CVE-2026-57517, CVSS 9.8）は未認証 blind SQLi から MySQL root 権限で webshell を配置可能。Hoppscotch（API 開発ツール、CVE-2026-50160）は CVSS 10 で mass assignment により JWT secret を上書き可能。Hyland PACSgear（医療画像システム、CVE-2026-58126, CVSS 9.8）は未認証 RCE</li>
+  <li><strong>Guardian language-system 詳細</strong> — (CVE-2026-34099) job_info.php 未認証 SQLi (CVE-2026-34100) media.php 認証済 SQLi (CVE-2026-34101) text_file.php SQLi (CVE-2026-34102) job_info_get.php SQLi (CVE-2026-34103) subtitles.php SQLi (CVE-2026-34104) designer.php SQLi (CVE-2026-34105) translate_text.php SQLi。これらに加え同一システム内で text.php / speech.php / complex_start.php / speechmac_text.php / speechmac.php / speech_text.php / translate_text.php / transcribe_amazon.php / transcribe.php / text_to_subtitles.php / subtitles.php / translate.php で未認証 command injection も確認</li>
+  <li><strong>Google Chrome 150 関連</strong> — Chrome 150 系列で多数の use-after-free（V8, Ozone, Fullscreen, GFX, IME, Blink, Canvas, Chromoting, DOM, Forms, WebView, Skia, Extensions, Cast, Oilpan, Omnibox, Navigation, Views, SignIn, BrowserTag, DevTools, Passwords, Scheduling, PDFium, Audio）、heap buffer overflow（V8, WebNN）、type confusion（V8）、integer overflow（V8, Chromecast）など広範な修正。stable channel 150 への更新を推奨</li>
+  <li><strong>能動的悪用</strong> — Cisco UCM（SSRF → root 権限昇格）・SimpleHelp（OIDC 認証バイパス、前日号で KEV 期限 7/2 と予告済み）・PTC Windchill/FlexPLM・Microsoft SharePoint が引き続き active exploitation 確認状態</li>
+  <li>〈Guardian language-system は Java/Python スタックの言語学習ツールとして間接関連。Control Web Panel は Web サーバー管理パネルとして Web スタックに関連。Hoppscotch は Web/Next.js/React の API 開発ツール。Chrome 150 修正群は Web/React のブラウザ基盤として直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 2, 2026（Thursday）</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-34099" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-34099</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-57517" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-57517</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-50160" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-50160</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-58126" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-58126</a></p>
+
+<hr>
+
+<h3>3. Genucenter — SNMP 認証情報漏洩（CVE-2026-13211） <span class="badge-low">LOW</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-13211 — Genucenter Web Interface Information Disclosure（CWE-200）。CVSS 3.1 <strong>4.3</strong>（<code>AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N</code>）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>SBA Research Advisory 公開: 2026-07-02。本対象期間内</td></tr>
+  <tr><td><strong>影響</strong></td><td>genucenter web interface version 8.0p11 未満で、"Service" または "Admin" ロールユーザーの HTTP 応答内に SNMP 認証鍵・暗号化鍵が露出。ネットワーク機器への不正アクセスに利用される可能性</td></tr>
+  <tr><td><strong>修正</strong></td><td>genucenter 8.0 Patch 11 または 8.6 以降へ更新</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で悪用確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://www.sba-research.org/2026/07/02/sba-security-advisory-genucenter-disclosure-of-snmp-credentials-cve-2026-13211/" target="_blank" rel="noopener noreferrer">SBA Research</a> が genucenter の SNMP 認証情報漏洩を公表。一般ユーザー（Service/Admin ロール）が SNMP の認証鍵を HTTP レスポンスから読み取れる</li>
+  <li><strong>対応</strong> — genucenter を 8.0 Patch 11 以降へ更新。SNMP v3 認証鍵は運用上重要なため、定期的な鍵ローテーションも推奨</li>
+  <li>〈Network management / SNMP 管理ツールとして間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.sba-research.org/2026/07/02/sba-security-advisory-genucenter-disclosure-of-snmp-credentials-cve-2026-13211/" target="_blank" rel="noopener noreferrer">SBA Research Advisory</a> · <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-13211" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-13211</a></p>
+
+<hr>
+
+<p class="empty-notice">Hermes Agent / Next.js / React / Django / SpringBoot / Hono / Python / Java について、本対象期間（2026-07-02 08:00 〜 2026-07-03 08:00 JST）で直接関連する新規 CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>
+<strong>Hermes Agent</strong> は v0.18.0 (v2026.7.1) が 2026-07-02 05:08 JST に公開済み（昨日号で詳報）。本対象期間中の新規リリース・セキュリティ修正は確認されませんでした。credential-exfil hardening / MCP-config persistence attack surface / browser cloud-metadata floor / IDOR 修正 / aiohttp CVE floor などは v0.18.0 に引き続き含まれます。<br>
+<strong>Claude Code</strong> は本対象期間中の新規セキュリティアップデートは確認されませんでした。<br>
+<strong>NVIDIA AIStore</strong> 認証バイパス、<strong>NVIDIA Container Toolkit</strong> TOCTOU race condition、<strong>containerd</strong> 脆弱性、<strong>Ray</strong> 脆弱性（いずれも CVE Brief Thursday 掲載）はスタックの AI/ML / container 領域に間接的に関連しますが、本対象期間でこれらに対する vendor patch の提供や新たな悪用確認は報告されていません。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🟠 Cisco UCM CVE-2026-20230 — CISA KEV active exploitation 継続（SSRF → root 権限昇格） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-20230 — Cisco Unified Communications Manager SSRF（CWE-918）。CVSS 未公表</td></tr>
+  <tr><td><strong>KEV 状態</strong></td><td>CISA KEV active exploitation 確認中（継続）。前日号より継続掲載</td></tr>
+  <tr><td><strong>影響</strong></td><td>未認証 remote attacker が SSRF 経由で任意ファイル操作・root 権限昇格</td></tr>
+  <tr><td><strong>修正</strong></td><td>Cisco 公式 advisory を参照</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Cisco Unified Communications Manager の SSRF 脆弱性は引き続き CISA KEV で active exploitation 確認状態。CVE Brief 7/2 でも継続して active exploitation としてリスト。UCM を運用する組織は即時パッチ適用を確認すること</li>
+  <li>〈VoIP 基盤として間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 PTC Windchill / FlexPLM CVE-2026-12569 — KEV active exploitation 継続（OVERDUE 状態） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-12569 — PTC Windchill and FlexPLM Improper Input Validation</td></tr>
+  <tr><td><strong>KEV 状態</strong></td><td>CISA KEV active exploitation 確認中（継続）。OVERDUE 状態継続</td></tr>
+  <tr><td><strong>影響</strong></td><td>PLM システムの入力検証不備により exploit 可能</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — PTC Windchill / FlexPLM の能動的悪用は CISA KEV で継続確認。製造業・製品ライフサイクル管理システムとして、露出口の制限とパッチ適用を推奨</li>
+  <li><strong>対応</strong> — PTC 公式パッチを即時適用。インターネット露出の最小化</li>
+  <li>〈製造業 PLM システムとして関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 Microsoft SharePoint Insecure Deserialization — KEV active exploitation 継続 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>影響</strong></td><td>Microsoft Office SharePoint insecure deserialization により authorized attacker が任意コード実行可能</td></tr>
+  <tr><td><strong>KEV 状態</strong></td><td>CISA KEV active exploitation 確認中（継続）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — SharePoint の insecure deserialization 脆弱性は CISA KEV で active exploitation 確認中。SharePoint を利用する組織では即時対応を確認のこと</li>
+  <li>〈Microsoft エコシステムとして関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟢 CVE Volume Update — June 2026: 7,454 CVEs（前月比 +14.5%）・今年最高月間件数 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-07-02（Vulnerability-Lookup 月次レポート）</td></tr>
+  <tr><td><strong>CVE 総数</strong></td><td>2026年6月: <strong>7,454 CVEs</strong>（5月 6,953 件から +14.5%、今年最高）</td></tr>
+  <tr><td><strong>GitHub Advisory</strong></td><td>7,315 件の GitHub セキュリティアドバイザリ</td></tr>
+  <tr><td><strong>PySec Advisory</strong></td><td>745 件の PySec アドバイザリ</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Vulnerability-Lookup が 2026年6月の脆弱性レポートを公開。CVE 公開数は 7,454 件で年初来最高。GitHub Advisory も 7,315 件と高水準。PyPI エコシステム（PySec）も 745 件のアドバイザリが発行されている。脆弱性の増加傾向が継続</li>
+  <li><strong>対応</strong> — 脆弱性管理体制の見直しを推奨。SBOM 管理・自動パッチ適用基盤の整備が重要度を増している</li>
+  <li>〈全スタック共通のトレンド指標〉</li>
+</ul>
+
+<p>🔗 <a href="http://www.vulnerability-lookup.org/2026/07/02/vulnerability-report-june-2026/" target="_blank" rel="noopener noreferrer">Vulnerability-Lookup — June 2026 Report</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
