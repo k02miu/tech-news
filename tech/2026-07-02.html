@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-02 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-02 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-01 09:00 〜 2026-07-02 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内に新規リリースなし</h2>
+<p>RSSフィード（<code>https://code.claude.com/docs/en/changelog/rss.xml</code>）を <code>pubDate</code> で精査したところ、本号の24時間枠内（2026-07-01 09:00 JST 〜 2026-07-02 09:00 JST）に入る Claude Code の新規リリースは確認されませんでした。チャンネルの <code>lastBuildDate</code> は <code>Thu, 02 Jul 2026 00:00:32 GMT</code>（= 2026-07-02 09:00:32 JST）ですが、エントリ追加はなく、RSS 最上位のまま <strong>v2.1.197</strong> および <strong>v2.1.196</strong>（いずれも <code>pubDate: Tue, 30 Jun 2026 18:47:17 GMT</code> = <strong>2026-07-01 03:47:17 JST</strong>）が先頭を維持しています。これらは前号の24時間枠内で既報（Claude Sonnet 5 のデフォルトモデル化を含む一括リリース）であり、本号で追加で可視化すべき新規チャンネル更新は見つかりませんでした。</p>
+<p>なお、同日5月頃から開始の Sonnet 5 移行プロモーション価格（<strong>$2 / $10 per Mtok</strong>、入力/出力、8月31日まで）は引き続き有効で、<strong>v2.1.197</strong> 以降へのアップデートが Claude Sonnet 5 利用の前提条件です。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog" target="_blank" rel="noopener noreferrer">Claude Code Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — v0.18.0「The Judgment Release」(v2026.7.1)</h2>
+<p>対象期間内に、Nous Research から <strong>Hermes Agent v0.18.0「The Judgment Release」</strong>（v2026.7.1、公開 <strong>2026-07-01</strong>、GitHub Atom エントリの <code>updated</code> は <code>2026-07-01T20:14:16Z</code> = <strong>2026-07-02 05:14:16 JST</strong>）が公開されました。v0.17.0 から増分で <strong>約1,720コミット・998マージPR・2,215ファイル変更・約251,000行追加・約41,000行削除・949件のissueクローズ・370名以上のコミュニティ貢献者</strong>を数える大規模リリースです。</p>
+
+<h3>🎯 ヘッドライン: P0 / P1 の完全撲滅</h3>
+<p>本リリースの目玉は、リポジトリ全体の <strong>P0（critical）と P1（high）の issue・PR を100%クローズ</strong>したことです。約1.5週にわたり優先バックログを昼夜で削り、<strong>約692件の最高優先度項目</strong>（P0: issue 3件 + PR 8件、P1: issue 493件 + PR 188件）を12日間で解決。最後に落ちたクラスタは interrupt-protected-compression の sibling-fork バグ（issue #56391 / fix #56416）。今後 P0 / P1 を <strong>ゼロ</strong> で維持する方针를明示しています。</p>
+
+<h3>✨ 新機能・改善（主要ハイライト）</h3>
+<ul>
+  <li><strong>Mixture-of-Agents (MoA) が選択可能な第一級モデルに</strong>: 従来の "mode から model へ"。名前付き MoA プリセットが <code>moa</code> プロバイダ配下で Claude / GPT / Grok と並んでモデルピッカー（CLI・TUI・デスクトップ・gateway の全サーフェス）に表示され、1つの選択で ensemble にルーティングされる (#46081, #53548, #53561)</li>
+  <li><strong>各参照モデルの推理内容をラベル付きブロックで可視化 + アグリゲータ回答のライブストリーミング</strong>: GPT-5 / Claude / Grok がどう考えたかを個別に読んでから、アグリゲータの最終回答がライブで stream される (#53793, #53855, #55625, #56101)</li>
+  <li><strong>完了契約 (completion contracts) による自己検証</strong>: <code>/goal</code> で「done」の条件を宣言すると、standing-goal ループがモデルの自己申告ではなく <strong>証拠</strong> に照らして完了を判定。プロジェクトの実際の checks を走らせて終了を判断する coding verification evidence ledger、<code>pre_verify</code> フック、verify-on-stop の1回限り v32 migration を同梱 (#50501, #52285, #55413, #53552)</li>
+  <li><strong><code>/learn</code> — 何でも再利用可能な skill に変換</strong>: ディレクトリ・URL・直前に実行した workflow を指定すると、Hermes が reusable skill に蒸留し <code>CONTRIBUTING.md</code> の基準に従って自動書き出し (#51506, #52372)</li>
+  <li><strong><code>/journey</code> — 学習タイムライン</strong>: CLI/TUI に蓄積された memories と skills の時系列表示を実装。デスクトップの <strong>memory graph</strong>（トップダウンの放射状タイムライン）と組み合わせて、エージェントの記憶が初めて可視化・編集可能に (#55555, #55859, #55226)</li>
+  <li><strong>バックグラウンド fan-out</strong>: <code>delegate_task</code> が複数の subagents を background で並列起動し、全完了後に1つの統合ターンで結果を返す。チャットをブロックせず、fleet を並行稼働させられる (#49734)</li>
+  <li><strong>デスクトップアプリの第一級 Projects</strong>: profile ごとの codebases サイドバー、coding rail、review pane、git worktree 管理、<code>project → repo → lane</code> モデル backed の agent 向き project ツール。散在する chat セッションから「coding cockpit」へ (#49037, #54385, #54517)</li>
+  <li><strong>gateway の scale-to-zero + drain 協調</strong>: アイドル時の dormant 状態化、restart / migration / auto-update 前の quiesce、in-flight 会話を落とさない外部 drain 調整。ホスト/リレー運用が production-grade に (#52243, #52937, #54824)</li>
+  <li><strong><code>/prompt</code> で <code>$EDITOR</code> 上の長文プロンプト作成</strong>: 1行入力欄と格闘せず markdown で詳細 spec や大量 paste を編集して queue 投入 (#50509)</li>
+  <li><strong>Google Vertex AI first-class provider</strong>: Vertex の OpenAI 互換 endpoint で Gemini を利用可能に。短命の OAuth2 access token を service-account JSON または ADC から自動 mint & refresh し、静的 API key 不要で稼働 (#56363)</li>
+  <li><strong>より安価な自己改善</strong>: post-turn の学習フォークが auxiliary model にルーティングされ、会話全体を再再生せず context digest を処理し、cadence も適応化。本モデル価格の何分の一かで自己改善を維持 (#49252)</li>
+</ul>
+
+<h3>🔒 セキュリティ強化</h3>
+<ul>
+  <li>MCP 設定の永続化攻撃表面を hardening</li>
+  <li>provider 認証情報を exfil しうる cron <code>base_url</code> override を block</li>
+  <li>ファイル読み取り時の prefix secrets に non-reusable sentinel を適用</li>
+  <li>Slack app-level (<code>xapp-</code>) トークン redaction</li>
+  <li>全 backend で browser cloud-metadata floor を強制（CDP non-local）</li>
+  <li>lazy messaging path 全体で <code>aiohttp</code> の CVE floor を適用</li>
+  <li>内部的に共有される guild 設定 / browser state が他セッションに意図せず流れないよう <code>CLAUDE_CLIENT_PRESENCE_FILE</code> 的な isolation を強化 (#50476, #56196, #54166, #56227, #52349, #56237)</li>
+</ul>
+
+<h3>📱 その他主要トピック</h3>
+<ul>
+  <li><strong>Telegram</strong>: command menu と cap の既定引き上げ、rich draft preview の別 gate 化、send pool timeout 時の drain→retry (#51716, #52088, #54121)</li>
+  <li><strong>Slack</strong>: Block Kit rendering の opt-in、<code>--no-assistant</code> manifest 生成 flag (#56102, #51487)</li>
+  <li><strong>Discord</strong>: reasoning を <code>-#</code> subtext で描画する <code>display.reasoning_style</code> (#51168)</li>
+  <li><strong>WhatsApp</strong>: Baileys bridge 経由の native media delivery (#53598)</li>
+  <li><strong>Signal</strong>: AAC voice-note remux + 共有 markdown formatting (#49530)</li>
+  <li><strong>Cron</strong>: continuable cron jobs（thread-preferred continuation + DM-mirror fallback）、Slack 向け flat in-channel continuation (#52250, #56254, #51696)</li>
+  <li><strong>kanban / plugin / LSP</strong>: task lifecycle hooks、typed block reasons + unblock-loop breaker、<code>ctx.profile_name</code>、PowerShellEditorServices language server、mem0 v3 API + OSS mode + update/delete ツール</li>
+  <li><strong>Performance</strong>: gateway platform adapter の lazy-load、config + plugin manifest の libyaml <code>CSafeLoader</code> parse、FTS5 segment merge と <code>handoff_state</code> index で write-lock contention を抑制</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">Hermes Agent v0.18.0 (v2026.7.1) Release Note</a> · <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — 対象期間内に新規リリースなし</h2>
+<p>OpenClaw の GitHub Releases Atom feed では、本号の24時間枠内に新規 publish された release タグは確認されませんでした。最新リリースは引き続き <strong>v2026.6.11</strong>（公開 <code>2026-06-30T16:06:39Z</code> = <strong>2026-07-01 01:06:39 JST</strong>、stable チャンネル昇格版）で、前号の24時間枠で既報です。Atom エントリの <code>&lt;updated&gt;</code> が <code>2026-07-01T01:45:07Z</code>（= 7/1 10:45 JST）に更新されているものの、これはリリースノート本文の編集によるもので、新規タグ発行を意味しません。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — v16.2.10 (stable) リパブリッシュ + canary 2本</h2>
+<p>対象期間内に stable チャンネルと canary チャンネル双方で publish を確認しました。stable は <code>@next/swc-wasm-web</code> の再発行のみで機能差分なしのリパブリッシュ、canary は routine リリースです。</p>
+
+<h3>✨ 新規 publish（対象期間内）</h3>
+<ul>
+  <li><strong>v16.2.10</strong>（publish <code>2026-07-01T20:13:14Z</code> = <strong>2026-07-02 05:13:14 JST</strong>）: npm <code>latest</code> タグの stable。<code>@next/swc-wasm-web</code> が <strong>v16.2.4</strong> 以降誤って publish されていなかった問題を修正するための再発行のみで、機能差分はなし</li>
+  <li><strong>v15.5.20</strong>（publish <code>2026-07-01T21:07:16Z</code> = <strong>2026-07-02 06:07:16 JST</strong>）: 15.x 系バックポート版。同様に <code>@next/swc-wasm-web</code> の再発行のみ（v15.5.15 以降誤発行分の回復）</li>
+  <li><strong>v16.3.0-canary.73</strong>（publish <code>2026-07-01T16:33:19Z</code> = <strong>2026-07-02 01:33:19 JST</strong>）: routine canary</li>
+  <li><strong>v16.3.0-canary.74</strong>（publish <code>2026-07-01T23:44:23Z</code> = <strong>2026-07-02 08:44:23 JST</strong>）: routine canary。枠末ぎりぎりの公開</li>
+</ul>
+<p>※ <strong>v16.2.9</strong>（6/9 公開）から <strong>v16.2.10</strong> への stable アップデートは実質パッケージ欠損の是正のみであり、 Stable ユーザは <code>npm install next@latest</code> で wasm 向け配布物が補完されます。意味のある stable 機能追加は引き続き次の <strong>v16.3.x</strong> 正式リリース待ちです。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a> · <a href="https://www.npmjs.com/package/next" target="_blank" rel="noopener noreferrer">npm registry</a></p>
+
+<hr>
+
+<h2>🐍 Anthropic SDK Python — v0.115.1（小型修正）</h2>
+<p>対象期間内に <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.115.1"><strong>v0.115.1</strong></a> が publish されました（Atom エントリ <code>updated: 2026-07-01T21:54:06Z</code> = <strong>2026-07-02 06:54:06 JST</strong>）。内容はチャンク的な chore のみで、コード変更の実害は小さいものの対象期間内の新規エントリなので記録します。</p>
+
+<h3>🐛 修正</h3>
+<ul>
+  <li><strong>api: 一部の非機能型を SDK から削除</strong>（commit <code>5e7c431ef31b72b3f1f59902e678316fea14d983</code>）</li>
+</ul>
+<p>なお、前号で既報の <strong>v0.115.0</strong>（Managed Agents の event delta streaming 等）と <strong>v0.114.0</strong>（claude-sonnet-5 サポート）に続くマイナーリリースです。</p>
+
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases" target="_blank" rel="noopener noreferrer">anthropic-sdk-python Releases</a></p>
+
+<hr>
+
+<h2>🅰️ Anthropic — Claude Fable 5 / Mythos 5 の再配信開始</h2>
+<p>Anthropic のニュースルームで「<a href="https://www.anthropic.com/news/redeploying-fable-5"><strong>Redeploying Fable 5</strong></a>」が <strong>2026-07-01 付</strong>で公開されました。米国政府の輸出規制により <strong>6/12</strong> に全ユーザ向けに suspend されていた <strong>Claude Fable 5</strong> と <strong>Claude Mythos 5</strong> のアクセス回復を告げるもので、<strong>7/1</strong> から Fable 5 が Claude Platform / Claude.ai / Claude Code / Claude Cowork で全球配信、Pro / Max / Team / 一部 Enterprise 向けには 7/7 まで週次利用枠の最大50% として組み込まれます（以降 usage credits 移行）。AWS・Google Cloud・Microsoft Foundry でも順次再有効化されます。</p>
+
+<h3>要点</h3>
+<ul>
+  <li><strong>背景</strong>: Fable 5/Mythos 5 は 6/9 リリース。6/12 に Amazon 研究者の報告（Fable 5 の safety classifier を迂回して脆弱性を示せる件）を契機に輸出規制が発動し、全ユーザで利用停止に</li>
+  <li><strong>新 safety classifier</strong>: Amazon 報告の bypass を <strong>99% 超</strong>で block するよう retraining。block 時は Opus 4.8 へフォールバック通知</li>
+  <li><strong>Mythos 5</strong>: 6/26 に政府承認を得た米国内一部組織へ先行回復済み。Glasswing プログラム経由で段階拡大</li>
+  <li><strong>業界共通の jailbreak severity framework</strong>: Amazon・Microsoft・Google 等 Glasswing パートナーとともに「capability gain / breadth of capability gain / ease of weaponization / discoverability」の4軸で severity 評価する共通基盤を草案中</li>
+  <li><strong>政府との深化協調</strong>: 国家_SECURITY_関連で能力 front を進めるモデルの事前評価アクセス、safeguard 情報の速やかな共有、専任 Anthropic チーム・計算資源割当による共同研究、業界共通の voluntary security/evaluation standard の策定寄与を確約</li>
+  <li><strong> 新 HackerOne プログラム</strong>: Fable 5 fog jailbreak 提出を受理（才）</li>
+</ul>
+
+<p>🔗 <a href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank" rel="noopener noreferrer">Redeploying Fable 5 — Anthropic</a> · <a href="https://www.anthropic.com/news" target="_blank" rel="noopener noreferrer">Anthropic Newsroom</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 7/1 付リリースノート更新</h2>
+<p>Google Cloud のリリースノートで <strong>2026年7月1日付</strong>の更新が公開されました。6/30 付の前号で既報の gcloud CLI 575.0.0 系続投下に続く、平日の製品アップデートまとめです。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>BigQuery ML — Connected Sheets での TimesFM モデル事前学習済み GA</strong>: <code>AI.FORECAST</code> と <code>AI.DETECT_ANOMALIES</code> 関数で予測・異常検知が Connected Sheets 経由で直接利用可能に</li>
+  <li><strong>BigQuery — Provisioned Throughput の複数保留注文 GA</strong>: 同モデル+同リージョンで最大7件の pending order を同時提出可能に</li>
+  <li><strong>[Spotlight Feature] Advanced BigQuery Export (Preview)</strong>: Google SecOps Enterprise Plus 向け。UDM events・rule detections・IoC matches に加え Entity Graph と Ingestion Metrics を export 対象に拡張。VPC-SC・CMEK・Data Residency (DRZ) を native support、Access Transparency 監査ログを Cloud Logging に直接配送、Fine-Grained DML merge で重複排除を実装。MSSP 向け hub-and-spoke モデルと enum mapping テーブルも追加</li>
+  <li><strong>Looker (Google Cloud core) — Release channels (preview) & 26.10</strong>: Rapid / Regular / No channel の3系統を選択可能に。最新 channel 番号は 26.10。Rapid は早期アクセスだが SLA 対象外、Regular は Accelerated Security Patching flag 付き</li>
+  <li><strong>Proofpoint Email Protection v8.0</strong>: quarantine mail 検索・削除・再送・移動の新 action を追加。Enrich Entities / Ping の backend script 実装も新 framework 対応</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ AWS — 今号の公式アップデート可視化対象なし</h2>
+<p>対象期間内の AWS News Blog で、本号で引用可能な新規個別発表は確認されませんでした。AWS Summit New York 週（前号および前々号で既報）の一連の発表（EC2 C9g/C9gd、CloudFormation Express mode、Lambda MicroVMs、ECS 高解像度メトリクス、ACME サポート等）はブログトップに継続掲載中ですが、本号24時間枠（7/1 09:00 JST 〜 7/2 09:00 JST）の新規性は確認できませんでした。直近の <strong>AWS Weekly Roundup (June 29, 2026)</strong>（公開 <code>Mon, 29 Jun 2026 16:30:30 UTC</code> = <strong>6/30 01:30:30 JST</strong>）は前号で既報済みで、次回 Weekly Roundup は <strong>7/6（月）</strong> 予定です。</p>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/" target="_blank" rel="noopener noreferrer">AWS News Blog</a> · <a href="https://aws.amazon.com/blogs/aws/tag/week-in-review/" target="_blank" rel="noopener noreferrer">Week in Review</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 今号の公式アップデート可視化対象なし</h2>
+<p>対象期間内の Azure Updates / Microsoft Azure Blog で、本号で引用可能な新規個別発表は確認されませんでした。Azure Updates ページの最新エントリは引き続き6/22週のものが多く、Microsoft Azure Blog トップに並ぶ代表記事は Build 2026 関連（前々号で既報）および「Claude Fable 5 available today in Microsoft Foundry」等が継続表示されていますが、本号24時間枠での新規 publish 日付を持つ個別発表は確認できませんでした。次回 Azure の週次まとめは週明けに公開される見込みです。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a> · <a href="https://azure.microsoft.com/en-us/blog/" target="_blank" rel="noopener noreferrer">Azure Blog</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（npm 最新は引き続き <strong>19.2.7</strong>、6/1 公開のままで本号枠内に stable/experimental タグ付きリリース発表なし。Atom フィード最新エントリも v19.2.7 のまま）、<strong>Spring Boot</strong>（最新 <strong>v3.5.16</strong> 6/25 公開で前号で既報、今号24時間内に追加リリースなし）、<strong>Hono</strong>（<strong>v4.12.27</strong> 6/23 公開、前号で既報、追加分なし）、<strong>Python / Cython</strong>（3.14.6 / 3.13.14 は 6/10 付で以後なし、次回 CPU は 7/21 予定）、<strong>Django</strong>（最新安定版は 6.0.6 の 6/3 付のまま、<code>6.1b1</code> 6/24 公開で前号で既報、今号新規性なし）、<strong>Java / JDK</strong>（次回 CPU は 7/21 予定）、<strong>NestJS</strong>（最新 <strong>v11.1.27</strong> 6/15 公開のまま）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
