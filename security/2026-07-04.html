@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-04 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-04 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-03 08:00 〜 2026-07-04 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 -->
+<h2>🔴 スタック関連</h2>
+
+<!-- Microsoft Azure OpenAI SSRF CVE-2026-45499 -->
+<h3>1. Microsoft Azure OpenAI — SSRF 経由の権限昇格 (CVE-2026-45499) <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45499 — Azure OpenAI Server-Side Request Forgery（CWE-918）。CVSS 3.1 <strong>9.9</strong>（AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 公開: 2026-07-02 19:16 EDT = <strong>2026-07-03 08:16 JST</strong>（本対象期間内）。CVE Brief Friday 掲載</td></tr>
+  <tr><td><strong>影響</strong></td><td>Azure OpenAI サービスに認証済みの攻撃者が SSRF を介して権限を昇格。CVSS 9.9 の Critical 相当（機密性・完全性・可用性すべて High、スコープ Change）</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ未提供（0%）。Microsoft Security Response Center の案内に従い、補完的対策を実施</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45499" target="_blank" rel="noopener noreferrer">Microsoft 公式 advisory</a> より、Azure OpenAI における Server-Side Request Forgery（SSRF）脆弱性。認証済みの authorized attacker がネットワーク経由で特権昇格を達成可能。CVSS 9.9 と非常に高スコアであり、AI/ML 基盤としての Azure OpenAI を運用する組織は即座に対応が必要</li>
+  <li><strong>対応</strong> — 公開時点でベンダーパッチなし。Microsoft のセキュリティガイダンスを監視し、ネットワークセグメンテーション・アクセス制限などの補完的対策を実施。Azure OpenAI エンドポイントへのアクセスを必要最小限に</li>
+  <li>〈Azure スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45499" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-45499</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45499" target="_blank" rel="noopener noreferrer">MSRC Advisory</a></p>
+
+<hr>
+
+<!-- Microsoft Entra SSRF CVE-2026-57100 -->
+<h3>2. Microsoft Entra Provisioning Service (SyncFabric) — SSRF 権限昇格 (CVE-2026-57100) <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-57100 — Microsoft Entra Provisioning Service (SyncFabric) SSRF（CWE-918）。CVSS 3.1 <strong>9.9</strong>（AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 公開: 2026-07-02 19:16 EDT = <strong>2026-07-03 08:16 JST</strong>（本対象期間内）。CVE Brief Friday 掲載</td></tr>
+  <tr><td><strong>影響</strong></td><td>Microsoft Entra Provisioning Service（SyncFabric）の SSRF により、認証済み攻撃者が権限昇格を達成可能。ID プロビジョニング基盤への攻撃経路となりうる</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ未提供（0%）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Microsoft Entra Provisioning Service（SyncFabric）に SSRF 脆弱性が発見され、CVSS 9.9 が割り当てられた。Entra ID のプロビジョニングパイプラインを標的にした権限昇格攻撃が理論上可能</li>
+  <li><strong>対応</strong> — ベンダーパッチの公開を監視。Entra テナントの監査ログ強化、ネットワークアクセス制限の見直しを推奨</li>
+  <li>〈Azure スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-57100" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-57100</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57100" target="_blank" rel="noopener noreferrer">MSRC Advisory</a></p>
+
+<hr>
+
+<!-- CVE Brief Friday July 3 roundup -->
+<h3>3. CVE Brief Friday (7/3) — Critical <strong>34 件</strong>（前日比 +21%）・Microsoft クラウドと WooCommerce プラグインに集中 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-07-03（Friday Brief、木曜 7/2 公開分を curation）。本対象期間内</td></tr>
+  <tr><td><strong>Critical CVE</strong></td><td><strong>34 件</strong>（前日 28 件から +21%）。Microsoft クラウドサービスに集中 — Azure OpenAI SSRF（CVE-2026-45499, CVSS 9.9）、Microsoft Entra Provisioning Service SSRF（CVE-2026-57100, CVSS 9.9）、Microsoft 365 Copilot Open Redirect（CVE-未詳細）、Microsoft Exchange Online 権限昇格、Microsoft Edge UAF</td></tr>
+  <tr><td><strong>High CVE</strong></td><td>78 件（前日から変わらず）</td></tr>
+  <tr><td><strong>WordPress/WooCommerce</strong></td><td>Divi Form Builder（CVE-2026-5524, CVSS 9.8 未認証 RCE）、Novalnet Payment Gateway（PHP Object Injection）、Printcart（任意ファイル削除）、Blocksy Companion Pro（未認証 RCE）など多数</td></tr>
+  <tr><td><strong>能動的悪用 (KEV)</strong></td><td>2 件継続 — SimpleHelp CVE-2026-48558（OIDC 認証バイパス）、Microsoft Office SharePoint（Insecure Deserialization）</td></tr>
+  <tr><td><strong>その他注目</strong></td><td>WatchGuard Fireware OS（use-after-free RCE x4、OOB write x4 など 8 件）、Ubiquiti UniFi シリーズ（複数）、Google Chrome（V8 UAF、ANGLE OOB、Skia ）、Apache Lucene パストラバーサル ×2、HPLIP 整数オーバーフロー、Apereo CAS 暗号化欠陥、SUSE Rancher Fleet Helm テナント認証情報漏洩、MLflow 脆弱性、Weaviate 脆弱性</td></tr>
+  <tr><td><strong>傾向</strong></td><td>Microsoft クラウドサービス（Azure OpenAI, Entra, 365 Copilot, Exchange Online）への攻撃経路が急増。WooCommerce エコシステムのプラグイン脆弱性が継続。Google Chrome のグラフィック系コンポーネント（ANGLE, Skia, Dawn）への OOB 多発。全体の 0% が公開時点でパッチ未提供</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief Friday 7/3 は Critical CVE 34 件と前日から 21% 増加。主軸は Microsoft クラウドサービス（Azure OpenAI, Entra, 365 Copilot, Exchange Online）の SSRF/認証脆弱性と、WordPress/WooCommerce エコシステムのプラグイン脆弱性。WatchGuard Fireware OS に 8 件の Critical/High 脆弱性が集中的に公表された点も注目</li>
+  <li><strong>Microsoft クラウド詳細</strong> — Azure OpenAI SSRF（CVE-2026-45499, CVSS 9.9）は authorized attacker がネットワーク経由で権限昇格。Microsoft Entra Provisioning Service SSRF（CVE-2026-57100, CVSS 9.9）は SyncFabric パイプライン経由で同様の影響。Microsoft 365 Copilot の open redirect は不正利用者による権限昇格のトリガーとなりうる。Microsoft Exchange Online も incorrect authorization により権限昇格</li>
+  <li><strong>WordPress/WooCommerce 詳細</strong> — Divi Form Builder の arbitrary file upload（CVE-2026-5524, CVSS 9.8）は未認証 RCE を許す。Novalnet Payment Gateway と Booktics は PHP Object Injection。Printcart は任意ファイル削除。Blocksy Companion Pro も未認証 RCE。WooCommerce ストアを運用する組織は即時プラグインアップデートと露出制限を推奨</li>
+  <li><strong>Google Chrome</strong> — V8 use-after-free、ANGLE（heap buffer overflow, OOB write, 未初期化メモリ使用、入力検証不備）、Skia（heap buffer overflow, integer overflow, 入力検証不備）、Dawn（入力検証不備）、Tint（OOB read/write）など広範。Chrome 150 系列への更新を推奨</li>
+  <li><strong>Apache Lucene（Java スタック）</strong> — Apache Lucene に 2 件の path traversal 脆弱性が公表。制限ディレクトリ外へのアクセスを許し、機密ファイル露呈のリスク。Java ベースの検索基盤を運用する組織は対応を検討</li>
+  <li><strong>能動的悪用</strong> — SimpleHelp（OIDC 認証バイパス、CVE-2026-48558）と Microsoft Office SharePoint（Insecure Deserialization）は引き続き CISA KEV で active exploitation 確認状態</li>
+  <li>〈Azure OpenAI は Azure スタック、Microsoft Entra は Azure/AWS/GCP の ID 基盤間接関連、Exchange Online は Web スタック、Apache Lucene は Java/SpringBoot 関連、WooCommerce は Web/WordPress 関連、Google Chrome は Web/React/Next.js のブラウザ基盤として関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 3, 2026（Friday）</a></p>
+
+<hr>
+
+<h3>4. Apache Lucene — パストラバーサル脆弱性 ×2 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>Apache Lucene に 2 件の path traversal 脆弱性（CWE-22）。詳細 CVE ID は CVE Brief Friday 掲載時点で未特定。影響を受けるバージョン・CVSS スコアは vendor advisory を確認中</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-07-03（CVE Brief Friday 掲載）</td></tr>
+  <tr><td><strong>影響</strong></td><td>制限ディレクトリ外への不正アクセスを許し、機密システムファイルが露呈する可能性</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ未提供。Apache ソフトウェア財団の advisory を監視</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で悪用確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Java ベースの全文検索ライブラリ Apache Lucene に 2 件の path traversal 脆弱性が CVE Brief Friday で報告された。Lucene を利用するアプリケーション（Elasticsearch, Solr 等を含む）に影響する可能性がある</li>
+  <li><strong>対応</strong> — Apache の公式 advisory を監視し、パッチ公開後速やかに適用。ファイルアクセス制御とパーミッション設定の見直しを推奨</li>
+  <li>〈Java/SpringBoot スタックに直接関連。Elasticsearch/Solr 経由で Web/Next.js スタックにも間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 3, 2026（Friday）</a></p>
+
+<hr>
+
+<!-- 他スタックの empty-notice -->
+<p class="empty-notice">Hermes Agent / Next.js / React / Python / Django / Hono / GCP / SpringBoot / Claude Code について、本対象期間（2026-07-03 08:00 〜 2026-07-04 08:00 JST）で直接関連する新規 CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>
+<strong>Hermes Agent</strong> — v0.18.0 (v2026.7.1) が 2026-07-01 に公開済み（前日号で詳報）。本対象期間中の新規リリース・セキュリティ修正は確認されませんでした。v0.18.0 に含まれる credential-exfil hardening / MCP-config persistence attack surface / aiohttp CVE floor / browser cloud-metadata floor / IDOR 修正などは引き続き有効です。<br>
+<strong>Claude Code</strong> — 本対象期間中の新規セキュリティアップデートは確認されませんでした。<br>
+<strong>OpenClaw</strong> — 2026.7.1-beta.1 が 2026-07-02 公開済み（前日号で詳報）。本対象期間中の新規リリースは確認されませんでした。<br>
+<strong>GCP</strong> — 本対象期間中の新規セキュリティアドバイザリは確認されませんでした（Vertex AI provider 追加は Hermes Agent v0.18.0 の新機能であり、GCP 側の脆弱性ではありません）。<br>
+<strong>Azure</strong> — 上記 Azure OpenAI SSRF / Entra SSRF に加え、本対象期間中の他の新規アドバイザリは確認されませんでした。<br>
+<strong>AWS</strong> — 本対象期間中の新規セキュリティアドバイザリは確認されませんでした。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🟠 Microsoft Azure OpenAI & Entra — 2 件の CVSS 9.9 SSRF（パッチ未公開） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45499（Azure OpenAI SSRF）· CVE-2026-57100（Entra Provisioning Service SSRF）</td></tr>
+  <tr><td><strong>影響</strong></td><td>両脆弱性とも authorized attacker が SSRF 経由で権限昇格可能。Azure OpenAI は AI/ML 基盤への攻撃経路、Entra は ID プロビジョニング基盤への攻撃経路</td></tr>
+  <tr><td><strong>パッチ状況</strong></td><td>公開時点（2026-07-03 JST）でパッチ未提供</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Microsoft クラウドに CVSS 9.9 の SSRF 脆弱性が 2 件同時公開。Azure OpenAI（CVE-2026-45499）と Entra Provisioning Service（CVE-2026-57100）の両方で、認証済み攻撃者が Server-Side Request Forgery を介して特権昇格を達成できる。CVSS 9.9（Critical）はスコープ Change（組織横断的影響）を含む厳しい評価</li>
+  <li><strong>Azure OpenAI 影響</strong> — AI ワークロードを Azure OpenAI で運用する組織では、当該エンドポイントへのアクセス制御とネットワークセグメンテーションを至急見直すこと。パッチ公開前の補完的対策として、Azure Policy での制限や Private Endpoint の利用を検討</li>
+  <li><strong>Entra 影響</strong> — Entra Provisioning Service は ID ライフサイクル管理の中核。SyncFabric パイプラインへの攻撃はテナント全体の ID 基盤に波及するリスクがある。プロビジョニングログの異常監視を強化</li>
+  <li>〈Azure スタック全体への影響が大きいトレンドインシデント〉</li>
+</ul>
+
+<p>🔗 <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45499" target="_blank" rel="noopener noreferrer">MSRC — CVE-2026-45499</a> · <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57100" target="_blank" rel="noopener noreferrer">MSRC — CVE-2026-57100</a></p>
+
+<hr>
+
+<h3>🟠 SimpleHelp CVE-2026-48558 & SharePoint Insecure Deserialization — KEV active exploitation 継続 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>SimpleHelp</strong></td><td>CVE-2026-48558 — OIDC 認証バイパスにより未認証攻撃者が token を偽造し technician 権限を取得可能。CISA KEV active exploitation 確認中（継続）</td></tr>
+  <tr><td><strong>SharePoint</strong></td><td>Insecure Deserialization — authorized attacker が任意コード実行可能。CISA KEV active exploitation 確認中（継続）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief Friday 7/3 でも active exploitation 確認済みとしてリストされた 2 件。SimpleHelp は OIDC フローの認証バイパスにより MFA 回避が可能。SharePoint は引き続き insecure deserialization 経由のコード実行が悪用中</li>
+  <li><strong>対応</strong> — SimpleHelp は 2026-07-02 が KEV の due date であったが、引き続き悪用が確認されている。パッチ未適用の場合は直ちにアップデートを。SharePoint も同様にパッチ適用状況を確認</li>
+  <li>〈SimpleHelp はリモートサポートツールとして Web/IT スタック間接関連。SharePoint は Web/Microsoft スタック関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></p>
+
+<hr>
+
+<h3>🟠 WatchGuard Fireware OS — 8 件の Critical/High 脆弱性（IKEv2 RCE, OOB Write など） <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>影響製品</strong></td><td>WatchGuard Fireware OS（全バージョン影響範囲確認中）</td></tr>
+  <tr><td><strong>脆弱性</strong></td><td>IKEv2 Mobile VPN use-after-free race condition（未認証 RCE）、null pointer dereference（DoS）、OOB write ×4（networkd, CLI, ikestubd, wgagent）、path traversal（Management Web UI ファイル書き込み）、firmware validation bypass（バックアップ/リストア経由のコード実行）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>CVE Brief Friday 7/3 掲載</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation は確認されていないが、IKEv2 RCE（未認証）の影響は甚大</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — WatchGuard Fireware OS に合計 8 件の Critical/High 脆弱性が CVE Brief Friday で一斉公表。特に IKEv2 Mobile VPN の use-after-free race condition（未認証 RCE）は CVSS 上でも Critical クラス。OOB write 群はいずれも authenticated privileged user が必要だが、Management Web UI 経由の path traversal はファイル書き込みによる権限昇格が可能</li>
+  <li><strong>対応</strong> — WatchGuard 公式のパッチ公開を待つ。IKEv2 VPN エンドポイントへのアクセス制限（IP 制限・証明書認証など）を推奨。Management Web UI は管理ネットワークのみに露出を制限</li>
+  <li>〈ネットワークセキュリティ基盤として全スタックに間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 3, 2026（Friday）</a></p>
+
+<hr>
+
+<h3>🟠 WordPress/WooCommerce エコシステム — Divi Form Builder RCE 他 多数 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>Divi Form Builder</strong></td><td>CVE-2026-5524 — 任意ファイルアップロードによる未認証 RCE（CVSS 9.8）</td></tr>
+  <tr><td><strong>Novalnet Payment Gateway</strong></td><td>PHP Object Injection — 未認証 RCE</td></tr>
+  <tr><td><strong>Printcart WooCommerce</strong></td><td>未認証任意ファイル削除</td></tr>
+  <tr><td><strong>Blocksy Companion Pro</strong></td><td>未認証 RCE</td></tr>
+  <tr><td><strong>その他</strong></td><td>Booktics PHP Object Injection、Auto_Bangumi ハードコード認証情報、Dockwatch OS コマンドインジェクション、W3 Total Cache 未認証 RCE、他多数</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief Friday 7/3 で WordPress/WooCommerce エコシステムに多数の Critical/High 脆弱性が集中。特に Divi Form Builder（CVSS 9.8）は未認証での任意ファイルアップロード → RCE が可能で、WooCommerce ストアを運用するサイトに甚大な影響を与える</li>
+  <li><strong>対応</strong> — 公開時点でパッチ未提供。該当プラグインを使用しているサイトでは、プラグインの無効化・ファイアウォールルールでの保護を検討。WooCommerce ストアでは管理画面の IP 制限とファイルアップロード制限を強化</li>
+  <li>〈Web/WordPress スタックに直接関連。Next.js/React スタックのヘッドレス WooCommerce 構成にも間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 3, 2026（Friday）</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
