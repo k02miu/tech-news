@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-03 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-03 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-02 09:00 〜 2026-07-03 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.198</h2>
+<p>対象期間内（RSS <code>pubDate: Thu, 02 Jul 2026 00:31:39 GMT</code> = <strong>2026-07-02 09:31:39 JST</strong>）に <strong>v2.1.198</strong> が公開されました。本リリースは「Claude in Chrome」のGA化を筆頭に、バックグラウンドエージェント通知、<code>/dataviz</code> スキル、Gatewayの新プロバイダ対応、そして多数の安定性修正を含むバランスの取れたアップデートです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude in Chrome が GA に</strong>: Chrome ブラウザ内で Claude Code を利用可能に</li>
+  <li><strong>バックグラウンドエージェント通知</strong>: <code>claude agents</code> で、入力を要するセッションや完了したセッションが <code>Notification</code> フック（<code>agent_needs_input</code> / <code>agent_completed</code>）を発火するようになりました</li>
+  <li><strong><code>/dataviz</code> スキル追加</strong>: チャート・ダッシュボードデザインのガイダンスとカラーパレットバリデーターを提供する新スキル</li>
+  <li><strong>Gateway: Claude Platform on AWS (anthropicAws) をアップストリームプロバイダに追加</strong>: model-not-found 時は自動でフェイルオーバーチェーンを進める</li>
+  <li><strong>バックグラウンドエージェントが自動で draft PR を作成</strong>: コード作業完了後に確認を求めず、自動で commit → push → draft PR を開く</li>
+  <li><strong>Explore エージェントがメインセッションのモデルを継承</strong>（上限 opus）：従来は haiku で動作していたものが改善</li>
+  <li><strong>サブエージェント・コンテキスト圧縮が extended thinking 設定を継承</strong>: 委譲タスクの出力品質が向上</li>
+  <li><strong>フォーカスモード改善</strong>: ターン内で起動されたサブエージェントがアクティビティサマリーに表示され、完了したバックグラウンド通知は1カウントに集約</li>
+  <li><strong>highlight.js 11 へのアップグレード</strong>: コードブロック、diff、ファイルプレビューのシンタックスハイライト精度が向上</li>
+  <li><strong>キーボードショートカットヒント改善</strong>: Mac から SSH 経由で接続時は alt/super ではなく opt/cmd を表示</li>
+  <li><strong>サブエージェントのメッセージ処理改善</strong>: 起動元のエージェントからのメッセージを通常のタスク指示として扱う（ユーザーの承認としては扱わない）</li>
+  <li><strong><code>/agents</code> ウィザード削除</strong>: エージェント管理は直接依頼するか <code>.claude/agents/</code> を編集</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>応答中のネットワーク瞬断（ECONNRESET 等）をバックオフリトライで回復するよう改善</li>
+  <li>サンドボックスプロセスが同一ホストに繰り返しアクセスする際の過剰な classifier リクエストを抑制</li>
+  <li>Web/Desktop/VS Code のタスクパネルでバックグラウンドタスクが "Running" でスタックする問題を修正</li>
+  <li>エージェントチーム: API エラーで停止したチームメイトが leader に "failed" を報告するよう改善、スタックしたチームメイトへのメッセージ送信で即座にリトライ起動</li>
+  <li><code>/diff</code> パネルが外部でのブランチ切り替えやコミット後に更新されない問題を修正</li>
+  <li>フルスクリーン表示でのマークダウンテーブル右ボーダーのはみ出しを修正</li>
+  <li>STS トークン期限切れ時の Claude Platform on AWS / Mantle セッション停止問題を修正（<code>awsAuthRefresh</code> 自動実行）</li>
+  <li>macOS のバックグラウンドエージェントセッションで Local Network entitlements が原因でローカルネットワークホストに到達できない問題を修正</li>
+  <li><code>/desktop</code> が worktree 出入り後に "Cannot determine working directory" で失敗する問題を修正</li>
+  <li>macOS で agents ビューが開いている間、バックグラウンドエージェントが約52秒ごとに "Reconnecting…" を表示する問題を修正</li>
+  <li><code>.claude/rules/</code> の条件付きルールがシンボリックリンク経由で参照されたファイルに対して読み込まれない問題を修正</li>
+  <li>フルスクリーンモード（Warp on macOS）で Cmd+click が URL を開かない問題を修正</li>
+  <li>API リトライ UX 改善: 2回目の試行後にエラー理由を表示、API 過負荷時はスピナーヒントの代わりにステータスページリンクを表示</li>
+</ul>
+
+<h3>🔒 セキュリティ修正</h3>
+<ul>
+  <li>複数のクラッシュ・セキュリティ改善（上記ネットワーク・認証関連含む）</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-198" target="_blank" rel="noopener noreferrer">Claude Code v2.1.198 Changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml" target="_blank" rel="noopener noreferrer">RSS</a></p>
+
+<hr>
+
+<h2>🤖 Hermes Agent — 対象期間内に新規リリースなし</h2>
+<p>本号の24時間枠内（2026-07-02 09:00 JST 〜 2026-07-03 09:00 JST）に公開された Hermes Agent の新規リリースは確認されませんでした。最新リリースは引き続き <strong>v0.18.0「The Judgment Release」(v2026.7.1)</strong>（公開 2026-07-01、前号で既報）です。P0/P1 完全撲滅、Mixture-of-Agents の第一級モデル化、<code>/goal</code> 完了契約、<code>/learn</code> / <code>/journey</code> による自己改善の可視化など、大規模リリースの詳細は前号をご参照ください。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a></p>
+
+<hr>
+
+<h2>🐙 OpenClaw — v2026.7.1-beta.1（プレリリース）</h2>
+<p>対象期間内（公開 <strong>2026-07-02T07:25:49Z</strong> = <strong>2026-07-02 16:25:49 JST</strong>）に、<strong>openclaw 2026.7.1-beta.1</strong> がプレリリースとして公開されました。GPT-5.6 サポートを筆頭に、CLI の新コマンド、Telegram Codex 連携、イベント駆動 cron、ネイティブアプリの刷新、iMessage 投票機能など、幅広い強化を含みます。</p>
+
+<h3>✨ 新機能・改善</h3>
+<ul>
+  <li><strong>OpenAI GPT-5.6 サポート</strong>: モデルカタログ、能力検出、ランタイム選択の全パスで GPT-5.6 ファミリーを認識 (#98333)</li>
+  <li><strong><code>openclaw attach</code></strong>: 既存の Gateway セッションに外部ハーネスをアタッチ。Codex スタイルの対話的ワークフローの再開・検査が容易に (#96454)</li>
+  <li><strong>Telegram Codex ワークフロー</strong>: Telegram から <code>/login</code> で Codex ペアリング開始、アクティブな Codex 実行のステアリング、API 障害からの最終応答リカバリ (#98006, #98126, #98786)</li>
+  <li><strong>イベント駆動 cron</strong>: 新 <code>on-exit</code> スケジュール種別 — 監視対象コマンドの終了時にエージェントを起動。セッションターゲット実行はデタッチ可能 (#92037, #98755)</li>
+  <li><strong>ネイティブアプリ全面刷新</strong>: iOS が iOS 26 ビジュアルシステムに対応（Liquid Glass）。ナビゲーション、設定、Chat/Talk、オンボーディングフローを一新。Apple/Android 両面でローカライゼーション拡充 (#98452, #98736, #98811, #97110-97113)</li>
+  <li><strong>iMessage ネイティブ投票</strong>: 投票の作成・閲覧・投票が iMessage 上でネイティブ動作 (#98421)</li>
+  <li><strong>スコープ付き会話（準備）</strong>: 能力プロファイルによる会話単位のツール・アクセス境界設定 (#98536)</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>Telegram の耐久性改善: イングレス要求の復旧、再起動で消えたメディアのリトライ、ポーリングエラーのサバイバル、poison update の dead-letter 化、リッチ転送テキストの保存、プラグインコールバックの正しいルーティング</li>
+  <li>エージェント・コンテキスト信頼性: ランタイムオーバーライドの永続化、<code>sessions_send</code> のフィードバックループ防止、ハーネス認識コンテキスト推定・圧縮プリチェックの改善</li>
+  <li>プロバイダ・ネットワーク安全性: Moonshot/MiniMax/Anthropic OAuth/Discord/Matrix/SMS/ブラウザ等、全パスでの過大・不正レスポンス読み取り制限</li>
+  <li>チャネル配信・ルーティング: Slack スレッド内応答の維持、アカウント単位の配送ルート保存、Nostr リレータイマーのクリア</li>
+  <li>Cron の正確性: タイムアウト時のプロバイダ・モデル選択保存、スタートアップキャッチアップ延期の保持、空の thinking オーバーライドのクリア</li>
+  <li>メモリ・セッション復旧: 未インデックス化トランスクリプトの検出、ノートの保存、Wiki 更新時のハンドエディット済み frontmatter 維持</li>
+  <li>Windows 実行情報: allowlist 実行パスの Windows パスへのバインド、<code>PATHEXT</code> 伝播、パスの大文字小文字無視正規化</li>
+</ul>
+
+<p><strong>222件のマージPR</strong> を含むプレリリースです。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.1-beta.1" target="_blank" rel="noopener noreferrer">OpenClaw v2026.7.1-beta.1 Release</a> · <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw Releases</a></p>
+
+<hr>
+
+<h2>⚡ Next.js — v16.3.0-canary.75</h2>
+<p>対象期間内に canary チャンネルの新規 publish を確認しました。安定版の更新はなく、引き続き <strong>v16.2.10</strong> が最新 stable です。</p>
+
+<h3>✨ 新規 publish（対象期間内）</h3>
+<ul>
+  <li><strong>v16.3.0-canary.75</strong>（publish <code>2026-07-02T09:45:52Z</code> = <strong>2026-07-02 18:45:52 JST</strong>）: ルーチン canary。Instant Navigation 関連の修正（ロック下の prefetch 再利用、<code>instant()</code> の耐障害性、テスト Cookie のリーク防止）、Turbopack の <code>#/</code> プレフィックス付き subpath import 対応 等</li>
+  <li><strong>v16.3.0-canary.76</strong>（publish <code>2026-07-03T00:04:49Z</code> = <strong>2026-07-03 09:04:49 JST</strong>）: 対象期間の4分後に公開されたため本号では詳細割愛、次号で正式扱い予定。React エコシステムのアップグレード、Instant Navigation のデプロイ対応、セグメント探索のプロトタイプ衝突修正等</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases" target="_blank" rel="noopener noreferrer">Next.js Releases</a></p>
+
+<hr>
+
+<h2>🐍 Anthropic SDK Python — v0.116.0</h2>
+<p>対象期間内（公開 <strong>2026-07-02T19:07:55Z</strong> = <strong>2026-07-03 04:07:55 JST</strong>）に <strong>v0.116.0</strong> が publish されました。API 定義の更新を伴うマイナーリリースです。</p>
+
+<h3>📦 変更内容</h3>
+<ul>
+  <li>OpenAPI スペックと SDK 設定の更新（Stainless SDK 経由の自動生成反映）</li>
+  <li>2 commits / 11 files changed</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.116.0" target="_blank" rel="noopener noreferrer">anthropic-sdk-python v0.116.0</a></p>
+
+<hr>
+
+<h2>☁️ AWS — EKS が Kubernetes バージョンロールバック機能を発表</h2>
+<p>AWS が <strong>Amazon EKS 向け Kubernetes バージョンロールバック</strong> を発表しました。本機能により、EKS クラスターのアップグレード後7日以内であれば、ワンクリックで以前の Kubernetes バージョンに戻すことが可能になります。Kubernetes のコントロールプレーンロールバックはこれまで不可能でしたが、EKS がこの制約を打破し、実質的な「元に戻す」ボタンを提供します。</p>
+
+<h3>🔧 主な特徴</h3>
+<ul>
+  <li><strong>7日間のロールバックウィンドウ</strong>: アップグレード後に互換性問題を発見した場合、7日以内に以前のバージョンに復元可能</li>
+  <li><strong>1マイナーバージョン単位のロールバック</strong>: アップグレードと同じ段階的アプローチ</li>
+  <li><strong>ロールバック準備チェック</strong>: Cluster Insights がノード互換性やアドオンの依存関係を自動評価し、安全にロールバック可能か事前確認</li>
+  <li><strong>EKS Auto Mode 対応</strong>: コントロールプレーンと管理ノードを同時にロールバック。Pod Disruption Budget を尊重し、中断を最小化</li>
+  <li><strong>キャンセルAPI</strong>: Auto Mode のノードロールバックは任意の時点でキャンセル可能</li>
+  <li><strong>追加コストなし</strong>: 標準の EKS 料金のみで利用可能</li>
+</ul>
+
+<p>🔗 <a href="https://aws.amazon.com/blogs/aws/upgrade-amazon-eks-clusters-with-confidence-using-kubernetes-version-rollbacks/" target="_blank" rel="noopener noreferrer">AWS News Blog: EKS Kubernetes Version Rollbacks</a> · <a href="https://aws.amazon.com/blogs/aws/" target="_blank" rel="noopener noreferrer">AWS News Blog</a></p>
+
+<hr>
+
+<h2>☁️ GCP — 7/2 付リリースノート更新</h2>
+<p>Google Cloud のリリースノートで <strong>2026年7月2日付</strong> の更新が公開されました。</p>
+
+<h3>✨ 主なアップデート</h3>
+<ul>
+  <li><strong>NetApp Volumes</strong>: Flex Unified サービスレベルで「クライアント接続中のボリューム削除防止」オプション機能をサポート。GCVE データストア利用時に必須。Flex Unified Default-mode で thick clone (thin clone split) 機能が Preview に</li>
+  <li><strong>Oracle Database@Google Cloud</strong>: Exadata on Dedicated Infrastructure および Exadata VM Clusters 向けに Exascale Storage Vaults が GA に</li>
+</ul>
+
+<p>🔗 <a href="https://cloud.google.com/release-notes" target="_blank" rel="noopener noreferrer">Google Cloud Release Notes</a></p>
+
+<hr>
+
+<h2>☁️ Azure — 今号の公式アップデート可視化対象なし</h2>
+<p>対象期間内の Azure Updates / Microsoft Azure Blog で、本号で引用可能な新規個別発表は確認されませんでした。Azure Updates ページの最新エントリは引き続き6月最終週のものが多く、新規の日付を持つ発表は確認できていません。次回の週次まとめは週明けに公開される見込みです。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates" target="_blank" rel="noopener noreferrer">Azure Updates</a></p>
+
+<hr>
+
+<h2>📋 その他スタック — サマリー</h2>
+
+<p class="empty-notice"><strong>React</strong>（npm 最新は引き続き <strong>19.2.7</strong>、6/1 公開のままで本号枠内に stable/experimental タグ付きリリース発表なし）、<strong>Spring Boot</strong>（最新 <strong>v3.5.16</strong> 6/25 公開、前号で既報、本号新規性なし）、<strong>Hono</strong>（<strong>v4.12.27</strong> 6/23 公開のまま）、<strong>Python / Cython</strong>（3.14.6 / 3.13.14 6/10 付で以後なし、次回 CPU は 7/21 予定）、<strong>Django</strong>（最新安定版 6.0.6 6/3 付のまま）、<strong>Java / JDK</strong>（次回 CPU は 7/21 予定）、<strong>NestJS</strong>（最新 <strong>v11.1.27</strong> 6/15 公開のまま）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
