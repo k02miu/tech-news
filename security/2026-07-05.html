@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-05 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-05 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-04 08:00 〜 2026-07-05 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 -->
+<h2>🔴 スタック関連</h2>
+
+<!-- Gitea 3 Critical CVEs -->
+<h3>1. Gitea — 3件のCritical脆弱性：リバースプロキシ偽装・SSRF・CI/CD改ざん <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>
+    CVE-2026-20896（CVSS 9.8）— リバースプロキシ認証ヘッダー経由のユーザー偽装（CWE-284）<br>
+    CVE-2026-22874（CVSS 9.6）— Webhook/マイグレーション allow-list の不完全な SSRF 保護<br>
+    CVE-2026-58426（CVSS 9.6）— Actions Artifacts V4 の HMAC 曖昧性によるクロスリポジトリ改ざん
+  </td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 公開: 2026-07-03（CVE-2026-20896 は Gitea Limited より 2026-07-03 17:16 UTC 受理）。CVE Brief 7/4 掲載。本対象期間内</td></tr>
+  <tr><td><strong>影響</strong></td><td>
+    CVE-2026-20896: Gitea Docker イメージ（〜1.26.2）が REVERSE_PROXY_TRUSTED_PROXIES=* をデフォルトとし、任意の送信元 IP から X-WEBAUTH-USER 等のヘッダーでユーザー偽装が可能（未認証）<br>
+    CVE-2026-22874: Webhook とマイグレーションの allow-list フィルタリングに不完全な SSRF 保護があり、内部サービスへの不正リクエストが可能<br>
+    CVE-2026-58426: Actions Artifacts V4 の署名付き URL の HMAC 検証に曖昧性があり、クロスリポジトリでのアーティファクト読み取り・クロスタスクでのアップロード状態書き換えが可能
+  </td></tr>
+  <tr><td><strong>修正</strong></td><td>
+    CVE-2026-20896: Gitea 1.26.3 で修正済み（<code>REVERSE_PROXY_TRUSTED_PROXIES</code> のデフォルト値変更）<br>
+    CVE-2026-22874 / CVE-2026-58426: 公開時点でパッチ未提供（0%）
+  </td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 7/4 で Gitea オープンソース Git サーバに 3 件の Critical 脆弱性が集中。CVE-2026-20896（CVSS 9.8）は Docker イメージのデフォルト設定に起因し、リバースプロキシ認証ヘッダーが有効な環境で未認証のユーザー偽装が可能。<a href="https://blog.gitea.com/release-of-1.26.3-and-1.26.4/" target="_blank" rel="noopener noreferrer">Gitea 1.26.3 で修正済み</a>だが、他の 2 件はパッチ未提供</li>
+  <li><strong>CI/CD リスク</strong> — CVE-2026-58426 は GitHub Actions 互換の Gitea Actions におけるアーティファクトの整合性を損なう。CI/CD パイプラインの成果物がクロスリポジトリで読み取られ、ビルドの完全性が脅かされる可能性</li>
+  <li><strong>対応</strong> — Gitea ユーザーは直ちに 1.26.3 以上へアップグレード。Docker 利用者は <code>REVERSE_PROXY_TRUSTED_PROXIES</code> を明示的に設定。2 件の未修正脆弱性については公式 advisory を監視</li>
+  <li>〈Web/Git ホスティングスタック（Go ベース）に直接関連。開発者インフラとして全スタックに間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-20896" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-20896</a> · <a href="https://github.com/go-gitea/gitea/security/advisories/GHSA-f75j-4cw6-rmx4" target="_blank" rel="noopener noreferrer">Gitea Advisory</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 4, 2026</a></p>
+
+<hr>
+
+<!-- Microsoft Edge CVEs -->
+<h3>2. Microsoft Edge (Chromium-based) — 型の混同 RCE (CVE-2026-58289, CVSS 9.0) 他 多数 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>
+    CVE-2026-58289（CVSS 9.0）— 型の混同（type confusion）による RCE<br>
+    他に use-after-free ×4（CVE-2026-50521 他）、heap buffer overflow、integer overflow、improper authorization ×2、type confusion ×2、improper access control ×2、external file path control など多数
+  </td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 公開: 2026-07-03。CVE Brief 7/4 掲載。本対象期間内</td></tr>
+  <tr><td><strong>影響</strong></td><td>未認証のリモート攻撃者がネットワーク経由で任意コード実行・セキュリティ機能バイパス・スプーフィング攻撃が可能。Chromium ベースのため、Edge に限定されず広範なブラウザに影響する可能性がある</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ未提供（0%）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 7/4 で Microsoft Edge（Chromium-based）に Critical 1 件を含む多数の脆弱性が集中。特に CVE-2026-58289（CVSS 9.0）は未認証のリモート攻撃者が型の混同を悪用して任意コード実行可能。High 深刻度の UAF や heap buffer overflow も多数含まれる</li>
+  <li><strong>対応</strong> — Microsoft のセキュリティ更新プログラムの公開を待ち、速やかに Edge を最新バージョンに更新。組織内でのブラウザポリシーによる更新強制を推奨</li>
+  <li>〈Web ブラウザとして全 Web スタック（Next.js / React / Hono 他）に間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-58289" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-58289</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 4, 2026</a></p>
+
+<hr>
+
+<!-- n8n Execute Command Node RCE -->
+<h3>3. n8n — Execute Command ノード経由の認証済み RCE (CVE-2025-71380, CVSS 8.8) <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2025-71380 — Execute Command ノードにおける任意コマンド実行（CWE-284）。CVSS 3.1 <strong>8.8</strong></td></tr>
+  <tr><td><strong>公表日</strong></td><td>VulnCheck advisory: 2026-07-02。NVD 公開: 2026-07-04。本対象期間内</td></tr>
+  <tr><td><strong>影響</strong></td><td>n8n 1.114.4 以前で、認証済みユーザーが Execute Command ノードを使用してホストシステム上で任意の OS コマンドを実行可能。データ流出・サービス停止・完全なシステム侵害に至る可能性</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ状況は未確認。n8n 公式の advisory を監視</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし。ただし認証情報さえあれば容易に悪用可能な設計上の問題</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — ワークフロー自動化プラットフォーム n8n の Execute Command ノードにおいて、認証済みユーザーがホストシステム上で任意のコマンドを実行可能な脆弱性が公表された。n8n は Node.js ベースのオープンソースツールであり、自社ホスト型インスタンスを運用する組織に影響</li>
+  <li><strong>対応</strong> — n8n の公式 advisory を監視し、パッチ公開後速やかに適用。Execute Command ノードの使用制限・ホスト側の実行権限制限・ネットワーク隔離などの補完的対策を推奨</li>
+  <li>〈Web/自動化スタック（Node.js）に直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.vulncheck.com/advisories/n8n-arbitrary-command-execution-via-execute-command-node" target="_blank" rel="noopener noreferrer">VulnCheck Advisory — CVE-2025-71380</a> · <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 4, 2026</a></p>
+
+<hr>
+
+<!-- Python ecosystem -->
+<h3>4. Python エコシステム — Picklescan・Keras・NLTK に複数の脆弱性 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>影響パッケージ</strong></td><td>
+    <strong>Picklescan</strong> — Python pickle ファイルのセキュリティスキャンユーティリティ。複数の脆弱性（任意コード実行・システム侵害の可能性）。バージョン 0 以前が影響<br>
+    <strong>Keras v3</strong> — 深層学習フレームワーク。セキュリティ脆弱性（詳細未特定）<br>
+    <strong>NLTK</strong> — 自然言語処理ライブラリ。セキュリティ脆弱性（詳細未特定）
+  </td></tr>
+  <tr><td><strong>公表日</strong></td><td>CVE Brief 7/4 掲載（2026-07-04）。本対象期間内</td></tr>
+  <tr><td><strong>修正</strong></td><td>公開時点でパッチ未提供（0%）。Picklescan は最新バージョンへの更新が推奨される</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation 確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CVE Brief 7/4 で Python エコシステムの 3 つの主要パッケージに脆弱性が報告された。Picklescan は AI/ML モデルの安全な配布に使われる pickle スキャンツールであり、複数の脆弱性が発見されている。Keras v3 と NLTK もセキュリティ上の問題が指摘されている</li>
+  <li><strong>Picklescan の重要性</strong> — pickle ファイルは Python のオブジェクト直列化形式であり、悪意ある pickle のデシリアライズは任意コード実行に直結する。Picklescan はその検出を目的とするツールであり、スキャンツール自体の脆弱性は検出バイパスにつながる深刻な問題</li>
+  <li><strong>対応</strong> — Picklescan・Keras・NLTK の公式 advisory を監視し、パッチ公開後速やかに更新。AI/ML パイプラインで Picklescan を利用している組織は特に注意</li>
+  <li>〈Python スタックに直接関連。Django・AI/ML 基盤にも間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://cvebrief.com/" target="_blank" rel="noopener noreferrer">CVE Brief — July 4, 2026</a></p>
+
+<hr>
+
+<p class="empty-notice">Next.js / React / Django / Hono / GCP / AWS / Azure / SpringBoot / Claude Code について、本対象期間（2026-07-04 08:00 〜 2026-07-05 08:00 JST）で直接関連する新規 CVE／アドバイザリ・パッチリリースは確認されませんでした。<br>
+<strong>Hermes Agent</strong> — v0.18.0 (v2026.7.1) が 2026-07-01 に公開済み（前々日号で詳報）。本対象期間中の新規リリース・セキュリティ修正は確認されませんでした。<br>
+<strong>OpenClaw</strong> — 2026.7.1-beta.1 が 2026-07-02 公開済み（前日号で詳報）。本対象期間中の新規リリースは確認されませんでした。<br>
+<strong>Azure</strong> — 前日公表の Azure OpenAI SSRF（CVE-2026-45499）・Entra Provisioning Service SSRF（CVE-2026-57100）に続く新規アドバイザリは本対象期間中に確認されませんでした。<br>
+<strong>GCP / AWS</strong> — 本対象期間中の新規セキュリティアドバイザリは確認されませんでした。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント -->
+<h2>📊 トレンドインシデント</h2>
+
+<!-- Bad Epoll -->
+<h3>🔴 Bad Epoll (CVE-2026-46242) — Linux カーネル Use-After-Free 特権昇格、成功率 99% <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-46242 — Linux カーネル epoll の use-after-free 競合状態（CWE-416）。CVSS 3.1 <strong>7.8</strong>（AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H）</td></tr>
+  <tr><td><strong>発見者</strong></td><td>Jaeyoung Chung（Google kernelCTF プログラムに 0-day として提出）</td></tr>
+  <tr><td><strong>影響範囲</strong></td><td>Linux カーネル 6.4 以上（6.18.33 未満）、Android も影響。epoll は無効化不可のため回避策なし</td></tr>
+  <tr><td><strong>修正</strong></td><td>修正パッチ公開済み（commit a6dc643c6931）。各ディストリビューションのバックポート適用を推奨</td></tr>
+  <tr><td><strong>特筆点</strong></td><td>成功率約 99%。Chrome のレンダラーサンドボックス内からもトリガー可能。Anthropic の最強 AI モデル Mythos が同一コード領域の類似バグ（CVE-2026-43074）を発見していたが本件は見逃した</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Linux カーネルの epoll サブシステムに存在する use-after-free 脆弱性。ep_remove() の競合ウィンドウ（約6命令幅）で file 構造体と eventpoll 構造体が同時に解放され、カーネルメモリ破壊→root 権限取得が可能。Chung のエクスプロイトはタイミングウィンドウを拡張し、99% の成功率を達成</li>
+  <li><strong>AI と脆弱性発見</strong> — Anthropic Mythos は同一の 2023 年コミットに起因する最初のバグ（CVE-2026-43074）を発見・修正したが、Bad Epoll を見逃した。これは小さなタイミングウィンドウと KASAN 検出不能という特性による。AI による脆弱性発見の限界を示す事例として注目される</li>
+  <li><strong>Android への影響</strong> — 多くの Linux カーネル特権昇格バグは Android に到達しないが、Bad Epoll は到達可能。Android 向けエクスプロイトも開発中</li>
+  <li><strong>対応</strong> — 修正パッチ（commit a6dc643c6931）を適用、または各ディストリビューションのバックポートを適用。epoll は無効化不可のため回避策は存在しない。カーネル 6.18.33+ / 7.0.10+ / 7.1+ で修正済み</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-46242" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-46242</a> · <a href="https://thehackernews.com/2026/07/new-bad-epoll-linux-kernel-flaw-lets.html" target="_blank" rel="noopener noreferrer">The Hacker News — Bad Epoll 詳細</a></p>
+
+<hr>
+
+<!-- SharePoint CVE-2026-45659 -->
+<h3>🟠 SharePoint CVE-2026-45659 — CISA KEV に追加、Due Date 7/4（パッチ公開済み・悪用確認中） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-45659 — Microsoft SharePoint Server デシリアライゼーション RCE（CVSS 8.8）。認証済み Site Member 権限でネットワーク越しに任意コード実行可能</td></tr>
+  <tr><td><strong>CISA KEV</strong></td><td>2026-07-01 追加、Due Date: 2026-07-04（BOD 26-04 3日 mandate）</td></tr>
+  <tr><td><strong>パッチ</strong></td><td>2026年5月 Patch Tuesday で修正済み。SharePoint Server Subscription Edition / 2019 / 2016 向け</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>CISA KEV で active exploitation 確認中。Microsoft の悪用可能性評価は「Exploitation Less Likely」だが、実環境での悪用が確認されている</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — CISA は 7/1 に SharePoint Server のデシリアライゼーション脆弱性 CVE-2026-45659 を KEV カタログに追加。5月のパッチで修正済みだが、未適用環境に対する active exploitation が確認されている。認証済みの Site Member 権限があればネットワーク経由で RCE が可能</li>
+  <li><strong>対応</strong> — 未パッチの SharePoint 環境は直ちに 2026年5月のセキュリティ更新プログラムを適用。FCEB 機関は Due Date 7/4 までに対応が必要</li>
+  <li>〈Microsoft / Web スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-45659" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-45659</a> · <a href="https://thehackernews.com/2026/07/sharepoint-rce-cve-2026-45659-added-to.html" target="_blank" rel="noopener noreferrer">The Hacker News</a></p>
+
+<hr>
+
+<!-- JadePuffer AI Ransomware -->
+<h3>🤖 JadePuffer — 世界初の LLM エージェントによる完全自律型ランサムウェア攻撃 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発見</strong></td><td>Sysdig Threat Research Team（TRT）が発見・文書化</td></tr>
+  <tr><td><strong>侵入経路</strong></td><td>Langflow の脆弱性（CVE-2025-3248）を悪用し、AI エージェントが自律的に偵察→認証情報窃取→水平移動→データベース暗号化を完全自動実行</td></tr>
+  <tr><td><strong>特筆点</strong></td><td>人間の操作を一切介さず、LLM エージェントがエンドツーエンドでランサムウェア攻撃を完遂した史上初の確認事例</td></tr>
+  <tr><td><strong>影響</strong></td><td>AI/ML ワークフロー基盤（Langflow）を標的とした自律型攻撃の現実性を証明。同様の手法が他の AI パイプラインにも応用可能</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Sysdig TRT は、LLM エージェントが人間の介入なしに完全なランサムウェア攻撃を実行した初の事例を文書化した。攻撃者は Langflow の脆弱性を入口に、AI エージェントを使って偵察・認証情報窃取・水平移動・データベース暗号化までの全工程を自律実行させた</li>
+  <li><strong>AI 攻撃の新時代</strong> — この事例は、既知の脆弱性と LLM エージェントのリアルタイム推論能力を組み合わせることで、複雑な多段階侵入が完全自動化可能であることを実証。AI パイプラインを運用する組織にとって、従来の防御モデルの再考を迫る転換点</li>
+  <li><strong>対応</strong> — Langflow インスタンスの最新バージョンへの更新、AI/ML ワークフロー基盤のネットワークセグメンテーション強化、LLM エージェントのツール実行範囲の制限</li>
+  <li>〈Python / AI/ML スタックに直接関連。全クラウドスタック（AWS/GCP/Azure）にも間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion" target="_blank" rel="noopener noreferrer">Sysdig — JadePuffer 詳細レポート</a> · <a href="https://www.securityweek.com/agentic-ai-used-to-conduct-ransomware-attack-via-langflow/" target="_blank" rel="noopener noreferrer">SecurityWeek</a></p>
+
+<hr>
+
+<!-- Langflow CVE-2026-33017 -->
+<h3>🟠 Langflow CVE-2026-33017 — 未認証 RCE が Monero マイナー展開に悪用中 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-33017（CVSS 9.3）— Langflow の未認証 API エンドポイント経由の任意コード実行</td></tr>
+  <tr><td><strong>攻撃手法</strong></td><td>未認証の Langflow API エンドポイントに 1 行の Python コードを送信 → Lambsys ワーム展開 → Monero 暗号通貨マイナー実行。再利用 SSH 鍵で拡散</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>Active exploitation 確認中。露出した Langflow エンドポイントが標的</td></tr>
+  <tr><td><strong>影響</strong></td><td>AI/ML ワークフロー構築フレームワークの露出インスタンスが不正利用され、計算資源の窃取に加え Lambsys ワームによる二次感染のリスク</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Langflow の未認証 RCE 脆弱性 CVE-2026-33017 が active exploitation 状態にある。攻撃者は未認証の API エンドポイント経由で Python コードを実行し、Monero マイナーと Lambsys ワームを展開。再利用 SSH 鍵を通じて水平展開する</li>
+  <li><strong>対応</strong> — Langflow の最新バージョンへの更新、インターネットに露出した Langflow エンドポイントのアクセス制限・認証の強制。SSH 鍵のローテーション</li>
+  <li>〈Python / AI/ML ワークフロー基盤としてスタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://thehackernews.com/2026/06/langflow-rce-exploited-to-deploy-monero.html" target="_blank" rel="noopener noreferrer">The Hacker News — Langflow RCE</a> · <a href="https://darkwebinformer.com/one-post-to-rce-unauthenticated-code-execution-in-langflow-cve-2026-33017/" target="_blank" rel="noopener noreferrer">Dark Web Informer</a></p>
+
+<hr>
+
+<!-- kernel.org outage -->
+<h3>⚠️ kernel.org 障害 — 新規ミラー追加時の設定ミスで全カーネルファイルが一時消失 <span class="badge-medium">MEDIUM</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>発生日時</strong></td><td>2026-07-02 14:21 UTC（日本時間 23:21 JST）</td></tr>
+  <tr><td><strong>原因</strong></td><td>新規プライマリミラー追加時の設定ミスにより、全アーカイブ・全現行カーネルファイルがアクセス不能に。ダウンストリームミラーも自動同期でファイルを削除</td></tr>
+  <tr><td><strong>影響</strong></td><td>kernel.org 上の全カーネルソース・パッケージが HTTP 404/403。Linux ディストリビューションのビルドパイプライン・ダウンストリームに波及</td></tr>
+  <tr><td><strong>復旧状況</strong></td><td>最新カーネルファイルは復旧済み。アーカイブ全量の復旧には相応の時間を要する見込み。Linux Foundation が復旧作業を継続中</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Linux カーネルの公式配布サイト kernel.org で、新規ミラー追加時の設定ミスにより全ファイルが消失した。プライマリサーバのデータ削除に伴い、ダウンストリームミラーも自動同期で全コピーを削除。全 Linux ディストリビューションのカーネルビルドパイプラインに影響</li>
+  <li><strong>供給網リスク</strong> — 本インシデントはセキュリティ侵害ではないが、OSS 供給網の単一障害点（SPOF）としての kernel.org の重要性を浮き彫りにした。ミラー自動同期のリスクも顕在化</li>
+  <li>〈全 Linux ベースのスタック（Web / Java / Python / GCP / AWS / Azure 他）に間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://securityonline.info/kernel-org-outage-config-error/" target="_blank" rel="noopener noreferrer">SecurityOnline — kernel.org Outage</a></p>
+
+<hr>
+
+<!-- Medtronic / AdaptHealth -->
+<h3>🏥 Medtronic データ侵害 — 380万人の患者情報流出（ShinyHunters） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>被害規模</strong></td><td>約 380万人の患者の個人情報・医療情報が流出</td></tr>
+  <tr><td><strong>攻撃者</strong></td><td>ShinyHunters — 2026年4月に企業 IT システムに侵入</td></tr>
+  <tr><td><strong>流出情報</strong></td><td>患者の個人情報・医療情報（クレジットカード番号・社会保障番号は含まれず）</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 医療機器メーカー Medtronic が ShinyHunters によるデータ侵害を公表。4月に企業 IT システムへ侵入され、380万人分の患者情報が流出した</li>
+  <li>〈医療分野のデータ侵害として注目。クラウド／Web セキュリティ全般に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/" target="_blank" rel="noopener noreferrer">SecurityWeek — Medtronic Data Breach</a></p>
+
+<hr>
+
+<!-- Scattered Spider arrest -->
+<h3>👮 Scattered Spider ハッカー逮捕 — 19歳メンバーを米国に送還（$100M 規模） <span class="badge-medium">MEDIUM</span></h3>
+
+<ul>
+  <li><strong>概要</strong> — 100件以上のネットワーク侵入と 1 億ドル以上の身代金支払いに関与したとされる Scattered Spider ハッキンググループの 19 歳メンバー Peter Stokes が米国に送還された。Scattered Spider はソーシャルエンジニアリングを駆使した高度な侵入で知られる</li>
+  <li>〈サイバー犯罪の法執行動向として注目〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.securityweek.com/" target="_blank" rel="noopener noreferrer">SecurityWeek — Scattered Spider Arrest</a></p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
