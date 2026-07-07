@@ -23,7 +23,7 @@
     <a href="../">ポータル</a>
   </nav>
   <h1>🛡️ 2026-07-07 セキュリティ朝刊</h1>
-  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+  <p class="subtitle">対象期間: 2026-07-06 08:00 〜 2026-07-07 08:00 JST 公開分</p>
 </header>
 <main>
 <article>
@@ -31,14 +31,69 @@
 <!-- 🔴 スタック関連 セクション -->
 <h2>🔴 スタック関連</h2>
 
-<!-- Hermes Agent v0.18.0 セキュリティラウンド -->
-<h3>Hermes Agent v0.18.0 — 包括的セキュリティ強化ラウンド <span class="badge-high">HIGH</span></h3>
+<!-- Adobe ColdFusion CVE-2026-48282 -->
+<h3>1. Adobe ColdFusion — Path Traversal による RCE（CVE-2026-48282, CVSS 10.0） <span class="badge-critical">CRITICAL</span></h3>
 
 <table class="cve-table">
-  <tr><th>対象</th><td>Hermes Agent</td></tr>
-  <tr><th>リリース</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">v0.18.0 (v2026.7.1) — The Judgment Release</a></td></tr>
-  <tr><th>公開日</th><td>2026-07-01</td></tr>
-  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span>（複数の認証情報漏洩ベクター修正）</td></tr>
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-48282（CVSS 10.0）— RDS（Remote Development Services）経由の Path Traversal による任意ファイル書き込み・RCE（CWE-22）</td></tr>
+  <tr><td><strong>公表日</strong></td><td>Adobe セキュリティ公告 APSB26-68: 2026-07-08。直後よりアクティブエクスプロイテーション確認。本対象期間内に複数ベンダーが実証</td></tr>
+  <tr><td><strong>影響</strong></td><td>ColdFusion 2025 Update 9 以前、ColdFusion 2023 Update 20 以前。未認証リモート攻撃者が RDS エンドポイント経由で任意ファイル書き込みから RCE へ昇格可能</td></tr>
+  <tr><td><strong>修正</strong></td><td>ColdFusion 2025 Update 10 / ColdFusion 2023 Update 21 で修正済み（<a href="https://helpx.adobe.com/uk/security/products/coldfusion/apsb26-68.html" target="_blank" rel="noopener noreferrer">APSB26-68</a>）</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td><strong>公開数時間でアクティブエクスプロイテーション確認</strong>。Resecurity・BleepingComputer 等が実証。PoC 公開済み</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — Adobe ColdFusion の RDS エンドポイントに存在する Path Traversal 脆弱性。CVSS 10.0（最大深刻度）で、認証不要のネットワーク経由攻撃が可能。攻撃者は RDS 経由でサーバ上の任意ファイルに書き込み、最終的に任意コード実行に至る</li>
+  <li><strong>波及範囲</strong> — ColdFusion は政府・金融・医療のレガシーシステムで広く利用。BleepingComputer は「公開から数時間で攻撃が開始された」と報道。Check Point も防御アドバイザリ（CPAI-2026-8444）を即時公開</li>
+  <li><strong>対応</strong> — ColdFusion を直ちに最新アップデートへ更新。RDS が不要な場合は無効化。WAF で Path Traversal パターンをブロック。内部ネットワークへのアクセス制限を強化</li>
+  <li>〈Web アプリケーションサーバとして全スタックに間接的に関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-48282" target="_blank" rel="noopener noreferrer">NVD — CVE-2026-48282</a> · <a href="https://helpx.adobe.com/uk/security/products/coldfusion/apsb26-68.html" target="_blank" rel="noopener noreferrer">Adobe APSB26-68</a> · <a href="https://www.bleepingcomputer.com/news/security/max-severity-adobe-coldfusion-flaw-now-exploited-in-attacks/" target="_blank" rel="noopener noreferrer">BleepingComputer 報道</a></p>
+
+<hr>
+
+<!-- ClamAV 複数脆弱性 -->
+<h3>2. ClamAV — 7件のメモリ破壊・DoS脆弱性（CVE-2026-20213 他、CVSS 7.5）Cisco 製品に影響 <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>
+    CVE-2026-20213 — PE ファイルパーサメモリ破壊（CVSS 7.5）<br>
+    CVE-2026-20214 — FSG ファイルパーサメモリ破壊（CVSS 7.5）<br>
+    CVE-2026-20215 — 7z ファイルパーサメモリ破壊（CVSS 7.5）<br>
+    CVE-2026-20216 — InstallShield ファイルパーサ DoS（CVSS 7.5）<br>
+    CVE-2026-20217 — PESpin ファイルパーサメモリ破壊（CVSS 7.5）<br>
+    CVE-2026-20243 — ALZ ファイルパーサメモリ破壊（CVSS 7.5）<br>
+    CVE-2026-20244 — DMG ファイルパーサメモリ破壊（CVSS 7.5）
+  </td></tr>
+  <tr><td><strong>公表日</strong></td><td>Cisco セキュリティアドバイザリ: 2026-07-01。本対象期間内に Tenable プラグイン等で追跡開始</td></tr>
+  <tr><td><strong>影響</strong></td><td>ClamAV（Cisco Secure Endpoint Connector for Windows/Linux/Mac を含む）。未認証リモート攻撃者が細工したファイルをスキャンさせることで DoS またはメモリ破壊を引き起こす可能性</td></tr>
+  <tr><td><strong>修正</strong></td><td>ClamAV 最新版で修正済み。Cisco Secure Endpoint Connector のアップデートも公開済み</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>現時点で active exploitation の報告なし。ただしエクスプロイトの実現可能性は高い</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — ClamAV のファイルパーサに 7 件の脆弱性が存在。PE・FSG・7z・InstallShield・PESpin・ALZ・DMG の各形式で境界チェック不備によるバッファオーバーフリーティ Write（out-of-bounds write）が発生。すべて CVSS 7.5（High）</li>
+  <li><strong>Cisco 製品への影響</strong> — Cisco Secure Endpoint Connector が ClamAV を内包するため、Windows 版ではスキャンエンジン停止による DoS に加え、32-bit プラットフォームではコード実行の可能性も指摘。Linux/Mac 版はスキャン停止に留まるがシステム安定性への影響は限定的</li>
+  <li><strong>対応</strong> — ClamAV を最新版に更新。Cisco Secure Endpoint Connector をアップデート。メールゲートウェイ・ファイルスキャン基盤で ClamAV を利用する環境は優先的に適用</li>
+  <li>〈アンチマルウェア基盤として全スタックのセキュリティ防御層に影響〉</li>
+</ul>
+
+<p>🔗 <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-clamav-88cFYyxR" target="_blank" rel="noopener noreferrer">Cisco Advisory</a> · <a href="https://github.com/Cisco-Talos/clamav/releases" target="_blank" rel="noopener noreferrer">ClamAV Releases</a></p>
+
+<hr>
+
+<!-- Hermes Agent v0.18.0 セキュリティラウンド -->
+<h3>3. Hermes Agent v0.18.0 — 包括的セキュリティ強化ラウンド <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>対象</strong></td><td>Hermes Agent</td></tr>
+  <tr><td><strong>リリース</strong></td><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">v0.18.0 (v2026.7.1) — The Judgment Release</a></td></tr>
+  <tr><td><strong>公開日</strong></td><td>2026-07-01</td></tr>
+  <tr><td><strong>深刻度</strong></td><td><span class="badge-high">HIGH</span>（複数の認証情報漏洩ベクター修正）</td></tr>
 </table>
 
 <ul>
@@ -53,15 +108,72 @@
 
 <p>プロンプトインジェクションや設定ミスによるセッションからの認証情報漏洩経路を包括的に削減するセキュリティアップデートです。Hermes Agent ユーザーは v0.18.0 へのアップグレードを推奨します。</p>
 
-<!-- 他のスタックに新規情報がない場合 -->
 <hr>
-<p class="empty-notice">その他のスタック（web / Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Claude Code / OpenClaw）については、本対象期間内に直接関連する新規 CVE・セキュリティアドバイザリは確認されませんでした。</p>
+
+<!-- python-multipart CVE-2026-53539 -->
+<h3>4. python-multipart — アルゴリズム複雑性 DoS（CVE-2026-53539、CVSS 7.5） <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>CVE</strong></td><td>CVE-2026-53539 — python-multipart QuerystringParser のアルゴリズム複雑性 DoS（CWE-400）。CVSS 7.5</td></tr>
+  <tr><td><strong>公表日</strong></td><td>NVD 公開: 2026-06-22。GitHub Advisory GHSA-5rvq-cxj2-64vf。本対象期間内に複数ベンダーが追跡開始</td></tr>
+  <tr><td><strong>影響</strong></td><td>python-multipart 0.0.30 未満。FastAPI・Starlette 等の <code>application/x-www-form-urlencoded</code> パースに影響</td></tr>
+  <tr><td><strong>修正</strong></td><td>python-multipart 0.0.30 で修正済み</td></tr>
+  <tr><td><strong>悪用状況</strong></td><td>攻撃容易性は高い（認証不要・ネットワーク経由・少量ペイロードで CPU 消耗）。実際の攻撃報告は現時点で確認なし</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — <code>python-multipart</code> の URL エンコードフォームパーサにおいて、セパレータ検索の二段階スキャンにより O(B²) の計算量が発生。セミコロン区切りのフォームボディを送信するだけでワーカプロセスの CPU を枯渇させ、DoS を引き起こす</li>
+  <li><strong>影響範囲</strong> — FastAPI・Starlette 等の Python Web フレームワークで <code>Form()</code> を利用するエンドポイントが全対象。数 KB のリクエストで秒単位の CPU 消耗が発生し、少数の同時リクエストでワーカが枯渇</li>
+  <li><strong>対応</strong> — <code>pip install --upgrade 'python-multipart>=0.0.30'</code> で即時更新可能。WAF/Middleware でセミコロン区切りのフォームボディを拒否するワークアラウンドも有効</li>
+  <li>〈Python / Django / Hono（バックエンド）/ web スタックに直接関連〉</li>
+</ul>
+
+<p>🔗 <a href="https://www.sentinelone.com/vulnerability-database/cve-2026-53539/" target="_blank" rel="noopener noreferrer">SentinelOne — CVE-2026-53539</a> · <a href="https://github.com/advisories/GHSA-5rvq-cxj2-64vf" target="_blank" rel="noopener noreferrer">GHSA-5rvq-cxj2-64vf</a></p>
+
+<hr>
+
+<!-- その他のスタック -->
+<p class="empty-notice">その他のスタック（Next.js / Java / GCP / Azure / React / SpringBoot / Claude Code / OpenClaw）については、本対象期間内に直接関連する新規 CVE・セキュリティアドバイザリは確認されませんでした。</p>
+
 <hr>
 
 <!-- 📊 トレンドインシデント セクション -->
 <h2>📊 トレンドインシデント</h2>
 
-<p class="empty-notice">本対象期間内に注目すべき新規セキュリティインシデント（大規模データ流出、サプライチェーン攻撃等）は確認されませんでした。</p>
+<!-- Adobe ColdFusion アクティブエクスプロイテーション -->
+<h3>1. Adobe ColdFusion CVE-2026-48282 — 公開数時間で攻撃開始 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>種別</strong></td><td>ゼロデイ悪用 / アクティブエクスプロイテーション</td></tr>
+  <tr><td><strong>時期</strong></td><td>2026-07-08 公告 → 数時間以内に攻撃確認。本対象期間内に複数ベンダー（Resecurity・BleepingComputer）が実証</td></tr>
+  <tr><td><strong>影響</strong></td><td>ColdFusion 利用組織（政府・金融・医療含む）。Path Traversal → RCE の攻撃チェーン</td></tr>
+</table>
+
+<ul>
+  <li><strong>事態の深刻性</strong> — Adobe がセキュリティ公告を公開した数時間後には、すでに攻撃者が CVE-2026-48282 を悪用し始めたことが確認されている。Resecurity は「RDS 経由の arbitrary file write から RCE への昇格が可能」と報告</li>
+  <li><strong>背景</strong> — ColdFusion は2000年代から多くのエンタープライズで利用されており、特に政府・教育機関での導入が多い。CVSS 10.0 の未認証 RCE であり、攻撃のハードルが極めて低い</li>
+  <li><strong>教訓</strong> — セキュリティ公告公開直後の「ゼロデイウィンドウ」の短さが際立つ。アップデート適用の自動化と WAF ルールの即時デプロイ体制が不可欠</li>
+</ul>
+
+<hr>
+
+<!-- 24B credentials -->
+<h3>2. 240億件の認証情報漏洩 — 大規模データリーク <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>項目</th><th>詳細</th></tr>
+  <tr><td><strong>種別</strong></td><td>認証情報漏洩 / データリーク</td></tr>
+  <tr><td><strong>公表日</strong></td><td>2026-06-17 複数の研究機関が報告。継続的に影響拡大中</td></tr>
+  <tr><td><strong>影響</strong></td><td>240億件のログイン認証情報が複数ソースから統合されオンライン公開</td></tr>
+</table>
+
+<ul>
+  <li><strong>概要</strong> — 複数ソースから収集された約240億件のログイン認証情報（ユーザー名・パスワード）がオンライン上で公開されたことが複数のセキュリティ研究機関によって報告。過去のデータ侵害の集積と新たに窃取された情報が混在しているとみられる</li>
+  <li><strong>影響</strong> — 大規模な credential stuffing（認証情報の流用攻撃）のリスクが飛躍的に増大。組織は MFA（多要素認証）の徹底、パスワードリユースの禁止、異常ログイン検知の強化が急務</li>
+  <li><strong>教訓</strong> — 単一の侵害だけでなく、複数侵害のデータが統合されることで攻撃の成功率が指数関数的に上昇する。ゼロトラストアーキテクチャの導入が一層重要に</li>
+</ul>
 
 </article>
 </main>
