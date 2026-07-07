@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-08 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-08 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-07 08:00 〜 2026-07-08 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Hermes Agent v0.18.0 セキュリティ強化 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>影響範囲</th><td>Hermes Agent v0.18.0 (2026.7.1)</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+<tr><th>公開日</th><td>2026-07-01</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.7.1" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li><strong>credential-exfil hardening（資格情報流出防止強化）</strong>: 認証情報の漏洩を防ぐためのセキュリティ強化が実施されました。P0/P1問題の全件解決の一環として対応されています。</li>
+<li><strong>P0/P1問題の完全解決</strong>: 692件の最重要課題（P0: 11件、P1: 681件）が12日間で全て解決され、セキュリティ関連の脆弱性も修正されています。</li>
+<li><strong>検証機能の強化</strong>: エージェントが自身の作業を検証し、実際のテスト結果に基づいて「完了」を判断する機能が追加され、セキュリティ面での信頼性が向上しています。</li>
+</ul>
+
+<h3>OpenClaw 2026.7.1-beta.2 セキュリティ関連改善</h3>
+<table class="cve-table">
+<tr><th>影響範囲</th><td>OpenClaw 2026.7.1-beta.2</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">MEDIUM</span></td></tr>
+<tr><th>公開日</th><td>2026-07-05</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.1-beta.2" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li><strong>capability profiles（機能プロファイル）</strong>: 会話ごとのツールアクセス権限を設定できるセキュリティ境界機能が追加されました。デフォルトプロファイルを弱めることなく、会話ごとのアクセス制御が可能になります。</li>
+<li><strong>スコープされた会話の安全性向上</strong>: 機能プロファイルにより、セキュリティ境界が強化されています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js、Java、Python、Django、Hono、GCP、AWS、Azure、React、SpringBoot、Claude Code については、対象期間内に直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Cisco製品群の複数脆弱性（2026年7月アドバイザリ）</h3>
+<table class="cve-table">
+<tr><th>CVE番号</th><td>CVE-2026-20191, CVE-2026-20213, CVE-2026-20214, CVE-2026-20215, CVE-2026-20216, CVE-2026-20217 他</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+<tr><th>公開日</th><td>2026-07-01</td></tr>
+<tr><th>情報源</th><td><a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-notice-vwL7b0S7" target="_blank" rel="noopener noreferrer">Cisco PSIRT</a></td></tr>
+</table>
+<ul>
+<li><strong>Cisco Catalyst Center</strong>: 任意ファイル読み取り脆弱性（CVE-2026-20191、CVSS 7.5）が公開されています。</li>
+<li><strong>ClamAV</strong>: Cisco製品に影響する複数の脆弱性（CVE-2026-20213〜CVE-2026-20217）が公開されています。</li>
+<li><strong>Cisco Identity Services Engine (ISE)</strong>: リモートコード実行や情報漏洩を可能にする複数の脆弱性が存在し、ソフトウェアアップデートが公開されています。</li>
+</ul>
+
+<h3>Ubiquiti UniFi Protect SQLインジェクション脆弱性</h3>
+<table class="cve-table">
+<tr><th>CVE番号</th><td>CVE-2026-55119</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+<tr><th>公開日</th><td>2026-07-07</td></tr>
+<tr><th>情報源</th><td><a href="https://community.ui.com/releases/Security-Advisory-Bulletin-066-066/984eceb3-49c8-4227-942d-671c289b3afc" target="_blank" rel="noopener noreferrer">Ubiquiti Community</a></td></tr>
+</table>
+<ul>
+<li><strong>UniFi Protect Application（バージョン7.1.77以前）</strong>: ネットワークアクセスを持つ低権限の悪意あるアクターが、認証済みSQLインジェクション脆弱性を悪用してホストデバイス上で権限昇格できる脆弱性が公開されています。</li>
+<li><strong>影響範囲</strong>: UniFi Protect Applicationのバージョン7.1.77以前が影響を受けます。</li>
+<li><strong>対策</strong>: Ubiquiti社からセキュリティアドバイザリBulletin 066が公開されており、アップデートの適用が推奨されています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
