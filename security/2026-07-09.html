@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-09 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-09 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<!-- CVE-2026-33264: Apache Airflow -->
+<h3>Apache Airflow — DAG作成者によるRCE <span class="badge-critical">Critical 9.8</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-33264" target="_blank" rel="noopener noreferrer">CVE-2026-33264</a></td></tr>
+<tr><th>対象</th><td>Apache Airflow &lt; 3.3.0</td></tr>
+<tr><th>種別</th><td>信頼できないデータのデシリアライゼーション (CWE-502)</td></tr>
+<tr><th>公開日</th><td>2026-07-07（更新 2026-07-08）</td></tr>
+</table>
+<ul>
+  <li><code>BaseSerialization.deserialize()</code> のバグにより、攻撃者が制御可能なクラスパスを無制限に <code>import_string()</code> できる問題</li>
+  <li>DAG作成者が悪意あるトリガーをDAGに埋め込むことで、API Server / Scheduler プロセス上でリモートコード実行が可能</li>
+  <li>Airflow のセキュリティ境界（DAG作成者コードはサーバープロセスで実行されるべきでない）を突破される</li>
+  <li><strong>修正:</strong> apache-airflow 3.3.0 以降にアップグレード。防御的緩和策として <code>[core] allowed_deserialization_classes</code> を狭い許可リストに制限することも推奨</li>
+</ul>
+
+<!-- CVE-2026-55830: RestrictedPython -->
+<h3>Zope RestrictedPython — セキュリティバイパス <span class="badge-high">High 8.3</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-55830" target="_blank" rel="noopener noreferrer">CVE-2026-55830</a></td></tr>
+<tr><th>対象</th><td>RestrictedPython &lt; 8.3</td></tr>
+<tr><th>種別</th><td>アクセス制御バイパス</td></tr>
+<tr><th>更新日</th><td>2026-07-08</td></tr>
+</table>
+<ul>
+  <li><code>check_function_argument_names()</code> が positional-only 引数の保護ガードフック名チェックを省略</li>
+  <li><code>__getattr__</code>, <code>_getitem_</code>, <code>_write_</code>, <code>_print_</code> がローカルパラメータで上書きされ、埋め込みアプリケーションのアクセスポリシーをバイパス可能</li>
+  <li><strong>修正:</strong> RestrictedPython 8.3</li>
+</ul>
+
+<!-- CVE-2026-55255: Langflow (CISA KEV) -->
+<h3>Langflow — 認可バイパス <span class="badge-high">CISA KEV</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://www.cve.org/CVERecord?id=CVE-2026-55255" target="_blank" rel="noopener noreferrer">CVE-2026-55255</a></td></tr>
+<tr><th>対象</th><td>Langflow</td></tr>
+<tr><th>種別</th><td>ユーザー制御キーによる認可バイパス</td></tr>
+<tr><th>KEV追加日</th><td>2026-07-07</td></tr>
+</table>
+<ul>
+  <li>CISA により既知の悪用脆弱性 (KEV) カタログに追加 — 実環境での積極的悪用の証拠あり</li>
+  <li>Langflow は Python ベースの LLM アプリケーションビルダー。認可バイパスにより攻撃者が昇格されたアクセス権を取得可能</li>
+  <li>連邦政府機関には BOD 26-04 に基づく期限付き対応が義務付け</li>
+</ul>
+
+<!-- CVE-2026-54499: Stanza -->
+<h3>Stanza (Stanford NLP) — 悪意あるモデルファイルによるコード実行 <span class="badge-high">High 7.5</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-54499" target="_blank" rel="noopener noreferrer">CVE-2026-54499</a></td></tr>
+<tr><th>対象</th><td>Stanza &lt; 1.12.2</td></tr>
+<tr><th>種別</th><td>安全でないデシリアライゼーション</td></tr>
+<tr><th>更新日</th><td>2026-07-08</td></tr>
+</table>
+<ul>
+  <li>モデルローダーが <code>torch.load(..., weights_only=True)</code> を試行後、<code>pickle.UnpicklingError</code> 発生時に <code>weights_only=False</code> へフォールバック</li>
+  <li>悪意ある .pt モデルファイルをロード時に任意の pickle コード実行が可能</li>
+  <li><strong>修正:</strong> Stanza 1.12.2</li>
+</ul>
+
+<!-- CVE-2026-56669: Elysia -->
+<h3>Elysia — フォームデータ正規化によるCPU枯渇 <span class="badge-high">High 7.5</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-56669" target="_blank" rel="noopener noreferrer">CVE-2026-56669</a></td></tr>
+<tr><th>対象</th><td>Elysia &lt; 1.4.29</td></tr>
+<tr><th>種別</th><td>リソース枯渇 (DoS)</td></tr>
+<tr><th>更新日</th><td>2026-07-08</td></tr>
+</table>
+<ul>
+  <li>multipart/form-data エンドポイントで <code>getAll</code> を使用したフォームデータ正規化により、キー・バリューペア数に対して二次関数的に計算量が増加</li>
+  <li>CPU 枯渇によるサービス拒否が可能</li>
+  <li><strong>修正:</strong> Elysia 1.4.29</li>
+</ul>
+
+<!-- Hermes Agent -->
+<h3>Hermes Agent — パッチリリース v0.18.1 / v0.18.2</h3>
+<table class="cve-table">
+<tr><th>プロジェクト</th><td><a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">NousResearch/hermes-agent</a></td></tr>
+<tr><th>リリース</th><td>v0.18.1 (2026-07-08 10:15 JST) / v0.18.2 (2026-07-08 12:11 JST)</td></tr>
+<tr><th>種別</th><td>パッチリリース</td></tr>
+</table>
+<ul>
+  <li><strong>v0.18.1:</strong> v0.18.0 以降の約660 PR を統合した安定版タグ。バグ修正、Windows インストーラーの自己修復、ダッシュボード・ゲートウェイ修正、WhatsApp ダッシュボードペアリング、MCP/プロバイダー修正、安定性向上</li>
+  <li><strong>v0.18.2:</strong> WhatsApp Baileys 依存関係を git コミット固定から公開 npm パッケージ (7.0.0-rc13) に変更。Docker ビルドの信頼性を改善</li>
+  <li>セキュリティ固有の修正は含まれていないが、安定性・ビルド信頼性に関する重要なパッチ</li>
+</ul>
+
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<!-- npm/PyPI supply chain attack -->
+<h3>npm / PyPI に偽の Paysafe・Skrill SDK — 資格情報を窃取するサプライチェーン攻撃</h3>
+<ul>
+  <li>少なくとも <strong>17個の悪意あるパッケージ</strong>（npm 13個、PyPI 4個）が公開され、Paysafe・Skrill・Neteller の正規SDKを偽装</li>
+  <li>パッケージは一見正規APIを返すが、実際には <strong>Paysafe API キー、AWSキー、GitHubトークン、npmトークン</strong> などを AWS 上の C2 サーバーへ送信</li>
+  <li>PyPI 版はインポート直後に自動でデータ窃取を開始（npm版はAPIキー存在時のみ）</li>
+  <li>簡易的な解析回避機能（CPUコア数チェック、仮想環境検出）も実装</li>
+  <li><strong>影響を受けた場合の対応:</strong> 該当マシン上の全シークレットをローテーション、依存関係ツリーの精査</li>
+  <li>出典: <a href="https://socket.dev/blog/npm-pypi-campaign-typosquats-popular-secure-payment-apps" target="_blank" rel="noopener noreferrer">Socket.dev</a>, <a href="https://www.bleepingcomputer.com/news/security/fake-paysafe-skrill-sdks-on-npm-and-pypi-steal-credentials/" target="_blank" rel="noopener noreferrer">BleepingComputer</a></li>
+</ul>
+
+<!-- CISA KEV -->
+<h3>CISA、4件の脆弱性を悪用確認済みカタログ (KEV) に追加</h3>
+<ul>
+  <li><strong>CVE-2026-48282:</strong> Adobe ColdFusion パストラバーサル（最大深刻度）</li>
+  <li><strong>CVE-2026-48908:</strong> JoomShaper SP Page Builder 危険なファイルの無制限アップロード</li>
+  <li><strong>CVE-2026-55255:</strong> Langflow 認可バイパス</li>
+  <li><strong>CVE-2026-56290:</strong> Joomlack Page Builder 不適切なアクセス制御</li>
+  <li>いずれも実環境での積極的悪用が確認されており、FCEB 機関には BOD 26-04 に基づく期限付き対応が義務付け</li>
+</ul>
+
+<!-- Ubiquiti -->
+<h3>Ubiquiti、UniFi OS の最大深刻度を含む7件の脆弱性を修正</h3>
+<ul>
+  <li><strong>CVE-2026-50746</strong> (最大深刻度): UniFi Connect Application における不正アクセス制御からコマンドインジェクションが可能</li>
+  <li>UniFi Talk、UniFi Access、UniFi Protect、UniFi OS Server、各種ルーター・ゲートウェイ・NAS にも影響する6件の Critical 脆弱性を同時修正</li>
+  <li>インターネット上に約10万台の UniFi OS インスタンスが露出（Censys 調べ）</li>
+  <li><strong>修正:</strong> UniFi Connect 3.4.20 以降</li>
+</ul>
+
+<!-- Mount Royal University breach -->
+<h3>Mount Royal University、ハッカーの攻撃によりデータ侵害を確認</h3>
+<ul>
+  <li>カナダ・カルガリーの Mount Royal University が、ファイルストレージシステムからデータが窃取・削除されたことを確認</li>
+  <li>ハッカーが攻撃を主張。詳細は調査中</li>
+</ul>
+
+<!-- Entra passkey vishing -->
+<h3>Microsoft 365 ユーザーを狙った Entra パスキー登録ビッシングキャンペーン</h3>
+<ul>
+  <li>複数業界の組織を標的とした音声ベースのソーシャルエンジニアリング攻撃</li>
+  <li>偽のセキュリティリクエストを用いて Microsoft 365 ユーザーに新規 Entra パスキーの登録を誘導</li>
+</ul>
+
+<!-- Roundcube exploitation -->
+<h3>中国関連の脅威アクター、Roundcube 脆弱性を悪用し学術研究者を標的に</h3>
+<ul>
+  <li>米国・カナダの大学で稼働する Roundcube サーバーを標的としたサイバーエスピオナージ活動</li>
+  <li>認証情報の窃取とバックドアマルウェアの展開が確認</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
