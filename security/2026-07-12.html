@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-12 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-12 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<!-- Google Chrome -->
+<h3><span class="badge-high">High</span> Google Chrome — 27件の脆弱性修正 (150.0.7871.114/.115)</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-15107 〜 CVE-2026-15133（27件）</td></tr>
+  <tr><th>公開日</th><td>2026-07-09</td></tr>
+  <tr><th>深刻度</th><td>High / Medium（複数）</td></tr>
+  <tr><th>影響</th><td>Google Chrome 150.0.7871.113 以前（全OS）</td></tr>
+</table>
+<ul>
+  <li>2026年7月9日、Chrome 安定版 150.0.7871.114（Linux）/ .115（Mac, Windows）がリリースされ、27件の脆弱性が修正されました</li>
+  <li>うち <strong>CVE-2026-15113</strong>（Autofill の Use-after-free、Android 版サンドボックス脱出可能）と <strong>CVE-2026-15115</strong>（WebAppInstalls の同一オリジンポリシーバイパス）は特に注意が必要です</li>
+  <li>CVE-2026-15111（Views の Use-after-free）、CVE-2026-15107〜15110 なども High 深刻度で報告されています</li>
+  <li>リモートコード実行・情報漏洩・セキュリティ制限バイパスが可能。直ちに更新を推奨します</li>
+</ul>
+
+<!-- JetBrains IntelliJ IDEA -->
+<h3><span class="badge-critical">Critical</span> JetBrains IntelliJ IDEA — パストラバーサルによる RCE</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-59792</td></tr>
+  <tr><th>公開日</th><td>2026-07-10</td></tr>
+  <tr><th>CVSS</th><td>9.6 (Critical)</td></tr>
+  <tr><th>影響</th><td>IntelliJ IDEA 2026.1.4 未満、2026.2 未満</td></tr>
+</table>
+<ul>
+  <li>プロジェクトワークスペースIDの処理におけるパストラバーサル脆弱性</li>
+  <li>リモートの攻撃者が細工したプロジェクトファイルを通じて任意コード実行が可能</li>
+  <li>Network・権限不要・ユーザー操作要（悪意あるプロジェクトを開く必要あり）</li>
+  <li>2026.1.4 以降または 2026.2 へのアップデートを強く推奨</li>
+</ul>
+
+<!-- JetBrains TeamCity -->
+<h3><span class="badge-high">High</span> JetBrains TeamCity — XSS および不適切な認可</h3>
+<table class="cve-table">
+  <tr><th>公開日</th><td>2026-07-11</td></tr>
+  <tr><th>深刻度</th><td>High (CWE-79 XSS) / Medium (CWE-862 認可不備)</td></tr>
+  <tr><th>影響</th><td>JetBrains TeamCity（バージョン未発表）</td></tr>
+</table>
+<ul>
+  <li>クロスサイトスクリプティング (CWE-79)：細工された入力により任意スクリプト実行が可能</li>
+  <li>不適切な認可 (CWE-862)：認証済みユーザーによる不正操作の可能性</li>
+  <li>ベンダーからのパッチ情報に注意。TeamCity サーバーへのネットワークアクセス制限を推奨</li>
+</ul>
+
+<!-- GCP Januscape -->
+<h3><span class="badge-high">High</span> GCP — KVM ゲスト脱出脆弱性「Januscape」</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-53359</td></tr>
+  <tr><th>GCP Bulletin</th><td>GCP-2026-046（2026-07-06 公開）</td></tr>
+  <tr><th>深刻度</th><td>High/S0</td></tr>
+  <tr><th>影響</th><td>Intel 系 KVM 仮想化環境（全主要クラウド）</td></tr>
+</table>
+<ul>
+  <li>Linux KVM の x86 シャドウページング／ネステッド仮想化に16年前から存在した Use-after-Free 脆弱性</li>
+  <li>ゲスト VM からホストへの脱出が可能。Compute Engine, GKE を含む全マネージド環境に影響</li>
+  <li>Google は全 Compute Engine ホストサーバーにライブハイパーバイザーホットパッチを展開済み</li>
+  <li>マネージド Compute Engine VM・GKE ユーザーの対応は不要（透過的修正）</li>
+  <li>自己管理型仮想化環境ではホスト Linux カーネルの更新が必要</li>
+</ul>
+
+<!-- AWS -->
+<h3><span class="badge-high">High</span> AWS — Amazon Linux 2 カーネル権限昇格 (GhostLock)</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-43499</td></tr>
+  <tr><th>公開日</th><td>2026-07-10</td></tr>
+  <tr><th>深刻度</th><td>Important</td></tr>
+  <tr><th>影響</th><td>Amazon Linux 2 (kernel 5.4)</td></tr>
+</table>
+<ul>
+  <li>Linux カーネルの脆弱性「GhostLock」により、ローカルの攻撃者が root 権限を取得可能</li>
+  <li>パブリックエクスプロイトコードが既に出回っているとの報告あり</li>
+  <li>Amazon Linux 2 ユーザーは <code>ALAS2KERNEL-5.4-2026-126</code> アドバイザリに従いカーネル更新を推奨</li>
+</ul>
+
+<!-- Hermes Agent -->
+<h3>Hermes Agent — v0.18.2 パッチリリース（セキュリティCVEなし）</h3>
+<table class="cve-table">
+  <tr><th>リリース</th><td>v0.18.2 (2026.7.7.2) — 2026-07-08</td></tr>
+  <tr><th>深刻度</th><td>N/A（セキュリティCVEの報告なし）</td></tr>
+</table>
+<ul>
+  <li>v0.18.1（7月7日）に続く同日パッチ。WhatsApp Baileys 依存関係の修正が主目的</li>
+  <li>v0.18.1 は v0.18.0 以降の約660 PR（バグ修正・ハードニング・機能開発）をマージした安定版タグ</li>
+  <li>インストーラー／アップデーターの自己修復、ダッシュボード修正、MCP・プロバイダー修正等を含む</li>
+  <li><code>hermes update</code> または <code>pip install -U hermes-agent</code> で更新可能</li>
+</ul>
+
+<!-- OpenClaw -->
+<h3>OpenClaw — 2026.7.1-beta.5 リリース（セキュリティCVEなし）</h3>
+<table class="cve-table">
+  <tr><th>リリース</th><td>2026.7.1-beta.5 — 2026-07-11</td></tr>
+  <tr><th>深刻度</th><td>N/A（セキュリティCVEの報告なし）</td></tr>
+</table>
+<ul>
+  <li>会話型オンボーディング、ClawRouter、macOS チャット、Metaプロバイダー（muse-spark-1.1）など多数の機能追加</li>
+  <li>セキュリティ関連のCVE修正は本リリースノートでは報告されていません</li>
+</ul>
+
+<!-- その他スタック -->
+<hr>
+<p class="empty-notice">Next.js / React / Python / Django / Hono / SpringBoot / Azure / Claude Code — 本対象期間内で直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<!-- 6 actively exploited -->
+<h3>⚠️ CISA KEV：6件の悪用が確認された脆弱性</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Adobe ColdFusion / Joomlaエクステンション4件 / Langflow</td></tr>
+  <tr><th>KEV登録日</th><td>2026-07-07 〜 2026-07-10</td></tr>
+  <tr><th>深刻度</th><td>Critical（すべて認証不要または低権限でRCE可能）</td></tr>
+</table>
+<ul>
+  <li><strong>Adobe ColdFusion</strong> — パストラバーサル（認証不要RCE）。EPSS 98パーセンタイルで特にリスク大</li>
+  <li><strong>JoomShaper SP Page Builder (Joomla)</strong> — 未認証ファイルアップロード → RCE</li>
+  <li><strong>Page Builder CK (Joomla)</strong> — 未認証ファイルアップロード → RCE</li>
+  <li><strong>iCagenda (Joomla)</strong> — 未認証ファイルアップロード → RCE（7月10日登録）</li>
+  <li><strong>Balbooa Forms (Joomla)</strong> — 未認証ファイルアップロード → RCE（7月9日公開、10日登録）</li>
+  <li><strong>Langflow</strong> — IDOR による他ユーザーの AI フロー不正実行</li>
+</ul>
+
+<!-- 28 critical CVEs -->
+<h3>📈 7月10日〜11日：28件の Critical CVE が新規公開</h3>
+<ul>
+  <li><strong>Apache IoTDB</strong>（CVSS 9.8）— unsafe reflection + パストラバーサル + 認証バイパスの3件。時系列DBのインフラ全体がリモート侵害のリスク</li>
+  <li><strong>OpenPLC</strong>（CVSS 9.9）— 認証済み任意ファイル書込みによるネイティブコード実行。産業用PLCランタイム</li>
+  <li><strong>Kubernetes MCP Server</strong>（CVE-2026-61459, CVSS 9.8）— 引数インジェクションによるベアラートークン窃取・クラスタ乗っ取り（3.9.0未満）</li>
+  <li><strong>Red Hat OpenShift AI</strong>（CVE-2026-15378, CVSS 9.3）— ブラインドSSRF。ガードレール検出コンポーネント経由で内部メタデータ・ローカルファイルへの不正アクセス</li>
+  <li><strong>Open WebUI</strong> — パストラバーサル＋SSRF（0.6.27未満）。認証済みユーザーによるコードインジェクション・情報漏洩</li>
+  <li><strong>Dell PowerFlex Manager</strong> — OSコマンドインジェクション（root実行）</li>
+  <li><strong>Prowler</strong> — SAMLアサーション検証不備によるクロステナントアカウント乗っ取り</li>
+  <li><strong>miniOrange Social Login (WordPress)</strong> — OAuth未検証＋予測可能OTPハッシュによる未認証アカウント乗っ取り</li>
+</ul>
+
+<!-- Cloud Providers status -->
+<h3>☁️ クラウドプロバイダーの対応状況</h3>
+<ul>
+  <li><strong>GCP</strong> — Januscape (CVE-2026-53359) に対し、全 Compute Engine ホストへライブパッチ適用済み。顧客対応不要</li>
+  <li><strong>AWS</strong> — Amazon Linux 2 向け kernel 5.4 の権限昇格修正 (CVE-2026-43499) を7月10日公開</li>
+  <li><strong>Azure</strong> — 本対象期間内の新規セキュリティアドバイザリは未確認（直近は7月7日のAzure Linux複数脆弱性）</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
