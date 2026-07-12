@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-12 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-12 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-11 09:00 〜 2026-07-12 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.207</h2>
+<p>2026年7月11日 10:01 JST、Claude Code <strong>v2.1.207</strong> がリリースされました。Bedrock / Vertex AI / Foundry でのオートモード解禁、多数の端末・バックグラウンドセッション修正、プラグインセキュリティ強化を含む大型アップデートです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Bedrock / Vertex AI / Foundry でオートモードが一般利用可能に</strong>: <code>CLAUDE_CODE_ENABLE_AUTO_MODE</code> のオプトインなしで利用可能。無効化は <code>disableAutoMode</code> 設定で制御</li>
+  <li><strong>Bedrock / Vertex / Claude Platform on AWS のデフォルトモデルを Claude Opus 4.8 に変更</strong></li>
+  <li><strong>エージェントビュー改善</strong>: ペースト時に同じテキストを再度貼ると既存の折りたたみプレースホルダを展開、ブロックされたセッションの覗き見で質問文と経過時間を表示</li>
+  <li><strong>Deep research 改善</strong>: Fetch フェーズのエージェントが「unknown」とラベルされていた問題を修正、送信元ホスト名を表示するように</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>端末のフリーズ・キー入力遅延を修正</strong>: 長大なリスト・テーブル・段落・コードブロックを含むレスポンスのストリーミング中に発生していた問題</li>
+  <li><strong>リモート管理設定の同意バイパスを修正</strong>: 非対話実行（<code>claude -p</code>、SDK）からのリモート管理設定が同意ダイアログなしで記録されていた問題</li>
+  <li><strong>プロンプトインジェクションの誤検知を修正</strong>: システム生成の会話更新による誤警報</li>
+  <li><strong>自動アップデーターのランチャー上書きを修正</strong>: リリースごとに <code>~/.local/bin/claude</code> のカスタムランチャーを上書きしていた問題。<code>/doctor</code> が外部管理ランチャーを報告するように</li>
+  <li><strong>プラグインセキュリティ強化</strong>: シェル形式の hook/monitor/headersHelper における <code>${user_config.*}</code> を拒否（シェルインジェクション対策）。exec 形式または環境変数経由で値を渡すように</li>
+  <li><strong>プラグイン設定のスコープ変更</strong>: <code>pluginConfigs</code> はプロジェクトレベルの <code>.claude/settings.json</code> から読み込まれなくなり、ユーザー設定・<code>--settings</code>・管理設定のみが対象に</li>
+  <li><strong>オートモード設定の読み取り元を変更</strong>: リポジトリ常駐の <code>.claude/settings.local.json</code> から <code>autoMode</code> を読み取らなくなり、<code>~/.claude/settings.json</code> を使用</li>
+  <li><strong>エージェントチームのクラッシュループを修正</strong>: 不正なメールボックスメッセージによる毎秒エラー</li>
+  <li><strong>Remote Control のタスク状態消失を修正</strong>: ネットワーク切断や認証情報更新からの回復時に発生</li>
+  <li><strong>Bedrock の AWS SSO 認証情報再取得を修正</strong>: 全 API リクエストで繰り返し要求されていた問題</li>
+  <li><strong>Windows での AWS 認証情報解決の無限ハングを修正</strong>: 60秒のストールガードが発動するように</li>
+  <li><strong><code>/usage-credits</code> の入力検証を強化</strong>: 不正な値はエラーに、$1,000 超は確認入力を要求</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-207">Claude Code チェンジログ (v2.1.207)</a></p>
+
+<h2>🐙 OpenClaw — 2026.7.1-beta.5（プレリリース）</h2>
+<p>2026年7月11日 19:36 JST、OpenClaw の大型プレリリース <strong>2026.7.1-beta.5</strong> が公開されました。</p>
+<h3>🔧 主な変更点</h3>
+<ul>
+  <li><strong>対話型オンボーディング (Crestodian)</strong>: CLI・Web インストール・macOS アプリ横断で AI ガイドのプロバイダ設定を実現。認証情報のマスク入力と確定論的フォールバックを完備</li>
+  <li><strong>ClawRouter</strong>: 認証情報スコープ付き動的モデル検出、OpenAI 互換・Anthropic/Gemini ネイティブトランスポート、使用量・予算レポートを備えたバンドルプロバイダ</li>
+  <li><strong>Control UI と macOS ネイティブチャット</strong>: セッション主体の UI、検索可能なサイドバー、推論エフォートスライダー、macOS ネイティブセッションブラウザ</li>
+  <li><strong>OpenAI GPT-5.6 サポート</strong>: Sol / Terra / Luna モデルファミリーを認識し、コンテキストウィンドウ・価格メタデータ・<code>max</code> 推論をサポート</li>
+  <li><strong>外部ハーネスアタッチ</strong>: <code>openclaw attach</code> で既存 Gateway セッションにスコープ付き・失効可能 MCP グラントで接続</li>
+  <li><strong>Meta プロバイダ</strong>: <code>muse-spark-1.1</code> の Responses API サポート（ストリーミング、ツール呼び出し、暗号化推論リプレイ）</li>
+  <li><strong>オフライン・音声モバイルチャット</strong>: iOS/Android のオフラインキャッシュ、Apple Watch フル音声対応、iOS TTS</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.1-beta.5">GitHub Releases (2026.7.1-beta.5)</a></p>
+
+<h2>☁️ Google Cloud — 2026年7月11日 アップデート</h2>
+<ul>
+  <li><strong>Google SecOps SOAR</strong>: Release 6.3.92 が全リージョンで利用可能に</li>
+  <li><strong>Apigee hybrid v1.16.7</strong>: セキュリティ修正・CVE 対応を含む更新版をリリース</li>
+  <li><strong>Cloud Billing</strong>: 請求書払いアカウント向けの支払いドキュメントが <strong>Payment status</strong> ページからアクセス可能に</li>
+  <li><strong>Cloud Deploy</strong>: Skaffold を Google 独自フォーク (<code>cd-skaffold</code>) に切り替え</li>
+  <li><strong>GDC for VMware 1.33.1000-gke.59</strong>: Kubernetes v1.33.11-gke.100 ベースの新バージョンがダウンロード可能</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.18.2</strong>（2026年7月7日）です。WhatsApp Baileys 依存関係を npm 公開版に差し替えるパッチです。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（直近の安定版は v16.2.10（7月1日）、canary のみ進行中）、<strong>React</strong>（直近の安定版リリースなし）、<strong>AWS</strong>・<strong>Azure</strong>（大規模アップデートなし）、<strong>Python</strong>・<strong>Django</strong>・<strong>Java</strong>・<strong>Spring Boot</strong>・<strong>Hono</strong>・<strong>Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
