@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-15 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-15 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<!-- OpenClaw CVE-2026-62199 -->
+<h3><span class="badge-high">High</span> OpenClaw — CVE-2026-62199: ホスト実行環境フィルタリング不備（CVSS 8.8）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-62199</td></tr>
+  <tr><th>公開日</th><td>2026-07-13（NVD分析: 2026-07-14）</td></tr>
+  <tr><th>CVSS 3.1</th><td>8.8 (HIGH) — AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</td></tr>
+  <tr><th>影響</th><td>OpenClaw 2026.6.6 未満の全バージョン</td></tr>
+  <tr><th>CWE</th><td>CWE-184 (Incomplete List of Disallowed Inputs)</td></tr>
+</table>
+<ul>
+  <li>ホスト実行環境変数のフィルタリングに不備があり、インタープリタ起動時の変数が適切に除外されない問題</li>
+  <li>低権限の呼び出し元または設定された入力経路から細工された環境変数を注入し、本来の認可範囲を超えたコード実行や永続化が可能</li>
+  <li>2026.6.6 で修正済み。影響を受ける機能が有効かつ到達可能な場合にのみ悪用可能</li>
+  <li>GitHub Advisory: <a href="https://github.com/openclaw/openclaw/security/advisories/GHSA-hjr6-g723-hmfm" target="_blank" rel="noopener noreferrer">GHSA-hjr6-g723-hmfm</a></li>
+</ul>
+
+<!-- OpenClaw CVE-2026-62200 -->
+<h3><span class="badge-high">High</span> OpenClaw — CVE-2026-62200: Git ext トランスポートの悪用（CVSS 8.8）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-62200</td></tr>
+  <tr><th>公開日</th><td>2026-07-13（NVD分析: 2026-07-14）</td></tr>
+  <tr><th>CVSS 3.1</th><td>8.8 (HIGH) — AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</td></tr>
+  <tr><th>影響</th><td>OpenClaw 2026.6.6 未満の全バージョン</td></tr>
+  <tr><th>CWE</th><td>CWE-184 (Incomplete List of Disallowed Inputs)</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-62199 と同根のホスト実行環境フィルタリング不備により、Git ext トランスポートを悪用可能</li>
+  <li>影響を受ける機能が有効な場合、低権限の呼び出し元が意図しないコード実行や永続化を行える</li>
+  <li>2026.6.6 で修正済み（CVE-2026-62199 と同一のパッチバージョン）</li>
+  <li>GitHub Advisory: <a href="https://github.com/openclaw/openclaw/security/advisories/GHSA-9969-8g9h-rxwm" target="_blank" rel="noopener noreferrer">GHSA-9969-8g9h-rxwm</a></li>
+</ul>
+
+<!-- Eclipse Vert.x CVE-2026-15075 -->
+<h3><span class="badge-high">High</span> Eclipse Vert.x — CVE-2026-15075: クロスオリジンリダイレクト時の認証情報漏洩（CVSS 7.5）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-15075</td></tr>
+  <tr><th>公開日</th><td>2026-07-14</td></tr>
+  <tr><th>CVSS 3.1</th><td>7.5 (HIGH) — AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N</td></tr>
+  <tr><th>影響</th><td>Eclipse Vert.x 4.x ≤4.5.29, 5.x ≤5.1.4</td></tr>
+  <tr><th>CWE</th><td>CWE-200 (情報漏洩), CWE-346 (オリジン検証不足)</td></tr>
+</table>
+<ul>
+  <li><code>DefaultRedirectHandler</code>（vertx-core）が、HTTP 30x リダイレクト時にリクエストヘッダをそのまま転送。Content-Length のみ除去され、送信元オリジンの検証（scheme/host/port）が行われない</li>
+  <li>Authorization, Cookie, Proxy-Authorization, X-API-Token などの認証情報が、攻撃者の制御するリダイレクト先ホストに漏洩する可能性</li>
+  <li>Webhook ディスパッチャー、画像プロキシ、マイクロサービスURLフェッチャーなど、外部URLにリクエストを発行するJavaアプリケーションが影響を受ける</li>
+  <li><strong>Javaスタック</strong>（SpringBoot + Vert.x 利用環境など）は要確認。修正バージョンへのアップデートを推奨</li>
+</ul>
+
+<!-- Eclipse Vert.x CVE-2026-15076 -->
+<h3><span class="badge-high">High</span> Eclipse Vert.x — CVE-2026-15076: Cookie ドメイン検証不備によるセッションハイジャック（CVSS 7.5）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-15076</td></tr>
+  <tr><th>公開日</th><td>2026-07-14</td></tr>
+  <tr><th>CVSS 3.1</th><td>7.5 (HIGH) — AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N</td></tr>
+  <tr><th>影響</th><td>Eclipse Vert.x 4.x ≤4.5.29, 5.x ≤5.1.4</td></tr>
+  <tr><th>CWE</th><td>CWE-346 (オリジン検証不足)</td></tr>
+</table>
+<ul>
+  <li><code>WebClientSession</code> が Set-Cookie レスポンスヘッダの Domain 属性を、RFC 6265 に反して検証していない</li>
+  <li>攻撃者が制御するサーバーから任意のサードパーティドメインにスコープされたCookieを注入可能。セッションストアはクロスドメイン所有権チェックを行わないため、注入されたCookieが保存・後続リクエストで送信される</li>
+  <li>結果として、被害アプリケーションが送信する支払金額やカード情報などの機密データが攻撃者のアカウントを通じてアクセス可能になる</li>
+  <li><strong>Javaスタック</strong>利用者は Vert.x Web Client の修正バージョンへのアップデートを推奨</li>
+</ul>
+
+<!-- Microsoft SharePoint Patch Tuesday -->
+<h3><span class="badge-critical">Critical</span> Microsoft SharePoint — CVE-2026-56164: 認証欠落による特権昇格（CVSS 9.8）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-56164</td></tr>
+  <tr><th>公開日</th><td>2026-07-14（July 2026 Patch Tuesday）</td></tr>
+  <tr><th>CVSS 3.1</th><td>9.8 (CRITICAL) — AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</td></tr>
+  <tr><th>影響</th><td>Microsoft Office SharePoint</td></tr>
+</table>
+<ul>
+  <li>Microsoft SharePoint の重要な機能に認証が欠落しており、未認証の攻撃者がネットワーク経由で特権昇格可能</li>
+  <li>July 2026 Patch Tuesday（月例セキュリティ更新）で公開。ネットワークからのリモート攻撃が可能で、認証不要・ユーザー操作不要の極めて深刻な脆弱性</li>
+  <li>SharePoint 管理者は至急パッチの適用を強く推奨</li>
+</ul>
+
+<!-- GCP bulletins -->
+<h3><span class="badge-critical">Critical</span> GCP — GCP-2026-047 (CVE-2026-14934): BigQuery/Dataform/Colab クロステナントリポジトリ乗っ取り</h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>GCP-2026-047 / CVE-2026-14934</td></tr>
+  <tr><th>公開日</th><td>2026-07-13</td></tr>
+  <tr><th>深刻度</th><td>Critical — 認証欠落 (Missing Authorization)</td></tr>
+  <tr><th>影響</th><td>BigQuery, Dataform, Colab Enterprise</td></tr>
+</table>
+<ul>
+  <li>リポジトリ作成時に認可検証が不十分であり、認証された攻撃者がクロステナントで他テナントのリポジトリを乗っ取れる可能性があった</li>
+  <li>Google は全影響サービスに緩和策を適用済み。<strong>顧客側の対応は不要</strong></li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> GCP — GCP-2026-048: Developer Connect 権限昇格</h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>GCP-2026-048</td></tr>
+  <tr><th>公開日</th><td>2026-07-13</td></tr>
+  <tr><th>深刻度</th><td>Medium</td></tr>
+  <tr><th>影響</th><td>Developer Connect（GitLab Enterprise / Bitbucket Data Center 接続）</td></tr>
+</table>
+<ul>
+  <li>Secret Manager シークレット取得時の権限チェックがサービスエージェント（P4SA）のみに依存しており、呼び出し元プリンシパルの検証が不足</li>
+  <li>現在は呼び出し元プリンシパルとP4SAの両方の権限を検証するよう修正済み</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> Eclipse Grizzly — CVE-2026-12606: HTTPリクエストスマグリング（CVSS 5.3）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-12606</td></tr>
+  <tr><th>公開日</th><td>2026-07-14</td></tr>
+  <tr><th>CVSS 3.1</th><td>5.3 (MEDIUM) — AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N</td></tr>
+  <tr><th>影響</th><td>Eclipse Grizzly 5.0.2 未満</td></tr>
+</table>
+<ul>
+  <li>不正な形式のトレーラーヘッダ行の解析に問題があり、HTTP リクエストスマグリングに悪用される可能性</li>
+  <li>5.0.2 で修正済み。<strong>Javaスタック</strong>で Grizzly を使用している場合はアップデート推奨</li>
+</ul>
+
+<!-- その他スタック -->
+<hr>
+<p class="empty-notice">Next.js / React / Python / Django / Hono / SpringBoot / AWS / Azure / Claude Code / Hermes Agent — 本対象期間内で直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Microsoft July 2026 Patch Tuesday — SharePoint CRITICAL ほか複数CVE公開</h3>
+<ul>
+  <li>2026年7月の月例セキュリティ更新（Patch Tuesday）が7月14日（現地時間）に公開された</li>
+  <li>最大の注目は <strong>CVE-2026-56164</strong>（SharePoint、CVSS 9.8 CRITICAL）：未認証のネットワーク経由特権昇格が可能</li>
+  <li>Active Directory Federation Services（AD FS）の <strong>CVE-2026-56155</strong> も併せて公開。アクセス制御の粒度不足によるローカル特権昇格</li>
+  <li>Adobe Audition についても CVE-2026-47967、CVE-2026-47968（領域外書き込み、任意コード実行）が同時公開</li>
+</ul>
+
+<h3>OpenClaw — CVE-2026-62199 / CVE-2026-62200（CVSS 8.8 HIGH × 2）</h3>
+<ul>
+  <li>OpenClaw のホスト実行環境フィルタリングに2件の脆弱性がNVDで公開・分析された</li>
+  <li>いずれも OpenClaw 2026.6.6 未満が影響を受け、2026.6.6 で修正済み</li>
+  <li>2026.7.1（7/13リリースの最新安定版）には修正が含まれている</li>
+  <li>前日の朝刊では「CVE報告なし」とされていたが、7/13にCVEが新規採番され7/14にNVD分析が完了</li>
+</ul>
+
+<hr>
+<p>引き続き注視すべき進行中のトピック：</p>
+<ul>
+  <li><strong>Checkmarx サプライチェーン侵害</strong>（4月発覚、7/6最終更新） — GitHub リポジトリからのデータ流出、AWS/Azure/GCP クレデンシャル漏洩の可能性</li>
+  <li><strong>Microsoft SharePoint CVE-2026-45659</strong> — CISA KEV 追加（7/1）、Warlock ランサムウェアによる実悪用を確認</li>
+  <li><strong>GhostLock (CVE-2026-43499)</strong> — Linux カーネル権限昇格。7/8公開、PoC出回り中。Amazon Linux 2 他で対応進行中</li>
+  <li><strong>Claude Code CNVDB警告</strong>（7/8） — 中国CNVDBがバックドア警告。Anthropic は v2.1.198 で該当コードを削除済み</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
