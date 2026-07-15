@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-15 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-15 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-14 09:00 〜 2026-07-15 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<!-- 🧠 Claude Code -->
+<h2>🧠 Claude Code — v2.1.210 / v2.1.209 / v2.1.208（トリプルリリース）</h2>
+<p>24時間以内に3つのバージョンが連続リリースされる活発な更新日となりました。最新の <strong>v2.1.210</strong>（日本時間 7月15日 08:53）を筆頭に、<strong>v2.1.209</strong>（7月14日 15:45）、<strong>v2.1.208</strong>（7月14日 10:16）と立て続けに公開されています。</p>
+
+<h3>🆕 v2.1.210（最新）</h3>
+<ul>
+  <li><strong>経過時間ライブカウンター</strong>: 折りたたまれたツールサマリー行に、実行時間のライブカウンターが表示されるように。長時間のツール呼び出しが「固まっている」ように見えなくなります</li>
+  <li><strong>パーミッションルール警告</strong>: <code>Write(path)</code> / <code>NotebookEdit(path)</code> / <code>Glob(path)</code> の代わりに <code>Edit(path)</code> / <code>Read(path)</code> を使うよう起動時に警告</li>
+  <li><strong>Worktree 隔離の修正</strong>: <code>isolation: 'worktree'</code> のサブエージェントが、本来隔離された worktree ではなくメインリポジトリに対して git 変更操作を実行できてしまう問題を修正</li>
+  <li><strong>ultracode キーワード誤検出の修正</strong>: Webhook ペイロードや PR コメントなど、人間以外の入力に対して <code>ultracode</code> キーワードが誤って発火する問題を修正</li>
+  <li><strong><code>claude attach</code> の信頼性向上</strong>: 「job not found」「agent is still starting」エラーを解消し、デーモンが安定するまで待機するように</li>
+  <li><strong>フックコールバックのタイムアウト修正</strong>: タイムアウトが「ユーザー拒否」と誤ってモデルに報告され、非対話セッションが停止してしまう問題を修正</li>
+  <li><strong>プラグイン MCP サーバーの生存性</strong>: MCP サーバー再同期時にプラグイン提供の MCP サーバーが破棄される問題を修正</li>
+  <li><strong>データ可視化スキルの色検証改善</strong>: OKLab 色差と色覚多様性閾値の再調整により、バンドルされた dataviz スキルのチャート色検証を改善</li>
+  <li><strong>間接プロンプトインジェクション対策</strong>: サブエージェントが読み取った内容を介した間接プロンプトインジェクションに対して Agent ツールを強化</li>
+  <li>その他多数の修正（crash telemetry、ペーストマーカーリーク、bigint レンダラー、cd バックグラウンド化の誤認識、Grep ページネーション、プラグインキャッシュ、git worktree ロック放置など）</li>
+</ul>
+
+<h3>🆕 v2.1.209</h3>
+<ul>
+  <li><strong>背景セッションでのダイアログブロック修正</strong>: <code>claude agents</code> の背景セッションで <code>/model</code> などのダイアログがブロックされる問題を修正（過度に広範だったガードを差し戻し）</li>
+</ul>
+
+<h3>🆕 v2.1.208（メジャーアップデート）</h3>
+<ul>
+  <li><strong>スクリーンリーダーモード</strong>: <code>claude --ax-screen-reader</code> / <code>CLAUDE_AX_SCREEN_READER=1</code> でプレーンテキスト表示に切替可能。画面読上げユーザー向け</li>
+  <li><strong>vimInsertModeRemaps 設定</strong>: Vim モードで <code>jj</code> などの2キーインサートモードシーケンスを Escape にマッピング可能に</li>
+  <li><strong>CLAUDE_CODE_PROCESS_WRAPPER</strong>: 企業ランチャー経由での自己スポーンを強制する設定。エンタープライズ環境向け</li>
+  <li><strong>自動モード改善</strong>: Bedrock / Vertex / Foundry の外部セッションで権限分類器が Sonnet 5 をデフォルト化</li>
+  <li><strong>多数のメモリリーク・安定性修正</strong>: 長時間セッションでのメモリ使用量削減（MCP stderr 64MB キャップ、LSP 50ドキュメント LRU、非同期フック出力保持の修正など）、編集履歴のトランスクリプトサイズ最大79倍削減</li>
+  <li><strong>パフォーマンス改善</strong>: 高ツール数環境でのツールラウンド最大7倍高速化、権限ルールキャッシュによる複数ルールセッションの高速化</li>
+  <li><strong>背景エージェントの UX 改善</strong>: 停止中のエージェント添付時に即座にトランスクリプト表示、完了エージェントがクリーンアップまで一覧に残るように</li>
+  <li>その他50件以上の修正（HTTP/2 GOAWAY クラッシュ、ストリームJSON出力切り捨て、科学的記法の環境変数誤解析、大規模Markdownテーブルのレンダリング停止、SDKセッション損失、Bedrock認証など）</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<!-- 🤖 Hermes Agent -->
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新リリースは <strong>v0.18.2</strong>（2026年7月7日）です。v0.18.0（The Judgment Release）以降の完全なキュレーションリリースノートは v0.19.0 で提供予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<!-- 🐙 OpenClaw -->
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新リリースは <strong>2026.7.1</strong>（7月14日 07:33 JST — 対象期間直前）です。前日号で詳細をカバーしています。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<!-- ☁️ Azure -->
+<h2>☁️ Azure — 7月14日のアップデート</h2>
+
+<h3>🔧 Azure Front Door エッジアクション（パブリックプレビュー）</h3>
+<p>Azure Front Door にエッジでのプログラマブルなロジック実行機能が追加されました。エッジでのリクエスト/レスポンスの書き換え、ルーティング、ヘッダー操作などが可能になります。</p>
+<ul>
+  <li>App Service、Virtual Machines との統合</li>
+  <li>エッジでのセキュアなカスタムロジック実行</li>
+</ul>
+
+<h3>🔧 SQL Server on Azure VM への SQL 移行（GA）</h3>
+<p>Azure SQL から SQL Server on Azure Virtual Machines への移行機能が一般提供開始。Azure Architecture Center に新しい参照アーキテクチャも公開されました。</p>
+
+<h3>🔧 Azure Container Apps Jobs × Apache Airflow</h3>
+<p>Azure Container Apps Jobs を Apache Airflow でオーケストレーションする方法が公式ブログで公開されました。</p>
+
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates">Azure Updates</a></p>
+
+<!-- その他スタック空セクション -->
+<p class="empty-notice"><strong>AWS</strong>（直近のウィークリーラウンドアップは7月13日付、前日号でカバー）、<strong>Google Cloud</strong>（新着なし）、<strong>Next.js</strong>（7月13日のセキュリティリリースプログラム発表は前日号でカバー）、<strong>React</strong>（最新 v19.2.7）、<strong>Python</strong>（最新 3.14.6 / 3.13.14）、<strong>Django</strong>（最新 6.0.7）、<strong>Java / Spring Boot</strong>（最新 Spring Boot 4.1、6月30日リリース）、<strong>Hono</strong>（新着なし）、<strong>Claude API / SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
