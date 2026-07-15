@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-16 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-16 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<!-- OpenClaw -->
+<h3>OpenClaw 2026.7.2-beta.1 — 複数のセキュリティ修正を含むプレリリース <span class="badge-medium">セキュリティ修正</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>OpenClaw (全バージョン)</td></tr>
+<tr><th>公開日</th><td>2026-07-16 03:48 JST</td></tr>
+<tr><th>GitHub</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.1" target="_blank" rel="noopener noreferrer">Release v2026.7.2-beta.1</a></td></tr>
+</table>
+<ul>
+  <li><strong>チャンネル許可リストのオーナー権限バイパス修正</strong> — チャンネル許可リストが誤ってオーナー権限を付与していた問題を修正 (<a href="https://github.com/openclaw/openclaw/pull/107403" target="_blank" rel="noopener noreferrer">#107403</a>)</li>
+  <li><strong>プロトタイプ汚染 (Prototype Pollution) 対策</strong> — マイグレーション設定マージ時にプロトタイプ汚染をブロック (<a href="https://github.com/openclaw/openclaw/pull/106116" target="_blank" rel="noopener noreferrer">#106116</a>)</li>
+  <li><strong>MCP サーバー接続のセッション隔離</strong> — MCPサーバー接続をリクエスト元セッションにスコープ (<a href="https://github.com/openclaw/openclaw/pull/106359" target="_blank" rel="noopener noreferrer">#106359</a>)</li>
+  <li><strong>認可境界の強化</strong> — ペアノードのディレクトリ参照に管理者権限を要求 (<a href="https://github.com/openclaw/openclaw/pull/106004" target="_blank" rel="noopener noreferrer">#106004</a>)</li>
+</ul>
+
+<!-- Cilium Critical -->
+<h3>CVE-2026-49445 — Cilium Envoy 管理者ソケット露出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-49445" target="_blank" rel="noopener noreferrer">CVE-2026-49445</a></td></tr>
+<tr><th>CVSS</th><td>9.2 (Critical)</td></tr>
+<tr><th>対象</th><td>Cilium &lt; 1.17.14 / &lt; 1.18.8 / &lt; 1.19.2</td></tr>
+<tr><th>公開日</th><td>2026-07-15 (JST)</td></tr>
+</table>
+<ul>
+  <li>L7 機能が有効な場合、組み込みまたはスタンドアロン Envoy が <code>admin.sock</code> をワールドアクセス可能な権限で作成</li>
+  <li>ローカル攻撃者が Envoy 管理エンドポイントにアクセスし、TLS シークレットの露出、クラスタトラフィックの妨害、Envoy の停止が可能</li>
+  <li>Kubernetes (GCP/AWS/Azure) 環境で広く使用される CNI プラグインのため影響範囲大</li>
+  <li>修正: 1.17.14 / 1.18.8 / 1.19.2 以降にアップデート</li>
+</ul>
+
+<!-- PraisonAI -->
+<h3>CVE-2026-61443 — PraisonAI リモートコード実行 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-61443" target="_blank" rel="noopener noreferrer">CVE-2026-61443</a></td></tr>
+<tr><th>CVSS</th><td>8.6 (High)</td></tr>
+<tr><th>対象</th><td>PraisonAI &lt; 1.6.78</td></tr>
+<tr><th>公開日</th><td>2026-07-15 20:25 JST</td></tr>
+</table>
+<ul>
+  <li><code>SkillTools.run_skill_script()</code> がパス検証なしでスクリプトを実行（CWE-22: パストラバーサル）</li>
+  <li>攻撃者は絶対ファイルパスを指定し、作業ディレクトリ外の任意スクリプトを実行可能</li>
+  <li>Python AI フレームワークとして広く使用されているため、当該スタック利用者は注意が必要</li>
+  <li>修正: 1.6.78 以降にアップデート</li>
+</ul>
+
+<!-- Better Auth -->
+<h3>CVE-2026-53514 — Better Auth 組織招待の不正受諾 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-53514" target="_blank" rel="noopener noreferrer">CVE-2026-53514</a></td></tr>
+<tr><th>CVSS</th><td>7.7 (High)</td></tr>
+<tr><th>対象</th><td>Better Auth &lt; 1.6.11</td></tr>
+<tr><th>公開日</th><td>2026-07-16 02:30 JST</td></tr>
+</table>
+<ul>
+  <li>組織プラグインの招待受諾エンドポイントが、セッションのメールアドレス検証を十分に行わずに招待IDの処理を許可</li>
+  <li>未検証セッションの攻撃者が招待IDを入手した場合、他者の組織招待を不正に受諾可能</li>
+  <li>TypeScript / Next.js / React の Web アプリケーションで使用される認証ライブラリ</li>
+  <li>修正: 1.6.11 以降にアップデート（<code>requireEmailVerificationOnInvitation: true</code> の設定も推奨）</li>
+</ul>
+
+<!-- Apollo Config -->
+<h3>CVE-2025-32781 — Apollo Config 設定情報漏洩 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2025-32781" target="_blank" rel="noopener noreferrer">CVE-2025-32781</a></td></tr>
+<tr><th>CVSS</th><td>6.5 (Medium)</td></tr>
+<tr><th>対象</th><td>Apollo Config &lt; 2.5.0</td></tr>
+<tr><th>公開日</th><td>2026-07-16 01:31 JST</td></tr>
+</table>
+<ul>
+  <li>Apollo Portal のリリース取得エンドポイントが権限検証をバイパス（CWE-639: 認可バイパス）</li>
+  <li>低権限ユーザーが releaseId を推測することで、他アプリケーションの設定情報を閲覧可能</li>
+  <li>Java / SpringBoot マイクロサービス環境で広く使用される構成管理システム</li>
+  <li>修正: 2.5.0 以降にアップデート</li>
+</ul>
+
+<!-- 他のスタック -->
+<hr>
+<h3>Next.js / React</h3>
+<p class="empty-notice">対象期間内に Next.js および React に直接関連する新規脆弱性は確認されませんでした。</p>
+
+<h3>Django</h3>
+<p class="empty-notice">対象期間内に Django に直接関連する新規脆弱性は確認されませんでした。</p>
+
+<h3>Hono</h3>
+<p class="empty-notice">対象期間内に Hono に直接関連する新規脆弱性は確認されませんでした。</p>
+
+<h3>Claude Code</h3>
+<p class="empty-notice">対象期間内に Claude Code のセキュリティ関連アップデートは確認されませんでした。</p>
+
+<h3>Hermes Agent</h3>
+<p class="empty-notice">対象期間内に Hermes Agent の新規セキュリティ関連リリースは確認されませんでした（直近は v0.18.2 / 2026-07-08 リリース）。</p>
+
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Microsoft July 2026 月例パッチ — .NET の深刻な脆弱性</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-50649" target="_blank" rel="noopener noreferrer">CVE-2026-50649</a>, <a href="https://app.opencve.io/cve/CVE-2026-47304" target="_blank" rel="noopener noreferrer">CVE-2026-47304</a></td></tr>
+<tr><th>CVSS</th><td>7.8 (High) / 8.1 (High)</td></tr>
+<tr><th>公開</th><td>2026-07-15 早朝 JST（対象期間直前）</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-50649: .NET の安全でないデシリアライゼーションによるローカルコード実行（CWE-502）</li>
+  <li>CVE-2026-47304: .NET の暗号署名検証不備によるセキュリティ機能バイパス（CWE-347）</li>
+  <li>影響範囲: .NET 8.0/9.0, .NET Framework 3.5〜4.8.1, Visual Studio 2022/2026</li>
+  <li>7月の月例パッチで修正済み — 早期の適用を推奨</li>
+</ul>
+
+<h3>Better Auth に複数の脆弱性が同時公開</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td><a href="https://app.opencve.io/cve/CVE-2026-53514" target="_blank" rel="noopener noreferrer">CVE-2026-53514</a>, <a href="https://app.opencve.io/cve/CVE-2026-45337" target="_blank" rel="noopener noreferrer">CVE-2026-45337</a>, <a href="https://app.opencve.io/cve/CVE-2026-53517" target="_blank" rel="noopener noreferrer">CVE-2026-53517</a></td></tr>
+<tr><th>CVSS</th><td>7.7 / 7.6 / 8.1 (High)</td></tr>
+<tr><th>修正</th><td>v1.6.11 で一括修正</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-53514: 未検証メールによる組織招待の不正受諾</li>
+  <li>CVE-2026-45337: デバイス認証フローの乗っ取り（deviceAuthorization プラグイン）</li>
+  <li>CVE-2026-53517: OAuth リフレッシュトークンの競合状態（OAuth プロバイダープラグイン）</li>
+  <li>3件とも v1.6.11 で修正済み。TypeScript/Next.js 認証に Better Auth を使用している場合は早急な更新を推奨</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
