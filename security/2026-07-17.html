@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p class="empty-notice">対象スタック（Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / OpenClaw / Claude / Hermes Agent）に直接関連する新規セキュリティ情報は、本対象期間内では確認されませんでした。</p>
+
+<hr>
+
+<p>なお、対象期間直前の動きとして以下が確認されています：</p>
+
+<h3>Spring Boot 複数の脆弱性 <span class="badge-critical">CRITICAL</span> <span class="badge-high">HIGH</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-40976" target="_blank" rel="noopener noreferrer">CVE-2026-40976</a></td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CVSS 9.1</span> (Critical) — 認証バイパス</td></tr>
+  <tr><th>影響</th><td>Spring Boot 4.0.0〜4.0.5</td></tr>
+  <tr><th>修正</th><td>4.0.6 / 3.5.14 へアップグレード</td></tr>
+</table>
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-40972" target="_blank" rel="noopener noreferrer">CVE-2026-40972</a></td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">CVSS 7.5</span> (High) — DevTools タイミング攻撃</td></tr>
+  <tr><th>影響</th><td>Spring Boot DevTools（複数バージョン）</td></tr>
+  <tr><th>修正</th><td>4.0.6 / 3.5.14 へアップグレード</td></tr>
+</table>
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-40973" target="_blank" rel="noopener noreferrer">CVE-2026-40973</a></td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">CVSS 7.0</span> (High) — 一時ディレクトリ乗っ取り</td></tr>
+  <tr><th>影響</th><td>Spring Boot（複数バージョン）</td></tr>
+  <tr><th>修正</th><td>4.0.6 / 3.5.14 へアップグレード</td></tr>
+</table>
+<ul>
+  <li>Spring Boot のデフォルト Web セキュリティが特定の構成下で完全に無効化される深刻な認証バイパス（CVE-2026-40976）</li>
+  <li>CVE-2026-40972 は DevTools のリモート秘密鍵をタイミング攻撃で推測可能、最悪 RCE に至る</li>
+  <li>4.0.x / 3.5.x は OSS で修正提供。3.4.x 以前は Enterprise Support のみ</li>
+  <li>※本件の初回開示は 6/29、NVD最終更新は 7/14 のため対象期間外ですが、影響が大きいため参考掲載します</li>
+</ul>
+
+<h3>OpenClaw v2026.7.2-beta.1 <span class="badge-medium">INFO</span></h3>
+
+<table class="cve-table">
+  <tr><th>リリース</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.1" target="_blank" rel="noopener noreferrer">v2026.7.2-beta.1</a> (2026-07-16 03:48 JST)</td></tr>
+  <tr><th>内容</th><td>チャネル操作の安全性向上 — Telegram/Signal の安定性修正、チャネル許可リストの所有者アクセス防止</td></tr>
+</table>
+<ul>
+  <li>Telegram の再起動後メッセージ消失防止、Signal の停止/承認制御の応答性改善</li>
+  <li>チャネル許可リストが誤って所有者アクセスを付与しないよう修正</li>
+  <li>リモートコーディングセッション、ネイティブオートメーション対応など機能追加も含む</li>
+  <li>※プレリリース版のため、本番環境への適用は stable リリースを推奨</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Zoom Windows クライアント アカウント乗っ取り <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-53412" target="_blank" rel="noopener noreferrer">CVE-2026-53412</a></td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CVSS 9.8</span> (Critical)</td></tr>
+  <tr><th>公開日</th><td>2026-07-16</td></tr>
+  <tr><th>影響</th><td>Zoom Desktop Client for Windows, VDI Client, Meeting SDK for Windows</td></tr>
+  <tr><th>修正</th><td>バージョン 7.0.0 以降へアップデート</td></tr>
+</table>
+<ul>
+  <li>Windows 版 Zoom の入力検証不備により、未認証の攻撃者がネットワーク経由でアカウント乗っ取り可能</li>
+  <li>攻撃条件: ネットワーク到達可能・認証不要・ユーザー操作不要（CVSS: AV:N/AC:L/PR:N/UI:N）</li>
+  <li>Zoom セキュリティ速報 ZSB-26014 にて公表、修正済みバージョンへの更新を強く推奨</li>
+</ul>
+
+<h3>Microsoft SharePoint Server の積極的悪用 <span class="badge-critical">CRITICAL</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2026-56164" target="_blank" rel="noopener noreferrer">CVE-2026-56164</a></td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CVSS 9.8</span> (Critical)</td></tr>
+  <tr><th>公表日</th><td>2026-07-14</td></tr>
+  <tr><th>状況</th><td>🔴 悪用確認済み（CISA KEV 登録: 2026-07-14）</td></tr>
+</table>
+<ul>
+  <li>Microsoft SharePoint Server の認証欠落により、未認証のリモートアクセスが可能</li>
+  <li>CISA により Known Exploited Vulnerabilities (KEV) カタログに登録、実環境での悪用が確認されている</li>
+  <li>Microsoft は 2026年7月の月例パッチで修正をリリース。AMSI による一時的緩和も可能</li>
+</ul>
+
+<h3>CISA KEV 新規追加（7/15-16） — 複数製品で積極的悪用を確認</h3>
+
+<p>米国 CISA は以下の脆弱性を Known Exploited Vulnerabilities カタログに新規追加しました：</p>
+<ul>
+  <li><strong>Oracle Payments</strong>（E-Business Suite）— 未認証のリモート脆弱性、HTTP 経由で悪用可能（7/15 追加）</li>
+  <li><strong>KNX Protocol Connection Authorization</strong> — アカウントロックアウト機構の不備（7/15 追加）</li>
+  <li><strong>SonicWall SMA1000</strong> — コードインジェクション（認証管理者）および SSRF（未認証）（7/14 追加、CVSS 10）</li>
+  <li><strong>Cisco IOS</strong> — CSRF 脆弱性（7/13 追加）</li>
+</ul>
+
+<p>これらは全ていずれも実環境での悪用が確認されており、該当製品の利用組織は至急のパッチ適用が推奨されます。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
