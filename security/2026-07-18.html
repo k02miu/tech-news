@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>OpenClaw <span class="badge-medium">セキュリティ更新</span></h3>
+
+<table class="cve-table">
+  <tr><th>対象</th><td>OpenClaw 2026.7.2-beta.2</td></tr>
+  <tr><th>公開日</th><td>2026-07-17 (JST 17:38)</td></tr>
+  <tr><th>深刻度</th><td>Medium（チャネル操作の安全性強化）</td></tr>
+  <tr><th>概要</th><td>チャネル許可リストがオーナー権限を誤って付与する問題を修正。Telegram durable-ingressの消失防止、Signalの停止・承認コントロールの応答性改善を含むチャネル操作の安全性向上。</td></tr>
+</table>
+<ul>
+  <li><strong>影響範囲:</strong> Telegram、Signal、その他チャネル統合を利用する全OpenClawデプロイ</li>
+  <li><strong>対策:</strong> 最新のプレリリース (<code>v2026.7.2-beta.2</code>) へのアップデートを推奨</li>
+  <li><strong>参照:</strong> <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.2" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">その他のスタック（Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Claude / Hermes Agent）については、対象期間内に直接関連する新規CVE・セキュリティアドバイザリは確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🔴 CISA KEV 新規追加 — FortiSandbox / SharePoint Server <span class="badge-critical">Critical</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-39808, CVE-2026-25089, CVE-2026-58644</td></tr>
+  <tr><th>対象</th><td>Fortinet FortiSandbox / Microsoft SharePoint Server</td></tr>
+  <tr><th>KEV追加日</th><td>2026-07-16 (JST)</td></tr>
+  <tr><th>深刻度</th><td>Critical（実環境での悪用を確認）</td></tr>
+  <tr><th>概要</th><td>米国CISAが悪用確認済み脆弱性カタログ（KEV）に3件を新規追加。FortiSandboxのOSコマンドインジェクション（認証不要でリモートコード実行が可能）、SharePoint Serverの信頼できないデータのデシリアライズ（ネットワーク経由でコード実行）が含まれる。</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-39808:</strong> FortiSandbox — 細工したHTTPリクエストにより認証不要でOSコマンド実行が可能</li>
+  <li><strong>CVE-2026-25089:</strong> FortiSandbox / FortiSandbox Cloud / FortiSandbox PaaS — 同様のOSコマンドインジェクション</li>
+  <li><strong>CVE-2026-58644:</strong> SharePoint Server — 信頼できないデータのデシリアライズによりRCEが可能。IISマシンキー窃取やマルウェア展開のおそれ</li>
+  <li><strong>対策期限（BOD 26-04）:</strong> 2026-07-19 までにパッチ適用または緩和策の実施が必要</li>
+  <li><strong>参照:</strong> <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a> / <a href="https://www.security-next.com/187509" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>🟠 SharePoint Server 複数脆弱性 — CISAが一斉注意喚起 <span class="badge-high">High</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-32201, CVE-2026-45659, CVE-2026-56164, CVE-2026-58644, CVE-2026-55040</td></tr>
+  <tr><th>対象</th><td>Microsoft SharePoint Server</td></tr>
+  <tr><th>公表日</th><td>2026-07-17 (JST)</td></tr>
+  <tr><th>深刻度</th><td>High〜Critical（実悪用確認あり）</td></tr>
+  <tr><th>概要</th><td>CISAがSharePoint Serverの複数脆弱性の悪用を確認し、緊急の対策を呼びかけ。リモートコード実行、IISマシンキー窃取、持続的侵害環境の構築、マルウェア展開のリスク。CVE-2026-55040は悪用未確認ながら高リスクと警告。</td></tr>
+</table>
+<ul>
+  <li><strong>推奨対策:</strong> 最新パッチ適用、AMSI有効化の確認、監視強化、侵害兆候の精査</li>
+  <li><strong>運用面:</strong> インターネット直接公開の回避、レイヤ7リバースプロキシによる管理画面保護</li>
+  <li><strong>侵害時対応:</strong> マルウェア排除後のキーローテーションが必須</li>
+  <li><strong>参照:</strong> <a href="https://www.security-next.com/187553" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>🟡 FortiOS 複数脆弱性 — パッチチューズデー対応 <span class="badge-medium">Medium</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-23573, CVE-2026-59837, CVE-2026-59839 ほか3件</td></tr>
+  <tr><th>対象</th><td>FortiOS / FortiPAM / FortiProxy</td></tr>
+  <tr><th>公表日</th><td>2026-07-17 (JST)</td></tr>
+  <tr><th>深刻度</th><td>Medium（4件）/ Low（2件）— クリティカル・Highはなし</td></tr>
+  <tr><th>概要</th><td>Fortinetが7月のパッチチューズデーで6件のアドバイザリを公開。SSL VPN Webページの反射型XSS、ログレポートのスタックバッファオーバーフロー、CLIのパストラバーサルなどに対応。authd/wadのメモリリークやHTTPヘッダインジェクションも修正。</td></tr>
+</table>
+<ul>
+  <li><strong>注目:</strong> CVE-2026-59839は高い権限と物理アクセスが必要だが、ルートファイルシステム削除が可能</li>
+  <li><strong>対策:</strong> 各アドバイザリに従い最新版へアップデート</li>
+  <li><strong>参照:</strong> <a href="https://www.security-next.com/187537" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>🟠 Ivanti Xtraction パストラバーサル脆弱性 <span class="badge-high">High</span></h3>
+
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-14903 (CVSS 7.7), CVE-2026-14902 (CVSS 4.0)</td></tr>
+  <tr><th>対象</th><td>Ivanti Xtraction（2026.2.1未満）</td></tr>
+  <tr><th>公表日</th><td>2026-07-17 (JST)</td></tr>
+  <tr><th>深刻度</th><td>High（パストラバーサル） / Medium（オープンリダイレクト）</td></tr>
+  <tr><th>概要</th><td>データ分析可視化製品Ivanti Xtractionに2件の脆弱性。CVE-2026-14903は低権限でウェブルート外の任意ファイル読み取りが可能。悪用は未確認。</td></tr>
+</table>
+<ul>
+  <li><strong>対策:</strong> Ivanti Xtraction 2026.2.1 へアップデート</li>
+  <li><strong>参照:</strong> <a href="https://www.security-next.com/187544" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>🏭 日本国内インシデント</h3>
+
+<h4>日産化学 — システム侵害の可能性を調査中</h4>
+<table class="cve-table">
+  <tr><th>組織</th><td>日産化学株式会社（化学メーカー）</td></tr>
+  <tr><th>発覚日</th><td>2026-07-01（不審な活動を検知）</td></tr>
+  <tr><th>公表日</th><td>2026-07-17 (JST)</td></tr>
+  <tr><th>状況</th><td>第三者によるシステム侵害の可能性を確認。被害拡大防止措置と監視強化を実施済み。7/16時点で顧客・取引先への影響は未確認も、全容把握には時間を要する見込み。</td></tr>
+</table>
+<ul>
+  <li><strong>影響:</strong> 現時点で顧客・取引先への具体的被害は確認されず</li>
+  <li><strong>対応:</strong> 外部協力のもと原因究明・影響範囲の調査を継続中</li>
+  <li><strong>参照:</strong> <a href="https://www.security-next.com/187519" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h4>オーミケンシ — ランサムウェア被害の続報（外部クラウドへのデータ送信確認）</h4>
+<table class="cve-table">
+  <tr><th>組織</th><td>オーミケンシ株式会社（繊維メーカー）</td></tr>
+  <tr><th>初回発生日</th><td>2026-03-16</td></tr>
+  <tr><th>続報公表日</th><td>2026-07-17 (JST、ScanNetSecurity報道)</td></tr>
+  <tr><th>状況</th><td>フォレンジック調査の結果、VPN経由の侵入 → 遠隔操作経路構築 → サーバから外部クラウドストレージへのデータ送信 → ファイル暗号化 → NASデータ削除の一連の攻撃フローを確認。送信データの内容特定は攻撃者の痕跡消去により困難。</td></tr>
+</table>
+<ul>
+  <li><strong>進展:</strong> 当初の「システム障害」公表から、具体的な攻撃手口とデータ流出の可能性が判明</li>
+  <li><strong>課題:</strong> 攻撃者による痕跡消去のため流出データの内容特定が困難</li>
+  <li><strong>参照:</strong> <a href="https://scan.netsecurity.ne.jp/article/2026/07/17/55728.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
