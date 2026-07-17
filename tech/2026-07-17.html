@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-17 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-17 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-16 09:00 〜 2026-07-17 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<!-- 🧠 Claude Code -->
+<h2>🧠 Claude Code — v2.1.211</h2>
+<p>2026年7月16日 09:32 JST に <strong>v2.1.211</strong> がリリースされました。30件以上の修正・改善を含む大規模なアップデートです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>--forward-subagent-text フラグ追加</strong>: <code>CLAUDE_CODE_FORWARD_SUBAGENT_TEXT</code> 環境変数とともに、サブエージェントのテキストと思考内容を stream-json 出力に含めることが可能に</li>
+  <li><strong>整数環境変数の入力形式拡張</strong>: タイムアウト値やトークン予算などの整数環境変数が科学表記（<code>1e6</code>）や桁区切り（<code>64_000</code>）を受け付けるように</li>
+  <li><strong>「常に許可」ルールの保存場所変更</strong>: リポジトリルートに保存するようになり、git worktree をまたいで承認が永続化</li>
+  <li><strong>Vim モード改善</strong>: <code>s</code> / <code>S</code>（文字/行の置換）が NORMAL モードで動作するように（vim の挙動に準拠）</li>
+  <li><strong>ターミナルレイアウト・レンダリング性能の改善</strong></li>
+  <li><strong>バックグラウンドエージェントの結果報告改善</strong>: 実行中のエージェントのステータスを報告し、実際の完了を待つように（結果の捏造を防止）</li>
+  <li><strong>メモリインデックスの超過警告改善</strong>: frontmatter と HTML コメントを除いた実コンテンツのみを計測</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ修正</strong>: パーミッションプレビューで双方向オーバーライド文字・ゼロ幅文字・類似引用符が中和されない問題を修正（ツール入力が承認メッセージを視覚的に改変できる脆弱性）</li>
+  <li><strong>auto mode × PreToolUse フック</strong>: フックの <code>ask</code> 決定を auto mode が上書きしていた問題を修正（フックの ask が最低でもプロンプトを表示するように）</li>
+  <li><strong>並行セッションの一斉ログアウト</strong>: スリープ復帰時に複数の Claude Code セッションが同時にログアウトする問題を修正</li>
+  <li><strong>プラグイン MCP サーバー再接続</strong>: アイドル状態の Web セッション復帰後に MCP サーバーが再接続されない問題を修正</li>
+  <li><strong>Vertex / Bedrock モデル指定</strong>: モデルが明示的に設定されている場合にデフォルト Opus を試行しスプリアスなフォールバック通知が表示される問題を修正</li>
+  <li><strong>サブエージェントモデル継承</strong>: 明示的なモデルオーバーライドで生成されたサブエージェントが再開時に親モデルに戻る問題を修正</li>
+  <li><strong>ファイルアップロード検証</strong>: DOS デバイスサフィックス（<code>.prn</code>）や末尾ドット付きファイル名の受付、複数ハードリンクファイルの拒否</li>
+  <li><strong>プロンプトキャッシュ回帰修正</strong>: Bedrock・Vertex・Mantle・Foundry で後続のシステムコンテキストブロックが毎回新規入力トークンとして課金される問題を修正</li>
+  <li><strong>headless print-mode セッション</strong>: Windows で stdin が読めない場合のクラッシュ・サイレント終了を修正</li>
+  <li><strong>/clear 後のコストカウンターリセット</strong>: ステータスラインのコストが /clear 後に $0 から開始されるように</li>
+  <li><strong>バックグラウンドジョブの auto-respawn 防止</strong>: ユーザーが kill したバックグラウンドエージェントが自動復活する問題を修正</li>
+  <li><strong>Claude in Chrome</strong>: ファイルアップロードパス検証の強化、<code>save_to_disk</code> がスクリーンショット画像を実際にディスクに書き込むように</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-211">Claude Code v2.1.211 リリースノート</a></p>
+
+<!-- 🤖 Hermes Agent -->
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.18.2</strong>（2026年7月8日リリース）です。WhatsApp Baileys 依存関係の修正を含むパッチリリースです。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<!-- 🐙 OpenClaw -->
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。直近のリリースは <strong>v2026.7.2-beta.1</strong>（2026年7月16日 03:48 JST、対象期間の約5時間前）です。リモートコーディングセッション、クラウドワーカー、Control UI ガイド付きセットアップなどの大規模機能を含むプレリリースです。最新安定版は <strong>v2026.7.1</strong> です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<!-- ☁️ AWS CloudFront 大規模障害 -->
+<h2>☁️ AWS CloudFront — 大規模障害発生</h2>
+<p>2026年7月16日 16:45 JST 頃より、AWS の CDN サービス <strong>Amazon CloudFront</strong> において大規模な障害が発生しました。特に VPC（Virtual Private Cloud）経由で CloudFront を利用しているユーザーに影響が出ています。</p>
+<h3>影響範囲</h3>
+<ul>
+  <li><strong>Hugging Face</strong>: 世界中のほとんどの地域でサービスが利用不可に</li>
+  <li><strong>はてなブログ</strong>: CloudFront 起因の 504 エラー</li>
+  <li><strong>ニコニコ動画</strong>: ニコニコ生放送へのアクセス不可、ログイン・ログアウト不可</li>
+  <li><strong>PayPay</strong>: 決済サービスおよび公式サイトが利用不可</li>
+  <li><strong>マイナポータル</strong>: ログイン不可</li>
+  <li>その他、多数の Web サービスに影響</li>
+</ul>
+<p>🔗 <a href="https://health.aws.amazon.com/health/status">AWS Health Dashboard</a> · <a href="https://gigazine.net/news/20260716-aws-cloudfront-down/">GIGAZINE 報道</a></p>
+
+<!-- 🖥️ NVIDIA -->
+<h2>🖥️ NVIDIA — 日本 AI エコシステム強化を発表</h2>
+<p>2026年7月15日〜16日、NVIDIA CEO のジェンスン・フアン氏が来日し、日本の AI エコシステムに関する大規模な発表を行いました。</p>
+<h3>🔧 主な発表内容</h3>
+<ul>
+  <li><strong>Physical AI Initiative（物理AIイニシアチブ）</strong>: 日本政府（経済産業省）と連携し、AI エージェント・デジタルツイン・ロボティクス向けのオープンなマルチモーダル基盤モデルを開発する国家プロジェクトを始動</li>
+  <li><strong>製造業との連携</strong>: 富士通・川崎重工業・FANUC・安川電機の CEO と会合。工場の物理 AI 導入に向けた協業を発表</li>
+  <li><strong>サプライチェーン強化</strong>: ADVANTEST・東京エレクトロン・京セラ・三菱電機・村田製作所・パナソニック・ルネサス・Kioxia など16社の経営陣と AI サプライチェーンについて協議</li>
+  <li><strong>Build-a-Claw イベント</strong>: 日本の開発者向けロボットハッカソンを開催、DGX Spark を授与</li>
+  <li><strong>ヘルスケア AI</strong>: アステラス製薬・第一三共・小野薬品などが NVIDIA BioNeMo を活用した AI 創薬を推進</li>
+</ul>
+<p>🔗 <a href="https://blogs.nvidia.com/blog/japan-ecosystem-2026/">NVIDIA Blog</a> · <a href="https://www.cnbc.com/2026/07/16/nvidia-reveals-new-ai-model-and-expands-japans-physical-ai-ecosystem.html">CNBC</a></p>
+
+<!-- 🔒 OpenAI -->
+<h2>🔒 OpenAI — 10代の安全なAIアクセスに関する見解を発表</h2>
+<p>2026年7月16日、OpenAI は「Why teens deserve access to safe AI（10代が安全なAIにアクセスすべき理由）」と題するブログ記事を公開しました。若年層に対する AI アクセスの安全性と教育的価値についての見解を示しています。</p>
+<p>🔗 <a href="https://openai.com/index/why-teens-deserve-access-safe-ai/">OpenAI Blog</a></p>
+
+<!-- ⚡ Next.js -->
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版の新規リリースは確認されませんでした。最新安定版は <strong>v16.2</strong> です。v16.3 の開発がカナリアリリースで進行中（v16.3.0-canary.88、7月17日 08:54 JST）。また、7月13日には <strong>セキュリティリリースプログラムの正式化</strong> が発表され、第一回のセキュリティパッチは <strong>7月20日</strong> に予定されています。</p>
+<p>🔗 <a href="https://nextjs.org/blog">Next.js Blog</a> · <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<!-- 空セクション: その他 -->
+<p class="empty-notice"><strong>React</strong>（最新安定版: v19.2.7、6月1日）、<strong>Python / Django</strong>（最新: Django 6.0.7、7月7日）、<strong>Java / Spring Boot / Hono</strong>、<strong>Claude API/SDK</strong>、<strong>Microsoft Azure</strong>、<strong>Google Cloud</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
