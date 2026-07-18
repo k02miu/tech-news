@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-18 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-18 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-17 09:00 〜 2026-07-18 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<!-- 🧠 Claude Code -->
+<h2>🧠 Claude Code — v2.1.212</h2>
+<p>2026年7月17日 09:33 JST に <strong>v2.1.212</strong> がリリースされました。30件以上の修正・改善を含む大規模なアップデートで、特にバックグラウンドセッション管理とレート制限に関する重要な機能追加が目立ちます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>/fork の動作変更と /subtask 新設</strong>: <code>/fork</code> は会話を新しいバックグラウンドセッション（<code>claude agents</code> に独立行として表示）にコピーし、作業を継続可能に。旧来のインセッションサブエージェントは <code>/subtask</code> に名称変更</li>
+  <li><strong>claude auto-mode reset</strong>: デフォルトの auto-mode 設定を復元するコマンドを追加（<code>--yes</code> で確認スキップ可）</li>
+  <li><strong>WebSearch 呼び出し制限</strong>: セッション全体の WebSearch ツール呼び出し上限を追加（デフォルト 200、<code>CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION</code> で調整可）。暴走検索ループを防止</li>
+  <li><strong>サブエージェント生成数制限</strong>: セッションあたりのサブエージェント生成上限を追加（デフォルト 200、<code>CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION</code> で上書き可）。<code>/clear</code> で予算リセット</li>
+  <li><strong>MCP ツール自動バックグラウンド化</strong>: 2分以上実行中の MCP ツール呼び出しを自動的にバックグラウンドへ移動（<code>CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS</code> で閾値調整・無効化可）</li>
+  <li><strong>/resume ピッカー</strong>: エージェントビューで <code>/resume</code> を入力すると、削除済みセッションを含む過去セッション一覧から選択・バックグラウンド再開が可能に</li>
+  <li><strong>バックグラウンドエージェント添付の改善</strong>: cold-attach 時にセッション起動中もフォーマット済みトランスクリプトを即座に表示</li>
+  <li><strong>プロンプトキャッシング改善</strong>: 中間会話のシステムブロックが LLM ゲートウェイやカスタム Base URL（Bedrock, Vertex, 1P）越しでも動作するように</li>
+  <li><strong>Web 検索・フェッチの信頼性向上</strong>: 529 エラーとレート制限リクエストを backoff 付きでリトライ</li>
+  <li><strong>エージェント間メッセージングのトークン削減</strong>: <code>SendMessage</code> 本文がリプレイ履歴とツール結果に重複して含まれないように</li>
+  <li><strong>/btw の動作変更</strong>: 引数なしで <code>/btw</code> を実行すると直近のやり取りのサイド質問パネルを再オープン</li>
+  <li><strong>フッターヒント改善</strong>: バックグラウンドエージェント完了時、<code>←</code> ヒントが一瞬 <code>N done</code> とパルス表示</li>
+  <li><strong>Task ツール mode パラメータ非推奨化</strong>: サブエージェントはデフォルトで親セッションのパーミッションモードを継承</li>
+  <li><strong>Enterprise forceLoginMethod 適用範囲拡大</strong>: VS Code 拡張・SDK・setup-token・install-github-app ログインにも適用</li>
+  <li><strong>セッショントランスクリプト</strong>: 各アシスタントメッセージの推論努力レベルを記録</li>
+  <li><strong>headless/SDK セッション</strong>: <code>set_model</code> 制御リクエストをターン途中で適用（次のモデルラウンドトリップで新モデル使用）</li>
+  <li><strong>エージェントビュー改善</strong>: サンドボックス・MCP入力・管理設定待ちのセッションが「Working」ではなく「Needs input」と表示</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>plan mode のセキュリティ修正</strong>: plan mode がファイル変更を伴う Bash コマンド（<code>touch</code>, <code>rm</code> など）を許可プロンプトや SDK <code>canUseTool</code> コールバックなしで自動実行していた問題を修正</li>
+  <li><strong>worktree のセキュリティ修正</strong>: リポジトリにコミットされたシンボリックリンク（<code>.claude/worktrees</code>）を辿ってリポジトリ外にファイルを作成できた問題を修正</li>
+  <li><strong>フックの信頼性修正</strong>: <code>continue:false</code> フックの停止がツール失敗/途中完了時に破棄される問題、およびフックインフラエラーがユーザー拒否と誤報告される問題を修正</li>
+  <li><strong>SIGTERM 処理</strong>: 実行中の Bash ツールが SIGTERM で orphan 化していた問題（print/SDK モード）。CLI がターンをアボートしプロセスツリーを kill、exit 143</li>
+  <li><strong>Windows /background 修正</strong>: グループポリシーで PowerShell 5.1 がブロックされている環境での <code>EUNKNOWN: unknown error, uv_spawn</code> を修正（PowerShell 7 を優先）</li>
+  <li><strong>OpenTelemetry 修正</strong>: Azure Monitor などチャンク転送エンコーディング非対応エンドポイントへの HTTP エクスポート 411/400 エラーを修正</li>
+  <li><strong>OTLP 修正</strong>: SDK/headless モードで <code>TRACEPARENT</code> 設定時にイベントログレコードの <code>trace_id</code>/<code>span_id</code> が欠落する問題を修正</li>
+  <li><strong>多数画像の会話</strong>: 画像多数の会話が「Request too large」で誤って失敗する問題を修正し、エラーメッセージを改善</li>
+  <li><strong>Web 検索・フェッチ</strong>: API 過負荷時に検索結果やページコンテンツとして「API Error」テキストが返される問題を修正</li>
+  <li><strong>/ultrareview 多数修正</strong>: PR 参照の拒否、リモートブランチ非fetch、<code>/clear</code> 後の課金確認スキップ、Claude Desktop でのエラーメッセージ改善など</li>
+  <li><strong>ファイル編集エラー</strong>: offset/limit 付きで読み込んだファイルの編集時に「File has not been read yet」が誤表示される問題を修正</li>
+  <li><strong>ExitWorktree</strong>: <code>--continue</code>/<code>--resume</code> でのセッション再開後に「no active EnterWorktree session」で失敗する問題を修正</li>
+  <li><strong>/fork バックグラウンドセッション</strong>: 状態書き込み失敗後に live-parent 保護が失われる問題を修正</li>
+  <li><strong>エージェントチーム</strong>: チーム初期化の再実行時に停止中のチームメイトがリーダーに重複 idle 通知を送る問題を修正</li>
+  <li><strong>差分プレビュー</strong>: 狭いレイアウトで行番号と +/- マーカーが消える問題を修正</li>
+  <li><strong>認証ステータスパネル</strong>: タイトルを「Cloud authentication」から「Authentication」に更新</li>
+  <li><strong>tmux リリースノート訂正</strong>: v2.1.200 の tmux 3.6 系列に関する記載を訂正（同期出力非対応、新しい tmux は自動検出）</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-212">Claude Code v2.1.212 リリースノート</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">RSS フィード</a></p>
+
+<!-- 🤖 Hermes Agent -->
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.18.2</strong>（2026年7月8日リリース）です。WhatsApp Baileys 依存関係の修正を含むパッチリリースです。v0.19.0 の curated リリースノートが準備中です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<!-- 🐙 OpenClaw -->
+<h2>🐙 OpenClaw — 2026.7.2-beta.2</h2>
+<p>2026年7月17日 17:38 JST 頃にプレリリース <strong>v2026.7.2-beta.2</strong> が公開されました。リモートコーディングセッションとネイティブ自動化を中心とした大規模なベータアップデートです。</p>
+
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>リモートコーディングセッション</strong>: Control UI セッションをクラウドワーカーで実行可能に。Codex・Claude のカタログセッションを所有ホストのターミナルで開き、OpenCode・Pi セッションをターミナルで直接再開可能</li>
+  <li><strong>ネイティブ自動化とノード</strong>: モバイル向け Automations のパリティ実現、Android のフォアグラウンド Voice Wake、ヘッドレス Linux ノードからカメラ・位置情報・通知機能を公開</li>
+  <li><strong>より安全なチャンネル運用</strong>: Telegram の永続的 ingress 消失防止、Signal の停止・承認コントロールの応答性維持、チャンネル許可リストによるオーナーアクセス付与を防止</li>
+  <li><strong>ガイド付き Control UI セットアップ</strong>: 設定からモデルプロバイダーを構成、ガイド付きセットアップページでチャンネルをオンボーディング、セッション作成時に画像とモデルを選択可能</li>
+  <li><strong>ゲートウェイとセッション復旧</strong>: 再起動受付によるゲートウェイのウェッジ防止、ファイナライズ停止後の返信セッション復旧、ライフサイクルクレーム競合を通じてワンショット cron ジョブを有効維持</li>
+  <li><strong>Linux deb / AppImage パッケージ</strong>: ゲートウェイガイダンス付きの deb および AppImage バンドルを追加、安定版 main ベースリリースから公開</li>
+</ul>
+
+<h3>🔧 その他の変更</h3>
+<ul>
+  <li><strong>外部ゲートウェイ監視</strong>: <code>OPENCLAW_SUPERVISOR_MODE=external</code> による OCM 等のライフサイクル所有者向け監視モード</li>
+  <li><strong>ClickClack 統合</strong>: ガイド付きセットアップ、コマンドメニューの自動発行</li>
+  <li><strong>Skill Workshop</strong>: 承認ポリシーのデフォルト自動化、セッション履歴スキャンによるスキル提案</li>
+  <li><strong>OpenAI GPT-5.6 デフォルト</strong>: 新規 API キーセットアップで <code>openai/gpt-5.6</code>（Sol エイリアス）をデフォルトに</li>
+  <li><strong>iOS オフラインチャット</strong>: ゲートウェイごとのキャッシュから最近のセッションを事前描画</li>
+  <li><strong>Slack 進捗インジケーター</strong>: ネイティブアシスタントスレッドステータスとローテーションローディングメッセージをデフォルトで使用</li>
+  <li><strong>Control UI 改善</strong>: チャットレイアウトの中央寄せ、設定ショートカット、セッションワークスペースショートカット</li>
+  <li><strong>その他</strong>: MCP 分離、Discord 音声通知、Codex CLI 0.144.4 へのバンプ、多数のバグ修正・安定性向上</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.2">OpenClaw 2026.7.2-beta.2 リリースノート</a></p>
+
+<!-- 空セクション: その他 -->
+<p class="empty-notice"><strong>⚡ Next.js</strong>（最新安定版: v16.2、カナリア v16.3.0-canary.89 まで進行中）、<strong>⚛️ React</strong>（最新安定版: v19.2.7）、<strong>☁️ AWS / Azure / GCP</strong>、<strong>Python / Django</strong>（最新: Django 6.0.7）、<strong>Java / Spring Boot / Hono</strong>、<strong>Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
