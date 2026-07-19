@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-19 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-07-19 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-18 09:00 〜 2026-07-19 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<!-- 🧠 Claude Code -->
+<h2>🧠 Claude Code — v2.1.214</h2>
+<p>2026年7月18日 10:29 JST に <strong>v2.1.214</strong> が公開されました。権限チェックの安全性を高める修正を中心に、長時間ツール呼び出し、OpenTelemetry、バックグラウンドセッション、Windows の PowerShell 周辺まで幅広く改善しています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>EndConversation ツール</strong>: 迷惑行為や jailbreak 試行が続くセッションを Claude が終了できるように</li>
+  <li><strong>長時間ツールの進捗通知</strong>: これまで無言になっていた長時間実行中のツール呼び出しに、定期的な heartbeat を追加</li>
+  <li><strong>メモリの更新日時</strong>: memory ファイルの frontmatter に ISO 形式の <code>modified</code> タイムスタンプを追加</li>
+  <li><strong>OpenTelemetry の相関情報</strong>: ログイベントに <code>message.uuid</code>、<code>client_request_id</code>、<code>tool_source</code> を追加し、<code>CLAUDE_CODE_OTEL_CONTENT_MAX_LENGTH</code> で内容の切り詰め上限を設定可能に</li>
+  <li><strong>推論情報の拡張</strong>: <code>subagentStatusLine</code> にモデルと reasoning effort を追加</li>
+  <li><strong>Docker 権限プロンプト</strong>: daemon リダイレクト用オプションを含む <code>docker</code> / Podman コマンドに確認を要求</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>権限チェックの安全性</strong>: <code>dir/**</code> の許可ルールが想定外の階層まで書き込みを自動許可する問題、Windows PowerShell 5.1 のバイパス、Bash のリダイレクト・長大コマンド・zsh 構文の誤判定を修正</li>
+  <li><strong>危険なコマンドの自動許可</strong>: 特定の <code>help</code> / <code>man</code> / <code>file</code> コマンドが安全と誤認される問題を修正</li>
+  <li><strong>バックグラウンドセッション</strong>: daemon のソケット競合、アイドル後のプロセス残留、完了セッションの削除不能、非 Git フォルダーからの削除失敗などを修正</li>
+  <li><strong>ストリーミングと SDK</strong>: corporate proxy 配下の Socket クローズ、遅い consumer での stream-json 切り詰め、累積 <code>message_delta</code> によるコスト・トークン二重計上を修正</li>
+  <li><strong>Windows の安定性</strong>: PowerShell の標準入力待ち、非 UTF-8 入力、非 ASCII 出力、リダイレクトによる UTF-16LE ファイル生成などを修正</li>
+  <li><strong>その他</strong>: GrowthBook の null 評価によるクラッシュ、MCP 更新時のリソース消失、スケジュール済みタスクの信頼性、フックの終了コード 2 の扱いを修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-214">Claude Code v2.1.214 リリースノート</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">RSS フィード</a></p>
+
+<!-- 🤖 Hermes Agent -->
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.18.2</strong>（2026年7月8日リリース）です。WhatsApp Baileys を公開 npm リリースへ切り替え、タグ付き Docker ビルドのインストール信頼性を改善したパッチです。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<!-- 🐙 OpenClaw -->
+<h2>🐙 OpenClaw — v2026.7.2-beta.3</h2>
+<p>2026年7月19日 08:16 JST に <strong>v2026.7.2-beta.3</strong> が公開されました。リモートコーディングセッション、Control UI、クラウドワーカー、モバイル自動化を軸に、ゲートウェイとチャンネルの信頼性も強化しています。</p>
+<ul>
+  <li><strong>リモートコーディング</strong>: クラウドワーカーでのセッション実行、所有ホスト上の Codex・Claude Code のターミナル起動、OpenCode・Pi セッションの再開に対応</li>
+  <li><strong>ネイティブ自動化とノード</strong>: モバイル Automations、Android のフォアグラウンド Voice Wake、Linux ノードのカメラ・位置情報・通知機能を拡張</li>
+  <li><strong>ゲートウェイ復旧</strong>: 再起動受付の停止、返信セッションの最終化停止、cron のライフサイクル競合などを修正</li>
+  <li><strong>導入と安全性</strong>: Linux deb / AppImage バンドル、GPT-5.6 の新規設定デフォルト、プラグイン導入元の確認強化、MCP 接続のセッション分離を追加</li>
+  <li><strong>Control UI とモバイル</strong>: ガイド付きプロバイダー・チャンネル設定、オフライン iOS チャット、Slack 進捗表示、設定・ワークスペースのショートカットを改善</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.3">OpenClaw v2026.7.2-beta.3 リリースノート</a></p>
+
+<!-- 🐋 Orca -->
+<h2>🐋 Orca — v1.4.146-rc.0 / v1.4.145</h2>
+<p>対象期間内に Orca では <strong>v1.4.145-rc.3</strong>、<strong>v1.4.145</strong>、<strong>v1.4.146-rc.0</strong> の3件が公開されました。端末描画と復元、PTY、SSH、ワークツリー、ネイティブチャットの安定性を継続的に改善しています。</p>
+<ul>
+  <li><strong>v1.4.146-rc.0</strong>: IME 入力の重複・消失、端末カーソル、foreground scan、PTY 再接続、SSH の Node/npm 検出、ワークツリー作成ピッカーなどを修正・改善</li>
+  <li><strong>v1.4.145</strong>: ローカル HTTPS、初期化済み submodule を含む worktree 削除、ショートカット、OpenCode / Pi セッション認識、モバイル接続移行を改善</li>
+  <li><strong>共通の安定性向上</strong>: リモート端末の初回描画、WebSocket 負荷時のモバイル接続、ネイティブチャット、AI Vault、i18n 周辺の修正を含む</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<!-- 🔧 その他 -->
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>Next.js</strong>: v16.3.0-canary.89 が公開。Turbopack の server chunking、soft navigation 時の SSR、反復ナビゲーション、Claude Code plugin としての skills パッケージなどを更新</li>
+</ul>
+<p class="empty-notice"><strong>☁️ AWS / Azure / GCP</strong>、<strong>⚛️ React</strong>、<strong>Python / Django / Java / Spring Boot / Hono</strong>、<strong>Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.89">Next.js v16.3.0-canary.89</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
