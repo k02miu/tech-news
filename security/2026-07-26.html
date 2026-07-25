@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-07-26 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-07-26 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-07-25 08:00 〜 2026-07-26 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>WordPress SAML Single Sign On – SSO Login の認証回避 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-15981" target="_blank" rel="noopener noreferrer">CVE-2026-15981</a></td></tr>
+  <tr><th>対象</th><td>miniOrange製 WordPressプラグイン「SAML Single Sign On – SSO Login」5.4.4以前</td></tr>
+  <tr><th>深刻度</th><td>Critical（CVSS v3.1: 9.8、Wordfence評価）</td></tr>
+  <tr><th>公開・更新</th><td>2026-07-24（NVD更新、CISA調整情報追加）</td></tr>
+  <tr><th>対策</th><td>5.4.5以降へ更新</td></tr>
+</table>
+<ul>
+  <li>署名検証のエラー値を成功と扱うため、未認証の攻撃者が細工したSAMLレスポンスで任意の既存ユーザー（管理者を含む）としてログインできる可能性があります。</li>
+  <li>NVDはWordfenceのCVSS v3.1評価と、影響を受けるバージョンが5.4.4以前であることを掲載しています。</li>
+  <li><a href="https://wordpress.org/plugins/miniorange-saml-20-single-sign-on/" target="_blank" rel="noopener noreferrer">WordPress.org公式プラグインページ</a>および<a href="https://www.wordfence.com/threat-intel/vulnerabilities/id/b412f60f-61ea-47b1-a3ef-17275f7951df?source=cve" target="_blank" rel="noopener noreferrer">Wordfenceアドバイザリ</a>を参照してください。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">WordPress SAMLプラグイン以外の対象スタック（Next.js、Java、Python、Django、Hono、GCP、AWS、Azure、React、SpringBoot、OpenClaw、Claude Code、Hermes Agent）について、対象期間内の新着セキュリティ情報は確認されませんでした。なお、Claude Codeのv2.1.220は2026-07-25に公開されましたが、リリースノート上は一般的なバグ修正・信頼性改善で、セキュリティ関連の具体的変更は記載されていません。OpenClawとHermes Agentの最新リリースも対象期間外でした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>愛知県農業共済組合の代表メールアカウント不正アクセス</h3>
+<table class="cve-table">
+  <tr><th>公表日</th><td>2026-07-24</td></tr>
+  <tr><th>組織</th><td>愛知県農業共済組合（NOSAI愛知）</td></tr>
+  <tr><th>影響</th><td>代表メールを送信元とする大量の迷惑メールが送信された</td></tr>
+  <tr><th>対応</th><td>パスワード変更により不正アクセスを遮断。心当たりのないメールの削除を呼びかけ</td></tr>
+</table>
+<ul><li><a href="https://www.security-next.com/187309" target="_blank" rel="noopener noreferrer">Security NEXTの報道</a>および<a href="https://www.nosai-aichi.jp/" target="_blank" rel="noopener noreferrer">NOSAI愛知公式サイト</a>を参照してください。</li></ul>
+
+<h3>あすか製薬グループの従業員リスト持ち出し</h3>
+<table class="cve-table">
+  <tr><th>公表日</th><td>2026-07-24</td></tr>
+  <tr><th>組織</th><td>あすか製薬ホールディングス／あすか製薬</td></tr>
+  <tr><th>対象情報</th><td>従業員・退職者の氏名、所属部署、役職、社員番号、生年月日、入社・退職年月日</td></tr>
+  <tr><th>状況</th><td>元従業員が退職後も再就職先の端末へ保存。端末侵害の調査で判明し、閲覧・ダウンロード痕跡は未確認</td></tr>
+</table>
+<ul><li><a href="https://www.security-next.com/187604" target="_blank" rel="noopener noreferrer">Security NEXTの報道</a>および<a href="https://www.aska-pharma-hd.co.jp/" target="_blank" rel="noopener noreferrer">あすか製薬ホールディングス公式サイト</a>を参照してください。</li></ul>
+
+<h3>太田市のふるさと納税メールで個人情報を誤記載</h3>
+<table class="cve-table">
+  <tr><th>公表日</th><td>2026-07-24</td></tr>
+  <tr><th>組織</th><td>群馬県太田市</td></tr>
+  <tr><th>対象情報</th><td>寄付者22人の氏名、住所、寄付年月日、寄付金額</td></tr>
+  <tr><th>原因・対応</th><td>寄付管理システムの不具合で受領完了メールに他の寄付者情報を記載。対象者へ説明・謝罪し、メール削除を依頼</td></tr>
+</table>
+<ul><li>事案発生日は2026-06-29です。<a href="https://www.security-next.com/187307" target="_blank" rel="noopener noreferrer">Security NEXTの報道</a>および<a href="https://www.city.ota.gunma.jp/" target="_blank" rel="noopener noreferrer">太田市公式サイト</a>を参照してください。</li></ul>
+
+<h3>関市のGoogleフォームで回答者情報が閲覧可能に</h3>
+<table class="cve-table">
+  <tr><th>公表日</th><td>2026-07-24</td></tr>
+  <tr><th>組織</th><td>岐阜県関市</td></tr>
+  <tr><th>対象情報</th><td>回答者57人の氏名、住所、電話番号</td></tr>
+  <tr><th>原因・対応</th><td>回答後のリンクから他回答者情報を閲覧できる設定不備。フォームを閉鎖し、二次元コードの配付を中止、対象者へ謝罪</td></tr>
+</table>
+<ul><li>事案判明日は2026-07-05です。<a href="https://www.security-next.com/187608" target="_blank" rel="noopener noreferrer">Security NEXTの報道</a>および<a href="https://www.city.seki.lg.jp/" target="_blank" rel="noopener noreferrer">関市公式サイト</a>を参照してください。</li></ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
