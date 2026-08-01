@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-08-01 08:00 〜 2026-08-02 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+<h2>🔴 スタック関連</h2>
+
+<h3>ArcadeDBのトリガースクリプトによるOSコマンド実行 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67340</td></tr>
+  <tr><th>対象</th><td>ArcadeDB 26.7.2未満</td></tr>
+  <tr><th>CVSS</th><td>v4.0: 9.3</td></tr>
+  <tr><th>公開日</th><td>2026-08-01</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/advisories/GHSA-w8vx-3rmm-v7rp" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a></td></tr>
+</table>
+<ul>
+  <li>認証済みでUPDATE_SCHEMA権限を持つ利用者が、JavaScriptトリガーからRuntime.exec()やProcessBuilderを呼び出し、OSコマンドを実行できる可能性があります。</li>
+  <li>26.7.2以降へ更新し、権限を最小化してください。</li>
+</ul>
+
+<h3>ArcadeDBのスキーマ権限検証不備 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67344</td></tr>
+  <tr><th>対象</th><td>ArcadeDB 26.7.2未満</td></tr>
+  <tr><th>CVSS</th><td>v4.0: 8.5</td></tr>
+  <tr><th>公開日</th><td>2026-08-01</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/advisories/GHSA-qwhj-f36r-39x7" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a></td></tr>
+</table>
+<ul>
+  <li>読み取り専用相当の認証利用者が、HTTPコマンドエンドポイント経由でALTER TYPEを実行し、スキーマメタデータやレコード振り分けを変更できる可能性があります。</li>
+  <li>26.7.2以降へ更新してください。</li>
+</ul>
+
+<h3>axiosのNode.js HTTPアダプターにおけるプロキシ経由情報漏えい <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67320</td></tr>
+  <tr><th>対象</th><td>axios 0.31.1〜0.32.x、1.15.2〜1.17.x</td></tr>
+  <tr><th>CVSS</th><td>v4.0: 8.3</td></tr>
+  <tr><th>公開日</th><td>2026-08-01</td></tr>
+  <tr><th>修正版</th><td>0.33.0、1.18.0</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/advisories/GHSA-68jp-44vc-2x5h" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a></td></tr>
+</table>
+<ul>
+  <li>Object.prototype汚染と設定インターセプターの組み合わせにより、Node.jsのHTTPアダプターが攻撃者管理プロキシへリクエストを送る可能性があります。</li>
+  <li>axiosを0.33.0または1.18.0以降へ更新し、プロトタイプ汚染の経路も併せて点検してください。</li>
+</ul>
+
+<h3>better-authのパスワードレス認証におけるアカウント乗っ取り <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67327</td></tr>
+  <tr><th>対象</th><td>better-auth 1.1.3〜1.6.21、1.7.0-beta.0〜beta.9</td></tr>
+  <tr><th>CVSS</th><td>v4.0: 8.7</td></tr>
+  <tr><th>公開日</th><td>2026-08-01</td></tr>
+  <tr><th>修正版</th><td>1.6.22、1.7.0-beta.10</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/advisories/GHSA-9wm3-rh5c-fc37" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a></td></tr>
+</table>
+<ul>
+  <li>オープンなメール／パスワード登録が有効な場合、攻撃者が被害者のメールアドレスで未認証アカウントを先に作成すると、magic linkやメールOTPログイン後も攻撃者のパスワードが残る可能性があります。</li>
+  <li>1.6.22または1.7.0-beta.10以降へ更新し、既存セッションと不審なアカウントを確認してください。</li>
+</ul>
+
+<h3>axiosのネストした設定オブジェクトにおけるプロトタイプ汚染影響 <span class="badge-medium">Moderate</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67319</td></tr>
+  <tr><th>対象</th><td>axios 0.33.0未満、1.18.0未満の1.x系</td></tr>
+  <tr><th>CVSS</th><td>v4.0: 6.3</td></tr>
+  <tr><th>公開日</th><td>2026-08-01</td></tr>
+  <tr><th>修正版</th><td>0.33.0、1.18.0</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/advisories/GHSA-9wx3-p993-35vp" target="_blank" rel="noopener noreferrer">GitHub Advisory Database</a></td></tr>
+</table>
+<ul>
+  <li>別コンポーネントによるObject.prototype汚染が前提ですが、authやparamsSerializerなどのネストした設定を通じてAuthorizationヘッダーやクエリ文字列が意図せず変更される可能性があります。</li>
+  <li>修正版へ更新し、上流のプロトタイプ汚染も防止してください。</li>
+</ul>
+
+<h3>OpenClaw 2026.7.2-beta.6のセキュリティ修正 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>版</th><td>2026.7.2-beta.6</td></tr>
+  <tr><th>公開日時</th><td>2026-08-01 14:34 JST</td></tr>
+  <tr><th>内容</th><td>認可、セッション公開範囲、Web検索境界、秘密情報保護などの修正</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.2-beta.6" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+  <li>チャネルallowlistによる所有者権限の誤付与、ワークスペース外へのセッションエクスポート、偽装マーカーを使ったWeb検索境界の迂回、非所有者へのACPセッション露出などを修正しています。</li>
+  <li>秘密情報のマスキング、exec／OAuth承認、インストールスクリプト検証、秘密情報計画の安全な書き込みも強化されています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の Next.js / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Claude / Hermes Agent について、対象期間内の直接関連する新着セキュリティ情報は確認されませんでした。</p>
+<hr>
+<h2>📊 トレンドインシデント</h2>
+<hr>
+<p class="empty-notice">国内の企業・官公庁・大学・医療機関等について、対象期間内に一次情報で確認できる新着の重大インシデントはありませんでした。</p>
+<hr>
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
