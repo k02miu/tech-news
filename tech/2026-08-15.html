@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-15 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-15 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.233 / v2.1.232</h2>
+<p>対象期間内に2件の更新が公開されました。v2.1.232ではサブエージェントフォークのデフォルト有効化やセッション間メッセージング、GitLab対応の拡充が入り、続くv2.1.233ではGitLab MR対応、Linux向けメモリcgroup、WindowsのNTLM資格情報漏えいベクターの修正などが含まれます。</p>
+<h3>🔧 新機能・改善（v2.1.233）</h3>
+<ul>
+  <li><strong>GitLab MR対応</strong>: <code>--worktree</code>フラグと<code>claude agents</code>ビューでGitLabのマージリクエストURLをサポート（MRは<code>!N</code>形式で表示）。</li>
+  <li><strong>アプリゲートウェイ</strong>: Anthropic upstreamでサインインユーザー身份をヘッダー送信するopt-in設定<code>forward_user_identity</code>を追加（プロキシ経由でユーザー別支出の帰属が可能に）。</li>
+  <li><strong>Linuxサンドボックス</strong>: Bashツールにopt-inのメモリcgroup対応（<code>CLAUDE_CODE_TOOL_MEMORY_LIMIT</code>）を追加し、暴走ビルドによるセッション停止を防止。</li>
+  <li><strong>WebFetch</strong>: セッションURLキャッシュTTLを設定する<code>CLAUDE_CODE_WEBFETCH_CACHE_TTL_MS</code>環境変数を追加。</li>
+  <li><strong>セルフホストRunner</strong>: セッション開始時に作業ツリーを書き換えず、サーバー往復も削減して起動を高速化。</li>
+</ul>
+<h3>🐛 主な修正（v2.1.233）</h3>
+<ul>
+  <li>WindowsでNTの<code>\\??\</code>デバイスプレフィックスによるUNCパス検証の迂回を修正し、NTLM資格情報漏えいベクターを塞ぎました。</li>
+  <li>MCP v2接続が固定タイムアウトでストリームを終了するサーバーでlistenストリームを無限に張り直す問題を修正しました。</li>
+  <li>Claude Desktop / VS Code実行時に権限プロンプトでNotification hooksが発火しない問題を修正しました。</li>
+  <li>サンドボックス有効時のLinuxアイドルセッションがCPUコアを100%占有する問題を修正しました。</li>
+  <li>Todo/タスク追跡ツール（TaskCreate/Get/Update/List、TodoWrite）がOpus 4.8・Sonnet 5・Fable 5・Mythos 5以降のモデルで利用不可に（<code>CLAUDE_CODE_ENABLE_TODO_TOOLS=1</code>で復元可能）。</li>
+  <li>2.1.232で導入したBash権限変更のうち、Cygwin風シンボリックリンクと入力リダイレクト（<code>&lt; file</code>）関連はロールバックされました。</li>
+</ul>
+<h3>🔧 新機能・改善（v2.1.232）</h3>
+<ul>
+  <li><strong>サブエージェントフォーク</strong>: <code>subagent_type: "fork"</code>が会話全体とプロンプトキャッシュを継承し、デフォルトで有効に。対話セッションの非チームメイトエージェント生成もデフォルトでバックグラウンド実行に。</li>
+  <li><strong>セッション間メッセージング</strong>: プロンプトで<code>@</code>を入力して他のClaudeセッションをメンションでき、<code>SendMessage</code>は完全一致するライブセッション名へ直接配信。</li>
+  <li><strong>GitLab対応</strong>: トークン系列（<code>glrt-</code>等）のシークレット秘匿化、<code>glab</code> CLI設定ストアの保護、プラグインマーケットプレイスでのGitLabリポジトリクローン対応。</li>
+  <li><strong>設定</strong>: ダイアログ有効期限と他セッションからのメッセージ受信を制御する<code>/config</code>行を追加。マーケットプレイス設定のエイリアスも導入。</li>
+  <li><strong>Remote Control</strong>: ネットワーク障害後も約30分間再接続を継続し、会話再開時のセッション奪取を回避。mTLS証明書の自動ローテーションにも対応。</li>
+</ul>
+<h3>🐛 主な修正（v2.1.232）</h3>
+<ul>
+  <li>PowerShellの変数書き込みパラメーターで<code>$PSDefaultParameterValues</code>を上書きする権限バイパスを修正しました。</li>
+  <li>Git BashがCygwin風シンボリックリンクを辿るWindows権限バイパスを修正しました。</li>
+  <li>ネストしたgitリポジトリが親ディレクトリの信頼を継承する問題を修正し、リポジトリごとの信頼確認を必須化しました。</li>
+  <li>MCP接続がプロトコルプローブに応答しないサーバーで30秒フルにハングする問題を修正しました。</li>
+  <li>Remote Controlセッションの転写・資格情報の継承、クラウドセッションでの会話履歴復元、休止中の到達不能表示などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-233">Claude Code v2.1.233公式changelog</a> · <a href="https://code.claude.com/docs/en/changelog#2-1-232">v2.1.232公式changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新リリースは8月13日公開のv0.20.1（v2026.8.13）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>（<code>openclaw/openclaw</code>）については、対象期間内に新規リリースは確認されませんでした。直近のリリースはv2026.7.1-2（8月4日）およびv2026.6.34（8月8日）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.183-rc.0</h2>
+<p>対象期間内にリリース候補版v1.4.183-rc.0（8月14日公開）がリリースされました。安定版v1.4.182は対象期間の直前（8月14日早朝）に公開済みです。本RCはリモートサーバー/SSHとUI/ワークスペースの修正・改善を中心としています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>サイドバー</strong>: 長距離スクロール用の「最上部へジャンプ」ボタンを追加しました。</li>
+  <li><strong>ワークツリー</strong>: ラベルを右側のバッジ欄に移動し、切り詰め時のツールチップを表示するようになりました。</li>
+  <li><strong>フィードバック</strong>: エラー報告にOrcaバージョンとOS情報を自動で含めるようになりました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>リモートランタイムのターミナルペイン分割権限、ペアリング済みリモートHTMLブラウザーの所有権・フォーカス、Add Projectのフォルダー閲覧を修正しました。</li>
+  <li>リモートターミナルリンクの所有ホストへのルーティング、ブラウザータブのフォールバック動作、ペアリング済みWeb作成の失敗処理を修正しました。</li>
+  <li>スナップショットのないペイント済みペインを消去しないようになり、リモートペインの再描画もホスト側バッファーから復元されます。</li>
+  <li>コミット済みクラウドミューテーションのアーティファクト復旧、light modeの<code>cmd-j</code>選択可視性、音声設定のstale closureなどを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.183-rc.0">Orca v1.4.183-rc.0</a> · <a href="https://github.com/stablyai/orca/releases/tag/v1.4.182">v1.4.182</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>対象期間内に安定版リリースはなく、canary版が3件（v16.3.1-canary.17 / .18 / .19）公開されました。canary.18ではReactが<code>eb8feb71-20260814</code>にアップグレードされ、canary.19ではSelectedMetadata方式への移行、<code>next/image</code>の空イメージ拒否、Turbopackの削除済みルート向けstale manifest除去が入っています。最新の安定版はv16.3.1（8月14日朝公開、Turbopack共有ランタイム・画像最適化・HMR・キャッシュ関連の修正）です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1-canary.19">v16.3.1-canary.19</a> · <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1">Next.js v16.3.1</a></p>
+
+<h3>AWS</h3>
+<ul>
+  <li><strong>Amazon RDS for Oracle</strong>: ローコード開発プラットフォームOracle Application Express（APEX）26.1をサポート。全対応リージョンで利用可能です。</li>
+  <li><strong>Amazon SES</strong>: クリックトラッキングに<code>ses:custom-path</code>属性を追加し、モバイルアプリのディープリンク（iOS Universal Links / Android App Links）をトラッキング無効化なしで利用可能にしました。</li>
+  <li><strong>AWS Billing and Cost Management</strong>: セットアップ不要でコストインサイトを表示する「Managed Dashboards」を新設。Cost Overview &amp; Trends、Compute and Database、Reservations and Savings Plansなど5種類のキュレート済みダッシュボードを提供します。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>Google Cloud</h3>
+<p>週次ラウンドアップ「What's new with Google Cloud」（8月10日〜14日分）が公開されました。</p>
+<ul>
+  <li><strong>Gemini in Database Migration Service</strong>: Oracle / SQL Serverのストアドプロシージャ等をAI支援でPostgreSQL / AlloyDB向けに変換し、スキーマ認識とサイドバイサイド検証で移行の「ラストマイル」を加速します。</li>
+  <li><strong>Compute Flex CUDs</strong>: G2（NVIDIA L4）とG4（NVIDIA RTX Pro 6000）GPU VMでフレキシブル確約利用割引（Flex CUDs）が利用可能になりました。</li>
+  <li><strong>Rapid Bucket + GCSFS 2026.8.0</strong>: 適応型コンカレントプリフェッチをデフォルト化し、単一ファイルのスループットを5倍、最大21 GiB/sまで向上。</li>
+  <li><strong>イベント</strong>: Gemini 3.5とGoogle Cloudで次世代エージェントを競う「All Things Agentic Hackathon」が開催中（賞金総額$190,000、8月3日〜31日受付）。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/">What's new with Google Cloud</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式フィードがHTML化され日付付きで取得できないため確認できず）、<strong>React</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
