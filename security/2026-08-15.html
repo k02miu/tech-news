@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-15 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-15 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Metabase：認証不要のSQLインジェクションで管理者権限を取得される脆弱性（CVE-2026-72898） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Metabase（OSS BIツール）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-72898（関連: CVE-2026-72899）</td></tr>
+  <tr><th>CVSS</th><td>10.0（Critical） CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H</td></tr>
+  <tr><th>影響</th><td>x.63.5 / x.62.9 / x.61.11 / x.60.17 / x.59.21 / x.58.24 より前（58系未満は影響なし、Metabase Cloudは対策済み）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-14（JPCERT/CC注意喚起 JPCERT-AT-2026-0023）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.jpcert.or.jp/at/2026/at260023.html" target="_blank" rel="noopener noreferrer">JPCERT/CC 注意喚起</a> / <a href="https://github.com/metabase/metabase/security/advisories/GHSA-vwf4-m7j8-wcjf" target="_blank" rel="noopener noreferrer">GitHub Advisory (GHSA-vwf4-m7j8-wcjf)</a></td></tr>
+</table>
+<ul>
+  <li>認証されていない遠隔の攻撃者が細工したリクエストを送信し、Metabaseのアプリケーションデータベースへ不正なSQLクエリを実行して管理者権限を取得できる脆弱性。設定変更、接続先DBの保存済み認証情報窃取、データ読出・外部送信などが可能。</li>
+  <li>Metabaseは本脆弱性のゼロデイ悪用を確認しており、海外では複数の組織が被害を公表。PoCとみられる情報も公開済みのため、悪用拡大に注意が必要。</li>
+  <li>直ちに更新できない場合は、一時回避策としてエンドポイント「/api/session/reset_password」へのアクセスを遮断。同エンドポイントをインターネット公開していた場合は、侵害有無の調査（POST /api/session/reset_password の400応答後、GET /api/user/current の200応答のパターン等）と接続先DB認証情報の変更を推奨。</li>
+  <li>関連情報として、公開ダッシュボード経由のSQLインジェクション（CVE-2026-72899、GHSA-r8h2-qpfx-mx59）にも注意。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Python / Django / Hono / GCP / AWS / Azure / Spring Boot / OpenClaw / Claude / Hermes Agent）について、直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>TENTIAL：メール送信サービスのアクセスキー不正利用で正規環境から約11万通のフィッシングメール <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社TENTIAL</td></tr>
+  <tr><th>発生日</th><td>2026-07-25〜07-26（フィッシングメール送信）/ 2026-07-28（発表）</td></tr>
+  <tr><th>種別</th><td>認証情報（アクセスキー）の不正利用によるフィッシング送信</td></tr>
+  <tr><th>情報源</th><td><a href="https://corp.tential.jp/news/20260728001/" target="_blank" rel="noopener noreferrer">TENTIAL公式発表</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/14/55932.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>同社が利用するメール送信サービスのアクセスキーが第三者に不正利用され、正規の送信環境（noreply@tential.jp 等）から約110,000通のフィッシングメール（件名「Abonnement PrimeVideo」等）が送信された。</li>
+  <li>不正利用されたアクセスキーはメール送信に特化したもので、顧客情報を閲覧する権限はなく、顧客DBへの不正アクセスや個人情報漏えいは現時点で確認されていない。</li>
+  <li>同社は検知後、アクセスキーの無効化と不正送信経路の遮断を実施済み。</li>
+</ul>
+
+<h3>メディア4u：SMS配信システムへのサイバー攻撃、館山市を装った不審SMSに注意 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社メディア4u / 千葉県館山市（委託先）</td></tr>
+  <tr><th>発生日</th><td>2026-07-27（館山市発表）</td></tr>
+  <tr><th>種別</th><td>SMS配信システムへの不正アクセス（サプライチェーン経由）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.city.tateyama.chiba.jp/kenkou/page100162.html" target="_blank" rel="noopener noreferrer">館山市公式発表</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/14/55931.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>館山市が委託するSMS配信システム会社（メディア4u）のシステムに第三者による不正アクセスが発生。同市のシステム管理情報（ID、部署名、担当者名、市役所の郵便番号、通知用メールアドレス）が閲覧・取得された可能性。</li>
+  <li>市民の携帯電話番号やSMS本文の流出は現時点で確認されていないが、同市を装った不審なSMS・メールやカード情報入力を求める連絡に注意を呼びかけ。</li>
+  <li>関連案件「メディア4uのSMS送信システムへのサイバー攻撃」（7/28〜7/29報道）の続報。</li>
+</ul>
+
+<h3>厚生労働省：行政文書の開示に係る関係書類を誤送付、個人情報が第三者に <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>厚生労働省</td></tr>
+  <tr><th>発生日</th><td>2026-07-03（発生）/ 2026-07-13（判明）/ 2026-07-27（発表）</td></tr>
+  <tr><th>種別</th><td>誤送付による情報漏えい</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.mhlw.go.jp/stf/newpage_74864.html" target="_blank" rel="noopener noreferrer">厚生労働省公式発表</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/14/55933.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>行政文書の開示に当たり「行政文書の開示の実施方法等申出書」の写し等を郵送した際、以前に郵便を発送した人の連絡先が記入された宛名ラベルを誤って貼付し、第三者に送付。</li>
+  <li>在庁者が1名のみだった当日、複数人確認を省略して自席で封かんしたことが原因。7月26日に誤送付先へ謝罪し書類を回収、本来の開示請求者にも謝罪。</li>
+  <li>再発防止策として、複数職員による宛先・内容確認の徹底と不要ラベルの速やかな廃棄を徹底。</li>
+</ul>
+
+<h3>リチェルカセキュリティ：防衛省・防衛装備庁が委託研究での不正行為により9ヶ月間の指名停止 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社リチェルカセキュリティ</td></tr>
+  <tr><th>発生日</th><td>2026-08-07（発表・措置開始）</td></tr>
+  <tr><th>種別</th><td>防衛省・防衛装備庁による指名停止（委託研究における不正行為）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.mod.go.jp/atla/pinup/pinup_r080807.pdf" target="_blank" rel="noopener noreferrer">防衛省 指名停止措置（PDF）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/14/55930.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>防衛装備庁からの委託研究に関し、リチェルカセキュリティで不正行為の事実が確認されたため、防衛省は2026年8月7日から2027年5月6日までの9ヶ月間、同社を指名停止。</li>
+  <li>防衛装備庁も同日付で同社に対する指名停止措置を公表（同一案件の続報）。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
