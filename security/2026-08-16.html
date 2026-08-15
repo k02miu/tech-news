@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-16 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-16 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Claude Code v2.1.232 / v2.1.233：NTLM資格情報漏えい等の権限バイパス・資格情報保護に関する多数の修正 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code（Anthropic）</td></tr>
+  <tr><th>修正内容</th><td>v2.1.232 / v2.1.233（セキュリティ修正多数）</td></tr>
+  <tr><th>影響</th><td>Windows / Linux / macOS 上の Claude Code（旧バージョン）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-14（v2.1.232）/ 2026-08-15（v2.1.233、JST）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.233" target="_blank" rel="noopener noreferrer">Claude Code Releases (v2.1.233)</a> / <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.232" target="_blank" rel="noopener noreferrer">v2.1.232</a></td></tr>
+</table>
+<ul>
+  <li>v2.1.233は、WindowsパスをNTデバイスプレフィックス「\??\」で指定することでUNCパス検証をバイパスできた問題を修正し、NTLM資格情報漏えいベクトルを閉鎖。MCP v2接続の再接続ループ修正、Bashツールのメモリcgroup制限（CLAUDE_CODE_TOOL_MEMORY_LIMIT）追加等も含む。</li>
+  <li>v2.1.232は、GitLabトークン系列（glrt-等）のシークレット秘匿化とroutableトークン（glpat-/gldt-）の完全秘匿化、PowerShellの$PSDefaultParameterValuesを介した権限バイパス修正、Git BashのCygwinシンボリックリンク経由の権限バイパス修正、ネストしたgitリポジトリの親ディレクトリからの信頼継承修正、ワークフロースクリプトのサンドボックス外コード実行（動的import）修正、bypassPermissionsモードが組織の無効化ポリシーを無視できた権限ギャップ修正等、多数のセキュリティ修正を収録。</li>
+  <li>セキュリティ修正を含むため、最新版（v2.1.233以降）への更新を推奨。</li>
+</ul>
+
+<h3>OpenClaw 2026.8.1-beta.2：シークレットの送信先ホストバインドとプラグインインストールの提供元検証を強化 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>OpenClaw（オープンソースAIエージェント）</td></tr>
+  <tr><th>バージョン</th><td>2026.8.1-beta.2（プレリリース）</td></tr>
+  <tr><th>影響</th><td>旧バージョンのOpenClaw（CLI / Gateway / Control UI）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-15（JST 14:36頃）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.8.1-beta.2" target="_blank" rel="noopener noreferrer">OpenClaw Releases (2026.8.1-beta.2)</a></td></tr>
+</table>
+<ul>
+  <li>「Secret egress host binding」: 共有ストアの各シークレットを送信先のHTTPSホストに厳密にバインドし、バインドされていないセンチネル置換を平文外部送信前にフェイルクローズするよう強化。</li>
+  <li>「Plugin install provenance warnings」: CLIおよびチャットでのインストール時、任意の実行可能プラグインソースには明示的な--force確認を要求。ClawHub等の信頼ソース経由以外のCrestodianインストールは信頼ソースに制限。</li>
+  <li>あわせてSQLiteスナップショットのバックアップ/復元、macOSアプリプロファイル分離等の改善を含むベータリリース。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Python / Django / Hono / GCP / AWS / Azure / Spring Boot / Hermes Agent）について、直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。なおHermes Agentの最新リリースはv0.20.1（2026-08-13）のまま変更なしです。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>NetScaler ADC / Gateway：認証なしリモートコード実行につながる脆弱性（CVE-2026-8452）に注意喚起、PoC公開済み <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>対象製品</th><td>Citrix NetScaler ADC / NetScaler Gateway（Cloud Software Group）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-8452（関連: CVE-2026-8451 / CVE-2026-8655 / CVE-2026-10816 / CVE-2026-10817 / CVE-2026-13474）</td></tr>
+  <tr><th>影響</th><td>NetScaler ADC / Gateway 14.1-72.61より前、13.1-63.18より前 等</td></tr>
+  <tr><th>公開日時</th><td>2026-08-15（JPCERT/CC注意喚起 JPCERT-AT-2026-0024）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.jpcert.or.jp/at/2026/at260024.html" target="_blank" rel="noopener noreferrer">JPCERT/CC 注意喚起</a> / <a href="https://labs.watchtowr.com/youre-back-in-the-room-citrix-netscaler-pre-auth-rce-cve-2026-8452/" target="_blank" rel="noopener noreferrer">watchTowr Labs分析</a> / <a href="https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX696604" target="_blank" rel="noopener noreferrer">Cloud Software Group Security Bulletin</a></td></tr>
+</table>
+<ul>
+  <li>watchTowr Labsが2026年8月14日に、NetScaler ADC / Gatewayのヒープベースバッファオーバーフローに関する詳細分析を公表。SAML SPまたはIdPとして構成されている場合、認証なしでリモートコード実行が可能とし、Webshellを設置可能なPoCコードも公開済み。</li>
+  <li>2026年6月30日に公表済みのCVE-2026-8452（サービス運用妨害・不審な動作）に関連するものとみられている。Cloud Software Groupはゲートウェイ（SSL VPN、ICAプロキシ、CVPN、RDPプロキシ）またはAAA仮想サーバー構成で影響を受けると説明。</li>
+  <li>JPCERT/CCは8月15日時点で悪用の確認はないものの、影響を受ける製品が国内で広く利用されていることを確認。PoC悪用による攻撃発生が懸念されるため、修正版へのアップグレードと、PHPファイル（/var/vpn/theme/ 配下等）への不審なアクセス、異常に長いSAML Response、nsppeプロセスの異常終了等の侵害調査を推奨。</li>
+</ul>
+
+<h3>医療機器メーカー社員による患者X線画像の持ち出し・社内共有（スミス・アンド・ネフュー日本法人、大学病院など9医療機関） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>スミス・アンド・ネフュー日本法人 / 大阪公立大学医学部附属病院、日本鋼管福山病院、金沢大、神戸大、宝塚市立病院 など9医療機関</td></tr>
+  <tr><th>発生日</th><td>2025-09〜10（撮影・共有）/ 2026-08-12（大阪公立大公表）/ 2026-08-13（朝日新聞報道）/ 2026-08-14（日本鋼管福山病院公表）</td></tr>
+  <tr><th>種別</th><td>患者情報（X線画像）の不適切な撮影・持ち出し・社内共有</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.hosp.omu.ac.jp/info/news1/entry-118258.html" target="_blank" rel="noopener noreferrer">大阪公立大学医学部附属病院 公表</a> / <a href="https://www.nkfh.or.jp/post_info/%e6%82%a3%e8%80%85%e6%83%85%e5%a0%b1%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e5%a0%b1%e9%81%93%e3%81%ab%e3%81%a4%e3%81%84%e3%81%a6/" target="_blank" rel="noopener noreferrer">日本鋼管福山病院 公表</a> / <a href="https://piyolog.hatenadiary.jp/" target="_blank" rel="noopener noreferrer">piyolog まとめ（8/15作成）</a></td></tr>
+</table>
+<ul>
+  <li>整形外科用医療機器を扱うスミス・アンド・ネフュー日本法人の社員が、手術室内で患者の同意なくX線画像（計13件、うち1件に氏名表示）を撮影し院外へ持ち出し、社内グループチャット（社員数十人が閲覧可能）で共有していた疑いが判明。</li>
+  <li>朝日新聞の取材により、同様の画像は大学病院など9医療機関の患者16人分に及び、2025年9月・10月に投稿されていたことが確認された。撮影は「少なくとも5年前からあった」との関係者証言も。</li>
+  <li>大阪公立大学医学部附属病院（8/12公表）と日本鋼管福山病院（8/14公表）は自ら公表。日本鋼管福山病院は確認画像に氏名・生年月日等は含まれていなかったとし、個人情報保護委員会等へ報告。撮影許可をめぐり病院側と会社側の説明は対立している。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
