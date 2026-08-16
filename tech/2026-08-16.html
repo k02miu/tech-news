@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-16 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-16 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p class="empty-notice"><strong>Claude Code</strong>については、対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.233（8月15日 07:28 JST公開、GitLab MR対応・Linuxメモリcgroup・NTLM資格情報漏えいの修正などを含む）です。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code 公式changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新リリースは8月13日公開のv0.20.1（v2026.8.13）です（v0.20.0以降の約656件のPRを取り込んだパッチリリースで、詳細なリリースノートはv0.21.0で公開予定）。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.8.1-beta.2</h2>
+<p>対象期間内にプレリリース版v2026.8.1-beta.2（8月15日 14:36 JST公開）がリリースされました。シークレット送信先ホストのバインド強化、GPT-5.6 Ultra対応、SQLiteスナップショットバックアップなど、セキュリティと管理面を中心としたベータ版です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>シークレット送信先ホストのバインド</strong>: 共有ストアの各シークレットを正確なHTTPS送信先ホストにバインドし、未バインドのセンチネル置換は平文送信前に失敗させるようになりました。</li>
+  <li><strong>GPT-5.6 Ultra / ランタイム切替</strong>: Sol・Terra・LunaをOpenClawおよびCodexエンジンでサポートし、<code>/model</code>によるモデル・ランタイム・思考量の選択を原子的に保持します。</li>
+  <li><strong>SQLiteスナップショット</strong>: <code>openclaw backup sqlite create|list|verify|restore</code>で、グローバル／エージェント別DBの検証済みスナップショットを取得・復元できるようになりました。</li>
+  <li><strong>macOSアプリプロファイル</strong>: 名前付きアプリインスタンスを状態・設定・Keychain・Gatewayサービスごとに分離します。</li>
+  <li><strong>プラグイン導入時の警告</strong>: 任意の実行可能プラグインソースには明示的な<code>--force</code>を要求し、信頼済みソース以外のCrestodianインストールを制限します。</li>
+  <li><strong>Fish Audio音声合成</strong>: ホスト型S2.1合成（ストリーミング・音声メモ・音声探索・電話対応）と、ネイティブmacOS TalkでのローカルFish S2 Pro参照音声ストリーミングに対応しました。</li>
+</ul>
+<h3>🐛 主な修正・改善</h3>
+<ul>
+  <li>ブラウザ拡張リレーのCDP互換（<code>Target.getBrowserContexts</code>応答、<code>/json/list</code>記述子提供）を追加し、Puppeteerベースのクライアントが権限プロンプトなしでChromeを操作可能に。</li>
+  <li>特権のないクラウドサンドボックスでのCrabboxハイドレーションを修正（共有キャッシュ利用不可時にユーザー書き込み可能なpnpmストアへフォールバック）。</li>
+  <li>Control UIの「新しいバージョンがあります」のリロードボタンが、ゲートウェイ再起動を待って確実にリロードされるようになりました。</li>
+  <li>Discord / Slackでネイティブログインの<code>/login</code>コマンドに対応しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.8.1-beta.2">OpenClaw v2026.8.1-beta.2</a> · <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.183</h2>
+<p>対象期間内に安定版v1.4.183（8月15日 12:53 JST公開）がリリースされました。リモートサーバー／SSH関連の修正を中心に、UI・ワークスペース、オーケストレーション、エージェント／ネイティブチャット、Windows／WSLの修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>サイドバー</strong>: 長距離スクロール用の「最上部へジャンプ」ボタンを追加しました。</li>
+  <li><strong>ワークツリー</strong>: ラベルを右側のバッジ欄に移動し、切り詰め時のツールチップを表示するようになりました。</li>
+  <li><strong>オーケストレーション</strong>: フェデレーテッド読み取りを共有コントロール経由でルーティングする性能改善、ワーカー完了・クリーンアップの権限明確化を行いました。</li>
+  <li><strong>OpenCodeエージェント</strong>: asarからSQLiteワーカーエントリを展開してセッションを検出可能にし、ネイティブOCセッションタイトルからのライブペイン検出を追加しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>リモートランタイムのターミナルペイン分割権限、ペアリング済みリモートHTMLブラウザーの所有権・フォーカス、Add Projectのフォルダー閲覧、リモートターミナルリンクの所有ホストへのルーティングを修正しました。</li>
+  <li>スナップショットのないペイント済みペインを消去しないようにし、復旧したリモートペインをホスト側の保持バッファーから再描画します。</li>
+  <li>Windows起動時にPATHを復元してからシェル変更するようにし、新規プロファイル起動の耐久性を修正しました。WSLではネイティブCLI引数の損失なし転送を実現。</li>
+  <li>Claude / Copilot / Kimi のWindowsフックガード、コールドリストアのレジュームセレクタ保護、完了エージェントのスマートソート順などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.183">Orca v1.4.183</a> · <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>安定版の新規リリースはなく、canary版が1件（v16.3.1-canary.20、8月16日 08:52 JST公開）公開されました。ハイドレーション前のバックボーン回復待ち処理、メタデータ解決プリミティブの抽出、Turbopackのresolveリクエストキー置換時の条件保持、サーバールートマッチャースタックの削除などが含まれます。最新の安定版はv16.3.1です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1-canary.20">v16.3.1-canary.20</a> · <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>AWS</h3>
+<p>対象期間内の新規アナウンスは確認されませんでした（最新は8月14日付のAmazon RDS for Oracle APEX 26.1対応、Amazon SESのカスタムURLパスによるモバイルディープリンク対応、AWS BillingのManaged Dashboardsで、前日朝刊に掲載済み）。8月13日付ではAWS Client VPNのCLI対応、Amazon RedshiftのGovCloud向けrg.large / rg.12xlarge追加、OpenAI「Daybreak Red / Blue」のAmazon Bedrock提供開始、ACMのメール→DNS検証切替対応などが公開されています。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>Google Cloud</h3>
+<p>週次ラウンドアップ「What's new with Google Cloud」（8月10日〜14日分）が更新されましたが、主な項目は前日朝刊に掲載済みです（Gemini in Database Migration Service、G2／G4 GPU VM向けCompute Flex CUDs、Rapid Bucket + GCSFS 2026.8.0、All Things Agentic Hackathon）。追加分として、Apigee HybridのCassandra読み取りレイテンシ診断ガイドが公開されています。</p>
+<p>🔗 <a href="https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/">What's new with Google Cloud</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式フィードがHTML化され日付付きで取得できないため確認できず）、<strong>React</strong>（最新はv19.2.8、7月21日公開）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
