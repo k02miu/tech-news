@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Hermes Agent v0.20.2（2026.8.16）：パッチリリース公開、cron堅牢化・認証解決等の改善を収録 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hermes Agent（Nous Research）</td></tr>
+  <tr><th>バージョン</th><td>v0.20.2（v2026.8.16、パッチリリース）</td></tr>
+  <tr><th>影響</th><td>旧バージョンのHermes Agent（Dockerイメージ・ホスティッド環境含む）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-16 17:33 UTC（JST 2026-08-17 02:33）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16" target="_blank" rel="noopener noreferrer">Hermes Agent Releases (v2026.8.16)</a></td></tr>
+</table>
+<ul>
+  <li>v0.20.1（2026-08-13）以降にマージされた約397件のPRを安定版としてまとめたパッチリリース。デスクトップアプリ（マルチゲートウェイ接続レジストリ、MCPヘルスチェック等）、CLI（Windows更新プローブ、チャット「-c」の堅牢化）、ゲートウェイ（永続モデルルート、Telegram DMトピック）、LiteLLM Claudeのプロンプトキャッシュ、cron堅牢化、プロファイルスコープを通した認証解決、Linux/Windows双方のインストーラ堅牢化などの改善を収録。</li>
+  <li>CVE番号や個別のセキュリティ脆弱性修正の明記はなく、悪用報告も確認されていないが、認証解決・cron・インストーラ等の堅牢化を含むため、既存導入環境は「hermes update」での最新化を推奨。</li>
+  <li>本リリースの詳細なリリースノートはv0.21.0で公開予定。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Claude Code / OpenClaw / Next.js / React / Java / Python / Django / Hono / GCP / AWS / Azure / Spring Boot）について、対象期間（2026-08-16 08:00 〜 2026-08-17 08:00 JST）内に公開された直接関連する新規セキュリティ情報は確認されませんでした。なお、NVDに本期間中に収載された約130件のCVEはWordPressプラグイン（Pods、Link Library等）やscriban等が中心で、対象スタックへの直接の関連はありません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>アスクル：ランサムウェア攻撃の調査継続で漏えい可能性のある個人情報約60万件を追加特定、本人通知を実施 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>アスクル株式会社（ASKUL / ソロエルアリーナ等）</td></tr>
+  <tr><th>発生日</th><td>2025-10-19（ランサムウェア攻撃発生）/ 2025-12-12（約739,700件の流出公表）/ 2026-07-30（追加発表・本人通知）/ 2026-08-17（報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃に伴う情報漏えいのおそれ（追加分）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.askul.co.jp/shopnews/news_260730_rw_notification.html" target="_blank" rel="noopener noreferrer">アスクル公式発表（2026-07-30）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/17/55938.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-17）</a></td></tr>
+</table>
+<ul>
+  <li>2025年10月19日に発生したランサムウェア攻撃に伴うシステム障害について影響範囲の調査を継続した結果、外部への漏えいのおそれを否定できない個人情報（氏名、住所、電話番号、メールアドレス）約60万件を追加で特定し、対象者への個別案内（本人通知）を実施すると発表。</li>
+  <li>2025年12月12日公表の約739,700件に加わる追加分。現時点で、追加特定した個人情報について外部への漏えいおよび不正利用の事実は確認されておらず、新たな個人情報の漏えいや新たなシステム侵害は発生していないとしている。</li>
+  <li>物流・通販基盤を担う大手企業の事案であり、被害範囲が再度拡大した点に留意が必要。同社や公的機関を装った「なりすまし」「フィッシング」メールへの注意も呼びかけている。</li>
+</ul>
+
+<h3>北朝鮮IT労働者（Famous Chollima）を偽装採用した実証調査が公開、警察庁も注意喚起 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象脅威</th><td>北朝鮮・Lazarusグループ傘下とみられる「Famous Chollima」に属するIT労働者（採用リスクのある各国企業が標的、日本企業も注意喚起の対象）</td></tr>
+  <tr><th>発生日</th><td>2026-07-31（警察庁ほか注意喚起）/ 2026-08-10（調査公表）/ 2026-08-17（piyologまとめ公開）</td></tr>
+  <tr><th>種別</th><td>偽装身分による遠隔IT就労（国家支援型インサイダー脅威 / サプライチェーン経由の侵入）</td></tr>
+  <tr><th>情報源</th><td><a href="https://any.run/cybersecurity-blog/lazarus-group-it-workers-investigation-part-two/" target="_blank" rel="noopener noreferrer">ANY.RUN調査報告（2026-08-10）</a> / <a href="https://www.npa.go.jp/bureau/security/northkorea_IT/NK_IT_202607J.pdf" target="_blank" rel="noopener noreferrer">警察庁ほか注意喚起（2026-07-31）</a> / <a href="https://piyolog.hatenadiary.jp/entry/2026/08/17/053005" target="_blank" rel="noopener noreferrer">piyologまとめ（2026-08-17）</a></td></tr>
+</table>
+<ul>
+  <li>セキュリティベンダANY.RUNと脅威インテリジェンス組織BCA LTD、NorthScanの3者は、偽のDeFiスタートアップ「Ballena Azul」を設立し、Famous Chollimaに属するとみられる北朝鮮IT労働者3名を面接・採用したうえで、サンドボックス環境上で採用後の挙動を記録した第2弾調査を2026年8月10日に公表。</li>
+  <li>採用後、システム情報収集コマンドの実行や接続元IPの確認、個人のGoogleアカウント同期（閲覧履歴・保存パスワード等の露出）、リモートデスクトップソフトの導入、生成AIへの業務依存・面接支援ブラウザ拡張の利用などが観測された。偽造身分証明書や第三者名義運転免許証の流用も確認されている。</li>
+  <li>警察庁ほかは2026年7月31日、偽装した身分による遠隔IT就労で企業内部に潜入する北朝鮮IT労働者について、各国・企業等に対する注意喚起（仮訳）を公表。日本企業を含む採用プロセスでの本人確認・身元確認の徹底が重要。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
