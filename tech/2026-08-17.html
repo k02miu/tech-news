@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-17 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-17 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p class="empty-notice"><strong>Claude Code</strong>については、対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.233（8月15日 07:28 JST公開）です。v2.1.233はGitLab MR URLの<code>--worktree</code>／<code>claude agents</code>対応、Linux向けBashツールのメモリcgroupサポート（<code>CLAUDE_CODE_TOOL_MEMORY_LIMIT</code>）、WebFetchセッションURLキャッシュTTL設定（<code>CLAUDE_CODE_WEBFETCH_CACHE_TTL_MS</code>）、Windows NTパス経由のNTLM資格情報漏えい経路の修正などを含みます（内容は前日朝刊に掲載済み）。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code 公式changelog</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent — v0.20.2 (v2026.8.16)</h2>
+<p>対象期間内（8月17日 02:33 JST公開）にパッチリリースv0.20.2（v2026.8.16）がリリースされました。v0.20.1（8月13日）以降にマージされた約397件のPR・約967コミットを取り込んだ安定タグ付きリリースで、デスクトップアプリ／CLI／ゲートウェイ／プロンプトキャッシュなど広範囲の修正・改善が含まれます。キュレーション済みの詳細リリースノートはv0.21.0で公開予定です。</p>
+<h3>🔧 主な改善点</h3>
+<ul>
+  <li><strong>デスクトップアプリ</strong>: マルチゲートウェイ「Connections」レジストリ、プロファイルスコープ単位のリフレッシュ、MCPヘルスチェックとディープリンクに対応しました。</li>
+  <li><strong>CLI</strong>: Windowsのアップデートプローブ、Kittyキーボードプロトコル対応、chat <code>-c</code>の堅牢化を実施しました。</li>
+  <li><strong>ゲートウェイ</strong>: 永続化されたモデルルート、<code>/loop</code>完了通知、Telegram DMトピックに対応しました。</li>
+  <li><strong>プロンプトキャッシュ</strong>: LiteLLM経由のClaudeをOpenAIワイヤーで利用する際のプロンプトキャッシュを追加しました。</li>
+  <li><strong>その他</strong>: cronの堅牢化、プロファイルスコープを通じた認証解決、Linux／Windows双方のインストーラ堅牢化を実施しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16">Hermes Agent v2026.8.16</a> · <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に正式なバージョンリリースは確認されませんでした。なお期間内（8月16日 19:15 JST）に、プレリリース枠でPR #124528（Gatewayのイベントループホットスポット比較）用のCPUプロファイル計測結果アーカイブ「pr-124528-profiles」が公開されましたが、これは製品リリースではなく開発用の計測データです。最新のバージョン付きリリースはv2026.8.1-beta.2（8月15日公開、前日朝刊掲載済み）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.184-rc.0</h2>
+<p>対象期間内（8月16日 12:05 JST公開）にリリース候補版v1.4.184-rc.0が公開されました。UI／ワークスペース、オーケストレーション、エージェント／ネイティブチャット、Windows／WSL、ターミナル関連の修正を中心とするプレリリースです（安定版v1.4.183は8月15日公開で前日朝刊掲載済み）。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>オートメーションページ</strong>: フィルタとソート機能を追加しました。</li>
+  <li><strong>フォルダワークスペース</strong>: レビューノートを永続化し、AutomationTimeFieldコンポーネントの数字入力改善を実施しました。</li>
+  <li><strong>ワークスペース</strong>: ボードショートカットのトグル化、貼り付けたLinear Issue URLの認識に対応しました。</li>
+  <li><strong>オーケストレーション</strong>: プロバイダ非依存のOpusエイリアスを採用し、フェデレーション端末決済のリトライとレガシーアドミッションを修正しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>非表示になっていたエージェントワークツリーを可視性ダイアログから復旧可能にし、サイドバーのワークツリーカードのドラッグ安定性を改善しました。</li>
+  <li>エージェント許可リストが未検出の場合にフェイルクローズするようエージェントフックを修正しました。</li>
+  <li>WSLのトランスクリプトfs操作をタイムアウト・容量制限付きにゲートし（STA-4049）、Windowsの新規プロファイル起動（デュラブルfsync後）を修正しました。</li>
+  <li>ターミナルの起動exec後のレディネス復旧、ガード付き送信時のエージェントID要求（STA-4028）を修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.184-rc.0">Orca v1.4.184-rc.0</a> · <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>安定版の新規リリースはありません。期間内にcanary版v16.3.1-canary.21（8月17日 08:55 JST公開）がリリースされました（v16.3.1-canary.20は前日朝刊掲載済み）。最新の安定版はv16.3.1（8月14日公開）です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1-canary.21">v16.3.1-canary.21</a> · <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>AWS</h3>
+<p>対象期間内の新規アナウンスは確認されませんでした（公式What's Newフィードの最新は8月15日 00:00 JST付のAmazon RDS for Oracle APEX 26.1対応で、前日朝刊掲載済み）。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>Google Cloud</h3>
+<p>週次ラウンドアップ「What's new with Google Cloud」は8月14日更新（8月10日〜14日分）で、対象期間内の新規項目は確認されませんでした。8月13日付でApigee Hybrid Cassandra読み取りレイテンシ診断ガイドが公開されています（前日朝刊掲載済み）。</p>
+<p>🔗 <a href="https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/">What's new with Google Cloud</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式RSSがHTTP 403で取得できず、更新ページはJSレンダリングのため日付付き項目を一次ソースで確認できず）、<strong>React</strong>（最新はv19.2.8、7月22日公開）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>（最新はv4.13.2、8月13日公開で期間外）、<strong>Claude API/SDK</strong>、<strong>web（一般）</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
