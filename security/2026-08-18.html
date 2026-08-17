@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Claude Code v2.1.234：NT名前空間パスを拒否しNTLM資格情報漏えいベクトルをさらに堅牢化、シークレット表示・マーケットプレイス検証等も修正 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code（Anthropic）</td></tr>
+  <tr><th>バージョン</th><td>v2.1.234（最新版）</td></tr>
+  <tr><th>影響</th><td>Windows / Linux / macOS 上の Claude Code（旧バージョン）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18 05:20 JST（2026-08-17 20:20 UTC タグ付け）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.234" target="_blank" rel="noopener noreferrer">Claude Code Releases (v2.1.234)</a></td></tr>
+</table>
+<ul>
+  <li>セキュリティ修正として、リモートファイル読み取り、セッション復元、CLAUDE.mdのinclude、ワークフロースクリプト、ファイルアップロードにおいてWindows NT名前空間パス（\??\）を拒否し、承認前のファイルアクセスに対するNTLM資格情報漏えいベクトル（v2.1.232 / v2.1.233で修正したUNCパス検証バイパスの残存経路）をさらに堅牢化。</li>
+  <li>MCP診断メッセージが解決済みシークレットを出力しないよう修正、strictKnownMarketplaces許可リストがSCP形式のgitマーケットプレイスで接続先ホストと異なるホストを受け入れる問題の修正、中継された権限プレビューで資格情報マスキングがコマンド・パス・送信先を隠せなくなる問題の修正、アカウントメールの利用を本人確認用途に限定する説明の明確化等を含む。</li>
+  <li>CVE番号の明記はないものの権限・資格情報保護に関わる修正を多数含むため、最新版（v2.1.234）への更新を推奨。</li>
+</ul>
+
+<h3>Hermes Agent v0.20.3（2026.8.16.2）：パッチリリース公開、サブプロセスPython実行環境の分離強化・プラグインインストールのセキュリティスキャン等を収録 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hermes Agent（Nous Research）</td></tr>
+  <tr><th>バージョン</th><td>v0.20.3（v2026.8.16.2、パッチリリース）</td></tr>
+  <tr><th>影響</th><td>旧バージョンのHermes Agent（Dockerイメージ・ホスティッド環境含む）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18 03:43 JST（2026-08-17 18:43 UTC タグ付け）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2" target="_blank" rel="noopener noreferrer">Hermes Agent Releases (v2026.8.16.2)</a></td></tr>
+</table>
+<ul>
+  <li>v0.20.2（2026-08-16）以降にマージされた約125件のPRを安定版としてまとめたパッチリリース。MCP 2.x SDK移行と2026-07-28 statelessプロトコル対応、Bot Mode（hermes-bots）プラグイン、CommandCodeプロバイダプラグイン等を収録。</li>
+  <li>セキュリティに関連する変更として、サブプロセスPython実行環境の所有権堅牢化（PYTHONHOME / PYTHONPATHの分離）、プラグインインストールのセキュリティスキャン、cronスケジューラの自己復旧（EMFILE回復・stale-claim調整・wedged-job再武装）、セッションハンドオフのデータロス修正等を含む。</li>
+  <li>CVE番号や個別のセキュリティ脆弱性修正の明記はなく悪用報告も確認されていないが、既存導入環境は「hermes update」での最新化を推奨。詳細なリリースノートはv0.21.0で公開予定。</li>
+</ul>
+
+<h3>Vault Secrets Operator：AppRole認証secretIDPathのパス検証不備で任意ファイル読み取り・認証情報窃取のおそれ（CVE-2026-8715） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>HashiCorp Vault Secrets Operator（Kubernetes向けシークレット管理）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-8715（HCSEC-2026-28）</td></tr>
+  <tr><th>CVSS</th><td>9.6（Critical、CVSSv3.1）</td></tr>
+  <tr><th>影響</th><td>1.3.0で導入されたAppRole認証の「secretIDPath」フィールドを使用する構成（修正版1.5.0でsecretIDPathを削除）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-13（HashiCorpアドバイザリ）/ 2026-08-17（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://discuss.hashicorp.com/t/hcsec-2026-28-vault-secrets-operator-vulnerable-to-arbitrary-file-read-via-approle-secretidpath/77645" target="_blank" rel="noopener noreferrer">HashiCorp HCSEC-2026-28</a> / <a href="https://www.security-next.com/188867" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a></td></tr>
+</table>
+<ul>
+  <li>「secretIDPath」のパス検証に問題があり、Podのファイルシステム上で参照可能な範囲が制限されていないため、任意ファイルを読み取り、含まれる認証情報などを攻撃者の管理するエンドポイントへ送信することで情報窃取が可能。</li>
+  <li>悪用にはKubernetesの認証済みユーザーで、VaultAuth / VaultConnection / VaultStaticSecretの作成・取得権限が必要となるなど一定の条件があるが、CVSS 9.6と深刻度は最高水準。</li>
+  <li>修正版1.5.0ではsecretIDPathを削除しており、設定の移行などが必要。対象構成では1.5.0へのアップデートを検討すること。</li>
+</ul>
+
+<h3>IBM Db2 Mirror for i：GUI関連の脆弱性18件、任意CLコマンド実行・認証回避等（CVE-2026-17186ほか） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>IBM Db2 Mirror for i（Db2 for i の複数システム同期製品）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-17186 ほか18件（CVE-2026-17184 / CVE-2026-17182 / CVE-2026-17181 / CVE-2026-16879 等）</td></tr>
+  <tr><th>CVSS</th><td>CVE-2026-17186: 9.9 / CVE-2026-17184・CVE-2026-17182: 9.8 / CVE-2026-17181: 9.3 / CVE-2026-16879: 8.8（CVSSv3.1）</td></tr>
+  <tr><th>影響</th><td>IBM Db2 Mirror for i 7.6 / 7.5 / 7.4（グラフィカルユーザーインターフェース関連）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-11（IBMセキュリティアドバイザリ）/ 2026-08-17（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188896" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a> / <a href="https://www.ibm.com/support/pages/node/7283359" target="_blank" rel="noopener noreferrer">IBM Security Bulletin</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-17186はコマンド内の特定要素を適切に無害化しないことに起因し、リモートから任意のCLコマンドを実行されるおそれがある脆弱性（CVSS 9.9）。</li>
+  <li>外部からファイル名やパスを制御でき任意コード実行につながるCVE-2026-17184、URIパスの検証不備により認証を回避し機密情報を取得・改変できるCVE-2026-17182（いずれもCVSS 9.8）、パストラバーサルで任意の場所へファイルを書き込めるCVE-2026-17181（9.3）、認可不備のCVE-2026-16879（8.8）など深刻な脆弱性を多数含む。</li>
+  <li>対象製品を利用している環境は修正版の適用を推奨。</li>
+</ul>
+
+<h3>SonicWall Email Security：コードインジェクションによりroot権限で任意のOSコマンド実行のおそれ（CVE-2026-66149 / CVE-2026-66150） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>SonicWall Email Security</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-66149 / CVE-2026-66150（SNWLID-2026-0012）</td></tr>
+  <tr><th>CVSS</th><td>7.8（High、CVSSv3.0、両件とも）</td></tr>
+  <tr><th>影響</th><td>SonicWall Email Security 10.0.36より前</td></tr>
+  <tr><th>公開日時</th><td>2026-08-11（SonicWallアドバイザリ）/ 2026-08-17（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188892" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a> / <a href="https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0012" target="_blank" rel="noopener noreferrer">SonicWall PSIRT (SNWLID-2026-0012)</a></td></tr>
+</table>
+<ul>
+  <li>いずれもコード生成の不適切な制御に起因するコードインジェクションの脆弱性。CVE-2026-66149は「netmask」、CVE-2026-66150は「SNMP」の処理に起因。</li>
+  <li>コマンドラインインターフェースにおける認証が必要となるが、悪用することでroot権限で任意のOSコマンドが実行できる可能性がある。</li>
+  <li>アドバイザリ公開時点で悪用は確認されていないが、修正版10.0.36以降へのアップデートを強く推奨。</li>
+</ul>
+
+<h3>JVN：miCheckerのXXE脆弱性（CVE-2026-14304） <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>miChecker 3.10以前（Eclipse Foundation開発・総務省提供のアクセシビリティ評価ツール）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-14304（JVN#40688603）</td></tr>
+  <tr><th>CVSS</th><td>CVSS:3.0 3.3（CVSS:4.0 4.6）</td></tr>
+  <tr><th>影響</th><td>細工された字幕（SMIL形式）の読み込みでローカル・内部ネットワークリソースへアクセスされる可能性</td></tr>
+  <tr><th>公開日時</th><td>2026-08-17 12:00 JST（JVN公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN40688603/index.html" target="_blank" rel="noopener noreferrer">JVN#40688603</a></td></tr>
+</table>
+<ul>
+  <li>XML外部実体参照（XXE、CWE-611）に関する脆弱性。細工された字幕を読み込むことで当該製品から意図しない通信が発生し、ローカルリソースや内部ネットワークリソースへアクセスされる可能性がある。</li>
+  <li>対策は最新バージョンへのアップデート。更新できない場合、「字幕（SMIL形式）を開く」機能の利用を停止するワークアラウンドが提供されている。</li>
+</ul>
+
+<h3>JVN：Synology Assistantのインストール時ファイルアクセス権設定不備（CVE-2026-4793） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Synology Assistant 7.0.7より前（Synology Inc.）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-4793（JVN#91713656）</td></tr>
+  <tr><th>CVSS</th><td>CVSS:3.0 6.7（CVSS:4.0 5.4）</td></tr>
+  <tr><th>影響</th><td>端末にアクセス可能なユーザーによりSYSTEM権限で任意コードを実行される可能性</td></tr>
+  <tr><th>公開日時</th><td>2026-08-17 12:00 JST（JVN公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN91713656/index.html" target="_blank" rel="noopener noreferrer">JVN#91713656</a> / <a href="https://www.synology.com/en-global/security/advisory/Synology_SA_26_12" target="_blank" rel="noopener noreferrer">Synology-SA-26:12</a></td></tr>
+</table>
+<ul>
+  <li>インストール時の不適切なファイルアクセス権設定（CWE-276）に関する脆弱性。当該製品がインストールされた端末にアクセス可能なユーザーによって、SYSTEM権限で任意コードを実行される可能性がある。</li>
+  <li>Synology Assistant 7.0.7以降へのアップデートが推奨されている。</li>
+</ul>
+
+<h3>JVN：F-RevoCRMのクロスサイトスクリプティング脆弱性（CVE-2026-71368） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>F-RevoCRM 7.3.0〜8.0.3（シンキングリード株式会社）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-71368（JVN#58692577）</td></tr>
+  <tr><th>CVSS</th><td>CVSS:3.0 6.1（CVSS:4.0 5.1）</td></tr>
+  <tr><th>影響</th><td>ログイン中のユーザーが細工されたページにアクセスすると意図しない操作をさせられる可能性</td></tr>
+  <tr><th>公開日時</th><td>2026-08-17 14:00 JST（JVN初回公表）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN58692577/index.html" target="_blank" rel="noopener noreferrer">JVN#58692577</a> / <a href="https://f-revocrm.jp/2026/08/47374/" target="_blank" rel="noopener noreferrer">シンキングリード告知ページ</a></td></tr>
+</table>
+<ul>
+  <li>クロスサイトスクリプティング（CWE-79）に関する脆弱性。当該製品にログインした状態のユーザーが、細工されたページにアクセスした場合、意図しない操作をさせられる可能性がある。</li>
+  <li>シンキングリード株式会社が告知ページを公開しており、最新版へのアップデートが推奨されている。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Python / Django / Hono / GCP / AWS / Azure / Spring Boot / OpenClaw）について、対象期間（2026-08-17 08:00 〜 2026-08-18 08:00 JST）内に公開された直接関連する新規セキュリティ情報は確認されませんでした。なおOpenClawの最新リリースは2026.8.1-beta.2（2026-08-15公開、既報）のまま変更なく、本期間内にセキュリティ関連の新規リリース・アドバイザリはありません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>「うんこミュージアム」公式サイトが改ざん、問い合わせフォーム送信データ（顧客4名分）が窃取された可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社たのしいミュージアム（エンターテインメント施設「うんこミュージアム」運営）</td></tr>
+  <tr><th>発生日</th><td>2026-08-10 17:04 〜 2026-08-11 11:24（問い合わせフォーム送信データ窃取のおそれ）/ 2026-08-17（公表・報道）</td></tr>
+  <tr><th>種別</th><td>サイト改ざん・個人情報流出のおそれ（ソフトウェアの脆弱性を突いた不正アクセス）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188876" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a> / <a href="https://tmuseum.co.jp/" target="_blank" rel="noopener noreferrer">株式会社たのしいミュージアム</a></td></tr>
+</table>
+<ul>
+  <li>同サイトで利用しているソフトウェアの脆弱性を突いた不正アクセスがあり、サイトの一部が改ざんされた。2026年8月10日17時4分から同月11日11時24分までに問い合わせフォームより送信されたデータが第三者に窃取された可能性がある。</li>
+  <li>対象は同フォームを利用した顧客4人で、氏名、電話番号、メールアドレス、問い合わせ内容などが含まれる。</li>
+  <li>設置された不正なファイルを削除するなど改ざんされた部分を復旧するとともに脆弱性を修正し、対象となる顧客と個別に連絡を取っている。</li>
+</ul>
+
+<h3>淡路島の宿泊施設「海月館」グループにサイバー攻撃、顧客の氏名・連絡先が流出した可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社かいげつ（海月館グループ、全国21施設を運営）</td></tr>
+  <tr><th>発生日</th><td>2026-07-29 夕刻 〜 2026-07-30 午前（第三者によるアクセス）/ 2026-08-17（公表・報道）</td></tr>
+  <tr><th>種別</th><td>外部からのサイバー攻撃による顧客情報流出のおそれ</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188294" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a> / <a href="https://kaigetsukan.com/" target="_blank" rel="noopener noreferrer">海月館グループ公式サイト</a></td></tr>
+</table>
+<ul>
+  <li>2026年7月29日夕刻から30日午前にかけて、同社グループの宿泊施設に対し第三者によるアクセスがあり、顧客の氏名や連絡先が外部へ流出した可能性があることが判明。</li>
+  <li>問題発覚後、アクセスを遮断し、外部協力のもと調査とセキュリティ対策の強化を進めている。</li>
+  <li>今回の問題を受けて、フィッシングメールなどに注意するよう顧客に対して注意喚起を実施している。</li>
+</ul>
+
+<h3>川崎市立井田病院：医師が患者35人分の個人情報を含む書類を病室に置き忘れ、約1か月後に患者宅で発見 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>川崎市立井田病院（神奈川県川崎市）</td></tr>
+  <tr><th>発生日</th><td>2026-05-21（書類紛失）/ 2026-06月下旬（患者宅で発見）/ 2026-07-02（病院へ返却）/ 2026-08-17（公表・報道）</td></tr>
+  <tr><th>種別</th><td>医療機関における個人情報を含む文書の紛失（管理不行き届き）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188882" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-17）</a> / <a href="https://www.city.kawasaki.jp/" target="_blank" rel="noopener noreferrer">川崎市</a></td></tr>
+</table>
+<ul>
+  <li>市立井田病院の医師が、入院患者35人の氏名、ID、生年月日、性別、年齢、病名、病状などが記載された書類をクリアファイルごと病室に置き忘れ、一時紛失。患者が退院時に自身の所有する書類と一緒に誤って持ち帰った可能性が高いと見られている。</li>
+  <li>約1か月後の6月下旬に患者宅で患者の家族によって書類が発見され、7月2日に病院へ返却された。医師は紛失後、上司へ報告していなかったことも判明。</li>
+  <li>同院は個人情報保護委員会へ報告し、書類に個人情報が記載されていた患者や家族に対して事情を説明し謝罪している。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
