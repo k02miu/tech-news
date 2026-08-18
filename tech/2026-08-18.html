@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-18 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-18 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.234</h2>
+<p>対象期間内（8月18日 06:06 JST公開）にv2.1.234がリリースされました。新環境変数・キーバインドアクション・GitLab統合強化に加え、NT名前空間パスを利用したNTLM資格情報漏えい経路のさらなる緩和を含むセキュリティ修正と、多数の不具合修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>CLAUDE_CODE_PROJECT_DIR_NAME</strong>: セッションごとに専用設定ディレクトリを持つホスト向けに、プロジェクト別トランスクリプトディレクトリの短い名前を指定できる環境変数を追加しました。</li>
+  <li><strong>selection:clear</strong>: アプリ内のテキスト選択をクリアするキーバインドアクションを追加（エージェントビューでも動作）。</li>
+  <li><strong>GitLab MRバッジ</strong>: GitLabリモートかつglab CLI認証済みのリポジトリで、フッター／ステータスラインにMR !N（draft/pending/green状態）を表示するようになりました。</li>
+  <li><strong>利用制限リセット時の自動継続</strong>: claude.aiの利用制限がリセットされるとセッションを自動的に継続するように（<code>/config</code>で無効化可能）。</li>
+  <li><strong>コンテキストコスト削減</strong>: 組み込み<code>claude-api</code>スキルのコンテキストコストを約200kトークンから約25kトークンへ削減（リファレンスドキュメントのオンデマンド読込化）。</li>
+  <li><strong>作業中の対話操作</strong>: <code>/permissions</code>と<code>/add-dir</code>がClaude作業中でも利用可能になり、フルスクリーンTUIでは複数ダイアログがターン途中で開けるようになりました。</li>
+  <li><strong>/goalのチェックイン</strong>: バックグラウンドタスクが30分以上ゴールを待たせる場合にClaudeが確認を行うように（<code>CLAUDE_CODE_GOAL_CHECKIN_MINUTES=0</code>で無効化可）。</li>
+  <li><strong>セキュリティ</strong>: リモートファイル読み取り・セッション復元・CLAUDE.mdインクルード・ワークフロースクリプト・ファイルアップロードでWindows NT名前空間（<code>\\??\</code>）パスを拒否し、NTLM資格情報漏えいベクトルをさらに緩和しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>長時間セッションでコンパクション後にサンドボックス化コマンドのネットワークアクセスが再チェック・拒否され続けるauto modeの問題を修正しました。</li>
+  <li>セッションスコープの許可回答（拒否を含む）がバックグラウンドサブエージェントのツール許可プロンプト対応時に失われる問題を修正しました。</li>
+  <li>非ストリーミングフォールバック経路（サードパーティゲートウェイ経由など）でthinking/textブロック欠落時にクラッシュする問題を修正しました。</li>
+  <li>特殊なUnicodeシーケンスを含むメッセージでMarkdownレンダリングが極端に遅くなる問題を修正しました。</li>
+  <li>セッション名が200文字上限または絵文字多数の際に<code>SendMessage</code>が<code>ListAgents</code>からコピーした受信者を拒否する問題を修正しました。</li>
+  <li>MCP診断で解決済みシークレットが出力される問題を修正（<code>${VAR}</code>形式で表示、接続失敗時はサーバー発信元のみ表示）。</li>
+  <li>フルスクリーンでの<code>/login</code> OAuth URLコピー時の文字欠落、<code>---</code>水平線のレンダリング崩れ、連続シェルコマンドの分割表示問題などを修正しました。</li>
+  <li>Remote Control: Desktop/VS Codeホストのセッションでユーザーに送るファイルがアップロードされない問題、別アカウントへのサインイン時に数時間後に誤解を招くHTTP 404を返す問題を修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-234">Claude Code changelog: v2.1.234</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent — v0.20.3 (v2026.8.16.2)</h2>
+<p>対象期間内（8月18日 03:43 JST公開）にパッチリリースv0.20.3（v2026.8.16.2）がリリースされました。v0.20.2以降にマージされた約125件のPR・約250コミット（+42,613 / −1,641、461ファイル）を安定タグ付きリリースに取り込んだもので、下流のDockerイメージ・ホステッドデプロイ・新規インストール向けのロールアップです。キュレーション済みの詳細リリースノートはv0.21.0で公開予定です。</p>
+<h3>🔧 主な改善点</h3>
+<ul>
+  <li><strong>MCP 2.x SDK移行</strong>: MCP 2.x SDKへの移行と、2026-07-28付のstatelessプロトコルサポートを取り込みました。</li>
+  <li><strong>Bot Modeプラグイン</strong>: コアチームメイトプロトコルを備えたバンドル版Bot Mode（hermes-bots）プラグインを追加しました。</li>
+  <li><strong>CommandCodeプロバイダプラグイン</strong>: 新たにCommandCodeプロバイダプラグインを追加しました。</li>
+  <li><strong>サブプロセスPythonランタイムの堅牢化</strong>: PYTHONHOME/PYTHONPATH分離による所有権ハードニングを実施しました。</li>
+  <li><strong>Cua Driver 0.20</strong>: computer use向けのCua Driver 0.20ランタイム契約に対応しました。</li>
+  <li><strong>cron自己修復</strong>: EMFILE回復、stale-claim調整、wedged-job再アームを含むcronスケジューラの自己修復機能を追加しました。</li>
+  <li><strong>その他</strong>: kanbanワークツリー／ディスパッチ修正、デスクトップのリモートゲートウェイヘッダーと接続自己修復、セッションハンドオフのデータ損失修正、プラグインインストールのセキュリティスキャン、UTF-16ファイル読み取りなどエコシステムスカウト由来の修正群を取り込みました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2">Hermes Agent v0.20.3 (v2026.8.16.2)</a> · <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新のバージョン付きリリースはv2026.8.1-beta.2（8月15日公開、既報）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.184</h2>
+<p>対象期間内（8月17日 09:14 JST公開）に安定版v1.4.184がリリースされました。前日公開のリリース候補v1.4.184-rc.0の内容を安定版として取り込んだもので、UI／ワークスペース、WSL経路の安定化、ターミナル・デーモンの回復性、ブラウザのCookie周りの修正、パフォーマンス改善を中心としています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>オートメーションページ</strong>: フィルタとソート機能を追加しました。</li>
+  <li><strong>ワークスペース</strong>: ボードショートカットをトグル化し、貼り付けたLinear Issue URLの認識に対応しました。</li>
+  <li><strong>リモート環境</strong>: ダッシュボードでSSH／リモートホストを識別できるようにしました。</li>
+  <li><strong>パフォーマンス</strong>: Git-adminフィンガープリントによる30秒ごとの全リポジトリ再スキャン停止、エージェントステータスバーストの1回化、スキル探索スキャンの上限・共有化を実施しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>WSLのトランスクリプトfs操作をタイムアウト・容量制限付きでゲートし（STA-4049）、Windowsの新規プロファイル起動を修正しました。</li>
+  <li>SSH再接続によるターミナル多重化とエージェントの二重再開を修正しました（STA-3077）。</li>
+  <li>デーモンがセッションを報告できない際に稼働中のコーディングエージェントを強制終了する問題、リタイアしたデーモンの接続判定（トークン読み取りではなく接続で証明）を修正しました。</li>
+  <li>ブラウザのGoogle Cookie分割保持（インポート時）と、失敗したインポートクリア後のCookie復活防止（STA-4061）、部分インポート後のフェイルクローズなCookieクリア（STA-4090）を修正しました。</li>
+  <li>git shimを削除し、検出されたエージェント許可リストなしの場合はフェイルクローズするようエージェントフックを修正しました。</li>
+  <li>POSIXでの読み取り専用ファイルのfsync、Fishレディネスエスケープバイトの保持、モバイルのフォルダワークスペース・エミュレータ接続などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.184">Orca v1.4.184</a> · <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>安定版の新規リリースはありません。期間内にcanary版v16.3.1-canary.22（8月18日 08:45 JST公開）がリリースされました（v16.3.1-canary.21は前日朝刊掲載済み）。最新の安定版はv16.3.1（8月14日公開）です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1-canary.22">v16.3.1-canary.22</a> · <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>AWS</h3>
+<p>対象期間内の新規アナウンスは一次ソースで確認されませんでした（公式What's NewページはJSレンダリングのため日付付き項目の直接取得不可、検索でも期間内の新しい項目は確認できず）。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>Azure / Google Cloud</h3>
+<p>いずれも対象期間内の日付付き公式アナウンスは確認されませんでした。</p>
+<p>🔗 <a href="https://azure.microsoft.com/ja-jp/updates/">Azure Updates</a> · <a href="https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/">What's new with Google Cloud</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新はv19.2.8、7月22日公開で期間外）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>（最新はv4.13.2、8月13日公開で期間外）、<strong>Claude API/SDK</strong>（Anthropic SDK for Python最新はv0.122.0、8月13日公開で期間外）、<strong>web（一般）</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
