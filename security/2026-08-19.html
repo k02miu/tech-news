@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-19 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-19 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>GitLab CE/EE：認証なしで公開プロジェクトを改変可能なコードインジェクションほか（CVE-2026-19478） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>GitLab Community Edition / Enterprise Edition</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-19478（CVSS 9.4）/ CVE-2026-19650（CVSS 7.1）</td></tr>
+  <tr><th>影響</th><td>19.2.4 / 19.1.6 / 19.0.8 / 18.11.11 より前のバージョン</td></tr>
+  <tr><th>公開日時</th><td>2026-08-17（GitLab公式アドバイザリ・修正版公開）/ 2026-08-18（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188947" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-18）</a> / <a href="https://about.gitlab.com/releases/categories/releases/" target="_blank" rel="noopener noreferrer">GitLab Releases</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-19478（CVSS 9.4 Critical）は、認証を必要とせずGraphQLディレクティブを介したコードインジェクションにより、公開プロジェクトやユーザーデータを改ざん・削除できる深刻な脆弱性。</li>
+  <li>CVE-2026-19650（CVSS 7.1 High）はGraphQLマルチプレックスクエリ処理におけるCSRFの脆弱性。</li>
+  <li>GitLab公式は2026年8月17日に19.2.4 / 19.1.6 / 19.0.8 / 18.11.11を公開し、早急な更新を要請。現時点で悪用は確認されていない。</li>
+</ul>
+
+<h3>AIフレームワーク「Ray」のRCE脆弱性（CVE-2025-62593）がCISA KEVに追加され悪用を警告 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Ray（Anyscale製の分散型AI/MLフレームワーク、Python）</td></tr>
+  <tr><th>CVE</th><td>CVE-2025-62593（CISA KEVに追加）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv4.0 9.4（Critical）</td></tr>
+  <tr><th>影響</th><td>2.52.0より前のRay Dashboard（修正済みバージョンへの更新が必要）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-17（CISA KEV追加）/ 2026-08-18（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188955" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-18）</a> / <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEVカタログ</a></td></tr>
+</table>
+<ul>
+  <li>Firefox/Safariを経由したDNSリバインディング攻撃等と組み合わせると、Ray Dashboard上でリモートコード実行が可能になる脆弱性（2025年11月公表、2.52.0で修正済み）。</li>
+  <li>実攻撃での悪用が確認されたため、CISAが2026年8月17日にKEV（Known Exploited Vulnerabilities）カタログへ追加。米連邦機関は2026年8月20日までに対策を講じる義務がある。</li>
+  <li>Dashboardをインターネットに公開している環境は特に注意し、修正版への更新とネットワーク露出の見直しを推奨。</li>
+</ul>
+
+<h3>JetBrains YouTrack：認証なしでデータベースバックアップを取得可能な脆弱性（CVE-2026-75045） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>JetBrains YouTrack（プロジェクト管理・課題追跡）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-75045</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.1（Critical）</td></tr>
+  <tr><th>影響</th><td>YouTrack 2026.2.18112 / 2026.1.13913 / 2025.3.156085 より前</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18（国内報道・JetBrainsアドバイザリ）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188979" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-18）</a> / <a href="https://www.jetbrains.com/security/" target="_blank" rel="noopener noreferrer">JetBrains Security</a></td></tr>
+</table>
+<ul>
+  <li>共有ドラフト用の署名を悪用することで、認証なしでデータベースバックアップをダウンロードできる脆弱性。バックアップには課題やユーザー情報等が含まれるため情報漏えいにつながるおそれがある。</li>
+  <li>対象のバージョンは修正版（2026.2.18112 / 2026.1.13913 / 2025.3.156085）への更新を推奨。</li>
+</ul>
+
+<h3>Claude Code v2.1.235：権限ダイアログの表示・付与範囲の整合性改善などセキュリティ関連修正を収録 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code（Anthropic）</td></tr>
+  <tr><th>バージョン</th><td>v2.1.235（最新版）</td></tr>
+  <tr><th>影響</th><td>Windows / Linux / macOS 上の Claude Code（旧バージョン）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-19 05:38 JST（2026-08-18 20:38 UTC タグ付け）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.235" target="_blank" rel="noopener noreferrer">Claude Code Releases (v2.1.235)</a></td></tr>
+</table>
+<ul>
+  <li>権限ダイアログの表示テキストと「次回から確認しない（don't ask again）」の付与範囲が常に一致するよう改善し、内容を完全に表示できない場合は「don't ask again」を出さないよう変更。権限の過剰付与リスクを低減。</li>
+  <li>権限プロンプトのコメント欄でShift+Tabを押すと編集を承認しセッション全体に編集権限を付与してしまう問題や、プロンプト入力のハイライトずれ等を修正。</li>
+  <li>v2.1.234に続く更新で、CVE番号の明記はないが権限・セキュリティに関わる修正を含むため、最新版への更新を推奨。</li>
+</ul>
+
+<h3>Hermes Agent v0.20.4（2026.8.18）：パッチリリース公開、skillインストール時のライセンス・セキュリティアドバイザリスキャンを追加 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hermes Agent（Nous Research）</td></tr>
+  <tr><th>バージョン</th><td>v0.20.4（v2026.8.18、パッチリリース）</td></tr>
+  <tr><th>影響</th><td>旧バージョンのHermes Agent（Dockerイメージ・ホスティッド環境含む）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18 16:26 JST（2026-08-18 07:26 UTC タグ付け）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.18" target="_blank" rel="noopener noreferrer">Hermes Agent Releases (v2026.8.18)</a></td></tr>
+</table>
+<ul>
+  <li>v0.20.3（v2026.8.16.2）以降にマージされた約74件のPRを安定版としてまとめたパッチリリース。</li>
+  <li>セキュリティに関連する変更として、skillインストール時にNVIDIA SkillEvaluator Tier 1アドバイザリスキャン（ライセンス・セキュリティチェック）を実行する機能、cronメディア送信の堅牢化（タイムアウト設定・手動実行時の添付対応）、SessionDBのイベントループスレッド・競合修正等を含む。</li>
+  <li>CVE番号や個別のセキュリティ脆弱性修正の明記はなく悪用報告も確認されていないが、既存導入環境は「hermes update」での最新化を推奨。</li>
+</ul>
+
+<h3>Langflow：files APIのパストラバーサルにより任意ファイル作成・サーバー侵入のおそれ（CVE-2026-5027） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Langflow（Python製のAIアプリケーション構築・ワークフローツール）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-5027（Tenable TRA-2026-26）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 8.8（High）</td></tr>
+  <tr><th>影響</th><td>Langflow 1.8.4 およびそれ以前（修正版は1.9.0）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18（Scan Tech Report・国内掲載）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55953.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a> / <a href="https://www.tenable.com/security/research/tra-2026-26" target="_blank" rel="noopener noreferrer">Tenable TRA-2026-26</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-5027" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-5027）</a></td></tr>
+</table>
+<ul>
+  <li>Langflowのファイル転送API「/api/v2/files」のfilenameパラメーターが検証されておらず、「../」等によるパストラバーサルでサーバー内の任意の場所にファイルを作成できる。悪意のあるcronタスク作成等によりサーバーへの侵入が可能。</li>
+  <li>認証済みユーザーによる悪用が前提だが、公開されたエクスプロイトコード（GitHub: yahiahamza/CVE-2026-5027）により遠隔から任意ファイル作成が試みられるリスクがある。</li>
+  <li>AIツールは性質的に高い権限が付与されることが多いため、1.9.0以降へのアップデートのほか、認証設定・認証情報の強化も推奨。</li>
+</ul>
+
+<h3>Apache Allura：Webhook機能を介したSSRFの脆弱性（CVE-2026-69223） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Apache Allura（Apacheソフトウェア財団のフォージ型開発プラットフォーム）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-69223（JVN#06609828）</td></tr>
+  <tr><th>CVSS</th><td>CVSS:3.0 6.6（CVSS:4.0 5.1）</td></tr>
+  <tr><th>影響</th><td>Apache Allura 1.19.1より前（1.19.1で修正）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18 12:00 JST（JVN公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN06609828/index.html" target="_blank" rel="noopener noreferrer">JVN#06609828</a></td></tr>
+</table>
+<ul>
+  <li>Webhook機能を介して内部ネットワークのURLへ任意のリクエストを送信できるサーバサイドリクエストフォージェリ（SSRF、CWE-918）の脆弱性。</li>
+  <li>Apache Allura 1.19.1以降へのアップデートが推奨されている。</li>
+</ul>
+
+<h3>Hono v4.13.3：CORS Varyヘッダー追加・CSRF検証のOPTIONS除外などセキュリティ関連修正 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hono（TypeScript/JavaScript製Webフレームワーク）</td></tr>
+  <tr><th>バージョン</th><td>v4.13.3（最新版）</td></tr>
+  <tr><th>影響</th><td>旧バージョンのHono</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18 19:57 JST（2026-08-18 10:57 UTC リリース）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/honojs/hono/releases/tag/v4.13.3" target="_blank" rel="noopener noreferrer">Hono Releases (v4.13.3)</a></td></tr>
+</table>
+<ul>
+  <li>CORSミドルウェアがOPTIONSプリフライト時にVaryヘッダーへOriginを追加するよう修正（キャッシュ汚染の防止）、CSRF検証からOPTIONSリクエストを除外する修正、パターンルーター・線形ルーターのワイルドカード経路におけるプレフィックス過剰マッチの修正等を収録。</li>
+  <li>CVE番号の明記はないが、CORS・CSRF・ルーティングの各処理に関わる修正を含むため、v4.13.3以降への更新を推奨。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Python本体 / Django / GCP / AWS / Azure / Spring Boot / OpenClaw）について、対象期間（2026-08-18 08:00 〜 2026-08-19 08:00 JST）内に公開された直接関連する新規セキュリティ情報は確認されませんでした（Djangoの直近セキュリティリリースは2026-08-04の6.0.8 / 5.2.17で既報のため対象外）。なおOpenClawの最新リリースは2026.8.1-beta.2（2026-08-15公開、既報）のまま変更なく、本期間内にセキュリティ関連の新規リリース・アドバイザリはありません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>さくらインターネット：「さくらのレンタルサーバ」に不正アクセス、583アカウントが不正ログイン被害・個人データや通信の秘密が漏えいしたおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>さくらインターネット株式会社（レンタルサーバ・クラウド事業）</td></tr>
+  <tr><th>発生日</th><td>2026-08-09（異常検知・調査開始）/ 2026-08-17（公表・報道）</td></tr>
+  <tr><th>種別</th><td>レンタルサーバへの不正アクセス・不正ログイン（個人データ・通信の秘密の漏えいのおそれ）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.itmedia.co.jp/news/article/2608/17/2000000563/" target="_blank" rel="noopener noreferrer">ITmedia NEWS（2026-08-17）</a> / <a href="https://www.sakura.ad.jp/corporate/information/newsreleases/2026/08/17/1968225614/" target="_blank" rel="noopener noreferrer">さくらインターネット発表</a></td></tr>
+</table>
+<ul>
+  <li>レンタルサーバサービス「さくらのレンタルサーバ」の一部顧客環境へ管理環境を経由した第三者による不正アクセスがあり、現時点で583アカウントへの不正ログインが判明。一部の顧客情報を含む個人データが閲覧・取得されたおそれがあり、攻撃者が通信の秘密に該当する情報にアクセス可能だったことも確認された。</li>
+  <li>8月9日にサーバ環境の異常を検知して調査を開始し、一部サーバにマルウェアが設置されていたことも確認。認証情報の無効化・アクセス遮断・マルウェア除去などの封じ込め対応を実施済みで、外部専門機関によるフォレンジック調査を継続中。</li>
+  <li>影響を受けた可能性のある顧客には登録メールアドレス宛てに個別案内中。データベースアップグレード機能やプラン変更・移行ツールなど一部機能を制限しており、「さくらのVPS」「さくらのクラウド」等への影響は確認されていない。</li>
+</ul>
+
+<h3>ペット用品通販「チャーム」に不正アクセス、顧客情報約23万件が流出したおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>チャーム（ペット用品・アクアリウム用品通販「チャーム本店1号店 / 2号店」運営）</td></tr>
+  <tr><th>発生日</th><td>2026-08-12（攻撃検知・サイト閉鎖）/ 2026-08-13（個人情報保護委員会・JIPDECへ報告）/ 2026-08-18（報道）</td></tr>
+  <tr><th>種別</th><td>通販サイトへの不正アクセスによる個人情報流出のおそれ（受注・出荷停止を伴う）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188965" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-18）</a> / <a href="https://www.charm.co.jp/" target="_blank" rel="noopener noreferrer">チャーム</a></td></tr>
+</table>
+<ul>
+  <li>「チャーム本店1号店」「チャーム本店2号店」への攻撃を8月12日に検知。被害拡大防止のため関連サーバを遮断してサイトを閉鎖し、受注・出荷を停止。主要オンラインモールの店舗でも受注・出荷を停止し、8月13日に個人情報保護委員会とJIPDECへ報告した。</li>
+  <li>両サイトを利用した顧客が届け先情報として登録した氏名・住所・電話番号のほか、生年月日・性別・メールアドレス・所持ポイント数・ハッシュ化されたパスワードなど約23万件が流出したおそれがある。</li>
+  <li>「チャーム本店」以外の店舗は安全性を確認できたとして8月13日から受注を再開、8月14日から出荷を開始。対象顧客への個別連絡と原因・影響範囲の特定を継続している。</li>
+</ul>
+
+<h3>2.5次元アイドル「いれいす」事務所（VOISING）のBIツールに不正アクセス、ファンコミュニティ利用者の個人情報が漏えい <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社VOISING（2.5次元アイドルグループ「いれいす」等の所属事務所）</td></tr>
+  <tr><th>発生日</th><td>2026-08-10 01:02〜（不正アクセス開始）/ 2026-08-16（データ不正ダウンロード）/ 2026-08-17（システム停止・遮断）/ 2026-08-18（公表・報道）</td></tr>
+  <tr><th>種別</th><td>BIツールへの不正アクセスによるファン情報の漏えい（データ窃取）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.itmedia.co.jp/news/article/2608/18/2000000589/" target="_blank" rel="noopener noreferrer">ITmedia NEWS（2026-08-18）</a> / <a href="https://voising-official.com/news/931" target="_blank" rel="noopener noreferrer">VOISINGニュースリリース</a></td></tr>
+</table>
+<ul>
+  <li>同社が利用するBIツールに外部から不正アクセスがあり、運営するファンコミュニティ等の利用者情報が漏えい。漏えいした情報は氏名・住所・電話番号・メールアドレス・生年月日・性別の基本情報に加え、購買履歴・決済金額記録・サービス加入状況・応援対象タレントの選択情報。</li>
+  <li>「VOISING ID」「VOISING CONNECT」「VOISING ONLINE STORE」を利用した全ユーザーが対象（件数は調査中）。クレジットカード番号・口座情報などの決済データやパスワードは対象システムに保持しておらず、漏えいしていないとしている。</li>
+  <li>8月10日午前1時2分ごろから不正アクセスが始まり、8月16日午後6時47分〜8時21分にデータが不正ダウンロードされた。17日午前1時55分までにシステム停止とネットワーク遮断を完了し、原因とみられる脆弱性の修正プログラム適用・全パスワード/アクセスキーの無効化・外部機関によるフォレンジック調査を実施中。フィッシング詐欺への注意を呼びかけている。</li>
+</ul>
+
+<h3>名鉄協商へのランサムウェア攻撃、取引先・中電不動産の顧客情報約4,000件が漏えいした可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>名鉄協商株式会社（名古屋鉄道グループ）／中電不動産株式会社（中部電力グループ）</td></tr>
+  <tr><th>発生日</th><td>2026-08-18（報道・企業公表）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃による個人情報漏えいのおそれ（取引先への波及）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55948.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a></td></tr>
+</table>
+<ul>
+  <li>名鉄協商へのランサムウェア攻撃により、同社が業務委託等で保有していた取引先・中電不動産（中部電力グループ）の顧客情報約4,000件が漏えいした可能性がある。</li>
+  <li>サプライチェーン（取引先）へ情報漏えいが波及した事例として、関係組織は影響範囲の確認と情報の悪用（フィッシング等）への警戒が必要。</li>
+</ul>
+
+<h3>CD・書籍販売チェーン「REXT」にランサムウェア攻撃、WonderGOO・新星堂などの一部店舗に影響 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社REXT（CD・書籍販売チェーン「WonderGOO」「新星堂」等を運営）</td></tr>
+  <tr><th>発生日</th><td>2026-08-18（報道・企業公表）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃による店舗運営・システムへの影響</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55952.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a></td></tr>
+</table>
+<ul>
+  <li>「WonderGOO」「新星堂」などを運営するREXTがランサムウェア攻撃を受け、一部店舗の運営・システムに影響が出ている。</li>
+  <li>生活に身近な小売チェーンへの攻撃であり、店舗運営の停止・再開状況や情報漏えいの有無について引き続き注視が必要。</li>
+</ul>
+
+<h3>RIZAP「APORITOオンラインストア」に不正アクセス、クレジットカード情報が外部流出した可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>RIZAPグループ（上場企業）運営の「APORITOオンラインストア」</td></tr>
+  <tr><th>発生日</th><td>2026-08-18（報道・企業公表）</td></tr>
+  <tr><th>種別</th><td>ECサイトへの不正アクセスによるクレジットカード情報流出のおそれ</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55951.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a></td></tr>
+</table>
+<ul>
+  <li>RIZAPグループが運営する「APORITOオンラインストア」に不正アクセスがあり、クレジットカード情報が外部流出した可能性がある。</li>
+  <li>カード情報関連の漏えいでは二次被害（不正利用）リスクが高いため、関係利用者はカード明細の確認と注意が必要。</li>
+</ul>
+
+<h3>通販サイト「インク革命」に不正アクセス、クレジットカード情報を含む2万4,166名分が漏えいした可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>通販サイト「インク革命」（インク・トナー通販）</td></tr>
+  <tr><th>発生日</th><td>2026-08-18（報道・企業公表）</td></tr>
+  <tr><th>種別</th><td>ECサイトへの不正アクセスによるクレジットカード情報流出のおそれ</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55949.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a></td></tr>
+</table>
+<ul>
+  <li>通販サイト「インク革命」に第三者による不正アクセスがあり、クレジットカード情報を含む2万4,166名分の情報が外部流出した可能性がある。</li>
+  <li>カード情報を含む大規模な漏えいのおそれがあるため、利用者はクレジットカードの利用明細確認や問い合わせ窓口の案内に注意し、二次被害に警戒すること。</li>
+</ul>
+
+<h3>丸高興業：3月のランサムウェア攻撃の調査結果を公表、少なくとも1.5GBのデータが漏えいした可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>丸高興業株式会社（建設・設備関連）</td></tr>
+  <tr><th>発生日</th><td>2026-03-11（サーバへの不正アクセス・データ暗号化）/ 2026-03-13（初回公表）/ 2026-07-29（調査結果発表）/ 2026-08-18（報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃の調査結果公表（データ漏えいの可能性・VPN機器経由の侵入）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55950.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a> / <a href="https://marutakakogyo.co.jp/information/notice-ransomware-personal-information-20260729/" target="_blank" rel="noopener noreferrer">丸高興業お知らせ</a></td></tr>
+</table>
+<ul>
+  <li>3月11日に同社サーバへのランサムウェア攻撃で保存データが暗号化された件について、外部専門会社によるフォレンジック調査の結果、第三者がVPN機器を経由して社内ネットワークへ侵入し、不正な管理者アカウントを作成して複数サーバへアクセス、データを暗号化したことが判明。</li>
+  <li>攻撃者によるシステムログ等の一部削除により完全な確認はできないものの、少なくとも1.5GBのデータが漏えいした可能性がある。対象サーバには会社名・担当者名・住所・納品先住所・電話番号・メールアドレス・受発注履歴など販売管理システムの情報が保存されていた。</li>
+  <li>被害サーバの隔離、VPN機器の最新機種への入れ替え、社内ネットワークの全面再構築、クラウド移行、全パソコン入れ替え、全アカウント・パスワードの再設定などの対応を実施済み。</li>
+</ul>
+
+<h3>科学技術振興機構（JST）：役職員12人のメールアカウントに不正アクセス、メール約1万6,000件が流出したおそれ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>国立研究開発法人 科学技術振興機構（JST）</td></tr>
+  <tr><th>発生日</th><td>2026-07-28（外部からの情報提供・調査開始）/ 2026-08-18（公表・報道）</td></tr>
+  <tr><th>種別</th><td>メールアカウントへの不正アクセスによる情報流出のおそれ</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188597" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-18）</a> / <a href="https://www.jst.go.jp/" target="_blank" rel="noopener noreferrer">科学技術振興機構</a></td></tr>
+</table>
+<ul>
+  <li>2026年7月28日に外部から情報提供があり調査したところ、役職員12人のメールアカウントが第三者による不正アクセスを受けたことが判明。</li>
+  <li>メールボックスに保管されていたメール約1万6,000件（外部関係者のメールアドレス約1,300件、役職員のアドレス約1,000件を含む）が外部流出した可能性がある。</li>
+  <li>不正アクセスに悪用された経路の遮断とアクセス権限の無効化を実施し、個人情報保護委員会へ報告、関係省庁・警察と連携して調査を継続中。</li>
+</ul>
+
+<h3>「デュエル・マスターズ サポートアプリ」のユーザー認証機能に脆弱性、他ユーザーの個人情報を閲覧される可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>「デュエル・マスターズ サポートアプリ」（トレーディングカードゲーム関連アプリ）</td></tr>
+  <tr><th>発生日</th><td>2026-08-18（報道・公表）</td></tr>
+  <tr><th>種別</th><td>ユーザー認証機能の設計・実装の脆弱性（他ユーザー情報の閲覧可能性）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/18/55947.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-18）</a></td></tr>
+</table>
+<ul>
+  <li>ユーザー認証機能の設計・実装の脆弱性により、他ユーザーの個人情報を閲覧される可能性がある。</li>
+  <li>アプリ利用者への影響範囲と修正対応の状況について、公式発表を注視することが望ましい。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
