@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-19 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-19 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.235</h2>
+<p>対象期間内（8月19日 07:28 JST公開）にv2.1.235がリリースされました。プロンプト入力のスペルチェック機能をはじめ、ターミナルUI・権限ダイアログ・クラウドセッションの改善と、多数の不具合修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>スペルチェック設定</strong>: オプションの<code>spellcheck</code>設定を追加。インストール済みの<code>aspell</code>／<code>hunspell</code>／<code>ispell</code>を使用し、プロンプト入力中のスペルミス単語に下線を表示します。</li>
+  <li><strong>クラウドセッションのリソース改善</strong>: <code>/ultrareview</code>や<code>/autofix-pr</code>などのクラウドセッションがバックグラウンドで動作中、イベントストリームの再スキャン・再レンダリングを廃止し、メモリ・CPU使用量を改善しました。</li>
+  <li><strong>権限ダイアログの整合性向上</strong>: 表示テキストと「次回から確認しない」オプションが許可内容と常に一致するようにし、内容を完全表示できない場合は「次回から確認しない」を出し分けません。</li>
+  <li><strong>組み込みgrepの強化</strong>: ネイティブmacOS/Linuxビルドで、病的なパターンはメモリを枯渇させずに即時失敗し、<code>-m N</code>と<code>-A/-C</code>併用時のコンテキスト出力も正確になりました。</li>
+  <li><strong>Vimモード</strong>: 詳細トランスクリプト（ctrl+o）の切り替えやパネルクローズ時に、NORMALモードとカーソル位置を維持するようになりました。</li>
+  <li><strong>Remote Control</strong>: <code>claude rc</code>がインタラクティブ起動と同じエンタープライズゲートウェイ可用性チェックを適用するようになりました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>言語サーバがセッション途中で切断・再接続した際にwhole-prompt-cacheが無効化される問題を修正しました。</li>
+  <li>ネストしたMarkdownリスト項目（深さ3以上）の位置ずれを修正し、折返しリスト項目にぶら下げインデントを追加しました。</li>
+  <li>複数行プロンプトでスラッシュコマンド・キーワード・メンションのハイライトが1文字以上ずれて表示される問題を修正しました。</li>
+  <li>権限プロンプトのコメント欄でShift+Tabを押すと、欄を閉じる代わりに編集を承認しセッション全体の編集権限を与えてしまう問題を修正しました。</li>
+  <li>利用できないエージェントのセッションでAgentツールが汎用デフォルトを宣伝する問題を修正し、<code>subagent_type</code>省略時に利用可能なエージェント一覧付きの明確なエラーを出すようにしました。</li>
+  <li>ノートブックのセル削除・置換の承認ダイアログで、ノートブック／セルを読み取れない場合に既存セル内容が黙って省略される問題を修正しました（理由を表示）。</li>
+  <li><code>SendMessage</code>がクロスセッション配信に大きすぎるメッセージを黙って破棄するのではなく、事前に拒否するようになりました。</li>
+  <li>VSCodeで複数のClaudeパネルがあるウィンドウを復元・リロードした際に、フォーカスが勝手にタブ間で移動する問題を修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-235">Claude Code changelog: v2.1.235</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent — v0.20.4 (v2026.8.18)</h2>
+<p>対象期間内（8月18日 16:26 JST公開）にパッチリリースv0.20.4（v2026.8.18）がリリースされました。v0.20.3以降にマージされた約74件のPR・約146コミット（+21,697 / −2,217、265ファイル）を安定タグ付きリリースに取り込んだロールアップで、Dockerイメージ・ホステッドデプロイ・新規インストール向けです。キュレーション済みの詳細リリースノートはv0.21.0で公開予定です。</p>
+<h3>🔧 主な改善点</h3>
+<ul>
+  <li><strong>デスクトップUI</strong>: ガラス／半透明サーフェス対応（matte glass、frost picker、macOSプリセレクト）を追加しました。</li>
+  <li><strong>SESSIONS|BOTSサイドバー</strong>: タブ式サイドバーを追加し、ボットごとの表示／非表示切替に対応しました。</li>
+  <li><strong>Bot Modeグループチャット修正</strong>: 長時間実行メンバーターン、Markdownレンダリング、クロスマシンルーティングの問題を修正しました。</li>
+  <li><strong>NVIDIA SkillEvaluator Tier 1</strong>: スキルインストール時にライセンス＋セキュリティのアドバイザリスキャンを実行する機能を追加しました。</li>
+  <li><strong>cronメディア送信の強化</strong>: 設定可能なタイムアウト、手動実行時の添付対応、missed-fireの表示を追加しました。</li>
+  <li><strong>その他</strong>: SessionDBのイベントループスレッド・競合修正、<code>hermes update</code>のparked-branch問題修正、kanbanのネイティブOS通知を追加しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.18">Hermes Agent v0.20.4 (v2026.8.18)</a> · <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新のバージョン付きリリースはv2026.8.1-beta.2（8月15日公開、既報）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p class="empty-notice"><strong>Orca</strong>については、対象期間内に新規リリースは確認されませんでした。最新版はv1.4.184（8月17日公開、昨日の朝刊で掲載済み）です。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>安定版の新規リリースはありません（最新の安定版はv16.3.1、8月13日公開）。期間内にcanary版v16.3.1-canary.23（8月18日 20:59 JST公開）とv16.3.1-canary.24（8月19日 08:44 JST公開）がリリースされました。Turbopackの文字クラスレンジ（regex）サポート、フォームのアクセシビリティ改善（ラベルと入力の関連付け）、開発モードでブラウザが古いページを復元しないようにする修正、ドキュメント類の整備が中心です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.1-canary.24">v16.3.1-canary.24</a> · <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ Azure</h3>
+<ul>
+  <li><strong>[Retirement] Azure VMware Solutionのライセンス込みサービス</strong>: 2027年8月30日に廃止予定。BroadcomのVMwareライセンスポリシー変更に伴い、BYOL（持ち込みライセンス）への移行が必要になります。</li>
+  <li><strong>[GA] Managed Instance on Azure App Service</strong>: オンプレミス／VM上のWebアプリケーションを、最小限の設定・コード変更なしでApp Serviceへ移行できるManaged Instanceが一般提供開始となりました。</li>
+  <li><strong>[Public Preview] Azure FirewallのIPv6対応</strong>: デュアルスタック構成（IPv4/IPv6）での設定が可能になり、ネイティブIPv6ネットワークルールフィルタリングとDNSプロキシをサポートします。</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<ul>
+  <li><strong>Cloud SDK 581.0.0（8月18日公開）</strong>: 破壊的変更として<code>gcloud beta services mcp</code>系コマンド（enable/disable/list）を削除。AI Platformのsemantic-governance-policy-engine関連コマンドをGA化、BigQueryの予約割当てに<code>precedence</code>／<code>condition</code>フィールド追加、Cloud Bigtable CLI（cbt）をCVE-2026-39883対策として再ビルド、Cloud IAM Workforce PoolsのSAMLプロバイダ作成コマンド追加、破損した<code>~/.kube/config</code>でのクラッシュ修正、GKEに<code>--enable-slice-controller</code>フラグ追加など。</li>
+  <li><strong>App Engine（Java/Python）</strong>: App Engine ImagesサービスからCloud Runへの移行サポートがGAになりました。</li>
+  <li><strong>Gemini Enterprise</strong>: Gemini 3.6 Flashがus／euマルチリージョンで一般提供開始（許可リスト不要）。AI developer tools（Antigravity 2.0、Antigravity CLI、Android Studioへのアクセス）もGAとなりました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<h3>AWS</h3>
+<p class="empty-notice"><strong>AWS</strong>については、対象期間内の新規アナウンスは確認されませんでした（直近のアナウンスは8月17日付のAmazon Connect Customer dashboardsで、期間外です）。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新はv19.2.8、7月21日公開で期間外）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong>、<strong>web（一般）</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
