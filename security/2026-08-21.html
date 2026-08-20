@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-21 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-21 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>NetScaler ADC/Gatewayに認証回避の脆弱性（CVE-2026-19490、CVSS 9.3 Critical）ほか <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>NetScaler ADC / NetScaler Gateway（旧Citrix ADC / Citrix Gateway）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-19490（認証回避）/ CVE-2026-19489（バッファオーバーフロー）</td></tr>
+  <tr><th>CVSS</th><td>CVE-2026-19490：CVSSv4.0 9.3（Critical）/ CVE-2026-19489：CVSS 8.8</td></tr>
+  <tr><th>影響</th><td>SSL VPN/ICAプロキシ/CVPN/RDPプロキシ等のゲートウェイ、認証・認可・監査を行う仮想サーバ構成（一部ビルドではSAMLアクション設定も条件）</td></tr>
+  <tr><th>対策</th><td>14.1-73.32 / 13.1-63.21（FIPS/NDcPP版含む）で修正</td></tr>
+  <tr><th>公開日時</th><td>2026-08-19（Cloud Software Groupが現地公開）/ 2026-08-20（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189093" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>代替経路を利用した認証回避（CVE-2026-19490、CVSSv4.0 9.3 Critical）。ゲートウェイやVDI/リモートアクセス基盤を外部公開している環境では、修正版への早期更新が強く望まれる。</li>
+  <li>CVE-2026-19489はLSNグループでSIP ALG有効時のバッファオーバーフローによるDoS（CVSS 8.8）。悪用の言及はない。</li>
+</ul>
+
+<h3>Cisco Secure Workloadに複数の深刻な脆弱性（CVE-2026-20315ほか、CVSS 10.0） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Cisco Secure Workload（SaaS / オンプレミス）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-20315 / CVE-2026-20317（CVSS 10.0）/ CVE-2026-20231（9.9）/ CVE-2026-20318（9.6）/ CVE-2026-20319 ほか</td></tr>
+  <tr><th>対策</th><td>4.0.4.16 / 3.10.9.1 で修正</td></tr>
+  <tr><th>公開日時</th><td>2026-08-19（Ciscoが公開）/ 2026-08-20（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189109" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>アクセス制御の不備（CVE-2026-20315）と認証処理の不備（CVE-2026-20317）がCVSS 10.0。ワークロード間通信の可視化・制御を行うセキュリティ製品への影響で、クラウド環境を含む利用者は更新を確認すること。</li>
+  <li>内部レビューで発見されたもので、悪用は未確認。</li>
+</ul>
+
+<h3>Cisco Crosswork 3製品にクリティカル脆弱性（CVE-2026-20030ほか） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Cisco Crosswork Network Controller / Planning / Data Gateway</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-20030（SQLインジェクション）/ CVE-2026-20357（認証欠如）/ CVE-2026-20358（ファイル名・パス制御）/ CVE-2026-20359（認証情報保護不十分）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-19（Ciscoが公開、Security Hardening Release）/ 2026-08-20（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189122" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>ネットワーク運用基盤「Cisco Crosswork」の3製品に4件の脆弱性。アドバイザリ重要度は最上位Criticalで、悪用は未確認。修正版は公開済み。</li>
+</ul>
+
+<h3>Oracle月例パッチ公開（2026年8月）：CVEベース925件の脆弱性に対処 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Oracle全製品（CSPU：Critical Security Patch Update）</td></tr>
+  <tr><th>CVE</th><td>CVEベース925件・のべ943件（CVSS 10.0が3件、9.9が19件、9.8が67件）</td></tr>
+  <tr><th>備考</th><td>467件は認証なしでネットワーク経由の攻撃が可能。Oracle Fusion Middleware 262件、E-Business Suite 120件、Database Server 6件等</td></tr>
+  <tr><th>公開日時</th><td>2026-08-18（Oracleが現地公開）/ 2026-08-20（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189101" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>Oracle Fusion Middlewareをはじめ広範囲に及ぶ月例更新。認証なしで攻撃可能な脆弱性が多数あり、該当製品の利用者には早急なパッチ適用を推奨。</li>
+</ul>
+
+<h3>MLflowのSSRF脆弱性（CVE-2026-64849）がCISA KEVに追加され悪用を警告 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>MLflow（機械学習プラットフォーム）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-64849（SSRF）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.3（Critical）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-19（CISAがKEVへ追加）/ 2026-08-20（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189114" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a> / <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEVカタログ</a></td></tr>
+</table>
+<ul>
+  <li>mm内部サービスやクラウドメタデータサービスへリクエストを送信させ、レスポンスのステータス・本文を窃取される可能性。実攻撃での悪用が確認されCISAがKEVへ追加。米行政機関は9月2日までに対策義務。</li>
+</ul>
+
+<h3>複数のセイコーエプソン製プリンター・スキャナーに失効したルート証明書が残存（CVE-2026-73542） <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>セイコーエプソン製プリンター・スキャナー（広範囲）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-73542（失効したルート証明書の残存、CWE-296）</td></tr>
+  <tr><th>CVSS</th><td>CVSS3.1 3.7（CVSS4.0 6.3）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-20 14:00 JST（JVN#91609598）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/vu/JVNVU91609598/index.html" target="_blank" rel="noopener noreferrer">JVNVU#91609598</a></td></tr>
+</table>
+<ul>
+  <li>中間者攻撃を受けた場合、当該製品が送信する通信内容が取得される可能性。対象機器はプリンター・スキャナー等で広範囲に及ぶため、提供元の対応情報を確認すること。</li>
+</ul>
+
+<h3>RDK-BのWebUIにおける複数の脆弱性（CERT/CC VU#874418） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>RDK-B（ブロードバンド・セットトップボックス用オープンソースプラットフォーム）のWebUI</td></tr>
+  <tr><th>公開日時</th><td>2026-08-20 10:15 JST（JVN#91551881公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/vu/JVNVU91551881/index.html" target="_blank" rel="noopener noreferrer">JVNVU#91551881</a> / <a href="https://kb.cert.org/vuls/id/874418" target="_blank" rel="noopener noreferrer">CERT/CC VU#874418</a></td></tr>
+</table>
+<ul>
+  <li>CERT/CCからRDK-BのWebUIに複数の脆弱性がある旨のアドバイザリが公表された。RDK-Bを採用したSTB・ゲートウェイ製品を提供・運用する環境は、CERT/CCのアドバイザリで影響・対策を確認すること。</li>
+</ul>
+
+<h3>Claude Code v2.1.238：スキル同期の堅牢化・MCPヘッダー生成の信頼要件強化などセキュリティ関連修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code（Anthropic）</td></tr>
+  <tr><th>公開日時</th><td>2026-08-20 20:33 UTC（JST 8月21日05:33）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.238" target="_blank" rel="noopener noreferrer">GitHub Releases（v2.1.238）</a></td></tr>
+</table>
+<ul>
+  <li>claude.aiから同期されるスキルを堅牢化（ローカルコマンドやMCPプロンプトをシャドーしない、説明文の無害化・ラベル付け、ローカルマシン上で「!」コマンドや「@」ファイル展開を実行しない）。</li>
+  <li>プロジェクトの .mcp.json やインラインMCPサーバーの headersHelper（HTTPヘッダー生成コマンド）は、そのフォルダの信頼ダイアログ承認を必須化。</li>
+  <li>MCP診断・セッション境界、Remote Controlのセッションスコープ環境変数の継承問題、長時間セッションでのメモリ増大などの修正も含む。CVE番号の明記なし。</li>
+</ul>
+
+<h3>複数スタックの新着情報なし <span class="badge-low">LOW</span></h3>
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Python本体 / Django / GCP / AWS / Azure / Spring Boot / Hono / OpenClaw / Hermes Agent）について、対象期間（2026-08-20 08:00 〜 2026-08-21 08:00 JST）内に公開された直接関連する新規セキュリティ情報は確認されませんでした。Hermes Agentの最新はv0.20.4（2026.8.18、既報）、OpenClawの最新は2026.8.1-beta.2（2026-08-15、既報）、Honoの最新はv4.13.3（2026-08-18、既報）のままで、本期間内にセキュリティ関連の新規リリース・アドバイザリはありません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>アフラック生命保険：システム不正アクセスの調査結果を公表、顧客約440万人・代理店約4万店の個人情報が漏えい（進展） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>アフラック生命保険株式会社（生命保険大手）</td></tr>
+  <tr><th>発生日</th><td>2026-06-10（初回漏えい）/ 2026-06-25（異変検知・初回公表）/ 2026-07-31（調査結果公表）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>「オンライン相談」・「アフラック よりそうネット」への不正アクセスによる情報漏えい（進展）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55972.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-20）</a> / <a href="https://www.aflac.co.jp/static/corp/profile/news/2026/2026073100.pdf" target="_blank" rel="noopener noreferrer">アフラック（2026-07-31）</a></td></tr>
+</table>
+<ul>
+  <li>漏えいしたのは顧客関連の個人情報約440万人（うち保険料振替口座が含まれる顧客は約22万人）と、代理店関連の個人情報約4万店。契約者・被保険者・受取人の氏名、生年月日、住所、電話番号、保険料振替口座（金融機関名・口座番号等）を含む。</li>
+  <li>原因は、攻撃で使用されたアクセス・データ照会の手口に対する制御が不十分だったこと。通常利用と同様の形式だったため不正アクセスとして即時検知できず、短時間に大量のデータ照会があった際に監視・制御する機能が不足していたことを確認。</li>
+  <li>7月10日から対象者へ謝罪文書を送付し、7月30日に発送完了。再発防止策としてアクセス・データ照会の制御強化、大量アクセス監視の強化、セキュリティレビュー・侵入テストの強化等を実施。管理監督責任を有する役員4名が報酬の一部を自主返納。</li>
+</ul>
+
+<h3>シーイーシー（CEC）のデータセンターにランサムウェア攻撃、障害が発生 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社シーイーシー（システム開発・データセンターサービス）</td></tr>
+  <tr><th>発生日</th><td>2026-08-05（東京第二データセンターで不正アクセス起因の障害発生）/ 2026-08-06（初回公表・サービス復旧）/ 2026-08-07（ランサムウェアと確認・続報）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>データセンターへの不正アクセス・ランサムウェア攻撃による障害</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55973.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-20）</a> / <a href="https://www.cec-ltd.co.jp/news/2026/7372.html" target="_blank" rel="noopener noreferrer">シーイーシー（続報）</a></td></tr>
+</table>
+<ul>
+  <li>東京第二データセンターで8月5日午前11時頃に不正アクセス起因の障害が発生。8月7日までの調査でランサムウェアによる攻撃であることを確認し、警察に被害報告、個人情報保護委員会に情報漏えいの可能性がある事案として第一報を報告。</li>
+  <li>8月6日時点でサービスは復旧。8月7日時点で情報漏えいは確認されておらず、攻撃対象領域は顧客から預かったシステム・データとは別領域であることが判明。調査委員会・第三者専門機関と調査継続中の続報。</li>
+</ul>
+
+<h3>ニデック：Webサイトにソフトウェアの脆弱性を悪用した不正アクセス、会員約2.8万人・問い合わせ約4,500人分の情報に漏えいの可能性（進展） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>ニデック株式会社（モーター・電子部品大手）</td></tr>
+  <tr><th>発生日</th><td>2026-07-24（不正アクセスの痕跡確認・初回公表）/ 2026-08-07（調査結果公表）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>Webサイトでのソフトウェア脆弱性悪用による不正アクセス・情報漏えいの可能性（進展）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55977.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-20）</a> / <a href="https://www.nidek.co.jp/news/20260807-news/" target="_blank" rel="noopener noreferrer">ニデック（2026-08-07）</a></td></tr>
+</table>
+<ul>
+  <li>同社運営Webサイトで使用していたソフトウェアの脆弱性を悪用した不正アクセスであることを確認。一部顧客の個人情報がアクセス・取得された可能性が完全には否定できない。</li>
+  <li>漏えいの可能性があるのは、会員登録者（仮登録含む）約28,000名分（氏名・会員ID・メールアドレス・保護されたパスワード等）と、問い合わせ者約4,500名分（氏名・メールアドレス・勤務先・電話番号・住所・問い合わせ内容等）。対象顧客に順次個別連絡予定。</li>
+  <li>問い合わせデータの保管状況を見直し、不要な過去データを削除。外部専門機関と連携し継続調査・当局報告・再発防止を進める。</li>
+</ul>
+
+<h3>さくらインターネット：レンタルサーバ不正アクセスに加え販売管理システムで会員情報1,360,563アカウントが影響を受けた可能性（続報） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>さくらインターネット株式会社</td></tr>
+  <tr><th>発生日</th><td>2026-08-09（異常検知・調査開始）/ 2026-08-17（初回公表）/ 2026-08-19（販売管理システム侵入の可能性・第二報）/ 2026-08-20（会員情報1,360,563アカウント影響・報道）</td></tr>
+  <tr><th>種別</th><td>レンタルサーバ・販売管理システムへの不正アクセス（続報）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55974.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-20）</a> / <a href="https://www.security-next.com/189072" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-19）</a></td></tr>
+</table>
+<ul>
+  <li>レンタルサーバ「さくらのレンタルサーバ」への不正アクセスに加え、調査過程で同社「販売管理システム」の侵害が判明。第二報（8月19日公表）で、販売管理システムの会員情報1,360,563アカウントが影響を受けた可能性を公表（氏名・住所等の契約情報と、ハッシュ化パスワード情報30アカウント）。</li>
+  <li>認証情報の無効化・アクセス遮断等の封じ込め対応を実施済みで、外部専門機関とフォレンジック調査を継続中。影響を受けた顧客環境についても引き続き調査中（既報の続報）。</li>
+</ul>
+
+<h3>REXTへのランサムウェア攻撃の進展：JEANS MATE店舗で現金支払いのみ、RIZAP「APORITO」事業でシステム障害 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>REXT株式会社（WonderGOO・新星堂・JEANS MATE等）／RIZAP株式会社（「APORITO」事業）</td></tr>
+  <tr><th>発生日</th><td>2026-08-09（ランサムウェア不正アクセス）/ 2026-08-10（初回公表）/ 2026-08-11（進展）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃によるシステム障害（進展）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55979.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（RIZAP・2026-08-20）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55978.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（JEANS MATE・2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>REXTへのランサムウェア攻撃（既報）の進展。</li>
+  <li>JEANS MATE店舗は通常営業するものの、システム障害の影響で支払いは原則として現金のみ。手作業での会計対応のため時間がかかる場合がある。オンラインショップは通常営業。</li>
+  <li>「APORITO」事業の運営をREXTに一部委託しているRIZAPは、8月10日から一部サービスの提供を制限。両社は被害の全容・原因の解明と早期復旧を進めている。</li>
+</ul>
+
+<h3>大阪・関西万博：再委託先のMicrosoft 365アカウントへの不正アクセスで関係者・出演者の個人情報が漏えいしたおそれ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>2025年日本国際博覧会協会（大阪・関西万博）</td></tr>
+  <tr><th>発生日</th><td>2026-05-13（再委託先従業員がフィッシングメール受信）/ 2026-08-20（公表・報道）</td></tr>
+  <tr><th>種別</th><td>再委託先のMicrosoft 365アカウントへの不正アクセスによる情報漏えいのおそれ</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.expo2025.or.jp/news/news-20260820-01/" target="_blank" rel="noopener noreferrer">2025年日本国際博覧会協会（2026-08-20）</a></td></tr>
+</table>
+<ul>
+  <li>催事業務などの再委託先従業員が5月13日に海外企業を装うフィッシングメールを受信したことを発端に、再委託先のMicrosoft 365アカウントが不正アクセスを受けた。</li>
+  <li>漏えいのおそれがあるのは委託先・再委託先従業員を含む関係者やイベント出演者の個人情報（氏名・所属・役職・メールアドレス・電話番号・勤務シフト等、出演者は肩書・写真・登壇動線など）。クレジットカード情報は含まれず、現時点で一般来場者の個人情報や二次被害は確認されていない。</li>
+</ul>
+
+<h3>大仙（農業用温室メーカー）：システム侵害・マルウェア感染、情報流出の可能性・受注出荷に影響 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>株式会社大仙（農業用温室・建築資材メーカー）</td></tr>
+  <tr><th>発生日</th><td>2026-08-01（社内システム侵害・マルウェア感染）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>社内システムへの不正アクセス・マルウェア感染、情報流出の可能性・受注出荷への影響</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/188290" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a> / <a href="https://www.daisen.co.jp/" target="_blank" rel="noopener noreferrer">大仙</a></td></tr>
+</table>
+<ul>
+  <li>8月1日2時ごろに社内システムが侵害されマルウェアに感染。検知後、社内の全システムを遮断。</li>
+  <li>インターネット上に今回と関連すると見られる情報が掲載されているが、内容は把握できておらず流出の有無は確認中。システム遮断により受注・出荷に影響が発生し、安全性確保後に復旧作業を進める。</li>
+</ul>
+
+<h3>徳島県：住基ネット機器更改でマイナンバー含む個人情報入りの外付HDD2台をデータ未消去のまま廃棄した可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>徳島県（住民基本台帳ネットワークシステム）／NECキャピタルソリューション／川上キカイ</td></tr>
+  <tr><th>発生日</th><td>2026-08-10（公表）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>廃棄委託した外部記録媒体（HDD）のデータ未消去のままの廃棄の可能性</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/20/55976.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-20）</a> / <a href="https://www.pref.tokushima.lg.jp/kenseijoho/hodoteikyoshiryo/7315616/" target="_blank" rel="noopener noreferrer">徳島県</a></td></tr>
+</table>
+<ul>
+  <li>住基ネットの機器更改に伴いリース事業者へ返却したバックアップ用外付HDD2台が、再委託先（川上キカイ）でデータ未消去のまま廃棄された可能性が高い。なお、県の承認手続きを経ずに再委託が行われていた。</li>
+  <li>HDDには住基ネットの操作履歴（アクセスログ）が保存され、個人情報を含むデータが延べ約46万件（うち個人番号を含むデータが延べ約18万件）。再委託先の処理遅延・保管スペース逼迫によるイレギュラー運用が原因と判断。</li>
+  <li>全量確認・防犯カメラ精査・外部搬出先調査の結果、外部侵入や意図的な持ち出しは確認されず、誤廃棄により既に破砕処理された可能性が極めて高い。県は再発防止策を講じる。</li>
+</ul>
+
+<h3>杉並区：保存期限前の歯科健診記録票1,895人分を誤って廃棄 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>東京都杉並区（自治体）</td></tr>
+  <tr><th>発生日</th><td>2026-07-15（誤廃棄）/ 2026-07-22（判明）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>保存文書の誤廃棄（移送日と廃棄日を誤認）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189040" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a> / <a href="https://www.city.suginami.tokyo.jp/" target="_blank" rel="noopener noreferrer">杉並区</a></td></tr>
+</table>
+<ul>
+  <li>乳幼児に関する歯科健診記録票や質問票など1,895人分（1歳6カ月児健診・3歳児健診・乳幼児歯科相談の情報）を、保存期限（2030年3月31日）前に誤って廃棄。</li>
+  <li>職員が保存文書の移送日と廃棄文書回収日を誤認し、廃棄文書回収車を移送用車両と思い込んで積み込み、溶解処分された。個人情報の漏えいは否定し、記載内容は母子システム・管理カードに記録があり影響なしとしている。</li>
+</ul>
+
+<h3>松山市：研修案内メールの誤送信で新規就農者125人のメールアドレス等が閲覧可能に <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>対象組織</th><td>愛媛県松山市（自治体）</td></tr>
+  <tr><th>発生日</th><td>2026-07-27（誤送信）/ 2026-08-20（報道）</td></tr>
+  <tr><th>種別</th><td>メール誤送信による個人情報（メールアドレス・一部氏名）の漏えい</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189131" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-20）</a> / <a href="https://www.city.matsuyama.ehime.jp/" target="_blank" rel="noopener noreferrer">松山市</a></td></tr>
+</table>
+<ul>
+  <li>2026年7月27日、新規就農者125人に農業指導センターの研修案内をメール送信した際、送信先を誤って宛先に設定し、受信者間でメールアドレスと一部氏名が閲覧できる状態になった。</li>
+  <li>受信者からの連絡で判明。対象の就農者に謝罪し、誤送信したメールの削除を依頼している。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
