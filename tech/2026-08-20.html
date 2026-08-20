@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.236</h2>
+<p>対象期間内（8月20日 07:51 JST公開）にv2.1.236がリリースされました。新環境変数<code>ANTHROPIC_DEFAULT_MODEL</code>やクロスセッション通知の<code>notify_when_idle</code>の追加をはじめ、サンドボックス・フルスクリーン・auto mode・Remote Control などの改善と、多数の不具合修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong><code>ANTHROPIC_DEFAULT_MODEL</code>環境変数</strong>: 新規セッションが開始時に使用するモデルを設定できます。<code>/model</code>での選択は上書きして再起動後も維持され、<code>ANTHROPIC_MODEL</code>とは挙動が異なります。</li>
+  <li><strong>クロスセッション通知<code>notify_when_idle</code></strong>: このマシン上の別のClaude Codeセッションに、次にアイドルになった際に1回だけ通知を送るよう依頼できます（opt-in・ワンショット・ポーリング不要、macOS/Linux）。</li>
+  <li><strong>macOSサンドボックス強化</strong>: ワイルドカード読み取り拒否ルール（例: <code>**/.env</code>）が、許可読み取り領域の内部では優先され、対象ディレクトリの内容もカバーし、拒否ファイルのリネームによるバイパスもできなくなりました。</li>
+  <li><strong>auto mode改善</strong>: 自動モード有効中は<code>Monitor</code>許可ルールを保留し、Bashコマンドと同様にレビューされるように。Bedrock／Vertex AI／Foundry／テレメトリ無効時もClaude APIと同様の分類デフォルト（severityスコア付き）を適用。git statusの未追跡ファイル隠し設定による改ざんも防止。</li>
+  <li><strong><code>/goal</code>自動チェックイン</strong>: 長時間バックグラウンド作業の背後にゴールが置かれたアイドルセッションが、30分（以降1時間・2時間）で自動チェックインするようになりました。</li>
+  <li><strong><code>/usage</code>強化</strong>: Team／Enterpriseメンバーの利用クレジット支出行を表示し、支出前に0%上限行を表示します。</li>
+  <li><strong>[VSCode] スクリーンリーダー対応</strong>: トランスクリプトにライブアナウンス（返信・権限要求・エラー・状態変化）とターン単位の見出しナビゲーションを追加しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>セッションが切り替えていたディレクトリが削除された際に、クリップボードコピー・バックグラウンドハウスキーピング・バックグラウンドセッション・ローカルMCPログが壊れる問題（2.1.229以降）を修正しました。</li>
+  <li>フルスクリーンレンダラーが一度の起動失敗で恒久的に動作しなくなる問題を修正し、以降の起動ではクラシックレンダラーにフォールバックするようにしました。</li>
+  <li>サブプロセス起動失敗時のunhandled promise rejectionを修正しました（例: WSLでWindows interop無効時の<code>powershell.exe</code>。2.1.234で退行）。</li>
+  <li>自己ホストランナーセッションが、ポストセッションフック完了前に別ランナーで再開される問題を修正しました。</li>
+  <li>暴走セッション要約を修正し、要約テキストを400文字・語境界で上限にしました。</li>
+  <li>SIGTERM（print/SDKモード）で、終了前のinterrupted turnや合成ツール拒否を記録しないようにし、実行中コマンドは終了、終了コード143を維持。</li>
+  <li>Remote ControlがCLI終了・ターミナルクローズ時にセッションを短時間でオフラインとしてマークするように。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-236">Claude Code changelog: v2.1.236</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新版はv0.20.4（v2026.8.18、8月18日公開・昨日の朝刊で掲載済み）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新のバージョン付きリリースはv2026.8.1-beta.2（8月15日公開、既報）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.185</h2>
+<p>対象期間内（8月19日 15:44 JST公開）にv1.4.185がリリースされました。UI／ワークスペース・オーケストレーション・ネイティブチャット・ターミナルなどの多数の改善・修正を含みます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ワークツリーの可視性制御</strong>: ソースごとの可視性コントロールを追加し、外部ワークツリーの受信箱リストを1枚のカードに統合しました。</li>
+  <li><strong>ワークスペースのクリーンアップ</strong>: クリーンアップ検出とダイアログを再設計しました。</li>
+  <li><strong>エージェントマップ／ダッシュボード</strong>: 未読フィニッシュを可視化（一瞥でdemote可）、質問状態に専用の色・グリフを追加、エージェントマップに本格的なフィルターパネルを追加しました。</li>
+  <li><strong>GPT-5.6 Codex系のmax effort</strong>: worker-startでgpt-5.6 Codexファミリーの最大努力を許可しました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>オーケストレーションにおけるworker終了後の直接ユーザー権限の保持、依存完了済みの遅延依存関係のready化などの修正。</li>
+  <li>ネイティブチャットのwatcher identity競合、Codexエスケープ割り込み保持、Codexフック信頼、WSLゲート拒否など多数の修正。</li>
+  <li>ハングしたWSLトランスクリプトのファイルシステム操作を、子プロセス＋ルート隔離で強制終了するよう修正。</li>
+  <li>ターミナルのSGRペンクリア、セッション別のdurable-historyチェックポイント分離、非ラテン入力時のCtrl+C配信、非ラテンレイアウトでのCtrlコードの位置的な解決など多数の修正。</li>
+  <li>macOSでアップデート後の切断されたターミナルTCC帰属を回復する修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.185">Orca v1.4.185</a> · <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>Next.js</h3>
+<p>安定版の新規リリースはありません（最新の安定版はv16.3.1、8月13日公開・期間外）。期間内にcanary版v16.3.1-canary.25（8月20日 08:46 JST公開）がリリースされました。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<ul>
+  <li><strong>[Preview] App Engine flexible environment Go 1.27ランタイム</strong>: Go 1.27ランタイムのサポートがプレビューとなりました。またApp Engine push queuesのCloud Tasksへの移行（Preview）が可能になり、アプリコードを変更せずにアップグレードできます。</li>
+  <li><strong>[EOS] Batch Debian 11 OSイメージ</strong>: Compute Engine Debian 11イメージのサポート終了（2026年8月31日）に伴い、Batch Debian 11 OSイメージファミリーが開発終了に。対象ジョブはDebian 12（<code>batch-debian-12-official</code>）への移行が必要です。</li>
+  <li><strong>Gemini Enterprise</strong>: シートベースのサブスクリプションにシート数上限（セルフサービス／再販アカウントは25席、請求アカウントは1,000席）が設定されました。</li>
+  <li><strong>Google Distributed Cloud（software only）for VMware 1.34.800-gke.90</strong>: Kubernetes v1.34.7-gke.200で動作する新バージョンがダウンロード可能になりました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<p class="empty-notice"><strong>AWS</strong>、<strong>Azure</strong>（直近の更新は前日以前）、<strong>React</strong>（最新はv19.2.8、7月21日公開）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong>、<strong>web（一般）</strong>については、対象期間内に一次ソースで確認できる公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
