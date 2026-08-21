@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Hermes Agent v0.20.5（v2026.8.19）パッチリリース <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hermes Agent（Nous Research）</td></tr>
+  <tr><th>対象</th><td>v0.20.5（v2026.8.19）</td></tr>
+  <tr><th>内容</th><td>v0.20.4以降の約323マージPRをまとめたパッチリリース。Bot Modeグループルームスレッド、フォルダブル会話サマリー、zero-authなkeyless Web層（5ベンダー無料ローテーション）、Composio評価由来の実行規律・ランタイムストールガード、cronジョブの永続メモリ等を含む</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21 21:16 JST（GitHub tag作成）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.19" target="_blank" rel="noopener noreferrer">Hermes Agent Releases（v2026.8.19）</a></td></tr>
+</table>
+<ul>
+  <li>CVE番号や個別のセキュリティ修正の明記はありません。実行規律・ランタイムストールガードなどの堅牢化が含まれます。検索対象スタックの1つとして更新を推奨します。</li>
+</ul>
+
+<h3>Claude Code v2.1.239：マスク入力の漏えい・権限昇格・コマンド承認など多数のセキュリティ関連修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code（Anthropic）</td></tr>
+  <tr><th>対象</th><td>v2.1.239</td></tr>
+  <tr><th>内容</th><td>マスク（パスワード式）入力欄のテキストがCtrl+Yで他箇所に貼り戻し・履歴に保存される問題の修正、/commit-push-prでの危険フラグ（--force / --amend / --no-verify等）の自動承認廃止、サンドボックスのIPv6リテラル括弧付け・曖昧表記のフェイルクローズ化、自己ホストランナーWindows起動時の--base-dir必須化等</td></tr>
+  <tr><th>公開日時</th><td>2026-08-22 04:54 JST（GitHub公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.239" target="_blank" rel="noopener noreferrer">Claude Code Releases（v2.1.239）</a></td></tr>
+</table>
+<ul>
+  <li>ログインコード等のマスク入力の漏えい抑制、危険なGitコマンドの自動承認廃止、sandboxのフェイルクローズ化など、権限・機密情報保護に関わる修正が多数含まれます。CVE番号の明記はありません。</li>
+</ul>
+
+<h3>PostgreSQLが脆弱性28件・110件超のバグを修正（RCE・SQLインジェクションを含む） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>PostgreSQL（Python/Django系スタックの標準DB）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-14664（正規表現処理のヒープBOF）、CVE-2026-14669（to_char）、CVE-2026-14670（plperl）、CVE-2026-16238 / CVE-2026-16239（型取り違いのコード実行）、CVE-2026-15741（SQLインジェクション）ほか28件</td></tr>
+  <tr><th>CVSS</th><td>CVSS 9.0以上なし。18件が7.0以上（うち14件は8.8）</td></tr>
+  <tr><th>対策</th><td>セキュリティアップデートを適用</td></tr>
+  <tr><th>公開日時</th><td>2026-08-13（PostgreSQL開発チームが公開）/ 2026-08-21（国内報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189206" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-21）</a> / <a href="https://www.postgresql.org/" target="_blank" rel="noopener noreferrer">PostgreSQL</a></td></tr>
+</table>
+<ul>
+  <li>任意コード実行が可能となる脆弱性やSQLインジェクション（CVE-2026-15741）を含み、CVSS 8.8が14件。Django/Python等のWebスタックで標準的に用いられるDBのため、該当バージョン利用者は早期のアップデートを推奨します（8/21に国内報道され、対象期間内の新規公表分として掲載）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js / React / Java / Spring Boot / Hono / GCP / AWS / Azure / OpenClaw）に関し、直接関連する新規のセキュリティ情報（CVE・要緊急対応の脆弱性・セキュリティ関連リリース）は本対象期間では確認されませんでした。OpenClawは最新版が2026.8.1-beta.2（8月15日公開済み）のままで、新規リリースはありません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>青山財産ネットワークス グループ会社にランサムウェア攻撃、日本資産総研と日東不動産以外の影響は確認されず <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>青山財産ネットワークス グループ会社（資産管理・相続支援）</td></tr>
+  <tr><th>影響</th><td>当該グループ会社および関連会社の日本資産総研・日東不動産以外への影響は確認されていない</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21 公表・報道（ScanNetSecurity 8:05）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55988.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>資産管理・相続支援を手がける青山財産ネットワークスのグループ会社に対しランサムウェア攻撃。影響範囲・情報漏えいの有無は調査中とみられます。</li>
+</ul>
+
+<h3>藤倉コンポジット：メールアカウントに不正アクセス、すべての受信メールを社外の不明なアドレスへ転送 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>藤倉コンポジット（複合材料メーカー）</td></tr>
+  <tr><th>影響</th><td>メールアカウントの不正アクセスにより全受信メールを社外の不明アドレスへ転送。影響範囲・情報漏えいの有無は調査中</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21 公表・報道（ScanNetSecurity 8:05）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55987.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>メールアカウントが不正アクセスされ、受信メールが外部へ転送される事案。取引先・従業員情報を含むメールの漏えいリスクがあり、調査が進められています。</li>
+</ul>
+
+<h3>EPARKリラク&amp;エステの予約・顧客管理プラットフォーム「PeakManager」に不正アクセス、個人情報漏えいの可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>PeakManager（リラクゼーション・エステサロン向け予約・顧客管理プラットフォーム）</td></tr>
+  <tr><th>影響</th><td>不正アクセスにより個人情報が漏えいした可能性。件数・影響範囲は調査中</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21 公表・報道（ScanNetSecurity 8:05）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55989.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>複数のサロンが利用する予約・顧客管理SaaSに不正アクセス。広範囲の店舗・利用者への影響が懸念されます。</li>
+</ul>
+
+<h3>公益財団法人東京都中小企業振興公社：価格転嫁・賃上げ支援事業の公式サイトに不正アクセス <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>価格転嫁・賃上げ支援事業の公式サイト（スタートアップ等を活用）</td></tr>
+  <tr><th>影響</th><td>不正アクセス判明。サイト運営業務を一部停止し、受託業者・関係機関・専門家と調査対応中</td></tr>
+  <tr><th>公開日時</th><td>2026-07-31（公社が公表）/ 2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.tokyo-kosha.or.jp/topics/2607/0020.html" target="_blank" rel="noopener noreferrer">東京都中小企業振興公社</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55990.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>公的機関が運営する事業サイトへの不正アクセス。公式発表が7月31日、報道が8月21日で、企業公式発表が確認され対象に含めました。</li>
+</ul>
+
+<h3>国立国際医療センター：心機能の検査機器付属ハードディスクを紛失、83,007名分の検査情報・患者情報を記録 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>国立健康危機管理研究機構 国立国際医療センター</td></tr>
+  <tr><th>影響</th><td>心電図等の検査情報（患者ID・氏名・年齢・性別・検査日・検査結果）と患者情報（病名・感染症検査結果・投薬状況等）83,007名分が記録されたHDDを紛失（4月16日判明、現在まで未発見）</td></tr>
+  <tr><th>公開日時</th><td>2026-07-31（同院が公表）/ 2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.jihs.go.jp/content4/20260731_1500.pdf" target="_blank" rel="noopener noreferrer">国立国際医療センター（お詫び）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55986.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>医療機関の要配慮個人情報を含む大規模な記憶媒体紛失。対象患者への個別連絡や、記憶媒体管理の再発防止策（院内での物理破壊・外部委託時の安全管理強化）を実施。</li>
+</ul>
+
+<h3>セントラルコンサルタント：コーポレートサイトに不正アクセス、お問い合わせフォーム情報が漏えいした可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>セントラルコンサルタント（建設コンサルタント）</td></tr>
+  <tr><th>影響</th><td>不正アクセス期間中、お問い合わせフォームのDBが第三者に閲覧・取得された可能性（会社名・氏名・メールアドレス・電話番号・住所・問い合わせ内容等）。サイトは復旧済み</td></tr>
+  <tr><th>公開日時</th><td>2026-07-31（同社が公表）/ 2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://central-con.co.jp/news/" target="_blank" rel="noopener noreferrer">セントラルコンサルタント</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/08/21/55985.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>コーポレートサイトへの不正アクセスによる問い合わせ情報の漏えい可能性。影響範囲と事実関係の確認が進められています。</li>
+</ul>
+
+<h3>旭化成セラピューティクス：委託先の患者支援システムで個人情報流出 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>旭化成セラピューティクス（製薬）/ 委託先：シミックヘルスケア・インスティテュート（CHI）</td></tr>
+  <tr><th>影響</th><td>患者30人の氏名・電話番号・年齢等、患者216人のメールアドレス、医療従事者1535人の氏名・医療機関名、委託元企業関係者159人の氏名・営業所名等が流出</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/187860" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>患者サポートプログラムで使用するシステムのWeb公開領域に配置されたファイルへ第三者がアクセスし取得（6月15日判明、7月11日確認）。データ取扱い・アクセス制御の運用不備と確認・監督体制不十分が原因。アクセス制御不備を修正し対象者へ連絡。</li>
+</ul>
+
+<h3>原田産業「ビールの縁側」：クラフトビール通販サイト侵害で個人情報流出の可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>原田産業 運営のクラフトビール通販サイト「ビールの縁側」</td></tr>
+  <tr><th>影響</th><td>サイト侵害により一部顧客の個人情報が流出した可能性。サイトを一時閉鎖し調査中</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189118" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>通販サイトの侵害による個人情報流出の可能性。原因・被害状況・影響範囲を調査し、サイトは安全性確認まで閉鎖。</li>
+</ul>
+
+<h3>エリッツホールディングス子会社エリッツ：クラウド保存ファイルのアクセス制限不備で個人情報流出の可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>エリッツ（エリッツHD子会社・不動産）</td></tr>
+  <tr><th>影響</th><td>入居申込者とのメール内容等を含むファイル（2021年4月3日以降、個人情報記載書類含む）をクラウドに保存していたがアクセス制限設定に不備。8月17日に外部調査会社から指摘され判明</td></tr>
+  <tr><th>公開日時</th><td>2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189196" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>クラウド環境上のアクセス制限設定不備による個人情報流出の可能性。不備を修正し、流出の有無・対象件数を調査中。</li>
+</ul>
+
+<h3>大阪市西区：広報紙配布の宛名シールを別人物の宛名に重ね貼り、個人情報流出 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>大阪市西区（広報紙配布業務）</td></tr>
+  <tr><th>影響</th><td>宛名シール二重・三重貼付により氏名・住所が流出した67人。委託業者が直接訪問して説明・謝罪し封筒を回収</td></tr>
+  <tr><th>公開日時</th><td>2026-07-15（判明）/ 2026-08-21（報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189129" target="_blank" rel="noopener noreferrer">Security NEXT（2026-08-21）</a></td></tr>
+</table>
+<ul>
+  <li>委託業者が重複作成した不要封筒を廃棄せず再利用し、宛名シールを重ね貼りしたことが原因。委託業者へ原因・影響範囲・再発防止策の報告を求める。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
