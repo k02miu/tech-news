@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.239</h2>
+<p>対象期間内（8月22日 06:09 JST公開）に v2.1.239 がリリースされました。コスト見積・フルスクリーンレンダラー拡充・Python SDK移行ツールなどの新機能に加え、Bedrock/プロキシ関連や起動挙動を含む多数の不具合修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>コスト見積の精度向上</strong>: <code>/cost</code>、ステータスライン、<code>--max-budget-usd</code> が、データレジデンシー対応ワークスペースの US 限定推論プレミアム（1.1×）を反映するようになりました。</li>
+  <li><strong>フルスクリーンレンダラー提供拡大</strong>: Bedrock・Vertex・Foundry など従来除外されていた構成にも提供開始。新規インストールはフルスクリーンで開始します。</li>
+  <li><strong><code>/claude-api upgrade</code></strong>: Python プロジェクトを <code>anthropic</code> 0.x から 1.x へ移行するコマンドを追加。スキルの Python リファレンスも 1.x 向けに更新され、timeout は <code>httpx.Timeout</code> ではなく <code>anthropic.Timeout</code> を使用します。</li>
+  <li><strong>クラウドセッションのプラグイン同期</strong>: claude.ai から同期されたプラグインが <code>name@synced</code> として表示され、同名で自分でインストールしたプラグインを上書きしません。</li>
+  <li><strong>Alpine/musl ビルド強化</strong>: ネイティブの画像貼り付け・クリップボード・音声キャプチャアドオンが読み込めるようになりました。</li>
+  <li><strong>Windows 版のクロスセッションメッセージング</strong>: macOS/Linux と同様、マシン間で <code>SendMessage</code>／<code>ListAgents</code> を使えるようになりました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>Content-Type ヘッダを除去するプロキシ背後での Bedrock ストリーミングで、非ストリーミング再実行による二重課金が発生する問題を修正しました。</li>
+  <li>SSO プロファイル＋<code>awsAuthRefresh</code>＋HTTPS プロキシ併用時に起動がハングする問題を修正（認証前チェックが <code>HTTPS_PROXY</code> を尊重します）。</li>
+  <li>存在しないディレクトリからの起動時クラッシュを、明確なメッセージ表示に改善しました。</li>
+  <li>JetBrains IDE ターミナルで Claude Code プラグイン接続時に Edit/Write 呼び出しが約5秒停止する問題を修正しました。</li>
+  <li>WebFetch が期限切れページコンテンツをセッション中ずっと保持していた問題を修正（本来は15分で解放）。</li>
+  <li>フルスクリーン表示の MCP elicitation フォームが端末より高い場合に切れる問題を修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-239">Claude Code changelog: v2.1.239</a> · <a href="https://code.claude.com/docs/en/changelog/rss.xml">公式RSS</a></p>
+
+<h2>🤖 Hermes Agent — v0.20.5（v2026.8.19）</h2>
+<p>対象期間内（8月21日 21:16 JST公開）に v0.20.5 がリリースされました。v0.20.4 以降にマージされた約323件の PR を安定版タグにまとめたパッチリリースです（Docker イメージ・ホスト済みデプロイ・新規インストール向け）。</p>
+<h3>🔧 主な変更点</h3>
+<ul>
+  <li><strong>Bot Mode</strong>: グループルームのスレッド対応、折りたたみ可能な会話サマリー、ブロブ顔アバター、PDF／ファイル添付のドラッグ＆ドロップ対応。</li>
+  <li><strong>キーレス Web 階層</strong>: 5ベンダー無料ローテーション＋リングフェイルオーバー、キーゼロでの新規インストール時の Web 検索。</li>
+  <li><strong>CLI 強化</strong>: ファジー <code>/model</code> ピッカー、Ctrl+P コマンドパレット、充実した <code>/status</code>、<code>hermes update</code> の受領確認、<code>hermes worktree list/prune</code>。</li>
+  <li><strong>その他</strong>: Composio eval の知見に基づく実行規律・ランタイム停止ガード、オープンコード不要のゼロ認証プロバイダ、複数質問の明確化、cron ジョブの永続メモリとジョブ別 reasoning effort。</li>
+  <li>この期間の詳細なキュレーション版リリースノートは v0.21.0 で公開予定です。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.19">Hermes Agent v0.20.5 Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice">対象期間内に新規リリースは確認されませんでした。最新のバージョン付きリリースは v2026.8.1-beta.2（8月15日公開、既報）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.187</h2>
+<p>対象期間内（8月21日 16:44 JST公開）に v1.4.187 がリリースされました。プライベートスキルバンドルの共有・パスキーサインイン・ワークツリー作成位置の選択・ターミナル入力の信頼性向上などが含まれます（着地 PR は通常48〜72時間後にリリース）。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プライベートスキルバンドルの安全な共有</strong>: Orca ホスト間で共有できるようになりました。</li>
+  <li><strong>パスキーサインインのアカウント選択</strong>: Web サイトがパスキーでサインインを求める際、アプリ内ブラウザで使用アカウントを選べます。</li>
+  <li><strong>ワークツリー作成時位置選択</strong>: 作成時に場所を選べるようになり、後から移動する必要がなくなりました。</li>
+  <li><strong>ターミナル入力の信頼性向上</strong>: IME（インプットメソッドエディタ）を使う言語で特に改善。CLI から実行場所の確認と画面の読み取りも可能になりました。</li>
+  <li><strong>アーティファクトページ刷新</strong>: 全幅テーブル＋ドロワーのデザインに再設計されました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>セキュリティスキャン中に一時的にロックされる Codex ファイルが原因で、サインアウトやセッション状態損失が起きにくくなりました。</li>
+  <li>オーケストレーションのタスクディスパッチ状態不変条件と受信者ルーティングの整合性を強化しました。</li>
+  <li>UI 周りではワークスペース作成・タブ検索・固定ピン表示などの諸問題を修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.187">Orca v1.4.187 Releases</a></p>
+
+<h2>⚡ Next.js — v16.3.2</h2>
+<p>対象期間内（8月21日 18:36 JST公開）に、不具合修正をバックポートしたパッチ版 v16.3.2 がリリースされました（canary の未確定機能は含みません）。</p>
+<h3>🔧 主な修正</h3>
+<ul>
+  <li>app ディレクトリ内のファイルのみに app-entry エクスポート検証を限定、catch-all index ページが他のスラグにも配信される問題を修正しました。</li>
+  <li>Turbopack 周り: 埋め込み WASM ローダーヘルパーのトレース抑制、resolve request キー置換時の条件保持、アセットプレフィックス付きワーカーチャンクロードを修正しました。</li>
+  <li>Turborepo リモートキャッシュ認証を静的 PAT から OIDC に変更しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.2">Next.js v16.3.2 Releases</a></p>
+
+<h2>☁️ AWS / Azure / GCP / ⚛️ React</h2>
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>・<strong>React</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
