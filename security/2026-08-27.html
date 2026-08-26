@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-27 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-27 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>「Next.js」に複数の深刻な脆弱性 - 認証なしRCE、リリース予定を前倒しして公開 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-75604 / GHSA-2xp9-vwfh-vxw4</td></tr>
+  <tr><th>影響</th><td>Next.js（Windowsファイルシステム使用サーバでキャッシュコンポーネントを利用しない Pages/App Router）</td></tr>
+  <tr><th>対策</th><td>Next.js 16.3.3 / 15.5.24 へアップグレード（2026年8月25日公開）</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-75604 は、認証を必要とせずリモートからコード実行されるおそれがある脆弱性。Windowsのファイルシステムを使用するサーバ上で稼働し、キャッシュコンポーネントを利用していない「Pages Router」「App Router」のアプリケーションが影響を受ける。</li>
+  <li>あわせて、画像最適化ライブラリ「sharp」が依存する「libheif」のヒープバッファオーバーフロー（GHSA-g89c-p67h-r497）に起因する認証なしRCE（識別子 GHSA-2xp9-vwfh-vxw4）も判明。細工されたAVIFファイルを処理されると任意コード実行のおそれがある。</li>
+  <li>開発チームは当初8月26日をリリース予定としていたが新たな脆弱性が判明したことを受け、1日早い8月25日にNext.js 16.3.3 / 15.5.24を公開。2026年8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>Apache Tomcat に10件の脆弱性（2026年8月25日付アドバイザリ） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-65182 / 65183 / 65637 / 65927 / 65905 / 66422 / 68525 / 73180 / 68569 / 68763</td></tr>
+  <tr><th>影響</th><td>Apache Tomcat 11.0.25 / 10.1.59 / 9.0.121 より前</td></tr>
+  <tr><th>対策</th><td>Apache Tomcat 11.0.25 / 10.1.59 / 9.0.121 へアップグレード</td></tr>
+</table>
+<ul>
+  <li>セキュリティ制約のバイパス（CVE-2026-65182）、Unixドメインソケットへの特定権限設定時のTOCTOU（CVE-2026-65183）、HTTP/2のno-authorityでの厳格なSNI検証バイパス（CVE-2026-65637）、RewriteValve [N] が2番目のルールで再起動しアクセス制御をバイパスし得る問題（CVE-2026-65927）など一部でアクセス制御に関わるものが含まれる。</li>
+  <li>DIGEST認証での限定リプレイ攻撃（CVE-2026-65905）、Servletロール参照による宣言型ロール制約バイパス（CVE-2026-66422）、STRICT SNI関連のHTTP/2ホスト検証回避等も修正。</li>
+  <li>2026年8月26日 JVNで公開（JVNVU#96149019）。</li>
+</ul>
+
+<h3>Chrome 152 リリース - 脆弱性327件を修正（Critical 10件） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-79282 ほか（Critical 10件・High多数）</td></tr>
+  <tr><th>影響</th><td>Chrome 152.0.7977.64 より前</td></tr>
+  <tr><th>対策</th><td>Chrome 152.0.7977.65/.64（Linux 152.0.7977.64）へアップデート</td></tr>
+</table>
+<ul>
+  <li>Windows/macOS向け 152.0.7977.65/.64、Linux向け 152.0.7977.64 を公開。327件の脆弱性に対処し、うちCritical 10件。</li>
+  <li>ANGLEのUse After Free（CVE-2026-79282）、AuraのUAF（CVE-2026-79290/79052）、ChromecastのUAF・入力検証不備（CVE-2026-79054/79224/79121）などを修正。</li>
+  <li>Googleが現地2026年8月25日公開、8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>「Gitea」のRCE脆弱性がCISA KEVに追加され悪用を警告 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-60004（CVSSv3.1 9.8）</td></tr>
+  <tr><th>影響</th><td>Gitea 1.27.1 より前</td></tr>
+  <tr><th>対策</th><td>Gitea 1.27.1 へアップグレード（PoC公開済み）</td></tr>
+</table>
+<ul>
+  <li>セルフホスト型Gitツール「Gitea」の脆弱性で、リポジトリへの書き込み権限を持つ場合に任意のシェルコマンドを実行されるおそれ（CVSSv3.1 9.8 Critical）。</li>
+  <li>実際の攻撃での悪用が確認され、米CISAが現地2026年8月25日にKEVカタログへ追加。米行政機関は8月28日までに対策義務。</li>
+  <li>2026年8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>Adobe Campaign Classic に深刻な脆弱性3件（CVSS 10.0） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-76197 / 76195 / 76193（CVSSv3.1 10.0）</td></tr>
+  <tr><th>影響</th><td>Adobe Campaign Classic 7.4.4 ビルド9401 より前（Windows / Linux）</td></tr>
+  <tr><th>対策</th><td>修正版 7.4.4 ビルド9401 を適用（優先度1）</td></tr>
+</table>
+<ul>
+  <li>OSコマンドインジェクション（CVE-2026-76197 / CVE-2026-76195）とSSRF（CVE-2026-76193）。いずれも任意コード実行の可能性があり、CVSSv3.1は最高値10.0。</li>
+  <li>Adobeが現地2026年8月25日公開、8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>Veeam ONE にCritical脆弱性（CVE-2026-65641 ほか） - クリティカル対応のアップデート <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-65641（CVSSv4.0 9.3）ほか、CVE-2026-64633（CVSS 10.0）ほか6件</td></tr>
+  <tr><th>影響</th><td>Veeam ONE 13.1 Patch 0 / 13.0.2 Patch 1 より前</td></tr>
+  <tr><th>対策</th><td>Veeam ONE 13.1 Patch 0 / 13.0.2 Patch 1 を適用</td></tr>
+</table>
+<ul>
+  <li>サービスアカウントにSMB認証を行わせる脆弱性 CVE-2026-65641（CVSSv4.0 9.3 Critical）。</li>
+  <li>同 13.0.2 Patch 1 では CVSS 10.0 の CVE-2026-64633 など7件も解消。Veeamが現地2026年8月25日公開、8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>SonicWall NetExtender（Linux版）に複数の脆弱性 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-66152（CVSSv3.0 8.8）/ CVE-2026-66153（CVSS 7.0）</td></tr>
+  <tr><th>影響</th><td>SonicWall NetExtender（Linux版）10.3.6 より前</td></tr>
+  <tr><th>対策</th><td>SonicWall NetExtender 10.3.6 へアップグレード</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-66152 は OPSWAT製 tarball 処理のパストラバーサルで root権限で任意のファイルを書き込める可能性（CVSSv3.0 8.8 High）。CVE-2026-66153 は NEService の自動アップグレードでのシンボリックリンク追跡（CVSS 7.0）。</li>
+  <li>Linux版のみ影響。悪用未確認。SonicWallが現地2026年8月25日公開、8月26日国内報道（Security NEXT）。</li>
+</ul>
+
+<h3>OpenSSL セキュリティアップデート（2026年8月25日付） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>OpenSSL Security Advisory [25th August 2026]</td></tr>
+  <tr><th>影響</th><td>OpenSSL 各影響バージョン</td></tr>
+  <tr><th>対策</th><td>OpenSSL公式アドバイザリを参照し更新</td></tr>
+</table>
+<ul>
+  <li>OpenSSL Projectから OpenSSL Security Advisory [25th August 2026] が公開された。</li>
+  <li>2026年8月26日 JVNで公開（JVNVU#96558110）。詳細は OpenSSL 公式アドバイザリを参照（https://openssl-library.org/news/secadv/20260825.txt）。</li>
+</ul>
+
+<h3>Claude Code v2.1.246：Bash許可ルール・テレメトリAPIキー・サンドボックス関連など多数のセキュリティ関連修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE番号の明記なし</td></tr>
+  <tr><th>影響</th><td>Claude Code 全プラットフォーム</td></tr>
+  <tr><th>対策</th><td>最新版 v2.1.246 へアップデート</td></tr>
+</table>
+<ul>
+  <li>サブコマンドより前のワイルドカードを含む Bash 許可ルール（例：Bash(git * main)）への起動時警告を追加。オプションがサブコマンドの前に挿入されるケースにも一致するため。</li>
+  <li>テレメトリ・メトリクスリクエストが第三者ゲートウェイ（ANTHROPIC_BASE_URL）向けに設定されたAPIキーをAnthropicへ送信しないよう修正し、資格情報は自身のホストのみに送信されるよう変更。</li>
+  <li>Bashのダングリングな &amp;&amp; / || を含む不正なコマンドで必ず承認を要求するよう修正。--strict-mcp-config セッションで読み込まれない .mcp.json サーバーの承認を促さないよう修正。</li>
+  <li>2026年8月26日JST公開（リリース日時：25 Aug 22:31 UTC）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">本対象期間中、Hermes Agent（最新 v0.20.5 / 2026.8.19 は既報）、OpenClaw（最新 2026.8.1-beta.3 は2026年8月24日公開で期間外）、web / Java / Python / Django / GCP / AWS / Azure / React / SpringBoot のうち上記以外に直接関連する新規の脆弱性・CVE・セキュリティリリースは確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>全日空商事：法人向けデジタルギフト「選べるe-GIFT」のシステムが侵害、個人情報流出・不正交換の可能性</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>ANAグループ 全日空商事 法人向けデジタルギフト「選べるe-GIFT」</td></tr>
+  <tr><th>発覚</th><td>2026年8月11〜12日（第三者アクセス検知）</td></tr>
+  <tr><th>影響</th><td>契約企業の担当者の個人情報（氏名・企業名・企業ID・ログインID・メールアドレスの一部）が記載されたページが数分間参照</td></tr>
+</table>
+<ul>
+  <li>8月11〜12日に同サービスの管理運用システムが第三者からアクセスされ、契約企業の担当者に関する個人情報を含むページが数分間参照された。</li>
+  <li>一部顧客では e-GIFT が第三者により不正交換されたことも確認。警察へ申告し個人情報保護委員会にも報告。</li>
+  <li>対象企業・担当者へ8月24日より個別連絡を開始。2026年8月26日報道（Security NEXT）。</li>
+</ul>
+
+<h3>名鉄協商（名古屋鉄道グループ）：調査の過程でカーシェア「カリテコ」の顧客情報が外部漏えいした可能性（進展）</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>名鉄協商（ランサムウェア攻撃・2026年7月2日公表）カーシェア「カリテコ」</td></tr>
+  <tr><th>影響</th><td>氏名・住所・生年月日・電話番号・メールアドレス・運転免許証情報、一部顧客はクレジットカード情報（現会員・退会済み会員）</td></tr>
+</table>
+<ul>
+  <li>調査の過程で、同社カーシェア「カリテコ」の顧客情報が外部漏えいした可能性を否定できないことが判明。現会員に加え退会済み会員の情報も対象。</li>
+  <li>対象顧客に個別案内中。同社は7月2日にランサムウェアによるシステム障害を公表済みで、「カリテコ」の新規入会も影響を受けていた。2026年8月26日報道（進展・ScanNetSecurity）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">対象期間内（2026年8月26日08:00〜8月27日08:00 JST）に上記以外の国内主要インシデントの新規公表・続報は確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
