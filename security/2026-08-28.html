@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-28 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-28 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Hermes Agent v0.20.6（v2026.8.27）パッチリリース <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Hermes Agent</td></tr>
+  <tr><th>公開日</th><td>2026年8月27日 12:06 JST</td></tr>
+  <tr><th>重要度</th><td><span class="badge-medium">Medium</span>（CVE番号の明記なし・パッチリリース）</td></tr>
+</table>
+<ul>
+  <li>v0.20.5以降の約525マージPRをまとめたパッチリリース。保存シークレットのOSキーチェーン暗号化（オプトイン）を追加しローカル資格情報保護を強化。</li>
+  <li>イメージ/パッケージ管理インストールが安全でないin-place更新を拒否する対応（#91277 Phase 3）を実施。</li>
+  <li>cron恒久インシデントack、Slackリンク展開制御、共有Dockerコンテナ識別子なども含む。</li>
+</ul>
+
+<h3>Claude Code v2.1.247：プラグインマーケットプレイス堅牢化などセキュリティ関連修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Claude Code</td></tr>
+  <tr><th>公開日</th><td>2026年8月27日 08:06 JST（8月26日23:06 UTC）</td></tr>
+  <tr><th>重要度</th><td><span class="badge-medium">Medium</span>（CVE番号の明記なし）</td></tr>
+</table>
+<ul>
+  <li>プラグイン名に制御・不可視文字を含む場合を拒否し、マーケットプレイス由来のテキストをエスケープ化して表示を安全化。</li>
+  <li>Linuxユーザー名前空間のクロスセッションメッセージで、マップされない所有者へのルート等価信頼を正規のシステムディレクトリに限定。</li>
+  <li>Bashサンドボックス後処理がdotfile管理の<code>settings.json</code>シンボリックリンクを削除する問題や、ネットワーク/automounterパス・制御文字を含むリンクの平文レンダリング化なども修正。</li>
+</ul>
+
+<h3>Claude Code v2.1.248：制限モード「--restricted」追加などセキュリティ関連変更 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Claude Code</td></tr>
+  <tr><th>公開日</th><td>2026年8月28日 07:12 JST（8月27日22:12 UTC）</td></tr>
+  <tr><th>重要度</th><td><span class="badge-high">High</span>（CVE番号の明記なし）</td></tr>
+</table>
+<ul>
+  <li>コマンド・コード実行ツールとWebFetchを除去し、ファイルツールを作業ディレクトリ内に制限、<code>bypassPermissions</code>を拒否し設定ファイルを無視する「<code>--restricted</code>」モードを新設（制限環境向け）。</li>
+  <li><code>/ultrareview</code>等が未コミットの認証情報ファイル（<code>key.pem.tmp</code>、<code>id_rsa.swo</code>等）をアップロードしないよう修正し、資格情報流出ベクトルを封じる。</li>
+  <li><code>crossSessionInbound</code>の不正値を警告・拒否し、MCPヘッダーの認可ヘッダー再実行や権限プロンプト関連の修正も多数含む。</li>
+</ul>
+
+<h3>Apache Tomcat に11件の脆弱性 - CISA評価で4件が「クリティカル」相当 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Apache Tomcat 9.0 / 10.1 / 11.0</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-65182 / 65183 / 65637 / 65905 / 65927 / 66299 / 66422 / 68525 / 68569 / 68763 / 73180</td></tr>
+  <tr><th>修正版</th><td>11.0.25 / 10.1.59 / 9.0.121（2026年8月18〜20日公開）</td></tr>
+  <tr><th>重要度</th><td><span class="badge-critical">Critical</span>（CISA CVSSv3.1評価）</td></tr>
+</table>
+<ul>
+  <li>開発チームは4件を「重要」とする一方、CISAのCVSSv3.1評価では「CVE-2026-65637」「CVE-2026-65905」が9.8、「CVE-2026-65182」「CVE-2026-68525」が9.1（Critical相当）とされるなど評価に隔たり。</li>
+  <li>セキュリティ制約バイパス（CVE-2026-65182）、オフバイワンエラーによるアクセス制御バイパス（CVE-2026-65927）、存在しないユーザーでも認証が成立（CVE-2026-68569）、HTTP/2リセットによるDoS（CVE-2026-68763）などを修正。</li>
+  <li>JVN（JVNVU#96149019）が2026年8月26日、Security NEXTが8月27日に詳細を報道。</li>
+</ul>
+
+<h3>Apache Struts 2 にリソース枯渇（DoS）の脆弱性 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Apache Struts 2</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-73635</td></tr>
+  <tr><th>影響/修正</th><td>6.0.0〜6.10.0、7.0.0〜7.2.1 → 修正版 7.3.0 / 6.11.0</td></tr>
+  <tr><th>重要度</th><td><span class="badge-medium">Medium</span>（DoS）</td></tr>
+</table>
+<ul>
+  <li>制限または調整なしのリソース割り当て（CWE-770）によりヒープメモリが枯渇し、サービス運用妨害（DoS）の可能性。</li>
+  <li>2.0.0〜2.3.37、2.5.0〜2.5.33はサポート終了のため未修正。</li>
+  <li>JVN#08517956としてIPA/JPCERTが2026年8月25日公表、8月27日報道（ScanNetSecurity）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">web / Next.js / Python / Django / Hono / GCP / AWS / Azure / React / Spring Boot / OpenClaw について、本対象期間内に報道された直接関連する新規脆弱性・重大アドバイザリは確認されませんでした（Next.js・Apache Tomcat のCVEは既報分および上記のとおり）。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>中部電力：一部システムへの不正アクセス、役職員メール・グループ連絡先情報など約7万4,100人分が漏えいした可能性 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>中部電力</td></tr>
+  <tr><th>公表日</th><td>2026年8月4日（8月27日報道）</td></tr>
+  <tr><th>種別</th><td>クレデンシャル不正利用による情報漏えい</td></tr>
+</table>
+<ul>
+  <li>同社が利用する一部システムの資格情報が不正利用され、役職員のメールとグループ連絡先情報が不正閲覧された可能性。第三者機関から7月29日に情報提供を受け調査し発覚。</li>
+  <li>漏えい可能性は関係機関・自治体・取引先など約2,400人と、グループ連絡先情報に登録された役職員・委託先社員など約71,700人。</li>
+  <li>システム障害・電力供給への影響なし、電気・ガスの顧客情報の漏えいは未確認。資格情報の無効化・遮断等の対応済み。</li>
+</ul>
+
+<h3>フェースへのランサムウェア攻撃、VPN機器経由の不正侵入 - 調査結果で顧客情報保存サーバの侵害を確認 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>フェース</td></tr>
+  <tr><th>公表日</th><td>2026年6月22日初回 / 8月21日調査結果（8月27日報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃</td></tr>
+</table>
+<ul>
+  <li>6月18日22時46分ごろ、外部通信用VPN機器を経由した不正侵入で社内サーバ・PCが不正操作されデータ暗号化・消去。顧客の氏名・生年月日・性別・住所・電話・メール・ログインID・パスワードを保存したサーバが侵害された。</li>
+  <li>現時点で外部持ち出しの痕跡・不正利用は未確認だが、流出を完全否定できず継続監視。EC発送は6月24日再開、8月7日仮稼働体制構築、システム全体の復旧は2026年10月末頃見込み。</li>
+</ul>
+
+<h3>ニデック台湾子会社（ニデックCCC）にランサムウェア攻撃、ダークウェブ上でファイル名リストの一部が公開（第二報） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ニデック 台湾子会社</td></tr>
+  <tr><th>公表日</th><td>2026年6月24日初回 / 8月4日第二報（8月27日報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃</td></tr>
+</table>
+<ul>
+  <li>6月22日に第三者の不正アクセス・ランサムウェア感染。外部専門機関のフォレンジック調査では外部流出の明確な技術的証拠は確認されなかったが、ダークウェブ上の犯行グループサイトに被害サーバのフォルダ・ファイル名リストの一部が公開されている事実を確認（ファイル自体は未公開）。</li>
+  <li>流出の可能性を否定できないと判断し監視継続。生産・出荷への重大な影響なし、連結業績への影響は軽微と見込む。</li>
+</ul>
+
+<h3>名鉄協商ランサムウェア攻撃の続報：カーシェア「カリテコ」の顧客情報が漏えいした可能性 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>名鉄協商（名古屋鉄道グループ）／中電不動産・カリテコ</td></tr>
+  <tr><th>公表日</th><td>2026年7月2日システム障害公表 / 8月26日続報（8月27日までに報道）</td></tr>
+  <tr><th>種別</th><td>ランサムウェア攻撃・サプライチェーン波及</td></tr>
+</table>
+<ul>
+  <li>同社へのランサムウェア攻撃の調査過程で、カーシェア「カリテコ」の顧客情報（氏名・住所・生年月日・電話番号・メールアドレス・運転免許証情報、一部顧客はクレジットカード情報）が外部漏えいした可能性を否定できないことが判明。現会員に加え退会済み会員の情報も対象。</li>
+  <li>8月18日初報では取引先である中電不動産（中部電力グループ）の顧客情報約4,000件が漏えいした可能性も報告。「カリテコ」の新規入会も影響を受けていた。対象顧客に個別案内中。</li>
+</ul>
+
+<h3>東北文化学園大学：教員のサポート詐欺被害の第3報を発表、フォレンジック調査で個人情報漏えいは確認されず <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>東北文化学園大学</td></tr>
+  <tr><th>公表日</th><td>2026年6月19日初回 / 8月7日第3報（8月27日報道）</td></tr>
+  <tr><th>種別</th><td>サポート詐欺・遠隔操作被害（進展）</td></tr>
+</table>
+<ul>
+  <li>6月1日に教員が業務PCの偽セキュリティ警告画面によるサポート詐欺被害に遭い遠隔操作された件。第2報では看護学科第10期生及び2025年度卒業生の一部個人情報が漏えいした可能性を公表。</li>
+  <li>外部専門機関によるフォレンジック調査の結果、個人情報を含むファイルへの不審なアクセスおよび外部流出の痕跡は認められなかった。今後は情報セキュリティ対策の一層の強化と再発防止に努める。</li>
+</ul>
+
+<h3>東海村社会福祉協議会：イベント申込フォームの公開設定ミスで申込者・児童の個人情報が閲覧可能に <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>東海村社会福祉協議会</td></tr>
+  <tr><th>公表日</th><td>2026年8月27日報道</td></tr>
+  <tr><th>種別</th><td>フォーム設定ミスによる情報漏えい</td></tr>
+</table>
+<ul>
+  <li>小学生向け事業「地域 de"きずな"かま」の参加申込フォームで回答の公開設定が誤り、同一会場の別申込者の個人情報が閲覧可能だった。7月7日に申込者からの指摘で判明。</li>
+  <li>保護者65人（氏名・電話番号・メールアドレス）と児童80人（氏名・学年）が対象。不正利用・二次被害は確認されておらず、設定を修正し対象申込者へ説明・謝罪。</li>
+</ul>
+
+<h3>部品メーカー「スプーン」：自社サイトが改ざんされ偽セキュリティ認証画面・不正コマンド実行を要求 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>スプーン（ホンダ車向け部品メーカー）</td></tr>
+  <tr><th>公表日</th><td>2026年8月27日報道</td></tr>
+  <tr><th>種別</th><td>サイト改ざん（マルウェア誘導）</td></tr>
+</table>
+<ul>
+  <li>同社運営サイトの一部が第三者に改ざんされ、特定ページ閲覧時に偽のセキュリティ認証画面が表示され、特定のキーボード操作による不正コマンド実行を要求する状態に。</li>
+  <li>サーバ上には8月12日17時59分ごろにファイル更新の記録。8月19日に改ざんファイルを無効化し関連システムの一部を停止。操作に従った場合の外部サーバ通信・不正処理の定期実行のおそれを説明し、パソコン遮断等を要請。</li>
+</ul>
+
+<h3>公立学校共済組合：岐阜支部で公務災害認定結果通知書23人分が所在不明に <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>公立学校共済組合</td></tr>
+  <tr><th>公表日</th><td>2026年8月27日報道</td></tr>
+  <tr><th>種別</th><td>重要書類の所在不明</td></tr>
+</table>
+<ul>
+  <li>地方公務員災害補償基金岐阜県支部から2026年4月2日に受領した共済組合等宛認定結果通知書が所在不明。公務災害該当可否が決定した関係者23人分で、氏名・組合員証番号・所属所名・災害発生日・傷病名・受診医療機関名・認定結果などが含まれる。</li>
+  <li>6月19日に所在不明が判明。執務室内の施錠できる引き出しに保管していたが、外部へ持ち出す書類ではないとし、誤って廃棄した可能性が高いとの見方を示す。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
