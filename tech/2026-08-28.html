@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-28 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-08-28 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.248 / v2.1.247</h2>
+<p>対象期間内に <strong>v2.1.248</strong>（2026-08-27 22:19 GMT = 28日 07:19 JST）と <strong>v2.1.247</strong>（2026-08-27 01:16 GMT = 10:16 JST）の2件のリリースが公開されました。</p>
+
+<h3>v2.1.248 — 主な新機能・改善</h3>
+<ul>
+  <li><strong>--restricted モード</strong>: コマンド実行・コード実行系ビルトインツールと WebFetch を除去（--tools で指定しない限り）、作業ディレクトリ内にファイルツールを制限、bypassPermissions を拒否、各種設定ファイルを無視する実行モード。環境変数は <code>CLAUDE_CODE_RESTRICTED=1</code></li>
+  <li><strong>experimental.cacheTtl</strong>: agent frontmatter に per-agent のプロンプトキャッシュ TTL（"5m"/"1h"）を設定可能に</li>
+  <li><strong>cross-session messaging</strong>: Bedrock / Vertex / Foundry、および telemetry 無効時にも同一マシン上のセッション間 <code>SendMessage</code>/<code>ListAgents</code> を拡大</li>
+  <li><code>claude self-hosted-runner --client-label</code>、<code>/usage-credits</code>（AWS Marketplace 経由の Enterprise 顧客向け）、サーバー管理型設定の診断強化など</li>
+</ul>
+<h3>v2.1.248 — 主な修正</h3>
+<ul>
+  <li>長時間セッションで約1時間に1回発生していたプロンプトキャッシュミス（拡張思考コンテキスト消失）を修正</li>
+  <li>Claude Desktop / Cowork セッションが30日後に消える問題を修正（アプリ使用中は保持）</li>
+  <li>Workflow ツールの説明を約 5.7k→1k トークンに削減、<code>workflow-authoring</code> スキルへ集約</li>
+</ul>
+
+<h3>v2.1.247 — 主なトピック</h3>
+<ul>
+  <li><strong>SendFeedback ツール</strong>: セッション中に問題が起きた際、Claude がフィードバック報告の下書きを生成（<code>feedbackDrafts</code> 設定で無効化可）</li>
+  <li><strong>/claude-api cost-optimize</strong>: 既存プロジェクトの Claude API 支出をプロファイリングし、コスト削減施策を測定しながら適用</li>
+  <li>Sonnet 5 の自動コンパクト窓をフル 1M コンテキストに変更</li>
+  <li>プラグインマーケットプレイスの堅牢化（制御文字・不可視文字を含む名前を拒否）</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.20.6 (v2026.8.27)</h2>
+<p><strong>Hermes Agent v0.20.6</strong> が 2026-08-27（12:06 UTC = 21:06 JST）にリリースされました。v0.20.5 以降にマージされた約525件の PR を集約した安定版タグです（約1,313 commits / 1,557 files）。</p>
+<h3>主な内容</h3>
+<ul>
+  <li><strong>同意ゲート付き実プロファイルブラウジング</strong>: デフォルトの Chromium プロファイルを使用したローカルブラウジング対応</li>
+  <li><strong>リモートMCPカタログ拡大</strong>: 50以上のライブ検証済みベンダーホスト型サーバー（Cloudflare, Grafana Cloud, Better Stack, Railway 等）</li>
+  <li><strong>web_search / web_extract の TTL 結果キャッシュ</strong>、パフォーマンス改善</li>
+  <li>lean-tail 圧縮をデフォルト化、multi-query <code>tool_search</code>（ステミング対応）</li>
+  <li>保存シークレット向け <strong>opt-in OSキーチェーン暗号化</strong>（macOS Keychain のたびのプロンプト廃止）</li>
+  <li>アップデータが制御ソケット経由でゲートウェイを一時停止（tree-kill 回避）、cron 永続的インシデント ack、Slack リンク展開制御など</li>
+  <li>モデルピッカーに <strong>GLM-5.3-Flash、MiniMax M3 free、MiniMax H3 Max video</strong> を追加</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした（直近は 2026-08-24 公開の v2026.8.1-beta.3）。</p>
+
+<h2>🐋 Orca — mobile-android-v0.0.46</h2>
+<p><strong>Orca Mobile Android v0.0.46</strong>（2026-08-27 16:12 UTC = 28日 01:12 JST）がリリースされました。主にモバイル UI・各種修正を含みます。</p>
+<ul>
+  <li>Android ダウンロードリンクの 0.0.44 への更新</li>
+  <li>worktree パレット検索をサイドバー最上部へ移動、Artifacts / Skills ページをナビゲーション履歴に追加</li>
+  <li>WSL ランナーの一元化・複数呼び出しサイトの移行、Windows Git Bash コンソール容量問題の修正</li>
+  <li>シークレットストレージを SecretStore ポート経由に移行、Linux ユーザーへの難読化のみの警告表示など</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<ul>
+  <li><strong>v16.4.0-canary.9</strong>（2026-08-27）が公開されました。直近の安定版 v16.3.3 / v15.5.24 は 08-25 公開のため対象期間外です。</li>
+</ul>
+
+<h3>☁️ AWS（2026-08-27 発表分）</h3>
+<ul>
+  <li><strong>Amazon Redshift が KDS 10MiB レコードの取り込みに対応</strong>: 従来の 1MiB から 10倍に拡大。大容量ペイロードを分割せずストリーミング投入可能に</li>
+  <li><strong>Amazon Redshift が Agent Toolkit for AWS と統合</strong>: Claude Code / Kiro / Cursor 等の AI エージェントから AWS MCP サーバー＋Redshift skills 経由でデータウェアハウスの構築・クエリ・移行が可能に</li>
+  <li><strong>Amazon EC2 X8i インスタンスが欧州（ミラノ・スペイン）リージョンに拡大</strong>: Intel Xeon 6 搭載、X2i 比で最大43%の高性能・6TB までのメモリなど</li>
+  <li><strong>AWS Elastic Disaster Recovery が Recovery Plans を提供</strong>: マルチサーバーアプリの起動順序を自動化した復旧プラン機能</li>
+  <li><strong>Amazon Bedrock AgentCore が 2 リージョン追加</strong>: US West（N. California）と Asia Pacific（Hyderabad）</li>
+  <li><strong>AWS Backup が FSx for NetApp ONTAP のクロスリージョン・クロスアカウント バックアップに対応</strong></li>
+</ul>
+
+<p class="empty-notice"><strong>Azure / GCP、React、Python / Django / Java / Spring Boot / Hono、Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
