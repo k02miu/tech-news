@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-29 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-08-29 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>WatchGuard「Fireware OS」に11件の脆弱性 - 認証なしRCEにつながるものも、緊急アップデート <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>WatchGuard Firebox / Fireware OS</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-19313 / 19315 / 19318（iked 認証なしRCE）、CVE-2026-13086（root RCE）ほか計11件</td></tr>
+  <tr><th>影響</th><td>細工したIKEメッセージ処理によるバッファオーバーフロー・域外メモリ読み込み・二重解放などで、認証なしに任意コード実行またはDoSの可能性</td></tr>
+  <tr><th>修正</th><td>Fireware 2026.2.2 / 12.12.2 / 12.5.20（2026年8月27日公開）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189551" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / WatchGuard PSIRT</td></tr>
+</table>
+<ul>
+  <li>11件のうち9件はIKEデーモン（iked）関連。CVE-2026-19313 / 19315 / 19318 はメモリ破壊によるDoSに加え、認証なしで任意コード実行につながるおそれ（CVE-2026-19318は「IKEペイロードの診断ログ」有効時のみ影響）。</li>
+  <li>CVE-2026-13086 は非推奨のMobile Security機能が使用する epmサービスの脆弱性で、隣接ネットワークから信頼済みインターフェースへアクセスできる場合、認証なしにroot権限で任意コード実行が可能。</li>
+  <li>ベンダーは早急な対応を呼びかけ。ファイアウォールとして境界に配置される製品のため優先的な更新が推奨されますわ。</li>
+</ul>
+
+<h3>NVIDIA「NemoClaw」「OpenShell」に18件の脆弱性 - サンドボックス脱出などクリティカル含む <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>NVIDIA NemoClaw / OpenShell</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-65093（サンドボックス脱出）/ CVE-2026-65083（プロビジョニングAPI入力制限不備）ほか計18件</td></tr>
+  <tr><th>CVSS</th><td>CVE-2026-65093 / 65083 は CVSSv3.1 9.9（Critical）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189544" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5872" target="_blank" rel="noopener noreferrer">NVIDIA Security Bulletin</a></td></tr>
+</table>
+<ul>
+  <li>コード実行・権限昇格・データ改ざん・情報漏えいが生じるおそれ。ほかにOSコマンドインジェクション（CVE-2026-65091）やL7 RESTネットワークポリシーのパストラバーサル回避（CVE-2026-65092、High）なども修正。</li>
+  <li>NVIDIAが現地2026年8月25日にアドバイザリ公開、アップデート提供済み。AIエージェント実行基盤を利用する環境は要対応ですわ。</li>
+</ul>
+
+<h3>Adobe、7製品のセキュリティアドバイザリを公開 - 6件がクリティカル <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Adobe Campaign Classic ほか7製品</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-76193 / 76195 / 76197（Campaign Classic、CVSSv3.1 10.0）ほか計39件</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189564" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / Adobe（APSB26-134 ほか）</td></tr>
+</table>
+<ul>
+  <li>Campaign ClassicのOSコマンドインジェクション2件とSSRF1件（いずれも任意コード実行の可能性、CVSS 10.0）は適用優先度「1」で72時間以内の対処を推奨（国内報道は8月26日、28日に追加掲載）。</li>
+  <li>Substance 3D Designer/Sampler/Painterで計27件、Content Credentials SDKで6件（DoS含む）、Adobe XD / Illustratorで各1件を修正。公表時点で悪用は確認されていませんわ。</li>
+</ul>
+
+<h3>ServiceNow「Now Platform」「AI Platform」に複数のクリティカル脆弱性 - 修正版公開 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>ServiceNow Now Platform / ServiceNow AI Platform</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-18885（GraphQL API コードインジェクション）/ CVE-2026-18886（アクセス制御不備）/ CVE-2026-74820（SQLインジェクション）/ CVE-2026-6876</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189522" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / ServiceNowアドバイザリ（2026年8月27日公開）</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-18885 は一定条件下で認証なしに任意コード実行・インスタンスデータの参照/変更が可能。CVE-2026-18886 は認証なしにデータ作成・変更・権限昇格の可能性。</li>
+  <li>CVE-2026-74820 は認証なしの任意SQLで基盤DBへアクセス・変更可能。ServiceNowは業務基盤として利用されることが多く、早急な更新が推奨されますわ。</li>
+</ul>
+
+<h3>Ubiquiti「UniFi OS」などに脆弱性22件 - 21件が「クリティカル」 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>UniFi OS / UniFi Protect / UniFi Talk ほか</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-77550（UniFi OS 認証回避）/ CVE-2026-77537（Protect コマンドインジェクション）/ CVE-2026-77554（Talk コマンドインジェクション）ほか計22件</td></tr>
+  <tr><th>CVSS</th><td>3件が CVSSv3.1 10.0（認証なしでネットワーク経由の悪用が可能）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189538" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / Ubiquiti Security Advisory Bulletin 067（2026年8月26日公開）</td></tr>
+</table>
+<ul>
+  <li>CVEベース22件のうち21件がCritical。ネットワーク機器の管理プレーンに関わるため、導入環境では優先的な更新を推奨しますわ。</li>
+</ul>
+
+<h3>SOY CMSにデシリアライゼーション等の脆弱性5件 - 任意コード実行のおそれ <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>SOY CMS / SOY Calendar / SOY Gallery（齋藤 毅氏提供）</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-78032（デシリアライゼーション、CVSS3.0 9.8）ほかXSS 3件（CVE-2026-73827 / 77838 / 78238）</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN04485476/index.html" target="_blank" rel="noopener noreferrer">JVN#04485476（2026年8月28日公開）</a></td></tr>
+</table>
+<ul>
+  <li>第三者によりウェブサーバの権限で任意コード実行される可能性。悪用未確認。開発者による修正版の公開を待つ必要があり、公開に向けた対応を検討することが案内されていますわ。</li>
+</ul>
+
+<h3>Zabbix agentにDLL読み込みに関する脆弱性 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Zabbix agent</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-59781（不適切なファイルアクセス権設定、CVSS3.0 6.7）</td></tr>
+  <tr><th>影響</th><td>不正なDLLを読み込まれ、管理者権限で任意コードを実行される可能性</td></tr>
+  <tr><th>修正</th><td>7.0.24 / 7.4.8</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN42011956/index.html" target="_blank" rel="noopener noreferrer">JVN#42011956（2026年8月28日公開）</a></td></tr>
+</table>
+<ul>
+  <li>監視エージェントを導入しているWindows環境では更新を推奨。悪用未確認ですわ。</li>
+</ul>
+
+<h3>Wiki「GROWI」に認可処理の不備 - 他ユーザーのブックマーク情報が取得・改ざん可能 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>GROWI v8.0.0以前</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-53620（権限チェック回避、CVSS3.0 6.3）/ CVE-2026-68951（認可処理の不備）</td></tr>
+  <tr><th>修正</th><td>v8.0.1</td></tr>
+  <tr><th>情報源</th><td><a href="https://jvn.jp/jp/JVN42348352/index.html" target="_blank" rel="noopener noreferrer">JVN#42348352（2026年8月28日公開）</a></td></tr>
+</table>
+<ul>
+  <li>ログイン・アクセス可能な攻撃者により他のユーザーのブックマーク情報が取得・改ざん・削除される可能性。悪用未確認ですわ。</li>
+</ul>
+
+<h3>Claude Code v2.1.251：権限チェック後のシンボリックリンク差し替え（TOCTOU）など多数のセキュリティ修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Anthropic Claude Code v2.1.251</td></tr>
+  <tr><th>修正内容</th><td>権限チェック後のシンボリックリンク差し替えによる作業ディレクトリ外への読み書き防止、プラグインコマンドのパストラバーサル拒否、ベータトレーシングendpointによるOTLP collector設定迂回の防止、WorkflowツールのscriptPath事前チェック、Grep/Globのシンボリックリンク経由のdenyルール適用、Bash算術式代入の自動承認廃止 等</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.251" target="_blank" rel="noopener noreferrer">GitHub Releases（2026年8月28日18:19 UTC公開、JST 8月29日03:19）</a></td></tr>
+</table>
+<ul>
+  <li>権限チェックとファイルアクセスの間のレース（TOCTOU）を突いた作業ディレクトリ外アクセスや、プラグイン・マーケットプレイス由来のパストラバーサルなど、エージェント実行環境の境界強化が中心。CVE番号の明記なし。</li>
+</ul>
+
+<h3>OpenClaw 2026.9.1-beta.1：監査ログの実行境界での記録・Control UIファイル保護の改善 <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>OpenClaw 2026.9.1-beta.1</td></tr>
+  <tr><th>変更内容</th><td>汎用ツールアクションの監査判断を権威ある実行境界で記録（運用者の診断性向上）、Control UIのエージェントファイル保存における競合時の確認済み保存保持、Gateway再起動をまたぐ実行復旧の改善 等</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.1-beta.1" target="_blank" rel="noopener noreferrer">GitHub Releases（2026年8月28日20:43 UTC公開、JST 8月29日05:43）</a></td></tr>
+</table>
+<ul>
+  <li>セキュリティ修正の直接的な記載はないものの、監査証跡とファイル整合性の改善はエージェント運用の安全性に関わる変更。CVE番号の明記なし。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">その他のスタック（web / Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Hermes Agent）に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>チューリッヒ保険会社：ドライブレコーダーデータ用アップロードシステム「Z-Dash」への不正アクセスで顧客最大1,668人分の情報流出の可能性</h3>
+<table class="cve-table">
+  <tr><th>発生日</th><td>2026年4月1日・4月6日（不正アクセス）</td></tr>
+  <tr><th>公表</th><td>2026年8月18日に脆弱性判明、調査の結果8月27日時点で流出可能性を確認（8月28日報道）</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.security-next.com/189532" target="_blank" rel="noopener noreferrer">Security NEXT（2026/08/28）</a> / チューリッヒ保険会社</td></tr>
+</table>
+<ul>
+  <li>社内調査でドライブレコーダーのデータアップロード用システム「Z-Dash」の脆弱性が判明し、アクセス状況を調査したところ4月1日・6日に不正アクセスを受けたことが判明。</li>
+  <li>流出の可能性があるのは、同システムへデータをアップロードした顧客最大1,668人の氏名・メールアドレスと、損害調査業務の事案管理番号。映像は含まれないとしていますわ。</li>
+  <li>同社はシステムを停止し詳細を調査中。対象顧客には判明次第書面で通知する予定ですわ。</li>
+</ul>
+
+<h3>ハンズホールディングス（ハンズ）にランサムウェア攻撃、従業員等のマイナンバーが閲覧されたおそれ</h3>
+<table class="cve-table">
+  <tr><th>公表</th><td>2026年8月25日（6月22日の公表に続く進展）、8月28日報道</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/28/56066.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/08/28）</a></td></tr>
+</table>
+<ul>
+  <li>国内大手生活雑貨チェーン「ハンズ」を運営するハンズホールディングスへのランサムウェア攻撃で、従業員等のマイナンバーが閲覧されたおそれがあることを公表。</li>
+  <li>6月22日に同社システムへの不正アクセスを公表済みで、今回の公表はその後の調査結果による進展ですわ。</li>
+</ul>
+
+<h3>大手ECパッケージ「ショップサーブ」に不正アクセス、不正プログラムで購入者情報を外部送信したおそれ</h3>
+<table class="cve-table">
+  <tr><th>公表</th><td>2026年8月28日報道（ScanNetSecurity）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/28/56060.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/08/28）</a></td></tr>
+</table>
+<ul>
+  <li>多数のネットショップが利用するEC構築プラットフォーム「ショップサーブ」への不正アクセスで、不正なプログラムを実行して購入者情報が外部に送信されたおそれ。</li>
+  <li>多数のネットショップに影響が及ぶ可能性があり、加盟店・購入者への波及リスクが大きい事案ですわ。続報に注意が必要ですわ。</li>
+</ul>
+
+<h3>日本大学法学部：教職員を標的とした巧妙なフィッシングメールでアカウント乗っ取り、3,177件の不審メールを送信</h3>
+<table class="cve-table">
+  <tr><th>公表</th><td>2026年8月28日報道（ScanNetSecurity）</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/28/56067.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/08/28）</a></td></tr>
+</table>
+<ul>
+  <li>教職員を標的とした巧妙に偽装されたフィッシングメールによりメールアカウントが乗っ取られ、3,177件の不審メールの送信に利用された事案。</li>
+  <li>標的型攻撃の踏み台化が教育機関でも継続して発生しており、多要素認証・フィッシング対策の徹底が求められますわ。</li>
+</ul>
+
+<h3>札幌市豊平区土木部：庁内使用限定の住宅地図データを使った位置図を誤って公開、個人宅の氏名等が漏えい</h3>
+<table class="cve-table">
+  <tr><th>発生日</th><td>2025年11月18日〜2026年5月28日（掲載期間）</td></tr>
+  <tr><th>公表</th><td>2026年8月7日、8月28日報道</td></tr>
+  <tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/08/28/56065.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/08/28）</a> / <a href="https://www.city.sapporo.jp/toyohira/public_works_center/r8-7oshirase.html" target="_blank" rel="noopener noreferrer">札幌市豊平区のお知らせ</a></td></tr>
+</table>
+<ul>
+  <li>「冬期間の通行禁止についてのお知らせ」ページの更新時に、誤って庁内使用に限定している住宅地図データを用いた位置図へ変更。約6か月間、個人宅の氏名及び名字が含まれた状態で公開されていましたわ。</li>
+  <li>更新作業手順の見直し等の再発防止策が示されていますわ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
