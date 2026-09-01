@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-01 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-01 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.252</h2>
+<p>対象期間内に v2.1.252 がリリースされました（2026-09-01 04:53 JST）。今回はバグ修正中心のリリースです。なお、前回大きな変更を含んだ v2.1.251（2026-08-29 公開）の内容も併せて掲載します。</p>
+<h3>🐛 v2.1.252 の主な修正</h3>
+<ul>
+  <li><strong>Mac での Bash コマンド失敗</strong>: 「task output swap refused (tasks dir moved or linked)」エラーで Bash コマンドが失敗する問題を修正</li>
+  <li><strong>「always allow」が保存されない</strong>: まだ <code>.claude/settings.local.json</code> が存在しないプロジェクトで許可設定が保存されない問題を修正</li>
+  <li><strong>Remote Control のスタール</strong>: Claude Desktop / VS Code ホストの Remote Control セッションで、claude.ai への接続が不安定な場合にツール完了後数分間停止する問題を修正</li>
+  <li><strong>巨大な失敗出力</strong>: ディスクフル時の git エラーなど非常に大きいバックグラウンドタスクの失敗出力が API リクエストサイズ上限を超える問題を修正</li>
+</ul>
+<h3>🔧 参考: v2.1.251 の新機能（前回リリース）</h3>
+<ul>
+  <li><strong>PreModelSwitch / PostModelSwitch フック</strong>: モデル切り替えをブロック・確認・注釈できる新しいフックイベントを追加。SessionStart resume フックはセッションの陳腐化情報と再キャッシュ推定コストを受け取るように</li>
+  <li><strong>フォアグラウンド subagent のライブストリーミング</strong>: 実行中のサブエージェントのツール呼び出しと結果を Remote Control クライアントへリアルタイム表示</li>
+  <li><strong>/usage に Spend limit バー</strong>: Claude apps gateway の利用上限額を可視化。status line に <code>rate_limits.spend_limit</code> フィールドも追加</li>
+  <li><strong>/cost にセッション別プロンプトキャッシュ行</strong>: ヒット率・ミス・再キャッシュトークン・warm/cold を表示</li>
+  <li><strong>セキュリティ修正が多数</strong>: シンボリックリンク経由での権限チェック後のファイル読み書き逸脱、プラグインコマンドのパストラバーサル、詳細ベータトレースの有効化回避、Grep/Glob の deny ルール回避などを修正</li>
+  <li><strong>デフォルトモデル変更</strong>: シートベースの Enterprise サブスクリプションのデフォルトモデルを Opus 5 に変更。/effort はモデルごとにデフォルト effort レベルを保存するように</li>
+  <li><strong>サイズ削減</strong>: ネイティブバイナリを約 5 MB 縮小、使用頻度の低い 6 言語のシンタックスハイライトを削除してさらに 2.5 MB 縮小</li>
+  <li><strong>その他</strong>: /radio を Bedrock/Vertex/Foundry 等で利用可能に、Claude in Chrome の操作を常に Claude Code の権限チェック経由に変更、非 Claude モデル利用時のコミットトレーラーを <code>Co-Authored-By: Claude Code</code> に変更など</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent — v2026.8.31 (v0.21.0 「The Pantheon Release」)</h2>
+<p>2026-09-01 04:29 JST にメジャーリリース v0.21.0 が公開されました。v0.20.0 以来 約5,800コミット・約2,475 PR・約2,100 issues クローズという大規模リリースで、「神々の集結」をテーマに Bot Mode を中心とした多剤的なアップデートです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Bot Mode 内蔵</strong>: デスクトップアプリに Bot Mode がバンドルされデフォルト有効化。各エージェントプロファイルに名前とアバター顔が付き、複数のボットと人間が同じチャットルームで会話できる Discord 風グループチャットを実現</li>
+  <li><strong>hermes peer — ボット間 DM</strong>: プロファイルや gateway を越えて、エージェント同士がハンドル名でメッセージを送受信可能。返信は各エージェントの Bot Chat に永続化され検査可能</li>
+  <li><strong>記憶する Cron ジョブ</strong>: cron エージェントが永続メモリを読み書きし、<code>continuity=true</code> で前回実行の出力を次回に引き継ぎ。各ジョブに永続メモパッド、変化なしなら LLM をスキップする monitor モード、cron 出力を Bot Chat に配信</li>
+  <li><strong>サブエージェントのライブ操縦</strong>: 実行中のサブエージェントを中断せず途中で指示変更・軌道修正が可能に</li>
+  <li><strong>MCP コマンドセンター化</strong>: MCP サーバ管理面が大幅強化</li>
+  <li><strong>デスクトップブラウザの自動運転</strong>: エージェントがデスクトップ自身のブラウザを操作可能に</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.31">Hermes Agent v2026.8.31 Release Notes</a></p>
+
+<h2>🐙 OpenClaw — v2026.8.1</h2>
+<p>2026-08-31 12:30 JST に安定版 v2026.8.1 がリリースされました。大きな機能追加と 2 つの破壊的変更を含みます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>過去会話の検索</strong>: 会話テキストを完全一致で検索し、マッチ箇所周辺を再表示可能に</li>
+  <li><strong>Gateway を越えたセッション</strong>: ペアリングしたデバイスやクラウドワーカーでジョブを実行し、ワークスペースを移動、ウォームなマシンとプロジェクトシードを再利用</li>
+  <li><strong>作業のライブ追跡</strong>: リロードをまたいで永続するセッション進捗カード、サブエージェントの活動と編集蓄積を web / ネイティブチャットで追跡</li>
+  <li><strong>インタラクティブな結果とダッシュボード</strong>: チャット内ウィジェット、セッションダッシュボードへのピン留め、レンダリング結果の画像エクスポート</li>
+  <li><strong>プライベートなクレデンシャル要求</strong>: マスクされたプロンプトでエージェントに認証情報を要求させ、チャットやモデルコンテキストに値を露出させない設計</li>
+  <li><strong>定常作業の一度だけ承認</strong>: 自動化権限を操作単位で付与し、後から検査・失効、ジョブ変更時は再承認を要求</li>
+  <li><strong>リッチな音声・動画</strong>: メディアを会話に添付したまま再生・再読み込み可能、Apple / Android クライアントで動画アップロード対応</li>
+</ul>
+<h3>⚠️ 破壊的変更</h3>
+<ul>
+  <li><strong>OpenProse 移行</strong>: バンドル OpenProse プラグインと <code>/prose</code> コマンドを削除。<code>openclaw doctor --fix</code> で移行</li>
+  <li><strong>OpenAI ルート移行</strong>: <code>codex/*</code> / <code>openai-codex/*</code> モデル参照を <code>openai/*</code> へ移行（<code>openclaw doctor --fix</code> 使用）</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.8.1">OpenClaw v2026.8.1 Release Notes</a></p>
+
+<h2>🐋 Orca — v1.4.193</h2>
+<p>2026-08-31 15:42 JST に v1.4.193 がリリースされました（Android モバイル版 v0.0.47 も 2026-09-01 05:31 JST にプレリリース）。</p>
+<h3>🔧 主な変更</h3>
+<ul>
+  <li><strong>信頼性向上</strong>: ローカル・リモート・SSH 接続をまたいだエージェントセッション、ネイティブチャット、ターミナル復旧、ワークスペース状態の信頼性を改善</li>
+  <li><strong>エディタ性能</strong>: キー入力のたびに全コードブロックを再レンダリングする問題を解消</li>
+  <li><strong>韓国語ローカライズ</strong>: オンボーディングと Agent Dashboard を韓国語対応</li>
+  <li><strong>修正多数</strong>: 切断済みホストの誤表示、Windows デーモンのライブネス検証、GitLab MR 管理メニュー、session-tab の変更消失、draft review の ready/close アクション表示など</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.193">Orca v1.4.193 Release Notes</a></p>
+
+<h2>⚡ Next.js — v16.3.4 / v15.5.25</h2>
+<p>対象期間内に安定版 2 本がリリースされました（2026-09-01 05:02 JST）。</p>
+<ul>
+  <li><strong>v16.3.4</strong>: v16.3.3 で一時停止されていた AVIF 画像最適化を再有効化するフォローアップリリース。backport 修正として testmode の passthrough fetch 無限再帰修正、TypeScript を <code>@typescript/typescript6</code> にエイリアスした際のビルドエラー修正、Turbopack マニフェストの crossOrigin 未設定修正を含む</li>
+  <li><strong>v15.5.25</strong>: 新しい <code>sharp</code> がインストールされている環境で AVIF 画像最適化を再有効化するフォローアップリリース</li>
+  <li>このほか canary として <strong>v16.4.0-canary.13</strong> も公開</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.4">Next.js v16.3.4 Release Notes</a></p>
+
+<p class="empty-notice"><strong>React</strong>（対象期間内の新規リリースなし）、<strong>Python / Django / Java / Spring Boot / Hono / Claude API/SDK</strong>、<strong>AWS / Azure / GCP</strong>（過去24時間内の主要な公式アップデート・アナウンスは確認されず）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
