@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>📄 PaperCut NG/MFに深刻な脆弱性2件（CVE-2026-82078 / CVE-2026-81578）− 悪用も確認 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-82078 / CVE-2026-81578</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.4（Critical）/ 8.8（High）</td></tr>
+<tr><th>影響</th><td>印刷管理ソフト PaperCut NG/MF</td></tr>
+<tr><th>修正</th><td>緊急パッチ公開済み</td></tr>
+<tr><th>公開</th><td>アドバイザリ 2026-08-27、国内報道 2026-09-01（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>Web管理インタフェースのアクセス制御不備（CVE-2026-81578）により、認証なしに一部のシステム設定を変更されるおそれ。</li>
+<li>データベース接続処理の安全でない動的クラスロード（CVE-2026-82078）により、任意のJavaバイトコードをサーバープロセス権限で実行される可能性。</li>
+<li>PaperCut Softwareが8月27日にアドバイザリ公開後、緊急パッチで2件に対応。利用者環境での侵害が確認されているため、早期適用が推奨されますわ。</li>
+</ul>
+
+<h3>📄 Dell「PowerStore」アドバイザリ更新 − CVE-2026-79687（認証欠如、CVSS 9.0）等を修正対象に追加 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-79687 / CVE-2026-58566</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.0（High）/ 8.8</td></tr>
+<tr><th>影響</th><td>Dell PowerStore（SDNAS）</td></tr>
+<tr><th>修正</th><td>PowerStoreT OS 4.3.1.2 / 4.1.0.6</td></tr>
+<tr><th>公開</th><td>アドバイザリ更新 2026-08-31、国内報道 2026-09-01（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>SDNASの重要な機能における認証欠如（CVE-2026-79687）で、リモートから認証なしにファイルシステムへアクセスされるおそれ。</li>
+<li>認可不備による権限昇格（CVE-2026-58566）も修正対象に追加。アップデート対象バージョンが拡大されています。</li>
+</ul>
+
+<h3>📄 JALデジタル「PALLET CONTROL」にSYSTEM権限で任意コード実行につながる脆弱性（CVE-2026-81302） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-81302</td></tr>
+<tr><th>深刻度</th><td>CVSS4.0 8.5 / CVSS3.0 7.8</td></tr>
+<tr><th>影響</th><td>PALLET CONTROL Ver.6.3パッチ5以前 / PalletControl 10 Update 8以前（クラウド含む）</td></tr>
+<tr><th>修正</th><td>Ver.6.3パッチ6 / PalletControl 10 Update 9</td></tr>
+<tr><th>公開</th><td>JVN#84094853 2026-09-01 12:00 JST</td></tr>
+</table>
+<ul>
+<li>サービスプログラムとの通信におけるアクセス制御不備（CWE-276）で、当該端末にログインした一般ユーザーによりSYSTEM権限で任意コードを実行される可能性。</li>
+<li>悪用は未確認。該当バージョン利用者は修正版への更新が推奨されますわ。</li>
+</ul>
+
+<h3>📄 Hermes Agent v0.21.0「Pantheon Release」公開 − セキュリティハードニングを多数含む <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Hermes Agent v0.21.0（v2026.8.31）</td></tr>
+<tr><th>種別</th><td>メジャーリリース（セキュリティハードニング含む）</td></tr>
+<tr><th>公開</th><td>2026-08-31（GitHub Releases）</td></tr>
+</table>
+<ul>
+<li>保護対象のエージェント指示ファイル（AGENTS.md、skills、memoryストア）の書き込みが常に承認必須となり、プロンプトインジェクションを受けたエージェントが自身の常設指示を黙って書き換えられないよう強化。</li>
+<li>ターミナルエラー、.env読み取り、チェックポイント、ACPログ横断のシークレット漏えい経路を塞ぐ大規模なレダクション（マスキング）改善。</li>
+<li>承認システムにWindowsの破壊的コマンド判定を追加。macOSの権限付与が安定したTCC署名IDによりアップデート後も維持されるように。CVE番号の明記なし。</li>
+</ul>
+
+<h3>📄 OpenClaw / その他スタック <span class="badge-low">Info</span></h3>
+<p class="empty-notice">OpenClawは直近の安定版（2026.8.2）のセキュリティ関連修正（Sharp/libheif画像デコード脆弱性対応、ワークスペース権限適用の修正、MCP応答サイズ制限等）を前報までに確認済みで、本対象期間での新規リリース・新規アドバイザリは確認されませんでした。その他（web/Next.js/Java/Python/Django/Hono/GCP/AWS/Azure/React/SpringBoot/Claude）も直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>🛒 まんだらけ：通販サイトへの不正アクセスで注文者の個人情報が漏えいした可能性 − 通販・オークション停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>まんだらけ（中古書籍・玩具チェーン）</td></tr>
+<tr><th>発生</th><td>2026-09-01 公表</td></tr>
+<tr><th>影響</th><td>注文者の個人情報が漏えいした可能性</td></tr>
+<tr><th>対応</th><td>通販・オークション受付停止、「大オークション大会」延期</td></tr>
+</table>
+<ul>
+<li>通販サイトへの不正アクセスにより、注文者の個人情報が漏えいした可能性。</li>
+<li>クレジットカード情報・パスワードは対象外としているが、通販・オークションの受付を停止し、恒例の「大オークション大会」も延期しています。</li>
+<li>2026年9月1日公表（ITmedia 14:25 JST報道）。</li>
+</ul>
+
+<h3>🏗️ いさぼうネット（五大開発）：不正アクセスで会員情報が外部から閲覧・取得された可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>いさぼうネット事務局（五大開発株式会社）</td></tr>
+<tr><th>発生</th><td>2026-01-26 不正アクセス確認、2026-07-27 漏えい可能性判明</td></tr>
+<tr><th>影響</th><td>会員の氏名・メールアドレス・パスワード・会社名・住所・電話番号</td></tr>
+<tr><th>報道</th><td>2026-09-01（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+<li>土木情報サービス「いさぼうネット」のサーバーへの不正アクセスを1月26日に確認。専門機関の調査の結果、7月27日に個人情報が外部から閲覧または取得された可能性が判明。</li>
+<li>対象サーバーの停止・隔離、新環境への移行を完了。利用者にはパスワードの変更・再設定を呼びかけ。</li>
+</ul>
+
+<h3>🌸 ホワイトエッセンス：予約サイト・基幹システムへの不正アクセスでオンライン予約を一時停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ホワイトエッセンス株式会社</td></tr>
+<tr><th>発生</th><td>2026-08-05 判明、2026-08-12 公表</td></tr>
+<tr><th>影響</th><td>顧客の登録情報（氏名・連絡先・予約履歴等、項目は調査中）</td></tr>
+<tr><th>報道</th><td>2026-09-01（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+<li>予約サイトおよび基幹システムへの第三者からの不正アクセスとセキュリティ上のリスクが判明し、システムを一時停止。</li>
+<li>Webサイト・アプリからの新規予約、予約の確認・変更・キャンセル機能を一時停止中。外部専門機関のもと侵入経路の封鎖と脆弱性修復を進めています。</li>
+</ul>
+
+<h3>⚙️ サンコーテクノ：ベトナム子会社（SANKO FASTEM (VIETNAM)）でランサムウェア被害</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>サンコーテクノ株式会社（子会社SANKO FASTEM (VIETNAM) LTD.）</td></tr>
+<tr><th>発生</th><td>2026-08-25 暗号化確認、2026-08-28 公表</td></tr>
+<tr><th>影響</th><td>一部サーバーおよびPC内ファイルの暗号化</td></tr>
+<tr><th>報道</th><td>2026-09-01（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+<li>子会社のサーバー・PC内ファイルの暗号化を確認し、ランサムウェア被害と判明。全サーバーの外部通信遮断、侵害疑い機器の運用停止を実施。</li>
+<li>子会社のネットワークはグループ各社から遮断済みで、他グループ各社への影響は未確認。ベトナム当局へ報告し調査・復旧対応中。</li>
+</ul>
+
+<h3>📁 PMDA（医薬品医療機器総合機構）：業務用USBメモリ紛失 − 非開示情報と個人情報286人分が保存されていた可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>独立行政法人医薬品医療機器総合機構（PMDA）</td></tr>
+<tr><th>発生</th><td>2026-04-16 紛失判明、2026-08-07 公表</td></tr>
+<tr><th>影響</th><td>審査報告書等の非開示情報、企業・担当者の個人情報286人分</td></tr>
+<tr><th>報道</th><td>2026-09-01（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+<li>職員が業務で使用していたUSBメモリ1個を紛失。捜索・遺失物届を提出したが未発見。</li>
+<li>学会講演資料の参照用資料に審査報告書3品目分、承認書2品目分等の非開示情報と個人情報286人分が含まれていた可能性。</li>
+<li>メモリはパスワード型で誤入力時にロックされるため第三者による不正閲覧の可能性は低いと説明。今後はパスワード型USBメモリの使用を禁止し再発防止を徹底。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
