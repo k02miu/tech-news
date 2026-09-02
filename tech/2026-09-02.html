@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-02 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-02 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.257 / v2.1.258</h2>
+<p>対象期間内に2つのリリースがありました。<strong>v2.1.257</strong>（JST 9/2 03:00）は大型リリースで、新モデル追加と自動モードのセキュリティ強化が目玉です。<strong>v2.1.258</strong>（JST 9/2 07:39）は続報の修正リリースですわ。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Fable 5.1 追加（v2.1.257）</strong>: <code>claude-fable-5-1</code> が新たなデフォルト Fable モデルに。1M コンテキスト、$10/$50 per Mtok、キャッシュ読み取り $0.25/Mtok。</li>
+  <li><strong>時刻フォーマット設定</strong>: <code>timeFormat</code> と <code>timeZone</code> 設定を追加。12時間/24時間/24時間UTC/strftime パターンに対応し、ターン終了時刻やトランスクリプト表示に反映。</li>
+  <li><strong>自動モードに Containment Escape ルール</strong>: クラウドメタデータ認証情報の取得、エグレス回避、クロステナント到達を、環境が「想定内」と明示しない限り自動承認しないよう変更。</li>
+  <li><strong><code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE</code></strong>: すべてのサブエージェントにメインモデル（または指定モデル）を強制適用できる環境変数。</li>
+  <li><strong><code>/effort</code> に <code>s</code> オプション</strong>: 現在のセッションのみ effort を変更可能に（<code>/model</code> と同様）。</li>
+  <li><strong>作業ディレクトリ外の読み取りで確認プロンプト</strong>: 自動モードで初回にワーキングディレクトリ外のファイルを読む前に確認を表示。ブロック設定（<code>permissions.blockReadsOutsideWorkingDirectories</code>）も追加。</li>
+  <li><strong>ゲートウェイモデル説明の表示対応</strong>: <code>/model</code> ピッカーでゲートウェイ提供の <code>description</code> を表示可能に。</li>
+  <li><strong>レンダリング性能改善</strong>: 長時間会話でのターン毎の再レンダリング削減、ストリーミングが応答の増大に伴って遅くならないよう改善、入力のキーストローク毎の処理も軽量化。</li>
+  <li><strong>サブエージェントの自動継続</strong>: スリープ・接続切断・サーバーエラーで応答が途切れても、完了ではなく自動的に続行するように。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>macOS 12 (Monterey) で起動に失敗する 2.1.255 由来のリグレッションを修正（v2.1.258）。</li>
+  <li>リモート・スケジュールセッションで「user messages must have non-empty content」エラーが出る問題を修正（v2.1.258）。</li>
+  <li>シンボリックリンク経由でプラグインが自身のディレクトリ外のファイルを読めるセキュリティ問題を修正（拒否してエラー表示）。</li>
+  <li>複合コマンド・サブシェル内で <code>permissions.ask</code> ルールがスキップされ確認なしで実行される問題を修正。</li>
+  <li>Bedrock / Bedrock Mantle の長時間 thinking 中にリクエストが無音になりアイドルタイムアウトで切断される問題を修正。</li>
+  <li>大量画像を含む長時間セッションで毎ターンプロンプトキャッシュミスが起きる問題を修正。</li>
+  <li>スクリーンショット多用セッションのトークンカウンター凍結、<code>claude --bg</code> の削除済みディレクトリでの挙動、バックグラウンドセッションの各種不具合など多数修正。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内（9/1 09:00 〜 9/2 09:00 JST）に新規リリースは確認されませんでした。最新バージョンは v2026.8.31（8/31 JST リリース）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.8.2</h2>
+<p>9/2 JST 01:00 に v2026.8.2 がリリースされましたわ。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Home エージェントを作業の隣に</strong>: <code>Cmd/Ctrl+Shift+H</code> で Home を右または下のドックで開き、作業コンテキストのスナップショット確認・削除や選択テキストの添付が可能に。</li>
+  <li><strong>Linux デスクトップ対応</strong>: x86-64 Linux 向け <code>.deb</code> / AppImage を提供。ローカル・リモート Gateway へ接続し、システムトレイや X11 ショートカットから Quick Chat を起動可能。AppImage 更新は署名検証付き。</li>
+  <li><strong>New Session からバックグラウンドセッション作成・実行</strong>: ローカル/クラウド/ペアリングデバイスの配置を保持し、完了通知から開けるように。</li>
+  <li><strong>より安全なアップグレード</strong>: 新しい設定の保持、不完全なセッションマイグレーションの中断、更新失敗後の Gateway 復旧を改善。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>ツール実行後や最初の応答で会話が止まる問題を修正（確定したツール結果の後に最終回答を返すように）。</li>
+  <li>音声の信頼性改善: 内部推論を音声に含めない、ツール生成音声の配信維持、通話セットアップ後の Talk ターン継続などを修正。</li>
+  <li>Gateway が稼働していない状態でも対応する Chrome 拡張ビルドからブラウザ制御を起動可能に。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.8.2">OpenClaw v2026.8.2</a></p>
+
+<h2>🐋 Orca — v1.4.194</h2>
+<p>9/1 JST 13:51 に v1.4.194 がリリースされました。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>パフォーマンス改善</strong>: Markdown（検索更新のスキップ、リストトークナイザースキャンのスキップ、シンタックスハイライトのインクリメンタル更新・キャッシュ）、worktree（ウォッチャー対象の並列解決）、エディタ・レンダラーの性能向上。リッチ Markdown のサイズ上限を 600 KB に引き上げ。</li>
+  <li><strong>信頼性向上</strong>: エージェントセッション、ネイティブチャット、リモート/SSH 接続、Windows/WSL ワークフローの安定性改善。</li>
+  <li><strong>UI / workspaces</strong>: worktree パレットのレイアウト改善（flex-1 タイトル、ヒント行のキーボード操作対応）、オートメーション履歴の回復 UX 改善。</li>
+  <li><strong>その他</strong>: ブラウザ、オートメーション、モバイル、オンボーディング、クロスプラットフォーム基盤の改善。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.194">Orca v1.4.194</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>9/2 JST 08:42 に <strong>v16.4.0-canary.14</strong> が公開されました。安定版リリースの対象期間内の新着はありません（最新の安定版は v16.3.4、8/31 公開）。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>（週次更新の対象期間外）、<strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
