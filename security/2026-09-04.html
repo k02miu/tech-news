@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-04 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-04 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-03 08:00 〜 2026-09-04 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>CISA KEVにSonicWall / JFrog関連の既知脆弱性7件を追加、うち5件は対応期限3日 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-83548 / CVE-2026-83549（SonicWall SMA1000）、CVE-2026-82329（JFrog Artifactory）、CVE-2026-49869（Kestra OSS）ほか7件</td></tr>
+<tr><th>深刻度</th><td>Critical〜High（実攻撃での悪用確認）</td></tr>
+<tr><th>公開日</th><td>2026年9月2日（CISA）/ 2026年9月3日国内報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189777" target="_blank" rel="noopener noreferrer">Security NEXT</a> / <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV</a></td></tr>
+</table>
+<ul>
+<li>CISAが9月2日、実攻撃での悪用が確認された7件の脆弱性をKEVカタログへ追加。うち5件は米行政機関の対応期限を現地9月5日と指定し、侵害調査の実施なども求めている。</li>
+<li>SonicWall SMA1000のSSRF脆弱性CVE-2026-83548は認証なしで保護された機能へアクセス可能。CVE-2026-83549は管理者権限でOSコマンド実行のおそれ。前日に悪用事例が報じられた製品と同一系列。</li>
+<li>JFrog Artifactoryの認証処理の問題（CVE-2026-82329）ではリモートから管理者権限が取得されるおそれ。ワークフロー自動化基盤Kestra OSSのOSコマンドインジェクション（CVE-2026-49869）も追加。</li>
+</ul>
+
+<hr>
+
+<h3>Cisco IOS XRにセキュリティアップデート - Critical 2件を含む多数の脆弱性に対処 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-20274 / CVE-2026-20279（CVSS 9.8）、CVE-2026-20278 / CVE-2026-20275 / CVE-2026-20280（8.8）、CVE-2026-20276（8.6）、CVE-2026-20277（8.2）</td></tr>
+<tr><th>影響</th><td>特定の設定に依存せず全リリースが影響</td></tr>
+<tr><th>公開日</th><td>2026年9月2日（Cisco）/ 2026年9月3日国内報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189782" target="_blank" rel="noopener noreferrer">Security NEXT</a> / <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-hardening-iosxr-qg64NcM" target="_blank" rel="noopener noreferrer">Cisco</a></td></tr>
+</table>
+<ul>
+<li>Ciscoが同社内部調査で発見した脆弱性を7カテゴリに分類し、CVE番号を割り当てて公表。バッファオーバーフロー・メモリ範囲外読み書き（CVE-2026-20274）、アクセス制御不備（CVE-2026-20279）がCVSS 9.8のCritical。</li>
+<li>悪用は公表時点で未確認。修正SMUをリリース済みで、修正版「26.3.1」「26.2.2」も順次リリース予定。ネットワーク機器運用者は早急な適用が望まれますわ。</li>
+</ul>
+
+<hr>
+
+<h3>NGINX JavaScript（njs）に複数の脆弱性 - 修正版1.0.1を公開 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-78689（CVSSv3.1 8.1）、CVE-2026-18329（8.2）、CVE-2026-78222（7.5）</td></tr>
+<tr><th>深刻度</th><td>major / medium / medium（開発者評価）</td></tr>
+<tr><th>公開日</th><td>2026年9月2日（F5）/ 2026年9月3日国内報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189805" target="_blank" rel="noopener noreferrer">Security NEXT</a> / <a href="https://nginx.org/" target="_blank" rel="noopener noreferrer">NGINX</a></td></tr>
+</table>
+<ul>
+<li>CVE-2026-78689はXMLモジュールでのヒープ領域外書き込み。細工データ処理でワーカークラッシュ・メモリリークのおそれがあり、公式SAMLリファレンス実装の署名検証処理も影響。</li>
+<li>CVE-2026-18329は「js_access」のアクセス制御バイパス。リクエストボディ非同期処理時にエラーが発生しても保護リソースへアクセス可能になる。修正版1.0.1を公開、一部脆弱性には設定による緩和策もアナウンス。</li>
+</ul>
+
+<hr>
+
+<h3>NVIDIA Megatron Bridgeに30件の脆弱性 - いずれもHigh <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-61750 〜 CVE-2026-61779（30件）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 7.8（High）×30</td></tr>
+<tr><th>公開日</th><td>2026年9月1日（NVIDIAアドバイザリ）/ 2026年9月3日国内報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189796" target="_blank" rel="noopener noreferrer">Security NEXT</a> / <a href="https://www.nvidia.com/" target="_blank" rel="noopener noreferrer">NVIDIA</a></td></tr>
+</table>
+<ul>
+<li>機械学習プラットフォーム向けコンポーネント「Megatron Bridge」で、信頼できないデータのデシリアライズに関する脆弱性30件。悪用されるとローカルでのコード実行、データ改ざん、情報漏洩につながるおそれ。</li>
+<li>修正版0.5.1をGitHubで公開済み。利用者は最新版へのアップデートが強く推奨されていますわ。</li>
+</ul>
+
+<hr>
+
+<h3>Linuxカーネル algif_aead の権限昇格脆弱性（Copy Fail / CVE-2026-31431）- エクスプロイト公開済み <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-31431</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 7.8（High）</td></tr>
+<tr><th>公開日</th><td>2026年4月公表 / 2026年9月3日国内報道（Scan Tech Report）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/03/56120.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（Scan Tech Report）</a></td></tr>
+</table>
+<ul>
+<li>暗号化APIのAEAD処理（authencesnテンプレート＋splice関数）のメモリ処理不備により、カーネルメモリ上にキャッシュされたSUIDファイルのデータを上書きでき、root権限で任意コード実行が可能。</li>
+<li>影響はカーネル4.14〜6.19系など広範。エクスプロイトコードがGitHubで公開済み。対策はカーネル更新。更新が難しい場合は algif_aead モジュールの無効化で低減可能。</li>
+</ul>
+
+<hr>
+
+<h3>OpenClaw 2026.9.1リリース - Gateway安定化と承認フロー堅牢化 <span class="badge-medium">Info</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>OpenClaw v2026.9.1</td></tr>
+<tr><th>公開日</th><td>2026年9月3日 18:31 UTC（GitHub Releases）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.1" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>直近betaリリースでの「2026.8.1-beta.2」に続き、正規版2026.9.1を公開。Gatewayの負荷下での起動復旧、不正なレガシーcron行の隔離（起動ブロック防止）、Windows Gatewayのエージェント再起動後の生存性など安定性向上を含む。</li>
+<li>セキュリティ関連としては、委譲されたシステムエージェントの設定変更・Gateway再起動時の承認カードを元チャンネルへ配信する改善、Codex承認の永続化（MCPツールの"Allow Always"がセッション姿勢に従う）などを含む。CVE番号の明記なし。</li>
+</ul>
+
+<hr>
+
+<h3>Hermes Agent v0.21.0（v2026.8.31）"The Pantheon Release" - cronの記憶継続性・サブエージェント制御強化 <span class="badge-medium">Info</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Hermes Agent v0.21.0</td></tr>
+<tr><th>公開日</th><td>2026年8月31日（GitHub Releases）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.31" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>v0.20.0以来の大型リリース。Bot Mode（複数エージェントのグループチャット）、bot間DM「hermes peer」、実行中サブエージェントのライブ制御、MCP管理画面統合などの新機能。</li>
+<li>セキュリティ運用に関連する点として、MCPサーバーのバックグラウンドヘルスチェックと再認証リマインダー、`hermes://` ディープリンク経由のMCPインストール時の明示的確認、`model_overrides` によるモデルメタデータの自己修正機能が含まれる。CVE番号の明記なし。</li>
+</ul>
+
+<hr>
+
+<h3>チェックポイント：2026年Q2ランサムウェアレポート - 活動グループ数が過去最多の93に <span class="badge-medium">Report</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>2026年第2四半期ランサムウェア動向</td></tr>
+<tr><th>公開日</th><td>2026年9月3日国内報道（Check Point発表は8月17日）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/03/56114.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>Q2の被害確認件数は2,139件（前年同期比+33%）。活動グループは71から93へ増加し過去最多。Qilinが279件で首位、急拡大のThe Gentlemenは6月にQilinを上回った。</li>
+<li>トップグループ「The Gentlemen」の中核は約9人のオペレーターで、管理者Zeta88がDeepSeek・QwenなどのAIコーディングツールを活用し約3日で管理パネルを構築していたことが判明。攻撃インフラ構築の参入障壁低下が注目点ですわ。</li>
+<li>身代金支払率は2019年の85%から約23%へ低下。攻撃はデータ窃取を主目的とした二重恐喝・恐喝へ移行しており、2025年のランサムウェア関連のブロックチェーン上の支払総額は8億2,000万ドル超。</li>
+</ul>
+
+<!-- 📊 トレンドインシデント セクション -->
+<hr>
+<h2>📊 トレンドインシデント</h2>
+
+<h3>札幌市：通行禁止告知ページに個人情報を含む住民地図を誤掲載（のべ259件）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>札幌市（豊平区土木部）</td></tr>
+<tr><th>内容</th><td>庁内使用限定の住宅地図データを誤ってWeb公開</td></tr>
+<tr><th>期間</th><td>2025年11月18日 〜 2026年5月28日</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189803" target="_blank" rel="noopener noreferrer">Security NEXT（2026/09/03）</a></td></tr>
+</table>
+<ul>
+<li>冬期間の通行禁止ページで、特定4区域の個人宅の氏名・名字のべ259件を含む住宅地図を誤掲載。2025年11月18日のページ更新時に庁内限定データへ誤って変更し、発覚した2026年5月28日まで約6か月間公開されたままだった。</li>
+<li>担当者がデータの使用制限を認識しておらず、過去の更新内容の確認もしていなかったことが原因。同市は公開停止と点検を実施し、公開時の複数名確認を再発防止策としている。</li>
+</ul>
+
+<h3>岐阜県：行政手続210件を放置し届出書など135件（のべ1,881人分の個人情報）を紛失 - 職員を懲戒処分</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>岐阜県（中濃県事務所）</td></tr>
+<tr><th>内容</th><td>行政手続の未処理・書類紛失による個人情報の所在不明</td></tr>
+<tr><th>期間</th><td>2022年8月15日 〜 2025年3月31日</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189474" target="_blank" rel="noopener noreferrer">Security NEXT（2026/09/03）</a></td></tr>
+</table>
+<ul>
+<li>職員が2022年8月から2025年3月までの間、浄化槽設置届出など16種類の行政手続き210件を未処理のまま放置し、届出書など135件（のべ1,881人分の個人情報を含む）を紛失。</li>
+<li>地方公務員法違反として2026年8月26日付けで該当職員を減給の懲戒処分、管理監督者7人も厳重注意とした。</li>
+</ul>
+
+<h3>大阪市のさつき保育園：サイト改ざん - 個人情報流出は否定</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>社会福祉法人北区さつき会（さつき保育園）</td></tr>
+<tr><th>内容</th><td>ウェブサイト改ざん</td></tr>
+<tr><th>発生日</th><td>2026年8月19日</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189794" target="_blank" rel="noopener noreferrer">Security NEXT（2026/09/03）</a></td></tr>
+</table>
+<ul>
+<li>8月19日に保育園サイトのトップページが第三者により改ざんされ、意図しないコンテンツが表示される状態に。全サイトを一時閉鎖し、脆弱性修正・設定見直しのうえ8月25日に再開。</li>
+<li>閲覧によるマルウェア感染のおそれなし、個人情報への影響も否定。監視体制を強化している。</li>
+</ul>
+
+<h3>VOISING（2.5次元アイドル事務所）：BIツールへの不正アクセスで個人情報流出 - 詳細公表 <span class="badge-high">進展</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>VOISING</td></tr>
+<tr><th>発生</th><td>2026年8月10日 01:02 〜 8月17日（データ窃取：8月16日）</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/189031" target="_blank" rel="noopener noreferrer">Security NEXT（2026/09/03）</a></td></tr>
+</table>
+<ul>
+<li>8月10日1時2分ごろからBIツールへの不正アクセスが開始され、8月16日18時47分〜20時21分に保管データがダウンロードされた。同日23時55分に把握し、17日未明にシステム停止・ネットワーク遮断。</li>
+<li>アカウントサービス・ファンコミュニティ・オンラインストア利用者が対象で、氏名・住所・電話番号・生年月日・性別・メールアドレス・購買履歴・決済金額などが流出した可能性。原因の脆弱性修正、パスワード・アクセスキー無効化、警察相談・個人情報保護委員会報告を実施中。</li>
+</ul>
+
+<h3>REXT HD：ランサムウェア被害の続報 - 一部店舗で臨時休業・決済制限が継続 <span class="badge-high">続報</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>REXT Holdings（REXT）</td></tr>
+<tr><th>発生</th><td>2026年8月9日</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/188962" target="_blank" rel="noopener noreferrer">Security NEXT（2026/09/03）</a></td></tr>
+</table>
+<ul>
+<li>8月9日のランサムウェア攻撃により、一部店舗で臨時休業・部分営業・営業時間変更のほか、キャッシュレス決済の利用制限・ポイントサービス休止が発生。ECサイトでも発送遅延・一部サービス停止。</li>
+<li>8月18日時点で直営店118店舗は営業中だが、レジ・決済システムの一部に不具合が残り、来店時の現金準備とレシート保管を呼びかけ。警察・個人情報保護委員会へ報告済みで復旧作業を継続中。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
