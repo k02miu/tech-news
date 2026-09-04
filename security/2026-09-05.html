@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-05 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-05 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-04 08:00 〜 2026-09-05 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Traefikに認証バイパスを含む重大な脆弱性群（CVE-2026-85595ほか） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE ID</th><td>CVE-2026-85595 / CVE-2026-85596 / CVE-2026-85597 / CVE-2026-85594</td></tr>
+<tr><th>CVSS</th><td>9.3 (Critical) / 8.2 / 8.2 / 7.4</td></tr>
+<tr><th>影響</th><td>traefik v2.11.55未満（digestAuthミドルウェアの認証バイパス）、v3.7.0〜3.7.10（Kubernetes Ingress NGINXプロバイダの認証バイパス）、v2.11.55未満（TLSオプション競合解決で認証なしアクセス）、v3.7.1以降（Kubernetes CRDのcrossProviderNamespaces制約未強制）</td></tr>
+<tr><th>情報源</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-85595">NVD</a>（2026-09-04公表分）</td></tr>
+</table>
+<ul>
+<li>リバースプロキシ／ロードバランサ「Traefik」に、認証バイパス3件とKubernetes CRDの名前空間制約未強制を含む脆弱性が公表された。digestAuthミドルウェアの認証バイパス（CVE-2026-85595、CVSS 9.3）は認証なしでアクセスを許すおそれがあり、修正版v2.11.55への更新が要請される。</li>
+</ul>
+
+<h3>fastify / @fastify/middie に複数の脆弱性 — 修正版5.12.2 / 9.3.4を公開 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE ID</th><td>CVE-2026-84469 / CVE-2026-84504 / CVE-2026-76169 / CVE-2026-85184</td></tr>
+<tr><th>CVSS</th><td>7.5 / 8.1 / 7.5 / 9.1 (Critical)</td></tr>
+<tr><th>影響</th><td>fastify 5.12.2未満（ヘッダー名の小文字化で upper-case ヘッダー辞書も通る、Ajv非同期バリデータ結果の取り扱い不備で検証迂回、不正URLが他プラグインプレフィックスへルーティング）。@fastify/middie 9.3.4未満（パススコープミドルウェアのマッチング不備で別経路のミドルウェアが実行される可能性）</td></tr>
+<tr><th>情報源</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-84504">NVD</a>（2026-09-04公表分）</td></tr>
+</table>
+<ul>
+<li>Node.jsフレームワークfastifyと@fastify/middieに複数の脆弱性が公表された。非同期スキーマ検証の結果オブジェクトをそのまま値として扱うことで検証を迂回できる問題（CVE-2026-84504）や、@fastify/middieのパススコープミドルウェア判定不備（CVE-2026-85184、CVSS 9.1）が含まれる。fastify 5.12.2 / @fastify/middie 9.3.4で修正。</li>
+</ul>
+
+<h3>Google Cloud 関連（Integration Connectors / Agent Development Kit）に脆弱性 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE ID</th><td>CVE-2026-4644 / CVE-2026-79707</td></tr>
+<tr><th>CVSS</th><td>8.5 (High) / 8.7 (High)</td></tr>
+<tr><th>影響</th><td>Google Cloud Integration Connectors の HTTP Connector に認可欠如（8.5、旧バージョンが影響）。Google Cloud Agent Development Kit (ADK) の builderエンドポイントにパストラバーサル（8.7）</td></tr>
+<tr><th>情報源</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-79707">NVD</a>（2026-09-04公表分）</td></tr>
+</table>
+<ul>
+<li>GCPを利用する環境では、Integration ConnectorsのHTTP Connector認可欠如とADKのパストラバーサルに注意。該当コンポーネント利用環境はバージョン更新を確認すること。</li>
+</ul>
+
+<h3>PHP/Python エコシステムの脆弱性 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE ID</th><td>CVE-2026-57777 (WordPress) / CVE-2026-85197 (libsoup) / CVE-2026-85626 (git-mcp-server) / CVE-2026-85606 (firecrawl-mcp-server)</td></tr>
+<tr><th>CVSS</th><td>7.6 / 7.6 / 7.5 / 7.5（いずれもHigh）</td></tr>
+<tr><th>影響</th><td>Automattic製WordPressプラグインにSQLインジェクション。libsoupにHTTP/2処理のヒープバッファオーバーフロー（悪意あるサーバ・MITMで悪用可）。git-mcp-server 2.15.1のgit_log ref/object引数に引数インジェクション。firecrawl-mcp-server 3.20.2のfirecrawl_parseツールに任意ローカルファイル読み取り</td></tr>
+<tr><th>情報源</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-85197">NVD</a>（2026-09-04公表分）</td></tr>
+</table>
+<ul>
+<li>開発ツールチェーン（MCPサーバー類）の脆弱性が相次いで公表されている。firecrawl-mcp-serverはセルフホストFirecrawlを運用している環境でも留意が必要。該当パッケージ利用環境は更新を確認すること。</li>
+</ul>
+
+<h3>Claude Code v2.1.260：Bashサンドボックスの権限ルール不備などセキュリティ関連修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Claude Code v2.1.260（2026-09-04 08:48 JST公開）</td></tr>
+<tr><th>種別</th><td>権限・サンドボックス関連の修正（CVE番号の明記なし）</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.260">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>Edit/Write/Read権限ルールのパスに括弧が含まれる場合、Bashサンドボックスで無効扱いされ「read-only」フォルダが書き込み可能になる問題を修正。</li>
+<li>zshのREPORTTIME等の環境変数代入でコマンド置換を隠すコマンドが自動承認される問題を修正（承認プロンプトへ変更）。</li>
+<li>Glob/Grepが権限チェック前に検索パスをディスクへ問い合わせる問題を修正。strictサンドボックスモード中でも`!` bashモードの入力はサンドボックス外で実行される仕様の明確化など。</li>
+</ul>
+
+<hr>
+<h2>📊 トレンドインシデント</h2>
+
+<h3>リンクバル「machicon JAPAN」：システム改修不備で顧客情報取り違え、他顧客の決済手段での購入も発生 <span class="badge-medium">国内</span></h3>
+<table class="cve-table">
+<tr><th>組織名</th><td>株式会社リンクバル（イベントECサイト「machicon JAPAN」）</td></tr>
+<tr><th>初回発生日</th><td>2026-08-04（不具合発生）、8月14日発表、9月4日报道（ScanNetSecurity）</td></tr>
+<tr><th>影響</th><td>約50名分の氏名・電話番号・メールアドレス・年齢・購入履歴・主催者とのメッセージ履歴が他顧客に表示。ログイン状態の取り違えで、他顧客が登録していた決済手段による購入や意図しない退会も発生</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/04/56131.html">ScanNetSecurity（2026-09-04報道）</a></td></tr>
+</table>
+<ul>
+<li>8月4日のシステム改修に不備があり、複数顧客のリクエスト同時処理時に個人情報が取り違えられた。8月8日21時頃まで事象が継続し、取り違えられたログイン情報は無効化済み。原因箇所は改修前の状態へ戻し、再発防止策（自動検査・自動テストの導入）を公表。</li>
+</ul>
+
+<h3>東京都管工事工業協同組合：ウェブサイトがCMS脆弱性を悪用した改ざん被害 <span class="badge-medium">国内</span></h3>
+<table class="cve-table">
+<tr><th>組織名</th><td>東京都管工事工業協同組合</td></tr>
+<tr><th>初回発生日</th><td>2026-09-01（9月1日発表）、9月4日报道（ScanNetSecurity）</td></tr>
+<tr><th>影響</th><td>CMS旧バージョンの脆弱性を突いた不正アクセスでサーバ内に不正プログラムが設置され、JSファイル改ざんによりスマートフォン閲覧時に不審な広告・感染画面へ遷移</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/04/56128.html">ScanNetSecurity（2026-09-04報道）</a></td></tr>
+</table>
+<ul>
+<li>個人情報流出は未確認。復旧済み。CMSのバージョン管理・改ざん検知の重要性を示す事案。</li>
+</ul>
+
+<h3>京都府立医科大学：附属病院実習で学生が患者が写り込んだ映像をSNSに投稿 <span class="badge-medium">国内</span></h3>
+<table class="cve-table">
+<tr><th>組織名</th><td>京都府立医科大学</td></tr>
+<tr><th>発表日</th><td>2026-08-14（大学公表）、9月4日报道（ScanNetSecurity）</td></tr>
+<tr><th>影響</th><td>患者を特定できる情報は映っていなかったと説明。ただしSNS投稿行為自体を医療従事者として極めて不適切と判断し指導・再発防止策を実施</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/04/56130.html">ScanNetSecurity（2026-09-04報道）</a></td></tr>
+</table>
+<ul>
+<li>サイバー攻撃ではなく人的要因による情報管理リスクの事案。医療機関におけるSNS利用ガイドライン整備の必要性が示された。</li>
+</ul>
+
+<hr>
+<h2>🌐 海外トレンド</h2>
+
+<h3>チェックポイント：2026年Q2ランサムウェアレポート — 活動グループ数が過去最多の93に、AI活用で参入障壁が低下 <span class="badge-medium">脅威動向</span></h3>
+<table class="cve-table">
+<tr><th>発表元</th><td>Check Point Research（8月17日発表、9月3日国内報道・ScanNetSecurity）</td></tr>
+<tr><th>概要</th><td>Q2の被害確認2,139件（前年同期比+33%）、活動グループ数は71→93で過去最多。Qilinが279件で4四半期連続首位</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/03/56114.html">ScanNetSecurity（2026-09-03報道）</a></td></tr>
+</table>
+<ul>
+<li>「The Gentlemen」の中核は約9人のオペレーターで、管理者がDeepSeek/Qwen等のAIコーディングツールを活用し約3日間で管理パネルを構築していたことが判明。AI活用により小規模チームでも短期間で大規模なランサムウェア運営が可能になり、参入障壁が劇的に低下している。</li>
+<li>身代金支払率は2019年の85%から約23%へ低下。攻撃はデータ窃取型の「二重恐喝」へ移行し、2025年のブロックチェーン上の関連支払総額は8億2,000万ドル超。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">その他のスタック（Next.js / Java / Python / Django / AWS / Azure / React / SpringBoot / OpenClaw / Hermes Agent）に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。OpenClaw・Hermes AgentのGitHub Releasesには対象期間内の新規リリースはありませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
