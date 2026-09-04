@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-04 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-04 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.260</h2>
+<p>Claude Code v2.1.260 がリリースされました（2026-09-04 08:55 JST 公開、対象期間内）。フルスクリーンモード用の差分パネル、プロンプトキャッシュミスの原因表示、GitLab 対応強化、多数の権限まわりの修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>差分パネル（/diff）</strong>: フルスクリーンモードで会話の横に未コミット変更を表示するパネルを追加。<code>/diff</code> でトグル可能</li>
+  <li><strong>キャッシュミスの原因表示</strong>: <code>/cost</code> とステータスラインの <code>prompt_cache</code> フィールドに、プロンプトキャッシュミスの推定原因（ツール定義・システムプロンプトの変更、TTL 超過のアイドル等）を表示</li>
+  <li><strong>ヘッドレス対応の拡充</strong>: <code>/reload-plugins</code> をヘッドレスセッションへ追加。デスクトップアプリ・SDK のコマンド一覧に表示されるように。また <code>/advisor</code> のテキスト形式（<code>/advisor</code>, <code>/advisor &lt;model&gt;</code>, <code>/advisor off</code>）をデスクトップ・Remote Control・<code>-p</code>/Agent SDK セッション向けに追加</li>
+  <li><strong>1M コンテキストの自動コンパクト改善</strong>: Opus / Fable セッションが 1M トークン上限直前にコンパクトされるように。大規模コンテキストでの復旧コンパクションが 10 分でタイムアウトしなくなった</li>
+  <li><strong>/ultrareview 拡張</strong>: クラウドレビューの待機上限が 30 分から 45 分に延長</li>
+  <li><strong>/effort 改善</strong>: Fable 5.1 でセッション途中に effort を変更してもプロンプトキャッシュが無効化されなくなった</li>
+  <li><strong>パフォーマンス</strong>: 非インタラクティブ（<code>-p</code> / SDK）セッションのアイドル CPU 使用率を改善</li>
+  <li><strong>背景コマンドの時間制限撤廃</strong>: サブエージェントが開始した背景コマンドの 1 時間制限を削除（メインセッションと同様に終了まで実行）</li>
+  <li><strong>VSCode 拡張</strong>: フッターのモデルピルに effort レベルを表示、セッション一覧に Open/Closed フィルタ追加、リトライ後の表示残骸やセッションタブの諸問題を修正</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ関連</strong>: 括弧を含むパスの Edit/Write/Read 権限ルールが Bash サンドボックスに無視され「読み取り専用」フォルダが書き込み可能になる問題を修正。zsh の REPORTTIME 等の代入に隠されたコマンド置換が自動承認される問題も修正</li>
+  <li><strong>2.1.259 のリバート</strong>: Bash 引数への <code>Read()</strong> deny ルール適用変更をリバート（<code>npm run build</code> 等が過剰に拒否される問題）</li>
+  <li><strong>Fable 5.1 関連</strong>: <code>/model</code> ピッカーに Fable 5.1 が表示されない問題、ツール結果後のコンテキストがキャッシュされず毎ターン再送される問題を修正</li>
+  <li><strong>認証・設定</strong>: 企業ルート CA が OS 証明書ストアのみの場合の Bedrock 接続失敗、管理設定が読み込まれない問題、<code>/status</code> の重複クレデンシャル表示を修正</li>
+  <li><strong>GitLab 対応</strong>: ネストしたサブグループのリポジトリ検出を修正。<code>owner/repo#123</code> 形式の参照が GitLab リポジトリ内で github.com にリンクされる問題を修正</li>
+  <li><strong>セッション/エージェント</strong>: <code>/rewind</code> がバックアップ欠落時に成功と報告する問題、リワインド後のファイル読み取りトラッキング残留、バックグラウンドセッションが ListAgents に二重表示される問題、エージェントチームのトランスクリプト欠落などを修正</li>
+  <li><strong>その他</strong>: 絵文字・フラグの折り返し分割、GitLab MR 参照リンク、IDE での行選択がスキル実行時に失われる問題、フルスクリーンの Ctrl+Z 動作などを修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-260">Claude Code Changelog v2.1.260</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内（2026-09-03 09:00 〜 2026-09-04 09:00 JST）に新規リリースは確認されませんでした。最新バージョンは v0.21.0（v2026.8.31、8月31日リリースの「The Pantheon Release」）です。Bot Mode のデスクトップアプリ統合、<code>hermes peer</code> によるエージェント間 DM、cron ジョブの永続メモリ、サブエージェントのライブ操縦、MCP コマンドセンター、デスクトップブラウザ操作などが含まれる大型リリースです。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.9.1</h2>
+<p>openclaw v2026.9.1 がリリースされました（2026-09-04 03:31 JST 公開、対象期間内）。主な内容は以下の通りです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Mermaid 図のレンダリング</strong>: チャット内の Mermaid ブロックが Control UI および macOS / iOS / Android ネイティブアプリで図として表示されるように</li>
+  <li><strong>クイックスタート</strong>: 新規インストール時に既存の Claude Code / Codex ログインや API キーを検出・検証し、Web ダッシュボードまで即到達するセットアップ導線を追加</li>
+  <li><strong>個人スキルライブラリ</strong>: 共有 Gateway 上で個人のスキルをワークスペースとは別に保持・ZIP インポート・共有可能に</li>
+  <li><strong>アップデートの堅牢化</strong>: <code>openclaw update</code> が Doctor 失敗時にロールバック、設定とシークレット参照を保持、内蔵トリアージエージェントに引き継ぎ</li>
+  <li><strong>Gateway の安定性</strong>: 負荷や大規模エージェント群でも起動復旧、壊れた cron 行の隔離、Windows でのエージェント再起動後も Gateway がオンライン維持</li>
+  <li><strong>Codex 承認の永続化</strong>: MCP ツールの「Allow Always」が永続化され、セッションのポスチャーに追従</li>
+  <li><strong>Android アプリの UI 追従</strong>: チャット画面・サイドバー・外観設定を Control UI に統一</li>
+  <li><strong>その他</strong>: 個人 GitHub アカウント接続、Anthropic Fable 5.1 対応、エージェント作業ディレクトリ/worktree 設定（最大 100 チェックアウト）、<code>cron.skipMissedJobs</code> や SSRF 用 <code>blockedHostnames</code> などの設定項目追加</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.196</h2>
+<p>Orca v1.4.196 がリリースされました（2026-09-03 10:50 JST 公開、対象期間内）。v1.4.195（9月2日）に続くリリースです。</p>
+<h3>🔧 主な変更点</h3>
+<ul>
+  <li><strong>パフォーマンス</strong>: ローカル・WSL・リモートワークスペース全体で、ワークツリー切替、Git メタデータスキャン、ターミナル起動、レンダラー更新を高速化</li>
+  <li><strong>ネイティブチャット</strong>: 大きな構造化コマンド結果の保持、ツールのライブ進捗表示、画像添付の保持、配信リカバリの起動時診断などを改善</li>
+  <li><strong>WSL / Windows / SSH</strong>: WSL ホストの Git メタデータポインタ解決、worktree の Git ルートキャッシュ刷新、インストールディレクトリの ACL 修復、SSH トランスポートとランタイム可用性の区別など、WSL 周りの修正が多数</li>
+  <li><strong>その他</strong>: モバイルの SSH セッションタブ更新、ワークスペース名のブランチ切替時保持、Automations UX 改善、ブラウザの DevTools オフスクリーン拒否など</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>Turbopack のチャンキング戦略に関する新ブログ記事「Turbopack Chunking」（2026-09-03 公開）が投稿されました。ページ読み込みの高速化とページ間コード共有を可能にする、チャンキングのチューニング用実験的機能を紹介しています。「1 ページ 1 チャンク」ではキャッシュが効かず、「1 モジュール 1 チャンク」ではリクエスト過多になるというトレードオフに対し、チャンクグループの概念に基づいて小さなチャンクを統合するアプローチを解説しています。なお安定版リリースは対象期間内になく、最新は v16.3.4（8月31日）です（v16.4.0-canary.16 が 9月3日リリース）。</p>
+<p>🔗 <a href="https://nextjs.org/blog/turbopack-chunking">Turbopack Chunking — Next.js Blog</a></p>
+
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>（検索基盤の不調により週次アップデートの抽出を確認できず）については対象期間内の主要発表を確認できませんでした。<strong>React</strong>（最新は v19.2.8、7月21日）、<strong>Python / Django / Java / Spring Boot / Hono / Claude API</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
