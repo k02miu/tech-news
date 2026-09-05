@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-05 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-05 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.261</h2>
+<p>2026-09-05 09:00 JST 現在、対象期間内（9/4 20:04 GMT リリース）に <strong>v2.1.261</strong> が公開されました。組織ポリシー可視化、出力上限設定、スキル健全性診断など開発者体験向上と、Remote Control / VS Code 拡張を中心とした大量の修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>組織ポリシーの可視化</strong>: <code>/status</code> と <code>claude doctor</code> に「Organization policy」行を追加。プロキシがエンドポイントを通していない等、ポリシーがロードできない理由を表示</li>
+  <li><strong>出力上限の拡張設定</strong>: <code>bashOutputMaxChars</code> / <code>taskOutputMaxChars</code> を追加。コマンドやバックグラウンドタスクの出力をファイル保存前にインラインで受け取れる量を最大128K文字まで拡張</li>
+  <li><strong>/skill-doctor</strong>: 使われていないスキルと、それが消費しているコンテキストコストを可視化し、 pruning（整理）を支援する新コマンド</li>
+  <li><strong>サブエージェント プロンプトのファイル指定</strong>: <code>--append-subagent-system-prompt-file</code> で、コマンドラインに収まらない大きなシステムプロンプトをファイルから読み込み可能に</li>
+  <li><strong>/model の改善</strong>: ピッカーと VS Code のモデル表示で、認識できるモデルは生の Bedrock / Vertex AI / LLM ゲートウェイ ID ではなくモデル名を表示。VS Code のモデルピッカーは全モデルのフラットなリストに変更</li>
+  <li><strong>ストリーミング性能向上</strong>: 描画済みブロックをレイアウトが毎回再チェックしなくなり、表示が高速化</li>
+  <li><strong>危険な rm の安全確認強化</strong>: 位置パラメータやダブルクォート内の <code>sh -c</code> スクリプトに含まれる <code>rm -rf</code> も検出対象に</li>
+  <li><strong>自動モードの安全性</strong>: 公開ダイアグラムレンダラの URL に内容を詰め込んだリンクは、そのサイトへのアップロードとして扱われ、明示的に要求しない限り自動承認されない</li>
+  <li><strong>キーバインドの Bash 統一</strong>: Ctrl+W は空白まで削除、Alt+F / Alt+D は単語末で停止など Bash と一致する挙動に。<code>keybindingFlavor</code> は無効化</li>
+  <li><strong>[VS Code]</strong> 「Build a custom style」ウォークスルー、MCP サーバーの追加/削除 UI、セッションリストのアーカイブ操作など新機能を多数追加</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>高速入力・キーリピート時に入力文字の順序が入れ替わったり欠落する問題を修正</li>
+  <li>Bedrock セットアップウィザードが AWS 認証ヘルパー無応答でハングする問題（タイムアウト+明確なエラーに改善）と、TLS 検査プロキシ配下でのモデルチェック失敗を修正</li>
+  <li>Remote Control 関連の多数の修正（古い権限モード表示、停止後のスピナー残存、TLS 検査プロキシでの受信ストリーム失敗など）</li>
+  <li>セッション再開時に並列ツール呼び出し周辺のフック出力やコンテキストが失われ、リクエストが変化する問題を修正</li>
+  <li>SDK / クラウドセッションで最初のプロンプト直後の Stop / interrupt が無視され、ターンが最後まで実行される問題を修正</li>
+  <li>再開できないバックグラウンドエージェントの起床リトライがタイトループし高 CPU を消費する問題を修正</li>
+  <li><code>/usage</code> と VS Code 使用量パネルが、レート制限時や起動直後にモデル別週次上限行を欠落させる問題を修正</li>
+  <li>Vertex AI 起動時に <code>gcloud</code> プロセスが余分に起動する問題を改善。API 応答ヘッダーなし時のリトライ待機を <code>API_TIMEOUT_MS</code>（既定10分）まで延長</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-261">Claude Code Changelog v2.1.261</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v2026.8.31（Hermes Agent v0.21.0、2026-08-31 リリース）です。</p>
+
+<h2>🐙 OpenClaw — 2026.9.1</h2>
+<p>2026-09-03 18:31 GMT（対象期間の直前だが本連載で未報告のため補足）に <strong>openclaw 2026.9.1</strong> がリリースされました。対象期間内（9/4 以降）の新規リリースはありません。</p>
+<ul>
+  <li><strong>全チャットでのダイアグラム表示</strong>: Mermaid ブロックが Control UI と macOS / iOS / Android ネイティブアプリで図として描画されるように。拡大プレビューと、モバイルでの描画失敗時のリトライも対応</li>
+  <li><strong>インストールからチャットまで一括セットアップ</strong>: <code>npx openclaw@latest</code> 等の新規インストールで、既存の Claude Code / Codex ログインや API キーを検出・検証し、Web ダッシュボードまで開くクイックスタートを提供</li>
+  <li><strong>共有 Gateway 上の個人スキルライブラリ</strong>: <code>openclaw skills library</code> でワークスペースのスキルとは別に個人スキルを保持。ZIP からのインポートや、チーム Gateway 上での ID 単位の共有・公開に対応</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.1">OpenClaw v2026.9.1 Release Notes</a></p>
+
+<h2>🐋 Orca — v1.4.197</h2>
+<p>2026-09-04 00:45 GMT（JST 9/4 09:45、対象期間内の直近リリースは v1.4.196: JST 9/3 10:50）に <strong>v1.4.197</strong> がリリースされました。</p>
+<ul>
+  <li><strong>ワークスペース操作の高速化</strong>: ローカル / WSL / リモートワークスペース全体で、worktree 切り替え・Git メタデータスキャン・ターミナル起動・レンダラ更新が高速化</li>
+  <li><strong>チャットとエージェントセッションの信頼性向上</strong>: 大きなコマンド結果、ライブツール進捗、画像添付、配信リカバリを含むネイティブチャット/エージェントセッションの改善</li>
+  <li><strong>その他</strong>: SSH、Windows/WSL、GitLab、アップデータ、起動・リリースの信頼性改善。モバイルの SSH セッションタブ更新の不具合修正、ワークスペース名の保持、Automations UX 改善など</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.197">Orca v1.4.197 Release Notes</a></p>
+
+<h2>⚡ Next.js — v16.4.0 Canary 更新</h2>
+<p>対象期間内に <strong>v16.4.0-canary.17</strong>（JST 9/4 17:59）と <strong>v16.4.0-canary.18</strong>（JST 9/5 08:41）がリリースされました。安定版の新規リリースはありません。</p>
+<ul>
+  <li><strong>canary.17</strong>: アダプトルートの折りたたみ（adapter route collapses）をデフォルトで有効化。<code>next info</code> でパッケージマネージャのエラーが誤表示される問題を修正</li>
+  <li><strong>canary.18</strong>: Turbopack の CSS ソースマップの <code>source</code> フィールドを修正。最終ランタイムのプリレンダで動的アクセスを追跡する修正。<code>skipProxyUrlNormalize</code> / <code>skipTrailingSlashRedirect</code> の API リファレンスを追加</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<p class="empty-notice"><strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong>、<strong>AWS / Azure / GCP</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
