@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-07 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-07 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-06 08:00 〜 2026-09-07 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>MikroTik RouterOS「MikroTrick」：SSH認証バイパス等6件の脆弱性が実攻撃で悪用 — 即時アップデートを要請 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-67276 / CVE-2026-86060 / CVE-2026-67277（計6件、うち2件がCritical）</td></tr>
+  <tr><th>CVSS</th><td>9.2 / 9.2 / 8.8 ほか</td></tr>
+  <tr><th>製品</th><td>MikroTik RouterOS 6.0.0〜6.49.20 / 7.0.0〜7.23.3 / 7.24〜7.24.1（SSH・WebFig・bandwidth-test等）</td></tr>
+  <tr><th>修正</th><td>7.25beta3 / 7.24.2 / 7.23.4（長期chは7.23.5）/ 6.49.21</td></tr>
+  <tr><th>公表</th><td>CERT Polska 2026-09-05（last-modified 2026-09-06 18:05 JST）、The Hacker News 2026-09-06報道</td></tr>
+</table>
+<ul>
+  <li>CERT Polska（CERT Poland）が6件の脆弱性を公表。SSH認証バイパス（CVE-2026-67276、CVSS 9.2）と細工ユーザー名による権限昇格（CVE-2026-86060、9.2）の組合せ攻撃チェーンは「MikroTrick」と命名され、SSHが公開されたルーターを認証なしで完全掌握できる。</li>
+  <li>9月2日以降、IPアドレス82.192.72.4発の実攻撃（特権アカウント「ops」の作成を含む）を確認。103.102.31.18からも悪用試行があった。</li>
+  <li>修正版では「Flagged」機構により侵害痕跡を検出・警告。<code>/system/device-mode/print</code>で確認可能だが、マーカーが無くても侵害を否定するものではない。</li>
+  <li>即時アップデートが推奨。適用までの緩和策として、SSH・WWW/WWW-SSL・bandwidth-testを信頼済み管理ネットワーク以外から遮断し、未パッチ機器からのTLS接続・内蔵SSHクライアントの使用を避けること。</li>
+</ul>
+
+<h3>N-able N-centralに認証前リモートコード実行の脆弱性（CVE-2026-86218） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-86218</td></tr>
+  <tr><th>CVSS</th><td>10.0 (Critical)</td></tr>
+  <tr><th>影響</th><td>N-able N-central 2026.3.1.14 未満</td></tr>
+  <tr><th>公表</th><td>NVD 2026-09-06 12:17 JST（N-ableセキュリティアドバイザリ）</td></tr>
+</table>
+<ul>
+  <li>MSP向けリモート管理プラットフォーム「N-able N-central」に、認証なしでリモートコード実行を許す脆弱性が公表された。CVSS 10.0の最大評価。</li>
+  <li>修正版2026.3.1.14への更新が必要。MSP経由で多数の管理下端末に波及しうる製品のため、利用環境は最優先で確認されたい。</li>
+</ul>
+
+<h3>Node.js HTTPフレームワーク「h3」に4件の脆弱性 — パストラバーサル・DoS・SSEイベント注入 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-86250 / CVE-2026-86251 / CVE-2026-86253 / CVE-2026-86252</td></tr>
+  <tr><th>CVSS</th><td>8.7 (High) / 8.2 (High) / 8.2 (High) / 6.9 (Medium)</td></tr>
+  <tr><th>影響</th><td>h3 2.0.1-rc.18未満（チャンクドCookieのO(n²)ループでDoS）、1.15.9未満（serveStaticのダブルデコードによるパストラバーサル）、2.0.1-rc.14以下（serveStaticの%2e%2eパストラバーサルで任意ファイル読み取り）、1.15.9未満（EventStreamのCR注入によるSSEイベント注入）</td></tr>
+  <tr><th>修正</th><td>h3 2.0.1-rc.18 / 1.15.9</td></tr>
+  <tr><th>公表</th><td>NVD 2026-09-06 21:17 JST（GitHub Security Advisory: GHSA-q5pr-72pq-83v3 ほか）</td></tr>
+</table>
+<ul>
+  <li>Nuxt等で広く使われるh3に複数の脆弱性が公表された。<code>setChunkedCookie()</code>/<code>deleteChunkedCookie()</code>がユーザー操作のCookie値から解析したチャンク数を検証せず、巨大チャンク数のCookieヘッダーでO(n²)クリーンアップループによりサーバープロセスを停止させられる（CVE-2026-86250）。</li>
+  <li><code>serveStatic</code>では二重エンコードされた<code>%252e%252e</code>が<code>resolveDotSegments()</code>をすり抜け、CDN/S3等のURLベースバックエンドで任意ファイル読み取りにつながるおそれ（CVE-2026-86251）。Node.jsデプロイではpathname未正規化のため<code>%2e%2e</code>が直接<code>../</code>に復号される問題（CVE-2026-86253）もある。</li>
+  <li>EventStreamのdata/comment欄のキャリッジリターン未サニタイズによるSSEイベント注入（CVE-2026-86252）は、既存の改行対策を迂回するバイパス。</li>
+  <li>Honoを含むJS/Webスタックの基盤ミドルウェアとして影響範囲が広いため、依存ツリーの更新を確認すること。</li>
+</ul>
+
+<h3>PostgreSQL関連：論理デコーディングの認可欠如「PostGREShell」（CVE-2026-6471）とPostgreSQL Anonymizerの権限昇格 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-6471 / CVE-2026-19633 / CVE-2026-83534 / CVE-2026-19634</td></tr>
+  <tr><th>CVSS</th><td>7.2 (High) / 8.8 (High) / 6.4 (Medium) / 6.4 (Medium)</td></tr>
+  <tr><th>影響</th><td>PostgreSQL 18.6 / 17.11 / 16.15 / 15.19 / 14.24 未満（2014年以降の全バージョンが影響）。PostgreSQL Anonymizer 3.1.4 / 3.2.0 未満</td></tr>
+  <tr><th>公表</th><td>PostgreSQL 2026-09-04修正・SecurityWeek 2026-09-04報道。PostgreSQL AnonymizerはNVD 2026-09-07 01:16 JST公開</td></tr>
+</table>
+<ul>
+  <li>Cyeraが「PostGREShell」と命名したCVE-2026-6471は、REPLICATION権限を持つ非スーパーユーザーが論理デコーディングのプラグイン選択経由で<code>dlopen</code>し、サーバー実行アカウント権限で任意コードを実行できる。12年間潜在しており、恒久的なスーパーユーザー権限取得とデータベース・サーバー乗っ取りに至りうる。</li>
+  <li>PostgreSQL Anonymizerでは、マスク済みユーザーが演算子・ドメインキャスト・ビューサブクエリ経由で高権限コード実行できる問題（CVE-2026-19633）のほか、テーブル所有者が<code>anon.anonymize_database_parallel()</code>でスーパーユーザー権限を実行できる問題（CVE-2026-83534）などが公表された。</li>
+  <li>該当バージョン利用環境はPostgreSQL 18.6/17.11/16.15/15.19/14.24、Anonymizer 3.2.0以降への更新を。</li>
+</ul>
+
+<h3>libcurl 8.21.0：Negotiate接続再利用・LDAP SASL認証バイパス等6件を修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-19931 / CVE-2026-13608 / CVE-2026-18924 / CVE-2026-80229 / CVE-2026-80230 / CVE-2026-80231</td></tr>
+  <tr><th>CVSS</th><td>6.5 (M) / 5.9 (L・C) / 5.9 (L・C) ほか</td></tr>
+  <tr><th>修正</th><td>curl / libcurl 8.21.0（2026-09-02公開。NVD記載は2026-09-06）</td></tr>
+  <tr><th>公表</th><td>curl.se セキュリティページ / NVD</td></tr>
+</table>
+<ul>
+  <li>Negotiate認証の接続再利用不備（CVE-2026-19931）では、空資格情報で確立した接続が再利用され、別ユーザーのリクエストが先に認証済みの接続で送信されるおそれがある。</li>
+  <li>LDAP SASLネゴシエーションで未完了のハンドシェイクが検証成功と誤認される問題（CVE-2026-13608）はMITMでの認証バイパスにつながる。HTTP/2 Server PushのUse After Free（CVE-2026-18924）も含まれる。</li>
+  <li>curlを利用する各種アプリケーション・ライブラリは8.21.0への更新を確認すること。</li>
+</ul>
+
+<h3>Claude Code v2.1.261 / v2.1.263：ゲートウェイ403処理・X-Forwarded-For処理・危険rmプロンプト強化など <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Claude Code v2.1.261（2026-09-05 04:58 JST公開）/ v2.1.263（2026-09-06 11:54 JST公開）</td></tr>
+  <tr><th>種別</th><td>権限・信頼境界まわりの修正（CVE番号の明記なし）</td></tr>
+  <tr><th>情報源</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.261">GitHub Releases v2.1.261</a></td></tr>
+</table>
+<ul>
+  <li>Claude appsゲートウェイで、信頼されたプロキシがX-Forwarded-Forにポートを追加する場合のクライアントIP解決を修正。アクセスリスト設定時、読み取れないエントリには403を返すよう変更。</li>
+  <li>危険な<code>rm</code>の安全性プロンプトを強化し、位置パラメータや<code>sh -c</code>の二重引用符内の<code>rm -rf</code>も検出対象に。</li>
+  <li>公開ダイアグラムレンダラのURLへコンテンツを詰め込むリンクは当該サイトへのアップロードとして扱い、要求がない限り自動承認しないようauto modeの挙動を変更。</li>
+  <li>管理設定で<code>forceLoginMethod: "gateway"</code>がピン留めされたマシンが、残留APIキーやclaude.aiログインを無視して<code>/login</code>を要求するよう変更。v2.1.263はバグ修正・信頼性改善のみ。</li>
+</ul>
+
+<h3>Hermes Agent：対象期間内にセキュリティ関連の新規リリース・CVEは確認されず <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+  <tr><th>状況</th><td>GitHub上の最新リリースはv2026.8.31（8月31日）で、本対象期間（9月6日08:00〜9月7日08:00 JST）の新規リリースなし</td></tr>
+  <tr><th>補足</th><td>mainブランチの直近コミット（9月6日）もチャット補完・圧縮・API呼び出しログ改善が中心で、セキュリティ修正の記載なし</td></tr>
+</table>
+<ul>
+  <li><a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a>を確認。CVE・セキュリティアドバイザリの公表はなかった。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React / Java / SpringBoot / Django / GCP / AWS / Azure / OpenClaw に関して、本対象期間（2026-09-06 08:00 〜 2026-09-07 08:00 JST）に直接関連する新規セキュリティ情報は確認されませんでした。OpenClawの最新リリースはv2026.9.2（9月6日05:00 JST）だが、HTTP依存関係の更新とプロキシバイパス時の宛先DNSチェック維持（#139056）を除き重大なセキュリティ修正の記載はありませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>マンチェスター空港グループ：ランサム要求拒否後、約880万人分のメールアドレス・電話番号等が窃盗団により公開 <span class="badge-critical">海外・重大</span></h3>
+<table class="cve-table">
+  <tr><th>組織名</th><td>Manchester Airports Group（MAG／マンチェスター・ロンドン・スタンステッド・イーストミッドランド空港）</td></tr>
+  <tr><th>初回発生日</th><td>2026年8月下旬に公表、FulcrumSecが9月初旬にデータ公開。SecurityWeek 2026-09-03報道</td></tr>
+  <tr><th>影響</th><td>約880万人分のメールアドレス・電話番号（HaveIBeenPwned解析・収録済み）。氏名・電話・町名・郵便地域・アクセス元IP、購入248万2,763件、SMS46万1,433件、車両ナンバー10万8,077件を含む約550GBをFulcrumSecが公開</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.securityweek.com/manchester-airports-group-data-on-8-8-million-people-leaked-after-ransom-refusal/">SecurityWeek（2026-09-03）</a></td></tr>
+</table>
+<ul>
+  <li>第三者データベース侵害により駐車場・ラウンジ・Fast Track予約データ等が窃取され、MAGがランサム要求を拒否した後、FulcrumSecが窃取データを公開。侵入経路は「露出した管理者キー」とされる。</li>
+  <li>空港運営自体への影響はないと公表済み。第三者ホスト型データベースの認証情報管理・要求拒否後の公開リスクを示す事案。</li>
+</ul>
+
+<h3>Magento / Adobe Commerce：未パッチのゼロデイが実攻撃で利用され、オンラインストアにバックドア設置 <span class="badge-critical">海外・実攻撃</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Magento Open Source 2.4.7 / 2.4.8 / 2.4.9 を含む全現行版、Adobe Commerce（影響バージョンは未確認）</td></tr>
+  <tr><th>発見</th><td>Sansec（セキュリティ企業）が未認証エクスプロイトチェーンを再現</td></tr>
+  <tr><th>公表</th><td>2026-09-05（The Hacker News報道）</td></tr>
+</table>
+<ul>
+  <li>認証不要の攻撃チェーンでサーバー上のコード実行が可能で、持続的なバックドアが設置される。少なくとも2店舗が既に被害を確認（ホスティング事業者Disrexが報告）。</li>
+  <li>最初の悪用観測から防御が存在するまでの約8時間の窓で侵害が発生しており、パッチ適用状況は被害阻止に機能しなかったとされる。</li>
+  <li>Adobeの次回セキュリティリリースは9月8日予定。ECサイト運営者はWAF・改ざん検知・バックドア有無の確認を推奨。</li>
+</ul>
+
+<h3>JetBrains Cadence：TeamCity脆弱性（CVE-2026-63077）悪用による侵入でユーザーデータ・ソースコード流出の可能性 — 全認証情報のローテーションを呼びかけ <span class="badge-high">海外・サプライチェーン</span></h3>
+<table class="cve-table">
+  <tr><th>組織名</th><td>JetBrains（CIaaS「Cadence」）</td></tr>
+  <tr><th>初回発生日</th><td>2026-08-08〜08-24（侵入期間）、2026-09-05報道（The Hacker News）</td></tr>
+  <tr><th>影響</th><td>api.cadence.jetbrains.comがTeamCityの重大脆弱性CVE-2026-63077で侵害。2024年のバックアップ、現行ユーザーのメールアドレス・プロジェクト情報、PyCharmから同期されたソースコードへのアクセスの可能性</td></tr>
+  <tr><th>情報源</th><td><a href="https://thehackernews.com/2026/09/attackers-breached-jetbrains-cadence.html">The Hacker News（2026-09-05）</a></td></tr>
+</table>
+<ul>
+  <li>JetBrainsは該当サーバーをオフライン化し、CadenceプラグインがPyCharmで使用する全アクセストークンを失効。保存された全認証情報・シークレットの取り消し・ローテーションを呼びかけている。</li>
+  <li>AWSアカウント、S3バケット、デプロイ環境、パッケージ/コンテナレジストリ等の接続システムでの不審な活動確認を推奨。個人情報流出による標的型フィッシング・なりすましのリスクも注意。</li>
+</ul>
+
+<h3>Trezor：配送業者ShipMonkの侵害で米国顧客6.7万人分のデータが影響 — 「削除済み」とされた情報 <span class="badge-medium">海外</span></h3>
+<table class="cve-table">
+  <tr><th>組織名</th><td>Trezor（ハードウェアウォレットメーカー）／配送委託先ShipMonk</td></tr>
+  <tr><th>発表</th><td>2026-09-04（Trezor公表）、2026-09-05報道（The Hacker News）</td></tr>
+  <tr><th>影響</th><td>2019年11月〜2021年8月の注文に係る米国顧客67,000人分の氏名・メールアドレス・電話番号・配送先住所・注文番号</td></tr>
+  <tr><th>情報源</th><td><a href="https://thehackernews.com/2026/09/trezor-says-shipmonk-breach-exposed.html">The Hacker News（2026-09-05）</a></td></tr>
+</table>
+<ul>
+  <li>過去に「削除済み」と公表されていたデータがShipMonk侵害で影響を受けたことが判明。ハードウェアウォレットのセキュリティ自体への影響はない。</li>
+  <li>委託先・サプライヤーでのデータ保持実態管理の重要性を示す事案。</li>
+</ul>
+
+<h3>大阪高等裁判所：Microsoft Teamsのチーム作成ミスで約6,000アカウントを誤登録、ユーザー名・メールアドレスが一時的に相互閲覧可能に <span class="badge-medium">国内</span></h3>
+<table class="cve-table">
+  <tr><th>組織名</th><td>大阪高等裁判所</td></tr>
+  <tr><th>初回発生日</th><td>2026-08-27（不具合発生）、2026-09-04公表（お詫び）</td></tr>
+  <tr><th>影響</th><td>特定の事件に係るチーム作成時に、外部ユーザー約3,500アカウントと職員約2,500アカウント（計約6,000）を誤登録。招待メール・Teams通知からアクセスした場合に、メンバーのユーザー名・メールアドレスが一時的に相互確認可能</td></tr>
+  <tr><th>情報源</th><td><a href="https://www.courts.go.jp/osaka-h/about/osirase/owabi/index.html">大阪高等裁判所（2026-09-04公表）</a></td></tr>
+</table>
+<ul>
+  <li>同日12時20分頃に外部からの問い合わせで事態を把握し、直ちに当該チームを削除。事件の記録情報にアクセスできる状態ではなく、訴訟資料の漏えいは確認されていないと報道。</li>
+  <li>誤登録された外部ユーザーに弁護士・司法修習生が含まれていたと報道（産経・MBS）。書記官の操作ミスとされ、同高裁は適正な事務処理の徹底を表明。</li>
+</ul>
+
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
