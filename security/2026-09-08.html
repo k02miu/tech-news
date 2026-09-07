@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-08 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-08 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-07 08:00 〜 2026-09-08 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Hermes Agent v0.21.1（v2026.9.7）パッチリリース — MCP認可改善を含む</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Hermes Agent</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span></td></tr>
+<tr><th>公開日</th><td>2026-09-07 22:17 UTC（JST 9/8 07:17）</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.7" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>v0.21.0以降の5,139コミット・632マージPRをまとめたパッチリリース。CVE番号の明記なし。</li>
+<li>「MCP authorization improvements（MCP認可の改善）」を含む。ほか、cronスケジューリングと配送の修正、委譲の信頼性改善、コードベースのモジュール化、ファイル操作・起動パフォーマンス改善等。</li>
+<li>詳細なリリースノートはv0.22.0で提供予定。既存環境は `hermes update` で更新可能。</li>
+</ul>
+
+<h3>h3（Node.js HTTPフレームワーク）にチャンクドCookieのDoS脆弱性（CVE-2026-86250、CVSS 8.7）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-86250</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>CVSS</th><td>8.7</td></tr>
+<tr><th>影響</th><td>h3 2.0.1-rc.18 未満</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/h3js/h3/security/advisories/GHSA-q5pr-72pq-83v3" target="_blank" rel="noopener noreferrer">GHSA-q5pr-72pq-83v3</a>（NVD 2026-09-06公開）</td></tr>
+</table>
+<ul>
+<li>setChunkedCookie()/deleteChunkedCookie() がユーザー操作Cookieのチャンク数を検証せず、巨大チャンク数でO(n²)ループによりサーバープロセスを停止させられる可能性。</li>
+</ul>
+
+<h3>h3のserveStaticにダブルデコードによるパストラバーサル（CVE-2026-86251、CVSS 8.2）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-86251</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>CVSS</th><td>8.2</td></tr>
+<tr><th>影響</th><td>h3 1.15.9 未満</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/h3js/h3/security/advisories/GHSA-72gr-qfp7-vwhw" target="_blank" rel="noopener noreferrer">GHSA-72gr-qfp7-vwhw</a>（NVD 2026-09-06公開）</td></tr>
+</table>
+<ul>
+<li>二重エンコードされたドットシーケンス（%252e%252e）がresolveDotSegments()をすり抜け、URLベースバックエンド（CDN/S3等）で任意ファイル読み取りにつながる可能性。</li>
+</ul>
+
+<h3>h3のserveStaticにパーセントエンコード経由のパストラバーサル（CVE-2026-86253、CVSS 8.2）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-86253</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>CVSS</th><td>8.2</td></tr>
+<tr><th>影響</th><td>h3 1.15.9 未満（Node.jsデプロイ）</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/h3js/h3/security/advisories/GHSA-wr4h-v87w-p3r7" target="_blank" rel="noopener noreferrer">GHSA-wr4h-v87w-p3r7</a>（NVD 2026-09-06公開）</td></tr>
+</table>
+<ul>
+<li>Node.jsデプロイでpathname未正規化のため%2e%2eがdecodeURI()で../に復号され、認証なしで任意ファイル読み取りが可能。</li>
+</ul>
+
+<h3>h3のEventStreamにCR注入によるSSEイベントインジェクション（CVE-2026-86252、CVSS 6.9）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-86252</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span></td></tr>
+<tr><th>CVSS</th><td>6.9</td></tr>
+<tr><th>影響</th><td>h3 1.15.9 未満</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/h3js/h3/security/advisories/GHSA-4hxc-9384-m385" target="_blank" rel="noopener noreferrer">GHSA-4hxc-9384-m385</a>（NVD 2026-09-06公開）</td></tr>
+</table>
+<ul>
+<li>イベントストリームのdata/comment欄のキャリッジリターン未サニタイズによりSSEイベント注入が可能（既存修正のバイパス）。</li>
+</ul>
+
+<h3>libcurl 8.21.0 — Negotiate接続再利用・LDAP SASL認証バイパス等6件を修正（CVE-2026-19931ほか）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-19931 / 13608 / 18924 / 80229 / 80230 / 80231</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span></td></tr>
+<tr><th>影響</th><td>curl / libcurl（修正版 8.21.0、2026-09-02公開）</td></tr>
+<tr><th>情報源</th><td><a href="https://curl.se/docs/security.html" target="_blank" rel="noopener noreferrer">curl セキュリティページ</a>（NVD記載は2026-09-06）</td></tr>
+</table>
+<ul>
+<li>Negotiate認証の接続再利用で他ユーザーの認証済み接続を横取り可能（CVE-2026-19931、Medium）。</li>
+<li>LDAP SASLの未完了ハンドシェイクが検証成功と誤認される問題（CVE-2026-13608、Low/Critical）ほか、HTTP/2 Server PushのUAF等6件。</li>
+</ul>
+
+<h3>Roundcube 1.6.19 / 1.7.4 — ゼロクリックXSSを含む12件の修正</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Roundcube（ウェブメールソフト）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>公開日</th><td>2026-09-06（開発チーム）、全本番環境へ更新を強く推奨</td></tr>
+<tr><th>情報源</th><td><a href="https://roundcube.net/news/2026/09/06/security-updates-1.6.19-and-1.7.4" target="_blank" rel="noopener noreferrer">Roundcube公式</a> / <a href="https://www.security-next.com/189922" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>TNEF形式のメール処理において添付ファイルURLへのタグ注入で利用者のクリックなしに実行されるストア型XSS（ゼロクリック）に対応。</li>
+<li>ほかにHTMLエディタのXSS、メールヘッダ注入、CSS経由のリモートコンテンツ遮断回避、SQLアドレス帳のアクセス制御不備など計12件を修正。CVE番号の言及なし。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / Python / Django / GCP / AWS / Azure / React / SpringBoot に関しては、直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ロジックベイン：不正アクセス情報がダークウェブのリークサイトに掲載（第4報、17,559名分確認）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ロジックベイン</td></tr>
+<tr><th>発生日</th><td>2025-12-08（発覚）、第4報は2026-08-17発表</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/07/56145.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>2025年12月8日発覚の社内ネットワーク不正アクセス（VPN経由侵入→ランサムウェア実行と推測）の第4報。</li>
+<li>保有情報の一部がダークウェブのリークサイトに掲載されていることを新たに確認。掲載確認は顧客・取引先・展示会来場者等17,559名分（氏名・所属先・連絡先等）。</li>
+<li>掲載未確認だが漏えいのおそれがあるのは約97,338名分。対象者へ順次個別通知中。</li>
+</ul>
+
+<h3>三井不動産：グループ利用システムへの不正アクセスで資格情報が不正利用、最大5.5万件の情報閲覧の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>三井不動産</td></tr>
+<tr><th>発生日</th><td>2026-08-28（不正アクセス確認）</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/07/56140.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>一部システムの資格情報が不正利用され、第三者から情報の一部を閲覧された可能性。</li>
+<li>役職員等最大19,000件（氏名・メールアドレス・部署・役職）、社外関係者最大36,000件（メールアドレス・表示名）が対象。</li>
+<li>資格情報無効化・監視強化済み、個人情報保護委員会・関係官庁へ報告。9月1日発表、9月7日報道。</li>
+</ul>
+
+<h3>01銀行：システムへの不正アクセスで最大100社の顧客識別情報・メールアドレスの漏えいを確認</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>01銀行</td></tr>
+<tr><th>発生日</th><td>2026-08-17（不正アクセス検知）</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/07/56142.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>調査の結果、顧客情報の漏えい事実を確認。漏えいは同社システムが使用する最大100社分の顧客識別情報とメールアドレス。</li>
+<li>対象顧客は特定できていないが注意喚起を実施。アクセス経路遮断済み、外部専門家と調査継続中。</li>
+</ul>
+
+<h3>T&amp;K TOKA（粘着剤メーカー）：システムへの不正アクセスでランサムウェア被害、一部業務を停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>T&amp;K TOKA</td></tr>
+<tr><th>発生日</th><td>2026-08-28（公表）</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/07/56141.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>一部システムへの第三者からの不正アクセスでランサムウェア被害を確認。製造業への攻撃で一部業務停止が継続中。</li>
+<li>被害拡大防止措置を実施しシステム復旧を進めるが、現在も一部業務を停止中。関係する顧客へ個別連絡、警察等と連携し調査中。</li>
+</ul>
+
+<h3>安藤ハザマ：偽警官に従業員がだまされ、約5,000件の名刺情報をメールで詐取される</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>安藤ハザマ</td></tr>
+<tr><th>発生日</th><td>2026-08-16（詐欺行為）〜08-23（判明）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189678" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>警察官を名乗る人物に従業員がだまされ、名刺管理システムから約5,000件の名刺情報（氏名・会社名・住所・部署名・役職・電話番号・FAX番号・メールアドレス）をダウンロードしメールで提供。</li>
+<li>架空請求を目的とした詐欺と判明。個人情報保護委員会へ報告し、対象関係者へ個別に報告・謝罪済み。</li>
+</ul>
+
+<h3>まんだらけ：サーバへの不正侵入で情報流出か — 通販は9/5再開、毎日オークションは9/7再開（続報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>まんだらけ</td></tr>
+<tr><th>発生日</th><td>2026-08-27（サーバ侵害確認）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189663" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>配送情報を保有するサーバなどへの侵入が判明。顧客情報へのアクセス・改ざん・削除の形跡は未確認だが、8/28 6時までに注文した人の氏名・住所・電話番号・メールアドレス等が流出した可能性。</li>
+<li>通販は9/5に再開、毎日オークションは9/7より再開。「大オークション大会」は9/7公開・9/9より入札開始。</li>
+</ul>
+
+<h3>アンビションDXホールディングス：ファイルサーバが侵害され一部情報が流出したことを確認</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アンビションDXホールディングス</td></tr>
+<tr><th>発生日</th><td>2026-08-06（アクセス障害・ログ消失）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/188534" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>ファイルサーバで8/6未明にアクセス障害が発生しログ消失を確認。第三者がアクセスを試みた痕跡も見つかり、一部情報が外部に流出したことを確認。</li>
+<li>対象情報は特定に至っていないが、顧客・賃貸管理物件オーナー・入居者・取引先・役職員の個人情報が含まれる可能性。ネットワーク遮断済み、調査継続中。</li>
+</ul>
+
+<h3>上越ケーブルビジョン（JCV）：ヘルプデスクのメールアカウント侵害でスパム送信・メール内容一部流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>上越ケーブルビジョン（JCV）</td></tr>
+<tr><th>発生日</th><td>2026-08-15（スパム送信検知）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189860" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>ヘルプデスクのメールアカウントが第三者に侵害され、大量の迷惑メール送信の踏み台に。メールボックス内の4件が参照されたことが判明。</li>
+<li>対象は48件のいずれかで、氏名・住所・電話番号・メールアドレス・問い合わせ内容等の個人情報が流出した可能性。パスワード変更済み、対象顧客へ書面で通知予定。</li>
+</ul>
+
+<h3>福岡県：県立高校の体験入学申込サイトで申込者293人分の個人情報が閲覧可能な状態に</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>福岡県</td></tr>
+<tr><th>発生日</th><td>2026-07-03〜07-24（閲覧可能期間）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189480" target="_blank" rel="noopener noreferrer">Security NEXT（9/7報道）</a></td></tr>
+</table>
+<ul>
+<li>体験入学参加者申し込みサイトの表示設定不備により、7/3〜7/24に他の申込者の申し込み情報が閲覧可能だった。対象は申込者293人（氏名・質問・相談したいこと等）。</li>
+<li>7/24に中学校からの連絡で判明。設定を修正し、対象申込者と在籍中学校に謝罪済み。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
