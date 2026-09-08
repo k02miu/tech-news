@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-09 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-09 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-08 08:00 〜 2026-09-09 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>OpenClaw 2026.9.3 — 更新リハーサル機構と公開セッション転写の明示同意化</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>OpenClaw</td></tr>
+<tr><th>深刻度</th><td><span class="badge-low">Low</span></td></tr>
+<tr><th>公開日</th><td>2026-09-08 23:15 JST（タグ付与）</td></tr>
+<tr><th>情報源</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.3" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>コアおよびプラグインの変更を分離された候補状態でリハーサルしてから有効化する「より安全な更新」機構、破棄された更新レコードの回復機能を追加。</li>
+<li>セッション転写の公開（Public session transcripts）は所有者／Gateway管理者が明示的に発行し、読み取り専用ビューにはツール・推論・ファイル・画像・実行可能ウィジェットを含めない設計に。取り消しも可能。</li>
+<li>非公開セッションのリンクプレビューは汎用カードをコピーするのみで、非公開内容を読まないよう変更。</li>
+<li>CVE番号の言及なし。Node 24.16.0+/26.1.0+の要求（Breaking）ほかSDK破壊的変更を含む。</li>
+</ul>
+
+<h3>Adobe Commerce / Magentoのゼロデイに公式アドバイザリ・ホットフィックス — 実攻撃悪用確認（CVE-2026-75650、CVSS 10.0）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-75650</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>10.0（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Adobe Commerce / Magento（全現行版）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189963" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）／Adobeアドバイザリ（2026-09-07公開）</td></tr>
+</table>
+<ul>
+<li>テンプレートエンジンの特殊要素無害化不備に起因する認証不要のリモートコード実行。ホットフィックスが提供されている。</li>
+<li>Adobeは実攻撃での悪用を確認し、適用優先度を最上位「1」（72時間以内目安）に指定。9/5時点では未パッチゼロデイとして報道されていたが、公式修正が登場した段階の報道。</li>
+</ul>
+
+<h3>F5 BIG-IP / BIG-IQに定例外アドバイザリ — 管理インタフェースのSSRFで権限昇格（CVE-2026-66842、CVSS 8.8）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-66842 / CVE-2026-63020</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>CVSS</th><td>8.8（CVSSv3.1）/ 3.1（Low）</td></tr>
+<tr><th>影響</th><td>BIG-IP（21.1.0.1 / 21.0.0.3 / 17.5.1.8 / 17.1.3.4で修正）、BIG-IQ 8.4.2.1</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190007" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）／F5アドバイザリ（2026-09-02公開）</td></tr>
+</table>
+<ul>
+<li>管理インタフェースにネットワークアクセスできる攻撃者が、Configuration utilityへの非公開リクエストを通じて任意のロールの認証済みユーザーとして管理者アカウントを作成可能なSSRF。</li>
+<li>あわせてConfiguration utilityでエラーメッセージを偽装できる脆弱性（CVE-2026-63020、Low）も修正。</li>
+</ul>
+
+<h3>Dell Secure Connect Gateway（SCG）5.0に106件の脆弱性 — 認証なしRCE・root権限昇格を含む</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-80172 / 61410 / 80238 ほか106件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>9.8 / 9.4 / 9.3（いずれもCVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Dell SCG 5.0（修正版：アプリ向け5.36.00.00、アプライアンス向け5.36.00.16）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190000" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）／Dellアドバイザリ（2026-08-31公開）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-80172：キャプチャしたリクエストを再利用して管理者用アクセストークン／リフレッシュトークンを生成し、認証なしでアクセス可能に。</li>
+<li>CVE-2026-61410：細工されたリクエストで認証なしのリモートコード実行が可能。CVE-2026-80238はDockerソケット悪用によるroot権限昇格。</li>
+</ul>
+
+<h3>SAP月次セキュリティパッチ（2026年9月8日） — NetWeaver Message Server等にCVSS 9.8、EPP処理ライブラリにCVSS 10.0</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-44756 / 58240 / 66768 / 76969 ほか</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>10.0（CVE-2026-44756）、9.8（CVE-2026-58240）</td></tr>
+<tr><th>公開日</th><td>2026-09-08（SAP Security Patch Day、NVD記載は同日01:17 UTC）</td></tr>
+<tr><th>情報源</th><td><a href="https://url.sap/sapsecuritypatchday" target="_blank" rel="noopener noreferrer">SAP Security Patch Day</a>（NVD 2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-44756（CVSS 10.0）：SAP Extended Passport（EPP）処理ライブラリのメモリ安全性の問題。細工したネットワークリクエストで異常終了・機密性完全性可用性への重大な影響の可能性（NVD記載）。</li>
+<li>CVE-2026-58240（CVSS 9.8）：NetWeaver Message Serverが内部アプリケーションサーバー構成要素の真正性検証を怠る問題で、ネットワークアクセス可能な未認証攻撃者が不正な構成要素を登録可能。</li>
+<li>ほかにSAP GUI for Java（CVE-2026-66768、9.0）、@sap/cds-mtxs NPMライブラリ（CVE-2026-76969、9.4）、SAP Integration SuiteのXXE（CVE-2026-76958、8.5）など。</li>
+</ul>
+
+<h3>Canva Androidアプリに2件の脆弱性 — WebView経由でセッション悪用（CVE-2026-85085、CVSS 9.6）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-85085 / CVE-2026-85094</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>9.6（Critical）/ 8.8（High）</td></tr>
+<tr><th>影響</th><td>Canva Androidアプリ 2.376.0 未満（修正版は2026-09-03公開）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190017" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）／Canvaアドバイザリ（2026-09-04公開）</td></tr>
+</table>
+<ul>
+<li>特権で動作するWebViewが外部オリジンを読み込む問題により、攻撃者が制御するページから利用者のセッションを利用してCanvaと通信できるほか、外部オリジンへの応答ヘッダ制限不備でセッションへアクセスされるおそれ。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Claude Code / Hermes Agent に関しては、直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>サカタのタネ：不正アクセスの調査結果を公表 — 最大約5.5万件の個人情報が漏えいした可能性（続報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>サカタのタネ（東証プライム上場）</td></tr>
+<tr><th>発生日</th><td>2025-11-11（データアクセスの形跡を確認）、調査結果公表は2026-08-19</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56155.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>2025年11月17日に公表した自社サーバへの不正アクセスと、2026年2月13日に公表した米国連結子会社サーバへの不正アクセスについて、外部専門会社とのフォレンジック調査を含む調査結果を発表。</li>
+<li>顧客・取引先の個人情報が不正アクセスされ外部漏えいした可能性が判明。卸売業務関連の顧客・取引先約4万4,000件（氏名・住所・一部電話番号・メールアドレス）、カレンダー等応募者約2,500件、採用応募者・候補者約5,000件、従業員（役員・社員・退職者等を含む）約5,000件、その他取引先約200件。対象者へは封書で個別連絡済み。</li>
+<li>リモートアクセス用の公開サーバが起点で管理者権限を取得された可能性。米国子会社（Sakata America Holding）ではリモートアクセスの認証情報が起点と分析。両事件の侵入経路は異なり直接的関係はないと同社は認識。ネットワーク管理体制見直し・通信制限強化・24時間監視等の再発防止策を実施。</li>
+</ul>
+
+<h3>さくらインターネット：不正アクセスに関する案内ページを公開 — 会員情報136万アカウントは「影響を受けた可能性」対象で確定漏えいは未確認（続報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>さくらインターネット</td></tr>
+<tr><th>発生日</th><td>2026-08-09（異常検知）</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56156.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）／<a href="https://help.sakura.ad.jp/unauth-access-faq/" target="_blank" rel="noopener noreferrer">さくらインターネット公式FAQ</a></td></tr>
+</table>
+<ul>
+<li>8月20日に案内ページを公開し、ニュースリリース・FAQ等を随時掲載。8月19日の第二報で公表した「販売管理システムに保存されている会員情報1,360,563アカウントが影響を受けた可能性」について、現時点ですべてが漏えいした事実は確認されておらず、実際に閲覧・取得された情報や件数は調査継続中と説明。</li>
+<li>第二報の1,360,563アカウントには第一報の「さくらのレンタルサーバ」の不正ログイン583アカウントを含む。対象範囲はレンタルサーバ利用者に限られない。8月26日に問い合わせ窓口を開設。</li>
+</ul>
+
+<h3>浜銀TT証券：インターネット取引でフィッシングによる不正アクセス・不正取引の被害 — パスキー設定を要請</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>浜銀TT証券</td></tr>
+<tr><th>発生日</th><td>2026-09-03（公表）</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56154.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>顧客がフィッシング詐欺により口座番号・パスワード（パスキー登録情報）を窃取され、保有する投資信託の不正な売買が実施された事象を公表。</li>
+<li>同社はパスキー認証への切替え（2026年5月18日から未設定口座は売買注文・出金等を制限）と、メールやSMSのリンクからログインしない（公式サイトをブックマークしてログイン）よう顧客に案内。</li>
+</ul>
+
+<h3>三井不動産：グループ利用システムへの不正アクセスで資格情報が不正利用、最大5.5万件の個人情報閲覧の可能性（再掲載・継続監視中）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>三井不動産</td></tr>
+<tr><th>発生日</th><td>2026-08-28（不正アクセス確認）、9月1日発表</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189789" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>同社グループが利用する一部システムで資格情報が不正利用され、第三者に個人情報が閲覧された可能性。役職員の氏名・メールアドレス・部署・役職など最大1万9,000件、社外関係者のメールアドレス・表示名など最大3万6,000件が対象。</li>
+<li>悪用された資格情報は無効化済み。原因・侵入経路・影響範囲を引き続き調査し、システム監視を強化。個人情報保護委員会・関係官庁へ報告済み。前日までの朝刊でScan報道分を掲載済みだが、Security NEXTでも本日報道されたため進展含め掲載。</li>
+</ul>
+
+<h3>尼崎市：市立小学校で卒業生107人分の指導要録（氏名・生年月日・保護者氏名・住所等）を誤廃棄 — 約1年前に裁断処分か</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>兵庫県尼崎市</td></tr>
+<tr><th>発生日</th><td>2026-07-28（紛失判明）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189992" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>2009年度卒業生107人分の指導要録（様式1号、氏名・生年月日・保護者の氏名・住所・進学先等、保存期間20年）が所在不明。廃紙置き場で綴じ表紙のみ発見され、2025年8月の金庫内書類整理時に他の廃棄書類と一緒に誤って裁断処分されたと見られる。</li>
+<li>同校は保管されている関連記録・資料を精査して学籍情報の復元を行うとしている。</li>
+</ul>
+
+<h3>三重大学：配慮を要する学生11人分の学籍番号が件名に記載されたメールを履修学生約1,400人に誤送信</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>三重大学</td></tr>
+<tr><th>発生日</th><td>2026-08-06（誤送信）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189737" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>修学上の配慮を要する学生11人が履修する授業の担当教員宛てに送るはずのアンケート回答依頼メールを、送信先設定ミスにより履修学生約1,400人に誤送信。</li>
+<li>メール本文に要配慮個人情報そのものは含まれないが、件名末尾に配慮が必要な学生の学籍番号が記載されており受信者から確認可能な状態だった。誤送信先の学生へ削除を依頼し、対象学生には個別に説明・謝罪。</li>
+</ul>
+
+<h3>学校法人KBC学園：発送データ作成ミスで氏名2,471件の宛名と住所が1行ズレたダイレクトメールを誤送付</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>学校法人KBC学園</td></tr>
+<tr><th>発生日</th><td>2026-08-03（発送）、8月17日発表</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56157.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>発送用データ作成時の行削除ミスにより宛名と住所が1行ずつズレた状態で発送され、氏名2,471名分の個人情報が誤送付で漏えい。8月3日に案内を発送した保護者からの連絡で発覚。</li>
+<li>8月12日までに経緯と謝罪を記載した書面を個別郵送。今後は複数名によるデータ検証・照合のチェック体制を徹底。</li>
+</ul>
+
+<h3>教育ソフトウェア：休眠中のレンタルサーバへランサムウェア攻撃 — 2016年までの自己採点システム利用者4,627件が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社教育ソフトウェア</td></tr>
+<tr><th>発生日</th><td>2026-04-30〜05-01（推定期間）、8月17日発表</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56158.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>長期間使用していなかった休眠サーバに対しランサムウェアによる暗号化被害と第三者からの不正アクセスの痕跡を確認。レンタルサーバ契約会社からの情報提供で発覚。</li>
+<li>当該サーバ内の顧客・取引先との過去のメール等が閲覧された可能性。漏えいの可能性があるのは2016年までに同サーバを利用したWebサービス（自己採点システム）の対象者4,627件の個人情報（顧客情報・所属大学名・氏名・学籍番号の一部等）。対象顧客へは公式サイトで告知。</li>
+<li>発覚後、安全性確認のうえ当該サーバを廃止し業務再開。定期的なセキュリティアップデート監査等で再発防止を徹底するとしている。</li>
+</ul>
+
+<h3>警察庁が「DMARC運用」を郵便局に例えて注意喚起 — None放置を確認しQuarantine/Reject移行を促す／総務省「令和8年版情報通信白書」でダークネット観測パケットが10年前の10倍と報告</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>警察庁 / 総務省（NICT）</td></tr>
+<tr><th>公開日</th><td>警察庁：2026-09-01（サイバー警察局便りR8Vol.11）／白書：2026-07-24公表</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56153.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（警察庁DMARC）</a>／<a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56149.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（情報通信白書）</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>警察庁は自社ドメインを悪用したなりすましメール対策として、DMARCポリシーが「None（記録のみ）」のまま放置されていないかの確認と、レポート分析後の「Quarantine」または「Reject」への移行を案内。</li>
+<li>情報通信白書では、NICTの大規模サイバー攻撃観測網（NICTER）のダークネット観測で2025年の1IPアドレス当たり観測パケット数が約250万パケット（2015年の約10倍、過去最高）と報告。2025年の不正アクセス禁止法違反事件の検挙件数は431件で前年比132件減。</li>
+</ul>
+
+<h3>CTC「守るべきはデータではなく事業」／東商アンケートでサイバー攻撃「被害経験なし」企業が約6割へ減少／NTTデータGがサイバーリカバリーを提唱</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>CTC / 東京商工会議所 / NTTデータグループ</td></tr>
+<tr><th>公開日</th><td>東商調査：2026-08-24発表、NTTデータGレポート：2026-08-26公開</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56150.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（CTC）</a>／<a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56151.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（東商）</a>／<a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56152.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（NTTデータG）</a>（2026-09-08報道）</td></tr>
+</table>
+<ul>
+<li>東京商工会議所の2026年調査（回答1,381社）では、サイバー攻撃で「被害・影響を受けたことはない」企業が約6割（2024年調査の約7割から減少）、「取引先や委託先が被害を受け自社業務に影響したことがある」が約2割（前回より10ポイント超増加）、「自社が攻撃を受けたことがある」は9.7%。</li>
+<li>NTTデータグループはランサムウェア復旧の長期化要因として「従来のバックアップやBCPが意図的侵害を想定していない」点を指摘し、隔離環境でデータ完全性を検証してから復旧するサイバーリカバリーの整備（4プロセス）を提案。</li>
+<li>CTCは企業のサイバーセキュリティ・ガバナンス体系を解説し、守る対象をデータから事業へ再定義する視点を提唱。</li>
+</ul>
+
+<h3>AIがランサムウェア攻撃の全工程を実行 — 被害企業へ80ページの「セキュリティ監査報告書」まで作成・提出（Unit 42事例）</h3>
+<table class="cve-table">
+<tr><th>分類</th><td>AI支援攻撃（国際）</td></tr>
+<tr><th>公開日</th><td>Unit 42レポート：2026-09-02公開</td></tr>
+<tr><th>情報源</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/09/08/56160.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a>（2026-09-08報道）／<a href="https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/" target="_blank" rel="noopener noreferrer">Palo Alto Networks Unit 42</a></td></tr>
+</table>
+<ul>
+<li>Unit 42のインシデントレスポンス事例。攻撃者は戦術面の実行をAIエージェントに委ね、監視・評価・行動・再計画のサイクルをリアルタイムで繰り返して侵入工程全体を高速化。最新モデルとエージェント型攻撃フレームワークを使用したと自認。</li>
+<li>交渉担当者向けに80ページに及ぶセキュリティ監査報告書の作成までAIに実行させた。Unit 42は「目新しいゼロデイや卓越した技術ではなく、AIによる作戦遂行の効率性が特徴」と分析。</li>
+</ul>
+
+<h3>piyolog：「Project Glasswing」時系列まとめを公開 — 米輸出規制による提供停止・再開、日本の金融庁作業部会等の経緯を網羅</h3>
+<table class="cve-table">
+<tr><th>分類</th><td>脅威情報（AI×サイバーセキュリティ）</td></tr>
+<tr><th>公開日</th><td>2026-09-08（記事更新、時点情報は2026-09-08現在）</td></tr>
+<tr><th>情報源</th><td><a href="https://piyolog.hatenadiary.jp/entry/ProjectGlasswing" target="_blank" rel="noopener noreferrer">piyolog（Project Glasswingまとめ）</a></td></tr>
+</table>
+<ul>
+<li>Anthropicの「Project Glasswing」（Claude Mythos Previewによる脆弱性発見取り組み）の発足から、米政府によるFable 5/Mythos 5の輸出管理指定（6月12日）と米国内限定での提供再開（6月26日許可・7月1日再開）、メガバンク各行のMythos利用再開（8月27日判明）までの経緯を時系列で整理。</li>
+<li>国内では金融庁の官民連携会議・作業部会（2026年5月14日第1回会合）や、UK AISIによるサイバー能力評価（CTF成功率73%）等も収録。2026年9月8日時点の情報を反映した更新。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
