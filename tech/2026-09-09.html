@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-09 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-09 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 2.1.265</h2>
+<p>2026-09-09 05:47 JST に <strong>2.1.265</strong> がリリースされました。対象期間内のリリースです。プラグイン管理の強化、セッション再開の信頼性向上、多数のバグ修正が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>--plugin-dir のフォルダ対応</strong>: プラグイン群を格納したフォルダを指定できるようになり、各子フォルダの manifest を読み込み。実行中の子フォルダ追加・削除も検知されるようになりました。</li>
+  <li><strong>ツール結果のディスク保存に 1 GB 上限</strong>: 会話内プレビューには、保存ファイルが切り詰められた場合にその旨が表示されます。</li>
+  <li><strong>大規模リポジトリでの --worktree 高速化</strong>: 新しい worktree のチェックアウトが並列実行されるようになりました（git 2.32+）。</li>
+  <li><strong>/workflows のエージェント詳細改善</strong>: ツール呼び出しに running/failed/done の状態表示、サブエージェントのタスクリスト表示、Enter で入力と結果を展開。</li>
+  <li><strong>スラッシュコマンド補完のリスト化</strong>: プロンプト入力中のコマンド候補がリスト表示になり（fullscreen 外では Tab で開く）、プラグインスキルが裸の名前でも検索可能に。</li>
+  <li><strong>リモート MCP の OAuth 遅延登録</strong>: 実際に認証するまで OAuth クライアントを登録しなくなりました。</li>
+  <li><strong>セッション再開の高速化</strong>: 多くのファイルを読んだ長いセッションの再開時間を短縮。</li>
+  <li><strong>Telemetry</strong>: Claude Desktop / Cowork が送信するテレメトリに <code>user.email</code> / <code>user.groups</code> を追加（ターミナルセッションと同様）。</li>
+  <li><strong>[VS Code]</strong> 非アクティブセッションの自動アーカイブを追加（「Archive inactive sessions」設定、デフォルト 14 日）。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>非対話セッション（<code>-p</code> + stream-json、Agent SDK、クラウドセッション）でユーザーメッセージごとにシェル作業ディレクトリがリセットされる問題 — <code>cd</code> がターンをまたいで永続化されるようになりました。</li>
+  <li>レガシー HTTP+SSE トランスポートしか話さない <code>http</code> 設定の MCP サーバーが接続できない問題（MCP 仕様どおり SSE へフォールバック）。</li>
+  <li>バックグラウンド（<code>--bg</code>）セッションが、アイドルタイムアウト直前にメッセージが届くとターン途中で退去される問題。</li>
+  <li><code>/model opusplan[1m]</code> が "Model not found" で拒否される問題。</li>
+  <li>tmux 内で 2 キーショートカットが 2 キー目の入力まで 1 秒超えると黙ってキャンセルされる問題（3 秒待ち + タイムアウト通知）。</li>
+  <li>セキュリティ: プラグインパスにバックスラッシュを含めることで macOS/Linux の symlink containment チェックをバイパスできる問題。</li>
+  <li>フォアグラウンドでスポーンされたサブエージェントの再開時にツールリストとシステムプロンプトのプレフィックスが変わり、プロンプトキャッシュが効かなくなる問題。</li>
+  <li>前プロセスがツール実行中に死亡したあとの再開で、最後のプロンプトが書き換えられず中断ツール呼び出しが保持されるように。</li>
+  <li>Windows: AppContainer / restricted-token サンドボックス内で Read/Write/Edit が全ファイルを拒否する問題。</li>
+  <li>[VS Code] Reload Window / 再起動後にサイドバーのチャットが空白になる問題（10 分以上開いていた場合）。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-265">Claude Code Changelog 2.1.265</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内（2026-09-08 09:00 〜 2026-09-09 09:00 JST）に新規リリースは確認されませんでした。最新バージョンは <strong>v0.21.1 (v2026.9.7)</strong>（2026-09-08 07:17 JST リリース）です。次の厳選リリースノートは v0.22.0 で提供予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 2026.9.3</h2>
+<p>2026-09-08 23:15 JST に <strong>2026.9.3</strong> がリリースされました。対象期間内のリリースです。</p>
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>安全なアップデート</strong>: コアとプラグインの変更を隔離された candidate 状態でリハーサルしてから適用。2026.9.2 の適用可能なマイグレーションに対応し、健全な Gateway を止めずに放棄されたアップデートレコードを回復。</li>
+  <li><strong>パフォーマンス</strong>: ウォームプロンプトキャッシュの保持、コールドセッション更新とメモリ検索の不要な処理削減、ワーカービルドのセッション間再利用。</li>
+  <li><strong>Skill Workshop</strong>: スキルをワークスペース横断のエージェント所有コレクションとして永続化、完全なスキル指示の比較、欠落ドラフト提案の安全な retire。</li>
+  <li><strong>ブラウザタブのライブ描画・ネイティブ対応</strong>: エージェントページの再描画を監視でき、外部リンクをチャット切替後もウィンドウに残るネイティブ Mac タブで開く。</li>
+  <li><strong>接続アカウント統合管理</strong>: Models 設定で接続アカウントとアカウント優先度を管理可能に。</li>
+  <li><strong>会話の選択共有</strong>: セッションの既存・将来の会話テキストを、公開リンクを持つ誰でも閲覧できる取消可能な読み取り専用ビューとして公開。</li>
+  <li><strong>検索可能なミーティングライブラリ</strong>: 保存ノートの閲覧、トランスクリプト全文検索、Markdown / JSONL 完全ダウンロード。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.3">openclaw 2026.9.3</a></p>
+
+<h2>🐋 Orca — v1.4.198</h2>
+<p>2026-09-08 17:41 JST に <strong>v1.4.198</strong> がリリースされました。対象期間内のリリースです。</p>
+<h3>🔧 主な変更</h3>
+<ul>
+  <li><strong>Codex チャット UI 改善</strong>: Experimental 設定で Structured Chat を有効化すると利用可能に。インラインファイル差分、ペインアクション、整理されたツール出力、個別タスク停止、モバイルの構造化 Codex チャット。</li>
+  <li><strong>GitHub Projects Roadmap</strong>: ビューがタイムラインとして描画されるように。デスクトップはタブスクロール、細幅タブ、通知の刷新も追加。</li>
+  <li><strong>パフォーマンス</strong>: ワークスペース、レンダラー、エディタ、ターミナル、Git、リモート操作の高速化。SSH リレーと Windows/WSL 復旧の強化。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.198">Orca v1.4.198</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に canary チャンネルの <strong>v16.4.0-canary.21</strong>（2026-09-09 05:23 JST）と <strong>v16.4.0-canary.22</strong>（2026-09-09 08:43 JST）がリリースされました。loaders API への <code>.resolve</code> 追加とバージョン付与、turbo-tasks-backend の GC が操作をブロック時に徐々に終了するよう修正など。安定版の新規リリースはありません。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h2>🌐 その他のトピック</h2>
+<h3>Node.js — v24.21.0（LTS 'Krypton'）</h3>
+<p>2026-09-09 06:51 JST に v24.21.0 がリリースされました。ルート証明書を NSS 3.126 に更新、STORE ローダー経由の秘密鍵読み込みサポート（semver-minor）、OpenSSL 3.5.8 / Undici 7.29.1 への依存更新。</p>
+<p>🔗 <a href="https://github.com/nodejs/node/releases/tag/v24.21.0">Node.js v24.21.0</a></p>
+
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>、<strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
