@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-10 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-10 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-09 08:00 〜 2026-09-10 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Microsoft、9月月例セキュリティ更新（パッチチューズデー）でCVEベース973件に対応 — 一部はすでに悪用確認</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Windows / Office / SQL Server / Azure / SharePoint Server ほか</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>規模</th><td>CVEベース973件（最大重要度Critical 113件）＋サードパーティ4件</td></tr>
+<tr><th>影響</th><td>リモートコード実行258件、権限昇格438件、情報漏えい173件、DoS 56件、セキュリティ機能バイパス19件、なりすまし16件、メモリ関連13件</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190063" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／MSRC（2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>パッチチューズデー（毎月第2火曜）にあわせて月例セキュリティ更新プログラムを公開。Windows・Office・SQL Server・Azure・Microsoft Dynamics・SharePoint Server・開発ツールなど幅広い製品を対象。</li>
+<li>一部の脆弱性はすでに実攻撃での悪用が確認されている。Windows環境の利用者は早急な更新適用が望まれる。</li>
+</ul>
+
+<h3>Adobe Campaign Classicに認証不要RCE（CVE-2026-82004、CVSS 10.0）— 適用優先度「1」で緊急更新を</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-82004</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>10.0（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Adobe Campaign Classic 7.4.4 ビルド9401以前（オンプレミス／ハイブリッド環境のオンプレミス側コンポーネント）。修正版はビルド9402。</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190057" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／Adobeアドバイザリ APSB26-142（2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>OSコマンドインジェクションの脆弱性。認証を必要とせずリモートから任意コードを実行されるおそれがある。</li>
+<li>アドバイザリ公開時点で悪用は未確認だが、今後の悪用リスクが高いと見て適用優先度を「1」（アドバイザリ公開から72時間以内を目安に更新）に指定。</li>
+</ul>
+
+<h3>Google「Chrome 153」公開 — 脆弱性230件を修正、ゼロデイ（CVE-2026-87491）を含む</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-87491 ほか230件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>影響</th><td>Chrome 153.0.8010.37（Windows/macOS）、153.0.8010.36（Windows/Linux）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190040" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／Chrome Releases（2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>重要度Critical 5件（WebGLの解放後メモリ使用 CVE-2026-87464 / CVE-2026-87488、域外書き込み CVE-2026-87438、バッファオーバーフロー CVE-2026-87527、Castの解放後メモリ使用 CVE-2026-87628）に対応。</li>
+<li>V8の域外書き込み脆弱性 CVE-2026-87491（Medium）は実攻撃での悪用が確認されたゼロデイ（2026年8月6日報告）。今後数日から数週間かけて自動更新が展開されるが、手動での最新化を推奨。</li>
+<li>High 45件・Medium/Low多数を含む計230件を修正。ANGLE・PDFium・V8・DevTools・Web Authentication・Paymentsなど幅広いコンポーネントに影響。</li>
+</ul>
+
+<h3>Adobe ColdFusionに脆弱性9件 — Critical 6件を含む（APSB26-119、適用優先度1）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-48273 / CVE-2026-75746 ほか9件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>最大9.9（CVE-2026-48273、CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Adobe ColdFusion（修正アップデート提供済み）</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190035" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／Adobeアドバイザリ APSB26-119（2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>動的に評価されるコードにおけるEvalインジェクション CVE-2026-48273（CVSS 9.9）、SQLインジェクション CVE-2026-75746（9.1）を修正。</li>
+<li>ほかにEvalインジェクション CVE-2026-76190、XSS CVE-2026-75993、入力検証不備 CVE-2026-75999、アクセス制御不備 CVE-2026-75998などCritical 6件、Important 3件（7.5〜8.6）。早急な更新適用を要請。</li>
+</ul>
+
+<h3>Ivanti Neurons for ITSMに脆弱性8件 — Critical 6件（CVE-2026-12650ほか、CVSS 9.9）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-12650 / 12645 / 12646 / 12647 / 12744 / 12745 ほか8件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>CVSS</th><td>最大9.9（CVSSv3）</td></tr>
+<tr><th>影響</th><td>Ivanti Neurons for ITSM（オンプレミス版）。クラウド版は2026-08-09に修正適用済み。</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190068" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／Ivantiアドバイザリ（2026-09-08公開）</td></tr>
+</table>
+<ul>
+<li>信頼できないデータのデシリアライズによるRCE（CVE-2026-12650）、認可欠如（CVE-2026-12645 / 12646 / 12647、いずれもCVSS 9.9）、デシリアライズ由来のCVE-2026-12744 / 12745（9.8）を含む計8件（Critical 6件・High 2件）。</li>
+<li>オンプレミス版向けに2026.1 / 2025.4 / 2025.3 / 2025.2各Sept 2026 Security Patchを提供中。次期バージョン2026.2は9月21日提供予定。アドバイザリ時点での悪用は未確認。</li>
+</ul>
+
+<h3>CISA KEVに4件追加 — Adobe Commerce/MagentoのRCE（CVE-2026-75650）など実攻撃悪用を確認</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-75650 / CVE-2026-86218 ほか4件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span></td></tr>
+<tr><th>影響</th><td>Adobe Commerce / Magento、N-able N-central、Windows関連</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190076" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）／CISA KEV（2026-09-08追加）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-75650（Adobe Commerce / Magento）はテンプレートエンジンの特殊要素無害化不備により攻撃者が任意コードを実行可能。CVE-2026-86218（N-able N-central）は認証なしコードインジェクション。</li>
+<li>両CVEについては米行政機関の対応期限を9月11日と指定し、侵害状況の調査も必要と指定。実攻撃での悪用が確認されている。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot / Claude / Hermes Agent 関連では、本対象期間内に新規のセキュリティ情報は確認されませんでした。Hermes Agentの最新リリース v0.21.1（v2026.9.7、2026-09-08 JST公開）は前日朝刊で掲載済みで、対象期間内の新規リリースはありません。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>覆面調査サービス「ファンくる」にパスワードリスト攻撃 — 506万回のログイン試行で5万9,389人会員が不正ログインされ、ポイント不正交換も</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ファンくる（覆面調査サービス）</td></tr>
+<tr><th>発生日</th><td>2026-08-20 22:00 〜 08-24 13:00、9月9日報道</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189477" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）</td></tr>
+</table>
+<ul>
+<li>506万270回に及ぶログイン試行（パスワードリスト攻撃と見られる）があり、5万9,389人の会員アカウントが第三者にログインされた。登録済みの氏名・電話番号・生年月日・メールアドレス等の個人情報が参照された可能性。</li>
+<li>2件のアカウントではなりすましによりポイントが不正に交換された。攻撃に使われた認証情報は内部流出の痕跡は確認されておらず、外部流出認証情報の利用と見られる。</li>
+<li>警察・個人情報保護委員会へ報告。対象会員へ個別連絡とパスワード再設定案内、サービス一時停止のうえ対策導入し8月25日12時に再開済み。</li>
+</ul>
+
+<h3>立教大学：学生・卒業生のGoogleアカウント6つに不正アクセス — 迷惑メール1万7,668件を送信されスパム踏み台に、メール内容参照の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>立教大学</td></tr>
+<tr><th>発生日</th><td>2026-04-27 〜 08-24（第1波検知7月16日）、9月9日報道</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/190050" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）</td></tr>
+</table>
+<ul>
+<li>7月16日に海外からの不正アクセス・迷惑メール送信を検知。調査の結果、学生2人と卒業生2人の4アカウントが4月27日〜7月16日に不正アクセスを受けていたことが判明。</li>
+<li>さらに8月12日〜24日に学生2人のアカウントへの不正アクセスを検知。6アカウントから送信された迷惑メールは計1万7,668件。一部の迷惑メールには同大教員の氏名・メールアドレスが記載され、被害アカウントの受信トレイに保存されていたメールの内容が件名に悪用されていた。</li>
+<li>メール本文や個人情報が第三者に参照された可能性。Gmail以外のGoogle Workspaceアプリ・VPN・学内ネットワークに侵入形跡はなし。Microsoft 365では1アカウントで不審ログイン・プロフィール閲覧の恐れがあり対応済み。被害アカウントの一時停止・パスワード強制変更、学外ログインへの多要素認証必須化を実施。</li>
+</ul>
+
+<h3>大田区：施設職員がサポート詐欺被害に遭いPCを遠隔操作される — 端末内に職員・利用者556人分の個人情報が保存され流出の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東京都大田区（大田区民プラザ）</td></tr>
+<tr><th>発生日</th><td>2026-08-22、9月9日報道</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189902" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）</td></tr>
+</table>
+<ul>
+<li>8月22日、大田区民プラザの職員がパソコン利用中にサポート詐欺の警告画面を表示し、記載の連絡先に電話して指示に従い操作した結果、端末を操作できない状況に陥った。</li>
+<li>ネットワークから端末を隔離したが、それまでの間に第三者によるアクセスを受けた。当該端末には施設の職員・利用者556人分の氏名等が保存されており、外部流出の可能性があるとして調査中。</li>
+<li>対象となる職員・利用者へは書面で経緯の報告と謝罪を実施予定。</li>
+</ul>
+
+<h3>早島町：講演会申込フォームの不備で申込者氏名最大196人分・代表者連絡先最大100人分が閲覧可能な状態に</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>岡山県早島町（観光協会主催講演会）</td></tr>
+<tr><th>発生日</th><td>2026-08-10 10:00、9月9日報道</td></tr>
+<tr><th>情報源</th><td><a href="https://www.security-next.com/189868" target="_blank" rel="noopener noreferrer">Security NEXT</a>（2026-09-09報道）</td></tr>
+</table>
+<ul>
+<li>8月10日10時に観光協会主催講演会の申し込みを受け付けた際、フォームの不備により申込者の氏名（最大196人分）と申し込み代表者の電話番号・メールアドレス・市町村名等（最大100人分）が閲覧できる状態だった。</li>
+<li>申込者からの連絡で判明し、フォームを一時停止。国・県など関係機関へ報告のうえ、個人情報が表示されないことを確認して受け付けを再開済み。</li>
+</ul>
+
+<h3>ニチレイグループ：サイバー攻撃によるシステム障害 — 従業員情報漏えいの可能性を確認（第6報、7月13日発生）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ニチレイ（グループ）</td></tr>
+<tr><th>発生日</th><td>2026-07-13（ネットワーク遮断）、第6報2026-08-14公表</td></tr>
+<tr><th>情報源</th><td><a href="https://www.nichirei.co.jp/news/2026/530.html" target="_blank" rel="noopener noreferrer">ニチレイ公式発表（第6報）</a>／<a href="https://www.jiji.com/jc/v7?id=cyberattack" target="_blank" rel="noopener noreferrer">時事通信</a>（RansomHouse犯行声明の報道継続）</td></tr>
+</table>
+<ul>
+<li>7月13日にグループのシステムが不正アクセスによる障害を受け、冷蔵倉庫の入出庫業務や冷凍食品製造に影響。ネットワーク遮断後もシステム強化・監視体制の強化を継続中。</li>
+<li>第6報（8月14日）で、攻撃を受けたサーバの一部に従業員情報が保管されており、氏名・生年月日・会社メールアドレス・従業員番号など人事労務管理情報の漏えいのおそれを確認。不正利用の事実は未確認。</li>
+<li>犯行声明はランサムウェアグループ「RansomHouse」名義。外部専門会社と調査を継続しており、追加の漏えい可能性が確認された場合は速やかに該当者へ通知するとしている。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
