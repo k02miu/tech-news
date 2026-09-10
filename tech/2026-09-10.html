@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-10 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-10 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.267 / v2.1.266</h2>
+<p>対象期間内に v2.1.267（9月10日 05:10 JST）と v2.1.266（9月9日 09:02 JST）の2つのリリースが確認されました。v2.1.267 は設定機能の追加と大規模な修正波、v2.1.266 は LLM ゲートウェイ構成向けの回帰修正です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>maxEffortLevel 設定</strong>: トップレベルまたは modelSettings 配下で設定可能。Bedrock、Vertex、Foundry を含む全プロバイダーの effort レベルに上限を設定でき、ユーザーはより低いレベルを選択可能</li>
+  <li><strong>--system-prompt-snapshot off</strong>: 会話に記録されたプロンプトを再利用せず、リクエストごとにシステムプロンプトを新規生成（プロンプト文言の反復調整向け）</li>
+  <li><strong>Bash ツールの説明改善</strong>: コマンドをそのまま表示する代わりに、平易な言葉でコマンドの内容を説明するようガイダンス改善</li>
+  <li><strong>プロンプトキャッシュ安定性の向上</strong>: サブエージェントや --system-prompt 起動のセッションが、システムプロンプトとツール定義を再レンダリングせず一度だけ記録するように</li>
+  <li><strong>/diff パネル改善</strong>: 「0 files changed」とスピナーが一瞬点滅する問題を解消、空状態をパネル中央に配置</li>
+  <li><strong>サンドボックスガイダンス改善</strong>: pbcopy などのクリップボードコマンドがサンドボックス内で失敗した際、/copy を提案</li>
+  <li><strong>入力応答性の改善</strong>: キーストロークがスピナーやストリーミング再描画の背後でフレーム待ちになる問題を解消</li>
+  <li><strong>--resume の初回描画高速化</strong>: 多数の Bash ツール呼び出しを含むセッションの再開が高速化</li>
+  <li><strong>自己ホストランナー</strong>: --use-anthropic-git-proxy を登録時にサーバーへ報告し、レガシー git プロキシ経由でクローンするセッションに警告を出力</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>2.1.265 のゲートウェイ回帰修正（v2.1.266）</strong>: CLAUDE_CODE_USE_GATEWAY 環境変数が単独で設定されていると Cloud ゲートウェイサインインが強制され、API キーや apiKeyHelper 併用構成で全リクエストが「Not signed in to the Cloud gateway」で失敗する問題。この変数単独は再び無視されるように</li>
+  <li><strong>プロンプトキャッシュ破壊の広範な修正</strong>: /model 切り替え時の全ツール定義再送信、セッション再開時のツールリスト書き換え、MCP 再接続タイミング差によるキャッシュミスなど多数修正</li>
+  <li><strong>大規模セッション再開（5MB超）</strong>: 並列ツール呼び出しとフック出力が再読み込み時に欠落する問題を修正</li>
+  <li><strong>/compact 後の再開</strong>: 「Continue from where you left off.」の不正なターンが挿入されなくなる</li>
+  <li><strong>セキュリティ修正</strong>: バックスラッシュを含むマーケットプレースエントリパスが macOS/Linux の containment チェックを回避できる問題を修正</li>
+  <li><strong>メンバ設定のフェイルセーフ</strong>: 読み取れない managed allowedHttpHookUrls 等が「何でも許可」ではなく「何も許可しない」ように修正</li>
+  <li><strong>tmux/ssh 再接続後</strong>: shift+enter と option+backspace が効かなくなる問題を修正</li>
+  <li><strong>Remote Control</strong>: サーバー認証情報失効（約30日）で全セッションが切断される問題。ホストが再登録して継続するように</li>
+  <li><strong>usage-limit 警告の点滅</strong>: モデルやモード違いのリミット窓で警告が点滅する問題を修正</li>
+  <li><strong>VSCode 拡張</strong>: 循環親リンクのあるトランスクリプトで拡張ホストが 100% CPU でハングする問題、WSL2/WSLg でのスクリーンショット貼り付け、CRLF ファイルの diff 編集失敗、@-メンションのスペース入りパス欠落など多数修正</li>
+  <li><strong>Claude Code on the web</strong>: GitHub Enterprise Server セッションでトークン失効時にアカウントが切断表示になる問題、Claude GitHub App のない組織で gh 呼び出しが失敗する問題を修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.21.1（v2026.9.7、9月7日リリース）です。コードベースのモジュール化、ファイル操作・起動パフォーマンス改善、プロバイダー/モデル更新、デスクトップセッション制御、MCP 認可改善、cron スケジューリング修正を含むパッチリリースで、詳細なリリースノートは v0.22.0 で公開予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは 2026.9.3（9月8日リリース）です。より安全なアップデート機構、パフォーマンス改善、Skill Workshop、ネイティブブラウザタブ、会話の共有機能、検索可能な会議ライブラリを含むリリースで、Node ランタイム要件（Node 24.16+/26.1+）が breaking change となっています。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.199</h2>
+<p>9月10日 03:45 JST に v1.4.199 がリリースされました。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>サイドバーの Create メニュー統合</strong>: 2つの作成アクションを1つの Create メニューに統合し、全ウィンドウ幅で New workspace の隣に Add project を配置、キーボードショートカットのヒントも表示</li>
+  <li><strong>構造化ネイティブチャットの強化</strong>: ツールバッチのグループ化、実行詳細、Codex サブエージェントのアクティビティ表示、/clear と /compact、セッション巻き戻し、Agent Session History からの再開、チャットタブのリネーム、Windows ネイティブでの構造化 Codex チャット</li>
+  <li><strong>パフォーマンス改善</strong>: リレー接続・再接続の高速化、レンダラー、ストア、ターミナル、ネイティブチャットジャーナル、Git パース、カタログインデックスにわたる広範なパフォーマンスパス</li>
+  <li><strong>アクティビティ表示の改善</strong>: 作業中のエージェントが「未読のみ」フィルターでも表示されるように、アクティビティメニューをフィルターと表示セクションに整理</li>
+  <li><strong>ローカライズ</strong>: アクティビティビューとサイドバーの翻訳追加</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.199">Orca v1.4.199</a></p>
+
+<h2>⚡ その他のトピック</h2>
+<p><strong>Next.js</strong> — v16.4.0-canary.23〜25 が対象期間内に3本公開されました（canary チャンネル、安定版リリースはなし）。Next.js 15系以前の安定版に動きはありませんでした。</p>
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>、<strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
