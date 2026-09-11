@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-11 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-11 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.268</h2>
+<p>対象期間内に v2.1.268（9月11日 05:44 JST）がリリースされました。Claude apps gateway まわりの機能追加と、サードパーティエンドポイントでの HTTP 400 回帰修正、パーミッション周りのセキュリティ修正など大規模な修正波が含まれます。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude apps gateway の料金連携</strong>: gateway.yaml に <code>pricing:</code> を設定すると、サインイン済みの Claude Code クライアントが managed settings 経由で同じレートを受け取り、<code>/cost</code> とテレメトリが支出メーターと一致するように</li>
+  <li><strong>gateway 向け警告の追加</strong>: <code>access_control.allow_cidrs</code> が空の場合の起動時警告、およびパブリックアドレスからリクエストが到達した際の1回限りの警告</li>
+  <li><strong>gatewayInternalNetworks managed setting</strong>: 管理者が組織自身のパブリック IPv4 ブロック上の Claude apps gateway への <code>/login</code> を許可可能に</li>
+  <li><strong>self-hosted runner のセッション状態削除</strong>: <code>claude self-hosted-runner --remove-session-state</code>（デフォルト off）でセッション終了時に <code>&lt;base-dir&gt;/_sessions/</code> 配下のセッションごとのディレクトリを削除</li>
+  <li><strong>JSON 出力の拡充</strong>: <code>claude auth status --json</code> に <code>configDirectory</code> を追加。plugin install/uninstall/update/enable/disable に <code>--json</code> を追加し、<code>claude plugin list --json</code> の各行に <code>errorDetails</code>/<code>noteDetails</code> を追加</li>
+  <li><strong>パブリッシュ済みアーティファクトのタブアイコン</strong>: ページに合わせて Claude が選んだブラウザタブアイコンを追加</li>
+  <li><strong>フルスクリーンモードの高速化</strong>: プロンプト行の追加/削除（Shift+Enter）が1文字のタイピング並みの速度で再描画されるように</li>
+  <li><strong>--continue / --resume の即時表示</strong>: SessionStart hooks を待たずに会話が即座に表示され、最初のメッセージでトランスクリプト全体を再読込しない</li>
+  <li><strong>auto mode の拒否メッセージ改善</strong>: Claude が受け取るメッセージがブロックしたルールを明示し、より安全な方法と無関係な作業の継続を促すように</li>
+  <li><strong>/plugin の即時反映</strong>: プラグインのインストール・有効化・無効化がメニューを閉じた時点で反映され、<code>/reload-plugins</code> が不要に</li>
+  <li><strong>Bedrock / Vertex / Foundry の整合性</strong>: 環境・モデル・設定情報をアタッチメントとして配信し、ツールリストを会話全体でバイト安定化（ファーストパーティセッションと一致）</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>HTTP 400 回帰修正</strong>: 2.1.265 以降、サードパーティの Anthropic 互換エンドポイント（<code>ANTHROPIC_BASE_URL</code>）で Artifact ツール入力スキーマの正規表現が拒否され毎ターン HTTP 400 で失敗する問題を修正</li>
+  <li><strong>WebFetch の無限ハング修正</strong>: レスポンスを開いたまま終了しないサーバーで永久に待ち続ける問題。300秒で失敗するように（<code>CLAUDE_CODE_WEBFETCH_DEADLINE_MS</code> で上書き可能、0 で無効化）</li>
+  <li><strong>永続的な高 CPU 使用率の修正</strong>: 長時間アイドルセッションのビジーループが CPU コアを占有する問題、セッション recap 中のターミナルフォーカス連打で CPU が高止まりする問題を解消</li>
+  <li><strong>セキュリティ: シンボリックリンク経由のパーミッション回避</strong>: <code>/etc</code>・<code>/tmp</code>・<code>/var</code>（macOS）や <code>/bin</code>（Linux）等の symlink ディレクトリに対する deny/ask ルールが実体パスで指定された場合に適用されない問題、Bash コマンドが symlink パス表記の deny ルールを無視する問題を修正</li>
+  <li><strong>セキュリティ: 解析不能コマンドでの deny ルール回避</strong>: 同一行に <code>env -C</code>・<code>eval</code> 等のパーミッションチェッカーが解析できないコマンドがあると Read/Edit deny ルールが適用されない問題を修正</li>
+  <li><strong>シークレット漏えい修正</strong>: プラグイン・マーケットプレースのエラーが git ソース URL からトークンやパスワードを表示する問題、<code>/mcp</code>・<code>/plugin</code> サーバー詳細や <code>claude mcp list</code>/<code>get</code>、MCP ログインエラーが <code>${VAR}</code> プレースホルダーから解決したシークレットを表示する問題を修正</li>
+  <li><strong>再スポーンされた in-process チーメイト</strong>: 信頼していないフォルダ内の同名エージェントファイルからツールやシステムプロンプトを引き継ぐ問題を修正</li>
+  <li><strong>MCP ツール呼び出し後</strong>: 「your message came through empty」と返答することがある問題を修正</li>
+  <li><strong>モデルアクセスの不整合</strong>: キャッシュされた古い拒否で再起動後や Desktop Code タブでモデルが制限表示される問題、別プロセスがモデルアクセスを更新すると実行中セッションが黙って組織既定モデルへ切替わる問題を修正</li>
+  <li><strong>/compact の文字化け</strong>: <code>/compact</code>・auto-compact の会話サマリーが <code>$</code> を含むテキストを壊す問題を修正</li>
+  <li><strong>ワークロードアイデンティティフェデレーション</strong>: claude-code-action 構成でプロセス共有時に <code>401 … jti reused</code> で実行途中に失敗する問題を修正</li>
+  <li><strong>MCP OAuth</strong>: ローカルコールバックポート範囲をバインドできないと「No available ports for OAuth redirect」で失敗する問題を修正</li>
+  <li><strong>権限モデルの変更</strong>: タスクトラッキングツール（TaskCreate/Get/Update/List、TodoWrite）の提供対象を Claude 3.x、Opus 4.0–4.7、Sonnet 4.0–4.6、Haiku 4.5 に限定（他は <code>CLAUDE_CODE_ENABLE_TODO_TOOLS=1</code> で有効化）</li>
+  <li><strong>アーティファクト権限の厳格化</strong>: 承認スキップ設定のローカル Cowork セッションで、セッションフォルダ外や symlink の背後にあるローカルファイルの読み取りを拒否するように</li>
+  <li><strong>Slack / Chrome / VSCode</strong>: managed settings の MCP allowlist で Slack セッションの Slack ツールが失われる問題、Chrome でナビゲーション URL のホスト解析不能時に "https" ホストの許可を求める問題、VSCode で <code>CLAUDE_CONFIG_DIR</code> 設定時にセッションリスト等が壊れる問題を修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v0.21.1（v2026.9.7、9月7日リリース）です。コードベースのモジュール化、ファイル操作・起動パフォーマンス改善、プロバイダー/モデル更新、デスクトップセッション制御、MCP 認可改善、cron スケジューリング修正を含むパッチリリースで、詳細なリリースノートは v0.22.0 で公開予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 2026.6.35</h2>
+<p>9月10日 15:39 JST に Extended Stable（LTS）ラインの 2026.6.35 がリリースされました。2026年6月 LTS の最終リリースであり、監査済みの信頼性・セキュリティバックポートをまとめたメンテナンスリリースです（新機能はなし）。</p>
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>プロバイダー・チャネル境界の安全化</strong>: バンドルされたプロバイダーとチャネルアダプタが信頼できないレスポンス本文をバウンドし、高コスト処理前に過大な入力を拒否、トランスポート障害時も安全なリカバリを維持</li>
+  <li><strong>長時間配信の信頼性向上</strong>: agent・gateway・retry・channel 経路がキャンセル、リトライ、部分送信、プロセスストリーム障害を、作業損失やunsafe操作の再生なしに処理</li>
+  <li><strong>バンドルプラグインの耐障害性</strong>: local-model、browser、media、collaboration プラグインが不正ペイロード・タイムアウト・一時的上流障害からクリーンに復旧</li>
+  <li><strong>メモリ安全性</strong>: provider・search・embedding・media・channel 統合が成功/エラーレスポンスの読み取りを上限化し、悪意あるペイロードによるメモリ枯渇を防止</li>
+  <li><strong>リリースパッケージ</strong>: Plugin SDK API ベースラインを更新し、公開パッケージの preflight がリリースサーフェスを検証</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v1.4.199（9月9日リリース）です。サイドバーの Create メニュー統合、構造化チャットの強化、リレー接続の安定化、広範なパフォーマンス改善を含むリリースです。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>⚡ その他のトピック</h2>
+<p><strong>Next.js</strong> — v16.4.0-canary.26 が対象期間内に公開されました（canary チャンネル、安定版リリースはなし）。Next.js 15系以前の安定版に動きはありませんでした。</p>
+<p class="empty-notice"><strong>AWS / Azure / GCP</strong>、<strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
