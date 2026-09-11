@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-12 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-12 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>「GitLab」にセキュリティ更新 — クリティカル脆弱性2件を含む18件を修正</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-critical">Critical（CVE-2026-85706 / CVE-2026-87719）</span></td></tr>
+<tr><th>対象</th><td>GitLab CE / EE（CVE-2026-87719はEEのみ影響）</td></tr>
+<tr><th>修正</th><td>GitLab 19.3.2 / 19.2.6 / 19.1.8（アドバイザリ 2026-09-10 公開）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-85706はリポジトリのコミット用APIにおけるパストラバーサル。パスの制限および認証処理に不備があり、一定の条件下で認証なしにサーバ上の任意ファイルを読み取ることが可能となる。</li>
+<li>CVE-2026-87719はGraphQLサブスクリプションで信頼できないデータをデシリアライズする脆弱性。「Duo Chat」へアクセスできる認証済みユーザーによって、「Advanced Search」の設定や機密性の高い認証情報を取得されるおそれがある。</li>
+<li>サードパーティ製ソフトウェアの依存関係を含めCVEベースで18件を解消。実悪用の報告は確認されていない（Security NEXT 2026-09-11報道）。</li>
+</ul>
+
+<h3>Dell「ThinOS 10」に深刻な脆弱性 — リモートから認証なしのコマンド実行が可能</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-critical">Critical（CVE-2026-81467 CVSSv3.1 9.8）</span></td></tr>
+<tr><th>CVE</th><td>CVE-2026-81467（9.8）/ CVE-2026-81048（9.6）/ CVE-2026-81046（9.4）/ CVE-2026-81468（9.1）ほか計54件</td></tr>
+<tr><th>修正</th><td>ThinOS 10 2605_10.2616（2026-08-31 リリース、アドバイザリは 2026-09-09 公開）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-81467はOSコマンドインジェクションで、リモートから認証なしにコマンドを実行されるおそれ。CVE-2026-81048は隣接ネットワークからコード実行が可能なコマンドインジェクション。製品固有の7件にサードパーティ製コンポーネントの47件を加えた54件が対象。</li>
+<li>Wyse / Latitude / OptiPlex / Dell Pro / Dell Precision など対応端末が影響。同バージョン以降への更新が呼びかけられている（Security NEXT 2026-09-11報道）。</li>
+</ul>
+
+<h3>米CISA、MikroTik「RouterOS」の脆弱性2件が実攻撃で悪用されているとして注意喚起</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-high">High〜Critical（権限昇格・情報漏えい）</span></td></tr>
+<tr><th>CVE</th><td>CVE-2026-86060（コマンド引数の無害化不備・権限昇格）/ CVE-2026-67277（認証欠如・カーネルメモリ情報漏えいとDoS）</td></tr>
+<tr><th>対応</th><td>米行政機関は2026年9月13日までに対処義務。CVE-2026-86060は侵害調査を要請</td></tr>
+</table>
+<ul>
+<li>CISAは現地2026年9月10日、悪用が確認された脆弱性カタログ（KEV）に2件を追加。CVE-2026-86060はSSHセッションでログインヘルパーにアクセスする必要があるが、信頼されたRouterOSのポリシーマスクを変更されて権限昇格につながるおそれ。</li>
+<li>CVE-2026-67277は認証完了前に接続を受け入れてしまう不備で、カーネルメモリ上の情報が漏えいしたりDoSが生じたりする可能性がある。ルータは境界機器であり、関連製品の利用組織も早急な確認・更新が求められる（Security NEXT 2026-09-11報道）。</li>
+</ul>
+
+<h3>Claude Code v2.1.269：プラグイン展開物のローカル権限・denyルール適用範囲などセキュリティ関連修正</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-medium">Medium（権限・機密保護の修正）</span></td></tr>
+<tr><th>対象</th><td>Claude Code（CLI / VSCode拡張）</td></tr>
+<tr><th>修正</th><td>v2.1.269（2026-09-11 19:17 UTC = JST 2026-09-12 04:17 公開）</td></tr>
+</table>
+<ul>
+<li>セッション用に展開したプラグインアーカイブが他のローカルユーザーから読める状態だった問題、展開ファイルがアーカイブ由来のworld-writableビットを保持していた問題、再展開時に古いファイルが残存する問題を修正。</li>
+<li>Bashの <code>tee</code> コマンドが書き込むファイルに対して <code>Edit()</code> のdenyルールと書き込みパス検査が適用されない問題を修正。<code>Bash(tee:*)</code> の許可ルールが作業ディレクトリ外のパスを覆わないようにも変更。</li>
+<li><code>!</code> で始まるdeny/ask権限ルールが、それを定義した設定ソースの範囲を越えて適用される問題を修正（自ソース内のみ適用、単独の <code>!</code> 否定は無視）。</li>
+<li>path-scoped denyルールでブロックされたRead/Edit/Writeが <code>--output-format stream-json</code> の <code>permission_denials</code> から欠落する問題、プラグインの <code>headersHelper</code> 同意プロンプトが別ホストに見えるURLパスを表示する問題も修正。VSCodeでは権限ルール一覧のダイアログが追加（startup-option・session-only・managedルールは読み取り専用）。CVE番号の明記なし。</li>
+</ul>
+
+<h3>OpenClaw 2026.9.4：アクセス境界とコンテンツ境界の修正群</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-medium">Medium（アクセス制御・境界防御の修正）</span></td></tr>
+<tr><th>対象</th><td>OpenClaw（Gateway / Control UI / チャネルアダプタ・MCP連携）</td></tr>
+<tr><th>修正</th><td>2026.9.4（2026-09-11 04:12 UTC = JST 13:12 公開）</td></tr>
+</table>
+<ul>
+<li>セキュリティ修正時に既存のWhatsAppグループ許可リストを保持、プライベートIPv6例外を有効にした場合でもクラウドメタデータアドレスへの到達を引き続き遮断、SlackのHTTPリクエストボディに上限を設定。</li>
+<li>Tlonの引用取得を引用元投稿のみに制限、署名の古いFeishu Webhookコールバックを拒否、兄弟エージェントのサンドボックスからの添付ファイル読み取りを防止、アップロード拒否後はMCPのパイプライン呼び出しを停止。CVE番号の明記なし。</li>
+</ul>
+
+<h3>Hermes Agent v0.21.2（v2026.9.11）：マルチプロファイル分離のハードニング</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-medium">Medium（プロファイル間の資格情報・データ分離）</span></td></tr>
+<tr><th>対象</th><td>Hermes Agent（1つのGatewayで複数プロファイルを動かすmultiplex構成）</td></tr>
+<tr><th>修正</th><td>v0.21.2 / v2026.9.11（2026-09-11 19:20 UTC = JST 2026-09-12 04:20 公開）</td></tr>
+</table>
+<ul>
+<li>セカンダリプロファイルのボットがデフォルトプロファイルの許可リストを継承しないよう修正。アダプタがデフォルトプロファイルのホストへ資格情報を送信する問題、stdio MCPサーバーがデフォルトプロファイルのVaultシークレットを受け取る問題を解消。</li>
+<li><code>MEDIA:</code> 配信で別プロファイルの <code>.env</code> / <code>auth.json</code> / <code>state.db</code> を添付できてしまう問題、セカンダリプロファイルが兄弟プロファイルのNous bearerをプロセス内メモから得てしまう問題、Feishuコールバックや <code>/p/&lt;profile&gt;/</code> Webhook応答が別プロファイルに流れる問題を修正。CVE番号の明記なし。</li>
+</ul>
+
+<h3>JVN：AOMEI Backupperのカーネルドライバに権限昇格、a-blog cmsにパストラバーサル</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-medium">Medium（権限昇格 / 情報漏えい・改ざん）</span></td></tr>
+<tr><th>CVE</th><td>CVE-2026-87727（a-blog cms パストラバーサル、CVSSv3.0 6.5 / CVSSv4.0 6.9）</td></tr>
+<tr><th>対象</th><td>AOMEI Backupperの <code>amwrtdrv.sys</code>（JVNVU#95258183）/ a-blog cms Ver. 3.2.33以前（JVN#20829034）</td></tr>
+</table>
+<ul>
+<li>AOMEI Backupperのカーネルドライバにおける権限昇格の脆弱性について、CERT/CCのアドバイザリが公表された（JVN 2026-09-11 10:30 JST）。</li>
+<li>a-blog cmsではフォーム設定の「管理者宛メールへのファイル添付」が有効な場合に限り、未認証の第三者からシステム上の任意ファイルを読み取られたり削除されたりするおそれ。Ver. 2.11系以下はサポート終了のため修正版の提供予定なし。Ver. 3.0系以上へのアップグレードが推奨される（JVN 2026-09-11 12:00 JST公開、悪用未確認）。</li>
+</ul>
+
+<h3>CISA ICS Advisory（2026年9月10日分）— 新規3件・更新1件</h3>
+<table class="cve-table">
+<tr><th>重要度</th><td><span class="badge-low">Low〜Medium（制御システム向け）</span></td></tr>
+<tr><th>対象</th><td>米CISAが公表した産業制御システム（ICS）および医療機器向けアドバイザリ</td></tr>
+<tr><th>情報源</th><td>JVNVU#94404414（JPCERT/CC 2026-09-11 10:30 JST 公開）</td></tr>
+</table>
+<ul>
+<li>ICS Advisory / ICS Medical Advisoryとして新規3件と更新1件が公表された。詳細はCISAの各アドバイザリを参照。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React / Hono / Java / Spring Boot / Python / Django / GCP / AWS / Azure の各スタックについては、本対象期間に該当する新規のセキュリティアドバイザリ・脆弱性情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>デジタル庁：政府共通の業務実施環境「GSS」への不正アクセス — 職員等の個人情報約24.6万件が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>デジタル庁（ガバメントソリューションサービス：GSS）</td></tr>
+<tr><th>発生日</th><td>2026年5月下旬ごろ侵入 / 6月25日検知 / 7月9日判明・遮断</td></tr>
+<tr><th>公表</th><td>2026-09-11 デジタル庁公表・松本大臣記者会見</td></tr>
+</table>
+<ul>
+<li>外部からの保守運用に利用していたVPN機器の脆弱性を悪用され、第三者がGSSのシステムへ侵入。保守運用担当者のアカウントを利用してサーバ上の大量ファイルへのアクセスが行われ、ファイルの一部が外部に流出した可能性がある。</li>
+<li>漏えいの可能性があるのは約24.6万件。内訳はGSS利用機関の職員および業務に携わった公務員等（独立行政法人職員を含む）が約18.9万件、業務に携わった事業者および個人が約5.7万件。属性は氏名約23.6万件、メールアドレス約23.1万件、電話番号約9.4万件、住所約0.1万件など（重複あり）。マイナンバー・金融機関口座情報・年金番号は含まれず、一般の人の個人情報も含まれないことを確認済み。</li>
+<li>7月9日に当該アカウントを停止し、侵害機器と外部の通信を遮断。7月15日には個人情報保護委員会へ報告し、警察庁にも相談している。現時点で二次被害は確認されていないが、なりすまし・フィッシングへの注意が呼びかけられ、対象者には順次個別連絡のうえ専用窓口が設置された。</li>
+<li>松本大臣は、悪用された脆弱性は事案発生前から把握していた既知の脆弱性で、CVSS評価は「中（Medium）」程度であり緊急度の高い他の脆弱性への対応を進める最中に悪用されたと説明。検知から公表まで約2カ月半を要した理由は調査に時間を要したためとし、脆弱性管理方法の見直しや外部からの接続方法の改善を進めるとしている。</li>
+<li>piyologは、大臣説明（CVSS「中」・5月中旬からの悪用観測・外部VPN接続の侵害経路）がPalo Alto NetworksのPAN-OS GlobalProtectにおける認証回避の脆弱性 CVE-2026-0257 と整合すると指摘しているが、VPN製品名は公式には明らかにされていない（推測である旨が明記されている）。</li>
+</ul>
+
+<h3>サカイホールディングス子会社（葬祭事業）：従業員がサポート詐欺被害、個人情報を含む約4000ファイルが削除</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>エスケーアイマネージメント（サカイホールディングス グループ会社・葬祭事業）</td></tr>
+<tr><th>発生日</th><td>2026年8月7日 遠隔操作 / 8月10日 被害確認</td></tr>
+<tr><th>公表</th><td>2026-09-11 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>従業員が業務用パソコンでAIツールに関するサイトを閲覧中に警告画面が表示され、記載先へ連絡。サポートセンターと信じて案内に従った結果、遠隔操作ツールがインストールされた。</li>
+<li>第三者による遠隔操作を確認したため端末をネットワークから遮断。8月10日のログ調査で、端末内に保存されていた個人情報を含む約4000ファイルが削除されていたことが判明した。ファイルには顧客の氏名・住所・電話番号・性別・生年月日・メールアドレスなどが含まれる。</li>
+<li>警察へ被害を相談するとともに個人情報保護委員会へ報告し、外部事業者によるフォレンジック調査を実施。検索結果の偽警告から遠隔操作に至る典型的なサポート詐欺であり、業務端末からのAI関連サイト閲覧を起点とする手口として注意が必要。</li>
+</ul>
+
+<h3>東京外環プロジェクト ホームページ侵害（進展）：登録者メールアドレス約700件が第三者に参照されたおそれ</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>国土交通省・東日本高速道路（NEXCO東日本）・中日本高速道路（NEXCO中日本）</td></tr>
+<tr><th>発生日</th><td>2026年9月上旬 侵害の可能性判明（初回公表 9月4日）</td></tr>
+<tr><th>公表</th><td>2026-09-11 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>東日本高速道路が運営する「東京外環プロジェクトホームページ」が第三者によって侵害された可能性があり、調査の結果、メール配信を希望する登録者のメールアドレス約700件が第三者から参照されたおそれがあることが判明した。</li>
+<li>同サイトは公開を一時停止したままで原因等を調査中。再開までは東京外かく環状国道事務所のウェブサイトで告知を行うとしている。</li>
+</ul>
+
+<h3>東京科学大学：情報基盤への不正アクセスで学生・教職員の個人情報が流出した可能性（進展）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東京科学大学（旧東京工業大学・旧東京医科歯科大学）</td></tr>
+<tr><th>発生日</th><td>2026年8月28日 対策本部設置 / 初回公表 9月7日</td></tr>
+<tr><th>公表</th><td>2026-09-11 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>大学の情報基盤が第三者による不正アクセスを受け、学生や教職員の個人情報が流出した可能性があることが判明した。</li>
+<li>対象は大学統合時に在籍していた学生・教職員で、氏名・住所・メールアドレスなどが含まれる。被害拡大防止措置を講じ、外部協力のもと影響範囲と対象情報の詳細を調査中。流出情報を悪用したなりすましメールなどへの注意が呼びかけられている。</li>
+</ul>
+
+<h3>EUサイバーレジリエンス法（CRA）の脆弱性・インシデント報告義務が2026年9月11日に適用開始</h3>
+<table class="cve-table">
+<tr><th>制度</th><td>EU Cyber Resilience Act（CRA）Article 14 に基づく報告義務</td></tr>
+<tr><th>適用開始</th><td>2026年9月11日（全面適用は2027年12月11日）</td></tr>
+<tr><th>報告先</th><td>ENISAが運用する「CRA Single Reporting Platform（SRP）」</td></tr>
+</table>
+<ul>
+<li>EU市場で提供するデジタル要素を備えた製品について、実際の攻撃で悪用されている脆弱性（actively exploited vulnerability）を把握した場合、原則24時間以内に早期警告、72時間以内に詳細通知を提出する義務が生じる。修正・緩和策の提供後14日以内に最終報告を行う。製品のセキュリティに重大な影響を及ぼすインシデントも同様に24時間・72時間の報告対象。</li>
+<li>すべてのCVEやPoC公開を報告する制度ではなく、あくまで実悪用の証拠を把握した時点で報告時計が動く点が重要。2027年12月11日より前に市場投入された対象製品にも適用される。</li>
+<li>報告義務のみが先行適用され、SBOM作成などの主要要件は2027年12月11日からの全面適用となる。対象製品・バージョン・依存コンポーネント・脆弱性認知時刻を社内で追跡できる体制の整備が実務上の焦点となる。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
