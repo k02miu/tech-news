@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-12 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-12 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.269</h2>
+<p>対象期間内に v2.1.269（9月12日 04:25 JST 公開）がリリースされました。プラグインの eval 実行基盤、出力スタイル切替、Bash ツールの diff 表示といった開発者体験の強化と、プロンプトキャッシュ・パーミッション・日本語を含む多言語入力まわりの修正が中心です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong><code>claude plugin eval</code></strong>: プラグインの eval スイートを Claude Code に対して実行し、採点済みで再現可能な結果（JSON + HTML レポート）を取得できるように。詳細は <code>claude plugin eval --help</code></li>
+  <li><strong><code>/output-style [name]</code></strong>: 出力スタイルの一覧表示と切替が可能に。Remote Control 経由、およびクラウドその他のヘッドレスセッションでも利用可能</li>
+  <li><strong>Bash ツールの編集 diff</strong>: Bash ツールがファイル編集を処理した場合、変更されたファイルの diff をツール結果に表示（設定 <code>bashEditDiffEnabled</code>）</li>
+  <li><strong><code>OTEL_METRICS_INCLUDE_REPOSITORY</code></strong>: OpenTelemetry のメトリクスとイベントを <code>vcs.*</code> リポジトリ属性でタグ付け。<code>OTEL_LOG_TOOL_DETAILS</code> 併用時はコミットイベントに <code>vcs.ref.head.*</code> を付与</li>
+  <li><strong><code>CLAUDE_CODE_GATEWAY_MODEL_DISCOVERY_TIMEOUT_MS</code></strong>: LLM gateway の <code>/v1/models</code> 検出タイムアウトを延長（既定 3 秒）</li>
+  <li><strong><code>CLAUDE_CODE_WORKFLOW_MAX_CONCURRENT_AGENTS</code></strong>（1〜256）: Workflow ツールの 1 実行あたり同時エージェント上限を引き上げ、推論律速のファンアウトに対応</li>
+  <li><strong>プロンプトサジェスチョンの多言語改善</strong>: 日本語・中国語・韓国語テキストのフィルタリングを改善。混在スクリプトや単語 1 語の候補は保持し、メタ的・評価的な文言は英語と同様に除外</li>
+  <li><strong>日本語・中国語・タイ語などの入力修正</strong>: 単語間にスペースを置かない言語のテキストでプロンプトサジェスチョンが破棄される問題を修正</li>
+  <li><strong>長セッションの応答性</strong>: トランスクリプト更新時に会話全体を再処理して折りたたみツール要約を組み立てなくなった</li>
+  <li><strong>SSH 経由のキーボード対応強化</strong>: kitty キーボードクエリに応答する端末（foot、Alacritty 0.16+ など）で Shift+Enter と Ctrl+Shift ショートカットが利用可能に</li>
+  <li><strong><code>/diff</code> パネル</strong>: ローディング表示を挟まず、1 ステップでレンダリング済みの状態で開くように改善。スピナーに <code>/focus</code> を提案するヒントを追加</li>
+  <li><strong>[VSCode] エージェントマップ</strong>: 「N agents」フッターピルからサブエージェントのマップを開き、エージェントごとのカード・Stop agent・読み取り専用トランスクリプトを表示</li>
+  <li><strong>[VSCode] Hooks / Permission rules ダイアログ</strong>: コマンドメニューからフックとパーミッションルールの表示・追加・編集・削除が可能に（managed・plugin・session の各ルールは読み取り専用）</li>
+  <li><strong>[Claude Code on the web]</strong>: クラウドセッションで Claude が読む前にキュー内メッセージを取り戻せるように（キューから削除、または Esc / Up でメッセージボックスへ復帰）</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>プロンプトキャッシュの部分無効化</strong>: 出力トークン上限で応答が打ち切られ自動再開した翌ターンでキャッシュが部分的に無効化される問題を修正</li>
+  <li><strong>「Prompt is too long」の恒久スタック</strong>: 自動圧縮に要約対象となる完全な過去のやり取りがない場合にセッションが永久にスタックする問題を修正（巨大プロンプトの Agent SDK セッションで多発）</li>
+  <li><strong><code>/goal</code> の無言停止</strong>: API エラー・ネットワーク断・トークン上限の後に黙って停止する問題を修正。バックオフ付き再試行、または理由（利用上限のリセット待ちを含む）を表示して一時停止するように</li>
+  <li><strong>パーミッションルールの適用範囲</strong>: <code>!</code> で始まる deny / ask ルールが、それを記述した設定ソースを越えて適用される問題を修正（自ソース内のみ適用、単独の <code>!</code> 否定は無視）</li>
+  <li><strong>Bash <code>tee</code> 経由の書き込み</strong>: <code>Edit()</code> deny ルールと書き込みパスチェックが <code>tee</code> の出力先に適用されない問題を修正。<code>Bash(tee:*)</code> allow ルールは作業ディレクトリ外の出力先を対象にしなくなった</li>
+  <li><strong>FTS 関連の復旧</strong>: プラグインアーカイブ展開時に他ローカルユーザーから読み取り可能だった問題、展開ファイルがアーカイブの world-writable ビットを保持する問題、再展開時に古いファイルが残る問題を修正</li>
+  <li><strong>端末描画の回帰</strong>: kitty プロトコル端末で F1/F2/F4 が効かない、st で Delete が効かない、rxvt-unicode で Alt+矢印が Escape 扱い、WezTerm で Shift+句読点が非シフト文字になる問題（2.1.247 の回帰）を修正</li>
+  <li><strong>リモート／ヘッドレスセッションの状態表示</strong>: バックグラウンドエージェントが動作中のまま「waiting for your input」と報告される問題を修正（<code>CLAUDE_CODE_BG_TASKS_REPORT_RUNNING=0</code> で旧挙動に戻せる）</li>
+  <li><strong>圧縮後の git status</strong>: Claude に伝えられる git status がセッション開始時点のものではなく現在の状態になった</li>
+  <li><strong>CMYK JPEG の添付</strong>: 「cannot decode」で添付できない問題を修正（他の JPEG と同様に変換・リサイズ）</li>
+  <li><strong>プラグイン LSP の終了処理</strong>: <code>shutdown</code> パラメータを拒否するプラグイン LSP サーバー（rust-analyzer 等）がセッション終了時も残る問題を修正（<code>shutdown</code> 失敗時も <code>exit</code> を送信）</li>
+  <li><strong><code>/insights</code></strong>: 既定の Opus モデルに到達できない Bedrock・Vertex・Foundry・gateway 環境で失敗する問題を修正（そのセッションのモデルを使用）</li>
+  <li><strong>MCP 再接続</strong>: 更新された設定がサーバー URL のクエリパラメータ順のみを変更した場合に MCP サーバーが再接続する問題を修正</li>
+  <li><strong>起動時の不要文字混入</strong>: 低速接続（ssh、ブラウザ端末）で端末のカラー／バージョン応答や <code>22c</code> のような文字がプロンプトに混入する問題を修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.21.2（v2026.9.11）</h2>
+<p>9月12日 04:20 JST に「The state.db Patch Release」こと v0.21.2 がリリースされました。v0.21.0 のセッションストア接続処理の大規模書き換えで <code>state.db</code> が壊れやすくなっていた問題群を根本から塞ぐリリースです。v0.21.1 以降の4日間に 947 件の非マージコミット・312 件のマージ PR・1,869 ファイルの変更（+182,504 / −15,564）が取り込まれ、140 名の貢献者が関わっています。</p>
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>state.db 信頼性キャンペーン</strong>（6 PR・44 issue クローズ）: プロファイル gateway が 5 秒ごとにルート <code>state.db</code> へ書き込んでいた問題、ダッシュボードが起動時に書き込み可能ハンドルを開いていた問題、cron のライフサイクルガードが生の <code>open()</code> でゲートウェイの POSIX ロックを打ち消していた問題（SQLite 破損の典型例）、<code>doctor --fix</code> が稼働中ホルダー下でチェックポイントしていた問題をすべて解消。hosted room は <code>shared-state.db</code>、ダッシュボードは読み取り専用オープン、ガードは tracked connection registry 経由に</li>
+  <li><strong>健全な WAL データベースの wedge 解消</strong>: OpenZFS の <code>(deleted)</code> ディレクトリエントリ、<code>close()</code> と <code>append_message</code> の競合で発生していた粘着性 <code>DeletedWalGenerationError</code> などを修正。WSL2 の一時的な disk I/O error や、ロックが解消済みなのに「state.db locked」バナーが流れる問題も修正</li>
+  <li><strong>FTS 破損が会話を止めない</strong>: 全文検索インデックスに限定されたエラーがファイル全体の破損と誤分類され会話をフェイルクローズしていた問題を修正。<code>fts_index</code> として扱われ、検索が劣化し後でインデックス再構築、トランスクリプトは無傷。ダッシュボードの analytics ポーラーが 1 日 52 万件のトレースバックを出す代わりに 503 を返すようにも</li>
+  <li><strong>1 行の破損で全体が落ちない</strong>: TEXT のタイムスタンプや <code>1e30</code> の epoch が <code>sessions list</code>・export・insights をクラッシュさせる問題を修正。全リーダーに <code>coerce_epoch()</code> を適用（不良行はセッション名付き WARNING とともに <code>?</code> 表示）、<code>json_valid</code> ガード、IN リストのチャンク化、export の一括ハイドレーションを追加</li>
+  <li><strong>プロファイル間の DB 混線防止</strong>: HERMES_HOME 上書き競合で Desktop 起動バックエンドが別プロファイルの <code>state.db</code> に固定される問題、<code>session_search</code> が裸の ID で全プロファイルを走査し他人のトランスクリプトを返す問題などを修正</li>
+  <li><strong>ロック取得の適正化</strong>: 書き込みが不要な場合に <code>state.db</code> を開くだけで書き込みロックを取っていた問題を修正。ビジーな gateway 配下で 4〜20 秒停止して「database is locked」で失敗していたのが 0.01 秒に</li>
+  <li><strong>マルチプロファイル分離の強化</strong>: セカンダリプロファイルの bot が既定プロファイルの許可リストを継承する問題、認証情報が既定プロファイルのホストへ送られる問題、stdio MCP サーバーが既定プロファイルの vault シークレットを受け取る問題、<code>MEDIA:</code> 配信が他プロファイルの <code>.env</code>・<code>auth.json</code>・<code>state.db</code> を添付し得る問題を修正</li>
+  <li><strong>Desktop のバックエンド大量起動を解消</strong>: Bot Mode が起動時とロースター更新ごとにプロファイルごとのバックエンドを起動していた問題、Bots ロースターにカーソルを合わせると行ごとに起動していた問題を修正</li>
+  <li><strong>パスワードを見ない資格情報保管庫</strong>: 1Password・Bitwarden・ローカル Hermes vault から、シークレットをエージェントに一切見せずにサインイン・支払い・住所入力を実行可能に。2 要素コードも保存済み認証キーから取得、またはユーザーの UI 上で入力</li>
+  <li><strong>プラグインカタログと Plugins ページ</strong>: SHA 固定のキュレーション済みプラグインインデックス（CLI・admission CI・ドキュメント・ダッシュボード）を追加。Desktop では agent プラグインと desktop プラグイン、インストール、カタログ、コミット単位の固定を 1 つのページで管理</li>
+  <li><strong>Nous 無料枠とガイド付き初回起動</strong>: コマンド 1 つでサインインするだけで無料推論とコネクタが利用可能に（チャットからの <code>/login</code> も対応）。Gmail・Linear・Notion などのコネクタツールは <code>tool_search</code> から検索可能</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>プロバイダー／ルーティング</strong>: <code>/model</code> と auxiliary auto が選択していないプロバイダーに課金する問題、資格情報のないプロバイダーへ自動切替する問題を修正。Bedrock の Claude/Converse/Mantle モデルが <code>/model</code>・フォールバック・復元を跨いで維持されるように。MCP OAuth のリフレッシュでリフレッシュトークンが消える問題も修正</li>
+  <li><strong>エージェントループ／圧縮</strong>: ブロックされた定期コールバックがリース更新を止める問題、ターン途中の <code>/steer</code> が独立した user 行として永続化されない問題、部分ストリーミング後のコンテキストオーバーフローがターンを終了しない問題を修正。Desktop↔TUI の切り替えでシステムプロンプトが再構築されプロンプトキャッシュが壊れる問題も修正</li>
+  <li><strong>プラットフォーム</strong>: config.yaml の裸の <code>display:</code> キーが全 gateway ターンをクラッシュさせる問題、停止した WebSocket 送信が後続イベントをすべてブロックする問題、Telegram の bot 間ループ、Matrix の LaTeX 表示、Signal の markdown テーブル、WhatsApp の view-once 引用などを修正</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 2026.9.4</h2>
+<p>9月11日 12:46 JST に OpenClaw 2026.9.4 がリリースされました。失敗したアップデートからの安全なロールバック、プラグイン管理の統合、クラウドセッションの準備済みワーカーが主な内容です。</p>
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>互換性のある失敗アップデートからの復旧</strong>: スキーマと設定のチェックでロールバックが安全と証明できた場合、以前のパッケージを前回の設定・サービスごと復元するように（DB マイグレーションを伴う場合は検証済みの事前バックアップが必須）</li>
+  <li><strong>プラグインの一元管理</strong>: バンドル済みプラグインと ClawHub プラグインを検出し、Control UI からインストール、セットアップ・設定・アクセスを統合された Plugins ワークスペースで管理</li>
+  <li><strong>準備済みクラウドセッション</strong>: 準備済みローカルプロジェクトまたは公開 GitHub リポジトリから Linux セッションを起動し、会話開始前に Control UI で再利用可能なスナップショットを構築可能。既定の予備はプロジェクト／プロファイルあたり 1 台、Gateway 全体で最大 4 台（稼働中は課金に注意）</li>
+  <li><strong>ターミナルでの質問応答</strong>: Gateway 接続セッション・ローカル TUI の両方で、キーボード駆動の選択肢、自由記述回答、複数質問プロンプトに対応（<code>/question</code> で保留中のプロンプトを再表示）</li>
+  <li><strong>GPT Image 2.5</strong>: OpenAI / fal 経由で新しい Flare・Sunburst バリアントを画像生成・編集に選択可能（既定モデルは変更不要）</li>
+  <li><strong>会話履歴の信頼性向上</strong>: 中断されたストリームからの最終返答復旧、リロード後もタイムアウト通知を保持、ライブチャットから保存済み履歴への引き継ぎ時の重複最終回答を防止</li>
+  <li><strong>音声が委任作業を完了</strong>: 複数ラウンドの委任を経てもサブエージェントの結果を Talk に返し、最終回答を配信</li>
+  <li><strong>外部管理設定</strong>: <code>OPENCLAW_CONFIG_READONLY=1</code> で、デプロイメント管理の設定を OpenClaw が書き換えないように（読み取り専用診断と通常のランタイム状態は維持）</li>
+  <li><strong>スキル学習・コマンドレビュー</strong>: 過去の作業から学習を通常セッション内で開始し、検査・継続可能に。自動コマンドレビュアーが限定的な会話コンテキストで許可・拒否・エスカレーションを判断（実行ポリシーの権限は維持）</li>
+  <li><strong>ロールバック以外の運用改善</strong>: Node.js ランタイム非互換時の更新提案と診断、長時間セッションの診断でライフサイクルキューの滞留原因を特定、Cloud workers のスナップショット操作（ビルド・再ビルド・検査・固定・削除・ロールバック）を Settings から実行可能に</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>アクセス境界</strong>: セキュリティ修復時に既存の WhatsApp グループ許可リストを保持、プライベート IPv6 例外有効時もクラウドメタデータアドレスを遮断、Slack HTTP リクエストボディの上限設定、Tlon の引用取得を引用元の投稿に限定。古い署名の Feishu Webhook コールバック拒否、兄弟エージェントサンドボックスからの添付読み取り防止も実施</li>
+  <li><strong>ワークスペースとバックアップ</strong>: 同時ワークスペース編集の保持、完全バックアップへの必須外部設定ファイルの同梱、スナップショット後の消滅する SQLite サイドカーの許容</li>
+  <li><strong>返信配信と履歴</strong>: 終了したストリームや以前のツールエラーからの最終返信復旧、失敗ターンの部分テキストとタイムアウト結果の保持、段落・コードブロック境界の維持、切り詰められた Responses 返信を incomplete として報告</li>
+  <li><strong>プロバイダー／モデル選択</strong>: エイリアス併存時やカタログ更新時の作成済みカタログ行・モデル同一性・メタデータ・資格情報の保持。モデル上書き、コンテキスト上限、思考設定、ビジョン、圧縮、ツール一覧を選択中のモデルとプロバイダーに紐付け</li>
+  <li><strong>各チャネル</strong>: Telegram のプロキシ経由での返信保持と bot ID メンション認識、Discord のギルドメッセージからの委任復旧と再接続直後のプレゼンス表示、Slack の Enterprise ワークスペース所有権解決、Mattermost・Signal・Matrix・Teams・Feishu の各種表示不具合を修正</li>
+  <li><strong>Android／モバイル</strong>: 添付選択後にキャプションを送信する前に待機、完了済みツールアクティビティの復元、接続状態とチャット準備状態の区別、折りたたみ画面でのペイン内維持、到達不能な Gateway の失敗・復旧表示</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.200</h2>
+<p>9月11日 15:21 JST に v1.4.200 がリリースされました。ネイティブチャットでのエージェント可視性向上と、オーケストレーションの復旧機構の追加が中心です。</p>
+<h3>🔧 ハイライト</h3>
+<ul>
+  <li><strong>ネイティブチャットでのエージェント可視化</strong>: Claude のサブエージェントアクティビティが共有キャリア上に表示され、Codex のバックグラウンドタスクもチャットストリップに報告されるように</li>
+  <li><strong>ターンの変更ファイル表示</strong>: 完了したターンで変更されたファイルを要約し、解決済みのプロンプトレシートを保持</li>
+  <li><strong>タスク進捗のストリーミング</strong>: タスクのチェックリストを更新差分付きで描画し、composer に進捗パネルを表示</li>
+  <li><strong>オーケストレーション</strong>: worker-terminal の所有権を生成時点で確立。起動時、モバイル入力、旧バージョンの federation コーディネーターに対する復旧セーフガードを追加</li>
+  <li><strong>ワークスペースとブラウザ</strong>: 新しく開いたバックグラウンドタブを開いた時点で読み込み、チャット作成時にアクティブな worktree を保持。ワークスペース有効化を通じてタブサーフェスの選択を統一</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>⚡ Next.js — v16.3.5</h2>
+<p>9月12日 04:15 JST に v16.3.5 がリリースされました。canary ではなく安定版系へのバックポートリリースで、すべて canary 上の保留中機能を含まないバグ修正です。</p>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><code>next/image</code>: ディスク LRU キャッシュ初期化時に 0 バイトのエントリをスキップ</li>
+  <li><code>next/image</code>: ディスクキャッシュへの読み書き時に空の画像を拒否</li>
+  <li><code>output: 'standalone'</code> をアダプターと併用した場合に、アプリ全体のサーバー NFT を出力</li>
+  <li>loading ファイルと template ファイルのスクリプトタグに CSP nonce を付与</li>
+  <li><code>use cache</code> の prerender シグナル保持を修正</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h2>☁️ AWS / GCP</h2>
+<h3>AWS（9月11日発表分）</h3>
+<ul>
+  <li><strong>Amazon SageMaker HyperPod のモデルキャッシングが GA</strong>: モデル重みとコンテナイメージをクラスタノードに事前ロードし、ポッドが数分ではなく数秒で起動。57〜145 GB のモデルでのベンチマークでスケールアウトが約 60% 高速化、イメージキャッシュは 2 分以上のプル時間を削減（97% 減）</li>
+  <li><strong>Amazon Bedrock Managed Knowledge Base が TwelveLabs Marengo 3.0 に対応</strong>: 動画・音声・画像のマルチモーダル埋め込みを生成可能に。512 次元ベクトルで、結果にセグメントの開始・終了時刻を含み、動画内の該当箇所へ直接ジャンプ可能</li>
+  <li><strong>AWS Lambda が Amazon S3 Files の direct read 設定に対応</strong>: 関数メモリサイズに依存せず、S3 バケットからの直接読み取りを明示的に有効化・無効化できるように（1 MB 以上のファイルは高スループット、小さいファイルは高性能ストレージ経由）</li>
+  <li><strong>AWS DevOps Agent が Slack 双方向コミュニケーションに対応</strong>: 接続済みの Slack プライベートチャンネルで <code>@mention</code> するだけで調査を開始・操作でき、チームのコンテキスト・エージェントの検出結果・推奨アクションが 1 つのスレッドに集約される</li>
+  <li><strong>Amazon EC2 X2idn インスタンスがアジアパシフィック（香港）で利用可能に</strong>: 第 3 世代 Intel Xeon Scalable プロセッサと Nitro System を搭載したメモリ最適化インスタンス（SAP 認定済み）</li>
+  <li><strong>AWS HealthOmics がリアルタイム実行メトリクスを CloudWatch へ発行</strong>: CPU・GPU・メモリ・ファイルシステム I/O・ネットワーク・一時ストレージの 14 メトリクスを OpenTelemetry 標準で出力し、ボトルネック特定とリソースの適正化に利用可能</li>
+  <li><strong>Amazon RDS for Oracle が 2026年7月リリースアップデートの Supplemental Patch Bundle に対応</strong>（19c / 26ai）</li>
+</ul>
+<h3>Google Cloud（9月11日発表分）</h3>
+<ul>
+  <li><strong>API Gateway が Model Context Protocol（MCP）サーバーとして動作可能に（Public Preview）</strong>: OpenAPI 3.x 仕様に Google 独自拡張でアノテーションするだけで、既存 REST API をバックエンド変更なしに AI エージェントのツールとして公開できる</li>
+  <li><strong>AlloyDB for PostgreSQL の監査ログパイプライン監視</strong>: インスタンス・ノード単位で監査ログパイプラインのステータス、スループット、バックログを Cloud Monitoring で確認可能に</li>
+  <li><strong>Cluster Toolkit の Slurm 脆弱性対応</strong>: 複数のセキュリティ脆弱性に対する修正を実施（セキュリティバレットンを参照）</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>、<strong>React</strong>、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
