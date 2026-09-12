@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-13 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-13 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>AI推論エンジン「vLLM」に任意コード実行とサービス妨害の脆弱性3件 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90553 / CVE-2026-90554 / CVE-2026-90555</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.5（High） / 6.9（Medium） / 7.1（High）</td></tr>
+<tr><th>影響製品</th><td>vLLM 0.28.0 未満（CVE-2026-90554 は 0.10.2 以上 0.28.0 未満）</td></tr>
+<tr><th>分類</th><td>リモートコード実行（RCE） / サービス運用妨害（DoS）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-90553（CVSSv4.0 8.5）</strong>：LlavaOnevision2 のプロセッサローダが <code>trust_remote_code</code> パラメーターを無視してリモートのプロセッサクラスを読み込んでしまう。細工したモデルの <code>processing_llava_onevision2.py</code> に任意コードを仕込むことで、<code>trust_remote_code=False</code> の設定であっても vLLM プロセス権限でコードが実行される。</li>
+<li><strong>CVE-2026-90554（CVSSv4.0 6.9）</strong>：NanoNemotronVL モデルで動画入力から音声を抽出する際、デコードサイズ・長さの上限が適用されない。圧縮率の高い小さな動画をマルチモーダル入力として与えると、音声デコード中に数GBのメモリを確保させてサービスを停止させられる。</li>
+<li><strong>CVE-2026-90555（CVSSv4.0 7.1）</strong>：文字起こしエンドポイントが音声のサンプルレートヘッダーを検証しておらず、細工したFLACヘッダーで過大なメモリ確保を誘発し、全テナントに影響するAPIサーバープロセスのクラッシュにつながる。</li>
+<li>いずれも vLLM 0.28.0 で修正済み。NVDが2026年9月12日に公開。実攻撃での悪用に関する言及はない。</li>
+</ul>
+
+<h3>MCPサーバー基盤「MCPHub」にOAuth認可サーバーの認証バイパス <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90474</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 7.6（High）</td></tr>
+<tr><th>影響製品</th><td>MCPHub 1.0.32 未満</td></tr>
+<tr><th>分類</th><td>認証バイパス（CWE-287）</td></tr>
+</table>
+<ul>
+<li>MCPHub に組み込まれたOAuth 2.0認可サーバーで、クライアント認証が既定で無効となっており、PKCEの強制も任意設定にとどまっていた。</li>
+<li>認可コードを傍受した第三者が、クライアントシークレットやPKCE検証子を提示することなくアクセストークンへ交換でき、被害者のアカウントと保有権限をそのまま奪取できる。</li>
+<li>1.0.32 で修正。NVDが2026年9月12日に公開。MCP（Model Context Protocol）サーバーを自前運用している環境では、到達可能範囲とバージョンの確認が望ましい。</li>
+</ul>
+
+<h3>Pythonエコシステム2件 — starlette-admin の検索対象回避と aiosmtplib のESMTPパラメータ注入 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-89267 / CVE-2026-90467</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 5.3（Medium） / 6.3（Medium）</td></tr>
+<tr><th>影響製品</th><td>starlette-admin 0.16.1〜0.17.1 / aiosmtplib 5.1.3 未満</td></tr>
+<tr><th>分類</th><td>アクセス制御不備 / コマンドパラメータ注入</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-89267</strong>：starlette-admin で <code>searchable_fields</code> を空リストに設定した場合に許可リストが機能せず、認証済みユーザーが一覧APIの <code>where</code> パラメーターに構造化フィルターを送ることで、検索対象から除外した列に対しても等価比較・大小比較を実行できてしまう。</li>
+<li><strong>CVE-2026-90467</strong>：aiosmtplib が呼び出し側から渡されたメールアドレスを適切に検証しないため、空白と山括弧を含むアドレスで <code>MAIL FROM</code> / <code>RCPT TO</code> のコマンドラインに <code>AUTH</code>、<code>NOTIFY</code>、<code>ORCPT</code> などのESMTPパラメーターを注入できる。認証済み身元の偽装や第三者への配送通知の強制につながる。</li>
+<li>いずれもNVDが2026年9月12日に公開。修正版の適用が推奨される。</li>
+</ul>
+
+<h3>Javaライブラリのデータ処理3種 — msgpack-java / snappy-java / zstd-jni <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90472 / CVE-2026-90473 / CVE-2026-90559 / CVE-2026-90560</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 6.9 / 6.9 / 8.7（High） / 8.8（High）</td></tr>
+<tr><th>影響製品</th><td>msgpack-java 0.9.12以前 / snappy-java 1.1.10.8以前 / zstd-jni 1.2.0〜1.5.7-13</td></tr>
+<tr><th>分類</th><td>スタック枯渇・整数オーバーフロー・領域外読み書き</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-90472</strong>：msgpack-java の <code>MessageUnpacker.unpackValue()</code> が配列・マップの再帰的なデシリアライズにネスト深さ制限を設けておらず、深くネストしたペイロードで <code>StackOverflowError</code> を発生させられる。</li>
+<li><strong>CVE-2026-90473</strong>：msgpack-java の <code>MessageUnpacker.skipValue()</code> で、MAP32コンテナの要素数が倍算時にオーバーフローし、解析カーソルがずれて後続フィールドの代わりに攻撃者制御のデータが返される。</li>
+<li><strong>CVE-2026-90559</strong>：snappy-java の <code>Snappy.uncompress(ByteBuffer, ByteBuffer)</code> が展開後サイズに対して宛先バッファ容量を検証しておらず、バッファ境界を越えた書き込みでJVMが終了する。</li>
+<li><strong>CVE-2026-90560</strong>：zstd-jni の <code>ZstdDictDecompress</code> コンストラクターで <code>offset</code> / <code>length</code> が辞書配列の範囲と照合されず、領域外読み取りによりJVMが終了するおそれ。</li>
+<li>4件ともNVDが2026年9月12日に公開。Kafka・Elasticsearch・Spark などJava系データ基盤の依存に含まれることが多く、依存ツリーの確認が望ましい。</li>
+</ul>
+
+<h3>LLMアプリ構築基盤「Flowise」にアクセス制御・認証の不備3件 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90533 / CVE-2026-90534 / CVE-2026-90535</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 6.0 / 6.1 / 6.3（いずれもMedium）</td></tr>
+<tr><th>影響製品</th><td>Flowise 3.1.4 未満</td></tr>
+<tr><th>分類</th><td>アクセス制御不備・認証欠如</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-90533</strong>：<code>GET /api/v1/organizationuser</code> のアクセス制御が破綻しており、組織に所属する任意の認証済みメンバーが、オーナーの完全なユーザー情報（bcryptパスワードハッシュや一時トークンを含む）を取得できる。ハッシュを持ち出してオフライン解析に回せば、最高権限アカウントの乗っ取りにつながる。</li>
+<li><strong>CVE-2026-90534</strong>：<code>POST /api/v1/node-load-method/:name</code> がルートレベルの認証なしでマウントされている。</li>
+<li><strong>CVE-2026-90535</strong>：<code>/api/v1/text-to-speech/abort</code> が認証なしで利用でき、利用者が指定した chatflowId / chatId によりサービス妨害を引き起こせる。</li>
+<li>3.1.4 で修正。NVDが2026年9月12日に公開。</li>
+</ul>
+
+<h3>Claude Code v2.1.270 — 権限確認のリグレッションを修正 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>v2.1.270（CVE番号の明記なし）</td></tr>
+<tr><th>深刻度</th><td>—（権限確認の挙動修正）</td></tr>
+<tr><th>影響製品</th><td>Claude Code v2.1.269</td></tr>
+<tr><th>分類</th><td>権限プロンプトの挙動不具合</td></tr>
+</table>
+<ul>
+<li>セッションをしばらく稼働させた後に、読み取り専用のgitコマンドが不必要に許可を求めるようになる v2.1.269 のリグレッションを修正した。</li>
+<li>2026年9月12日19:45 UTC（JST 2026年9月13日04:45）公開。CVE番号の明記はない。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 2026.9.4 / 2026-09-11公開）、Hermes Agent（最新 v0.21.2 / 2026-09-11公開）、Next.js、Hono、Django については、対象期間内にセキュリティに関連する新規リリース・アドバイザリは確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>警察庁のランサムウェア復元ツール、国内41社・約2,000万ファイルの復元に貢献</h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月12日（読売新聞）</td></tr>
+<tr><th>区分</th><td>国内動向（被害統計・対策）</td></tr>
+<tr><th>一次情報</th><td>読売新聞 2026年9月12日付</td></tr>
+</table>
+<ul>
+<li>警察庁が独自に開発したランサムウェア復元ツールが、2024年2月の運用開始以降、国内41社のデータを回復させていたことがわかった。復元できたファイルは顧客リストや社員名簿など約2,000万件に上る。</li>
+<li>同ツールは欧米など100か国超で利用されており、警察庁は被害時の警察への早期相談を呼びかけている。</li>
+<li>富山市の飲料メーカー「トンボ飲料」（従業員約180人）は2026年1月15日朝に被害を把握。ロックビット名義の犯行声明で壁紙が改ざんされ、過去9か月分の仕入れデータが閲覧不能となったが、身代金を支払わず、2月下旬の復元連絡を受けて業務を正常化させた。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">対象期間（2026-09-12 08:00 〜 2026-09-13 08:00 JST）内に新たに公表された国内企業・官公庁・医療機関等の被害事案は確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
