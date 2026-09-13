@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-14 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-14 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>ヘッドレスCMS「Strapi」のコンテンツ管理画面にストアドXSS <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90561</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.3（Critical）</td></tr>
+<tr><th>影響製品</th><td>Strapi 4.x 〜 4.26.2 / 5.x 5.48.1 未満</td></tr>
+<tr><th>分類</th><td>ストアドクロスサイトスクリプティング（CWE-79）</td></tr>
+</table>
+<ul>
+<li>コンテンツマネージャのWYSIWYGプレビューコンポーネントが、リッチテキストから <code>script</code> タグを除去していませんでした。</li>
+<li>Author権限のユーザーがリッチテキスト欄に悪意あるスクリプトを保存でき、EditorやSuper Adminがプレビュー欄を展開した時点でそのセッション上でスクリプトが実行されます。結果として権限の高いアカウントの乗っ取り（アカウントテイクオーバー）につながります。</li>
+<li>5.48.1 で修正済み。NVDが2026年9月13日に公開。Strapi を運用している場合は、Author権限の運用実態と併せて版数の確認が望まれます。</li>
+</ul>
+
+<h3>Node.jsメール送信ライブラリ「Nodemailer」に二次時間計算量のDoS <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90776</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.7（High、可用性のみ影響）</td></tr>
+<tr><th>影響製品</th><td>Nodemailer 9.1.0 〜 10.0.4</td></tr>
+<tr><th>分類</th><td>サービス運用妨害（アルゴリズム複雑度の問題）</td></tr>
+</table>
+<ul>
+<li>アドレス解析コンポーネント <code>addressparser</code> が、RFC 5322 のコメント表記を含むメールアドレスを解析する際に二次時間計算量（O(n²)）の問題を抱えています。</li>
+<li>コメントで区切ったアトムを大量に含む細工済みメールヘッダーを与えると、CPUを過大に消費し、Node.jsのイベントループを数秒間にわたり停止させられます。</li>
+<li>受信メールのヘッダーをそのまま解析するNext.js製アプリやメール基盤では影響が及びやすい構成です。修正版への更新が推奨されます。</li>
+</ul>
+
+<h3>スキーマ検証ライブラリ「joi」にプロトタイプ汚染 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90771</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 6.3（Medium）</td></tr>
+<tr><th>影響製品</th><td>joi 17.13.8 未満 / 18.2.9 未満</td></tr>
+<tr><th>分類</th><td>プロトタイプ汚染</td></tr>
+</table>
+<ul>
+<li>カスタムエラーメッセージのコンパイル処理が <code>__proto__</code> をエラーコードとして受理してしまい、攻撃者が <code>__proto__</code> キーを渡すと返却オブジェクトのプロトタイプを差し替えられます。</li>
+<li><code>Object.prototype</code> のメソッドに依存する下流のコードが壊れる可能性があります。Node.js系のAPI検証で広く使われるライブラリであり、依存ツリーの確認が望まれます。</li>
+</ul>
+
+<h3>React製データカタログ「Amundsen」フロントエンドにXSS <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90772</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.3（High）</td></tr>
+<tr><th>影響製品</th><td>Amundsen frontend 4.3.0 まで</td></tr>
+<tr><th>分類</th><td>クロスサイトスクリプティング（Reactの <code>dangerouslySetInnerHTML</code> の不適切な使用）</td></tr>
+</table>
+<ul>
+<li>テーブル・ダッシュボード・特徴量の説明文を <code>ResourceListItem</code> 系コンポーネントでHTMLサニタイズなしに <code>dangerouslySetInnerHTML</code> で描画しています。</li>
+<li>メタデータサービスや Elasticsearch 経由で <code>img</code> タグの <code>onerror</code> ハンドラー等を説明文に注入すると、検索結果を表示した全ユーザーのブラウザ上でJavaScriptが実行されます。</li>
+<li>Reactでの <code>dangerouslySetInnerHTML</code> 利用箇所は、社内ダッシュボード実装でも同種の見落としが起きやすい箇所です。</li>
+</ul>
+
+<h3>Python製ツール2件 — Open NotebookのSSRFとESPnetの任意コード実行 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90769 / CVE-2026-90777</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.3（High） / 8.7（High）</td></tr>
+<tr><th>影響製品</th><td>Open Notebook 1.11.0 未満 / ESPnet 202609 未満</td></tr>
+<tr><th>分類</th><td>サーバサイドリクエストフォージェリ / 安全でないデシリアライゼーション</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-90769</strong>：Open Notebook の <code>POST /api/sources</code> がURLパラメーターを検証しておらず、認証済みユーザーが任意のURLを指定できます。アプリサーバーにHTTPリクエストを送らせることで、クラウドのメタデータサービスやローカルホスト上のサービスを読み出されるおそれがあります。</li>
+<li><strong>CVE-2026-90777</strong>：ESPnet が学習済みモデルのチェックポイントを <code>torch.load</code> の <code>weights_only=False</code> で読み込んでいます。細工したチェックポイントファイルを初期化・ファインチューニング経路で読み込ませると、任意のコードが実行されます。</li>
+<li>いずれもNVDが2026年9月13日に公開。学習済みモデルを外部から取得して読み込む運用では、配布元の信頼性確認も併せて見直しが望まれます。</li>
+</ul>
+
+<h3>Java製ライブラリ — Java-WebSocketのフラグメント処理でリソース枯渇 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90584</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 5.5（Medium、PoC公開済み）</td></tr>
+<tr><th>影響製品</th><td>TooTallNate Java-WebSocket 1.6.1 まで</td></tr>
+<tr><th>分類</th><td>リソース枯渇</td></tr>
+</table>
+<ul>
+<li><code>Draft_6455.processFrameContinuousAndNonFin</code> のフラグメント処理で、リモートから細工したフレームを送ることでリソースを枯渇させられます。</li>
+<li>エクスプロイトが公開されており、修正のプルリクエストはまだ受理待ちの状態です。WebSocketを公開しているJavaアプリでは、フレーム長・継続フレーム数の制限など緩和策の検討が望まれます。</li>
+</ul>
+
+<h3>サプライチェーン — Socket Firewallが上流TLS証明書を検証せず、依存パッケージを差し替えられるおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90651</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.1（High）</td></tr>
+<tr><th>影響製品</th><td>Socket Firewall（socket-registry-firewall）registryモード 2.0.0 未満</td></tr>
+<tr><th>分類</th><td>証明書検証の欠如（中間者攻撃）</td></tr>
+</table>
+<ul>
+<li><code>socket.yml</code> に <code>api_ssl_verify</code> / <code>upstream_ssl_verify</code> を書かない場合、生成される設定が既定で検証を無効（<code>false</code>）にし、OpenResty/LuaのHTTPクライアントは自己署名を含む任意の証明書を受理していました。</li>
+<li>Socket FirewallとSocket API、または上流パッケージレジストリ間の通信を傍受できる攻撃者は、正規の証明書を提示して応答を改ざんできます。悪性パッケージのすり替えや、許可・遮断判定そのものの書き換えに至ります。</li>
+<li>2.0.0 で修正済み。パッケージのサプライチェーン検査ツール自体が検査をすり抜けられる構成だった点は、導入時の設定既定値の確認という教訓を含みます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Claude Code（最新 v2.1.270 / 2026-09-12公開）、OpenClaw（最新 2026.9.4 / 2026-09-11公開）、Hermes Agent（最新 v0.21.2 / 2026-09-11公開）、Next.js（最新 16.3.5 / 2026-09-11公開）、Hono（最新 v4.13.7 / 2026-09-04公開）、Django については、対象期間内にセキュリティに関連する新規リリース・アドバイザリは確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>コープやまぐちの「LINEミニアプリ」に不正アクセス、約22万件の個人情報が流出したおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>第一報 2026年8月28日 / 第二報 2026年9月7日 / 2026年9月13日報道（読売新聞・山口新聞）</td></tr>
+<tr><th>区分</th><td>国内インシデント（生活協同組合・個人情報漏えいのおそれ）</td></tr>
+<tr><th>一次情報</th><td>生活協同組合コープやまぐち「コープやまぐちLINEミニアプリへの不正アクセスによる個人情報漏えいのおそれについて（第一報・第二報）」</td></tr>
+</table>
+<ul>
+<li>2026年8月27日、コープやまぐちが運営する「コープやまぐちLINEミニアプリ」のデータベースに対し第三者による不正アクセスが行われ、データベース内の全データが削除される事象が発生しました。開発・運用は外部事業者へ委託されており、同組合は事象確認後ただちに外部からのアクセスを遮断し、同日中にバックアップから復元してサービスを復旧しています。</li>
+<li>漏えいのおそれがあるのは氏名・住所・電話番号・メールアドレスで、クレジットカード情報、金融機関の口座情報、各種ログインパスワード、要配慮個人情報は含まれていません。組合員情報の登録者のうち電子マネー機能付き「ここカード」を持たない方の69,586件をはじめ、宅配・アンケート回答者などが対象範囲として確定し、全体では約22万件に上ることが9月13日の報道で明らかになりました。</li>
+<li>外部への流出の事実は現時点で確認されていませんが、流出の可能性は否定できず、不正利用・なりすまし・迷惑メール等の二次被害も確認されていません。同組合は個人情報保護委員会への報告と所轄警察署への相談・被害届提出を行い、対象者へは9月14日から順次個別連絡を進めています。</li>
+</ul>
+
+<h3>極東開発工業の子会社 日本トレクスで不正アクセス、約7週間前にランサムウェアグループ「INC Ransom」の犯行声明 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月8日（システム障害） / 9月11日（第2報・不正アクセスと公表） / 9月13日（犯行声明の確認）</td></tr>
+<tr><th>区分</th><td>国内インシデント（製造業・業務停止を伴う不正アクセス）</td></tr>
+<tr><th>一次情報</th><td>日本トレクス「弊社情報システムへの不正アクセスによる情報流出の可能性に関するお詫びとお知らせ」（2026-09-11）</td></tr>
+</table>
+<ul>
+<li>特殊車両メーカー極東開発工業の100％子会社、日本トレクス（愛知県豊川市）で2026年9月8日にシステム障害が発生し、第三者による不正アクセスが原因であることが9月11日の第2報で公表されました。</li>
+<li>影響により「インターネットによる発注業務」「指定取引先向け部品受注システム（FAX受注は可能）」「顧客・取引先とのメール送受信」が停止しています。代替手段により業務は継続中で、9月11日時点では個人情報や顧客データの外部流出は確認されておらず、復旧時期も未公表です。</li>
+<li>一方で、ランサムウェアグループ「INC Ransom」の犯行声明サイトに極東開発工業（Kyokuto Kaihatsu Kogyo）の掲載があったことが9月13日に確認されました。掲載日付は2026年7月17日で、9月の不正アクセスより約7週間前です。ただし掲載画面には窃取データの種類・容量や身代金要求額は示されておらず、企業側も9月の事案をランサムウェア攻撃と公表しておらず、両者の関連も明らかにしていません。犯行声明は攻撃者側の一方的な主張である点に留意が必要です。</li>
+</ul>
+
+<h3>円谷プロ直営店「ULTRA MART」の抽選システムに不正アクセス、133名の当選結果が「落選」に改ざん <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月11日（円谷プロダクション・mogily） / 9月13日報道</td></tr>
+<tr><th>区分</th><td>国内インシデント（不正アクセスによる業務データ改ざん）</td></tr>
+<tr><th>一次情報</th><td>「ULTRA MART」公式サイト「【重要なお知らせ】チケット抽選システムへの不正アクセスに関するお詫びと今後の対応について」</td></tr>
+</table>
+<ul>
+<li>円谷プロダクションが運営する直営店「ULTRA MART」が利用するLINEアプリ上のデジタル整理券システム「mogily」の管理システムに、2026年9月9日〜10日に第三者による不正アクセスが発生しました。</li>
+<li>本来「当選」だった利用者の当落ステータスが第三者によって「落選」へ書き換えられ、影響を受けた利用者は133名に上ります。mogilyはログ調査で対象者を特定し、133名全員を本来の「当選」へ復旧させました。</li>
+<li>氏名・連絡先などの個人情報の漏えいは確認されていません。ただし業務データそのものが改ざんされ、利用者に表示される抽選結果に直接影響した点が特徴です。9月19日以降の抽選は一旦停止され、システム提供元では侵入経路の特定とセキュリティ強化を完了したとしています。</li>
+</ul>
+
+<h3>ドズル社の公式ECストアで不正な決済ページへ誘導、原因は導入済みの外部アプリ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月12日（ドズル社） / 9月13日報道</td></tr>
+<tr><th>区分</th><td>国内インシデント（ECサイト・決済ページ誘導／サードパーティ製アプリ起因）</td></tr>
+<tr><th>一次情報</th><td>ドズル社「【重要】ドズル社ストアにおける不正なページへの誘導に関するお知らせとお詫び」</td></tr>
+</table>
+<ul>
+<li>ゲーム実況グループのドズル社が運営する「ドズル社ストア」で、2026年9月11日15時頃から17時50分までの間、商品の購入手続き時に正規の決済ページではない不正な外部ページへ誘導される事象が発生しました。17時50分にストアを緊急メンテナンスのため停止し、それ以降は発生していません。</li>
+<li>ドズル社とECプラットフォームを提供するShopifyの調査により、ストアに導入されていた外部アプリが誘導の原因と特定され、当該アプリは同日20時23分に削除されました。アプリ名や、不正な誘導を行う状態になった経緯は公表されていません。ShopifyのEC基盤そのものが侵害されたという説明はありません。</li>
+<li>不正なページで行われた支払いは正規注文として受け付けられていません。クレジットカード情報を入力した利用者にはカード会社への連絡と再発行の検討、Shop・PayPal・G Pay の認証情報を入力した利用者にはパスワード変更、氏名・住所・電話番号等を入力した利用者には第三者取得の可能性があるとして注意を呼びかけています。顧客情報への影響の有無は調査中です。</li>
+</ul>
+
+<h3>越谷市立学校の教員がサポート詐欺被害、児童生徒の個人情報が漏えいしたおそれ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月11日（越谷市） / 9月13日報道（埼玉新聞）</td></tr>
+<tr><th>区分</th><td>国内インシデント（教育機関・サポート詐欺による遠隔操作）</td></tr>
+<tr><th>一次情報</th><td>越谷市「市内学校における個人情報漏えいのおそれがある事案に関する公表資料」（2026-09-11）</td></tr>
+</table>
+<ul>
+<li>埼玉県越谷市は、市立学校に所属する教員が自宅で私物パソコンを私的に操作していた際にサポート詐欺の被害に遭い、遠隔操作ツールをダウンロード・実行したと発表しました。公表資料によれば事象の発生日は令和8年8月13日です。</li>
+<li>当該パソコンに接続していたUSBメモリー内に保管されていた児童生徒の氏名・住所などの情報が漏えいしたおそれがあります。市は、外部への流出や第三者による不正使用の事実は確認されていないとしています。</li>
+<li>私物端末での業務データ保管と、偽の警告画面からの遠隔操作という古典的な手口が教育現場で繰り返されている事例です。端末管理とリテラシー研修の両面での対策が求められます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">以上のほか、対象期間内に新たに公表された国内企業・官公庁・医療機関等の被害事案は確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
