@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-15 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-15 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Cisco Secure Email Gatewayのメール解析にSQLインジェクション、root権限で任意コマンド実行 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-76461</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（Critical）— 実攻撃での悪用を確認（CISA KEV追加）</td></tr>
+<tr><th>影響製品</th><td>Cisco AsyncOS Software（Cisco Secure Email Gateway）</td></tr>
+<tr><th>分類</th><td>SQLインジェクション → OSコマンド実行</td></tr>
+</table>
+<ul>
+<li>メール解析ロジックの検証が不十分で、細工したメールメッセージを送信するだけで、認証なしのリモート攻撃者が任意のSQL文を実行できます。その結果、基盤OS上でroot権限の任意コマンド実行に至るおそれがあります。</li>
+<li>NVDは2026年9月14日（JST 9月15日 02:17）に公開。あわせて米CISAが2026年9月14日付で「悪用が確認された脆弱性カタログ（KEV）」へ追加しており、公開直後から実際の攻撃での悪用が確認されている点が重い案件です。</li>
+<li>メールセキュリティ製品は境界に位置し、侵害されるとメール経路全体へ影響が及びます。修正版の適用状況と、侵害痕跡の有無の確認が優先されます。</li>
+</ul>
+
+<h3>AWS Systems Manager Agent（SSM Agent）にSSRF、IAMロールの一時認証情報が窃取されるおそれ <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-89049</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.9（AWSの重要度は「Important」）／CVSSv4.0 8.5</td></tr>
+<tr><th>影響製品</th><td>AWS Systems Manager Agent（SSM Agent）3.3.4851.0 未満</td></tr>
+<tr><th>分類</th><td>サーバサイドリクエストフォージェリ（リンクローカルアドレスの検証不備）</td></tr>
+</table>
+<ul>
+<li>リモートホストへのポート転送機能の検証不備により、拒否リストを別形式の表現で回避できます。管理対象インスタンスからリンクローカルエンドポイントへアクセスさせられ、そのインスタンスに付与されたIAMロールの一時的な認証情報を取得・悪用されるおそれがあります。</li>
+<li>悪用にはポート転送の権限が必要ですが、取得された一時認証情報はインスタンスの権限範囲でクラウドリソースを操作できるため、影響は広範になり得ます。</li>
+<li>2026年7月13日リリースの 3.3.4851.0 で修正済みです。最新版へ追従していないEC2インスタンス・オンプレミス管理サーバーは優先的な確認が望まれます。</li>
+</ul>
+
+<h3>Java製フレームワーク — Apache Syncopeにクリティカル脆弱性の一斉公開 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-82232 / CVE-2026-73470 / CVE-2026-73579 / CVE-2026-87785 / CVE-2026-87802 ほか</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（SQLインジェクション・権限管理不備）／9.1（認証バイパス・署名検証不備）</td></tr>
+<tr><th>影響製品</th><td>Apache Syncope 3.0.0-M0〜3.0.16 / 4.0.0-M0〜4.0.7 / 4.1.0-M0〜4.1.2</td></tr>
+<tr><th>分類</th><td>SQLインジェクション、認可・認証の不備、JWT署名検証不備</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-82232</strong>：タスク検索の未サニタイズなソート句を利用して、権限を有する管理者がスタッククエリで任意のSQLを実行できます（9.8）。同じ検索経路では、Neo4jのCypherインジェクション（CVE-2026-86460、9.8）や認可不備（CVE-2026-73579 / CVE-2026-73668、9.8）も報告されています。</li>
+<li><strong>CVE-2026-87785</strong>：内部JWT認証のJWKS設定が漏えいしている場合、攻撃者が正規のJWT取得後に別ユーザーの権限を偽装できます（9.1）。<strong>CVE-2026-87802</strong>：SRAをJWKS URIなしでOAuth 2.0に構成した場合、任意のJWTを偽造してユーザーになりすませます（9.1）。</li>
+<li>ID管理（IdM）製品は認証基盤そのものであり、脆弱性が業務システム全体の認可に波及します。修正版（4.0.8 / 4.1.3系）への更新と、アクセストークン一覧・JWKS設定の棚卸しが望まれます。</li>
+</ul>
+
+<h3>Java製データ基盤 — Apache Dorisの認可処理不備と、AI/MCP基盤の任意コード実行2件 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-72524 / CVE-2026-90898 / CVE-2026-90919</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.8（High）／9.8（Critical）／CVSSv4.0 9.3・CVSSv3.1 9.8（Critical）</td></tr>
+<tr><th>影響製品</th><td>Apache Doris 3.1.0〜4.1.3 / Bifrost（MCPゲートウェイ） / LightLLM 1.2.0 まで</td></tr>
+<tr><th>分類</th><td>認可処理の不備、認証欠如による任意コード実行、安全でないデシリアライゼーション</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-72524</strong>：Apache Dorisで認証済みユーザーが権限チェックを回避し、本来参照・変更できないデータへアクセスできます。4.0.8 / 4.1.4 で修正済みです。</li>
+<li><strong>CVE-2026-90898</strong>：MCPゲートウェイ「Bifrost」は管理APIでstdioクライアント（コマンド＋引数）を登録するとその場でプログラムを起動します。ガバナンス認証が既定で無効であるため、認証なしの <code>POST /api/mcp/client</code> 1回でBifrostプロセス権限の任意プログラム実行が成立します。</li>
+<li><strong>CVE-2026-90919</strong>：LLM推論基盤 LightLLM の Config Server が、認証なしの <code>/visual_register</code> WebSocketで受け取った最初のフレームをそのまま <code>pickle.loads()</code> に渡しており、細工したシリアライズデータで任意コードが実行されます。</li>
+<li>MCPサーバーや推論基盤は「内部向けだから安全」と扱われがちですが、いずれも外部到達可能なポートで成立する欠陥です。エージェント基盤の公開範囲と認証既定値の確認が望まれます。</li>
+</ul>
+
+<h3>サーバ管理ソフト「Plesk」のバックアップ機能に2件のクリティカル脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-68487 / CVE-2026-68488</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.0 9.9（Critical、いずれも）</td></tr>
+<tr><th>影響製品</th><td>Plesk Obsidian（Linux版）Backup Manager 18.0.80.7 未満 / 18.0.79.11 未満</td></tr>
+<tr><th>分類</th><td>パストラバーサル／シンボリックリンク競合による権限昇格</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-68487</strong>：署名されていないバックアップヘッダーを処理する際のパス検証不備により、認証済みの顧客がホスト上の任意の場所へroot所有ファイルとして書き込みできます。</li>
+<li><strong>CVE-2026-68488</strong>：サブスクリプション復元時のシンボリックリンク競合状態を突かれ、管理パネルまたはFTPのアクセス権を持つ一般ユーザーが管理対象外ファイルの所有権を奪い、最終的にroot権限へ昇格できます。</li>
+<li>いずれもWindows版は非該当です。共有ホスティングでは顧客アカウントからホスト全体へ昇格し得るため、速やかな更新が推奨されます。悪用は確認されていません。</li>
+</ul>
+
+<h3>登山アプリ「YAMAP」Android版にWebViewのアクセス制限不備 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-85125（JVN#69877538）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 5.1 / CVSSv3.0 5.4（Medium）</td></tr>
+<tr><th>影響製品</th><td>Androidアプリ「YAMAP / ヤマップ登山地図アプリ」v17.1.0 およびそれ以前</td></tr>
+<tr><th>分類</th><td>通信チャネルの送信元検証不備（CWE-940）</td></tr>
+</table>
+<ul>
+<li>アプリ内ブラウザの送信元検証が不十分なため、アプリ内の情報が漏えいしたり、想定していないWebサイトへ遷移させられたりする可能性があります。</li>
+<li>JVNが2026年9月14日 12:00 JSTに公開（初回公表）。株式会社ブロードバンドセキュリティの佐藤光喜氏がIPAへ報告しました。最新版へのアップデートで修正されます。</li>
+<li>スマートフォンアプリの内蔵ブラウザは、業務アプリでもWebView設定の見落としが起きやすい箇所です。アプリ側の更新と併せて設定の確認が望まれます。</li>
+</ul>
+
+<h3>CISA KEVの進展 — GitLab・ConnectWise ScreenConnect・JFrog Artifactoryの悪用確認、米機関の対応期限は9月14日 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-85706 / CVE-2026-84869 / CVE-2026-42018 / CVE-2026-42016</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 最大9.9（ScreenConnect）ほか</td></tr>
+<tr><th>区分</th><td>既知脆弱性の実悪用（米CISA KEVカタログ登録）</td></tr>
+</table>
+<ul>
+<li>米CISAが2026年9月11日付でKEVへ4件を追加しました。GitLab CE/EEのコミットAPIのパストラバーサル（CVE-2026-85706）は認証なしに任意ファイルを読まれるおそれがあり、ConnectWise ScreenConnect（CVE-2026-84869）はアクティブなリモートセッションからホスト側の確認なしにファイル転送・実行が可能です。</li>
+<li>JFrog Artifactoryの2件はトークン漏えいや権限昇格につながり、対応期限は9月25日とされています。GitLabとScreenConnectについては、米行政機関に対し現地9月14日までの対応と侵害状況の調査が求められました。</li>
+<li>パッチ適用だけでなく「すでに侵害されていないか」の確認が求められる段階です。リポジトリのコミット履歴、リモートサポートセッションの記録、アーティファクトレジストリのトークン発行履歴を併せて点検することが望まれます。</li>
+</ul>
+
+<h3>Claude Code v2.1.271 — Bash権限チェックの回避経路を複数修正、プラグイン導入に<code>--accept-command &lt;sha256&gt;</code>を追加 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>種別</th><td>ベンダーリリース（セキュリティ関連修正、CVE番号の明記なし）</td></tr>
+<tr><th>公開日時</th><td>2026年9月14日 22:12 UTC（JST 2026年9月15日 07:12）</td></tr>
+<tr><th>区分</th><td>権限チェック回避、MCP・組織ポリシー、プラグイン導入の完全性確認</td></tr>
+</table>
+<ul>
+<li>Bashの権限チェックが、認識しないオプションの後に続くファイルを対象から漏らす問題、ワイルドカードの展開先ファイルを検査しない問題、シェル変数宣言フラグで実行コマンドを偽装できる問題、<code>cd</code>を2回・サブシェル・<code>cd</code>＋<code>git</code>の連鎖で <code>permissions.blockReadsOutsideWorkingDirectories</code> の確認を回避できる問題が修正されました。</li>
+<li>管理設定の <code>managed-mcp.json</code> が読めない場合に黙って無視されていた挙動が改められ、排他的なMCP制御（ユーザー・プロジェクト・プラグイン由来のMCPサーバーを読み込まない）と起動時警告が行われるようになりました。MCP OAuthのクライアント登録の取り違え・同時書き込みによる有効登録の削除も修正されています。</li>
+<li>プラグイン導入・更新では、従来の <code>-y</code> に代えて、直前の <code>--json</code> 実行で表示されたコマンドをSHA-256で厳密に指定する <code>--accept-command &lt;sha256&gt;</code> が追加されました。加えてサンドボックス併用時の自動モードで、コマンドごとに必要な通信先だけを許す <code>allowed_domains</code> が利用できます。</li>
+<li>アカウント・組織・APIキー切り替え後に古い組織ポリシーが再利用される問題、第三者ローカルプロキシ経由で組織ポリシーが取得・拒否される問題も修正されています。</li>
+</ul>
+
+<h3>Hermes Agent v0.21.3（v2026.9.14）— セッション更新トークンとstate.db周りのハードニング <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>種別</th><td>ベンダーリリース（セキュリティ関連修正、CVE番号の明記なし）</td></tr>
+<tr><th>公開日時</th><td>2026年9月14日 16:04 UTC（JST 2026年9月15日 01:04）</td></tr>
+<tr><th>区分</th><td>認証トークン再発行処理、多重プロファイル分離、永続ストアのハンドル管理</td></tr>
+</table>
+<ul>
+<li>前回v0.21.2（v2026.9.11）で<b>マルチプロファイル分離</b>が重点的にハードニングされていたのに続き、今回はリモートGatewayのサインイン経路が修正されました。回転式リフレッシュトークンを同時に運ぶ複数リクエストを集約するようになり、Desktopの一斉復帰時にローテーション済みトークンを再送してセッション全体が失効する事象が解消されています。</li>
+<li>長期稼働プロセスが state.db の書き込みハンドルを重複保持しなくなり、健全な構成でも「N live SessionDB handles」の前兆検知が発火する問題が解消されました。リフレッシュ処理がイベントループ外で実行されるため、遅いIDプロバイダが <code>/api/status</code> を固める問題もなくなります。</li>
+<li>本リリースは約338マージPRをまとめたタグで、MCP OAuthのリフレッシュトークンを発行者に束縛する変更やクロスVMファイルシステムでの state.db WAL 拒否も含まれます。Hermes Cloud等のホスト型環境は新タグへ自動更新されます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 2026.9.4 / 2026-09-11公開）、Next.js（最新 16.3.5 / 2026-09-11公開）、Hono（最新 v4.13.7 / 2026-09-04公開）、Django、Spring Boot、GCP、Azure、React については、対象期間内にセキュリティに関連する新規リリース・アドバイザリは確認されませんでした。JVNに新規掲載された脆弱性はYAMAPのAndroidアプリ（CVE-2026-85125、9月14日公開）のみで、CVEベースの新規国内アドバイザリは他に確認されていません。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>「ファンくる」にリスト型攻撃 — 不正ログイン試行506万回、59,389人の会員情報が閲覧された可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>第二報 2026年8月25日 / 2026年9月14日 08:05 JST報道（ScanNetSecurity）</td></tr>
+<tr><th>区分</th><td>国内インシデント（覆面調査サービス・リスト型攻撃／不正ポイント交換）</td></tr>
+<tr><th>一次情報</th><td>株式会社ファンくる「『ファンくる』への不正ログインに関するお詫びとご報告（第二報）」</td></tr>
+</table>
+<ul>
+<li>2026年8月20日 22時から8月24日 13時にかけて、外部の第三者によるリスト型攻撃とみられる不正ログインが発生しました。試行回数は5,060,270回、不正ログインが成立した会員数は59,389人に上ります。</li>
+<li>マイページ経由で氏名・生年月日・郵便番号・電話番号・メールアドレスが閲覧された可能性があり、2アカウントでは第三者による不正なポイント交換も確認されています。パスワードの使い回しが成立の主因とみられます。</li>
+<li>同社は不正通信の遮断、ログイン画面への不正アクセス対策機能の導入、監視体制の強化を実施し、8月25日12時からサービスを再開しました。対象のモニター会員へは順次個別連絡とパスワード再設定の案内を行っています。</li>
+</ul>
+
+<h3>サンメッセが利用する購買発注システム「WEB発注システム」にサイバー攻撃、ユーザー情報が漏えいした可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月8日（サンメッセ） / 9月9日 利用再開 / 2026年9月14日 08:05 JST報道（ScanNetSecurity）</td></tr>
+<tr><th>区分</th><td>国内インシデント（印刷・情報加工業・委託先システムへの攻撃）</td></tr>
+<tr><th>一次情報</th><td>サンメッセ株式会社「WEB発注システムへのサイバー攻撃について」</td></tr>
+</table>
+<ul>
+<li>同社が利用する購買発注システム「WEB発注システム」のサーバへのサイバー攻撃が、運用委託会社から報告されました。被害拡大防止と安全確保を優先し、同システムの利用を停止しています。</li>
+<li>これまでの調査で一部のユーザー情報が外部に漏えいした可能性を確認しており、運用委託会社と連携して事実関係の究明と影響範囲の特定を進めています。</li>
+<li>9月9日には同システムの利用を再開した旨が公表されました。自社システムではなく業務委託先が運用するシステムが侵害された事例で、委託先のインシデント管理体制が自社の業務停止に直結する構図が改めて示されています。</li>
+</ul>
+
+<h3>TRUNKの従業員メールアカウントに不正アクセス、424件の個人情報が漏えいした可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月1日（TRUNK） / 2026年9月14日 08:05 JST報道（ScanNetSecurity）</td></tr>
+<tr><th>区分</th><td>国内インシデント（ホテル企画運営・メールアカウント侵害／なりすましメール）</td></tr>
+<tr><th>一次情報</th><td>株式会社TRUNK「従業員メールアカウントへの不正アクセスについて」</td></tr>
+</table>
+<ul>
+<li>従業員のメールアカウントに第三者から不正アクセスがあり、同社が保有する情報の一部が外部に漏えいしました。第三者は当該アカウントを不正利用し、同社および従業員になりすまして不審メールを送信していたことも確認されています。</li>
+<li>漏えいした可能性があるのは424件分で、氏名・住所・メールアドレス・勤務先などの個人情報が含まれます。</li>
+<li>応急措置として従業員メールアカウントのパスワードをより安全なものへ変更し、不審メールの送信を停止させました。なりすましメールは取引先への攻撃にも波及するため、受信側での注意喚起も必要です。</li>
+</ul>
+
+<h3>宮崎県の県立学校地区生徒寮でサポート詐欺、入寮者と職員の情報が漏えいしたおそれ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月14日（Security NEXT報道・宮崎県）</td></tr>
+<tr><th>区分</th><td>国内インシデント（公的機関・サポート詐欺による遠隔操作）</td></tr>
+<tr><th>一次情報</th><td>宮崎県（県立学校地区生徒寮の運営を受託する宮崎県奨学会）</td></tr>
+</table>
+<ul>
+<li>生徒寮の管理人が2026年9月4日、インターネットで防災気象情報を収集していた際にサポート詐欺の被害に遭いました。<br>「マルウェアに感染しており除去作業が必要」と偽る警告画面を信じて記載の電話番号へ連絡し、指示に従った結果としてパソコンが遠隔操作される状態に陥っています。</li>
+<li>電話を切った後、見慣れないウイルス対策ソフトが起動していることを不審に思い警察へ連絡し、個人情報が流出した可能性があるとして調査が行われています。</li>
+<li>対象は2020年度から2026年度の西都地区生徒寮の入寮者名簿に記載された76人分（氏名・住所・保護者連絡先・アレルギーの有無・寮費納入状況等）と、2024年度から2026年度の同施設職員10人分（氏名・給与額等）。施設運営に関わる財務関係データ・業務日誌・取引事業者名などの内部情報も流出したおそれがあります。</li>
+</ul>
+
+<h3>沖縄県が個人情報を含むファイルを40市町村へ誤送信、200人分が対象 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月14日（Security NEXT報道・沖縄県）</td></tr>
+<tr><th>区分</th><td>国内インシデント（公的機関・誤送信）</td></tr>
+<tr><th>一次情報</th><td>沖縄県（調査依頼メールの転送時の誤送信）</td></tr>
+</table>
+<ul>
+<li>2026年7月10日、国から送信された添付ファイルを含む調査依頼メールを県内40市町村の担当者へ転送した際、本来送付すべきでない個人情報が含まれたままでした。市町村ごとに分割して送付すべきところ、全対象者200人分の個人情報を含んだまま送信しています。</li>
+<li>含まれるのは氏名・市町村または研修施設名・年齢・営農類型・2026年度の交付予定額です。2025年度の調査では未記入の様式が添付されていたため、今回も同様であると勘違いしたことが原因とされています。</li>
+<li>県は送信先の市町村へ謝罪しメールの削除を依頼、連絡先を把握している関係者には書面で謝罪しました。<br>連絡先を把握していない対象者には、市町村や研修先を通じて謝罪の書面を配付するとしています。</li>
+</ul>
+
+<h3>個人情報保護委員会 第367回会合 — 令和8年度第1四半期、民間事業者98件へ指導（不正アクセス起因が中心） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>公表日</th><td>2026年9月2日（会合開催・資料公開） / 2026年9月14日 08:05 JST報道（ScanNetSecurity）</td></tr>
+<tr><th>区分</th><td>国内動向（規制当局・監督状況）</td></tr>
+<tr><th>一次情報</th><td>個人情報保護委員会「第367回 個人情報保護委員会」配布資料</td></tr>
+</table>
+<ul>
+<li>令和8年度第1四半期の漏えい等報告の処理件数は、個人情報6,101件・特定個人情報113件でした。同期間に指導・助言は計141件で、うち民間事業者98件・行政機関等43件です。</li>
+<li>民間事業者への指導内訳は、外部からの不正アクセス等の防止の不備21件、アクセス者の識別と認証の不備14件、委託先に対する監督の不備12件、情報システムの使用に伴う漏えい等の防止の不備3件のほか、<b>漏えい等報告の提出の遅延が45件</b>でした。行政機関等では媒体の管理等の不備7件、誤送付等の防止の不備3件、報告遅延31件となっています。</li>
+<li>報告遅延が指導全体の約3分の1を占める点は、初動調査と対外報告の体制が実務上の課題になっていることを示しています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">以上のほか、対象期間内に新たに公表された国内企業・官公庁・医療機関等の被害事案は確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
