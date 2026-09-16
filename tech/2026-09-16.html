@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-16 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-16 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.272 / v2.1.273</h2>
+<p>対象期間内に <strong>v2.1.272</strong>（9月15日 09:50 JST 公開、バグ修正・信頼性改善のみ）と <strong>v2.1.273</strong>（9月16日 05:30 JST 公開）の2件がリリースされました。v2.1.273 では LLM ゲートウェイ向けのリクエストヘッダ拡張、MCP 切断時の通知と再接続の改善、Remote Control セッションのフォーク機能などが追加され、パーミッションチェッカーまわりと長時間セッションの挙動に多数の修正が入っています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ゲートウェイ向けリクエストヘッダ（v2.1.273）</strong>: LLM ゲートウェイ向けに <code>x-claude-code-request-class</code>、<code>x-claude-code-agent-type</code>、<code>x-claude-code-prev-tool-durations</code>、<code>x-claude-code-compaction</code>、<code>x-claude-code-context-compacted</code> を追加。<code>CLAUDE_CODE_GATEWAY_HINT_HEADERS=1</code> でオプトインします</li>
+  <li><strong>MCP 切断時の通知</strong>: セッション途中で MCP サーバーが切断し、自動再接続も諦めた場合に通知が表示され <code>/mcp</code> へ誘導されます</li>
+  <li><strong>Remote Control セッションのフォーク</strong>: <code>claude --remote-control</code> または <code>/remote-control</code> で開始したセッションを Claude アプリからフォーク可能に。フォークはお手元のマシン上のバックグラウンドセッションとして動作します</li>
+  <li><strong>Artifact ツールの改善</strong>: 配信対象外のファイル形式を含む publish 時のエラー説明を具体化、ページ読み取り時にその artifact のケイパビリティとデータベース規則を提示、DB 書き込みで単一フィールドの削除が可能に、接続断後の publish 再送が安全になり重複バージョンを作らなくなりました</li>
+  <li><strong>エラー診断の改善</strong>: Bedrock / Vertex / Foundry の 401・403 や Claude apps gateway の 403 で、更新すべき資格情報名やゲートウェイ管理者への連絡先を明示。<code>/autofix-pr</code>・<code>/web-setup</code>・SSL 証明書／プロキシ接続エラーも原因と対処（<code>NODE_EXTRA_CA_CERTS</code> など）を表示します</li>
+  <li><strong>長時間セッションの応答性改善</strong>: フックの進捗やサブエージェントの活動更新ごとに会話全体を再処理しなくなった</li>
+  <li><strong>テレメトリ</strong>: <code>OTEL_LOG_TOOL_DETAILS=1</code> がコスト・トークン指標に実際の agent / skill / plugin / MCP サーバー名を含めるように。<code>/bug</code>・<code>/feedback</code> はモデル挙動パラメータのみを送信し、リクエストメタデータや <code>CLAUDE_CODE_EXTRA_BODY</code> は除外されます</li>
+  <li><strong>挙動変更</strong>: Bedrock / Vertex / Foundry の auto モードは当面ローカル分類器を既定とし、サーバー側分類器を使うには <code>CLAUDE_CODE_AUTO_MODE_SERVER=1</code> を設定します</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>パーミッションチェッカーが完全に解析できない Bash コマンドが <code>permissions.blockReadsOutsideWorkingDirectories</code> 下でプロンプトをすり抜ける問題、およびバイパスモードでサブシェルが危険な <code>rm</code> を隠せる問題を修正</li>
+  <li>組織が Skills を無効化した後も claude.ai から同期されたスキルが利用可能なままだった問題を修正（復元可能なゴミ箱へ移動）</li>
+  <li>MDM や <code>managed-settings.json</code> で設定した <code>allowManagedMcpServersOnly</code>・<code>deniedMcpServers</code>・<code>disableClaudeAiConnectors</code> が、サーバー管理設定が併存する場合に無視される問題を修正</li>
+  <li><code>/login</code>・<code>/upgrade</code>・<code>/extra-usage</code> が会話中の thinking を破棄し、次リクエストでプロンプトキャッシュ全体の書き直しを強いていた問題を修正</li>
+  <li>コンテキストメーターと auto-compact が advisor ツールのターンを実際の約2倍で計上し、実ウィンドウの半分で auto-compact が発火していた問題を修正</li>
+  <li>サブエージェント／バックグラウンドエージェントが、最終ストリーミング応答にトークン使用量やモデル ID が無いと「失敗」扱いになり結果が届かない問題を修正</li>
+  <li>SDK と <code>--output-format stream-json</code> の出力で、実行途中にバックグラウンドへ移されたサブエージェントの残りのメッセージと最終レポートが欠落する問題を修正（<code>CLAUDE_AUTO_BACKGROUND_TASKS</code> など）</li>
+  <li><code>.claude/scheduled_tasks.json</code> を別フォルダ（新しい worktree など）へコピーすると、保存済みスケジュールタスクが誤ったセッションで実行される問題を修正</li>
+  <li>macOS でドラッグしたスクリーンショットなどの Read が「symlink resolution changed after permission was checked」で拒否される問題を修正</li>
+  <li><code>/tui</code> が、既に作業を終えて agents パネルに表示されていない agent-team のメンバーを理由に再起動を拒否する問題を修正</li>
+  <li>spinner が compaction ステータス行（「Running PreCompact hooks…」など）で省略記号を二重表示する問題、Artifacts の読み取り／publish 後に frontend-design プラグインを勧める誤ったヒントを修正</li>
+  <li><code>/install-github-app</code> が SAML シングルサインオンによるブロックを「admin permissions required」と誤報する問題を修正</li>
+  <li>2.1.268 の変更を一部巻き戻し: パーミッションチェッカーが解析できない Bash 行（<code>eval</code>、<code>env -C</code>）で Read / Edit の拒否ルールを適用していたため、<code>time -p make build</code> のようなコマンドは拒否ではなく再度プロンプト表示に戻りました</li>
+  <li>[VSCode] 完了ターン後に Windows で赤い「Claude Code process exited with code 4294967295」バナーが出る問題、フィードバック無効組織でも「Report a problem」が表示される問題を修正</li>
+  <li>[Claude Code on the web] 組織設定からのセルフホスト環境作成がサーバーエラーで中途半端に失敗する問題、管理者がコネクタを削除・再追加するとルーチンが古いコネクタを呼び続ける問題を修正</li>
+  <li>[Claude Tag] スケジュールタスクが組織共有の private Slack チャンネルで投稿されない問題、古いスレッドへの返信がタスクを最初からやり直して未 push の作業を失う問題などを修正</li>
+  <li>[Code Review] ベースブランチのマージで「Additional findings」がある PR が全量再レビューになる問題、<code>REVIEW.md</code> 全体が @メンションや行をまたぐコードスパンで無視される問題、<code>/ultrareview --post</code> のリトライで所見コメントが0回／2回投稿される問題を修正</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-273">Claude Code Changelog — v2.1.273</a> · <a href="https://code.claude.com/docs/en/changelog#2-1-272">v2.1.272</a>（RSS フィードで全バージョンを照合済み）</p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.21.3（タグ v2026.9.14、9月15日 01:04 JST 公開）</strong>です。v0.21.2 以降の約338件の PR を、Docker イメージ・Hermes Cloud・ホステッド環境などの下流コンシューマー向けにまとめたパッチリリースで、リモート Dashboard セッションのリフレッシュ集中による失効問題と、長時間稼働プロセスの <code>state.db</code> 重複ハンドル問題を修正しています。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2026.9.4（9月11日 12:46 JST 公開）</strong>です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.203</h2>
+<p>対象期間内に <strong>v1.4.203</strong>（9月15日 14:43 JST 公開）がリリースされました。信頼性・セキュリティ、エージェントとネイティブチャット、ワークスペースとモバイル、そして幅広い性能改善をまとめたリリースです。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>信頼性・セキュリティ</strong>: glibc 環境の use-after-free に対処するため Electron を更新。ブラウザの Cookie 移行がより確実になり、worktree 作成が post-create 失敗後も正常に完了します</li>
+  <li><strong>ブラウザ Cookie</strong>: Chromium の SameSite ストレージ値のデコードに対応（プロファイルあたり最大135件の Cookie が失われていました）。Cookie スコープを psl の古いサフィックスリストから切り離しました</li>
+  <li><strong>エージェントとネイティブチャット</strong>: 再起動で宙に浮いた送信をプロバイダ履歴と突き合わせて判定、agent ステータスが保持されたランタイム行ストアに依存しないように変更、プロバイダが一覧に載せていない構造化モデルを拒否するなど検証を強化</li>
+  <li><strong>自動化</strong>: スケジューラの tick を分離し、サイズ超過の cron ステップを拒否するように</li>
+  <li><strong>AI Vault</strong>: インデックス上のセッション検索クエリエンジンを追加。以前のサイズに書き戻されたトランスクリプトの再読み取りにも対応</li>
+  <li><strong>モバイル</strong>: プッシュ通知とコールドスタート時の解除動作を復旧、型付き RPC 操作の追加と生リクエストの制限、Markdown 描画の無限ループ防止、通知タップ時に現在のワークスペースを再利用</li>
+  <li><strong>ワークスペース・サイドバー</strong>: 保存済みフォルダワークスペースの名前とグループをリソースマネージャに表示、アニメーション付き並べ替えを保ったままサイドバーのネストを操作しやすく改善</li>
+  <li><strong>性能</strong>: コールドスイッチ、ブラウザ、ターミナル、SSH、モバイル、履歴、プラグイン、relay のオーバーヘッドを広範に削減。エディタの Markdown 空白走査による数秒単位の停止を解消し、20.7 MiB の重複・未使用メディアを削除</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<p>対象期間内に安定版の新規リリースは確認されませんでした（最新安定版は v16.3.5、9月12日 04:15 JST 公開）。canary は <strong>v16.4.0-canary.32</strong>（9月16日 08:47 JST 公開）が対象期間内に、canary.29〜31 が期間開始直前に公開されています。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Billing Conductor</strong>: SKU スコープの価格ルールで、カスタムレートと利用量ティア別の料金設定が可能になりました。公開オンデマンド料金に対する百分比のマークアップ／マークダウンを計算せずに、pro forma 請求データへ交渉済み価格をそのまま反映できます（9月16日 03:58 JST 告知）</li>
+  <li><strong>Billing and Cost Management Dashboard</strong>: 新設の Detected Anomalies ウィジェットで、コスト異常をダッシュボード上で直接監視できるようになりました（9月16日 07:00 JST 告知）</li>
+  <li><strong>Amazon SageMaker AI</strong>: トレーニングジョブと処理ジョブでインスタンス優先リスト（instance preference lists）を指定可能に（9月16日 03:30 JST 告知）</li>
+  <li><strong>Amazon Q in Console</strong>: CloudTrail のイベントを自然言語で分析できるようになりました（9月16日 01:54 JST 告知）</li>
+  <li><strong>Amazon Connect Customer</strong>: エージェントが希望シフトに入札できる機能を追加（9月16日 01:00 JST 告知）</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>9月15日（米国時間）付のリリースノートが公開されました。<strong>Artifact Registry</strong> の Conda パッケージ管理（プレビュー）、古いカーネルの VM OS イメージ指定時にジョブが失敗する既知問題へのワークアラウンド、2026年7月分データリリースに向けたカーボンデル v17 への更新（Scope 1/2/3 の配分係数・排出係数の更新、欧州の再エネマッチング境界の RE100 基準への整合）が含まれます。あわせて Google Cloud CLI <strong>585.0.0</strong> が公開され、Cloud Storage の <code>ADMIT_ON_SECOND_MISS</code> 非推奨化、<code>gcloud app-topology</code> の GA／beta 昇格、BigLake の <code>--cross-cloud-cache</code> 追加などが含まれています。</p>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<h3>☁️ Azure</h3>
+<p>対象期間内の新規告知は確認されませんでした（Azure Blog の最終更新は 9月11日）。</p>
+
+<h3>⚛️ React / Python / Django / Java / Spring Boot / Hono / Claude API・SDK</h3>
+<ul>
+  <li><strong>React</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v19.3.0（9月10日 03:01 JST 公開）</li>
+  <li><strong>Python</strong>: 対象期間内の新規リリースは確認されませんでした。最新タグは v3.15.0rc2（9月1日 18:14 JST）</li>
+  <li><strong>Django</strong>: 対象期間内にリリース・セキュリティアドバイザリは確認されませんでした。最新の bugfix リリースは 6.1.1（9月3日 02:30 JST）。なお 9月15日 22:20 JST 公開の weblog で <strong>DjangoCon Europe 2027 の開催地がオーストリア・インスブルックに決定</strong>したことが発表されました</li>
+  <li><strong>Java / Spring Boot</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.1.1（8月21日 05:02 JST）／v4.0.8（8月21日 11:39 JST）</li>
+  <li><strong>Hono</strong>: <strong>v4.13.8</strong>（9月15日 16:31 JST 公開）が対象期間内にリリースされました。大きな keyed 更新での JSX/dom ルックアップ削減と reconciliation の最適化、AWS Lambda でレスポンスボディのストリーミング時にバックプレッシャーを尊重する修正、<code>Accept-Language</code>／<code>q</code> パラメータ処理の修正（q=0 のエントリをスキップ、<code>q</code> を大文字小文字非依存に、負の値を 1 ではなく 0 にクランプ）、キャッシュされたボディ再利用時にリクエストのメディアタイプを保持する修正が含まれます</li>
+  <li><strong>Claude API / SDK</strong>: Python SDK <strong>v1.6.0</strong>（9月16日 00:14 JST 公開）と TypeScript SDK <strong>v0.126.0</strong>（9月16日 02:34 JST 公開）が対象期間内にリリースされました。Managed Agents の auto モードでのツール権限、compaction パラメータと署名付き compaction ブロック（ベータ）、workspace のデータレジデンシー geo フィールドの enum 型、web fetch ツールの <code>url_sources</code>、user profiles メソッドの <code>workspace_id</code> パラメータ追加に加え、非同期クライアントでの credential token provider 対応、60秒超の <code>Retry-After</code> 尊重、無効な <code>Retry-After</code> の無視と <code>maxRetries</code> 検証などが含まれます。TypeScript 側はさらに vertex-sdk v0.19.9、bedrock-sdk v0.33.6、foundry-sdk v0.4.7、aws-sdk v0.7.2、google-cloud-sdk v0.0.12 も同時公開されました</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
