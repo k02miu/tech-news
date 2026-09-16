@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Google「Chrome 153」にセキュリティ更新 — 脆弱性42件を修正、WebGL等のCritical 3件 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Google Chrome 153.0.8010.48 / 153.0.8010.47（Windows・macOS）、153.0.8010.47（Linux）</td></tr>
+  <tr><th>脆弱性</th><td>CVE-2026-91726（WebGL 境界外読み取り）、CVE-2026-91721（Internals 解放後メモリ使用）、CVE-2026-91749（Workers 解放後メモリ使用）ほか</td></tr>
+  <tr><th>深刻度</th><td>Critical 3件 / High 28件 / Medium 10件 / Low 1件（計42件）</td></tr>
+  <tr><th>公開</th><td>Google 現地2026年9月15日公開、2026年9月16日国内報道</td></tr>
+</table>
+<ul>
+  <li>Critical 3件はいずれもブラウザ内でのメモリ破壊・情報漏えいにつながる問題で、WebGL（CVE-2026-91726）、Internals（CVE-2026-91721）、Workers（CVE-2026-91749）が該当しますわ。</li>
+  <li>High 28件には、スクリプトエンジン「V8」の整数オーバーフロー（CVE-2026-91728）と解放後メモリ使用（CVE-2026-91745）、ServiceWorker の境界外書き込み（CVE-2026-91711）、型の取り違え（CVE-2026-91715）などが含まれます。</li>
+  <li>このほか Skia・DOM・PDF・Core・Input の Use After Free、競合状態、認可処理の不備、未初期化リソースなど幅広い問題を修正しています。アップデートは数日〜数週間かけて順次展開されます。</li>
+  <li>9月8日公開の Chrome 153 初回リリース（脆弱性230件を修正）とは別の追加セキュリティアップデートですので、あわせて適用くださいませ。</li>
+</ul>
+
+<h3>Oracle、月例セキュリティアップデート（CSPU 2026年9月）— のべ673件を修正、CVSS 10.0が6件 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Oracle Database Server / Fusion Middleware / E-Business Suite / Enterprise Manager / PeopleSoft / Siebel / Analytics / Supply Chain / Commerce / Communications / VM VirtualBox ほか</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3 10.0 が6件、9.9 が15件、9.8 が44件。607件がスコア7.0以上、104件が9.0以上</td></tr>
+  <tr><th>公開</th><td>Oracle 現地2026年9月15日公開、2026年9月16日国内報道</td></tr>
+</table>
+<ul>
+  <li>四半期ごとの累積型 CPU を補完する CSPU として、重複を除いた CVE ベースで672件（のべ673件）の脆弱性に対処しています。</li>
+  <li>247件についてはネットワーク経由・認証なしで攻撃が可能とされており、対象製品を外部公開している環境は優先的な適用が望まれますわ。</li>
+  <li>対象が Database・Fusion Middleware・E-Business Suite をはじめ極めて広範ですので、ご利用中のコンポーネントをご確認くださいませ。</li>
+</ul>
+
+<h3>Apple、「iOS 27」「iPadOS 27」および「macOS Golden Gate 27」を公開 — 合計336件の脆弱性に対処 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>iOS 27 / iPadOS 27（CVEベース126件）、macOS Golden Gate 27（CVEベース210件）。旧環境向けに iOS/iPadOS 26.7 等も提供</td></tr>
+  <tr><th>脆弱性</th><td>カーネル（iOS 20件 / macOS 33件）、CVE-2026-43689（root権限取得）、CVE-2026-65414（Bluetooth リモートコード実行）、WebKit、CUPS、SMB ほか</td></tr>
+  <tr><th>公開</th><td>Apple 現地2026年9月14日リリース、2026年9月16日国内報道</td></tr>
+</table>
+<ul>
+  <li>カーネルではメモリ破損やシステム異常終了につながる問題に加え、悪意あるアプリが「root」権限を取得し得る CVE-2026-43689（macOS では CVE-2026-86917 も）を修正しています。</li>
+  <li>Bluetooth の CVE-2026-65414 は、リモートの攻撃者によりアプリが異常終了したり任意のコードを実行されたりする可能性がある問題です。WebKit は iOS/iPadOS 側で3件、WebKit Canvas で1件を修正しています。</li>
+  <li>macOS 側はネットワーク関連が厚く、印刷システム「CUPS」で10件、Windows とのファイル共有に用いる「SMB」で9件に対応しています。</li>
+</ul>
+
+<h3>HPE「EdgeConnect SD-WAN Gateways（ECOS）」「SD-WAN Orchestrator」— Critical 6件を含む39件 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>HPE Networking EdgeConnect SD-WAN Gateways（ECOS） / SD-WAN Orchestrator</td></tr>
+  <tr><th>脆弱性</th><td>CVE-2026-76669 / CVE-2026-76670（APIの権限昇格）、CVE-2026-76672（機密設定情報の漏えい）、CVE-2026-76673（認証回避）、CVE-2026-76674（Gatewaysの認証なし任意コード実行）</td></tr>
+  <tr><th>深刻度</th><td>Critical 6件を含む CVEベース39件。CVE-2026-76669 / 76670 / 76672 は CVSSv3.1 9.9</td></tr>
+  <tr><th>公開</th><td>HPE 現地2026年9月15日公開、2026年9月16日国内報道</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-76669 / 76670 は、低い権限を持つリモートの認証済みユーザーが管理者権限を取得し、システム全体を侵害されるおそれがある権限昇格です。</li>
+  <li>CVE-2026-76672 は読み取り権限があれば悪用でき、外部サービスの API トークンや認証情報など機密性の高い設定情報が漏えいし得ます。</li>
+  <li>CVE-2026-76674 は SD-WAN Gateways において認証なしに任意のコードを実行されるおそれがあり（CVSSv3.1 9.8）、修正版が提供されています。</li>
+</ul>
+
+<h3>JVN：QND（クオリティソフト）に複数の脆弱性 — SYSTEM権限での任意コマンド実行と管理アカウント窃取 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>QND Premium / Standard Ver.11.1i およびそれ以前、QND Advance Ver.11.0.9i およびそれ以前</td></tr>
+  <tr><th>脆弱性</th><td>CVE-2026-84408（名前付きパイプに対するアクセス制限不備、CWE-782）、CVE-2026-81326（ハードコードされた暗号鍵の使用、CWE-321）</td></tr>
+  <tr><th>深刻度</th><td>CVE-2026-84408：CVSS4.0 8.7 / CVSS3.0 8.8。CVE-2026-81326：CVSS4.0 6.8 / CVSS3.0 5.5</td></tr>
+  <tr><th>公開</th><td>JVN#95825631 として2026年9月16日12:00 JST公開（初回公表）</td></tr>
+</table>
+<ul>
+  <li>当該製品の Windows クライアントが導入された PC にログイン可能な攻撃者により、CVE-2026-84408 では「SYSTEM」権限で任意のコマンドが実行され、CVE-2026-81326 では当該製品の管理者 ID およびパスワードが窃取される可能性があります。</li>
+  <li>対策は Ver.11.0.9i または Ver.11.1i へアップデートしたうえでのパッチ適用です。エムオーテックス株式会社の小椋大靖氏が IPA へ報告しています。悪用は確認されていません。</li>
+</ul>
+
+<h3>JVN：XikeStor製Layer3スイッチのコンフィグレーションデータダウンロード機能における認証欠如 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>SKS8310-8X / SKS8300-8T / SKS8300-12E2T2X の V1.04.B09 より前のバージョン</td></tr>
+  <tr><th>脆弱性</th><td>CVE-2026-88263（重要な機能に対する認証の欠如、CWE-306）</td></tr>
+  <tr><th>深刻度</th><td>CVSS4.0 8.7 / CVSS3.0 7.5</td></tr>
+  <tr><th>公開</th><td>JVN#45281119 として2026年9月16日12:00 JST公開（初回公表）</td></tr>
+</table>
+<ul>
+  <li>認証なしにネットワーク構成やパスワード等の機密情報を取得される可能性があり、その結果として当該製品を不正に操作されたり、踏み台として悪用されたりするおそれがあります。</li>
+  <li>最新バージョンへのアップデートで修正されます。悪用は確認されていません。</li>
+</ul>
+
+<h3>CISA ICS Advisory（2026年9月15日分）— 新規8件 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Digital Watchdog VMAX DVR/NVR、Wärtsilä FOS-Onboard、mySCADA myPRO Manager、Schneider Electric SCADAPack x70、Siemens Reyrolle 7SR5、Siemens Mendix SAML、Siemens Teamcenter、CareCam CM2507</td></tr>
+  <tr><th>公開</th><td>JPCERT/CC が JVNVU#93448623 として2026年9月16日09:00 JST公開（ICS Medical Advisory 含む）</td></tr>
+</table>
+<ul>
+  <li>米国 CISA が ICSA-26-258-01 〜 ICSA-26-258-08 を公表したものです。Siemens Mendix SAML や Teamcenter、Schneider Electric SCADAPack x70 など、産業制御・OT 環境で広く用いられる製品が含まれています。</li>
+  <li>該当製品を運用されている場合は、ベンダーアドバイザリをご確認のうえ対策をご検討くださいませ。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Claude Code / Hermes Agent / OpenClaw / Hono については、本対象期間（2026-09-16 08:00 〜 2026-09-17 08:00 JST）にセキュリティ関連の新規リリース・アドバイザリは確認されませんでした（Claude Code v2.1.273 は 2026-09-16 05:23 JST 公開分として前日朝刊に掲載済み）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>画像共有サービス「Gyazo」への不正アクセス — ユーザー情報約2,362万件・画像メタデータ約4.9億件が流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社Helpfeel（画像共有サービス「Gyazo」）</td></tr>
+  <tr><th>発生日</th><td>2026年9月11日（検知は同日夜、9月12日未明に遮断。9月16日公表）</td></tr>
+  <tr><th>原因</th><td>画像アップロードサーバーに存在した脆弱性を悪用され、第三者に任意のコマンドを実行された</td></tr>
+  <tr><th>流出規模</th><td>ユーザーに関する情報 約2,362万件、画像に関するメタデータ 約4.9億件（画像データ全体の約14.4%）＋条件を絞って取得された約240万件</td></tr>
+</table>
+<ul>
+  <li>2026年9月11日、Gyazo の画像アップロードサーバーに存在した脆弱性を悪用され、第三者が同社システム上で任意のコマンドを実行する不正アクセスが発生いたしました。同社は同日中に検知して調査を開始し、9月12日未明までに侵入経路の遮断と不正な接続の切断を実施、原因となった脆弱性の修正も完了しています。</li>
+  <li>その後の調査で、第三者が Gyazo のデータベースにアクセスし、ユーザー情報と画像メタデータが外部に流出した事実を確認。9月14日から一部画像の配信サーバーを緊急停止し、9月15日には追加の二次被害防止策を実施したうえで新規アップロード分の配信を再開しました。9月16日には「書き込み」「回転・切り抜き」など一部の編集機能も一時停止しています。</li>
+  <li>流出したユーザー情報には、名前、メールアドレス、<strong>パスワードのハッシュ値</strong>、利用者ID、端末ID、ログインセッションID、X（旧Twitter）連携用トークン、Google SSO のメールアドレス、プロフィール情報、利用言語、登録日時、最終ログイン日時、契約プラン、課金ステータス、利用統計などが含まれます。クレジットカード番号等の決済情報は含まれていません。</li>
+  <li>約2,362万件は「ユーザーに関するデータの件数」であり人数ではなく、メールアドレス等を登録していない匿名アカウントも含まれるため、個人情報の流出対象となる実人数は調査中です。</li>
+  <li>画像メタデータには、画像ID（画像URLを構成する情報）、アップロード元 IP アドレス、User-Agent、EXIF 位置情報、画像の OCR テキスト、画像タイトル、取得元 URL、非公開画像のパスフレーズ（ハッシュ化済み）などが含まれます。画像 URL を構成する情報が漏えいしているため、これを用いて対象画像に不正アクセスされるおそれがあり、<strong>非公開画像のファイル一覧が取得されていたこと</strong>と、一部の非公開画像が第三者に閲覧された可能性を完全には否定できないことが確認されています。なお、不正アクセスによる画像データそのものの消失は確認されていません。</li>
+  <li>同社が提供する「Helpfeel」「Cosense」は Gyazo とは異なるシステム構成で、両サービスからの情報流出は確認されていません（Gyazo 画像の表示箇所は配信停止の影響を受けています）。</li>
+  <li>同社は漏えいした認証関連情報について必要な無効化・制限等の対策を実施済みで、個人情報保護委員会への報告と外部専門機関によるフォレンジック調査を進めています。利用者にはパスワードの変更（同一・類似パスワードを使う他サービスも含む）と不審なメール・メッセージへの注意を呼びかけています。</li>
+</ul>
+
+<h3>ロート製薬 — 通信販売システムの侵害、顧客との通話音声データが流出した可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ロート製薬株式会社</td></tr>
+  <tr><th>発生日</th><td>2026年9月10日に侵害の疑いを確認（9月11日公表、9月15日に調査状況を更新、9月16日報道）</td></tr>
+  <tr><th>原因</th><td>通信販売で利用しているシステムが第三者に侵害（詳細は調査中）</td></tr>
+  <tr><th>対象情報</th><td>顧客との通話音声データおよび関連情報、顧客管理システム上の情報（範囲・件数は調査中）</td></tr>
+</table>
+<ul>
+  <li>2026年9月10日、通信販売で利用しているシステムが侵害された疑いがあることを確認し、同月11日に事態を公表して対応を進めていました。</li>
+  <li>その後の調査で、通信販売の顧客対応に利用するシステム内に保存されていた<strong>顧客との通話音声データや関連情報が第三者に取得された可能性</strong>があることが判明しました。さらに同社が利用する顧客管理システムも侵害され、情報を窃取された可能性があるとしています。</li>
+  <li>同社は個人情報保護委員会へ報告するとともに、外部協力のもと、取得された可能性がある情報の範囲や件数、影響について調査を進めています。ご家族やお取引先で通販を利用されている方がいらっしゃいましたら、ご注意をお伝えくださいませ。</li>
+</ul>
+
+<h3>クリエイティブ業界向け求人サービス「CINRA JOB」に不正アクセス — 会員情報が流出した可能性</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>CINRA（クリエイティブ業界向け求人サービス「CINRA JOB」）</td></tr>
+  <tr><th>発生日</th><td>2026年8月18日に不正アクセスを確認（2026年9月16日報道）</td></tr>
+  <tr><th>原因</th><td>認証情報が第三者に取得され、クラウド環境上のシステムへ不正アクセス</td></tr>
+  <tr><th>対象情報</th><td>退会者も含む会員の氏名、住所、電話番号、生年月日、性別、メールアドレス、学歴、職歴、希望条件、スキルと資格、志望動機、自己PR など</td></tr>
+</table>
+<ul>
+  <li>取得された認証情報を用いることで、会員情報を保管するデータベースやバックアップにアクセスすることが可能な状態でした。第三者による会員情報の閲覧・取得は確認されていないものの、流出の可能性があります。</li>
+  <li>同社は取得された認証情報の無効化と原因箇所の修正を行い、警察への相談および個人情報保護委員会への報告を行っています。転職活動で職歴・年収等の機微な情報を預けているサービスだけに、影響が心配されるところですわ。</li>
+</ul>
+
+<h3>プルデンシャル生命保険 — 元従業員が顧客情報を持ち出し、退職後に紛失</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>プルデンシャル生命保険</td></tr>
+  <tr><th>発端</th><td>2026年3月に退職した元従業員が、在職中に取得した顧客情報を含む帳票類を社外へ持ち出し、退職後に紛失。6月に帳票の拾得者から同社へ連絡があり発覚</td></tr>
+  <tr><th>対象情報</th><td>顧客1,570人分の氏名、住所、電話番号、証券番号、加入商品名、勤務先、契約の状況など</td></tr>
+</table>
+<ul>
+  <li>持ち出された帳票類は同社が回収済みです。また元従業員の私物スマートフォンに、本来削除されるべき顧客の連絡先が残っていたことも確認され、当該連絡先は削除されたとしています。</li>
+  <li>外部からのサイバー攻撃ではなく内部者による情報持ち出しであり、拾得者の連絡という偶然から発覚した事案です。内部不正・内部者リスク対策の重要性を示す事例といえますわ。</li>
+</ul>
+
+<h3>フィッシング対策協議会 — 7月の報告数は減少も、悪用URLは微増。「Amazon」をかたる攻撃が増加</h3>
+<table class="cve-table">
+  <tr><th>出典</th><td>フィッシング対策協議会（2026年7月分、2026年9月16日報道）</td></tr>
+  <tr><th>報告数</th><td>6万6,119件（前月7万2,370件から約8.6%減、4月以降3カ月連続減）／1日あたり約2,132.9件</td></tr>
+  <tr><th>悪用URL</th><td>4万3,267件（前月4万2,241件から約2.4%増）／1日あたり約1,395.7件</td></tr>
+</table>
+<ul>
+  <li>カテゴリ別では「EC関連」が約50.5%、「クレジット・信販関連」が約25.4%で、両者で約4分の3を占めます。続いて「オンラインサービス関連（約7.5%）」「航空関連（約4.6%）」「決済サービス関連（約2.4%）」「交通関連（約2.1%）」となっています。</li>
+  <li>報告数全体に占める割合は小さいものの、「金融関連」は前月の2倍以上の報告が寄せられました。また7月は「Amazon」をかたるフィッシングの増加が目立ったとされています。</li>
+  <li>報告数が減っても誘導先 URL は増えており、一件あたりの悪用ドメインが細分化している傾向がうかがえます。リンクの安易なクリックを避け、正規アプリ・ブックマーク経由でのアクセスを徹底くださいませ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
