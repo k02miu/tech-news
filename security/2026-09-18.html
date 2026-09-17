@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Cisco ISE に42件の脆弱性 - 管理APIの認証回避でroot権限コマンド実行、一部で悪用確認 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-76460 ほか CVEベース42件</td></tr>
+  <tr><th>CVSS</th><td>Critical（アドバイザリ単位。Critical評価のものに21件が含まれる）</td></tr>
+  <tr><th>影響</th><td>Cisco Identity Services Engine（ISE）、Cisco ISE Passive Identity Connector（ISE-PIC）</td></tr>
+  <tr><th>公開</th><td>2026-09-16（現地時間）／2026-09-17 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>ネットワークの認証・アクセス制御を担う「Cisco ISE」に、Cisco が現地2026年9月16日に15件のセキュリティアドバイザリを公開し、CVEベースで42件の脆弱性を明らかにしましたわ。</li>
+  <li>アドバイザリの重要度は、最上位「Critical」が6件、「High」が3件、「Medium」が6件。Critical評価のアドバイザリには21件の脆弱性が含まれます。</li>
+  <li>なかでも <strong>CVE-2026-76460</strong> は要注意ですわ。管理用APIの認証制御の不備に起因し、細工したHTTPリクエストによって管理インタフェースの認証を回避され、<strong>root権限でコマンドを実行されるおそれ</strong>があります。ISE-PIC も影響を受けます。</li>
+  <li>一部の脆弱性については<strong>実際の悪用が確認されており</strong>、早急なアップデートが呼びかけられています。</li>
+</ul>
+
+<h3>米CISA、KEVに3件追加 - 「Acronis Backup」のcPanel/Plesk連携の権限昇格など悪用確認 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-87886（Acronis Backup）、CVE-2026-76460（Cisco ISE / ISE-PIC）、スマートフォン関連1件</td></tr>
+  <tr><th>CVSS</th><td>権限昇格につながるおそれ（Acronis）／管理インタフェース回避（Cisco ISE）</td></tr>
+  <tr><th>影響</th><td>Acronis Backup の cPanel &amp; WHM 向けプラグイン／Plesk 向け拡張機能、Cisco ISE / ISE-PIC</td></tr>
+  <tr><th>公開</th><td>2026-09-16（現地時間）／2026-09-17 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>米CISAが現地2026年9月16日、悪用が確認された脆弱性3件を「悪用が確認された脆弱性カタログ（KEV）」へ追加いたしましたわ。対応期限はいずれも同月19日に設定され、侵害調査も求められています。</li>
+  <li><strong>CVE-2026-87886</strong> は、Acronis Backup の cPanel &amp; WHM 向けプラグインおよび Plesk 向け拡張機能における既定のアクセス権限設定が不適切なもので、権限昇格につながるおそれがあります。</li>
+  <li>Cisco ISE / ISE-PIC の <strong>CVE-2026-76460</strong>（上の項目と同一）は、APIエンドポイントの認証制御が不十分なため、未認証のリモート攻撃者がウェブベース管理インタフェースを回避して対象機器へ不正アクセスできるおそれがあります。</li>
+</ul>
+
+<h3>IBM Guardium Data Security Center にCVEベース251件の脆弱性 - 利用コンポーネントのDNSキャッシュポイズニングはCVSS 10.0 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-47691 / CVE-2026-45674（Netty）、CVE-2026-54513 / CVE-2026-54512（Jackson Databind）ほか CVEベース251件</td></tr>
+  <tr><th>CVSS</th><td>10.0（Netty の DNSキャッシュポイズニング）／8.1（Jackson Databind の型許可リスト回避）</td></tr>
+  <tr><th>影響</th><td>IBM Guardium Data Security Center（修正版 3.8.11）</td></tr>
+  <tr><th>公開</th><td>2026-09-15（現地時間）／2026-09-17 13:39 JST 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>Java 製コンポーネントを広く内包するデータセキュリティ基盤ですわ。IBMが現地2026年9月15日にアドバイザリを公開し、利用コンポーネントの脆弱性へ対処するアップデートを提供しています。</li>
+  <li>「Netty」では DNS 応答の検証不備により DNS キャッシュポイズニングにつながる <strong>CVE-2026-47691 / CVE-2026-45674</strong>（いずれも CVSSv3.1 は最高値の 10.0）に対応しました。</li>
+  <li>「Jackson Databind」では、デシリアライズ時に型の許可リストを回避できる <strong>CVE-2026-54513 / CVE-2026-54512</strong>（いずれも 8.1）を修正。</li>
+  <li>このほか HTTPリクエストスマグリング、認証情報の漏えい、アクセス制御の回避、リソース枯渇によるDoSなど多岐にわたる問題（2020年以前に確認されたものも含む）を解消し、修正版 <strong>3.8.11</strong> へのすみやかな更新が強く推奨されています。</li>
+</ul>
+
+<h3>Mozilla「Firefox 156」公開 - 脆弱性73件に対応、グラフィックス処理の権限昇格8件やサンドボックス回避 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-92005 〜 CVE-2026-92079（CVEベース73件）</td></tr>
+  <tr><th>CVSS</th><td>アドバイザリ全体で「高（High）」評価。Critical 相当のものは含まれず</td></tr>
+  <tr><th>影響</th><td>Firefox 156 未満、Firefox ESR 153.3 / 140.16 / 115.41 未満</td></tr>
+  <tr><th>公開</th><td>2026-09-15（現地時間）／2026-09-17 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>Mozilla Foundation が現地2026年9月15日に「Firefox 156」を公開いたしましたわ。権限昇格、サンドボックスからの脱出、Use After Free など CVEベースで73件の脆弱性に対処しています。</li>
+  <li>グラフィックス処理の境界条件の不備に起因する権限昇格が8件、グラフィックス関連のサンドボックス回避 <strong>CVE-2026-92035</strong>、Android版の権限昇格 <strong>CVE-2026-92033</strong> などを解消。</li>
+  <li>音声・動画・DOM・XML・SVG・ネットワーク処理など幅広いコンポーネントの Use After Free も修正されています。延長サポート版として「Firefox ESR 153.3」「同 140.16」「同 115.41」も公開されました。</li>
+</ul>
+
+<h3>AIエージェント向け隔離実行環境「Docker Sandboxes」に複数の脆弱性 - 共有ワークスペース境界を越えてホストへ到達 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-77179（macOS virtio-fs）、CVE-2026-79994（Unixドメインソケット中継）</td></tr>
+  <tr><th>CVSS</th><td>9.4 Critical ／ 8.7 High（CVSSv4.0）</td></tr>
+  <tr><th>影響</th><td>Docker Sandboxes（0.42.0 で修正、0.43.0 も公開）</td></tr>
+  <tr><th>公開</th><td>Docker 2026-09-07 / 09-15 ／2026-09-17 14:15 JST 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>AIエージェントを隔離実行するための環境に、サンドボックス境界を越えられる脆弱性が判明いたしましたわ。いずれも<strong>悪意あるゲストがシンボリックリンクを悪用し、共有ワークスペースの境界を越えてアクセスできる</strong>ものです。</li>
+  <li><strong>CVE-2026-77179</strong> は macOS の virtio-fs ホストサーバの問題で CVSSv4.0 は 9.4（Critical）。<strong>CVE-2026-79994</strong> はゲストからホストへの Unixドメインソケット中継処理の問題で 8.7（High）。ホスト上のファイルへのアクセスやソケット経由の情報漏えいにつながるおそれがあります。</li>
+  <li>アップデートできない場合は、クローンモードを使用し、ホストの読み書き可能なマウントを追加しないことが求められています。</li>
+</ul>
+
+<h3>MLflow の dspy・statsmodels フレーバーに pickle デシリアライズ制御回避（JVNVU#94390979） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>JVN は CERT/CC アドバイザリ（VU#369093）に委ねているため個別 CVE の提示なし</td></tr>
+  <tr><th>影響</th><td>MLflow の dspy フレーバー・statsmodels フレーバー</td></tr>
+  <tr><th>公開</th><td>2026-09-17 09:30 JST（JVNVU#94390979）</td></tr>
+</table>
+<ul>
+  <li>Python の機械学習基盤である MLflow の dspy および statsmodels フレーバーで、pickle のデシリアライズ制御を回避できる脆弱性が CERT/CC から公表されましたわ。</li>
+  <li>JVN は詳細および CVSS を CERT/CC のアドバイザリ（Vulnerability Note VU#369093）に委ねています。悪用の言及はありません。</li>
+</ul>
+
+<h3>Sentry Seer で攻撃者が制御する入力が管理者権限で実行される脆弱性（JVNVU#91019649） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>JVN は CERT/CC アドバイザリ（VU#212479）に委ねているため個別 CVE の提示なし</td></tr>
+  <tr><th>影響</th><td>Sentry の AIデバッグ機能「Seer」</td></tr>
+  <tr><th>公開</th><td>2026-09-17 09:30 JST（JVNVU#91019649）</td></tr>
+</table>
+<ul>
+  <li>Sentry の「Seer」において、攻撃者が制御する入力が特権環境で実行される脆弱性が CERT/CC から公表されましたわ。</li>
+  <li>詳細・CVSS は CERT/CC のアドバイザリ（Vulnerability Note VU#212479）を参照してくださいませ。悪用の言及はありません。</li>
+</ul>
+
+<h3>Siemens製品へのアップデート（2026年9月）- 新規アドバイザリ9件、認証バイパスやパストラバーサル等 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>影響</th><td>Mendix SAMLモジュール、Reyrolle 7SR5、Teamcenter、OIS Web Module、Desigo CC、Industrial Edge Management、SIMOVE Fleetmanager／SIPLANT、WTV676／WTV776 ほか</td></tr>
+  <tr><th>公開</th><td>2026-09-04 初回／2026-09-17 09:00 JST 最終更新（JVNVU#97027767）</td></tr>
+</table>
+<ul>
+  <li>JPCERT/CC が Siemens の各製品向けアドバイザリを公開・更新いたしましたわ。新規9件、更新7件です。</li>
+  <li>新規分には、Mendix SAMLモジュールのアカウントハイジャック（SSA-887643）、OIS Web Module の任意ファイルアップロード（SSA-254516）、複数産業製品に影響する「Copy Fail」（SSA-328642）、Desigo CC のクライアントコード実行（SSA-330084）、Industrial Edge Management の認証バイパス（SSA-503852）、SIMOVE Fleetmanager／SIPLANT のパストラバーサル（SSA-517424）などが含まれます。</li>
+</ul>
+
+<h3>Claude Code v2.1.274 / v2.1.275 - プラグイン関連ログへのパスワード・トークン露出を修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>明記なし（セキュリティ関連修正を含む通常リリース）</td></tr>
+  <tr><th>影響</th><td>Claude Code v2.1.275 未満</td></tr>
+  <tr><th>公開</th><td>2026-09-17 09:12 JST（v2.1.274）／2026-09-18 07:33 JST（v2.1.275）</td></tr>
+</table>
+<ul>
+  <li><strong>v2.1.275</strong> では、プラグインおよびマーケットプレイスのメッセージ・ログ・「claude plugin marketplace list」が、<strong>git／ssh／マーケットプレイスURLに保存されたパスワードやトークンを表示してしまう問題</strong>が修正されましたわ。資格情報がログへ流出する経路の遮断です。</li>
+  <li>あわせて、一部の git アドレスで誤ったサーバーが表示される問題、Claude apps gateway 経由のサインインでアカウントを確認してから資格情報を保存する変更、otelHeadersHelper 失敗時の起動時警告などが含まれます。</li>
+  <li><strong>v2.1.274</strong> は、初回非対話ターンで MCP サーバーの接続を待つ時間を制限する <code>CLAUDE_CODE_MCP_STARTUP_WAIT_MS</code> の追加、メモリ逼迫時の警告、managed-settings の解決状況を記録する OTel イベント（設定値・ダイジェストはレダクト）など。明示的な CVE・セキュリティ修正の記載はありません。</li>
+</ul>
+
+<h3>スマートフォンアプリ「東北電力 よりそうｅねっと」にハードコードされた暗号鍵使用（CVE-2026-75553） <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-75553（CWE-321）</td></tr>
+  <tr><th>CVSS</th><td>2.4（CVSS4.0 / CVSS3.0 とも）</td></tr>
+  <tr><th>影響</th><td>Android／iOS アプリ「東北電力 よりそうｅねっと」2.8.0 より前</td></tr>
+  <tr><th>公開</th><td>2026-09-17 14:00 JST（JVN#93985674）</td></tr>
+</table>
+<ul>
+  <li>東北電力のスマートフォンアプリに、ハードコードされた暗号鍵使用の脆弱性が公表されましたわ。当該製品に埋め込まれた暗号鍵を第三者に取得される可能性があります。</li>
+  <li>物理的なアクセスが必要で CVSS は 2.4 と低めですが、バージョン 2.8.0 で修正済みですので、最新版へのアップデートで対応してくださいませ。株式会社Aiソリューションズの佐々木優太氏が IPA に報告しています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java・SpringBoot / Django / React / Hono / GCP / AWS / Azure / OpenClaw / Hermes Agent の各スタックについて、本対象期間では直接関連する新規セキュリティアドバイザリは確認されませんでした（OpenClaw は 2026.9.4、Hermes Agent は v0.21.3 が最新で、いずれも対象期間外の公開です）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ムラウチドットコム - 不正アクセスで顧客情報771万6,811件が流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ムラウチドットコム（オンライン通信販売）</td></tr>
+  <tr><th>発生日</th><td>2026-07-15（障害発生・翌16日に不正アクセス痕跡を確認）</td></tr>
+  <tr><th>被害</th><td>顧客情報 771万6,811件（氏名・住所・電話番号・生年月日・性別・メールアドレス）</td></tr>
+  <tr><th>公表</th><td>2026-09-17 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>2026年7月15日未明に社内システムで障害が発生し、翌16日の復旧作業中に不正アクセスの痕跡を確認。<strong>ウェブシステムの脆弱性を悪用され、複数のシステムが侵害された</strong>ことが判明いたしましたわ。</li>
+  <li>個人情報保護委員会への報告と警察への相談を行い、外部事業者によるフォレンジック調査を実施した結果、保有する顧客情報 <strong>771万6,811件</strong>が外部へ流出したことが確認されました。</li>
+  <li>9月14日に個人情報保護委員会へ確報を提出し、同月15日より対象顧客へ順次通知メールを送信しています。国内のEC事業者としては今年でも屈指の規模の漏えいですわ。</li>
+</ul>
+
+<h3>NTTドコモ - 同意を得ずに34万4,213回線の電話番号・契約プラン名をAmazonジャパンへ提供 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>NTTドコモ</td></tr>
+  <tr><th>発生期間</th><td>2026-04-21 〜 2026-08-20（2026-02-25 の設定削除に起因）</td></tr>
+  <tr><th>被害</th><td>34万4,213回線分の電話番号・契約する料金プラン名</td></tr>
+  <tr><th>公表</th><td>2026-09-16 公表／2026-09-17 15:03 piyolog が全体像を整理</td></tr>
+</table>
+<ul>
+  <li>Amazonプライムの特典が付帯する4料金プラン（ドコモ MAX、ドコモ ポイ活 MAX、ドコモ ポイ活 20、ドコモ mini）で、<strong>本人同意なく</strong>電話番号と契約プラン名がアマゾンジャパン合同会社へ提供されていました。</li>
+  <li>2026年2月25日の同意事項見直し作業で、<strong>削除すべきでない第三者提供の個別同意の記述を人的ミスで削除</strong>。4月21日の反映以降、8月20日までの間に34万4,213回線が対象となりました。</li>
+  <li>8月18日に文言の欠落を把握し、20日に設定を修正。8月21日に総務省へ電気通信事業法上の特定利用者情報の漏えい事案として報告。アマゾンは提供情報を利用せず、9月12日までに削除したことをドコモが確認しています。</li>
+  <li>ドコモは公式サイトでは発表せず、対象契約者へSMSで個別通知する方針を採り、その理由を「対象者が特定できており、個別に説明・おわびができるため」と説明しています。</li>
+</ul>
+
+<h3>アイスタイル「@cosme」 - ファイル転送サービスの設定ミスで会員1万997人分が一時ネット上で閲覧可能に <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>アイスタイル（@cosme）</td></tr>
+  <tr><th>発生日</th><td>2026-09-02 14:20 ごろから約20分間</td></tr>
+  <tr><th>被害</th><td>会員 1万997人分（メールアドレス・配信設定・ユーザーID等）</td></tr>
+  <tr><th>公表</th><td>2026-09-17 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>従業員が個人情報を含むファイルを社内で受け渡す際に利用したファイル転送サービスで公開設定に不備があり、<strong>ダウンロード用URLが約20分間にわたり公開状態</strong>となっていました。</li>
+  <li>氏名・住所・電話番号・パスワード・クレジットカード情報は含まれておらず、URLは社内関係者間でのみ共有されていて第三者には提供していないとのこと。二次被害は確認されていません。</li>
+  <li>発覚後はファイルを削除し、個人情報保護委員会へ報告のうえ対象者へ個別連絡。再発防止として手動によるデータ抽出の廃止などを検討しています。</li>
+</ul>
+
+<h3>TRUNK（ホテル運営）- 従業員メールアカウント侵害で424人分の情報流出か、なりすましメールも送信 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>TRUNK（ホテル運営）</td></tr>
+  <tr><th>被害</th><td>424人分の氏名・住所・メールアドレス・勤務先など</td></tr>
+  <tr><th>公表</th><td>2026-09-17 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>従業員のメールアカウントが不正アクセスを受け、同社が保有する情報の一部が流出したことが判明いたしましたわ。</li>
+  <li>さらに侵害されたアカウントが不正利用され、<strong>同社や従業員になりすましたメールが第三者により送信</strong>されました。パスワード変更後、不正なメール送信は停止しています。</li>
+  <li>個人情報保護委員会へ報告し、対象関係者へ順次謝罪するとともに、なりすましメールへの注意喚起を行っています。</li>
+</ul>
+
+<h3>生活協同組合コープやまぐち - LINEミニアプリへの不正アクセスでDB内の全データが削除 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>生活協同組合コープやまぐち（開発・運用は外部事業者へ委託）</td></tr>
+  <tr><th>発生日</th><td>2026-08-27</td></tr>
+  <tr><th>被害</th><td>氏名・住所・電話番号・メールアドレス（件数・人数は精査中）</td></tr>
+  <tr><th>公表</th><td>2026-08-28 公表／2026-09-17 報道（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+  <li>「コープやまぐちLINEミニアプリ」のデータベースに第三者から不正アクセスがあり、<strong>データベース内の全てのデータが削除される</strong>事象が発生いたしましたわ。</li>
+  <li>第三者による個人情報の閲覧・取得・外部持ち出しは現時点で確認できておらず、同組合は流出を否定できないとして漏えいのおそれがある事案として対応しています。</li>
+  <li>対象は、梨・りんごギフト（2024年7月31日〜2026年8月27日）、母の日特別ギフト（2025年4月14日〜27日）、自宅直送グルメ（2025年5月26日〜6月3日）を注文した組合員および届け先、2023年1月20日〜2026年8月27日にアンケートへ回答した組合員。</li>
+  <li>事象確認後ただちに外部からのアクセスを遮断し、8月27日中にバックアップからデータを復元してサービスを復旧。外部専門家とともに原因究明と再発防止策の検討を進めています。</li>
+</ul>
+
+<h3>山梨大学 - 契約するレンタルサーバでWebサイト改ざん、JCE の脆弱性起点に54サイトが閲覧不可 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>国立大学法人山梨大学</td></tr>
+  <tr><th>発生日</th><td>2026年6月上旬（JCE 脆弱性悪用）〜7月下旬に侵害拡大</td></tr>
+  <tr><th>被害</th><td>1台のレンタルサーバ内の59サイトのうち54サイトが閲覧不可。個人情報・機微情報の流出は未確認</td></tr>
+  <tr><th>公表</th><td>2026-08-27 公表／2026-09-17 報道（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+  <li>7月中旬以降、複数のCMS利用サイトで<strong>不正なユーザーの作成、WebShell等の不審なファイルの設置、SEOスパム・SEOポイズニング</strong>などの侵害が確認されました。</li>
+  <li>6月上旬にあるWebサイトで利用していた Joomla 拡張機能「JCE」の脆弱性が悪用されて WebShell が設置され、7月下旬にかけて同一レンタルサーバ上の他サイトへ侵害が拡大した可能性が高いとされています。</li>
+  <li>侵害されたサイトでは個人情報や機微情報を取り扱っておらず、情報流出も確認されていません。安全性が確認できたサイトから順次公開を再開しています。</li>
+</ul>
+
+<h3>さくらインターネット - 不正アクセス調査結果（第三報）、レンタルサーバ全サーバ再構築などの再発防止策 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>さくらインターネット</td></tr>
+  <tr><th>発生期間</th><td>販売管理システムへの不正アクセスは 2023年4月〜2026年3月の間</td></tr>
+  <tr><th>被害</th><td>レンタルサーバ 951アカウント、会員情報 最大1,360,563アカウント（うち30アカウントはハッシュ化済みパスワード）</td></tr>
+  <tr><th>公表</th><td>2026-09-10 公表（第三報）／2026-09-17 報道（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+  <li>2026年8月9日に「さくらのレンタルサーバ」のメンテナンス用サーバで異常を検知。レンタルサーバへの不正アクセス、一部サーバへのマルウェア設置、販売管理システムのデータベースへの不正アクセスが確認されました。</li>
+  <li>第三報では、レンタルサーバの影響対象が <strong>583 → 951アカウント</strong>に拡大。販売管理システムの会員情報は最大 <strong>1,360,563アカウント</strong>が閲覧・取得された可能性があります。</li>
+  <li>販売管理システムには、レンタルサーバの初期サーバパスワードおよび VPS の管理者初期パスワードが<strong>ハッシュ化されていない状態で保存</strong>されていました。初期パスワードを利用中の契約者については同社がパスワードを変更し個別案内しています。</li>
+  <li>データの外部持ち出しを裏付ける明確な事実や、本件に起因する二次被害は現時点で確認されていません。同社は「さくらのレンタルサーバ」全サーバの再構築によるクリーンナップなど再発防止策を掲げています。</li>
+</ul>
+
+<h3>熊本県「ワンストップジョブサイトくまもと」が改ざん - iPhone 閲覧時に偽警告でサブスクアプリに誘導 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>熊本県（就職・移住支援サイト）</td></tr>
+  <tr><th>発生期間</th><td>2026-09-01 3:30 ごろ 〜 2026-09-03 10:00 前</td></tr>
+  <tr><th>被害</th><td>個人情報の流出は確認されず。閲覧者が有料アプリへ誘導されたおそれ</td></tr>
+  <tr><th>公表</th><td>2026-09-17 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>サイトは第三者により改ざんされ、利用登録画面で会員規約の同意ボタンをクリックすると<strong>偽のセキュリティ警告</strong>が表示されるよう細工されていました。</li>
+  <li>「ウイルスが検出された」などと不安を煽り有料アプリのインストールを促す内容で、Apple iOS 搭載の iPhone でのみ表示される状態でした。不正アクセスにともなう個人情報の流出は確認されていません。</li>
+  <li>県はセキュリティ対策を講じてサイトを復旧。偽警告に従いアプリをインストールしてしまった場合は、アプリの削除と自動継続課金の解約が呼びかけられています。</li>
+</ul>
+
+<h3>アップ「洛西進学教室」「進学館」- プラグイン脆弱性を悪用され応募者・管理者情報が閲覧のおそれ <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社アップ（教育・進学教室運営）</td></tr>
+  <tr><th>発生日</th><td>2026-08-24</td></tr>
+  <tr><th>被害</th><td>採用応募者10名分＋サイト管理者3名の従業員情報</td></tr>
+  <tr><th>公表</th><td>2026-09-04 公表／2026-09-17 報道（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+  <li>運営サイトが利用していた外部ソフトウェア（プラグイン）の脆弱性を悪用され、<strong>サーバ内に不正なプログラムが設置</strong>されました。</li>
+  <li>採用応募者10名分（氏名・フリガナ・性別・年齢・大学・住所・連絡先・希望内容等）とサイト管理者3名の従業員情報が閲覧された可能性があります。外部への持ち出し痕跡・二次被害は未確認です。</li>
+  <li>不正アクセスの遮断、サーバ隔離、不正プログラムの除去、脆弱性の修正を完了し、安全性が確認できたサイトから順次復旧しています。</li>
+</ul>
+
+<h3>厚生労働省 - 令和8年最低賃金に関する基礎調査の調査票が配送過程で紛失 <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>厚生労働省</td></tr>
+  <tr><th>発生日</th><td>2026-08-28 発表</td></tr>
+  <tr><th>被害</th><td>最低賃金に関する基礎調査の調査票が運送業者の配送過程で紛失</td></tr>
+  <tr><th>公表</th><td>2026-09-17 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>厚生労働省は2026年8月28日、令和8（2026）年最低賃金に関する基礎調査の調査票が、運送業者による配送過程で紛失したことを発表いたしましたわ。</li>
+  <li>調査票には事業所の賃金情報等が記載されていました。同省は再発防止策を講じるとしています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
