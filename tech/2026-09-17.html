@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-17 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-17 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.273</strong>（9月16日 05:30 JST 公開。対象期間開始の約3時間30分前）です。RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）で全バージョンを照合した結果、<code>lastBuildDate</code> は 9月17日 09:00 JST で、v2.1.273 より新しい項目はありませんでした。</p>
+<p>参考として、期間外直近の v2.1.273 では LLM ゲートウェイ向けリクエストヘッダ（<code>CLAUDE_CODE_GATEWAY_HINT_HEADERS=1</code>）、MCP サーバー切断時の通知と自動再接続の諦め通知、<code>--remote-control</code> セッションのアプリからのフォーク、パーミッションチェッカーまわりの修正が多数含まれています。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a>（RSS フィードで pubDate を全件照合済み）</p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.21.3（タグ v2026.9.14、9月15日 01:04 JST 公開）</strong>です。v0.21.2 以降の約338件の PR をまとめたパッチリリースで、リモート Desktop / Cloud セッションのリフレッシュ集中による失効問題（<code>#110061</code>）と、長時間稼働プロセスの <code>state.db</code> 重複ライターハンドル問題（<code>#110934</code>）に対処しています。なお v0.22.0 で v0.21.0 以降の全内容をまとめた正式なリリースノートが出る予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2026.9.4（9月11日 12:46 JST 公開）</strong>です。GitHub Releases API で直近6件を照合し、期間内の公開はありませんでした。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.204</h2>
+<p>対象期間内に <strong>v1.4.204</strong>（9月16日 13:57 JST 公開）がリリースされました。ネイティブチャットのファイルドラッグ＆ドロップとプロバイダ対応の Fast モード、再起動後の構造化チャット復帰、Grok の完了通知／フック帰属の修正、Claude の <code>SessionEnd</code> 対応などが含まれるリリースです。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>ネイティブチャット</strong>: ファイルのドラッグ＆ドロップに対応し、チャットペイン全体をドロップターゲットとして表示。プロバイダを認識する Fast モードを追加。再起動後に構造化チャットを正常に再開し、再開済みの Claude ターンをプロバイダが再オープンできるように。待機中のアイドル表示も非表示化</li>
+  <li><strong>Grok / Claude 連携</strong>: 再生された Claude・Cursor のフックが Grok ペインを Claude と誤報告する問題、<code>SessionStart</code> の orca-status フックが10秒ハングする問題、完了通知が複数回出る問題を修正。Claude は対応バージョンで <code>SessionEnd</code> を購読するように</li>
+  <li><strong>エージェント状態管理</strong>: ステータス行をペインではなくエージェント単位でキー付けする run-identity 型を導入。エージェントの attention 境界をターミナルペインから切り離し</li>
+  <li><strong>ワークスペース</strong>: エージェント選択後に空と報告されたワークスペースを再シード、アクティベーション失敗時に実ターミナルを復旧、子を持たないチャットのタブをワークスペース消滅時に退役</li>
+  <li><strong>ブラウザ</strong>: キー入力ごとにサブプロセスを起動していた処理を、US レイアウトの CDP キーテーブル経由の in-process 送出に変更</li>
+  <li><strong>モバイル</strong>: settings 読み取り・ソースコントロール・ワークスペース作成を型付き RPC へ移行中。ネイティブチャットの tail-follow オーナーを一本化し、ストリーミングのジャンプを解消</li>
+  <li><strong>AI Vault / セッション検索</strong>: 公開セッション検索コントラクトとトランスポートを追加、スキャナサービス内に検索インデクサを設定フラグ付きで構築。サイズ超過のリモートトランスクリプトをストリーミング</li>
+  <li><strong>性能</strong>: ターミナルのファイルリンク検査をバッチ化、リモート capability の重複プローブを回避、冗長な永続化フラッシュを省略、WSL のスキル探索を上限付きに</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<p>対象期間内に安定版の新規リリースは確認されませんでした（最新安定版は <strong>v16.3.5</strong>、9月12日 04:15 JST 公開）。canary は <strong>v16.4.0-canary.33</strong>（9月16日 18:06 JST 公開）と <strong>v16.4.0-canary.34</strong>（9月17日 08:46 JST 公開）の2件が対象期間内です。canary.33 では Pages i18n 併用時の App Router ロケールパスマッチング修正と React の 20260915 ビルドへの更新、canary.34 では Turbopack の lockfile から wasmer を除去、コード生成 AST パスを共有トライに格納、<code>try_join</code> より <code>join</code> を優先する変更などが含まれます。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>Amazon ECS</strong>: <strong>Amazon S3 Files</strong> の対応を EC2 起動タイプのタスクへ拡張。EC2 上のコンテナから S3 のデータを共有ファイルシステムとして標準的なファイルシステムセマンティクスで扱えるようになり、ファイルベースのアプリや AI エージェント、データ処理をコード変更なしで実行できます（9月17日 01:25 JST 告知）</li>
+  <li><strong>Amazon SageMaker AI</strong>: NVIDIA <strong>Nemotron 3.5 Lightning</strong>（ハイブリッド MoE、総30B・アクティブ3B）のサーバーレスなモデルカスタマイズに対応。SFT・DPO・RFT が利用できます（9月17日 07:29 JST 告知）</li>
+  <li><strong>新しい AWS 体験</strong>: Google・GitHub・Apple・Amazon の既存資格情報でサインアップでき、初期プロジェクトを妥当なデフォルトで自動構成してビルダーがすぐ実装に入れる新エクスペリエンスを提供開始（9月17日 02:45 JST 告知）</li>
+  <li><strong>Amazon WorkSpaces</strong>: NVIDIA RTX PRO 4500 Blackwell Server Edition GPU と Intel Xeon 6 を搭載した Graphics G7 バンドルに対応。従来の G6 比で最大 2.1 倍の性能、8 vCPU/32 GB/GPU 1基から 48 vCPU/192 GB/GPU 2基までの4サイズ（9月17日 02:00 JST 告知）</li>
+  <li><strong>AWS Elemental MediaTailor</strong>: Monetization Functions に「post ADS response」と「pre manifest insertion」の2つのライフサイクルフックを追加。一次 ADS が応答しない場合の二次広告ソース呼び出しなどがミドルウェア無しで可能に（9月17日 02:30 JST 告知）</li>
+  <li><strong>Amazon Connect Customer</strong>: カスタムメトリクスのタグベースアクセス制御に対応（9月17日 02:00 JST 告知）。またサードパーティ QM 製の評価フォーム PDF を AI で読み取り、Connect 上に質問・選択肢・配点ごと自動再構築できるようになりました（同時刻告知）</li>
+  <li><strong>AWS Client VPN</strong>: macOS 27 Golden Gate に対応（クライアント v6.0 以降、9月17日 02:56 JST 告知）</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>9月16日（米国時間）付のリリースノートが公開されました。主な内容は次のとおりです。</p>
+<ul>
+  <li><strong>Backup and DR</strong>: 自動保護ポリシーとリソースラベルにより、Compute Engine インスタンスと Persistent Disk を大規模に自動保護する機能を追加（プレビュー）</li>
+  <li><strong>BigQuery</strong>: 移行リネージサービスにより、ソースデータベースのデータフローと接続関係を可視化し、BigQuery へのデータウェアハウス移行計画を支援（プレビュー）</li>
+  <li><strong>Filestore</strong>: Regional サービスティアの小容量インスタンスが GA。100 GiB から 1 GiB 刻みで拡張でき、開発・テストや低トラフィック用途に適します</li>
+  <li><strong>Datastream</strong>: MongoDB ソースから BigQuery への新規ストリームで、<strong>MongoDB extended JSON canonical モード</strong>が既定のフォーマットに。BSON 型を明示的にラベル付けし精度損失を防ぎます</li>
+  <li><strong>Gemini Enterprise Agent Platform</strong>: CodeMender が v0.8.0 に更新。<strong>Gemini 3.8 Flash</strong> が CLI セッションの既定モデルとなり、ファイル読み取り 2 MiB・grep 検索 512 KiB の出力ガードレールを追加。Windows のシェル検出や <code>cm verify</code> の所見永続化などのバグも修正されました</li>
+  <li><strong>Cloud Number Registry</strong>（破壊的変更）: 組織で設定する前に、管理用プロジェクトの指定が必須になりました</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<h3>☁️ Azure</h3>
+<p>対象期間内に以下のアップデートが告知されました（時刻は JST）。</p>
+<ul>
+  <li><strong>Azure Red Hat OpenShift with hosted control planes</strong>（パブリックプレビュー）: OpenShift のコントロールプレーンを、顧客アプリを動かすワーカーノードから分離したフルマネージドサービスとして実行する新しいデプロイオプション（9月16日 23:13 告知）</li>
+  <li><strong>Azure Database for PostgreSQL — PostgreSQL skills &amp; MCP plugin</strong>（パブリックプレビュー）: 対応する AI コーディングアシスタントを、接続先データベースの文脈を理解して助言・操作まで行える PostgreSQL の専門家に変えるプラグイン（9月16日 23:07 告知）</li>
+  <li><strong>Azure SQL の2026年9月中旬アップデート</strong>（パブリックプレビュー）: 論理サーバー削除時の<strong>ソフトデリート</strong>と自己復元などの更新が含まれます（9月17日 02:15 告知）</li>
+  <li><strong>リタイア告知</strong>: コンテナ化された SAP データコネクタは 2026年9月14日にリタイア済みで、非サポート・非メンテナンスとなりました。コンテナイメージは <strong>2026年10月14日</strong> に削除されます（9月17日 02:19 告知）</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h3>⚛️ React / Python / Django / Java / Spring Boot / Hono / Node.js / Claude API・SDK</h3>
+<ul>
+  <li><strong>Node.js</strong>: <strong>v26.9.0（Current）</strong>が対象期間内（9月16日）にリリースされました。注目点は、汎用 MAC API の追加、OpenSSL プロバイダからの暗号・ハッシュ自動検出、<strong>FFI モジュールのデフォルト有効化</strong>、<code>node:bench</code> の実装、perf_hooks の Histogram <code>meanCI</code> API と CBOR エクスポート／インポート、実験的 <strong>DTLS API</strong>、CJS／ESM モジュールローダとの VFS 統合、<code>worker_threads</code> での Web Workers サポートなどです</li>
+  <li><strong>React</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v19.3.0（9月10日 03:01 JST 公開）</li>
+  <li><strong>Python</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした</li>
+  <li><strong>Django</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした。最新の bugfix リリースは 6.1.1（9月3日 02:20 JST 公開、PyPI の upload_time 基準）</li>
+  <li><strong>Java / Spring Boot</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.1.1（8月21日 05:02 JST）／v4.0.8（8月21日 11:39 JST）／v4.2.0-M1（8月21日 05:09 JST）</li>
+  <li><strong>Hono</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.13.8（9月15日 16:31 JST 公開）</li>
+  <li><strong>Claude API / SDK</strong>: TypeScript の <strong>Claude Agent SDK v0.3.274</strong> が対象期間内（9月17日 07:38 JST 公開）に npm 上で公開されました。本体の <code>@anthropic-ai/sdk</code>（v0.126.0、9月16日 02:41 JST）と Python SDK（v1.6.0、9月16日 00:14 JST）はいずれも対象期間開始前の公開です。派生 SDK（vertex v0.19.9 / bedrock v0.33.6 / foundry v0.4.7 / aws v0.7.2 / google-cloud v0.0.12）も同様に期間外でした</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
