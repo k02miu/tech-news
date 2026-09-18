@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-19 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-19 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>ISC BIND に複数の脆弱性 - 未認証のDoHリクエスト1発でnamedが停止、ゾーン汚染のおそれ <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-19033 / CVE-2026-19662 / CVE-2026-19666 / CVE-2026-19667 / CVE-2026-19668 / CVE-2026-19941 / CVE-2026-75029 / CVE-2026-76163 / CVE-2026-77119 / CVE-2026-77692 / CVE-2026-78301 / CVE-2026-80274 / CVE-2026-81563 / CVE-2026-81736（計14件）</td></tr>
+  <tr><th>CVSS</th><td>アドバイザリ単位の重要度はISCに委ねる。JPRSは複数件について「緊急」「バージョンアップを強く推奨」と説明</td></tr>
+  <tr><th>影響</th><td>ISC BIND 9.x（権威サーバ・キャッシュ／再帰サーバの双方）</td></tr>
+  <tr><th>公開</th><td>2026-09-18 16:45 JST（JVNVU#97703430）／JPRS 2026-09-17 解説公開</td></tr>
+</table>
+<ul>
+  <li>インターネットの名前解決を支える基盤ソフトウェア「ISC BIND」に、CVEベースで14件の脆弱性が公表されましたわ。JPCERT/CC が JVN にまとめ、株式会社日本レジストリサービス（JPRS）が日本語で個別の解説を公開しています。</li>
+  <li>とりわけ <strong>CVE-2026-77692</strong> は、<strong>未認証のリモートからDoH（DNS over HTTPS）のSIG(0)リクエストを1件送るだけで named を異常終了させられる</strong>ものとして「緊急」に分類されています。同様に <strong>CVE-2026-19667</strong>（16ビット長の切り捨てによるアサーション失敗）、<strong>CVE-2026-76163</strong>（グローバル options 文が無い構成でのTKEYクエリ）、<strong>CVE-2026-19666</strong>（DNS64有効時のUse After Free）も「緊急」扱いです。</li>
+  <li>さらに <strong>CVE-2026-19033</strong> は IXFR の差分が <strong>TSIG 検証より前に live zone へ適用されてしまう</strong>問題で、ゾーンデータを不正に追加されるおそれがあります。<strong>CVE-2026-77119</strong> は NSEC3 の insecure-referral 証明に無関係なキャッシュ済みRRsetを流用でき、DNSキャッシュポイズニングの危険があります。</li>
+  <li>ほかにもリソース枯渇（<strong>CVE-2026-19668 / CVE-2026-75029 / CVE-2026-81736</strong>）、ゾーンカットの不正生成（<strong>CVE-2026-78301</strong>）、NOQNAME証明の不整合による再帰リゾルバ停止（<strong>CVE-2026-19662 / CVE-2026-80274</strong>）などが含まれます。公開DNS・社内DNSを問わず、すみやかなバージョンアップを強く推奨いたしますわ。</li>
+</ul>
+
+<h3>Cisco Secure Firewall（ASA / FTD / FMC）に29件の脆弱性 - Criticalアドバイザリ5件、一部は悪用確認 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVEベース29件（うち堅牢化リリース分は8件のCVE番号に集約）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.9が2件、7.5まで幅広く分布。アドバイザリ重要度「Critical」が5件・18脆弱性</td></tr>
+  <tr><th>影響</th><td>Cisco Secure Firewall ASA／Threat Defense（FTD）／Management Center（FMC）</td></tr>
+  <tr><th>公開</th><td>2026-09-16（現地時間）／2026-09-18 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>境界防御の中核となる Cisco Secure Firewall シリーズに、合計14件のセキュリティアドバイザリ・CVEベース29件の脆弱性が判明いたしましたわ。認証不要でリモートから任意コマンドを実行されるもの、管理者権限を奪取されるもの、サービス拒否、機密情報の漏えい、認証回避などが含まれます。</li>
+  <li>FMC の <strong>sftunnel におけるroot権限での任意コード実行</strong>、Javaデシリアライズによるリモートコード実行などが Critical 相当です。ASA／FTD 側では IKEv2証明書認証、DTLS、EIGRP、TCP DNS、Snort 2 の SSL/TLS などで DoS が成立します。</li>
+  <li>オブジェクトグループのアクセス制御リストを回避される脆弱性も含まれ、<strong>一部の脆弱性はすでに悪用が確認</strong>されています。管理系（FMC）と境界系（ASA／FTD）の双方で、早急なアップデートをお願いいたしますわ。</li>
+</ul>
+
+<h3>Synology DiskStation Manager（DSM）にCritical脆弱性8件 - 認証不要でリモートから任意ファイル読み書きのおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-13684（SCGI）／CVE-2026-13639（ログイン処理）／CVE-2026-13673（LDAP API）／CVE-2026-6205（Upload API）ほか計8件</td></tr>
+  <tr><th>CVSS</th><td>アドバイザリ重要度は最上位「Critical」</td></tr>
+  <tr><th>影響</th><td>Synology DSM（NAS向けOS）</td></tr>
+  <tr><th>公開</th><td>2026-09-18（現地時間）／2026-09-18 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>NAS の定番OS「DSM」に、Synology が重要度 Critical のアドバイザリを公開。CVEベースで8件を明らかにしましたわ。</li>
+  <li>Webサーバとアプリ間の通信「SCGI」で出力のエンコード・エスケープが不十分な <strong>CVE-2026-13684</strong>、ログイン処理のエントロピー不足 <strong>CVE-2026-13639</strong>、LDAP API のアクセス権限設定不備 <strong>CVE-2026-13673</strong>、Upload API のファイル名・パス制御不備 <strong>CVE-2026-6205</strong> など。</li>
+  <li><strong>認証を必要とせず悪用できるものも含まれ</strong>、リモートから任意ファイルの読み書きやDoSを引き起こされるおそれがあります。修正版への早急な更新をお願いいたしますわ。</li>
+</ul>
+
+<h3>pgAdmin 4 9.18 - HTTPヘッダ信頼による認証回避（CVE-2026-86863）とバックアップ機能のコマンドインジェクション（CVE-2026-86864） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-86863（認証回避）／CVE-2026-86864（コマンドインジェクション）ほかCVEベース4件</td></tr>
+  <tr><th>影響</th><td>PostgreSQL 管理ツール「pgAdmin 4」9.18 より前</td></tr>
+  <tr><th>公開</th><td>2026-09-17（現地時間）／2026-09-18 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>PostgreSQL の標準的な管理ツール「pgAdmin 4」に、バージョン9.18でCVEベース4件の修正が入りましたわ。Python製のWebアプリケーションですので、ご利用環境では優先的な確認をおすすめします。</li>
+  <li><strong>CVE-2026-86863</strong> は Webサーバ認証の不備で、外部から送られたHTTPヘッダを信頼してしまうため、ウェブサーバから利用者情報が取得できない状況では<strong>パスワードなしで管理者になりすませる</strong>おそれがあります。</li>
+  <li><strong>CVE-2026-86864</strong> はバックアップ機能でデータベース名をコマンド引数として扱うことによるコマンドインジェクションです。悪用には認証が必要ですが、保存領域外へのファイル書き込みや、接続先を変更してDB接続パスワードを外部へ送信させることなどが可能です。</li>
+</ul>
+
+<h3>WordPress 7.1.1 セキュリティリリース - 格納型XSS・REST APIのパストラバーサル・権限昇格など11件 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>個別CVEの明記なし（セキュリティ修正11件）</td></tr>
+  <tr><th>影響</th><td>WordPress 7.1.1 より前（旧ブランチは 4.7 まで順次バックポート）</td></tr>
+  <tr><th>公開</th><td>2026-09-17（現地時間）／2026-09-18 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>WordPress 開発チームが、セキュリティリリース「7.1.1」を公開いたしましたわ。セキュリティに関する修正が11件、コア17件・ブロックエディタ19件のバグ修正も含まれます。</li>
+  <li>一部の関数と一部テーマにおける<strong>格納型クロスサイトスクリプティング（XSS）</strong>、認証済みユーザーによる <strong>REST API テンプレートコントローラのパストラバーサル</strong>を修正。細工したURLで WordPress.org から非アクティブテーマを自動インストールさせプレビューできる問題も解消しています。</li>
+  <li>投稿者以上の権限で任意の投稿を上書きできる問題、下書き・保留中投稿のスラッグ漏えい、マルチサイト環境で管理者がプラグインを全体有効化できてしまう問題など、<strong>権限を超えた操作や情報漏えい</strong>につながる脆弱性も含まれます。自動更新が有効なサイトでは順次適用されますが、ダッシュボードからの手動更新もご確認くださいませ。</li>
+</ul>
+
+<h3>Chrome 153.0.8010.53 - Critical 2件を含む16件の脆弱性を修正 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-93372（WebGL）／CVE-2026-93374（Dawn）ほか CVE-2026-93372〜93387 の16件</td></tr>
+  <tr><th>CVSS</th><td>重要度 Critical 2件、High 7件、Medium 6件、Low 1件</td></tr>
+  <tr><th>影響</th><td>Windows／macOS：153.0.8010.53・同 .52、Linux：153.0.8010.52 より前</td></tr>
+  <tr><th>公開</th><td>2026-09-17（現地時間）／2026-09-18 国内報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>わずか2日前の更新に続き、Google が再び Chrome のセキュリティアップデートを 現地2026年9月17日にリリースしましたわ。今回は16件の脆弱性に対処しています。</li>
+  <li>最上位の「Critical」は、グラフィックス処理「Dawn」の Use After Free <strong>CVE-2026-93374</strong> と、「WebGL」のバッファオーバーフロー <strong>CVE-2026-93372</strong> の2件です。</li>
+  <li>「High」7件には PDFレンダラ PDFium の Use After Free・バッファオーバーフロー、スクリプトエンジン V8 の型の取り違え、拡張機能の Use After Free、Tracing の参照解決不備、Skia の状態検証不備、ORB の認可処理不備などが含まれます。展開は今後数日〜数週間かけて順次行われます。</li>
+</ul>
+
+<h3>Dokploy にOSコマンドインジェクションの脆弱性（CERT/CC VU#280377） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>JVN は CERT/CC アドバイザリ（Vulnerability Note VU#280377）に委ねているため個別CVEの提示なし</td></tr>
+  <tr><th>影響</th><td>セルフホスト型 PaaS「Dokploy」</td></tr>
+  <tr><th>公開</th><td>2026-09-18 09:30 JST（JVNVU#94707104）</td></tr>
+</table>
+<ul>
+  <li>Docker ベースのセルフホスト型デプロイ基盤「Dokploy」に、OSコマンドインジェクションの脆弱性があるとして CERT/CC からアドバイザリが公表されましたわ。JPCERT/CC が JVN に掲載しています。</li>
+  <li>詳細・CVSS・対策は CERT/CC の Vulnerability Note VU#280377 を参照くださいませ。セルフホストのデプロイ基盤は<strong>ホスト全体の権限に直結</strong>しますため、公開範囲の見直しとあわせてご確認いただくのがよろしいでしょう。</li>
+</ul>
+
+<h3>CISA ICS Advisory / ICS Medical Advisory（2026年9月17日分）- 新規7件・更新1件 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>ICS Advisory ごとに記載（JVN は CISA 原文に委ねている）</td></tr>
+  <tr><th>影響</th><td>三菱電機 GX Works3／CC-Link IE TSN、Hitachi Energy FCP、Schneider Electric Modicon M340・NetBotz 5 750/755・PowerChute Serial Shutdown、ABB Ability Edgenius、Bransys ELD</td></tr>
+  <tr><th>公開</th><td>2026-09-17（現地時間）／2026-09-18 09:30 JST（JVNVU#91030326）</td></tr>
+</table>
+<ul>
+  <li>米CISA が公表した ICS／医療機器向けアドバイザリを JPCERT/CC が JVN に掲載いたしましたわ。新規7件、更新1件です。</li>
+  <li>新規分には三菱電機 GX Works3・モーション制御設定、Hitachi Energy FACTS Control Platform、Schneider Electric Modicon M340 と通信モジュール、NetBotz 5、ABB Ability Edgenius などが並びます。製造・エネルギー設備を運用されている場合は該当有無をご確認くださいませ。</li>
+</ul>
+
+<h3>Claude Code v2.1.276 / v2.1.277 - egress境界の明示オプション追加と権限まわりの挙動修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>明記なし（セキュリティ関連の挙動修正を含む通常リリース）</td></tr>
+  <tr><th>影響</th><td>Claude Code v2.1.277 未満</td></tr>
+  <tr><th>公開</th><td>2026-09-18 11:12 JST（v2.1.276）／2026-09-19 03:06 JST（v2.1.277）</td></tr>
+</table>
+<ul>
+  <li><strong>v2.1.277</strong> では、外部への通信が転送プロキシのみというゲートウェイ構成向けに <code>CLAUDE_GATEWAY_PROXY_IS_EGRESS_BOUNDARY=1</code> が追加されましたわ。<strong>ローカルで名前解決せずホスト名をそのままプロキシへ渡す</strong>挙動になり、egress境界の制御を意図どおりに保てます。</li>
+  <li>あわせて、Write ツールが既存ディレクトリを対象とした際に「権限拒否」として黙ってターン終了してしまう問題、Edit ツールが <code>\uXXXX</code> エスケープを誤解釈して非ASCII文字の編集で意図しない書き換えを行う問題、プラグイン再インストール時に使用中のコピーを壊す問題などが修正されています。</li>
+  <li>非対話実行（<code>claude -p</code>）と Agent SDK が内部エラー後に無応答でハングする問題も解消され、エラー報告と終了コード1で戻るようになりました。プロジェクト指示ファイルとして <strong>AGENTS.md の読み込みにも対応</strong>しています。</li>
+  <li><strong>v2.1.276</strong> は、<code>ANTHROPIC_BASE_URL</code> がプロキシ／ゲートウェイを指す構成で全リクエストが 400 で失敗する v2.1.275 のリグレッション修正のみです。明示的な CVE の記載はありません。</li>
+</ul>
+
+<h3>Nintendo Switch のQRコード読み取りに伴う脆弱性（CVE-2026-82079） <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-82079</td></tr>
+  <tr><th>影響</th><td>Nintendo Switch（システムバージョン 23.0.0 未満）</td></tr>
+  <tr><th>公開</th><td>2026-09-10 公表（任天堂）／2026-09-18 国内報道（ScanNetSecurity）</td></tr>
+</table>
+<ul>
+  <li>任天堂が、Nintendo Switch の近接リモート攻撃による本体情報漏えいの可能性を公表しましたわ。アルバムの「スマートフォンへ送る」機能や『マリオカート ライブ ホームサーキット』でカートを使用する場面が対象です。</li>
+  <li>成立には<strong>画面に表示されるQRコードを第三者が直接読み取れる状況</strong>が必要で、不正なコードの実行や本体が保持する情報の取得につながるおそれがあります。システムバージョン <strong>23.0.0</strong> への更新で対処してくださいませ。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java・SpringBoot / Django / React / Hono / GCP / AWS / Azure / OpenClaw / Hermes Agent の各スタックについて、本対象期間では直接関連する新規セキュリティアドバイザリは確認されませんでした（OpenClaw は 2026.9.4、Hermes Agent は v0.21.3（v2026.9.14）が最新で、いずれも対象期間外の公開です）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ニチレイ - 7月のサイバー攻撃で個人情報5万3,866件の漏えいを確認（食品・物流大手） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ニチレイ（冷凍食品・低温物流大手）</td></tr>
+  <tr><th>発生日</th><td>2026-07（サイバー攻撃）／2026-08-10 ハッカー集団がデータ公開</td></tr>
+  <tr><th>被害</th><td>計 5万3,866件（配送先顧客 3,308件＝氏名・住所・電話番号、取引先役職員 6,849件、グループ従業員・退職者・家族・求職者 4万3,709件）</td></tr>
+  <tr><th>公表</th><td>2026-09-18 18:53 発表（時事通信）</td></tr>
+</table>
+<ul>
+  <li>2026年7月に受けたサイバー攻撃について、外部の専門家と連携した調査の結果がまとまりましたわ。漏えいが確認された個人情報は<strong>合計5万3,866件</strong>にのぼります。</li>
+  <li>内訳は、同社グループが配送業務を請け負った配送先の顧客が3,308件（氏名・住所・電話番号）、取引先の役職員が6,849件、ニチレイグループ従業員（退職者を含む）とその家族・求職者が4万3,709件です。いずれもクレジットカード情報は含まれていません。</li>
+  <li>8月10日にはハッカー集団がデータを公開したと報じられており、現時点で不正利用などの二次被害は確認されていないとのことです。生活インフラに近い食品・物流企業への攻撃だけに、影響範囲の確定と再発防止が待たれますわ。</li>
+</ul>
+
+<h3>Gyazo（Helpfeel）- 画像アップロードサーバの脆弱性を悪用され、ユーザー情報約2,362万件と画像メタデータ約4.9億件が流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社 Helpfeel（画像共有サービス「Gyazo」）</td></tr>
+  <tr><th>発生日</th><td>2026-09-11（不正アクセス）／2026-09-12 までに侵入経路遮断・脆弱性修正</td></tr>
+  <tr><th>被害</th><td>ユーザー情報 約2,362万件（氏名・メールアドレス・パスワードのハッシュ値等）、画像メタデータ 約4.9億件＋追加抽出 約240万件</td></tr>
+  <tr><th>公表</th><td>2026-09-16 発表（Helpfeel）／2026-09-18 報道（サイバーセキュリティ.com）</td></tr>
+</table>
+<ul>
+  <li>画像共有サービス「Gyazo」が、<strong>画像アップロードサーバの脆弱性を悪用され、同社システム上で意図しないコマンドを実行された</strong>ことを公表いたしましたわ。攻撃者は9月11日に侵入しています。</li>
+  <li>漏えいが確認されたのは、氏名・メールアドレス・パスワードのハッシュ値を含むユーザー情報 約2,362万件、画像のメタデータ 約4.9億件、さらに別途抽出された約240万件のメタデータです。クレジットカード情報などの決済情報は流出していません。</li>
+  <li>ユーザー情報には匿名アカウントも含まれるため、個人情報が流出した人数は調査中です。メタデータには画像URLを構成する情報が含まれ、<strong>不正に画像を閲覧されるおそれ</strong>があるとして一部画像の配信を停止。外部専門機関による調査を進めています。</li>
+</ul>
+
+<h3>警察庁 - 北朝鮮ハッカー集団「ウォータープラム」の攻撃で100カ国・3万台超が感染、約7,000口座の暗号資産が窃取 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>警察庁（注意喚起文書を公表）</td></tr>
+  <tr><th>被害</th><td>日本など100カ国で3万台以上の端末がマルウェア感染、約7,000の暗号資産口座が窃取、グループ口座へ約17億円相当が送金</td></tr>
+  <tr><th>公表</th><td>2026-09-18 15:18（時事通信）</td></tr>
+</table>
+<ul>
+  <li>警察庁が2026年9月18日、北朝鮮のハッカー集団<strong>「ウォータープラム」</strong>によるサイバー攻撃に関する注意喚起文書を公表いたしましたわ。</li>
+  <li>日本を含む<strong>100カ国で3万台以上の端末がマルウェアに感染</strong>し、約7,000の暗号資産口座が盗まれました。グループの口座には約17億円分の暗号資産が送金されていたとのことです。</li>
+  <li>あわせて、偽装受注による外貨獲得（北朝鮮IT労働者の活動）についても日米当局などが公表しています。暗号資産関連の開発・運用に携わる方は、端末の侵害有無とウォレットの取扱いを今一度ご確認くださいませ。</li>
+</ul>
+
+<h3>カインドオル - ECプラットフォームのスタッフアカウントに不正アクセス、顧客13万6,464名分の情報を一括エクスポート <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社カインドオル（アパレル通販）</td></tr>
+  <tr><th>発生日</th><td>2026-08-23（顧客情報の一括エクスポート2回）／2026-08-24 発覚</td></tr>
+  <tr><th>被害</th><td>顧客 136,464名分（カスタマーID・氏名・住所・電話番号・生年月日・メールアドレス・購読状況・注文回数・購入金額・タグ情報・ポイント履歴）</td></tr>
+  <tr><th>公表</th><td>2026-08-28 発表／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>ECプラットフォームのスタッフアカウントのメールアドレスが<strong>同社で使用していないものに変更されている</strong>ことに8月24日の通常業務中に気づいたことが発端ですわ。調査の結果、8月23日に顧客情報の一括エクスポートが2回行われていました。</li>
+  <li>原因は、ECプラットフォーム運営会社を装った<strong>フィッシングメール</strong>でした。偽サイトに認証情報を入力した直後に最初の不正アクセスが発生しています。当該アカウントは<strong>二段階認証が未設定</strong>で、パスワード強度も十分ではありませんでした。</li>
+  <li>同社はアカウント削除、全スタッフアカウントの二段階認証必須化、一括エクスポート権限の見直し、大量データ出力の監視・エスカレーション体制強化などを進めています。フィッシング起点のECアカウント侵害は繰り返し起きておりますので、多要素認証の徹底が急務ですわ。</li>
+</ul>
+
+<h3>安藤・間（安藤ハザマ）-「警察官」を名乗る者に名刺情報5,000件を提出して流出 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社安藤・間（ゼネコン・上場企業）</td></tr>
+  <tr><th>発生日</th><td>2026-08-16〜23（社員が名刺情報をダウンロードしメール送付）／2026-08-23 警察への連絡で詐欺と判明</td></tr>
+  <tr><th>被害</th><td>約5,000件の名刺情報（会社名・部署名・役職・氏名・住所・電話番号・FAX番号・メールアドレス）</td></tr>
+  <tr><th>公表</th><td>2026-08-31 発表／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>社員が2026年8月16日から23日にかけて、<strong>警察官を名乗る者から「交友関係の捜査に必要」として名刺情報の提出を求められ</strong>、8月17日に社内の名刺管理システムからダウンロードした名刺情報をメールで提出してしまいました。</li>
+  <li>8月23日に社員が自ら警察へ連絡したことで、一連の連絡が警察官によるものではなく<strong>架空請求を目的とした詐欺</strong>であると判明しています。流出したのは約5,000件の名刺情報です。</li>
+  <li>同社は対象者への個別謝罪・報告を進めるとともに、個人情報保護・情報セキュリティ教育の実施とデータアクセス権限の見直しで再発防止を図るとしています。「当局を名乗る照会」への対応手順を組織として定めておく必要がありますわ。</li>
+</ul>
+
+<h3>静銀ティーエム証券 - フィッシング詐欺等によるものとみられる口座への不正アクセス・不正取引 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>静銀ティーエム証券（しずおかフィナンシャルグループ系）</td></tr>
+  <tr><th>被害</th><td>顧客口座への不正アクセスと、第三者による有価証券等の売買（不正取引）</td></tr>
+  <tr><th>公表</th><td>2026-08-28 発表／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>証券会社では近年、フィッシング詐欺等によるものとみられる不正アクセス・不正取引が相次いでいますが、同社の顧客口座でも不正アクセス・不正取引が確認されましたわ。</li>
+  <li>同社は被害状況を精査し、個別の事情に応じて一定の補償を行う方針としつつ、<strong>ID・パスワード等の管理状況や態様によっては補償を減額、または補償できない場合がある</strong>としています。</li>
+  <li>利用者には、Eメール通知サービスの利用、パスワードの定期的な見直し、OS・ブラウザ・ソフトウェアの最新化、不審な画面でのID・パスワード入力回避が呼びかけられています。</li>
+</ul>
+
+<h3>マネジメントサービスセンター - ホームページへの不正アクセスで管理者権限を奪取、フォーム送信情報297名分が保存され流出リスク <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社マネジメントサービスセンター（MSC）</td></tr>
+  <tr><th>発生日</th><td>2026-07（不正アクセス・改ざん）／2026-08-20 個人情報の保存を確認</td></tr>
+  <tr><th>被害</th><td>2023年12月〜2026年7月に各種フォームを利用した一部の利用者 297名分（氏名・会社名・メールアドレス・電話番号）</td></tr>
+  <tr><th>公表</th><td>2026-08-25 発表／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>7月にホームページへの第三者からの不正アクセスと改ざんを確認し、ホームページを停止して制作・保守会社および外部専門機関と調査を実施。<strong>管理者権限の取得と改ざんが行われていた</strong>ことが判明いたしましたわ。</li>
+  <li>さらに解析の結果、<strong>問い合わせ等のフォームから送信された個人情報を含むデータがホームページシステム内に保存されていた</strong>ことが8月20日に判明しました。影響を受けた可能性があるのは297名分の氏名・会社名・メールアドレス・電話番号です。</li>
+  <li>ソフトウェアの脆弱性対策・更新管理の徹底、管理者画面のアクセス制御強化、多要素認証の導入、個人情報の保存・管理方法の見直しを再発防止策として進めています。フォーム入力をWeb公開領域に保存しない構成への見直しは、他社にも通じる教訓ですわ。</li>
+</ul>
+
+<h3>繋（tsng.co.jp）- WordPressサイトに管理者アカウントを不正作成されバックドアを設置、問い合わせ157件の情報が閲覧可能に <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社繋</td></tr>
+  <tr><th>発生日</th><td>2026-06-29 異常検知（公開停止）／不正アクセスの時期は2024年以降の複数期間</td></tr>
+  <tr><th>被害</th><td>問い合わせフォーム投稿に含まれる157件の個人情報（氏名・メールアドレス・住所・電話番号）</td></tr>
+  <tr><th>公表</th><td>2026-08-27 発表／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>同社のコーポレートサイトで6月29日に異常を確認し公開を停止。外部専門機関による調査の結果、<strong>管理者権限を持つアカウントが第三者によって不正に作成され、サーバ上にバックドア等の不正プログラムが設置されていた</strong>ことが判明いたしましたわ。</li>
+  <li>サイトとデータベースに保存されていた情報は第三者から技術的に閲覧・取得可能な状態でした。外部持ち出しを直接示す記録はありませんが、<strong>利用できるログが限定されているため漏えいの可能性を完全には否定できない</strong>としています。対象はメール送信ログに残っていた157件の問い合わせ情報です。</li>
+  <li>同社はWordPress環境とデータベースを再利用せず新規環境へ移行し、管理者認証情報の変更、WordPress本体・プラグインの自動更新設定、WAFの変更・強化、<strong>個人情報をWebサイト環境内に保存しない構成への変更</strong>、個人情報保護委員会への報告、警察への通報を行っています。</li>
+</ul>
+
+<h3>大阪市 - 職員採用試験の録画面接システムに不正アクセス、申込者106人の個人情報が漏えいか <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>大阪市（システム提供事業者へ委託）</td></tr>
+  <tr><th>発生期間</th><td>2026-08-09 〜 2026-09-07（第三者による不正アクセス）</td></tr>
+  <tr><th>被害</th><td>「大阪市職員（社会人等技術【夏】）採用試験」申込者 106人分（氏名・フリガナ・メールアドレス・電話番号等）</td></tr>
+  <tr><th>公表</th><td>2026-09-15 発表（大阪市）／2026-09-18 報道（サイバーセキュリティ.com）</td></tr>
+</table>
+<ul>
+  <li>動画選考に利用している録画面接システムで、2026年8月9日から9月7日にかけて第三者による不正アクセスがあり、採用試験申込者106人分の個人情報が漏えいした可能性があることが判明いたしましたわ。</li>
+  <li>市によると、原因は<strong>システム提供事業者が利用しているデータ分析ツールへの不正アクセス</strong>です。事業者は9月7日に不正アクセスを遮断するなどの緊急措置を実施し、個人情報保護委員会と所轄警察署へ報告・相談しています。</li>
+  <li>市は対象の106人へ謝罪と事案の報告を行い、今後事業者から詳細な調査結果の報告を受けて対応を検討するとしています。委託先の<strong>さらに下流で使われる分析ツール</strong>まで含めた管理が問われる事例ですわ。</li>
+</ul>
+
+<h3>塩尻警察署 - 交通安全施設関係の報告書等が所在不明、誤廃棄の可能性が高い <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>長野県警察 塩尻警察署 交通課</td></tr>
+  <tr><th>発生日</th><td>2021年度作成分が所在不明（2026-09-07 発表）</td></tr>
+  <tr><th>被害</th><td>「交通安全施設損壊事案報告書」「交通安全施設修繕執行伺」「交通安全施設修理結果表」「道路標識標示工事監督等指示書」「信号機BOX」（関係者・提案者の氏名・住所等を記載）</td></tr>
+  <tr><th>公表</th><td>2026-09-07 発表（長野県警察）／2026-09-18 報道（ScanNetSecurity 8:05）</td></tr>
+</table>
+<ul>
+  <li>塩尻警察署交通課が令和3（2021）年度中に作成した交通安全施設関係の報告書等が所在不明となっていることが発表されましたわ。捜索しても発見に至らず、状況から<strong>誤廃棄した可能性が高い</strong>としています。</li>
+  <li>書類には関係者の氏名等が、「信号機BOX」には提案者の氏名・住所等が記載されていました。該当の修繕や意見・要望への対応は既に完了しています。</li>
+  <li>同署は署員に対し公文書廃棄時の確認の徹底を指導し、個人情報の適正な取扱いの徹底と再発防止に努めるとのことです。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
