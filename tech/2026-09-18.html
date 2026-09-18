@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-18 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-18 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.275 / v2.1.274</h2>
+<p>対象期間内に <strong>v2.1.275</strong>（9月18日 07:42 JST 公開）と <strong>v2.1.274</strong>（9月17日 09:19 JST 公開）の2件がリリースされました。RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）の <code>pubDate</code> を全件照合した結果です。両バージョンとも VSCode 拡張・Claude Code on the web・Claude Tag（Slack 連携）・Code Review にわたる広範な修正を含みます。</p>
+
+<h3>🔧 新機能・改善（v2.1.275）</h3>
+<ul>
+  <li><strong>送信キーの追加</strong>: 現在のターンを中断してキュー済みメッセージを一括送信する <code>ctrl+enter</code>（または <code>ctrl+x ctrl+s</code>）を追加。送信済み・キュー済みメッセージはモデルが受け取るまでグレー表示になります</li>
+  <li><strong>Claude apps gateway のサインイン改善</strong>: サインイン中のアカウント名をゲートウェイが提示した場合に確認してから資格情報を保存し、<code>/status</code> にも表示。<code>/logout</code> はトークン失効を広告するゲートウェイ側のセッションも終了させます</li>
+  <li><strong>claude.ai アカウントの skills / plugins を同期</strong>: claude.ai で有効化したスキルとプラグインがターミナルセッションにも同期されるように。<code>syncClaudeAiSkills: false</code> / <code>syncClaudeAiPlugins: false</code> でオプトアウト可能</li>
+  <li><strong><code>/plugin install &lt;plugin&gt; --marketplace &lt;source&gt;</code></strong>: プラグイン導入前にマーケットプレイスの追加を提案する形式を追加</li>
+  <li><strong>テレメトリ</strong>: 設定済みの <code>otelHeadersHelper</code> が失敗した際に起動時警告を出すようになり、テレメトリが無言で出力されないセッションに気付けます</li>
+  <li><strong>プラグイン取得の堅牢化</strong>: npm ソースのプラグインは <code>npm pack --ignore-scripts</code> と完全性検証を伴って取得されるようになり、パッケージの install スクリプトが実行されなくなりました</li>
+  <li><strong>アーティファクト／画像</strong>: タブアイコンを絵文字 favicon ではなく一単語で指定する方式に変更。貼り付け・添付画像は Desktop や VS Code を含めパーミッションプロンプトなしでファイルとして開ける場所に保存されます</li>
+  <li><strong>[VSCode]</strong>: Memory ダイアログで保存済みメモリの参照・編集・削除に対応。提案差分タブに変更ごとの accept / reject ボタンを追加。エージェントマップの改善（稼働数バッジ、失敗時の赤表示、メインエージェントの固定表示）</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.275）</h3>
+<ul>
+  <li>compaction / resume 後に復元されたメモリファイルの age 表記がリクエスト間で変わり、プロンプトキャッシュミスを起こしていた問題を修正</li>
+  <li>プラグイン・マーケットプレイスのメッセージやログ、<code>claude plugin marketplace list</code> が git / ssh / マーケットプレイス URL に含まれるパスワードやトークンを表示していた問題を修正</li>
+  <li>壊れたトランスクリプト（不正な task-reminder や @-file 添付、不正なメッセージ content block）で <code>--resume</code> やセッション開始が失敗する問題を複数修正。<code>/rewind</code> のゼロ埋め・切り詰め復元も修正</li>
+  <li>20MB 出力上限を超える検索で Grep / Glob / @-file サジェストがハングまたはメモリ枯渇する問題、および警告多発時に system ripgrep が「該当なし」と誤報告する問題を修正</li>
+  <li>ネットワークゲートウェイが API エラー応答を書き換える環境で、毎ターン <code>API Error: 400</code> になる問題を修正</li>
+  <li>Linux のサンドボックス Bash が zsh シェル時に失敗コマンドでも終了コード 0 を返す問題、<code>hooks/</code> や <code>config/</code> 名のプロジェクトディレクトリへ書き込めない問題を修正</li>
+  <li><strong>[VSCode]</strong>: 高速タイプ時やキー長押し時に fullscreen セッションが「unrecoverable interface error」で終了する問題、巨大なファイル差分を遡る際のフリーズ／ブランク、応答ストリーミング中に上へスクロールしても最下部へ引き戻される問題（<code>claudeCode.scrollToBottomOnSend</code> 設定も追加）などを修正</li>
+  <li><strong>[Claude Code on the web]</strong>: 非常に長い許可ドメインリストを持つクラウド環境で保存は成功するものの全セッション起動が失敗する問題を、保存時にエラーとして弾く方式に変更</li>
+</ul>
+
+<h3>🔧 新機能・改善（v2.1.274）</h3>
+<ul>
+  <li><strong>メモリ逼迫の警告</strong>: メモリ使用量が危険域に達した際の可視警告と、安全に解放／再起動する手順を表示</li>
+  <li><strong><code>CLAUDE_CODE_MCP_STARTUP_WAIT_MS</code></strong>: 非対話の初回ターンが MCP サーバーの接続を待つ上限時間を指定可能（<code>0</code> で待たない）。長時間の MCP タイムアウトや list-changed 通知の反映漏れも修正</li>
+  <li><strong>OpenTelemetry 拡張</strong>: <code>claude_code.llm_request</code> スパンに <code>effort</code> 属性を追加（<code>api_request</code> イベントと一致）。managed-settings の解決元とポリシーヘルパー状態を示す <code>claude_code.managed_settings_resolved</code> イベントを追加（<code>OTEL_LOG_MANAGED_SETTINGS=1</code> で設定値のダイジェストを出力）</li>
+  <li><strong>Claude apps gateway 設定</strong>: <code>store.connect_timeout_seconds</code> で Postgres 接続タイムアウト（既定5秒）を延長可能に。DB 到達不可時の起動エラーも <code>store.postgres_url</code> と設定値を指すように改善。レプリカの上流同時リクエスト上限（256）超過の警告と起動ログを追加</li>
+  <li><strong>fullscreen モード</strong>: 折りたたまれた teammate / agent メッセージをクリックで展開可能に</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.274）</h3>
+<ul>
+  <li>「unexpected tool_use_id」の 400 エラーを無限リトライし続ける問題を修正。壊れたトランスクリプトは可能な範囲で自己修復し、それ以外は <code>/rewind</code> を案内する明示的なエラーでループを終了させます</li>
+  <li>MCP まわりを多数修正: 初回リクエストに 422 などの 4xx を返すレガシー HTTP+SSE サーバーへ接続できない問題、per-server の <code>timeout</code> を延ばしても Streamable HTTP のツール呼び出しが約5分でタイムアウトする問題、<code>listChanged</code> 未宣言の list-changed 通知でプロンプト・リソースが更新されない問題、403 <code>insufficient_scope</code> が「サインイン期限切れ」と誤報告される問題</li>
+  <li>コンテキスト再オーバーフロー時に <code>/goal</code> などのフック駆動セッションが compaction されず「Prompt is too long」で終了する問題、resume 時にアクティブな <code>/goal</code> が失われる問題を修正</li>
+  <li><strong>[VSCode]</strong>: プラン レビューカードのボタン切れ、ハイコントラストテーマでのコード可読性、セッション名の横ズレ、スクリーンリーダー向けに各メッセージを「You / Claude」としてアナウンスする改善など</li>
+  <li><strong>[Claude Tag]</strong>: 他の Slack アプリ／ボットが @mention した場合に応答しない問題、チャンネル内検索が必ずエラーになる問題、Slack 返信のメールアドレスに <code>mailto:</code> が可視表示される問題、進行チェックリストの文字数上限／再投稿間隔の制御などを修正</li>
+  <li><strong>[Code Review]</strong>: 再レビュー時に修正済み指摘のスレッドが開いたまま残る問題、一時的なサービス障害でレビューが「エラー」で終わる問題を修正し、指摘文の書き方も「影響を受ける対象・誤りの箇所・修正内容」を先頭に据える平易な文へ改善</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a>（RSS フィードで pubDate を全件照合済み）</p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.21.3（タグ v2026.9.14、9月15日 01:04 JST 公開）</strong>です。GitHub Releases API で直近5件（v2026.9.14 / v2026.9.11 / v2026.9.7 / v2026.8.31 / v2026.8.27）を照合し、9月17日以降の公開はありませんでした。次期 <strong>v0.22.0</strong> では v0.21.0 以降の全内容をまとめた正式なリリースノートが公開される予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2026.9.4（9月11日 12:46 JST 公開）</strong>です。リポジトリは <code>openclaw/openclaw</code>（<code>nicepkg/openclaw</code> ではない）で、GitHub Releases API の直近5件を照合しました。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.205</h2>
+<p>対象期間内に <strong>v1.4.205</strong>（9月17日 13:59 JST 公開）がリリースされました。ネイティブチャットのメッセージレール追加や、ワークツリー削除時の安全性確保、ターミナルハンドルの PTY 再生成をまたぐ保持、Codex 使用量スキャンの大幅な高速化などが含まれます。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>エージェント／チャット</strong>: プロンプト間をジャンプするメッセージレールをネイティブチャットに追加。再開したトランスクリプトを末尾に固定し、メッセージ増加中も切り離したリーダーの位置を保持。保留中のプロンプトのキャンセルを正確化。OMP の会話が保存済み名でセッション履歴から再開可能に</li>
+  <li><strong>セッション／フック</strong>: タイムアウトしたフックが実際にプロセスツリーを終了するよう修正。エージェント状態の取り込みを単一の admission point に集約（レガシー経路を分離）</li>
+  <li><strong>ワークスペース／エディタ</strong>: アーカイブフックが失敗した場合はワークツリー削除をブロックするように変更（従来は削除を続行）。prunable な git-file 登録状態でもワークツリー登録が生き残るよう修正。コードブロックにコピーボタンを追加。Tiptap を Markdown 互換ガード付きで更新</li>
+  <li><strong>ソース管理</strong>: stage / unstage / discard の失敗をリトライ手段付きで表面化。Git 起動時の <code>ENOENT</code> を「バイナリ不在」と「cwd 不在」で区別して報告</li>
+  <li><strong>ターミナル／リモート</strong>: ペインのハイドレーション前にターミナル名変更が失われる問題、PTY インカネーション回転をまたぐハンドル保持、PTY 子プロセス検査で「検証不能」を推測せず保持する修正。リレー障害を取得フェーズと実行フェーズで切り分けて診断可能に</li>
+  <li><strong>性能</strong>: Codex 使用量スキャンで帰属解決をスキャンごとに1回とし、成長したロールアウトは最後に解析したバイト位置から再開。大規模なコールドスキャンが数分から1分未満に短縮（ワーカースレッド移行は後続リリース）</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<p>対象期間内に安定版の新規リリースは確認されませんでした（最新安定版は <strong>v16.3.5</strong>、9月12日 04:15 JST 公開）。canary は <strong>v16.4.0-canary.35</strong>（9月18日 08:43 JST 公開）が対象期間内です。内容は <code>next upgrade --ai</code> の「latest」「future defaults」「セキュリティ脆弱バージョン」各アップグレード経路に対するエージェント向けナッジと検証カバレッジの追加が中心で、<code>lzzzz</code> を <code>lz4_flex</code> へ置換、SWC v79 への更新、Turbopack の webpack ローダービルド依存ファイル追跡、重複ネストキャッシュのメタデータ伝播修正、<code>isStableBuild()</code> がコミットプレビューの tarball を安定版と誤判定する問題の修正なども含まれます。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ AWS</h3>
+<p>対象期間内に以下の告知がありました（時刻は JST）。</p>
+<ul>
+  <li><strong>Amazon EC2 T8i インスタンス GA</strong>: 第6世代 Intel Xeon 6 と第6世代 Nitro カードを採用した低コストなバースタブルインスタンス。T3 比で最大30%の価格性能改善、最大70%のコンピュート性能向上、1.25倍のネットワーク帯域、2.4倍の EBS 帯域。nano / micro / small / medium の4サイズで、micro と small は AWS Free Tier 対象。東京を含む多数のリージョンで利用可能です（9月18日 00:00 告知）</li>
+  <li><strong>AWS Elastic Beanstalk — Cluster Mode</strong>: 単一アカウント内の共有インフラ上で複数アプリを運用する新しいデプロイモード。Amazon EKS を基盤に、イベント駆動オートスケーリング、OpenTelemetry ベースの可観測性、Secrets Manager 連携、ACM による HTTPS 既定有効化を備えます。アプリごとの専用環境が不要となり、スケールやアプリ数の増加に伴うコストを抑えられます。GitHub Action による CI/CD デプロイにも対応（9月17日 17:00 告知）</li>
+  <li><strong>Amazon S3 Express One Zone が7リージョン追加</strong>: シンガポール、サンパウロ、北カリフォルニア、カナダ（中部）、パリ、シドニー、ソウルが加わり、計15リージョンに拡大（9月17日 17:00 告知）</li>
+  <li><strong>AWS Batch — 一括キャンセル／終了</strong>: 最大50ジョブを1回の API 呼び出しでキャンセル・終了できる <code>CancelJobs</code> / <code>TerminateJobs</code> / <code>TerminateServiceJobs</code> を追加。結果はジョブ単位で1レスポンスにまとまり、<code>ListJobs</code> は <code>isCancelled</code> / <code>isTerminated</code> を返します（9月18日 02:23 告知）</li>
+  <li><strong>AWS HealthOmics — IAM セッションポリシー対応</strong>: 専用 IAM ロールを作らずに実行単位で権限を動的に絞り込めるようになり、マルチテナント構成でテナントごとの S3 バケットだけにアクセスを限定するといった制御が可能に（9月18日 03:32 告知）</li>
+  <li><strong>AWS Transfer Family — SFTP の送信元 IP 保持</strong>: VPC ホスト型エンドポイントの SFTP サーバーの前に NLB を置く構成で、Proxy Protocol v2（PPv2）によりクライアントの送信元 IP を保持。ログ・イベントやカスタム ID プロバイダでの認証時に実際の送信元 IP を扱えるようになり、IP ベースの監査・アクセス制御が可能になりました（9月18日 04:00 告知）</li>
+  <li><strong>Amazon Corretto 27 GA</strong>: Feature Release 版の OpenJDK ディストリビューション。全環境で G1 が既定 GC に（JEP 523）、TLS 1.3 の耐量子ハイブリッド鍵交換（JEP 527）、Compact Object Headers の既定有効化（JEP 534）、JFR のインプロセス データ秘匿（JEP 536）などが含まれ、2027年4月までサポートされます（9月17日 09:00 告知）</li>
+  <li><strong>Amazon Quick — シート生成と画像からの分析生成</strong>: 自然言語で単一シートを既存分析に追加できる Generate Sheet と、他 BI ツールを含むダッシュボード画像から編集可能な分析を再構築する機能を追加（9月17日 11:37 告知）</li>
+  <li><strong>AWS Builder Center モバイルアプリ</strong>: コミュニティ プラットフォームが iOS / Android アプリとして利用可能に。600以上の Skill Builder コースやハンズオン ワークショップの管理、Heroes / Community Builders のフォロー、トピック購読のプッシュ通知などに対応（9月17日 16:09 告知）</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>9月17日（米国時間）付のリリースノートが公開されました。主な内容は次のとおりです。</p>
+<ul>
+  <li><strong>Compute Engine</strong>: ストレージ最適化マシンシリーズ <strong>Z4D</strong> が GA。AMD EPYC Turin プロセッサと Titanium オフロード プロセッサを採用し、SQL / NoSQL / ベクターDB、データ分析、検索、AI・ML 向け並列ファイルシステムなど「低コア数・高ストレージ密度」のワークロード向け。最大3 TB メモリ、42,000 GiB のローカル Titanium SSD、2つの物理 NIC で最大 400 Gbps のネットワーク帯域を提供します</li>
+  <li><strong>BigQuery / Dataform</strong>: パイプラインにユニットテストを追加して SQL 変換ロジックをモックデータセットで検証する機能が GA。Dataform のユニットテスト（モックデータに対する期待結果セットでのアクション検証）も GA</li>
+  <li><strong>Cloud SQL for MySQL / PostgreSQL</strong>: 障害復旧（DR）のスイッチオーバーとレプリカ フェイルオーバー完了後、ポイントインタイム リカバリ（PITR）を非同期の別操作として自動有効化するように。PITR 有効化がスイッチオーバーをブロックしなくなり、復旧時間を短縮できます</li>
+  <li><strong>Gemini Enterprise</strong>: チャットボックスの音声入力が GA。マイクボタンで録音し、文字起こしを確認・編集してから送信できます（管理者が Enable speech-to-text を有効化する必要あり）</li>
+  <li><strong>Cloud Armor</strong>: マネージド ルールセットがプレビュー提供に。最新に保たれた脅威シグネチャでバックエンドサービスと API を保護します</li>
+  <li><strong>Google Distributed Cloud</strong>: VMware 版およびベアメタル版の <strong>1.34.900-gke.135</strong>（Kubernetes v1.34.7-gke.200）が公開。<code>etcd</code> を v3.5.33-0-gke.3 へ更新し CVE-2026-46595・CVE-2026-39821 に対処、管理クラスタとユーザークラスタで pod density が異なる場合に Reconciling / Running を繰り返す問題などを修正しました</li>
+  <li><strong>Looker 26.18</strong>: Looker（original）インスタンスへ 9月21日 から順次展開予定（完了は 10月4日 予定）。カスタムテーマのフォント適用、ダッシュボードの CSV / ZIP ダウンロードの 500 エラー、LookML <code>link</code> パラメータの 500 エラー、スケジュール PDF 配信の破損などの修正が含まれます</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<h3>☁️ Azure</h3>
+<p>対象期間内に以下のアップデートが告知されました（時刻は JST）。</p>
+<ul>
+  <li><strong>Azure Payments HSM v2</strong>（パブリックプレビュー）: 支払い処理、資格情報の発行、PIN 処理、鍵管理、認証データ保護のための高可用・シングルテナントな Payment HSM サービス。顧客が隔離環境の管理を排他的に掌握できます（9月18日 03:36 告知）</li>
+  <li><strong>Azure Virtual Network Manager — High-scale mesh</strong>（GA）: connected group を使った high-scale mesh が一般提供に。利用可能なリージョンでは、単一のメッシュ接続構成で既定 3,000 の仮想ネットワークを接続でき、それ以上のスケール構成も可能です（9月18日 02:40 告知）</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h3>⚛️ React / Python / Django / Java / Spring Boot / Hono / Node.js / Claude API・SDK</h3>
+<ul>
+  <li><strong>Node.js</strong>: <strong>v26.9.0（Current）</strong>が対象期間内（9月17日 09:49 JST、npm の公開時刻基準）にリリースされました。汎用 MAC API、OpenSSL プロバイダからの暗号・ハッシュ自動検出、FFI モジュールの既定有効化、<code>node:bench</code>、perf_hooks の Histogram <code>meanCI</code> API と CBOR エクスポート／インポート、実験的 DTLS API、CJS／ESM モジュールローダとの VFS 統合などが含まれます</li>
+  <li><strong>React</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v19.3.0（9月10日 03:01 JST 公開）</li>
+  <li><strong>Python</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした（最新は 3.14.7 / 3.13.15、いずれも8月5日公開）</li>
+  <li><strong>Django</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした。最新の bugfix リリースは 6.1.1（9月3日 02:20 JST 公開、PyPI の upload_time 基準）</li>
+  <li><strong>Java / Spring Boot</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.1.1（8月21日 05:02 JST）／v4.0.8（8月21日 11:39 JST）／v4.2.0-M1（8月21日 05:09 JST）。なお AWS の Amazon Corretto 27 GA は JDK 27 系の Feature Release です</li>
+  <li><strong>Hono</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.13.8（9月15日 16:31 JST 公開）</li>
+  <li><strong>Claude API / SDK</strong>: <strong>Claude Agent SDK v0.3.275</strong> が対象期間内（9月18日 05:23 JST 公開）に npm 上で公開されました。本体の <code>@anthropic-ai/sdk</code>（v0.126.0、9月16日 02:41 JST）と Python SDK（<code>anthropic</code> v1.6.0、9月16日 00:14 JST）はいずれも対象期間開始前の公開です</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
