@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-19 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-19 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.277 / v2.1.276</h2>
+<p>対象期間内に <strong>v2.1.277</strong>（9月19日 03:18 JST 公開）と <strong>v2.1.276</strong>（9月18日 11:20 JST 公開）の2件がリリースされました。RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）の <code>pubDate</code> を全件照合した結果です。なお <strong>v2.1.275</strong> は 9月18日 07:42 JST 公開で、対象期間の開始（9月18日 09:00 JST）より前のため本号の対象外です。</p>
+
+<h3>🔧 新機能・改善（v2.1.277）</h3>
+<ul>
+  <li><strong>AGENTS.md 対応</strong>: CLAUDE.md が存在しないプロジェクトでは <code>AGENTS.md</code> をプロジェクト指示として読み込むようになりました。<code>/config</code> の「Project instructions」で切り替え可能です（Bedrock / Vertex / Foundry では未対応）</li>
+  <li><strong><code>CLAUDE_GATEWAY_PROXY_IS_EGRESS_BOUNDARY=1</code></strong>: 外向き通信がフォワードプロキシのみの Claude apps gateway 向け。全ての送信リクエストはローカルで名前解決せず、ホスト名をそのままプロキシへ渡します</li>
+  <li><strong>gateway upstream の静的ヘッダー</strong>: プロバイダ前面のプロキシへ送る固定ヘッダーを <code>headers:</code> マップで指定できるようになりました</li>
+  <li><strong>プロンプトの無害化</strong>: プロンプト中の不可視 Unicode 書式文字・タグ文字を除去し、送信前にクリーニング済みのプロンプトを確認表示します</li>
+  <li><strong>バックグラウンドタスク通知</strong>: <code>/tasks</code> などのパネルを開いている間にタスクが完了した場合、「更新が待機中」である旨の行を表示します</li>
+  <li><strong>サブエージェント結果の明示</strong>: サブエージェントの結果は「サブエージェント出力」と分かるヘッダー付き・インデント付きでメインエージェントへ届くようになり、結果本文がセッション自身の指示として誤解されにくくなりました</li>
+  <li><strong>危険な <code>rm</code> の許可プロンプト改善</strong>: 該当する <code>rm</code> コマンド名を提示し、<code>${VAR:?}</code> ガードを提案するようになり、ヘッドレス実行でも復旧しやすくなりました</li>
+  <li><strong><code>/ultrareview</code> の改善</strong>: レビュー対象がない場合にどのケースかを明示し、最新コミットをレビューするコマンドを案内。新規リポジトリの初回コミットは全体をレビューします</li>
+  <li><strong>SDK / ヘッドレス起動の高速化</strong>: SDK および <code>claude -p</code> の初回ターンがディレクトリ単位の CLAUDE.md 検索を待たなくなりました</li>
+  <li><strong>廃止</strong>: deprecated だった TaskOutput ツールを削除。バックグラウンドタスクの出力は Read で読む方式になり、<code>taskOutputMaxChars</code> 設定と <code>TASK_MAX_OUTPUT_LENGTH</code> は無効になりました</li>
+  <li><strong>[VSCode]</strong>: パネルメニューに Sign out 行を追加（<code>/logout</code>）。エージェントマップにバックグラウンドシェル等の実行中タスクと Stop、<code>/tasks</code> を追加。応答の Copy ボタンと <code>/copy</code>、非アクティブセッションの自動アーカイブ通知と「Unarchive all」、プラン制限が適用されない環境でのコスト・トークン使用量表示を追加</li>
+  <li><strong>[Claude Code on the web]</strong>: 環境ピッカーに Personal / Organization セクションを追加し、管理者が個人環境を組織へ共有可能に。管理者設定の「Web」ラベルを「Cloud sessions」へ変更</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.277）</h3>
+<ul>
+  <li><code>claude -p</code> と Agent SDK が内部エラー後に結果を返さずハングする問題を修正。エラーを報告して終了コード 1 で終了します</li>
+  <li>以前の assistant ターンが空の text ブロックを保持していると、<code>--resume</code> 後も含め毎リクエストが「text content blocks must be non-empty」で失敗する問題を修正</li>
+  <li>同一マシンで古い Claude Code ビルド（IDE 拡張の同梱 CLI など）が動作していると、予期せずログアウトされる問題を修正</li>
+  <li>Write ツールの対象パスが既存ディレクトリの場合、無言で権限拒否としてターンを終了していた問題を修正（明示的なエラーを返すように）</li>
+  <li>Edit ツールが「エスケープされたバックスラッシュ + uXXXX」を Unicode エスケープと誤認し、非 ASCII 文字の編集でエスケープ列を書き換えてしまう問題を修正</li>
+  <li>プロセス・メモリ・ファイルハンドル枯渇で検索を開始できない場合に、Grep / Glob が「該当なし」と誤報告する問題を修正（エラーを返すように）</li>
+  <li>使用中バージョンのプラグイン再インストールでインストール済みコピーが壊れる問題、<code>/plugin</code>・<code>/skills</code> の各種クラッシュ（<code>constructor</code> 等の名前、壊れた <code>claudeAiMcpEverConnected</code> / <code>theme</code> 値、ターミナル配色コードを含むプロンプトでの起動時クラッシュ等）を修正</li>
+  <li>プロキシが不正なバージョンを返した際に更新チェックが30分ごとにエラーになる問題、および最小／最大バージョン設定時に <code>claude update</code> がハングする問題を修正（不正な <code>minimumVersion</code> は無視されるように）</li>
+  <li>プロンプトキャッシュ関連: resume / relaunch 後に以前の添付ファイルが再描画され extended thinking が失われる問題、<code>/clear</code> 後の継続で SessionStart フック出力によりプロンプトキャッシュが全損する問題、resume したサブエージェントが MCP ツール定義を再描画しキャッシュを壊す問題を修正</li>
+  <li>シェル関連: サンドボックス有効時にサンドボックス外で走る Bash で <code>$TMPDIR</code> が空展開される問題、<code>sandbox.excludedCommands</code> の glob が複合コマンドの一部一致だけで全体を免除してしまう問題を修正</li>
+  <li><strong>[VSCode]</strong>: プラン制限が無い環境でのコスト・使用量表示、<code>/fast</code> が既定として保存されない問題、effort スライダーの値が後続セッションへ引き継がれない問題、Auto がモードピッカーに表示されない問題などを修正</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.276）</h3>
+<ul>
+  <li><strong>v2.1.275 のリグレッション修正</strong>: <code>ANTHROPIC_BASE_URL</code> がプロキシやゲートウェイを指している環境で、全リクエストが <code>400 … Input tag 'advisor_20260301'</code> で失敗する問題を修正。プロキシ経由で Claude Code を使っている場合はこのバージョンへの更新が推奨されます</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code Changelog</a>（RSS フィードで pubDate を全件照合済み）</p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v0.21.3（タグ v2026.9.14、9月15日 01:04 JST 公開）</strong>です。GitHub Releases と atom フィードの両方で直近5件（v2026.9.14 / v2026.9.11 / v2026.9.7 / v2026.8.31 / v2026.8.27）を照合し、9月18日 09:00 JST 以降の公開はありませんでした。次期 <strong>v0.22.0</strong> では v0.21.0 以降の全内容をまとめた正式なリリースノートが公開される予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.9.5</h2>
+<p>対象期間内に <strong>v2026.9.5</strong>（9月19日 05:40 JST 公開、コミット <code>ec9c1a1</code>・署名検証済み）がリリースされました。リポジトリは <code>openclaw/openclaw</code>（<code>nicepkg/openclaw</code> ではない）です。なお GitHub Releases API のタグ照会は 404 を返したため、リポジトリ内の <code>CHANGELOG/2026.9.5.md</code>（タグ <code>v2026.9.5</code>）を一次ソースとして確認しました。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>より安全なアップグレードと履歴保持</strong>: Doctor がセッション履歴と繰り返し修復の状態を保持し、不正な残存履歴があってもアップグレードを完了。起動中の Gateway を繰り返し停止・スタールさせないよう改善（#149741, #149956, #148901, #149308, #149823, #149760）</li>
+  <li><strong>ライブ プラグイン管理</strong>: Gateway を再起動せずに対応プラグインのインストール・リロードが可能に。稼働中のエージェント会話やマネージド Codex 会話のツールも更新され、1つの CLI コマンドで複数プラグインを管理できます（#145484, #145710, #145713, #145648, #145917, #149910）</li>
+  <li><strong>マルチエージェントの可視性向上</strong>: 実行と結果配信を区別し、親への完了ハンドオフを非公開化。スコープ付きセッション一覧の再開と、ステアリング入力ごとに1つの回答を返す挙動を整理（#147571, #147206, #150065, #148051, #149925）</li>
+  <li><strong>デスクトップ優先の Systems ワークスペース</strong>: Web ログイン経由で Gateway 接続を管理し、Primary とは独立に保存済み Gateway を切り替え可能に。iOS / Android ではサイドバー切り替えに対応（#147519, #148526, #147684, #146641, #148209）</li>
+  <li><strong>音声（Live voice）の柔軟化</strong>: 通話・会議をまたいで GPT Live を利用でき、アカウント単位の Talk 既定値を選択、通話中に音声を変更できます（#145382, #146546, #146676）</li>
+  <li><strong>引用とレビュー</strong>: Web / ネイティブチャットで引用元をプレビューし、選択したチャット本文を編集可能なコメント化。Android の Review で選択行の参照、ワードラップ切り替えに対応（#148431, #148904, #148906, #148649）</li>
+  <li><strong>モデルのサインインと選択</strong>: ネイティブ サインインとランタイム選択の整合、モデルを変えずにサインイン、エージェント ハーネス横断の選択、Radius モデルのブラウザ サインイン＋ネイティブ ストリーミング接続（#143588, #144329, #147994, #145377）</li>
+  <li><strong>Plugin SDK 移行（Gateway V2）</strong>: Gateway ハンドラと node-session のインポートが、物理 WebSocket・汎用フレーム・HTTP ポーリングの能力を明示する形に変更。node のワイヤ プロトコル自体は不変です</li>
+  <li><strong>主な修正</strong>: 2026.9.4 → 2026.9.5 のアップグレード時に <code>openclaw update</code> のサービス環境更新が失敗する問題（#151977）、送信者アイデンティティをメッセージ本文から推測していた問題、コンパクションをまたぐ文脈・所有権の保持、サブエージェントのモデル継承と fork 制限、Telegram / Discord / Slack のシャットダウン時の取りこぼし、大きなセッション詳細読み取りの応答性（#149749, #149853, #149901）などを修正</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a> / <a href="https://raw.githubusercontent.com/openclaw/openclaw/v2026.9.5/CHANGELOG/2026.9.5.md">CHANGELOG 2026.9.5</a></p>
+
+<h2>🐋 Orca — v1.4.206</h2>
+<p>対象期間内に <strong>v1.4.206</strong>（9月18日 13:05 JST 公開、v1.4.205 比 80 コミット）と、モバイル向け <strong>Orca Mobile Android mobile-android-v0.0.50</strong>（9月18日 15:19 JST 公開）がリリースされました。タグ付け時刻は GitHub の atom フィードおよびコミット履歴で確認しています。</p>
+<h3>🔧 主な内容（v1.4.206）</h3>
+<ul>
+  <li><strong>セッション検索（Session history search）</strong>: <code>orca search</code> CLI を追加し、履歴パネルからローカル検索を実行可能に。検索インデックスの設定と有効化コントロール、オプトイン同意、複数コンピュータを横断する検索、ペアリング済みサーバー側のインデックス有効化、OpenCode の SQLite セッションおよび型付き Text ブロックを持つ Codex 返信のインデックスに対応。索引ステータスが未処理バックログを正しく報告するよう修正（#20582, #20514, #20580, #20670, #20885, #20886, #20870, #20763）</li>
+  <li><strong>エージェント状態管理</strong>: canonical store と子ワーク契約を追加し、構造化セッションを正規の所有権経路へルーティング（#20717, #20718）。エージェント起動は単一の executor（<code>agent.launch</code>）に集約（#19848, #19849, #20911）</li>
+  <li><strong>ネイティブチャット</strong>: 生の question ツール行を「入力待ち」行に置換（#20724）、チャットペイン非表示中でもキュー済みメッセージを配信（#20659）、プロバイダのルート終了後にセッションを解放（#20502）、Claude の Stop がジャーナルに記録されたターンに対して判定されるよう修正（#20794, #20921）</li>
+  <li><strong>ワークツリー／ターミナル／SSH</strong>: worktree 作成時に Git 作成を優先しバックグラウンド準備を遅延（#20722）、WSL チェックアウトを削除が巻き込まないよう修正（#20273）、<code>lsof</code> の空応答を検証してからエンドポイント解放と判定（#20585）、runtime が作成した Windows ターミナルを指定シェルとして扱えるように修正（#20825）</li>
+  <li><strong>性能</strong>: Codex / Claude / OpenCode の使用量スキャンをワーカースレッドへ移行（#21114）、rollout スキャンを最後に解析済みのバイト位置から再開（#21102）、cwd ごとの worktree 解決をスキャンごとに1回へ（#21130）</li>
+  <li><strong>モバイル</strong>: GitHub PR サーフェス、タスク プロバイダ／ボード、ディクテーション、ターミナル、通知、ブラウザなど多数ドメインを型付き <code>RpcOperations</code> へ段階移行（#20668, #20685, #20702, #20891, #20915, #20919, #20954）</li>
+  <li><strong>その他</strong>: automations の実行履歴テーブルを仮想化（#20916）、Markdown 画像レイアウト後のスクロール位置保持（#20956）、ブラウザのビューポート プリセットが UI ズームで誤スケールされる問題（#20962）、プロキシ バイパス規則の複数行保持（#20957）などを修正</li>
+</ul>
+<h3>🔧 主な内容（Mobile Android v0.0.50）</h3>
+<ul>
+  <li>ネイティブチャットペインの上にフローティング ワークスペースを維持するよう修正、クラウドセッション失効・デスクトップ サインアウトを端末へ通知するリレー改善、リレー／relay-infra のアラートとインシデント ダッシュボード追加</li>
+  <li>Claude の構造化ネイティブチャットを Claude Agent SDK 上へ移行し、macOS / Linux でも有効化（#18560）。Codex と同じ UI で描画されるよう統一（#18743）</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<p>対象期間内に安定版の新規リリースは確認されませんでした。canary は <strong>v16.4.0-canary.36</strong>（9月19日 08:47 JST 公開）が対象期間内です。内容は「復活したタスクを新規タスクとして永続化」「Rspack: turbo-unix-path 経由で bincode 依存を削除」「restore waiter ハンドオフをまたぐタスク固定」「Turbopack のシャットダウン用に内部プレフィックスの環境変数を使用」「prefetch-static-shell の ISR フォールバック待機リトライ」「<code>next/dynamic</code> の遅延評価を正しく無効化」「agentic upgrade 成功後に <code>experimental.agenticAutoUpgrade</code> を設定」など、内部タスク処理とテスト安定化が中心です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h3>☁️ AWS</h3>
+<p>対象期間内（9月18日）に以下の告知がありました（時刻は JST）。</p>
+<ul>
+  <li><strong>Moonshot AI の Kimi K3 が Amazon Bedrock で GA</strong>: Bedrock のモデル カタログに Kimi K3 が追加され、本番利用が可能になりました（9月19日 00:15 告知）</li>
+  <li><strong>Amazon SNS がメッセージ ペイロード 1 MiB に対応</strong>: 従来の 256 KiB 上限から拡大し、大きなイベント ペイロードを分割せずに配信できます（9月19日 00:00 告知）</li>
+  <li><strong>Amazon Bedrock AgentCore の新しい AgentCore Runtime が利用可能に</strong>: エージェント実行基盤の新ランタイムが GA（9月18日 22:25 告知）</li>
+  <li><strong>Amazon ECS Express Mode が AWS Graviton（ARM64）ワークロードに対応</strong>: Express Mode で ARM アーキテクチャを選択可能になり、価格性能の改善が図れます（9月19日 02:27 告知）</li>
+  <li><strong>AWS PrivateLink — Tunnel Endpoints</strong>: ネットワーク セグメントへアクセスするための Tunnel Endpoint を発表（9月18日 16:00 告知）</li>
+  <li><strong>AWS Resilience Hub に3つの新機能</strong>: EKS 依存関係ポリシーを含む新機能を追加（9月19日 01:49 告知）</li>
+  <li><strong>AWS RTB Fabric</strong>: 可用性ゾーン アフィニティを構成可能に（9月19日 00:30 告知）</li>
+  <li><strong>AWS Continuum</strong>: 資格情報テストとアクセシブルなドメイン候補の提案に対応（9月19日 03:34 告知）</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>9月18日（米国時間）付のリリースノートが公開されました。主な内容は次のとおりです。</p>
+<ul>
+  <li><strong>Cloud Load Balancing</strong>: バックエンド mTLS 向けのマネージド ワークロード アイデンティティが GA。グローバル／リージョナル外部アプリケーション LB、クロスリージョン／リージョナル内部アプリケーション LB が対象で、Certificate Authority Service および Certificate Manager と統合して証明書・トラストの管理を自動化します</li>
+  <li><strong>Vertex AI</strong>: xAI の <strong>Grok 4.6 が GA</strong>。グローバル エンドポイントと米国マルチリージョン エンドポイントで本番利用が可能です</li>
+  <li><strong>Agent Platform SDK for Python v2.0.1</strong>: 生成 AI モジュールを Google Gen AI SDK へ移行し、エージェント サーフェスを <code>google-cloud-aiplatform</code> から専用パッケージへ分離して名前空間を再構成</li>
+  <li><strong>Cloud Scheduler</strong>: <code>asia-southeast3</code>（バンコク）で利用可能に</li>
+  <li><strong>Gemini Enterprise</strong>: Microsoft OneDrive / Outlook / SharePoint / Teams 向けの新規アクションがパブリック プレビューで追加（フォルダー コピー、ファイル／フォルダー移動、カレンダー作成、チャネル作成、メンバー追加など）</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud Release Notes</a></p>
+
+<h3>☁️ Azure</h3>
+<p>対象期間内に以下のアップデートが告知されました（時刻は JST、Microsoft 公式の Azure Updates API を一次ソースとして確認）。</p>
+<ul>
+  <li><strong>Microsoft Foundry — Foundry Routines（パブリック プレビュー）</strong>: 公開済みエージェントを自動実行するネイティブのトリガー プリミティブ。Logic Apps や Azure Functions、Webhook、キュー、個別の ID／ロール割り当てといった外部の糊付けなしに、スケジュール実行や業務イベント起点の実行が可能になります（9月19日 04:10 告知）</li>
+  <li><strong>Microsoft Foundry エージェントの Microsoft 365 Copilot / Teams への公開が GA</strong>: Foundry 開発者が個別のデプロイ パイプラインやボット登録、アプリ マニフェストなしに、エージェントを M365 Copilot / Teams へ公開できます（9月19日 02:21 告知）</li>
+  <li><strong>Foundry — hosted agent のネットワーク送信制御（パブリック プレビュー）</strong>: 送信先ホスト（<code>*.contoso.com</code> などのワイルドカード FQDN）に対する順序付きルールで、許可・拒否・送信ヘッダー変換・宛先書き換えを制御。ルールはエージェントの Responsible AI ポリシーに保存され、Foundry 内部で強制されます（9月19日 02:23 告知）</li>
+  <li><strong>Agent 365 で Foundry エージェントの有効化／無効化が GA</strong>: Microsoft Admin Center のガバナンス サーフェスから、組織全体で Foundry エージェントの利用可否を管理者が制御できます（9月19日 02:24 告知）</li>
+  <li><strong>Mdsv4 / Msv4 シリーズ仮想マシン（SAP 向け、パブリック プレビュー）</strong>: 第6世代 Intel Xeon Scalable を採用したメモリ最適化シリーズ。Azure Boost と高度なセキュリティ機能を備え、SAP を含むメモリ集約的なミッションクリティカル ワークロード向け（9月19日 02:29 告知）</li>
+  <li><strong>Azure Database for PostgreSQL Flexible Server</strong>: 論理レプリケーション スロットの同期状態メトリック <code>logical_replication_slot_sync_status</code> が GA（9月19日 01:44 告知）。高 CPU・メモリ・IOPS・一時ファイル・autovacuum 向けのトラブルシューティング ガイドも刷新（9月19日 00:51 告知）</li>
+  <li><strong>PostgreSQL 18 を elastic clusters でサポート（GA）</strong>: 分散・クラウドスケールのワークロードで PostgreSQL 18 の性能・信頼性・開発者向け改善を利用可能に（9月19日 00:49 告知）</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h3>⚛️ React / Python / Django / Java / Spring Boot / Hono / Node.js / Claude API・SDK</h3>
+<ul>
+  <li><strong>Claude API・SDK</strong>: <strong><code>@anthropic-ai/sdk</code> v0.127.0</strong>（9月19日 01:30 JST）と <strong>Python SDK <code>anthropic</code> v1.7.0</strong>（9月19日 01:12 JST）が対象期間内に公開されました。Python SDK はレート制限に <code>display_name</code> 付き group を追加して <code>group_type</code> を非推奨化し、ツールランナーに <code>compact_before_next_turn()</code> を追加。Bedrock の eventstream 例外フレームで API エラーを送出する修正、<code>X | Y</code> ユニオン型のレスポンス解析修正、複数の <code>anthropic-beta</code> 値をカンマ区切り（空白なし）で結合する修正などが含まれます。Claude Agent SDK も <strong>v0.3.276</strong>（9月18日 10:40 JST）／<strong>v0.3.277</strong>（9月19日 01:22 JST）が公開されています</li>
+  <li><strong>Node.js</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v26.9.0（9月16日公開）です</li>
+  <li><strong>React</strong>: 対象期間内の安定版リリースは確認されませんでした。最新は v19.3.0（9月10日公開）で、canary のみ <code>19.3.0-canary-59aff3e1-20260918</code>（9月19日 01:23 JST）が公開されています</li>
+  <li><strong>Python</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした（最新は 3.15.0rc2 / 3.14.7 / 3.13.15）</li>
+  <li><strong>Django</strong>: 対象期間内の新規リリース・セキュリティアドバイザリは確認されませんでした。最新の bugfix リリースは 6.1.1（9月2日公開）です</li>
+  <li><strong>Java / Spring Boot</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.2.0-M1 / v4.1.1（いずれも8月21日公開）です</li>
+  <li><strong>Hono</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v4.13.8（9月15日公開）です</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
