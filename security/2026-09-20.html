@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-20 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-20 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Linuxカーネルの脆弱性3件がCISAの悪用カタログ（KEV）に追加 - kTLSのゼロ長レコード処理（CVE-2025-39682、CVSS 9.8）など <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2025-39682（kTLS）／CVE-2026-53266（ebtables）／CVE-2025-39964（AF_ALG）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.8（Critical）／8.8（High）／7.8（High）</td></tr>
+  <tr><th>影響</th><td>Linuxカーネル（各ディストリビューションのカーネルパッケージ）</td></tr>
+  <tr><th>公開</th><td>2026-09-18（現地時間、米CISAがKEVへ追加）／2026-09-19 報道（Security NEXT）</td></tr>
+</table>
+<ul>
+  <li>米サイバーセキュリティインフラストラクチャセキュリティ庁（CISA）が現地2026年9月18日、<strong>悪用が確認された脆弱性カタログ（KEV）</strong>へ Linuxカーネルの脆弱性3件を追加いたしましたわ。修正プログラムの適用だけでなく、<strong>侵害の痕跡の調査</strong>も求めています。</li>
+  <li>もっとも深刻なのは <strong>CVE-2025-39682</strong>（CVSSv3.1 9.8、Critical）で、TLS処理機能「kTLS」に関するもの。受信キューから取り出した<strong>長さがゼロのTLSレコードが適切に処理されず、後続のレコードが誤った前提で処理される</strong>おそれがあります。</li>
+  <li><strong>CVE-2026-53266</strong>（8.8、High）はネットワークブリッジの「ebtables」で、ARPパケットの送信元MACアドレスを書き換える際に<strong>域外メモリへデータが書き込まれる</strong>問題です。<strong>CVE-2025-39964</strong>（7.8、High）は暗号処理のユーザー空間インタフェース「AF_ALG」の競合状態で、同一ソケットへの同時書き込みによりデータが混在し、ソケット内部の状態に不整合が生じます。</li>
+  <li>各ディストリビューションで対応が順次進められており、米行政機関には登録から3日後にあたる<strong>現地9月21日</strong>までの対策が求められています。カーネル更新は再起動を伴い、コンテナホストやゲートウェイでは影響範囲が広がりやすいため、適用計画と再起動のタイミングを先にご確認くださいませ。</li>
+</ul>
+
+<h3>OpenClaw 2026.9.5 - サンドボックスのマウント検証、ツール権限の明示保存など境界まわりの変更 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>明記なし（セキュリティ境界に関わる変更を含む通常リリース）</td></tr>
+  <tr><th>影響</th><td>OpenClaw 2026.9.5 未満（Docker実行構成・trusted-proxy認証を利用する構成で影響）</td></tr>
+  <tr><th>公開</th><td>2026-09-19 公開（GitHubリリース、64直接コミット・4,179プルリクエスト・502アカウント）</td></tr>
+</table>
+<ul>
+  <li>OpenClaw が <strong>2026.9.5</strong> を公開いたしましたわ。新機能が中心の大型リリースですが、アクセス境界に関わる変更が複数含まれています。</li>
+  <li>Docker上で動かす場合、サンドボックスのシェルとブラウザがホストと同じワークスペース・スキルファイルを参照できるようになった一方で、<strong>ワークスペースと状態フォルダは「検証済みのホストbind mount」が必須</strong>となりました。named volume・tmpfs・イメージ内にしか存在しないファイルは非対応で、<strong>コンテナやDockerデーモンを検証できないソースは拒否</strong>されます。読み取り専用マウントは読み取り専用のまま維持されます。</li>
+  <li>ツール選択と実行権限の分離も明確になり、ローカルのオンボーディングでは既定で「Full」ツールが選択され、<strong>セキュリティ設定には明示的なFullの選択が保存</strong>されます（<em>Full</em>はツール選択、<em>Full Access</em>は実行権限で、それぞれ別管理）。制限付きプロファイルでの子プロセス起動は、追加の権限を付与せずに拒否されます。</li>
+  <li>trusted-proxy認証を使う運用者は、未使用のGatewayトークンやパスワードを追加することなくモバイル用セットアップコードを生成できるようになりました。なお<strong>共有認証を変更すると以前の資格情報は無効化</strong>され、破損したトークンは自動修復されません。プラグインはGatewayの再起動なしにインストールでき、更新は次バージョンを確認してから切り替える「Atomic Updates」方式になっています。</li>
+</ul>
+
+<h3>Claude Code v2.1.278 - 自動モード分類器のサーバー側既定化（セキュリティ修正の記載なし） <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>明記なし（セキュリティ関連の修正記載なし）</td></tr>
+  <tr><th>影響</th><td>Claude Code v2.1.278</td></tr>
+  <tr><th>公開</th><td>2026-09-19 公開（GitHub表示 03:10、v2.1.278）</td></tr>
+</table>
+<ul>
+  <li>Claude Code が <strong>v2.1.278</strong> を公開いたしましたわ。変更は2点のみで、いずれも<strong>課金と自動モードの実行場所</strong>に関するもので、脆弱性修正の記載はありません。</li>
+  <li>Claude API・Enterprise利用者、および Bedrock／Vertex／Foundry／ゲートウェイ経由の自動モードは、既定で<strong>サーバー側の分類器</strong>を使うようになりました（分類器分の課金は発生せず、課金されるフォールバック時には警告）。Bedrock等では <code>CLAUDE_CODE_AUTO_MODE_SERVER=0</code> でオプトアウトできます。<code>/status</code> に「Auto mode server」行が追加されています。</li>
+  <li>前号でお伝えした v2.1.277（egress境界オプション、権限まわりの修正）以降、追加のセキュリティ修正は本対象期間では確認されませんでした。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java・SpringBoot / Python・Django / React / Hono / GCP / AWS / Azure / Hermes Agent の各スタックについて、本対象期間では直接関連する新規セキュリティアドバイザリは確認されませんでした（Hermes Agent の最新リリースは v0.21.3（v2026.9.14）で、対象期間外の公開です。JPCERT/CC の新規注意喚起も本対象期間にはありません）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<hr>
+<p class="empty-notice">日本国内の企業・官公庁・大学・医療機関等について、本対象期間（2026-09-19 08:00 〜 2026-09-20 08:00 JST）に新たに公表された被害事例・続報は確認されませんでした。9月19日から23日はシルバーウィーク（5連休）にあたり、官公庁・報道機関の発表が少ない期間です。既報の主要案件（ニチレイ、さくらインターネット、Helpfeel（Gyazo）、デジタル庁 GSS、警察庁のウォータープラム注意喚起、イエローハット、ムラウチドットコム等）は前号までに掲載済みです。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
