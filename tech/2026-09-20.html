@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-19 09:00 〜 2026-09-20 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.278</h2>
+<p>対象期間内（2026-09-19 12:19 JST 公開）に v2.1.278 がリリースされました。auto mode の分類器がサーバーサイドで動くように変更された点が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>auto mode の既定がサーバーサイド分類器に</strong>: Claude API および Enterprise ユーザー、ならびに Bedrock・Vertex・Foundry・各種ゲートウェイ経由の利用において、auto mode の分類器がサーバー側で実行される構成が既定となりました。サーバーサイド分類器は分類器自体のオーバーヘッドに対して課金されません。Bedrock・Vertex・Foundry・ゲートウェイでは <code>CLAUDE_CODE_AUTO_MODE_SERVER=0</code> でオプトアウトできます。課金対象のフォールバックへ切り替わる場合は警告が表示されます（詳細: <a href="https://code.claude.com/docs/en/auto-mode-classifier-billing">auto-mode-classifier-billing</a>）。</li>
+  <li><strong><code>/status</code> に <code>Auto mode server</code> 行を追加</strong>: 現在のセッションの auto mode 分類器がサーバー側で動作しているかどうかを <code>/status</code> で確認できるようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-278">Claude Code changelog — 2.1.278</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>（対象期間内に新規リリースは確認されませんでした。最新版は v0.21.3 / v2026.9.14、2026-09-14 公開です）。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.9.5</h2>
+<p>対象期間内（2026-09-19 10:55 JST 公開）に v2026.9.5 がリリースされました。4,179 のプルリクエスト・64 の直接コミット・502 の貢献アカウントを含む大型リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Atomic Updates（アトミック更新）</strong>: 対応する更新経路では、現行の Gateway を稼働させたままプライベートコピー上で次バージョンを検証し、問題なければ切り替えて更新後のインストールを検証します。失敗時はデータと設定の互換性が保たれていれば旧バージョンへ復旧できます。ただしアプリケーションのロールバックはデータベースのマイグレーションを巻き戻せないため、更新前の検証済みバックアップが別途必要です。</li>
+  <li><strong>Gateway を再起動せずにプラグインをインストール</strong>: 稼働中の Gateway を止めずにプラグインの導入が可能になりました。</li>
+  <li><strong>会話の共有とアーカイブ</strong>: 会話を共有できるようになり、古い履歴は圧縮してアーカイブし後から開き直せます。ストレージ管理は Settings から行えます。</li>
+  <li><strong>GPT Live</strong>: ミーティングや電話に GPT Live を組み込めるようになりました。</li>
+  <li><strong>ブラウザページの並行作業</strong>: エージェントと並んでブラウザページ上で作業できるようになりました。</li>
+  <li><strong>専門エージェントチームのガイド付きセットアップ</strong>: chief of staff・researcher・writer・reviewer といったロールを選び、承認を経てチームを作成できます。Web UI の「New agent」からも同じロールを提案形式で利用できます。</li>
+  <li><strong>Linux 更新チャンネル</strong>: Linux コンパニオンの最新版として v2026.9.5 が配信されています。</li>
+</ul>
+
+<h3>⚠️ 補足</h3>
+<ul>
+  <li>Android の APK は対象バージョンではスキップされました（<code>apps/android/version.json</code> が 2026.8.2 のまま）。</li>
+  <li>検証情報は npm パッケージ <code>openclaw@2026.9.5</code>、リリース SHA <code>ec9c1a13db8938e5a3eaa51fca2e981cde2395a9</code> として公開されています。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.5">openclaw/openclaw — v2026.9.5</a> · <a href="https://docs.openclaw.ai/releases/2026.9.5">リリースノート</a></p>
+
+<h2>🐋 Orca</h2>
+<p class="empty-notice"><strong>Orca</strong>（対象期間内に新規リリースは確認されませんでした。最新版は v1.4.205、2026-09-17 公開です。モバイル側は Orca Mobile Android v0.0.50 が 2026-09-18 公開です）。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">stablyai/orca Releases</a></p>
+
+<h2>⚡ Next.js — v16.4.0-canary.37</h2>
+<p>対象期間内（2026-09-20 08:46 JST 公開）に canary リリース v16.4.0-canary.37 が公開されました。安定版の最新は v16.3.5（2026-09-12 公開）です。</p>
+<ul>
+  <li><strong>Turbopack</strong>: 追加ルート（additional roots）の指定に対応しました（#98003）。</li>
+  <li><strong>Turbopack</strong>: NFT メタデータにシンボリックリンクと追加ルートが含まれるようになりました（#98469）。</li>
+  <li><strong>クライアントルート予測</strong>: クローズドパラメータの制約が保持されるようになりました（#98889）。</li>
+  <li><strong>テスト</strong>: 暗黙の起動に依存していたデプロイメントテストを修正しました（#98935）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.37">vercel/next.js — v16.4.0-canary.37</a></p>
+
+<h2>☁️ AWS / Azure / GCP</h2>
+<p class="empty-notice"><strong>AWS</strong>、<strong>Azure</strong>、<strong>GCP</strong>については、対象期間（2026-09-19 09:00 〜 2026-09-20 09:00 JST）内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+<p>なお、対象期間の直前（2026-09-18 〜 09-19 未明 JST）には以下の発表がありました。</p>
+<ul>
+  <li><strong>GCP — xAI の Grok 4.6 が GA</strong>: グローバルエンドポイントおよび米国マルチリージョンエンドポイントで本番利用が可能になりました。</li>
+  <li><strong>GCP — Agent Platform SDK for Python 2.0.1</strong>: 生成 AI モジュールを Google Gen AI SDK へ移行し、agent サーフェスを <code>google-cloud-aiplatform</code> から専用パッケージへ分離。名前空間も再構成されています（マイグレーションガイドあり）。</li>
+  <li><strong>GCP — Cloud Load Balancing の backend mTLS マネージドワークロード ID が GA</strong>: Certificate Authority Service / Certificate Manager と連携し、証明書と信頼の管理・ローテーションを自動化します。</li>
+  <li><strong>AWS — Kimi K3（Moonshot AI）が Amazon Bedrock で GA</strong>: オープンウェイトモデルとして初めて Bedrock の明示的プロンプトキャッシュに対応しました。</li>
+  <li><strong>AWS — Amazon SNS のメッセージペイロード上限が 1 MiB に拡大</strong>: 従来の 256 KiB から 4 倍となり、topic 属性 <code>MaximumMessageSize</code> で設定します。</li>
+  <li><strong>AWS — 次世代 AgentCore Runtime が利用可能に</strong>: セッション中のメモリを弾力的に管理し、P75 コールドスタートが 1.9〜2.0 秒に短縮（V1 は 5.4〜30 秒）。ap-northeast-1 を含む 5 リージョンで提供されます。</li>
+</ul>
+
+<h2>🔧 その他のスタック</h2>
+<p class="empty-notice"><strong>React</strong>、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API / SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
