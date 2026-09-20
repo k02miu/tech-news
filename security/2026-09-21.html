@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-21 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-21 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>openEQUELLA に FreeMarker 経由の任意コード実行（CVE-2026-94109） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-94109</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8（High）</td></tr>
+  <tr><th>影響</th><td>openEQUELLA 2026.1.0 未満（Java ベースの教育機関向けコンテンツ・リポジトリ管理基盤）</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-20 21:17 JST（2026-09-20 12:17 UTC）</td></tr>
+  <tr><th>対策</th><td>2026.1.0 以降へ更新</td></tr>
+</table>
+<ul>
+  <li>FreeMarker のテンプレートコンパイルで <code>TemplateClassResolver</code> がサンドボックス化されておらず、認証済みの攻撃者が細工したテンプレート式を注入できる。</li>
+  <li>注入経路はコレクションのサマリー、ダッシュボードのポートレット、MIME テンプレートなど。<code>freemarker.template.utility.Execute</code> などの危険なクラスをインスタンス化し、<code>Runtime.exec</code> を呼び出して任意のコードを実行されるおそれがある。</li>
+  <li>Java 製 Web アプリケーションを運用している環境では、該当バージョンの有無を確認のうえ速やかに更新されたい。</li>
+</ul>
+
+<h3>getID3 1.9.26 未満に OS コマンドインジェクション（CVE-2026-94106） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-94106</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8（High）</td></tr>
+  <tr><th>影響</th><td>getID3 1.9.26 未満（PHP 製のメディアメタデータ解析ライブラリ）</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-20 21:17 JST（2026-09-20 12:17 UTC）</td></tr>
+  <tr><th>対策</th><td>1.9.26 以降へ更新</td></tr>
+</table>
+<ul>
+  <li>外部コマンドを呼び出す shell-out ハンドラでファイル名がエスケープされておらず、シェルのメタ文字を含むファイル名を解析させると、getID3 を組み込んだプロセスの権限で任意のコマンドを実行されるおそれがある。</li>
+  <li>アップロードされたメディアファイルを PHP 側で解析する構成（旧来の CMS・EC パッケージ等）では、攻撃者がファイル名を制御できる経路がないか併せて確認されたい。</li>
+</ul>
+
+<h3>Web 管理画面を持つネットワーク機器に、公開エクスプロイト付きの Critical 脆弱性（CVE-2026-94089 / CVE-2026-94003 / CVE-2026-93958） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-94089 / CVE-2026-94003 / CVE-2026-93958</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 10.0（CVE-2026-94089、CVE-2026-94003）、9.1（CVE-2026-93958）</td></tr>
+  <tr><th>影響</th><td>D-Link DIR-868L 2.01b05、Comfast CF-N1-S 2.6.0.1、D-Link R95 BE9500_1.00.16</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-20 〜 2026-09-21 06:16 JST（2026-09-20 02:16〜21:16 UTC）</td></tr>
+  <tr><th>対策</th><td>ベンダーの修正版適用、または該当機器の管理画面を外部へ公開しない運用への変更</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-94089：D-Link DIR-868L の認証ハンドラ <code>/webfa_authentication.cgi</code> の <code>strcpy</code> に起因するスタックベースのバッファオーバーフロー。<code>id</code>/<code>password</code> を操作され、リモートから任意のコードを実行されるおそれがある。</li>
+  <li>CVE-2026-94003：Comfast CF-N1-S の Web 管理インターフェース <code>/cgi-bin/mbox-config</code> の <code>get_css_path_from_uri</code> に起因するスタックベースのバッファオーバーフロー。</li>
+  <li>CVE-2026-93958：D-Link R95 の DHMAPI コンポーネント <code>/bin/ssi</code> で <code>NTPServer</code> 引数がそのまま扱われ、OS コマンドインジェクションにつながる。</li>
+  <li>いずれも PoC・エクスプロイトが公開済みとされ、悪用可能な状態にある。インターネットへ管理画面を露出させている機器は、更新の可否にかかわらず到達経路の遮断を検討されたい。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 2026.9.5）、Claude Code（最新 v2.1.278）、Hermes Agent（最新 v0.21.3 / v2026.9.14）は、本対象期間内に新たなセキュリティ関連リリース・アドバイザリは確認されませんでした。また Next.js、Spring、Django、Node.js、Apache Tomcat、OpenSSL についても、対象期間内の新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<hr>
+<p class="empty-notice">対象期間内（2026-09-20 08:00 〜 2026-09-21 08:00 JST）に公表された国内主要インシデントの新規公表は確認されませんでした。対象期間が週末にあたり、Security NEXT、ScanNetSecurity、サイバーセキュリティ.com、時事通信、ITmedia NEWS、JVN、JPCERT/CC のいずれにも新たな被害公表・注意喚起の掲載はありません。2026-09-18〜19 に公表されたニチレイの個人情報漏えい、Gyazo（Helpfeel）の不正アクセス、警察庁によるウォータープラム注意喚起などは既報のとおりです。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
