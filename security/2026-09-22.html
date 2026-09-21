@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-21 08:00 〜 2026-09-22 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>WordPress Core「Click2Shell」— 未認証から始まる RCE チェーン、技術詳細と PoC が公開 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>識別子なし（WordPress 7.1.1 で修正済み）</td></tr>
+  <tr><th>深刻度</th><td>公式な CVSS 採番なし。パッチ公開済み・PoC 公開済み（管理者の操作を要する）</td></tr>
+  <tr><th>影響</th><td>WordPress Core 7.1.0 以前（テーマプレビュー機能）</td></tr>
+  <tr><th>公開</th><td>2026-09-21 に研究者 pwn.ai の Paulos Yibelo 氏が技術詳細と PoC を公開（報告は 8/22、修正は WordPress 7.1.1）</td></tr>
+  <tr><th>対策</th><td>7.1.1 以降へ更新。即時更新できない場合は <code>DISALLOW_FILE_MODS</code> を有効化（テーマ・プラグインの強制インストールを防止）</td></tr>
+</table>
+<ul>
+  <li>テーマプレビュー URL の値が、WordPress.org のテーマ API と管理者ブラウザー上の JavaScript の二重で解釈される問題。攻撃者は認証情報も nonce も管理者権限も持たずに、公式カタログ上の任意の脆弱なテーマを対象サイトへ強制インストールさせられる。</li>
+  <li>非アクティブ状態のテーマであっても Customizer のプレビュー時に PHP が実行されるため、サーバー側で任意コード実行に至る。<code>wp-config.php</code>（DB 認証情報・認証シークレット）の読み取り、ファイルの改ざん・削除、不正な管理者アカウントの作成などが可能となる。</li>
+  <li>攻撃の成立にはログイン済みの管理者が細工リンクを開く必要がある。Patchstack は標的型フィッシングや既存の XSS を起点とした攻撃を警告している。WordPress は jQuery セレクターに渡す前にテーマスラッグをエスケープし、セレクターを実際のテーマカードに限定することで修正した。</li>
+</ul>
+
+<h3>Apache MINA の Java デシリアライズ対策に修正漏れ — 2.0.X / 2.1.X 系はフィルターバイパスが残存（CVE-2026-94301） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-94301</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.8（Critical、AV:N/AC:L/PR:N/UI:N）</td></tr>
+  <tr><th>影響</th><td>Apache MINA 2.0.X および 2.1.X（2.0.29 / 2.1.13 は「修正済み」と告知されたが未修正。2.0.30 / 2.1.14 も影響）</td></tr>
+  <tr><th>公開</th><td>Apache Software Foundation が 2026-09-21 公開（NVD 登録 2026-09-22 00:17 JST）</td></tr>
+  <tr><th>対策</th><td>2.2.X 系（2.2.8 以降）へ更新。2.0.X / 2.1.X を固定している場合は <code>ObjectInputFilter</code> の allow-list を見直し、<code>java.lang.reflect.Proxy</code> 経由の迂回が成立しないか確認</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-47065（<code>resolveProxyClass</code> 未オーバーライドによる acceptMatchers のフィルターバイパス）の修正は 2.2.X ブランチにのみコミットされ、2.0.X / 2.1.X のメンテナンスブランチには反映されていなかった。</li>
+  <li>「Fully addressed」とアナウンスされた 2.0.29 / 2.1.13 と、それ以降の 2.0.30 / 2.1.14 が、CVE-2026-47065 が塞ぐはずだった allow-list バイパスに依然として脆弱である。</li>
+  <li>同日の 18:00 台には、同製品の <code>CompressionFilter</code> に展開後サイズを制限していないことによるメモリ枯渇（DoS、CVE-2026-47321、CVSSv3.1 7.5）も公開されている。Java 製アプリで MINA を利用している環境は、依存バージョンを実測のうえ更新されたい。</li>
+</ul>
+
+<h3>Apache Airflow の Core API ログアウトがトークンを失効させない（CVE-2026-86473） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-86473（ほか CVE-2026-82355 / CVE-2026-75158）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.1（Critical）、4.2・4.3（Medium）</td></tr>
+  <tr><th>影響</th><td>apache-airflow 3.3.2 未満</td></tr>
+  <tr><th>公開</th><td>Apache Software Foundation が 2026-09-21 公開（NVD 登録 2026-09-22 00:17 JST）</td></tr>
+  <tr><th>対策</th><td>apache-airflow 3.3.2 以降へ更新</td></tr>
+</table>
+<ul>
+  <li>Core API のログアウトエンドポイントは <code>_token</code> Cookie として提示されたセッショントークンのみを失効させる。認証情報を <code>Authorization: Bearer</code> ヘッダーで提示してログアウトすると、通常のログアウト応答を返しながら何も失効させない。</li>
+  <li>トークンを窃取済みの攻撃者は、被害者がログアウトした後もトークンの有効期限（既定 24 時間）までアクセスを維持できる。ブラウザーセッション Cookie ではなく Bearer トークンで認証する API クライアントが対象。</li>
+  <li>関連: CVE-2026-82355 は Cookie と Bearer を同時に送った場合に Cookie 側の利用者として解決される問題、CVE-2026-75158 は <code>/assets/events</code> API が閲覧権限のない Dag の asset event まで返す問題。</li>
+</ul>
+
+<h3>conda のエントリーポイント生成でプレフィックス外への書き込みが可能（CVE-2026-53940） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-53940</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8（High、AV:N/AC:L/PR:N/UI:R）</td></tr>
+  <tr><th>影響</th><td>conda 26.5.2 未満</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-22 01:17 JST（2026-09-21 16:17 UTC）</td></tr>
+  <tr><th>対策</th><td>conda 26.5.2 以降へ更新</td></tr>
+</table>
+<ul>
+  <li><code>noarch:python</code> パッケージの <code>info/link.json</code> にある entry-point コマンドが検証されずにパスへ結合され、インストール先プレフィックスの外へ実行ファイルを書き出したり、既存の entry point を上書きしたりできる。</li>
+  <li>パス区切り・トラバーサル要素・絶対パスを含む悪性パッケージにより、既定のインストールおよび環境トランザクションの過程で成立する。CI で外部由来の conda パッケージを取得している環境は、取得元とバージョンを確認されたい。</li>
+</ul>
+
+<h3>InvenTree（Django 製の在庫管理システム）に認可欠如が多発 — 1.4.0 で修正（CVE-2026-61744 ほか） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-61744 / 61745 / 61746 / 61747 / 61748 / 61749</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 4.3 〜 6.5（Medium）</td></tr>
+  <tr><th>影響</th><td>InvenTree 1.4.0 未満（Django / Python 製）</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-22 04:17 JST（2026-09-21 19:17 UTC）</td></tr>
+  <tr><th>対策</th><td>InvenTree 1.4.0 以降へ更新</td></tr>
+</table>
+<ul>
+  <li><code>POST /api/barcode/</code> は攻撃者が合成した内部 JSON バーコードを受け付け、モデル単位の閲覧ロールを確認せずに完全なシリアライザー出力を返す。低権限の利用者が主キーを列挙し、部品・在庫・ロケーション・発注・製造に関する価格や取引先などの機微情報を取得できる。</li>
+  <li>ほかに、マシン再起動 API のスコープ欠如（CVE-2026-61745）、プラグイン設定 API の認証欠如（CVE-2026-61746）、データ取込 API のクエリーセット未スコープ化（CVE-2026-61747）、帳票印刷 API の権限確認漏れ（CVE-2026-61748）、帳票テンプレート経由の SSRF（CVE-2026-61749）。</li>
+</ul>
+
+<h3>Keycloak に権限・認証まわりの脆弱性 4 件（CVE-2026-94213 / 94215 / 94217 / 94218） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-94213 / 94215 / 94217 / 94218</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 5.5・4.9・3.5・3.1（Medium 〜 Low）</td></tr>
+  <tr><th>影響</th><td>Red Hat Build of Keycloak（Java 製の ID 管理基盤）</td></tr>
+  <tr><th>公開</th><td>Red Hat が 2026-09-21 公開（NVD 登録 2026-09-22 01:16 JST）</td></tr>
+  <tr><th>対策</th><td>Red Hat の修正版へ更新</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-94215：Admin REST API がクライアントをリクエストパスのレルム所属と照合せずにリクエスト単位のメモリーキャッシュで解決するため、限定権限の管理者が自分の管理するレルム経由で master レルムの機密クライアント設定を読み書きできる。クライアント資格情報の露出や、管理者ログインの悪性サイトへのリダイレクトにつながる。</li>
+  <li>CVE-2026-94213：ポリシー評価エンドポイントの認可チェック欠如により、委任管理者が閲覧を許可されていない利用者の完全なプロファイルとロール情報を取得できる。</li>
+  <li>CVE-2026-94217：UMA の許可チケット処理で同名リソースの権限が誤って統合され、共有を意図していない他者リソースのスコープを取得できる。CVE-2026-94218：ログイン途中に特定のセッション再開リンクを開くことで、管理者がクライアントポリシーで必須化した 2FA 設定を回避できる。</li>
+</ul>
+
+<h3>ログ・メール・踏み台・管理パネル基盤に Critical 脆弱性（Fluent Bit / Warpgate / Mailu / Ajenti） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-61674 / CVE-2026-58491 / CVE-2026-85751 / CVE-2026-79920</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 / v4.0 9.9・9.8・9.3・9.2（すべて Critical 相当）</td></tr>
+  <tr><th>影響</th><td>Fluent Bit 5.0.8 未満、Warpgate 0.25.5 未満、Mailu 2024.06.55 未満 / helm-charts 2.7.3 未満、Ajenti 2.2.16 未満</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-22 02:17 〜 04:18 JST（2026-09-21 17:17〜19:18 UTC）</td></tr>
+  <tr><th>対策</th><td>各製品の修正版へ更新</td></tr>
+</table>
+<ul>
+  <li><b>CVE-2026-61674（Fluent Bit、9.2）</b>：<code>out_forward</code> の Secure Forward ハンドシェイクで、サーバー制御の PONG reason を 32 バイトのスタックバッファーへ型・長さ検証なく <code>memcpy</code> する。Shared_Key / Empty_Shared_Key 構成の転送先を掌握または偽装できる攻撃者が、初回ハンドシェイク中に過大な reason を送って制御データを上書きできる。カナリアのないビルドではリモートコード実行に至り、<code>--supervisor</code> モードでは反復試行により堅牢化ビルドでも成立しうる。</li>
+  <li><b>CVE-2026-58491（Warpgate、9.3）</b>：SSO 開始エンドポイントが保存する <code>next</code> パラメーターを、POST の戻り処理で HTML エスケープせずに応答へ挿入する。細工リンクから SSO を完了させると認証済みオリジンでスクリプトが実行され、利用者 API（管理者なら管理 API）へ到達される。GET 側は同じ値でオープンリダイレクトにもなる。</li>
+  <li><b>CVE-2026-85751（Mailu、9.8）</b>：<code>PROXY_AUTH_WHITELIST</code> を設定し <code>REAL_IP_HEADER</code> を未設定の構成で、クライアント制御の <code>X-Forwarded-By</code> ヘッダーが信頼される。nginx テンプレートの <code>proxy_hide_header</code> は上流応答からは隠すが受信値は上書きしないため、未認証の攻撃者が信頼済みプロキシを偽装して認証を回避できる。</li>
+  <li><b>CVE-2026-79920（Ajenti、9.9）</b>：認証済みの低権限利用者が <code>/api/core/tasks/start</code> からプラグイン管理権限なしに InstallPlugin / UnInstallPlugin / UpgradeAll を投入できる。タスクワーカーは root で pip を実行するため、任意のパッケージ導入を通じて root 権限でコード実行され、ホスト全体が掌握される。</li>
+</ul>
+
+<h3>CISA KEV に Zyxel GS1900 シリーズのスタックベースバッファオーバーフローを追加（CVE-2026-7273） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-7273</td></tr>
+  <tr><th>深刻度</th><td>CVSS は CISA カタログでは個別提示なし（スタックベースのバッファオーバーフロー）</td></tr>
+  <tr><th>影響</th><td>Zyxel GS1900 シリーズスイッチ</td></tr>
+  <tr><th>公開</th><td>CISA が 2026-09-21 付で KEV カタログへ追加（カタログ版 2026.09.21）</td></tr>
+  <tr><th>対策</th><td>ベンダー修正版の適用。米行政機関は 2026-09-24 までに対策が義務付けられている</td></tr>
+</table>
+<ul>
+  <li>実攻撃での悪用が確認されたため KEV に収載されたもの。管理系スイッチは侵入後の横展開経路になりやすく、インターネットから管理画面へ到達できる構成は優先的に対処されたい。</li>
+</ul>
+
+<h3>Open VSX マーケットプレイスのキャッシュ汚染で偽拡張機能の配布が可能に（CVE-2025-12999） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2025-12999（GHSA-f55q-5m46-rmxc）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv4.0 9.1（Critical）</td></tr>
+  <tr><th>影響</th><td>Eclipse Open VSX 0.6.0 〜 1.1.x（VSCodium など本エンドポイントで更新確認するエディター）</td></tr>
+  <tr><th>公開</th><td>GitHub アドバイザリ 2026-09-21 公開（NVD 登録 2026-09-22 03:17 JST）</td></tr>
+  <tr><th>対策</th><td>Open VSX 1.2.0 以降へ更新（クライアント側は信頼できるミラー・レジストリの利用を確認）</td></tr>
+</table>
+<ul>
+  <li><code>GET /vscode/gallery/{namespace}/{extension}/latest</code> が、assetUri や VSIX・署名・公開鍵の URL をリクエストの <code>X-Forwarded-Host</code> 等から生成し、送信元が信頼できるプロキシかを検証していない。キャッシュキーが (namespace, extension) のみのため、キャッシュミス後に最初に届いたリクエストのホスト部が TTL（既定 1 時間、Redis 有効時はクラスター全体）にわたり固定される。</li>
+  <li>未認証の攻撃者が自前ホストを指す URL でキャッシュを汚染すると、拡張機能の更新確認が署名・公開鍵ごと攻撃者のホストへ向き、攻撃者提供の VSIX を取得・インストールさせられるおそれがある。</li>
+</ul>
+
+<h3>その他の注目脆弱性 <span class="badge-high">HIGH</span></h3>
+<ul>
+  <li><b>Apache Neethi（WS-Policy）に DoS 4 件</b>：CVE-2026-91863 / 91864 / 91865 / 91866（いずれも CVSSv3.1 7.5）。深いネストによるスタック枯渇、サイズ上限を無視したアサーション内容のヒープ消費、ポリシー参照の指数的再展開、ポリシー交差の指数的処理。CVE-2026-91867（4.3）はストリーミング参照取得のタイムアウト不備。Neethi 3.2.4 で修正（Apache CXF などの Java スタックで使用）。</li>
+  <li><b>CRI-O の checkpoint restore で security context バイパス</b>：CVE-2026-92574（CVSSv3.1 8.8）。悪性のチェックポイント済みコンテナから Pod を作成できる利用者が、復元プロセスに資格情報・Linux capability・no_new_privs・seccomp 状態を保持させ、コンテナ境界を越えて昇格実行できる。CRI-O 1.34 以降、Red Hat 製品は OCP 4.17 以降が影響。関連の CVE-2026-15801（8.0、パストラバーサル）も同日公開。</li>
+  <li><b>Unix クライアント側ライブラリ</b>：CVE-2026-88807（libXrender 0.9.13 未満、8.9）は <code>RenderQueryPictFormats</code> のヒープオーバーフローで悪性 X サーバーによるコード注入が可能。CVE-2026-88806（libX11 1.8.14 未満、7.5）は <code>XkbGetMap</code> のバッファーオーバーフロー。</li>
+  <li><b>開発・運用ツール</b>：Temporal 関連で CVSSv3.1 8.7 が 6 件（sqlparser のネスト／バージョンコメント処理、tchannel-go のフレーム検証、ringpop-go のラベル上限ほか）、GoCD 26.1.0 未満に 9 件（7.5 の未エスケープリンク生成など）、nginx ignition 2.41.1 未満に未認証での管理者作成（CVE-2026-61628、8.1）、KubeEdge の NodeUpgradeJob / ConfigUpdateJob に 8.8 が 2 件。</li>
+  <li><b>基盤ソフトウェア</b>：MISP に権限昇格・IDOR・XSS など 10 件超（8.7 の読み取り専用 API キー昇格ほか）、jshERP 3.6 に認可バイパス 10 件（8.8 が 4 件）、Tuleap Enterprise Edition 17.3〜17.5 の OS コマンドインジェクション（CVE-2026-84285、8.8）、fetchmail の NTLM 構成でのスタック BOF（CVE-2026-94184、8.1）、draw.io 30.3.8 未満の IPv6 ULA 判定不備による SSRF（CVE-2026-76898、7.7）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js、Django（InvenTree を除く）、Spring Boot、Hono、Node.js、React、GCP・AWS・Azure について、本対象期間内の新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h3>OpenClaw 2026.7.35 — 7 月系 extended-stable に重要セキュリティ修正をバックポート <span class="badge-low">INFO</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>OpenClaw 2026.7.35（extended-stable / 旧 LTS 相当。最新版は 2026.9.5）</td></tr>
+  <tr><th>公開</th><td>2026-09-21（GitHub 表示 21 Sep 13:14）</td></tr>
+  <tr><th>対策</th><td>2026.7 系を維持している環境は 2026.7.35 へ更新。新規は 2026.9.5 を選択</td></tr>
+</table>
+<ul>
+  <li>同日公開のリリースは、7 月ラインの初の GitHub Release として 2026.7.33 / 2026.7.34 の内容をまとめて収録したもの。コマンド解析の堅牢化、ブラウザー Origin 検査、プラグインの Git インストールにおけるオプション注入対策、継承された secret 応答 ID の拒否、不正なブラウザー操作の拒否など、セキュリティ境界に関する修正が含まれる。</li>
+  <li>ほかに、バックアップアーカイブを所有者限定の 0o600 権限で書き出す修正、Twilio webhook のトークン診断ログの秘匿化、Doctor のプラグイン登録情報の完全な保持など。</li>
+</ul>
+
+<h3>Hermes Agent v0.21.4（v2026.9.21）— パッチリリース <span class="badge-low">INFO</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>Hermes Agent v0.21.4（v2026.9.21）</td></tr>
+  <tr><th>公開</th><td>2026-09-22 03:10 JST（GitHub 表示 21 Sep 18:10 UTC）</td></tr>
+  <tr><th>対策</th><td><code>hermes update</code>、または Docker イメージ <code>nousresearch/hermes-agent:v2026.9.21</code> へ更新</td></tr>
+</table>
+<ul>
+  <li>v0.21.3 以降の約 1,800 マージ PR をロールアップしたパッチリリース。プロファイル／マルチプレクサー分離、cron、kanban、Desktop、state.db に関する多数の修正を含む。CVE 番号や個別のセキュリティ修正の明記はない。</li>
+  <li>ホスト全体の Gateway シングルトンロックとランデブーレコード、権限外 DM を拒否する <code>decline</code> 挙動、保存シークレットの OS キーチェーン暗号化（オプトイン）など、境界まわりの変更が含まれる。</li>
+</ul>
+
+<h3>Claude Code — 本対象期間内の新規リリースなし <span class="badge-low">INFO</span></h3>
+<ul>
+  <li>最新は v2.1.278（2026-09-19 公開、自動モード分類器のサーバー側既定化）で、本対象期間内に新たなセキュリティ関連リリース・アドバイザリは確認されませんでした。</li>
+</ul>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>BigCommerce、サードパーティ製アプリ「Ribon」の資格情報窃取で加盟店にデータ侵害を通知 <span class="badge-high">SUPPLY CHAIN</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>BigCommerce（米国の EC プラットフォーム）および同社加盟店。影響アプリは Fastr 社の「Be A Part Of」が運営する Ribon / Ribon 1.5</td></tr>
+  <tr><th>事案</th><td>第三者アプリのアプリケーションキーが窃取され、加盟店ストアのショッパーデータへアクセス、悪性スクリプトが挿入された</td></tr>
+  <tr><th>発生</th><td>2026-09-13 〜 09-17（BigCommerce は 09-17 に資格情報の侵害を確認）</td></tr>
+  <tr><th>公表</th><td>2026-09-21 報道（BleepingComputer）。英 Master of Malt が顧客向け告知を公開し、ICO へ報告</td></tr>
+  <tr><th>漏えい項目</th><td>氏名、メールアドレス、電話番号、配送先住所。パスワードとカード情報は別管理のため対象外と説明</td></tr>
+</table>
+<ul>
+  <li>攻撃者は窃取したアプリキーで 9 月 13 日から 17 日にかけて加盟店環境のショッパーデータへアクセスし、少数の店舗のストアフロントに悪性スクリプトを挿入した。</li>
+  <li>BigCommerce は自社プラットフォームへの侵害はないとし、該当アプリを加盟店からアンインストールして攻撃者のアクセスを失効させ、ログデータを開発元の調査へ提供している。</li>
+  <li>Master of Malt は影響が自社顧客にとどまらず数百店舗に及ぶ可能性を指摘。2024 年にサードパーティ製アプリ「FreshClick」が侵害され決済スキミングコードが挿入された ZAGG 事案と同型で、EC のサードパーティ連携が引き続き主要な侵入経路となっている。</li>
+  <li>関連動向として、Brevo ではアプリケーションのソースコードにハードコードされていた Cloudflare API キーを窃取され、エッジで ClickFix 誘導スクリプトを挿入される事案（9/14、最大 10 万サイトに影響の可能性）が 09-17 にポストモーテムで公表されている。<b>アプリキーや API キーのソースコード直書き、およびその権限範囲の広さ</b>が共通の弱点である。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">国内主要インシデントの新規公表なし — 対象期間（2026-09-21 08:00 〜 2026-09-22 08:00 JST）は 9/20（日）・9/21（敬老の日）の連休にあたり、Security NEXT、ScanNetSecurity、JVN（VU / JP）、サイバーセキュリティ.com、ITmedia NEWS、時事通信のサイバー特集、個人情報保護委員会のいずれにも、国内企業・官公庁・大学・医療機関による新規の被害公表は確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
