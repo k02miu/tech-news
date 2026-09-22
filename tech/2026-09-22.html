@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-21 09:00 〜 2026-09-22 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p class="empty-notice"><strong>Claude Code</strong>（対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.278、2026-09-19 12:19 JST 公開です）。</p>
+<p>RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）を最優先で確認いたしました。対象期間（2026-09-21 09:00 〜 2026-09-22 09:00 JST）内に pubDate を持つリリース項目はございません。直近のリリースは v2.1.278（Auto mode のサーバーサイド分類器を既定化し、<code>/status</code> に <code>Auto mode server</code> 行を追加）で、本日 09:00 JST 時点の最新版も引き続き v2.1.278 です。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.21.4 (v2026.9.21)</h2>
+<p>対象期間内（2026-09-22 03:10 JST 公開）に v0.21.4（タグ <code>v2026.9.21</code>）がリリースされました。v0.21.3 以降にマージされた約 1,800 件の PR を、Docker イメージ・Hermes Cloud・ホスト型デプロイメントなどの下流利用者向けに安定タグとしてまとめたパッチリリースです。本ウィンドウの正式なキュレーション済みノートは v0.22.0 に持ち越されます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ゲートウェイのシングルトンロック</strong>: ホスト全体でゲートウェイを単一インスタンスに保つシングルトンロックとランデブーレコード、および Desktop が 2 つ目のバックエンドを起動せず稼働中のホストバックエンドへ接続する挙動が入りました。</li>
+  <li><strong>CLI の構造化出力</strong>: <code>--format stream-json</code> による JSONL 形式の出力に対応しました。</li>
+  <li><strong>スキルの常時ロード</strong>: <code>skills.auto_load</code> で指定したスキルを、新規セッションのプロンプトへ常に固定して読み込めます。</li>
+  <li><strong>Desktop の強化</strong>: チャット／UI のフォントピッカー、ローカルエンジンのワンクリック更新、Plugins ハブからのプラグイン削除が可能になりました。コネクタ操作の一部はバックエンド所有となり、Desktop・TUI・CLI で同じセットアップカードを利用できます。</li>
+  <li><strong>ゲートウェイの安全性</strong>: 未許可の DM を<code>拒否</code>する挙動が追加されました。</li>
+  <li><strong>MCP とセッション検索の調整</strong>: MCP ディスカバリの接続上限（<code>mcp.discovery_concurrency</code>）、<code>session_search</code> の <code>after</code>/<code>before</code> 範囲指定と OR 緩和付きの再検索、<code>hermes sessions set-journal-mode</code> が追加されました。</li>
+  <li><strong>カタログの拡充</strong>: 動画カタログに LTX 2.5 と Kling O3 が加わり、ウェブサイト上で全カタログプラグイン・作者のページ（README のコミット固定表示、追加日・更新日ソート付き）が閲覧できるようになりました。コミュニティプラグインも tailscale・ssh・shodan・terminal・rss・resetwatch・done-bell・kiwi・cognee・Octen など十数件が追加されています。</li>
+  <li><strong>その他の修正</strong>: プロファイル／多重化の分離、cron、Kanban、Desktop、state.db に関する広範な修正が含まれます。</li>
+</ul>
+
+<h3>📊 リリース規模</h3>
+<ul>
+  <li>コミット <code>4b8a8134</code> 時点で、v0.21.3 以降は非マージコミット 5,071 件、変更ファイル 5,169 件（+312,961 / −62,855）、マージ済み PR 1,812 件、クローズされた Issue 2,116 件です。</li>
+  <li>更新方法は <code>hermes update</code>（git インストール）またはインストーラの再実行。Docker / Hermes Cloud はタグ <code>v2026.9.21</code>（<code>nousresearch/hermes-agent:v2026.9.21</code>）からビルドされます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.21">NousResearch/hermes-agent — v0.21.4 (v2026.9.21)</a></p>
+
+<h2>🐙 OpenClaw — 2026.7.35</h2>
+<p>対象期間内（2026-09-21 22:14 JST 公開）に <strong>2026.7.35</strong> がリリースされました。これは 7 月メンテナンスラインの「extended-stable」（LTS 相当）リリースで、2026 年 7 月末時点の OpenClaw に、重要なセキュリティ更新・信頼性／性能修正・新しいモデル対応を追加したものです。現行の最新版は 2026.9.5 です。</p>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Doctor のプラグインレジストリ</strong>: Doctor がレジストリ状態を作成・修復する際に、同梱プラグインの完全なインベントリを保持するようになりました。既定の Browser・Canvas・ペアリング・ファイル転送・通話音声・Bonjour プラグインが再起動後も利用可能な状態に保たれます。</li>
+  <li><strong>状態マイグレーションの復旧</strong>: 2026.7.34 が書き込んだ部分的なレジストリからも復旧できるようになり、外部プラグインのインストール記録はそのまま維持されます（#136045 からのバックポート）。</li>
+  <li>本リリースが 7 月ラインで最初の GitHub Release であるため、未公開だった 2026.7.33 / 2026.7.34 の変更履歴もあわせて収録されています（コマンド解析・ブラウザオリジン検査・プラグインの Git インストール・診断・サービス認証情報の強化、各チャネル配信の不具合修正など）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.7.35">openclaw/openclaw — 2026.7.35</a></p>
+
+<h2>🐋 Orca</h2>
+<p class="empty-notice"><strong>Orca</strong>（対象期間内に新規リリースは確認されませんでした。最新版は v1.4.206、2026-09-21 07:50 JST 公開＝対象期間の開始直前です）。</p>
+<p>正規リポジトリ <code>stablyai/orca</code> の Releases を確認しました。v1.4.206 は本対象期間の開始（2026-09-21 09:00 JST）より約 70 分前に公開されたため、前日の朝刊で既報です。対象期間内の新規タグは確認されませんでした。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">stablyai/orca Releases</a></p>
+
+<h2>⚡ Next.js</h2>
+<p class="empty-notice"><strong>Next.js</strong>（対象期間内に新規リリースは確認されませんでした。最新の canary は v16.4.0-canary.37、2026-09-20 08:46 JST 公開。安定版の最新は v16.3.5 です）。</p>
+<p>対象期間内に公開された canary も安定版も確認されませんでした。最新の canary は対象期間の開始前（2026-09-20 08:46 JST）の公開です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS — 2件のアップデート</h2>
+<p>対象期間内に AWS から 2 件の発表がありました。</p>
+<ul>
+  <li><strong>Amazon ECS のリアルタイム デプロイ可観測性（2026-09-22 05:05 JST）</strong>: Amazon ECS コンソールで、ネイティブの Linear・Canary・Blue/Green デプロイ戦略に対するリアルタイムのサービスデプロイ可観測性が提供されるようになりました。デプロイの各フェーズ・サービスイベント・タスク起動と終了の進捗をライブタイムラインとして表示し、トラフィックシフトの分布や現在のライフサイクル段階（グリーンのスケールアップ中、ライフサイクルフック待ち、ベイク時間中など）を一目で確認できます。サーキットブレーカーの状態と閾値追跡、デプロイアラーム、コンテナ／ロードバランサーのヘルスチェック、ライフサイクルフックの状態もタイムラインと並んで表示され、失敗したタスクは診断情報と AWS CloudTrail などへのディープリンク付きで可視化されます。追加料金なしで、全 AWS 商用リージョンおよび GovCloud (US) で利用可能です。</li>
+  <li><strong>Amazon EVS が FedRAMP Class C の対象に（2026-09-22 04:08 JST）</strong>: Amazon Elastic VMware Service（EVS）が、全米国リージョンにおいて FedRAMP Class C（旧 Moderate ベースライン）の対象範囲に入りました。Amazon EVS は最新の VMware Cloud Foundation（VCF）を Amazon VPC 内の EC2 ベアメタルインスタンス上で実行できるサービスで、数時間で VCF 環境を構築し、データセンター脱却に向けたワークロード移行を迅速化できます。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure / GCP</h2>
+<p class="empty-notice"><strong>Azure</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+<p>Azure ブログのフィードで最新項目は 2026-09-10（Gartner の Container Management MQ に関する記事）で、対象期間内の新着はありません。Azure Updates の公式ページは JavaScript 描画のため一次確認が取れず、フィード側での確認となりました。</p>
+<h3>🔧 GCP — 2026-09-21 のリリースノート</h3>
+<ul>
+  <li><strong>AlloyDB Columnar Engine が HNSW ベクトルインデックスのキャッシュに対応（GA）</strong>: AlloyDB の Columnar Engine を、HNSW ベクトルインデックス向けの読み取り最適化・インメモリキャッシュとして利用できるようになりました。ベクトル検索の性能と QPS が向上します。</li>
+  <li><strong>BigQuery Studio: クエリ結果ペインで実行履歴を表示</strong>: クエリエディタの Query results ペインで、直近の実行履歴（マルチステートメントクエリを含む）を Job history タブへ移動せずに確認できるようになりました（GA）。</li>
+  <li><strong>BigQuery の生成 AI 関数が gemini-3.8-flash に対応</strong>: BigQuery の generative AI functions で <code>gemini-3.8-flash</code> モデルを利用できます。</li>
+  <li><strong>Dataform リモート MCP サーバーが開発ワークスペースと Git 操作に対応（GA）</strong>: AI エージェントがワークスペースの作成・一覧、ファイルの検索と編集、コミットとリモート Git へのプッシュ、リポジトリ設定の更新、フォルダ整理まで行えるようになりました。</li>
+  <li><strong>Gemini Enterprise: 共有エージェントの所有権移譲</strong>: Gemini Enterprise 管理者ロールを持つユーザーが、共有済みエージェントの所有権を他ユーザーや自分自身へ移譲できるようになりました。スケジュール／イベントトリガー付きのエージェントは、移譲時に無効化されるため新所有者が有効化する必要があります。</li>
+  <li><strong>Access Context Manager</strong>: Workforce Identity Federation 向けのセッション延長がサポートされました（Looker (Google Cloud core) 顧客向けプレビュー）。</li>
+  <li><strong>Apigee</strong>: 9 月 21 日より、メンテナンスウィンドウを設定した Apigee インスタンスのメンテナンス更新が開始されました（<code>1-18-0-apigee-4</code> 未満のインスタンスは 7〜21 日以内に更新）。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<h2>🔧 その他のスタック</h2>
+<p class="empty-notice"><strong>React</strong>（最新 v19.3.0 / 2026-09-09）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新 v4.1.1 / 2026-08-20）、<strong>Hono</strong>（最新 v4.13.8 / 2026-09-15）、<strong>Claude API / SDK</strong>（最新の記載は 2026-09-18）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+<p>Claude Platform のリリースノートで対象期間内に該当するエントリはありませんでした（直近は 2026-09-18、Compliance API のローカルセッションエンドポイントが Claude in Chrome のセッション記録も返すようになった件です）。</p>
+
+<h3>📌 web（一般）</h3>
+<ul>
+  <li><strong>Grok 4.7 が公開</strong>: xAI が Grok 4.7 を発表しました（Hacker News で 470 ポイント・386 コメント）。</li>
+  <li><strong>Xiaomi が MiMo v2.6 を公開</strong>: Xiaomi のモデル更新が大きな注目を集めています（Hacker News で 444 ポイント・224 コメント）。</li>
+  <li><strong>Cloudflare の Python Workers が GA</strong>: Cloudflare Workers 上で Python が一般提供となりました（Hacker News で 175 ポイント・28 コメント）。</li>
+  <li><strong>AI コーディングが CI のボトルネック化を招く</strong>: Linear が「AI コーディングにより CI がボトルネックになったため自社 CI を作り直した」とする記事を公開しました（Hacker News で 115 ポイント・101 コメント）。</li>
+  <li><strong>Google に €403M の制裁金</strong>: アイルランドのデータ保護委員会（DPC）が、位置情報データの処理に関して Google に 4 億 300 万ユーロの制裁金を科しました（Hacker News で 51 ポイント）。</li>
+  <li><strong>Qwen3.5 上の小型意思決定モデル「Kev」</strong>: Jev 系の小型モデルファミリーが公開され話題となりました（Hacker News で 398 ポイント・175 コメント）。</li>
+  <li><strong>NASA の Mars Sample Return 計画が中止</strong>: 火星サンプルリターン計画の終了が報じられました（Hacker News で 274 ポイント・201 コメント）。</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
