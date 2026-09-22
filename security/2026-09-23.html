@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-23 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-23 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-22 08:00 〜 2026-09-23 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Python 非同期基盤「AnyIO」— IDNA 2003 変換を突いた証明書検証バイパス（CVE-2026-63374） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-63374（GHSA-82r6-8w77-94w6）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv4.0 9.3（Critical、AV:N/AC:L/PR:N/UI:N）</td></tr>
+  <tr><th>影響</th><td>AnyIO 4.14.2 未満（Python。asyncio / Trio 上で動作する非同期並行・ネットワークフレームワーク）</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-23 01:17 JST（2026-09-22 16:17 UTC）</td></tr>
+  <tr><th>対策</th><td>AnyIO 4.14.2 以降へ更新。非 ASCII ドメインへ接続する箇所の依存関係を実測で確認</td></tr>
+</table>
+<ul>
+  <li><code>connect_tcp()</code> と <code>TLSStream.wrap()</code> が、国際化ホスト名を標準ライブラリが <strong>IDNA 2003</strong> で ASCII 化した<em>後</em>に検証してしまう。IDNA 2003 と IDNA 2008 では同じ非 ASCII 名が別の ASCII 名へ変換されうるため、攻撃者がその別名に対して正規の証明書を取得して提示すると、悪性エンドポイントの証明書が検証を通ってしまう。</li>
+  <li>非 ASCII ドメインへの接続が乗っ取り・リダイレクトされた場合に、中間者としてサーバーなりすましが成立する。HTTPX など AnyIO を基盤とする非同期 HTTP クライアントや、FastAPI / Starlette 系サービスでは依存として取り込まれている可能性が高い。</li>
+  <li>修正コミットは <code>68f5891</code>、PR #1208、修正版は 4.14.2。同じ NVD バッチでは AnyIO を含む非同期スタックの再確認が推奨される。</li>
+</ul>
+
+<h3>Claude Code v2.1.280 — シンボリックリンク経由の書き込み承認判定を修正 <span class="badge-low">INFO</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>v2.1.280（CVE 番号の明記なし）</td></tr>
+  <tr><th>公開</th><td>2026-09-23 01:38 JST（GitHub 表示 22 Sep 16:38 UTC）</td></tr>
+  <tr><th>対策</th><td><code>claude update</code> で最新版へ更新</td></tr>
+</table>
+<ul>
+  <li><strong>シンボリックリンク経由の書き込みが、実際の着地先ではなく「ツリー内の見かけのパス」で判定されていた問題を修正。</strong>プロンプトには実際に書き込まれる先が表示され、<code>acceptEdits</code>・allow ルール・自動モードが「作業ディレクトリ外に着地する書き込み」を承認しなくなった。承認 UI と実挙動の乖離を突いた権限境界の問題であり、本期間で最も優先度の高い Claude Code 側の修正。</li>
+  <li>自動モードの安全チェックが判定を拒否した際に同じ操作を延々と再試行する問題、判定が返らないまま無制限に再試行する問題も修正（いずれも再試行をバックオフし、10 回連続でターンを停止）。</li>
+  <li>ほかに Claude Opus 5.5（<code>claude-opus-5-5</code>、1M コンテキスト）の既定化、MCP ツール説明の文字数上限を変更する <code>CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH</code> の追加、<code>hook_execution_complete</code> への出力サイズ計上など。</li>
+</ul>
+
+<h3>MCP サーバーと AI コーディングエージェントに相次ぐ境界不備 — MCP Atlassian は CVSS 10.0 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-77244（10.0）ほか MCP Atlassian 30 件超 / CVE-2026-19202（9.1）/ CVE-2026-95660 / CVE-2026-88624</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 10.0、CVSSv4.0 9.1、7.5 ほか</td></tr>
+  <tr><th>影響</th><td>mcp-atlassian 0.22.0 未満 / mcp-toolbox-sdk-python（toolbox-core）修正前 / Kimi Code 0.31.0 まで / openCode 1.18.26</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-23 03:17・04:17・07:17 JST（2026-09-22 18:17・19:16・22:17 UTC）</td></tr>
+  <tr><th>対策</th><td>各製品の修正版へ更新。HTTP トランスポートで公開している MCP サーバーの到達性を最優先で見直し</td></tr>
+</table>
+<ul>
+  <li><b>MCP Atlassian（sooperset/mcp-atlassian）CVE-2026-77244、CVSSv3.1 10.0</b>：0.22.0 未満の HTTP トランスポートが、<strong>利用者識別を検証せずにリクエストを受け付け</strong>、下流のフェッチャー構築が運用者に設定されたグローバルな Jira / Confluence 資格情報へフォールバックする。MCP エンドポイントに到達できるネットワーククライアントは、運用者の権限で読み書きツールを実行できた。<code>UserTokenMiddleware</code> / <code>AtlassianOpaqueTokenVerifier</code> / <code>_get_fetcher</code> / streamable-http の経路が該当。</li>
+  <li>同製品ではほかに、添付アップロードが呼び出し元指定のサーバーローカルパスを制限なく開く問題（CVE-2026-77247 / 77253 / 77258 / 77259 / 77260 / 77262 / 77266 / 77270、最大 8.6）、SSRF 検証と接続時解決の不一致（CVE-2026-77242 / 77264 / 77265 / 77274、最大 8.8）、OAuth フォールバックトークンの平文保存（CVE-2026-77250 / 77256 / 77268）、監査・許可リストの迂回（CVE-2026-77243 / 77251 / 77252）など多数が同時に修正された。</li>
+  <li><b>mcp-toolbox-sdk-python（toolbox-core）CVE-2026-19202、CVSSv4.0 9.1</b>：モジュールレベルのトークンキャッシュが要求 <em>audience</em> でキー分けされていない。同一プロセスで 2 つ以上の audience へ認証するアプリでは、機密サービス A 向けの有効な Google ID トークンがサービス B へ送信される。B を運用・侵害・監視する攻撃者はトークンを奪い、A に対して被害アプリケーションになりすませる（googleapis/mcp-toolbox-sdk-python #675）。</li>
+  <li><b>エージェント本体の不備</b>：Moonshot AI「Kimi Code」0.31.0 までは MCP 設定ローダー（<code>agent-core-v2/src/agent/mcp/config-loader.ts</code>）で OS コマンドインジェクション（CVE-2026-95660）。openCode 1.18.26 では <code>Worktree.remove</code> のパス検証欠如により、細工したペイロードで任意の再帰的ディレクトリ削除が可能（CVE-2026-88624）。</li>
+</ul>
+
+<h3>Java スタック — Apache Calcite Avatica の安全でないリフレクションほか <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-70410 / CVE-2026-89407 / CVE-2026-95619</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8（Avatica）、7.5（jackson-core）、7.7（libstdc++）</td></tr>
+  <tr><th>影響</th><td>Apache Calcite Avatica / FasterXML jackson-core / GNU libstdc++</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-22 22:17 〜 2026-09-23 01:17 JST</td></tr>
+  <tr><th>対策</th><td>各製品の修正版へ更新。Avatica はプラグインインスタンス化の入力源を確認</td></tr>
+</table>
+<ul>
+  <li><b>Apache Calcite Avatica CVE-2026-70410</b>：<code>AvaticaUtils#instantiatePlugin</code> ほかが、制限のない <code>Class.forName</code> 相当の呼び出しで任意クラスを初期化する（外部制御入力によるクラス・コード選択）。JDBC ドライバ経由で Avatica を利用する基盤は、接続文字列やサービス設定に外部入力が混ざらないか確認されたい。</li>
+  <li><b>jackson-core CVE-2026-89407</b>：<code>NumberInput.looksLikeValidNumber()</code> が文字列化された数値を事前検証する正規表現（2.17.0 以降の <code>PATTERN_FLOAT</code>、2.17.2 で追加された末尾ドット版）で不正な入力を通す。ネイティブ浮動小数点の無効化を前提とした判定に影響する。</li>
+  <li><b>libstdc++ CVE-2026-95619</b>：aligned <code>operator new</code> が大きな入力で整数オーバーフローを起こし、過小なメモリ確保からメモリ破壊やアプリケーション不安定化につながる。</li>
+</ul>
+
+<h3>開発・CI ツール周辺 — open-vsx.org の CORS 設定不備、GHE、Dokploy、9Router <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-90882 / CVE-2026-75101 / CVE-2026-86059 / CVE-2026-56681 / CVE-2026-56682 / CVE-2026-94456</td></tr>
+  <tr><th>深刻度</th><td>CVSSv4.0 8.7、CVSSv3.1 9.6・9.1、7.3・6.0・5.3</td></tr>
+  <tr><th>影響</th><td>open-vsx.org（Edge/CDN 層の設定）/ GitHub Enterprise Server / Dokploy 0.29.13 未満 / 9Router 0.5.6 未満 / Postiz</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-22 19:17 〜 2026-09-23 06:17 JST</td></tr>
+  <tr><th>対策</th><td>各製品・デプロイの修正適用。open-vsx はエッジ層の CORS 設定とトークン再発行</td></tr>
+</table>
+<ul>
+  <li><b>open-vsx.org CVE-2026-90882（CVSSv4.0 8.7）</b>：認証付き <code>/user/</code> 系エンドポイントで <code>Access-Control-Allow-Origin</code> が要求 Origin をそのまま反射し、<code>Access-Control-Allow-Credentials: true</code> が付与されていた。任意のサイトがログイン済み利用者のブラウザから資格情報付きリクエストを送り、応答を読める。<code>/user</code>・<code>/user/tokens</code>・<code>/user/namespaces</code>・<code>/user/extensions</code> などが露出し、<code>/user/csrf</code> も同様に読めるため書き込み系の CSRF 保護が無効化。両者を連鎖させると <code>/user/token/create</code> を呼ばせて <strong>publish / delete 権限を持つ個人アクセストークンを窃取</strong>できた。ヘッダーはアプリではなく CDN / エッジ層が付与していた点が特徴で、ソフトウェア側の設定では再現しない。前日の Open VSX キャッシュ汚染（CVE-2025-12999）と合わせ、配布基盤側の防御再確認が望ましい。</li>
+  <li><b>GitHub Enterprise Server CVE-2026-75101（6.0）</b>：任意の認証済み利用者が、プライベートリポジトリのプルリクエストの raw diff / patch を認可なしで閲覧できた。raw 用アクセストークンの取り扱いも含めて修正済み。</li>
+  <li><b>Dokploy 0.29.13 未満 CVE-2026-86059（CVSSv3.1 9.6）</b>：Git プロバイダ参照権限を持たない組織メンバーが、<code>github.one</code> / <code>gitlab.one</code> / <code>gitea.one</code> / <code>bitbucket.one</code> から<strong>平文のプロバイダ資格情報</strong>を取得できる。<code>application.one</code> は GitHub App 秘密鍵・OAuth トークン・クライアントシークレット・Webhook シークレット・app password を入れ子で返していた。</li>
+  <li><b>9Router 0.5.6 未満（CVE-2026-56681 7.3 / CVE-2026-56682 5.3）</b>：サニタイズ用 <code>custom-server.js</code> を経由せずリクエストが Next.js へ到達する配置では、クライアント制御の <code>X-9r-Real-Ip</code> ヘッダーが信頼され、レート制限・ロックアウト・IP ベース判定が回避される。</li>
+  <li><b>Postiz CVE-2026-94456（9.1）</b>：OAuth アクセストークン・認可コード・クライアントシークレット・組織 API キー・PKCE verifier を <code>Math.random()</code> で生成していた。</li>
+</ul>
+
+<h3>その他の注目脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+<ul>
+  <li><b>ネットワーク境界</b>：F5 BIG-IP APM（CVE-2026-94127、APM アクセスポリシーと OAuth プロファイルを同一仮想サーバーで構成時に認証不要の RCE）、Check Point 製品（CVE-2026-93616 / CVE-2026-85102）、SolarWinds Observability Self-Hosted（CVE-2026-28324、整合性チェック不備による認証不要 RCE 9.8）、Cisco Analytics and Location Engine（CVE-2026-76708 / 76709、既定のハードコード資格情報 9.8）、Lantronix SLC8000 / EMG8500 / EMG7500 ほか（CVE-2026-80155、Web 管理画面のアップロード端点で認証バイパス、CVSS 10.0。関連する root 権限コマンドインジェクションも 9.4 で多数）。</li>
+  <li><b>観測・運用基盤</b>：Vector（CVE-2026-77621、file sink のパス封じ込め欠如 9.3 / CVE-2026-77619・77620、logstash source のフレーム長未制限とネスト圧縮 8.7 / CVE-2026-77633・77637・79913、Cloudreve）、Netdata（CVE-2026-83598 〜 83603、Windows MSI 修復時の SYSTEM 権限プロファイル読み込み・未認証 WebSocket 圧縮・ndsudo の socket_path 制御）、Nuclei 3.0.0 〜 3.10.0 未満（CVE-2026-76802 〜 76805、未署名テンプレートの署名検証を回避できる経路が複数）。</li>
+  <li><b>IoT・機器</b>：D-Link DAP-1360（CVE-2026-95675、Web 管理画面へ認証なしで root 権限の任意コマンド実行 9.3）、lwIP MQTT（CVE-2026-87121、境界外書き込み 9.3）、RTI Connext Professional（CVE-2026-7866、スタック BOF 10.0 ほか多数）。</li>
+  <li><b>エンタープライズ製品</b>：ManageEngine ADSelfService Plus build 7001 未満（CVE-2026-74849、GINA クライアントの RCE 9.8 / CVE-2026-75791、REST API 認識バイパス 8.6）、Softaculous Virtualizor 3.2.9 Patch 9 未満（CVE-2026-43641、課金モジュールの OS コマンドインジェクション 9.3 / CVE-2026-43642、PHP オブジェクトインジェクション 9.2）、IBM Financial Transaction Manager for OpenShift および IBM Concert（CVE-2026-17472、RBAC ワイルドカードによる越権 9.6 ほか多数）。</li>
+  <li><b>Adobe</b>：Campaign Classic に NVD が CVSS 10.0 のコードインジェクション・SQL インジェクション・SSRF を一括登録（CVE-2026-73369 / 75699 / 75703 / 75721 / 75723 / 84412 / 89275 ほか）、Experience Manager Forms JEE（CVE-2026-75745、認可不備で任意コード実行 10.0）、Adobe Connect（SQL インジェクションおよび格納型 XSS 9.3 〜 9.9）。</li>
+  <li><b>OS・共通ライブラリ</b>：Linux カーネル RPC-over-RDMA（CVE-2026-13087、ヒープ境界外書き込み 8.8）、glibc <code>ld.so</code>（CVE-2026-86805、<code>$ORIGIN</code> 展開の TOCTOU による権限昇格 6.3 / CVE-2026-95818、スタック BOF 3.6）、rpcbind（CVE-2026-94640、未認証 DoS 7.5）、Notepad++ 8.9.8 未満（CVE-2026-85279、プラグイン読み込みのスタック BOF 8.6 / CVE-2026-85995、アップデータの Authenticode ダイジェスト検証不備 7.3）。</li>
+</ul>
+
+<h3>OpenClaw / Hermes Agent — 本対象期間内の新規リリースなし <span class="badge-low">INFO</span></h3>
+<ul>
+  <li><b>OpenClaw</b>：最新は 2026.9.5（2026-09-19 公開）、extended-stable は 2026.7.35（2026-09-21 公開）。本対象期間内に新たなリリースは確認されませんでした。</li>
+  <li><b>Hermes Agent</b>：最新は v0.21.4（v2026.9.21、2026-09-21 18:10 UTC 公開、前回の朝刊で既報）。本対象期間内に新たなリリース・セキュリティアドバイザリは確認されませんでした。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js 本体、React、Django、Spring Boot、Hono、GCP・AWS・Azure について、本対象期間内の新規セキュリティ情報は確認されませんでした。Node.js は 26.10.0 が 2026-09-22 18:02 JST に公開されましたが、セキュリティ修正の記載はありません。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>CISA KEV に 4 件追加 — Check Point と F5 BIG-IP APM の脆弱性が実悪用、対処期限は 9 月 25 日 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>事案</th><td>米 CISA が既知の悪用された脆弱性カタログ（KEV）を更新。本対象期間に新規追加された 3 件はいずれも境界防御製品</td></tr>
+  <tr><th>対象</th><td>F5 BIG-IP APM（CVE-2026-94127）、Check Point 製品（CVE-2026-93616 / CVE-2026-85102）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.8 / 9.8 / 未採点（いずれも実悪用確認済み）</td></tr>
+  <tr><th>公開</th><td>KEV カタログ版 2026.09.22（2026-09-23 04:02 JST 公開）。米行政機関の対処期限は 2026-09-25</td></tr>
+</table>
+<ul>
+  <li><b>CVE-2026-94127（F5 BIG-IP APM）</b>：仮想サーバーに APM アクセスポリシーと OAuth プロファイルを構成している場合、ヒープベースのバッファオーバーフローにより<strong>認証不要でリモートコード実行</strong>が成立する。Appliance モードも影響を受け、データプレーンの問題でコントロールプレーンの露出はないとされる。暫定緩和としてベンダー提供の iRule 適用と、その後の正式パッチ適用が必要。</li>
+  <li><b>CVE-2026-93616（Check Point）</b>：Security Management Server / Multi-Domain Security Management Server / Log Server / Multi-Domain Log Server / SmartEvent にパストラバーサルがあり、<strong>認証不要で任意スクリプトのアップロードと実行</strong>が可能。Check Point は「Action Required」として注意喚起を公開している。</li>
+  <li><b>CVE-2026-85102（Check Point）</b>：Site to Site VPN または Remote Access VPN を用いる Security Gateway / Spark Firewall の証明書検証不備で、認証不要のリモート攻撃者が Gateway 上で任意コード実行に至る。Check Point の告知では本件の能動的な悪用が確認されている。</li>
+  <li>管理系・境界系の製品が同時に狙われている状況であり、外部公開している VPN / 管理コンソールのパッチ適用と侵害痕跡の確認を優先されたい。</li>
+</ul>
+
+<h3>CPAN モジュール「Crypt::SelfCertificate」にマルウェア混入 — インストール後のペイロード実行を狙う <span class="badge-high">SUPPLY CHAIN</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-95831（Perl / CPAN）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 7.8（High、AV:L/AC:L/PR:N/UI:R）</td></tr>
+  <tr><th>影響</th><td>Crypt::SelfCertificate 1.01 〜 1.05</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-23 04:17 JST（oss-security 2026-09-22 投稿）</td></tr>
+</table>
+<ul>
+  <li>証明書ファイル（<code>lib/Crypt/SelfCertificate/sample/validate.p12</code>、同 <code>cert7.pem</code>）として保存された Python スクリプトを <code>generate_certificate</code> が実行し、Base64 で難読化された固定 HTTP URL からコードを取得して応答本文をそのまま実行する。<strong>ディスク上にスクリプトを残さずに任意コードが利用者権限で実行されうる</strong>点が特徴。</li>
+  <li>対象リリースにはテストスクリプトもビルドフックも存在せず、インストール後の発火を狙った意図的な混入と評価されている。当該バージョンを取り込んだ環境は、インストール履歴と当該パッケージの使用有無を確認されたい。</li>
+  <li>SHA-256：<code>fbff21f45ff748365062a5e36fb2d72558cad82a507a6f357f320b4fcdf07760</code>（1.01 アーカイブ）、<code>9fdfa7d69b034b77d4510cda567e8da1e486ca81c7daaadc5732a45c41d71991</code>（1.05 アーカイブ）。ペイロード本体はいずれも <code>27b2d2d3174ad771474fff2521f5084ec231e9218ea8c832515aef1cbd5897bc</code>。</li>
+</ul>
+
+<h3>国内主要インシデント — 本対象期間内の新規公表なし <span class="badge-low">INFO</span></h3>
+<ul>
+  <li>被害企業・官公庁・大学・医療機関の公式発表、Security NEXT、ScanNetSecurity、サイバーセキュリティ.com、時事通信（サイバー攻撃関連トピックス）、JVN、JPCERT/CC 注意喚起、警察庁の公表情報を確認したが、<strong>2026-09-22 08:00 〜 2026-09-23 08:00 JST に新たに公表された国内インシデントは確認されませんでした</strong>（直近の大型案件は 9 月 18 日〜19 日分までで、いずれも既報）。</li>
+  <li>実悪用が確認された CISA KEV の新規 3 件（F5 BIG-IP APM、Check Point 2 件）は、国内の境界防御製品にも該当導入が存在しうるため、国内組織においても優先度の高い対処事項である。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
