@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-23 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-23 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-22 09:00 〜 2026-09-23 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.280</h2>
+<p>対象期間内（2026-09-23 01:48 JST 公開）に <strong>v2.1.280</strong> がリリースされました。最大のトピックは <strong>Claude Opus 5.5（<code>claude-opus-5-5</code>）の追加</strong>で、既定の Opus モデルとなっています。コンテキストは 1M トークン、料金は $4 / $20 per Mtok（キャッシュ読み出しは $0.20/Mtok）です。あわせて、Pro および Team Standard プランの既定モデルが Sonnet から Opus へ変更され、Max・Team Premium・Enterprise と揃いました。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Opus 5.5 を追加</strong>: 既定の Opus モデルとなり、1M コンテキスト・$4/$20 per Mtok（キャッシュ読み出し $0.20/Mtok）を提供します。</li>
+  <li><strong>フルスクリーンモードのマウス操作拡張</strong>: ホイールで <code>/skills</code> の一覧をスクロールでき、<code>/plugin</code> のスキル状態オプションをクリックできるようになりました。選択リストに隠れた項目がある場合（<code>/model</code>、<code>/permissions</code> など）もホイールでスクロールできます。</li>
+  <li><strong><code>CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH</code> を追加</strong>: セッション内の全 MCP サーバーに対する MCP ツール説明文・サーバー指示の 2,048 文字上限を変更できます。</li>
+  <li><strong>OpenTelemetry イベントの拡充</strong>: <code>hook_execution_complete</code> イベントにフック出力サイズと、サイズ超過でファイル保存された出力の件数が追加されました。</li>
+  <li><strong>既定モデルの変更</strong>: Pro および Team Standard プランの既定モデルが Sonnet から Opus へ変更されました（Max・Team Premium・Enterprise と同一）。</li>
+  <li><strong>effort レベルの扱いを整理</strong>: <code>/effort</code> がモデル単位になる前に保存された effort レベルは、Opus 5.5 のような新規モデルへ適用されなくなり、既定値から始まります。Opus 4.7 / 4.8 / Fable 5 は、<code>-p</code>・Agent SDK・プロジェクト設定・管理設定・<code>--settings</code> の <code>effortLevel</code> よりも起動時の既定 effort を保持しなくなりました。</li>
+  <li><strong>UI の細かな改善</strong>: <code>/permissions</code> でルール閲覧・追加・削除後にフォーカスがルール一覧へ戻り、削除確認の既定が No になりました。<code>/artifacts</code>・<code>/workflows</code> の長い一覧にスクロールバーが付き、ワークフロー進捗ツリーの実行中エージェントは ⟳ ではなく淡いドットで表示されます。<code>/btw</code> はツール実行中に尋ねられた場合、その呼び出しが失敗ではなく実行中であると認識します。</li>
+  <li><strong>プラグイン／マーケットプレイスの保護</strong>: 予約名を模倣するマーケットプレイス名は追加時に拒否され、既に追加済みのものも読み込まれなくなります。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>シンボリックリンク経由の書き込み判定を修正</strong>: ツリー内での表記ではなく実際の書き込み先で判定されるようになり、<code>acceptEdits</code>・許可ルール・auto モードが本来のツリー外への書き込みを承認しなくなりました。</li>
+  <li><strong>auto モードのリトライ暴走を修正</strong>: 安全チェックがレビューを拒否した場合に同じ操作を繰り返さず 1 度だけ拒否し、回答が得られない場合はリトライをバックオフして連続 10 回でターンを終了します。</li>
+  <li><strong>Write 呼び出しの検証失敗を修正</strong>: モデルが <code>file_path</code> / <code>content</code> の代わりに <code>path</code>・<code>file_text</code>・<code>file_content</code> などを送った場合の検証失敗を解消しました。</li>
+  <li><strong>ダイアログ操作の不具合を多数修正</strong>: 各種ダイアログで Ctrl+C / Ctrl+D の 2 回押しが Claude Code 終了ではなくダイアログ閉鎖になる、クリックが前面化のみでも配下の項目を発火してしまう、迷子の <code>n</code> がダイアログを閉じ <code>y</code> が確定してしまう、テキスト欄がキーバインドに 1 文字を奪われる、といった問題が修正されました。</li>
+  <li><strong>Windows ターミナルの表示崩れを修正</strong>: 不可視文字削除後にプロンプト行が乱れる問題が解消され、送信される正確なテキストが再描画されるようになりました。ペルシア語・アラビア語が接尾辞接続に使う ZWNJ を誤って削除する問題も修正されました。</li>
+  <li><strong>音声入力の不具合を修正</strong>: Ctrl+C で録音が止まらずプロンプトだけ消える、文字起こし処理中に Esc でキャンセルできない、transcript 表示や vim NORMAL モードで Space 長押しが入力開始してしまう問題が修正されました。</li>
+  <li><strong>API エラーでの全ターン失敗を修正</strong>: 「role 'system' must precede an 'assistant' message」、プロキシ／ゲートウェイ配下での <code>advisor_20260301</code> タグ 400 エラー、MCP ツール読み込み失敗の不正な通知が履歴に残った場合の失敗などを解消しました。</li>
+  <li><strong>サブエージェント関連を多数修正</strong>: fork したサブエージェントがツール一覧を再構築してプロンプトキャッシュを壊す、ヘッドレス／SDK セッションでサブエージェントへのメッセージが失われる、報告前に会話が compact されると報告が失われる、LSP ツールが使えない、背景シェルが無害な非ゼロ終了を失敗扱いする、といった問題が修正されました。</li>
+  <li><strong>セッション復帰・クラッシュ系を修正</strong>: 不正なシステムメッセージやメモリ保存通知を含む transcript からの復帰時クラッシュ、破損したキャッシュメッセージ一覧による unrecoverable interface error、名前付きパイプへの差し替えによるハング、設定ファイルの退行値による <code>/config</code> クラッシュなどが修正されました。</li>
+  <li><strong>アーティファクト関連を修正</strong>: 組織ポリシーが読み込めない場合（Web プロキシ配下など）に Artifact ツールが黙って消える問題を、ブロック理由を明示するよう改善しました。再公開時にデータベースアクセスルールが無音でリセットされる問題は拒否されるようになりました。</li>
+  <li><strong>その他</strong>: 背景セッション（<code>claude --bg</code>）が環境変数の NUL 文字で git やフックを実行できない問題、背景サブエージェント実行中の Ctrl+C が 3〜4 回必要だった問題、<code>/ultrareview</code> の状態誤報告、Remote Control／クラウドセッションのコンテキスト使用量表示などが修正されました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog (v2.1.280)</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>（対象期間内に新規リリースは確認されませんでした。最新版は v2026.9.21 = v0.21.4、2026-09-22 03:10 JST 公開です）。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。v0.21.4（タグ <code>v2026.9.21</code>）は対象期間の開始（2026-09-22 09:00 JST）より約 6 時間前に公開されており、対象期間内に公開された新規タグはございません。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>（対象期間内に新規リリースは確認されませんでした。最新版は 2026.7.35、2026-09-21 22:14 JST 公開です）。</p>
+<p>正規リポジトリ <code>openclaw/openclaw</code> の Releases を確認いたしました。対象期間内に公開された新規タグは確認されませんでした。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.207</h2>
+<p>対象期間内（2026-09-22 18:44 JST 公開）に <strong>v1.4.207</strong> がリリースされました。v1.4.206 に対するパッチリリースで、変更点はファイル検索の表示不具合の修正 1 件です。</p>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>ファイル検索の古い結果表示を修正</strong>: Quick Open とファイルエクスプローラーで、新しい検索クエリの結果が読み込み中の間に前回の結果が一瞬表示されてしまう問題が修正されました。新しいクエリでは、自身の結果が到着するまで前回の結果が一切表示されなくなります（<a href="https://github.com/stablyai/orca/pull/22173">#22173</a> @AmethystLiang）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.207">stablyai/orca — v1.4.207</a></p>
+
+<h2>⚡ Next.js — セキュリティアップデート v16.3.6 / v15.5.26</h2>
+<p>対象期間内（2026-09-23 02:15 JST / 02:14 JST 公開）に、<strong>重大な上流脆弱性へのアウトオブバンド・セキュリティアップデート</strong>が公開されました。Active LTS の <strong>v16.3.6</strong> と Maintenance LTS の <strong>v15.5.26</strong> が出ています。</p>
+<ul>
+  <li><strong>影響</strong>: <code>next/og</code> の <strong>Node.js 版 ImageResponse</strong> におけるリモートコード実行（Critical）。対象は Next.js <code>&gt;=16.2.0 &lt;16.3.6</code>。Satori が生成する SVG 出力のエスケープ不備と、他の上流依存の脆弱性が組み合わさることで RCE に至る可能性があります。修正は上流依存（Satori を含む）のアップグレードによるものです。</li>
+  <li><strong>影響を受けない構成</strong>: <strong>Edge 版 ImageResponse</strong> を使うアプリケーションは影響を受けません。また、攻撃者が制御する値を SVG の内容・属性・スタイルへ渡していないアプリケーションも影響を受けません。</li>
+  <li><strong>Next.js 15.x について</strong>: 15.5.26 は関連する堅牢化を含みますが、15.x は本 RCE の影響を受けません。</li>
+  <li><strong>対処</strong>: <code>npm install next@16.3.6</code>（16.3 系）／<code>npm install next@15.5.26</code>（15.5 系・堅牢化のみ）。直ちにアップグレードできない場合は、Node.js 版 ImageResponse が描画する SVG の内容・属性・スタイルに攻撃者制御の値を渡さないでください。</li>
+  <li><strong>関連アドバイザリ</strong>: GHSA-vcvr-r3jv-pc5j（Next.js）、GHSA-wx4j-mvgx-mqwp（Satori）。</li>
+</ul>
+<p>🔗 <a href="https://nextjs.org/blog/nextjs-security-update-september-22-2026">Next.js Security Update for a Critical Upstream Issue</a> · <a href="https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j">GHSA-vcvr-r3jv-pc5j</a></p>
+
+<h2>☁️ AWS — 7件のアップデート</h2>
+<p>対象期間内に AWS What's New で 7 件の発表が確認されました。</p>
+<ul>
+  <li><strong>Claude Opus 5.5 が AWS で利用可能に（2026-09-23 00:00 JST）</strong>: Anthropic の最新 Opus モデル、Claude 5.5 ファミリーの第一弾が AWS で提供開始されました。Claude Opus 5 より少ないトークンでタスクを完了し、トークン単価も低く、キャッシュ読み出しの低コスト化が効率改善に重なります。長期間のコーディング・ナレッジワークを担い、何を行い・何を見つけ・次に何が必要かを明確に報告する「優れた協働者」とうたわれています。アクセスは <strong>Amazon Bedrock</strong> と <strong>Claude Platform on AWS</strong> の 2 経路。Bedrock は既定でゼロデータ保持（ZDR）をサポートし、リージョンデータレジデンシー、Guardrails や Knowledge Bases といった AWS マネージド機能を提供します。GovCloud (US) でも同日提供開始です。</li>
+  <li><strong>OpenAI GPT-6 Sol / GPT-6 Luna が Amazon Bedrock で一般提供（2026-09-23 03:09 JST）</strong>: GPT-6 ファミリーに Astra に続く 2 モデルが加わりました。<strong>Sol</strong> は反復的な複雑タスクとソフトウェア開発向けのデイリーモデルで、OpenAI 社内のファクト性評価では GPT-5.6 Sol の約半数しか誤りを出さないとされています。<strong>Luna</strong> は要約・抽出・分類・ルーティングのような大量処理向けの最も効率的なモデルです。両モデルとも最大 1M トークンのコンテキストに対応し、Amazon Bedrock の推論エンジン上で動作します。</li>
+  <li><strong>AWS Security Hub AI Inventory が Azure のセルフホスト型インスタンスに対応（2026-09-22 17:00 JST）</strong>: Microsoft Azure 上のセルフホストインスタンスで動作する AI 資産の検出・カタログ化に対応しました。Amazon Inspector の SBOM 解析を活用し、Azure 仮想マシン上にインストールされた推論エンドポイント・モデル・AI エージェント（Ollama、vLLM、Hugging Face TGI など）を識別します。検出された AI 資産は基盤インフラと対応付けられ、セキュリティ検出事項と相関されるため、AWS と Azure をまたいだ AI インベントリのフィルタ・グループ化・照会が可能です。Security Hub Essentials に追加料金なしで含まれます。</li>
+  <li><strong>Amazon Route 53 Resolver が第2世代 AWS Outposts で一般提供（2026-09-22 17:00 JST）</strong>: Outpost 上でローカルのマネージド再帰 DNS 解決を提供します。Service Link を経由せずローカル解決するためレイテンシが低減し、Service Link 切断中もキャッシュ済みレコードで DNS 解決が継続します。AWS マネージド基盤上で動作し、顧客のコンピュート容量を消費しません。マルチラックの第2世代 Outpost では既定で有効化され、オプトアウトも可能です。2026-12-21 までは 91 日間の無償トライアル、以降は 1 ラックあたり $0.65/時間です。</li>
+  <li><strong>AWS Glue Data Quality がコンテキスト特化のルール推奨を数秒で生成（2026-09-22 17:00 JST）</strong>: ルール推奨の新たな Advanced モードでは、生成 AI がデータの意図を検出し、業務上有意味なルールを提案します。全カラムを網羅したすぐ使えるルールセットが手動設定なしで得られ、新規データセットの立ち上げや大規模データレイクのベースライン確立を高速化します。アジアパシフィック（メルボルン、大阪、シドニー、東京）を含む複数リージョンで利用可能です。</li>
+  <li><strong>AWS Billing Transfer が二段階転送向けの請求グループ自動作成に対応（2026-09-23 05:08 JST）</strong>: AWS Billing Conductor の新設定により、二段階の請求転送構成における手動の請求グループ設定が不要になります。下流のセラー パートナーからエンド顧客が請求転送を承諾した時点で請求グループが自動作成され、プロフォーマ費用データが即座に利用可能になります。</li>
+  <li><strong>Amazon RDS Custom for SQL Server が最新 CU に対応（2026-09-22 16:30 JST）</strong>: SQL Server 2022 CU26（KB5093420、RDS バージョン 16.00.4265.3.v1）に対応しました。マネジメントコンソール、AWS SDK、CLI からアップグレードできます。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure / GCP</h2>
+<p class="empty-notice"><strong>Azure</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+<p>Azure Updates の公式フィードは配信形式の問題により一次確認が取れず、対象期間内の新着は確認できませんでした。</p>
+
+<h3>🔧 GCP — 2026-09-22 のリリースノート</h3>
+<ul>
+  <li><strong>Bigtable: コンソールで protobuf スキーマを管理（GA）</strong>: Google Cloud コンソールから Bigtable テーブルの protobuf スキーマ（スキーマ バンドル）を作成・管理できるようになりました。Bigtable Studio でスキーマ バンドルの定義も閲覧できます。</li>
+  <li><strong>Cloud SDK 586.0.0（2026-09-22）— 破壊的変更</strong>: <code>google-cloud-sdk</code> Snap パッケージは 2026-09-29 に非推奨・削除されるため、<code>google-cloud-cli</code> パッケージへの移行が必要です。同梱の Kustomize コンポーネント（<code>kustomize</code>）と <code>kpt</code> コンポーネントは CLI から削除されました。<code>gcloud</code> の man ページ コンポーネント（<code>gcloud-man-pages</code>）は 590.0.0（2026-10-20）で削除予定です。</li>
+  <li><strong>Cloud Services</strong>: <code>gcloud services api-keys create</code> / <code>update</code> が GA・beta を通じて <code>--api-target</code> 制限を必須としました。<code>update</code> から <code>--clear-restrictions</code> フラグが削除されています。</li>
+  <li><strong>BigLake: Iceberg カタログ作成の各種フラグが GA / beta へ昇格</strong>: <code>glue-aws-region</code>・<code>namespace-filters</code>・<code>refresh-interval</code>・<code>secret-name</code>・<code>snowflake-role</code> など多数のフラグが GA に、<code>service-directory-name</code>・<code>workday-base-url</code> などが beta になりました。</li>
+  <li><strong>Audit Manager</strong>: <code>gcloud audit-manager audit-schedules</code> コマンド群（<code>create</code> / <code>list</code> / <code>update</code>）が追加されました。</li>
+  <li><strong>Apigee / Artifact Registry</strong>: CH リージョンの DRZ エンドポイントに対応。Artifact Registry では、ドメインスコープのプロジェクト URI を Docker コマンドが解析できなかった問題が修正されました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<h2>🔧 その他のスタック</h2>
+<ul>
+  <li><strong>Claude API / SDK — Python SDK v1.8.0（2026-09-23 01:25 JST）</strong>: <code>claude-opus-5-5</code> への対応、インライン ツール定義、MCP ツールリストの固定（beta）が追加されました。修正としては、Managed Agents イベント間で <code>evaluated_permission</code> enum を共有、ストリームを開いたまま終了した際の Python 3.13 クラッシュ回避、<code>add_tools()</code> が即時反映されない問題、tool runner の compaction リクエストに reply-only パラメータが混入する問題が修正されました。</li>
+</ul>
+<p class="empty-notice"><strong>React</strong>（最新 v19.3.0 / 2026-09-10）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新 v4.1.1）、<strong>Hono</strong>（最新 v4.13.8 / 2026-09-15）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+<h3>📌 web（一般）</h3>
+<ul>
+  <li><strong>Claude Opus 5.5 が公開</strong>: Anthropic が Claude Opus 5.5 を発表。Hacker News で 1,118 ポイント・773 コメントと本期間最大の話題となり、性能・価格分析記事（Artificial Analysis）も 219 ポイントを集めました。</li>
+  <li><strong>OpenAI が GPT-6 Sol / Luna を発表</strong>: OpenAI が GPT-6 ファミリーの新モデルを発表（Hacker News で 1,082 ポイント・564 コメント）。</li>
+  <li><strong>GPT-6 Astra が 2005 年以来未解読のエニグマ暗号を解読</strong>: 長年解読できなかった暗号文の解読が報じられました（539 ポイント・354 コメント）。</li>
+  <li><strong>Apple Intelligence とサイト運営者の対立</strong>: 「I said no and Apple said yes」と題した記事が 782 ポイント・642 コメント。iOS に常設広告が追加されたことへの反発も 580 ポイントを集めています。</li>
+  <li><strong>「gzip は言語モデルになり得るか」</strong>: 圧縮と言語モデルの関係を論じた記事（369 ポイント）。</li>
+  <li><strong>AI 規律に関する論考</strong>: 「AI Has No Wisdom and Neither Will You」（364 ポイント・509 コメント）。</li>
+  <li><strong>米国防総省、AI への過度な依存がイラン学校へのミサイル攻撃に関与と表明</strong>: Bloomberg の調査報道（348 ポイント）。</li>
+  <li><strong>FBI 職員全員のデータを窃取したとハッカーが主張</strong>: 404 Media が報じました（324 ポイント）。</li>
+  <li><strong>Meta の Muse にファイルシステムを要求したら 6.8GB が返ってきた</strong>: ランタイムのエクスポート検証記事（288 ポイント）。</li>
+  <li><strong>GrapheneOS が 2027 年にプリインストール端末が販売される可能性を示唆</strong>（254 ポイント）。</li>
+  <li><strong>Show HN: Drop</strong>: gVisor 対応の rootless Linux サンドボックス（153 ポイント）。</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
