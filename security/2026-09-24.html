@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-24 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-24 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-23 08:00 〜 2026-09-24 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Arista「VeloCloud Orchestrator」— 認証不要で内部機能に到達、CVSS 10.0 かつ悪用確認 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-93952</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 10.0（最大値）／CVSSv4.0 9.5。Arista は実際の悪用を確認済みと表明</td></tr>
+  <tr><th>影響</th><td>オンプレミス版「VeloCloud Orchestrator（VCO）」。証明書ベース認証を構成しており、「VeloCloud Edge」の認証証明書の公開部分または VCO の Web インタフェースへ到達できる場合</td></tr>
+  <tr><th>公開</th><td>Arista が現地 2026-09-22 に Security Advisory 0183 を公開、2026-09-23 国内報道（Security NEXT）</td></tr>
+  <tr><th>対策</th><td>オンプレミス版は 6.4.2.8 ／ 5.2.3.16 へ更新。ホスティング版は同脆弱性が存在したが修正済み。サポート期間内の他ブランチも修正版を準備中</td></tr>
+</table>
+<ul>
+  <li>入力値の検証不備に起因し、<strong>本来は高い権限を必要とする内部機能へ認証なしでアクセスできる</strong>。ホストおよび管理データの機密性・完全性・可用性が損なわれるおそれがある。</li>
+  <li>外部からの報告を受けて判明したもので、Arista は実際に悪用されていることを確認したとしている。SD-WAN の制御基盤は拠点間ネットワークの設定情報を保持するため、侵害されると全拠点の経路・ポリシーが書き換えられる影響に発展しうる。</li>
+  <li>VCO の管理インタフェースをインターネットへ直接公開している構成は、到達性の制限と侵害痕跡の確認を優先されたい。</li>
+</ul>
+
+<h3>Apache Tomcat — 11.0.26 / 10.1.60 / 9.0.122 で多数の脆弱性を修正、WebSocket のセキュリティ制約バイパスを含む <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-76183 ／ CVE-2026-86350 ／ CVE-2026-86248 ／ CVE-2026-78383 ／ CVE-2026-77791 ほか（同時公開 10 件超）</td></tr>
+  <tr><th>深刻度</th><td>CVE-2026-76183 は CVSSv3.1 9.8（Tomcat の重要度評価は「Important」）。CVE-2026-86248 は 9.8、CVE-2026-86350 は 9.1、CVE-2026-78383 ／ CVE-2026-77791 は 7.5</td></tr>
+  <tr><th>影響</th><td>11.0.0-M1 〜 11.0.25（11.0.26 で修正）、10.1.0-M1 〜 10.1.59（10.1.60 で修正）、9.0.0.M1 〜 9.0.121（9.0.122 で修正）。10.0.x はサポート終了のため未修正</td></tr>
+  <tr><th>公開</th><td>各系列の修正版は 2026-09-15 リリース。脆弱性情報は <strong>2026-09-23 に一斉公開</strong></td></tr>
+  <tr><th>対策</th><td>11.0.26 ／ 10.1.60 ／ 9.0.122 以降へ更新。あわせて Tomcat Native の修正版（CVE-2026-86246 ほか）も適用</td></tr>
+</table>
+<ul>
+  <li><b>CVE-2026-76183（Important）</b>：リクエストパスがエンドポイントのテンプレートとして誤って解釈されるため、<strong>WebSocket エンドポイントに設定したセキュリティ制約をバイパス</strong>できる。WebSocket に認可をかけている構成では認証・認可の前提が崩れる。</li>
+  <li><b>CVE-2026-86350（Important）</b>：CVE-2026-41293 の修正が引き起こしたリグレッションにより、HTTP/2 リクエストの解釈が一貫せず<strong>リクエストヘッダーの取り違え</strong>が発生しうる。11.0.22 〜 11.0.25、10.1.55 〜 10.1.59 が影響する比較的新しい範囲であり、直近で更新した環境こそ確認が必要。</li>
+  <li><b>CVE-2026-86248（Moderate）</b>：CVE-2026-34500 の修正が不完全で、OCSP のソフトフェイルを無効化していても FFM 実装ではソフトフェイルする場合がある。<strong>CLIENT_CERT 認証が想定どおり失敗しない</strong>ケースが残る。</li>
+  <li><b>CVE-2026-78383 ／ CVE-2026-77791 ／ CVE-2026-79677（Important・Moderate）</b>：いずれも DoS。AJP でリクエストボディ未指定時に処理スレッドが占有される問題、WebSocket クローズ送信時のビジーウェイト、非同期 WebSocket 書き込みのタイムアウト消失。</li>
+  <li>ほかに HTTP/2 のプール済みリクエストへのトレーラー混入（CVE-2026-77762）、HTTP/1.0 での Transfer-Encoding 解釈（CVE-2026-77756）、Jakarta Authentication 構成時のクロスコンテキスト認証混同（CVE-2026-75973）など。Spring Boot 内蔵 Tomcat を利用する構成も同系列の修正版へ追随されたい。</li>
+</ul>
+
+<h3>フルリゾルバー「Unbound」— リモートコード実行を含む 9 件の脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-81642 ／ 81634 ／ 82717 ／ 77955 ／ 78227 ／ 80225 ／ 82720 ／ 85501 ／ 77860</td></tr>
+  <tr><th>深刻度</th><td>リモートコード実行が可能になる問題を含む（ベンダー・JPRS のアドバイザリを参照）</td></tr>
+  <tr><th>影響</th><td>フルリゾルバー（キャッシュ DNS サーバ）Unbound</td></tr>
+  <tr><th>公開</th><td>中央ヨーロッパ夏時間 2026-09-16 に公開、JPRS が 2026-09-18 に発表、ScanNetSecurity が 2026-09-24 に報道</td></tr>
+  <tr><th>対策</th><td>同時公開された修正版へ更新。再帰解決を外部へ開放している構成は優先度を上げる</td></tr>
+</table>
+<ul>
+  <li>フルリゾルバーは再帰問い合わせを外部から受け付ける立場上、攻撃面が直接露出しやすい。<strong>RCE に至る問題が含まれる</strong>ため、内部 DNS として運用している場合も適用を検討されたい。</li>
+  <li>ISC BIND についても 2026-09-18 付の JVN 情報（JVNVU#97703430、CVE ベース 14 件）が継続して有効。DNS 基盤は 9 月に修正が集中しているため、あわせて棚卸しをされたい。</li>
+</ul>
+
+<h3>Hono 利用構成に影響 — OpenAPI クライアント生成器「orval」にコードインジェクション 6 件 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-96754 ／ 96755 ／ 96756 ／ 96757 ／ 96758 ／ 96759</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.3（5 件）、9.2（1 件）</td></tr>
+  <tr><th>影響</th><td>orval 8.28.0 未満 〜 8.30.0 未満。@orval/hono、@orval/effect、@orval/core の各ジェネレーター</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-09-24 早朝（2026-09-23 夜 UTC）</td></tr>
+  <tr><th>対策</th><td>orval 8.30.0 以降へ更新。生成元の OpenAPI 仕様が信頼できるソースかどうかも確認</td></tr>
+</table>
+<ul>
+  <li>OpenAPI 仕様の <code>path</code>・<code>operationId</code>・media-type キー・date-time など<strong>生成コードへ埋め込まれる文字列をエスケープせずに出力</strong>するため、悪性の仕様ファイルから生成クライアントへ任意コードを混入させられる。</li>
+  <li>@orval/hono ジェネレーターが該当するため、Hono プロジェクトで API クライアントを自動生成している構成は該当しうる。外部から取り込んだ OpenAPI 仕様をそのまま生成に使っていないか確認されたい。</li>
+</ul>
+
+<h3>国内製品の脆弱性（JVN）— 東北電力アプリのハードコード鍵、IT 資産管理ツール「QND」 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-75553（東北電力アプリ）／ CVE-2026-81326・CVE-2026-84408（QND）</td></tr>
+  <tr><th>深刻度</th><td>QND の名前付きパイプ問題は SYSTEM 権限での任意コマンド実行に至る</td></tr>
+  <tr><th>影響</th><td>Android / iOS アプリ「東北電力 よりそうｅねっと」2.8.0 未満、クオリティソフト製「QND」Premium / Standard Ver.11.1i およびそれ以前、Advance Ver.11.0.9i およびそれ以前</td></tr>
+  <tr><th>公開</th><td>JVN が 2026-09-17（東北電力アプリ）・2026-09-16（QND）に公表、ScanNetSecurity が 2026-09-24 に報道</td></tr>
+  <tr><th>対策</th><td>東北電力アプリは 2.8.0 へ更新。QND は Ver.11.0.9i または Ver.11.1i へ更新のうえパッチ適用</td></tr>
+</table>
+<ul>
+  <li><b>東北電力 よりそうｅねっと（CVE-2026-75553）</b>：ハードコードされた暗号鍵が使用されており、鍵を第三者に取得されるおそれ。Ai ソリューションズの佐々木優太氏が報告。</li>
+  <li><b>QND（CVE-2026-81326）</b>：ハードコードされた暗号鍵の使用により<strong>管理者 ID とパスワードが窃取される</strong>おそれ。<b>（CVE-2026-84408）</b>は名前付きパイプへのアクセス制限不備で、<strong>SYSTEM 権限で任意のコマンドを実行</strong>されるおそれ。エムオーテックスの小椋大靖氏が報告。</li>
+  <li>いずれもクライアント側に配布済みの資産であり、修正版への更新が行き渡っているかの確認が要点となる。</li>
+</ul>
+
+<h3>Claude Code v2.1.281 — 権限判定とサンドボックスの境界をまとめて修正 <span class="badge-low">INFO</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>v2.1.281（CVE 番号の明記なし）</td></tr>
+  <tr><th>公開</th><td>2026-09-24 04:19 JST（GitHub 表示 23 Sep 19:19 UTC）</td></tr>
+  <tr><th>対策</th><td><code>claude update</code> で最新版へ更新</td></tr>
+</table>
+<ul>
+  <li><strong>NUL バイトを含む権限ルールがワイルドカード一致へ展開されてしまう問題を修正</strong>。該当ルールは何にも一致しなくなった。allow ルールの意図しない広がりを塞ぐ修正であり、本期間で最も優先度の高い Claude Code 側の変更。</li>
+  <li><code>rm -rf "$(pwd)"</code> のように<strong>コマンド置換の出力のみを対象とする再帰削除</strong>が、自動モードおよび <code>--dangerously-skip-permissions</code> で無承認に実行されていた問題を修正（Bash の allow ルールがあっても確認を求める）。</li>
+  <li>承認前に macOS の <code>/.vol</code>・<code>/.nofollow</code>・<code>/.resolve</code> 配下（ネットワークマウントへ到達しうる）を読み取っていた問題、Read / Write / Edit / NotebookEdit でパスに NUL バイトを含む場合にターン全体が終了していた問題、<code>--setting-sources</code> が子セッション（teammates・<code>/bg</code>・<code>claude agents</code>・<code>--worktree --tmux</code>）へ伝播していなかった問題を修正。</li>
+  <li>サンドボックスの <code>excludedCommands</code> が <code>git rev-parse --git-dir</code> 等に一致しない問題、<code>claude plugin validate</code> に MCP サーバー検査（読み込み時に黙って捨てられる <code>.mcp.json</code> エントリ、未宣言の <code>${user_config.*}</code> 参照、安全でない URL）を追加、MCP の URL モード elicitation 対応なども含む。</li>
+</ul>
+
+<h3>その他の注目脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+<ul>
+  <li><b>Java スタック</b>：MQTT ブローカー「Moquette」0.18.1 未満に 9 件（CVSS 8.7 〜 9.3。設定した認証・認可クラスが読み込めない場合のフェイルオープン、H2PersistentQueue のセッション名衝突による越権、共有サブスクリプションのトピックフィルター解析不備、トピック深度・保留メッセージ長の無制限化など）。JLine 3.0.0 〜 3.30.15 / 4.3.1 未満（組み込み nano エディターの正規表現検索・grep・less で未検証入力を使用、最大 7.5）。JSON パーサー「Jawn」1.7.0 未満（配列・オブジェクトのネスト深度が無制限、7.5）。Keycloak の CVE-2026-96445（Conditional OTP が HTTP ヘッダーを評価してワンタイムパスワード要件を回避、6.8）／ CVE-2026-96446（PAR の <code>prompt=none</code> 経路で認可処理が完結しない、4.2）。</li>
+  <li><b>Python スタック</b>：Red Hat Ansible Automation Platform の automation-controller に多数（CVE-2026-84474 と CVE-2026-84502 が <strong>CVSS 9.9</strong>。provisioning-callback シークレットの露出、Project の <code>scm_url</code> 未検証）。MLflow の dspy フレーバー（CVE-2026-96775）と statsmodels フレーバー（CVE-2026-96804）が <code>MLFLOW_ALLOW_PICKLE_DESERIALIZATION=False</code> を適用せず、pickle のデシリアライズ制御を回避される（いずれも 8.8。JVNVU#94390979 の NVD 登録分）。PgBouncer 1.25.2 まで（SCRAM の client-final-message 検証欠如、パケットバッファ成長の整数オーバーフロー、鍵導出反復回数の上限なし）。Mesop 1.3.4 未満（未認証の <code>/__csp__</code> エンドポイント）。<strong>LightLLM 1.2.0 までの RCE（CVE-2026-96560、CVSS 9.3）</strong>：<code>--pd_trans_mode nccl</code> 起動時に KV-transfer worker が未認証の RPyC 制御チャネルを露出し、デシリアライズを経てコード実行に至る。AI 推論基盤はネットワーク分離が前提となりがちだが、到達性の再確認をされたい。</li>
+  <li><b>ブラウザ・文書</b>：Foxit PDF Editor / Reader に 30 件超（UAF・ヒープ境界外書き込み・パストラバーサル、更新機構の証明書検証バイパスによる MitM（CVE-2026-91812、7.9）、更新パッケージ差し替え（CVE-2026-91813、8.8）、ローカル権限昇格（CVE-2026-91798 / 91800 / 91803、8.8））。Arc のアドレスバーなりすまし（CVE-2026-94181、7.4）。</li>
+  <li><b>OS・共通基盤</b>：sudo の <code>NOTBEFORE</code> / <code>NOTAFTER</code> 時刻制限で末尾 <code>Z</code> 省略時にローカル時刻で評価される問題（CVE-2026-96512、7.8）。Flatpak 1.18.1 未満（悪性リポジトリによる任意パス書き込み CVE-2026-96275 が 8.8、悪性 SDK コンテナによる拡張ポイントの <code>directory</code> 経由書き込み CVE-2026-96276 が 9.8）。BusyBox に多数（httpd の CIDR プレフィックス不正時に拒否ルールがフェイルオープン、TLS ClientHello の境界外読み取り、yescrypt ハッシュを平文扱いして Basic 認証が反転する問題など）。Caddy 2.11.3 以下、Plex Media Server 1.43.3.10861 未満（パストラバーサル、SSRF、管理者による任意ファイル書き込みで読み込み時に実行されうる問題 8.6）、WatchGuard AuthPoint Gateway の LDAP Sync 一次認証バイパス（CVE-2026-95676、7.4）。</li>
+  <li><b>エンタープライズ製品</b>：ManageEngine の OpManager / OpManager MSP / Firewall Analyzer / Applications Manager に CVSS 9.9 〜 10.0 を含む多数（Notification Profile の RCE、Google Cloud サービスアカウント秘密鍵のインストーラー内露出、診断設定のコマンドインジェクションなど）。IBM Financial Transaction Manager for Red Hat OpenShift（<strong>認証不要の Java ネイティブデシリアライズ RCE CVE-2026-18490 が 8.8</strong>、ハードコード鍵による認証バイパス、格納型 XSS、AI エージェントサーバーの RAG ポイズニングなど多数）。Dell Secure Connect Gateway Policy Manager 5.34.00.16 未満。SunEditor 2.47.11 未満（サニタイザーが名前空間付き・カスタムタグを一貫して拒否せず、<strong>CVSS 10.0</strong>）。</li>
+  <li><b>サプライチェーン</b>：Apache BuildStream の <code>tar</code> source プラグインで、Python 3.12 未満においてリンク解決の不備から悪性 tarball がアーカイブ外へファイルを書き込める（CVE-2026-82331、9.8）。</li>
+</ul>
+
+<h3>OpenClaw / Hermes Agent — 本対象期間内の新規リリースなし <span class="badge-low">INFO</span></h3>
+<ul>
+  <li><b>OpenClaw</b>：最新は 2026.9.5（2026-09-19 公開）、extended-stable は 2026.7.35（2026-09-21 公開）。本対象期間内に新たなリリースは確認されませんでした。</li>
+  <li><b>Hermes Agent</b>：最新は v0.21.4（v2026.9.21、2026-09-21 18:10 UTC 公開、既報）。本対象期間内に新たなリリース・セキュリティアドバイザリは確認されませんでした。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js 本体、React、Django、Hono 本体、GCP・AWS・Azure について、本対象期間内の新規セキュリティ情報は確認されませんでした。Hono 関連では orval ジェネレーターのコードインジェクションを上記に掲載しています。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>境界・管理系ネットワーク製品の脆弱性が短期間に集中して実悪用 — VCO・BIG-IP APM・Check Point・Zyxel <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>事案</th><td>SD-WAN 制御基盤、APM、管理サーバ、スイッチと、境界・管理系製品の脆弱性に対する能動的悪用が短期間に集中して確認された</td></tr>
+  <tr><th>対象</th><td>Arista VeloCloud Orchestrator（CVE-2026-93952）／ F5 BIG-IP APM（CVE-2026-94127）／ Check Point 管理・ログサーバ（CVE-2026-93616）・Security Gateway（CVE-2026-85102）／ Zyxel GS1900 シリーズ（CVE-2026-7273）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 10.0 ／ 9.8 ／ 9.8 ／ 未採点。いずれも実悪用が確認されている</td></tr>
+  <tr><th>公開</th><td>2026-09-21 〜 2026-09-23。米 CISA の KEV 対処期限は Zyxel が 2026-09-24、F5・Check Point が 2026-09-25</td></tr>
+</table>
+<ul>
+  <li><b>CVE-2026-93952（Arista VeloCloud Orchestrator）</b>：入力値検証不備により、高い権限を要する内部機能へ認証なしで到達できる。CVSSv3.1 は最大値 10.0。オンプレミス版は 6.4.2.8 ／ 5.2.3.16 で修正、ホスティング版は修正済み。SD-WAN の制御基盤が侵害されると拠点間の経路・ポリシー全体に影響が及ぶ。</li>
+  <li><b>CVE-2026-94127（F5 BIG-IP APM）</b>：仮想サーバーに APM アクセスポリシーと OAuth プロファイルを構成している場合、ヒープベースのバッファオーバーフローにより認証不要でリモートコード実行が成立する。Appliance モードも影響。暫定緩和としてベンダー提供の iRule 適用と、その後の正式パッチ適用が必要。</li>
+  <li><b>CVE-2026-93616（Check Point）</b>：Security Management Server / Multi-Domain Security Management Server / Log Server / Multi-Domain Log Server / SmartEvent にパストラバーサルがあり、認証不要で任意スクリプトのアップロードと実行が可能。同社は「少数の顧客で攻撃を把握している」とし、R82.20 Security Hotfix ほかを公開している。</li>
+  <li><b>CVE-2026-7273（Zyxel GS1900 シリーズ）</b>：CGI プログラムのスタックベースバッファオーバーフローで、内部ネットワークから細工した HTTP リクエストを送るだけで認証なしに OS コマンドを実行できる。管理系スイッチは侵入後の横展開経路になりやすく、対処期限が最も早い。</li>
+  <li>4 件はいずれも<strong>外部公開されやすい管理インタフェースを持つ製品</strong>であり、パッチ適用と侵害痕跡の確認を同時に進める必要がある。VPN・管理コンソールのインターネット直接公開を避ける構成変更も有効である。</li>
+</ul>
+
+<h3>国内主要インシデント — 本対象期間内の新規公表なし <span class="badge-low">INFO</span></h3>
+<ul>
+  <li>被害企業・官公庁・大学・医療機関の公式発表、Security NEXT、ScanNetSecurity、サイバーセキュリティ.com、piyolog、JVN、JPCERT/CC 注意喚起、警察庁の公表情報を確認したが、<strong>2026-09-23 08:00 〜 2026-09-24 08:00 JST に新たに公表された国内インシデントは確認されませんでした</strong>。9 月 21 日（敬老の日）・23 日（秋分の日）の連休を挟んだため、国内報道は脆弱性情報が中心となっています。</li>
+  <li>直近の大型案件は 9 月 18 日〜19 日分まで（ニチレイの個人情報漏えい確認、Gyazo の約 2,362 万件流出、警察庁によるウォータープラム注意喚起など）で、いずれも既報です。</li>
+  <li>ただし実悪用が確認された上記 4 件の境界・管理系製品は国内にも導入が広く存在しうるため、国内組織においても優先度の高い対処事項です。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
