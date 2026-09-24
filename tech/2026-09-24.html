@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-24 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-24 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-23 09:00 〜 2026-09-24 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.281</h2>
+<p>対象期間内（2026-09-24 04:28 JST 公開）に <strong>v2.1.281</strong> がリリースされました。Claude apps gateway のエンタープライズ向け機能拡充が中心で、あわせて <strong>セッション復帰・プロンプトキャッシュ・プロキシ配下のストリーム処理</strong>に関する大量の修正が含まれています。変更項目は 170 件超と、今月でも最大級のボリュームです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude apps gateway — Bedrock 上流の権限委譲に対応</strong>: Bedrock 上流に <code>assume_role</code> を設定できるようになり、ゲートウェイが STS 経由で IAM ロールを引き受けて Bedrock を呼び出します。別の AWS アカウントのロールも指定でき、開発者ごとに 1 セッションを割り当てる構成も可能です。あわせて <code>guardrail: {id, version}</code> により全リクエストへ Amazon Bedrock のガードレールを適用できます（全 Bedrock 上流に設定するか、まったく設定しないかのいずれか）。</li>
+  <li><strong>Desktop 向けポリシー拡張</strong>: <code>desktop</code> ポリシーブロックで新しい Claude Desktop のキー（<code>blockReadsOutsideWorkingDirectories</code>、<code>disableBypassPermissionsMode</code>）に対応しました。<code>telemetry.resource_attributes</code> で Claude Desktop と <code>/login</code> セッションのテレメトリに固定ラベルを付与できます。</li>
+  <li><strong>コミット／PR の帰属表示を無効化可能に</strong>: <code>settings.json</code> に <code>"attribution": false</code> を記述すると、コミットおよび PR の帰属表示をすべて非表示にできます。旧バージョンの CLI はこのキーを含む設定ファイル自体をスキップするため、複数バージョンで共有するファイルではオブジェクト形式を保つ必要があります。</li>
+  <li><strong>MCP URL モードの elicitation に対応</strong>: 2026-07-28 プロトコル接続で、サーバーが Claude Code にブラウザベースのフローを開かせることができるようになりました。サーバー側に完了確認手段がない場合、待機ダイアログは画面に残りません。</li>
+  <li><strong><code>claude plugin validate</code> が MCP サーバーを検査</strong>: 読み込み時に黙って破棄される <code>.mcp.json</code> エントリ、未宣言の <code>${user_config.*}</code> 参照、安全でない URL を報告します。</li>
+  <li><strong><code>/insights</code> に auto モードの推奨を追加</strong>: 最近のセッションで auto モードが処理できたであろう許可プロンプトの件数を見積もります。</li>
+  <li><strong>UI の細かな改善</strong>: フルスクリーン時の <code>/skills</code>・<code>/mcp</code>・<code>/plugin</code> のインストール済み一覧にスクロールバーが付きました。タブ付きダイアログのキーボード操作、<code>/diff</code> のスクロールバー、狭いターミナルでの一覧行の折り返し抑制、ワークフロー行の進捗バー・経過時間・トークン表示なども改善されています。</li>
+  <li><strong>起動・復帰の高速化</strong>: git 読み取り・起動テレメトリ・Bedrock/Vertex のモデル昇格確認が最初のフレーム描画前に走らなくなり、対話起動が速くなりました。多数のファイルを読んだ長いセッション、および compact 済みの非常に長いセッションの復帰時間も短縮されています。</li>
+  <li><strong>動作変更</strong>: 「send now」（Ctrl+Enter または Ctrl+X Ctrl+S）が実行中のツールをキャンセルせずバックグラウンドへ移すようになりました。危険な <code>rm</code> の確認プロンプトは、auto モード／<code>--dangerously-skip-permissions</code> 時に 2 分待ってから書き換えヒント付きで拒否し、無人セッションが停止しないようになっています。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>リトライ中のクラッシュを修正</strong>: API リクエストのリトライ中にセッションが「unrecoverable interface error」で終了することがありました。また、解析不能なツール呼び出しと出力上限による切り詰めが交互に起きた場合に <code>--max-turns</code> を無視して無限にリトライする問題も修正されました。</li>
+  <li><strong>セッション復帰の整合性を修正</strong>: 復帰時に以前のターンが別の形で再送されプロンプトキャッシュと推論が壊れる問題、巨大なセッションで直近数メッセージしか復元されない問題、許可プロンプト待ちのまま再起動した場合に履歴が変わる問題、ツール呼び出し中に終了したセッションの扱いなどが修正されました。</li>
+  <li><strong>プロキシ／ゲートウェイ配下のストリーム処理を修正</strong>: ストリームが途中で切れた際に「Content block not found」で失敗する、応答が完全なものとして無警告で表示される、重複したストリームイベントでツールが 2 回実行される、stop reason が失われる、といった問題が解消されました。</li>
+  <li><strong>危険なコマンド実行の防止を強化</strong>: <code>rm -rf "$(pwd)"</code> のようにコマンド置換の出力のみを対象とする再帰削除が、auto モードと <code>--dangerously-skip-permissions</code> で無確認実行されていました。Bash の許可ルールがあっても確認するようになり、シェル変数や作業ディレクトリ由来の変数、バックスラッシュのみの対象も検出されます。</li>
+  <li><strong>macOS 固有パスの事前読み取りを修正</strong>: 許可ダイアログと添付ファイル検査が、承認前に macOS の <code>/.vol</code>・<code>/.nofollow</code>・<code>/.resolve</code>（ネットワークマウントに到達しうる）配下のパスを読んでしまう問題が修正されました。</li>
+  <li><strong>MCP 関連を多数修正</strong>: MCP サーバー切断時にプロンプトキャッシュが失われる、URL 表記の違い（ホストの大文字小文字・既定ポート・末尾スラッシュ）で同一サーバーが二重接続される、接続中の <code>mcp_tool</code> フックがスキップされる、といった問題が修正されました。</li>
+  <li><strong>ファイル編集ツールの堅牢化</strong>: パスに NUL バイトが含まれる場合にターン全体を終了させず、そのツール呼び出しのみ明確なエラーで失敗するようになりました。</li>
+  <li><strong>UI 操作の不具合を多数修正</strong>: 主要ダイアログでの Ctrl+C / Ctrl+D 2 回押しがアプリ終了になる、<code>/permissions</code> の削除確認でポインタが No にあるのに <code>1</code> が Yes として働く、Esc がエージェントパネルの選択解除ではなくターンを中断する、vim モードの <code>dj</code>/<code>dG</code>/<code>cw</code> などの挙動、などが修正されました。</li>
+  <li><strong>Windows</strong>: <code>$TMPDIR/…</code> への書き込みが「Permission denied」で失敗する問題、同時更新時に互いの <code>claude.exe</code> バックアップを削除しうる競合が修正されました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog (v2.1.281)</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>（対象期間内に新規リリースは確認されませんでした。最新版は v2026.9.21 = v0.21.4、2026-09-22 03:10 JST 公開です）。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST へ換算して確認いたしました。v0.21.4（タグ <code>v2026.9.21</code>）は対象期間開始の約 30 時間前に公開されており、対象期間内に公開された新規タグはございません。なお v0.21.4 は v0.21.3 以降にマージされた約 1,800 PR を集約したパッチリリースで、網羅的なリリースノートは v0.22.0 で公開される予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 2026.9.6</h2>
+<p>対象期間内（2026-09-24 08:21 JST 公開）に <strong>2026.9.6</strong> がリリースされました。翌 2026.9.5 から 1 日強での続投で、管理された Gateway のアップグレード処理、再起動後の復旧、ペアリング済みノードのワークスペース対応が主要トピックです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>更新と再起動の堅牢化</strong>: Node.js のインストールパスが変わった後も管理 Gateway のアップグレードを完遂し、Doctor・ファイナライズ・コア後のプラグイン処理が暗黙の期限で打ち切られなくなりました。再起動で取り残された会話の復旧、Node 再起動中の作業保持、兄弟セッションの完了リプレイの宛先修正も含まれます。</li>
+  <li><strong>利用状況の 30 日履歴ビュー復活</strong>: 作成者別内訳・日付選択・可視リスト外のセッションを含む合計値が揃いました。</li>
+  <li><strong>GitHub リーダー</strong>: 公開 Issue・PR・コミット・コメント・diff をチャットの横で開けるようになりました。明示的なプラグイン許可リストを使う構成では、プレビューを残すため <code>github</code> の追加が必要です。</li>
+  <li><strong>リモートワークスペース</strong>: ペアリング済みノードのワークスペースでも Agent ドキュメント・添付・Memory ファイル・Skills を利用できます（ファイルアクセスとインストールポリシーは維持。Gateway とノードは同一バージョンである必要があります）。</li>
+  <li><strong>会議（Meetings）</strong>: キャプチャ中の会議で、自動更新されるトランスクリプトと中間要約を追従できるようになりました。</li>
+  <li><strong>意思決定モデル（Decision models）</strong>: エージェントごとに型付きの意思決定モデルを選択でき、公式 TypeSafe プラグイン経由でホスト型・ローカルの System One サーバーに対応します（TypeSafe は <code>@openclaw/typesafe</code> として別途インストール、OpenClaw 2026.9.6 以降が必要）。</li>
+  <li><strong>モデル追加</strong>: 適応的思考と 1M コンテキストに対応した <strong>Claude Opus 5.5</strong>、および OpenAI API と組み込み ChatGPT トランスポート上に <strong>GPT-6 Sol / GPT-6 Luna</strong> が加わりました。</li>
+  <li><strong>ツール探索</strong>: 組み込み実行と Copilot 実行では構造化 Tool Search が既定で有効になりました（直接スキーマを維持するには <code>tools.toolSearch: false</code>）。</li>
+  <li><strong>その他</strong>: 設定画面からの MCP コネクタのサインイン、テーマの一覧・インポート・適用、ヘッドレスノードのランタイム自動更新、コマンドパレットからのバックグラウンドセッション開始、クラウドセッションの OS・マシンサイズ選択、Android の文字サイズ・画像ズーム・サイドバー並べ替え、デスクトップ共有の既定有効化などが含まれます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>ソース更新で浅い部分チェックアウトに対応し、Git 更新時のアーカイブサイズ失敗とメモリ急増を回避するようになりました。</li>
+  <li>MCP 接続で、長時間実行されるツールリクエストが結果を返すまで接続を維持するようになりました。</li>
+  <li>更新後にワーカーが再接続した際のクラウドセッション復旧、および複数クラウドセッション時の再起動遅延を改善しました。</li>
+  <li>Matrix・Telegram・Slack のアカウントが削除されていても会話一覧の読み込みが続行されるようになりました。</li>
+  <li>プロバイダールーティングで、選択した検索プロバイダーの尊重、無関係なネイティブ検索資格情報の流用防止、Anthropic OAuth 要求時の古いクライアントバージョン拒否の防止が行われました。</li>
+  <li>キャンセルされたコマンドからの遅延失敗通知、古い子プロセス待機の失敗、作業完了後の質問リマインダーが抑止されました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.6">openclaw/openclaw — 2026.9.6</a></p>
+
+<h2>🐋 Orca — v1.4.209</h2>
+<p>対象期間内（2026-09-23 14:25 JST 公開）に <strong>v1.4.209</strong> がリリースされました。セッション検索と利用状況レポートの改善、ターミナル入力・選択・ペーストの一貫性向上、大規模リストの仮想化が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>セッション検索</strong>: 検索結果が新しい順に並び、関連度が同点の場合は新しいものから表示されるようになりました。</li>
+  <li><strong>エージェント起動</strong>: 起動プロンプトをターミナルエージェントへ直接渡せるようになり、OpenCode・Claude・Pi・Antigravity・Devin の起動がより確実になりました。</li>
+  <li><strong>利用状況レポートの精度向上</strong>: GPT-6（Sol / Luna / Astra）、Opus 5.5、Fable 5.1 の価格に対応し、GPT-5.6 の料金も修正されました。リセット後に Codex の利用状況が古いままになる問題、OpenCode の Go 利用状況の読み取り、キャッシュ読み書きトークンが合計に含まれない問題も修正されています。</li>
+  <li><strong>大規模リストの仮想化</strong>: アーティファクト一覧と競合ファイルツリーが仮想化され、大きなワークスペースでも一覧が高速に動作します。検索クエリ変更時に古い一覧が残る問題も併せて修正されました。</li>
+  <li><strong>リモートペインのスクロールバック保持</strong>: 強制再起動をまたいでも、待機中のリモートペインのスクロールバックが保持されるようになりました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>ターミナル</strong>: 再描画中もドラッグ選択が安定し、マウストラッキングを行う TUI で中クリックペーストが動作するようになりました（Shift+中クリックのペーストにも対応）。並列同期フレームでも Pi の入力が表示され続け、ポーランド語や Option キーによる合成文字が kitty ペインで保持されます。</li>
+  <li><strong>リモート実行環境</strong>: WSL・SSH・Windows 環境の復旧がよりクリーンになり、リレーの再配置やセル展開の失敗がセル全体の停止につながらなくなりました。</li>
+  <li><strong>PDF / ワークツリー</strong>: PDF のズーム設定がタブ切り替えや再起動をまたいで保持され、新しいワークツリーの作成ダイアログでスクロール中もボタンが画面内に留まります。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.209">stablyai/orca — v1.4.209</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>安定版の新規リリースは対象期間内には確認されませんでした。最新の安定版は <strong>v16.3.6</strong>（2026-09-23 02:15 JST 公開）で、<code>next/og</code> の Node.js 版 ImageResponse に関する重大な上流脆弱性へのアウトオブバンド・セキュリティアップデートです。対象期間内は開発チャネルの <strong>v16.4.0-canary.40</strong>（2026-09-24 00:25 JST）と <strong>v16.4.0-canary.41</strong>（2026-09-24 08:46 JST）が公開されています。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS — 3件のアップデート</h2>
+<p>対象期間内に AWS What's New で 3 件の発表が確認されました。</p>
+<ul>
+  <li><strong>Amazon Bedrock Managed Knowledge Base が Salesforce／Zendesk のネイティブコネクタに対応（2026-09-24 02:41 JST）</strong>: 完全マネージドの RAG サービスである Bedrock Managed Knowledge Base に、Salesforce のナレッジ記事と Zendesk の記事・コミュニティ投稿を直接同期できるコネクタが加わりました。従来はカスタムの取り込みパイプラインが必要でしたが、インスタンスの資格情報を渡すだけでクロール・メタデータ抽出・増分同期が自動化されます。Zendesk のヘルプセンターに基づくサポートボットや、商談準備中に Salesforce のナレッジ記事を参照する社内アシスタントの構築に適しています。</li>
+  <li><strong>Amazon Connect Customer の分析データレイクにルーティングステップデータを追加（2026-09-24 01:00 JST）</strong>: ルーティング判断のインサイトを得やすくなりました。Amazon Athena と Amazon Quick を使い、各ルーティングステップでキューに入ったコンタクト数や接続数、エージェントマッチング条件が緩和された箇所、ルーティング設定が待ち時間やエージェント稼働率に与えた影響を、複雑なデータパイプラインなしで分析できます。</li>
+  <li><strong>Amazon CloudWatch Omni が一般提供（2026-09-23 09:06 JST）</strong>: Amazon CloudWatch の進化形として、AI 駆動のオブザーバビリティ体験を提供します。チームとそのチームが運用するアプリケーションを軸に整理され、アプリケーションとエージェントの監視・トラブルシューティングを 1 か所で行えます。OpenTelemetry の相互運用性と CloudWatch のスケール・信頼性を兼ね備え、SSO 対応のスタンドアロン Web 体験か、ローカル IDE 拡張のいずれかで利用できます。中央アカウントに「スペース」を作成し、AWS アカウント・リージョン横断、さらに Azure を含む他クラウドのテレメトリも参照できます。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure / GCP</h2>
+<h3>🔷 Azure — 2件（サポート終了告知）</h3>
+<ul>
+  <li><strong>PowerShell 7.4 のサポート終了（2026-09-24 01:50 JST 告知）</strong>: 2026 年 11 月 10 日に PowerShell 7.4 のサポートが終了します。</li>
+  <li><strong>.NET 8 / .NET 9 のサポート終了（2026-09-24 01:46 JST 告知）</strong>: 2026 年 11 月 10 日をもって .NET 8 および .NET 9 のサポートが終了します。アプリケーションを .NET 10 へアップグレードすることが推奨されています。</li>
+</ul>
+
+<h3>🔧 GCP — 2026-09-23 のリリースノート</h3>
+<ul>
+  <li><strong>Apigee API hub: AWS API Gateway／Azure API Management プラグインのプレビュー提供</strong>: サードパーティゲートウェイから API メタデータを取り込む組み込みプラグインが 2 種追加されました。<code>AWS API Gateway</code> と <code>Azure API Management</code> の双方が Public Preview で、Google Cloud・AWS・Azure をまたぐ API ガバナンスを単一のビューで扱えます。既定では 6 時間ごとのフル同期（upsert と孤児削除による整合）で、AWS Lambda または Azure Function を使った準リアルタイムのプッシュ同期も任意で構成できます。</li>
+  <li><strong>API hub: 仕様とデプロイの双方向リンク、ゲートウェイリビジョン追跡が GA</strong>: API 仕様・オペレーションと、それを提供するデプロイの双方向リンクが第一級の機能になりました。デプロイは <code>source_revision</code> フィールドで基盤ゲートウェイのリビジョンを保持します。同一メソッド・パスで重複するオペレーションも、破棄せずそれぞれの仕様に関連付けられます。</li>
+  <li><strong>Cloud KMS: 外部キーのマイグレーションがプレビュー</strong>: <code>EXTERNAL</code>／<code>EXTERNAL_VPC</code> の保護レベルを持つ鍵について、新しい鍵バージョンを同じ保護レベルで作成できます。既存の外部鍵バージョンの保護レベルをダウンタイムなしで変更でき、アプリケーションの再構成も不要です。</li>
+  <li><strong>Cloud Service Mesh: 1.30.4-asm.14 が利用可能に</strong>: Envoy v1.38.5-dev を使用し、CVE-2022-31045、CVE-2026-5450、CVE-2026-84304 などのプラットフォーム CVE への修正が含まれます。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a> · <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h2>🔧 その他のスタック</h2>
+<p class="empty-notice"><strong>React</strong>（最新 v19.3.0 / 2026-09-10）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新 v4.1.1）、<strong>Hono</strong>（最新 v4.13.8 / 2026-09-15）、<strong>Claude API / SDK</strong>（最新 Python SDK v1.8.0 / 2026-09-23 01:25 JST 公開・対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+<h3>📌 web（一般）</h3>
+<ul>
+  <li><strong>Claude が CRISPR 様の反復を持つ新規酵素システムを発見</strong>: Anthropic が発表。Hacker News で 440 ポイント・490 コメントを集めました。</li>
+  <li><strong>Claude Code が AGENTS.md をテレメトリ有効時のみ読む問題（修正済み）</strong>: 検証記事が 439 ポイント・250 コメント。テレメトリ設定と指示ファイル読み込みが結び付いていた挙動が話題となりました。</li>
+  <li><strong>Jev in 25 Lines of Python</strong>: 25 行の Python による実装解説が 628 ポイントと本期間最大の話題に。</li>
+  <li><strong>GPT-6 Astra が自動車の運転能力を獲得</strong>: 運転ベンチマークの結果が 270 ポイント・221 コメント。</li>
+  <li><strong>Gemini 3.8 の text-to-speech が公開</strong>: Google の公式ブログ記事（242 ポイント）。</li>
+  <li><strong>Samsung、ソフトウェア更新でスマート冷蔵庫を誤って凍結させる</strong>: Android Authority が報道（227 ポイント）。</li>
+  <li><strong>Stripe の Knowledge AI Platform</strong>: 開発者ブログで解説が公開されました（170 ポイント）。</li>
+  <li><strong>Seattle 市議会、食料品販売における監視価格設定の禁止を可決</strong>: Consumer Reports が報じました（288 ポイント）。</li>
+  <li><strong>Grammarly、解約しようとすると全ユーザーへ異様なメッセージを送信</strong>: r/sysadmin の報告が 351 ポイントを集めました。</li>
+</ul>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
