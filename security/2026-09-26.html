@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-26 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-26 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Next.js 16.3.6 — ImageResponse（Node.js実装）にリモートコード実行（CVE-2026-94545、CVSSv4.0 9.5）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv4.0 9.5）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-94545（GHSA-vcvr-r3jv-pc5j）</td></tr>
+<tr><th>影響</th><td>Next.js の画像生成モジュール「ImageResponse」（<code>next/og</code>）の Node.js 実装</td></tr>
+<tr><th>修正版</th><td>Next.js 16.3.6</td></tr>
+<tr><th>公開日</th><td>GitHubアドバイザリ 2026/09/22、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>上流コンポーネントの脆弱性の影響により、攻撃者が制御可能な値が SVG のコンテンツ・属性・スタイルに渡され、画像が生成される過程でリモートからのコード実行に至るおそれがあります。</li>
+<li><code>next/og</code> の <code>ImageResponse</code> を OGP画像生成や動的画像生成に利用しているアプリは、外部入力（クエリパラメータ・CMS由来のテキスト等）がそのまま描画されていないか確認のうえ、速やかに 16.3.6 へ更新ください。</li>
+<li>直ちに更新できない場合、開発チームは回避策の適用を求めています。同リポジトリでは2026年8月にも Image Optimization API の未認証RCE（GHSA-2xp9-vwfh-vxw4）等が公表されており、Next.js 利用環境は継続的な追従が必要です。</li>
+</ul>
+
+<h3>PHP 8.5.11 / 8.4.26 / 8.3.35 / 8.2.34 — セキュリティリリース、CVE採番11件を含む</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 相当を含む複数</td></tr>
+<tr><th>CVE</th><td>CVE-2026-91768、CVE-2026-91769、CVE-2026-91767、CVE-2025-1218、CVE-2026-6103、CVE-2026-91766、CVE-2026-93682 ほか計11件</td></tr>
+<tr><th>影響</th><td>PHP 8.5系 / 8.4系 / 8.3系 / 8.2系</td></tr>
+<tr><th>修正版</th><td>PHP 8.5.11 / 8.4.26 / 8.3.35 / 8.2.34</td></tr>
+<tr><th>公開日</th><td>現地2026年9月24日リリース、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>「FPM」では IPv6 アドレス処理においてアクセス制御を回避できる不備（CVE-2026-91768）を修正。OpenSSL 関連は CVE-2026-91769 / CVE-2026-91767 に対応しています。</li>
+<li>「HTTPストリームラッパー」では、リダイレクト時に異なるオリジンへ認証情報が漏洩する問題（CVE-2026-91766）と、空の Location ヘッダで境界外読み取りが生じる問題（CVE-2026-93682）が判明しています。</li>
+<li>ほか、MySQLnd のワイヤープロトコルパケット処理の不備（CVE-2025-1218）、tar アーカイブへ任意エントリを挿入できる Phar の脆弱性（CVE-2026-6103）、SOAP 処理の無制限再帰・整数オーバーフローなどを修正。ストリームフィルタや Windows のファイル／ストリーム入出力にも対処が含まれます。</li>
+<li>各ブランチともセキュリティリリースとして位置づけられており、PHP をホストする web サーバは早急な更新を推奨します。</li>
+</ul>
+
+<h3>Adobe — 7件のセキュリティアドバイザリ、36件を修正（Critical 26件）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（Adobe評価、CVE-2026-75682 は CVSSv3.1 9.9）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-75682（Adobe Connect のSQLi）、CVE-2026-75745（AEM Forms JEE の認可不備、9.8）ほか計36件</td></tr>
+<tr><th>影響</th><td>Adobe Connect / Adobe Experience Manager（AEM）Forms / Adobe Bridge / Substance 3D Modeler / Premiere Pro / Content Credentials SDK / InDesign</td></tr>
+<tr><th>公開日</th><td>現地2026年9月22日、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>InDesign を除く6件のアドバイザリで、Adobe の3段階中最上位「Critical」に相当する脆弱性26件に対処しています。</li>
+<li>Adobe Connect の SQLインジェクション（CVE-2026-75682、CVSSv3.1 9.9）と、AEM Forms JEE の認可不備（CVE-2026-75745、9.8）はスコアが高く、社内ポータルやフォーム基盤として運用している場合は優先的な更新をご検討ください。</li>
+<li>いずれも脆弱性の悪用は確認されておらず、適用優先度が最上位「1」のものはありませんでした。</li>
+</ul>
+
+<h3>ServiceNow AI Platform — SQLインジェクションほか5件、Critical 2件（CVE-2026-13016 / CVE-2026-86860、CVSSv4.0 9.3）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv4.0 9.3 ×2件）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-13016（SQLi）、CVE-2026-86860（認可不備）ほか計5件</td></tr>
+<tr><th>影響</th><td>ServiceNow AI Platform</td></tr>
+<tr><th>公開日</th><td>2026年9月24日アドバイザリ公開、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>CVE-2026-13016 は特定環境下で認証なしにネットワーク経由で悪用でき、インスタンスのデータベース参照・改ざんが可能となります。</li>
+<li>CVE-2026-86860 は認可処理の不備で、認証なしにインスタンスからデータを抜き出し、権限昇格が可能となります。</li>
+<li>内部テスト・協調的報告・バグ報奨金プログラムを通じて特定されたもので、修正版が提供されています。ITSM基盤は機密情報の集積点となるため優先度の高い更新が必要です。</li>
+</ul>
+
+<h3>米CISA KEV追加 — Adobe Commerce/Magento（CVE-2026-71362）とWSO2（CVE-2026-5430）、いずれも悪用確認済み</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（悪用が確認された既知の脆弱性として登録）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-71362（Adobe Commerce / オープンソース Magento）、CVE-2026-5430（WSO2 API Manager ほか）</td></tr>
+<tr><th>公開日</th><td>米CISA KEV追加 現地2026年9月24日、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>CVE-2026-71362 は認可不備により権限昇格が可能となるもので、Adobe は2026年8月11日にアドバイザリを公開し30日以内の更新を推奨しています。</li>
+<li>CVE-2026-5430 は WSO2 の JWT認証バイパスで、管理者アカウントの乗っ取り、任意ファイルアップロードを経たリモートコード実行に至るおそれがあります。</li>
+<li>米行政機関には2026年9月27日を期限として更新と侵害状況の確認が要求されました。EC基盤・APIゲートウェイを運用している環境は侵害痕跡の確認も併せて推奨します。</li>
+</ul>
+
+<h3>baserCMS — 複数の脆弱性（JVN#14353754）およびプラグイン「アドオンマイグレーター」（JVN#21754394）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>（CVSSv4.0 5.3〜6.9）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-62956（SQLi）、CVE-2026-93462（認証欠如）、CVE-2026-93460 / 93463 / 93464（XSS）</td></tr>
+<tr><th>影響</th><td>baserCMS 5.2.10より前の5.2系以前（SQLi）、5.4.1より前の5.4系・5.3.1より前の5.3系以前（その他）、プラグイン「アドオンマイグレーター」</td></tr>
+<tr><th>公開日</th><td>JVN公開 2026/09/25 12:00</td></tr>
+</table>
+<ul>
+<li>CVE-2026-62956 は Web API を利用可能な攻撃者による SQLインジェクション。CVE-2026-93462 は重要機能に対する認証の欠如（CWE-306）です。</li>
+<li>XSS 3件（CVE-2026-93460 / 93463 / 93464）はいずれも CVSSv3.0 5.4。プラグイン「アドオンマイグレーター」には信頼できない制御領域からの機能の組み込みに関する脆弱性があります。</li>
+<li>対策はいずれも最新版へのアップデート。報告は三井物産セキュアディレクション。国内CMSのため、自社・取引先サイトの棚卸しをおすすめします。</li>
+</ul>
+
+<h3>ViewSonic vCast — 未認証の画面窃取と端末侵害（JVNVU#96941087）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（未認証で情報窃取・端末侵害が成立）</td></tr>
+<tr><th>識別子</th><td>JVNVU#96941087（CERT/CC VU#234131）</td></tr>
+<tr><th>影響</th><td>ViewSonic vCast のメディアストリーミングサービス</td></tr>
+<tr><th>公開日</th><td>JVN公開 2026/09/25 10:00</td></tr>
+</table>
+<ul>
+<li>同サービスにおいて、未認証の第三者による画面の窃取（screen exfiltration）と端末の侵害につながる複数の脆弱性が確認されています。会議室・サイネージ用途で導入している端末はネットワーク露出の見直しを。</li>
+</ul>
+
+<h3>Norwegian Cruise Line ドアアクセスコントローラ — 認証不備（JVNVU#96565230）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>（物理アクセス制御に影響）</td></tr>
+<tr><th>識別子</th><td>JVNVU#96565230（CERT/CC VU#676317）</td></tr>
+<tr><th>公開日</th><td>JVN公開 2026/09/25 10:00</td></tr>
+</table>
+<ul>
+<li>ドアアクセスコントローラに認証不備の脆弱性。詳細・影響範囲・対策は CERT/CC アドバイザリを参照ください。</li>
+</ul>
+
+<h3>米CISA ICS Advisory / ICS Medical Advisory（2026年09月24日）— 新規2件・更新2件（JVNVU#93222287）</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>JVNVU#93222287</td></tr>
+<tr><th>内容</th><td>新規：ICSA-26-267-01 Botslab G980H Dashcams、ICSA-26-267-02 Eufy Omni C20 / Omni X10 Pro<br>更新：ICSA-26-258-02 Wärtsilä FOS-Onboard（Update A）、ICSA-26-209-02 Siemens Mendix Runtime（Update A）</td></tr>
+<tr><th>公開日</th><td>JVN公開 2026/09/25 10:00</td></tr>
+</table>
+<ul>
+<li>家庭用・業務用のネットワークカメラ／ダッシュカム製品が新規に登録されています。IoT機器経由の侵入経路として狙われやすいため、ファームウェア更新と不要な露出ポートの閉塞をご確認ください。</li>
+</ul>
+
+<h3>Claude Code 2.1.283 — 権限・サンドボックス・マネージド設定まわりを修正</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>（権限境界・設定強制に関する修正）</td></tr>
+<tr><th>版</th><td>Claude Code 2.1.283</td></tr>
+<tr><th>公開日</th><td>2026-09-25 21:50 UTC（JST 2026-09-26 06:50）</td></tr>
+</table>
+<ul>
+<li>Windows の PowerShell ツールにおいて、<code>cmd /c rd</code>・<code>rmdir</code>・<code>del</code>・<code>erase</code> でドライブ直下・ホームフォルダ等を削除できてしまう問題を修正（<code>Remove-Item</code> が拒否する範囲を削除可能だったもの）。</li>
+<li>マネージドな <code>sandbox</code> 設定のネスト値が1つ不正な場合にブロック全体が無視されていた問題を、フェイルクローズに変更。</li>
+<li>サンドボックス内の <code>git</code> がサンドボックスプロキシの認証情報を credential helper に保存しようとする問題、<code>claude mcp add</code>/<code>add-json</code>/<code>remove</code> が設定ファイル書込み失敗時に成功と報告していた問題を修正。</li>
+<li>プラグイン関連では、マーケットプレイス名の検証、<code>outputStyles</code>／<code>themes</code>／<code>monitors</code>／<code>lspServers</code> のパスがプラグインディレクトリ外を指す場合の検証漏れ、<code>installed_plugins.json</code> が読めないレコードを含む場合に書換えでレコードを失う問題などを修正しています。</li>
+<li>権限管理面では <code>availableModelsMatch</code>（<code>"exact"</code> 指定で未許可モデルをブロック）と <code>deniedModels</code> のマネージド設定が追加されました。組織配布の管理設定を見直す余地があります。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 v2026.9.6、2026-09-23 リリース）および Hermes Agent（最新 v0.21.5 / v2026.9.24、2026-09-24 リリース）については、本対象期間内に新規リリース・セキュリティ関連変更は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ApplyNow — 採用管理プラットフォームに不正アクセス、マイナンバーを含む個人データが漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ApplyNow</td></tr>
+<tr><th>事象</th><td>データ分析ツールの脆弱性を突いた第三者による不正アクセス</td></tr>
+<tr><th>影響範囲</th><td>Interview Cloud / ApplyNow / ApplyNow Sign の利用企業および応募者（件数は調査中）</td></tr>
+<tr><th>不正アクセス期間</th><td>2026年8月9日 〜 2026年9月7日（検知は9月7日）</td></tr>
+<tr><th>公表日</th><td>2026年9月9日（ScanNetSecurity報道 2026/09/25）</td></tr>
+</table>
+<ul>
+<li>「ApplyNow Sign（電子雇用契約）」では、雇用契約情報に加え<strong>個人番号（マイナンバー）・基礎年金番号・金融機関口座情報</strong>を含む契約者情報が対象となる可能性があります。</li>
+<li>「Interview Cloud」「ApplyNow」では応募者の氏名（カナ）・メールアドレス・電話番号と、企業担当者のユーザー名・メールアドレス・権限、外部連携情報が対象となりえます。</li>
+<li>同社は9月7日に異常なアクセスログを検知し、同日中に遮断などの緊急措置を実施。今後、対象企業・個人へ個別案内と専用窓口の周知を行い、セキュリティ管理体制を抜本的に見直すとしています。</li>
+<li>採用管理SaaSは複数社が同居するマルチテナント型であり、1社の侵害が取引先全体に波及するサプライチェーン型インシデントです。同種サービスを利用している場合は委託先の対応状況を確認ください。</li>
+</ul>
+
+<h3>日本トレクス（極東開発工業子会社）— 不正アクセスによるシステム障害、受発注業務を停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>日本トレクス株式会社（極東開発工業株式会社 グループ会社）</td></tr>
+<tr><th>事象</th><td>不正アクセスによるシステム障害</td></tr>
+<tr><th>停止業務</th><td>インターネットによる発注業務／代理店からの部品受注システム／顧客・取引先とのメール送受信</td></tr>
+<tr><th>公表日</th><td>2026年9月8日（親会社は9月11日にも発表、ScanNetSecurity報道 2026/09/25）</td></tr>
+</table>
+<ul>
+<li>代替手段により業務は継続しているとのこと。現時点で個人情報や顧客データの外部流出は確認されていません。</li>
+<li>復旧に向けた調査と対応を進めているとしています。製造業の受発注系が止まる事例が続いており、取引先側では代替発注経路の確認が有効です。</li>
+</ul>
+
+<h3>ファイブフォックス — ランサムウェア攻撃によりVIP・GOLDランク顧客の情報が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ファイブフォックス（アパレル）</td></tr>
+<tr><th>事象</th><td>ランサムウェア攻撃</td></tr>
+<tr><th>影響範囲</th><td>VIP・GOLD ランクの顧客情報が流出した可能性</td></tr>
+<tr><th>公表日</th><td>ScanNetSecurity報道 2026/09/25 8:05</td></tr>
+</table>
+<ul>
+<li>上位ランク顧客の情報が対象とされ、顧客管理基盤が標的となった事例です。該当顧客への注意喚起とフィッシング対策の周知が求められます。</li>
+</ul>
+
+<h3>ワシントンホテル — ランサムウェア攻撃の被害を公表</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ワシントンホテル（宿泊業）</td></tr>
+<tr><th>事象</th><td>ランサムウェア攻撃</td></tr>
+<tr><th>状況</th><td>実行犯が示唆したダークウェブでの情報公開は現時点で確認されず</td></tr>
+<tr><th>公表日</th><td>ScanNetSecurity報道 2026/09/25 8:05</td></tr>
+</table>
+<ul>
+<li>宿泊業は予約・顧客管理系が業務停止に直結するため、復旧状況と二次被害（なりすまし・フィッシング）への注意が必要です。</li>
+</ul>
+
+<h3>カルビー — プロ野球チップス関連サービス「PhotoGoods」で個人情報漏えいの可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>カルビー株式会社</td></tr>
+<tr><th>事象</th><td>個人情報が漏えいした可能性</td></tr>
+<tr><th>影響範囲</th><td>プロ野球チップス関連サービス「PhotoGoods」の利用者</td></tr>
+<tr><th>公表日</th><td>ScanNetSecurity報道 2026/09/25 8:05</td></tr>
+</table>
+<ul>
+<li>食品大手の消費者向けキャンペーンサービスでの漏えい事案。応募者情報が対象となる可能性があり、対象者への案内状況の確認をおすすめします。</li>
+</ul>
+
+<h3>ハルメクHD — 女性向け情報サイト「HALMEK up」の管理画面に不正アクセス、IDとパスワードが窃取</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ハルメクホールディングス</td></tr>
+<tr><th>事象</th><td>ウェブサイト「HALMEK up」の管理画面への不正アクセス</td></tr>
+<tr><th>原因</th><td>従業員が使用する管理画面のIDとパスワードが窃取された</td></tr>
+<tr><th>公表日</th><td>検知 2026年9月9日、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>パスワードは変更済み。顧客管理情報へのアクセスは確認されていませんが、外部協力のもと調査を継続しています。</li>
+<li>雑誌発行・通信販売事業への影響は否定されています。管理画面の認証情報窃取型は、フィッシングや情報窃取マルウェア経由が多いため、管理アカウントへの多要素認証導入が有効です。</li>
+</ul>
+
+<h3>川崎市 かわさき新産業創造センター — CMSプラグインの脆弱性を突かれ不正アクセス、22人分の情報</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>川崎市（かわさき新産業創造センター、指定管理者が運営）</td></tr>
+<tr><th>事象</th><td>コンテンツ管理システムのプラグイン脆弱性を突いた不正アクセス</td></tr>
+<tr><th>影響範囲</th><td>2026年7月1日〜9月4日に入力された27件（22人分）の氏名・住所・電話・メール・企業名・担当業務・問い合わせ内容</td></tr>
+<tr><th>公表日</th><td>2026年9月4日判明、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>プラグインの脆弱性情報が公表されたことを受け、9月4日に指定管理者がサイト更新作業を試みたところ、不正アクセスを受けていたことが判明しました。</li>
+<li>個人情報流出・サイト改ざんの痕跡は確認されていませんが、流出可能性を含めて調査中です。CMSプラグインは脆弱性情報の公表後に集中的に狙われるため、更新の即時適用が肝要です。</li>
+</ul>
+
+<h3>横浜信用金庫 — 3支店で個人情報含む書類を紛失、91人分（誤廃棄の可能性）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>横浜信用金庫（本牧支店・千年支店・栗木支店）</td></tr>
+<tr><th>事象</th><td>「時効対象預金明細表」等の書類が所在不明</td></tr>
+<tr><th>影響範囲</th><td>3店舗あわせて顧客91人分の氏名・住所・電話番号・口座番号・残高</td></tr>
+<tr><th>公表日</th><td>Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>顧客からの定期預金に関する問い合わせを機に発覚し、全店で保管状況を調査した結果、3店舗での紛失が判明しました。</li>
+<li>保存ルールを勘違いしたことにより誤って廃棄した可能性が高いとしています。金融機関の書類管理において、保存期間ルールの周知徹底が課題として残ります。</li>
+</ul>
+
+<h3>宝塚市立病院 — 医療機器メーカー従業員が患者のX線画像を院外へ持ち出し</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>宝塚市立病院（兵庫県）</td></tr>
+<tr><th>事象</th><td>医療機器メーカー従業員が手術室で患者のX線画像を撮影し院外へ持ち出し、社内グループチャットで共有</td></tr>
+<tr><th>影響範囲</th><td>患者4人のX線画像（うち1人は年齢・性別がチャット内に追記）</td></tr>
+<tr><th>公表日</th><td>2026年8月12日に調査報告書提出で発覚、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>2025年9月・10月に同社から社内利用目的でのX線画像撮影の依頼を受けており、執刀医は個人情報が含まれないよう口頭で注意したうえで臨床的考察の目的で撮影を許可していました。</li>
+<li>院外への持ち帰りや年齢・性別の追記までは想定していなかったとして、今後はX線画像の撮影を原則禁止とし、外部関係者による撮影・個人情報の取り扱いをより厳格に運用するとしています。委託先・外部関係者による「想定外の持ち出し」は内部不正の典型パターンです。</li>
+</ul>
+
+<h3>福岡女学院大学 — オープンキャンパス関連案内メールの誤送信</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>福岡女学院大学</td></tr>
+<tr><th>事象</th><td>バス利用者・交通費補助申込者への案内メールで送信先アドレスを誤って宛先に設定</td></tr>
+<tr><th>影響範囲</th><td>バス利用者117人・交通費補助申込者41人（受信者間でメールアドレスが閲覧可能に）</td></tr>
+<tr><th>公表日</th><td>2026年8月21日発生、Security NEXT報道 2026/09/25</td></tr>
+</table>
+<ul>
+<li>対象者へ謝罪し、誤送信メールの削除を依頼しています。一斉配信では BCC 運用の徹底と送信前の宛先確認が有効な対策です。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
