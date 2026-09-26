@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-27 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-27 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>本対象期間は、NVD（米国国立標準技術研究所の脆弱性データベース）に大量のCVEが一括登録された日となりました。なかでも <strong>OpenClaw エコシステム（本体・各連携プラグイン・ClawHub）</strong> と <strong>Java／Spring Boot 環境で広く使われる Netty</strong> に多数のCVEがまとめて採番されています。いずれも修正版は公開済みですので、該当バージョンをご利用の場合は速やかな更新をご検討くださいませ。</p>
+
+<h3>OpenClaw エコシステム — NVDに71件のCVEが一括登録、Critical 1件を含む</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-100551、CVSSv3.1 9.0）／<span class="badge-high">High</span> 多数</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100551、CVE-2026-100567、CVE-2026-100558、CVE-2026-100597、CVE-2026-100544、CVE-2026-100575、CVE-2026-100529、CVE-2026-100530 ほか計71件（CVE-2026-100525〜100599 等）</td></tr>
+<tr><th>影響</th><td>npm パッケージ <code>openclaw</code>、および <code>@openclaw/discord</code>・<code>@openclaw/slack</code>・<code>@openclaw/whatsapp</code>・<code>@openclaw/matrix</code>・<code>@openclaw/msteams</code>・<code>@openclaw/feishu</code>・<code>@openclaw/googlechat</code>・<code>@openclaw/voice-call</code>・<code>@openclaw/diagnostics-prometheus</code> 等のチャネル／プラグインパッケージ、iOS アプリ</td></tr>
+<tr><th>修正版</th><td>openclaw 2026.8.1 ／ 2026.9.2 ／ 2026.9.3、各プラグイン 2026.8.1 以降、iOS アプリ 2026.8.11（一部は 2026.7.1 で修正済み）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 12:16〜12:17 JST（ClawHub分は同日 23:16 JST）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100551（Critical・9.0）</strong>: OpenClaw for iOS の 2026.7.1 以上 2026.8.11 未満において、Control UI が保存済みの Gateway TLS ピンを強制していませんでした。ネイティブ接続側では指紋検証が働いていたものの、認証済みターミナルセッション経由では検証が及ばず、中間者攻撃によりセッションを乗っ取られるおそれがあります。<strong>iOS 版は 2026.8.11 へ更新ください。</strong></li>
+<li><strong>CVE-2026-100567（High・8.9）</strong>: 2026.4.5 以上 2026.8.1 未満で、Gateway が外部 Chrome DevTools 接続先のDNS解決結果を1件しか検証しておらず、DNS リバインディング等によりSSRFへ至るおそれ。</li>
+<li><strong>CVE-2026-100597（High・8.8）</strong>: 2026.7.1 未満で、OpenShell のローカルミラーに対する remove／mkdir／rename 操作に TOCTOU 競合があり、承認済み範囲外のファイル操作に悪用されうる状態でした。</li>
+<li><strong>CVE-2026-100558（High・8.7）</strong>: 2026.8.1 未満で、Gateway リスナーが WebSocket アップグレード要求を送り続ける未認証クライアントに応答ソケットを保持させ、資源枯渇（DoS）に至るおそれ。</li>
+<li>ほか、exec 承認が「Allow Always」でパスや作業ディレクトリの文脈を失う権限拡大（CVE-2026-100529 / 100530 / 100560）、Slack の複数人DMで送信者許可リストが効かない問題（CVE-2026-100575、8.7）、voice-call が発信者の owner 判定を引き継がない問題（CVE-2026-100544、8.7）、メモリ保持時に権限ポリシーが引き継がれない問題（CVE-2026-100535 / 100537 / 100538）、CSVエクスポートの数式インジェクション（CVE-2026-100563 / 100564）などが含まれます。</li>
+<li>加えて、スキルマーケット側の <strong>ClawHub（openclaw/clawhub）</strong> にも5件（CVE-2026-100600〜100604）が登録されました。うち CVE-2026-100603（8.7）は、通常の認証済みアカウント4件による通報でスキルを自動非表示にできてしまうモデレーションの不備、CVE-2026-100602（7.1）は changelog プレビューへの認可欠如、CVE-2026-100601（6.9）はプロフィールプレビューの画像取得にSSRFがあります。</li>
+<li>OpenClaw 本体の最新リリースは 2026.9.6（2026-09-23）で、本対象期間に新規リリースはありませんでした。ただし上記CVEの多くは 2026.8.1 を境に修正されているため、<strong>2026.8.1 未満の環境は早急な更新が必要</strong>です。</li>
+</ul>
+
+<h3>Netty 4.2.18.Final / 4.1.138.Final — HTTP/1.1・HTTP/3・QUIC 関連の12件（CVE-2026-100655〜100666）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVSSv3.1 8.7 ×8件）／<span class="badge-medium">Medium</span>（6.9 ×4件）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100655〜CVE-2026-100666</td></tr>
+<tr><th>影響</th><td><code>io.netty:netty-codec-http</code> / <code>netty-codec-http3</code> / <code>netty-codec-stomp</code> を利用する Java アプリ全般（Spring Boot・Apache系サーバ・APIゲートウェイ等）</td></tr>
+<tr><th>修正版</th><td>Netty 4.2.18.Final ／ 4.1.138.Final（2026-09-09 リリース）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100656（8.7）</strong>: <code>HttpServerCodec</code> が未応答のHTTP/1.1パイプライン要求を追跡する際、1接続あたりのキューが無制限に伸長し、DoSに至るおそれ。</li>
+<li><strong>CVE-2026-100657（8.7）</strong>: STOMP の <code>StompSubframeDecoder</code> で、フレーム本文が終端しない場合に <code>ByteBuf</code> がリークしメモリを圧迫。</li>
+<li><strong>CVE-2026-100660 / 100661 / 100662（各 8.7）</strong>: HTTP/3 の QPACK 実装に、per-stream 動的テーブル追跡の無制限保持、prefixed-integer デコーダの過大消費、エンコーダ命令デコーダの資源枯渇が存在。</li>
+<li><strong>CVE-2026-100665（8.7）</strong>: QUIC の証明書検証経路で、素の <code>X509TrustManager</code> を用いた場合にホスト名検証が不完全なまま通過しうる状態。</li>
+<li><strong>CVE-2026-100663 / 100664（各 8.7）</strong>: HTTP/1 の CONNECT authority-form や Host ヘッダの扱いが HTTP/3 変換時に不整合となり、ルーティング回避につながるおそれ。</li>
+<li>ほか、SPDY の同時ストリーム無制限受付（CVE-2026-100655）、WebSocket 拡張ハンドラのキュー伸長（CVE-2026-100658）、HTTP/3 の :authority 重複（CVE-2026-100659）、応答と要求の取り違え（CVE-2026-100666）を含みます。Netty は Spring Boot の WebFlux／Reactor Netty や各種 Java 製ミドルウェアの基盤であり、依存関係の洗い出しと更新をご検討ください。</li>
+</ul>
+
+<h3>Horilla（Django製 HR／CRM） — 権限昇格・XSS・情報漏えい等（CVE-2026-96795 ほか、最大 8.8）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-96795、CVSSv3.1 8.8）ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-96795（8.8）、CVE-2026-71483（8.5）、CVE-2026-86066（5.9）、CVE-2026-63431（6.5）、CVE-2026-63432（6.5）</td></tr>
+<tr><th>影響</th><td>Horilla（Python／Django 製の人事・CRMソフトウェア）1.5.0-85 以前、および 2.0.0 未満</td></tr>
+<tr><th>修正版</th><td>Horilla 1.6.0 ／ 2.0.0</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 07:17〜08:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-96795（8.8）</strong>: <code>horilla_views/generic/cbv/views.py</code> の <code>HorillaListView.export_data</code> が、認証済みユーザーの <code>columns</code> POST パラメータを検証せずに内部フィールド参照へ展開しており、権限外のデータをエクスポートできるおそれ。</li>
+<li><strong>CVE-2026-71483（8.5）</strong>: 従業員検索の <code>search</code> パラメータが <code>employee_nav.html</code> で jQuery <code>.html()</code> により無害化されずに描画され、反射型XSSが成立。</li>
+<li>ほか、勤怠承認ビューの状態改ざん（CVE-2026-86066）、給与・手当タブの認可不備（CVE-2026-63431）、メールプレビューでの本文描画によるXSS（CVE-2026-63432）。Django 系の業務アプリは認可まわりの不備が集積しているため、依存版数の確認をおすすめします。</li>
+</ul>
+
+<h3>Flowise 3.1.4 まで — SSO認証バイパス2件が Critical（CVSSv3.1 9.2）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-100606 / 100607、9.2）／<span class="badge-high">High</span> 4件</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100606、CVE-2026-100607（各 9.2）、CVE-2026-100608（8.7）、CVE-2026-100610（7.7）、CVE-2026-100609（7.6）、CVE-2026-100605（7.5）</td></tr>
+<tr><th>影響</th><td>Flowise 3.1.4 以前（SSO有効な Enterprise／platform 構成を含む）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100606 / 100607（9.2）</strong>: SSO ログイン経路で、メールアドレスのみでユーザーを解決しており、プロバイダ／subject 識別子の紐付けを保存していないため、任意の既存ユーザーとして認証できてしまう認証バイパスです（INVITED／INACTIVE 状態のメール一致で通過する経路も含む）。<strong>SSOを有効化した構成は特に注意が必要です。</strong></li>
+<li><strong>CVE-2026-100608（8.7）</strong>: queue モードで BullMQ 管理ダッシュボードを有効にした場合、ダッシュボードへの認可が行われていません。</li>
+<li>ほか、チャット履歴の越権参照・削除（CVE-2026-100605）、credential のワークスペース未絞り込み参照（CVE-2026-100609）、upsert-history の権限欠如（CVE-2026-100610）。</li>
+</ul>
+
+<h3>Budibase 3.45.0 未満 — OIDC/SSO 認証バイパス Critical（CVE-2026-100684、9.2）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-100684、9.2）ほか <span class="badge-high">High</span> 多数</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100684（9.2）、CVE-2026-100683（8.9）、CVE-2026-100682 / 100686（8.7）、CVE-2026-100685 / 100688（8.3 / 7.1）ほか</td></tr>
+<tr><th>影響</th><td>Budibase（<code>@budibase/server</code>）3.45.0 未満</td></tr>
+<tr><th>修正版</th><td>Budibase 3.45.0</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100684（9.2）</strong>: <code>sso.authenticate</code> において、SSO subject に一致する既存ユーザーが無い場合のフォールバック処理に認証バイパスがあり、任意ユーザーとしてログインできてしまうおそれ。</li>
+<li><strong>CVE-2026-100683（8.9）</strong>: MySQL／MSSQL の列名変更DDLを、識別子をそのまま生クエリ文字列へ補間して構築しており、SQLインジェクションが成立。</li>
+<li><strong>CVE-2026-100682（8.7）</strong>: PWAアイコンアップロードで ZIP をシンボリックリンク検証なしに展開し、任意ファイル書き込みに至るおそれ。</li>
+<li>ほか、ワークスペースをまたぐロール付与（CVE-2026-100686）、テナント越えのアプリパッケージ閲覧（CVE-2026-100688）、ビルダー向けWebSocketへデータソース資格情報が平文で配信される問題（CVE-2026-100687）。</li>
+</ul>
+
+<h3>vLLM 0.29.0 未満 — 推論APIの入力検証不備（CVE-2026-100647〜100654）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（最大 CVSSv3.1 8.3）／<span class="badge-medium">Medium</span> 複数</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100653（8.3）、CVE-2026-100652（8.2）、CVE-2026-100650 / 100651（7.1）、CVE-2026-100647 / 100648 / 100649（6.9）</td></tr>
+<tr><th>影響</th><td>vLLM 0.29.0 未満（OpenAI互換／Anthropic互換APIを含む）</td></tr>
+<tr><th>修正版</th><td>vLLM 0.29.0</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100653（8.3）</strong>: 運用者が指定したモデルのリビジョンピン（<code>--revision</code>／<code>--code-revision</code>）が一部経路へ伝播せず、意図しないリビジョンのコードが読み込まれるおそれ。</li>
+<li><strong>CVE-2026-100652（8.2）</strong>: Rust 製 HTTP／gRPC フロントエンドで <code>stop_token_ids</code> の語彙範囲検証がなく、語彙外トークンIDがロジット処理器へ到達。</li>
+<li>ほか、<code>cache_salt</code> の長さ未検証によるDoS（CVE-2026-100647）、音声ファイルサイズ上限の迂回（CVE-2026-100648）、マルチモーダル入力の事前展開によるDoS（CVE-2026-100650 / 100651）。自前で推論サーバを運用している場合は、公開エンドポイントの扱いにご注意ください。</li>
+</ul>
+
+<h3>Nodemailer 10.0.9 未満 — アドレスパーサの脆弱性（CVE-2026-100699〜100702）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-100700、8.7／CVE-2026-100702、8.2）ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100700（8.7）、CVE-2026-100702（8.2）、CVE-2026-100699（6.9）、CVE-2026-100701（6.0）</td></tr>
+<tr><th>影響</th><td>Nodemailer 10.0.9 未満（Node.js のメール送信ライブラリ）</td></tr>
+<tr><th>修正版</th><td>Nodemailer 10.0.9（一部は 10.0.6 / 10.0.2）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100700（8.7）</strong>: アドレスパーサの free-text フォールバック正規表現に二次関数的バックトラックがあり、細工したメールアドレス文字列でサービス拒否に至るおそれ。</li>
+<li><strong>CVE-2026-100702（8.2）</strong>: <code>to</code>／<code>cc</code>／<code>bcc</code> に深くネストした配列を渡すとスタック枯渇。</li>
+<li>ほか、引用符付きローカルパートの解析不備（CVE-2026-100699）、プロセス全体で共有されるDNSキャッシュがTLS servername を呼び出し元ごとに分離していない問題（CVE-2026-100701）。</li>
+</ul>
+
+<h3>GitPython 3.1.62 未満 — .gitmodules のパス検証不備（CVE-2026-100689、8.7）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVSSv3.1 8.7）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100689</td></tr>
+<tr><th>影響</th><td>GitPython 3.1.62 未満</td></tr>
+<tr><th>修正版</th><td>GitPython 3.1.62</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26 23:16 JST</td></tr>
+</table>
+<ul>
+<li>信頼できない <code>.gitmodules</code> から読み取った <code>path</code> フィールドを検証していないため、サブモジュール更新時にワークツリー外へ書き込みが及ぶおそれがあります。従来の修正（GHSA-hmq2-w58f-27jc）で <code>Submodule._validated_name()</code> が追加されたものの、パス側が取り残されていたものです。CI でリポジトリを自動処理するジョブでは更新をご検討ください。</li>
+</ul>
+
+<h3>そのほか一括登録された主な脆弱性（Hugo・Grav・Adminer・froxlor・SiYuan・Parse Server・Kibana／Elasticsearch・Joomla拡張・WordPressプラグイン）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 〜 <span class="badge-medium">Medium</span></td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-26（JST）〜 2026-09-27 06:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>froxlor</strong>（サーバ管理パネル、2.3.13 で修正）: 2.3.12 未満でパスワード変更時に既存セッション・APIキー・2FA信頼Cookieが失効しない問題（CVE-2026-100711、8.7）、Let's Encrypt チャレンジパスの未検証（CVE-2026-100714、9.4）、DataDump のパス検証不備（CVE-2026-100716、9.4）、SSL証明書アップロード経由の格納型XSS（CVE-2026-100720、9.3）など。</li>
+<li><strong>SiYuan</strong>（セルフホスト型ナレッジ管理、v3.8.4 で修正）: 未認証SQLインジェクション（CVE-2026-100644、8.7）、公開サービスでの Secure／SameSite 未付与によるセッションCookie発行（CVE-2026-100635、8.2）、<code>exportBrowserHTML</code>／<code>checkoutRepo</code>／<code>setNotebookIcon</code> のパストラバーサル（各 8.3）など計14件。</li>
+<li><strong>Hugo</strong>（静的サイトジェネレータ、v0.166.0 で修正）: symlink 隔離チェックがマウントルートで止まる問題（CVE-2026-100692、8.7）、<code>security.http.urls</code> のIPリテラル拒否が大文字小文字を区別するためバイパス可能（CVE-2026-100693、8.6）、Node.js 権限モデルを用いたツール実行の制約不備（CVE-2026-100690、8.7）。</li>
+<li><strong>Grav CMS</strong>（2.0.25 で修正）: Twig サンドボックス脱出（CVE-2026-100668、7.1）、グループ／アカウントblueprintの権限昇格（CVE-2026-100670、8.7）、Webサーバ設定サンプルのdenyルールが大文字小文字を区別する不備（CVE-2026-100669、8.7）、Comments プラグインの認証なしデータ返却（CVE-2026-100672、8.7）など。</li>
+<li><strong>Adminer</strong>（6.0.2 で修正）: Elasticsearch／ClickHouse ドライバの認証前SSRF（CVE-2026-100696 / 100697、各 6.9）、接続文字列の解析不備（CVE-2026-100698）。</li>
+<li><strong>Parse Server</strong>: LiveQuery の <code>protectedFields</code> 評価が不完全（CVE-2026-100632、7.1）、インストールレコードの device token 重複排除の検証不備（CVE-2026-100631、8.7）。</li>
+<li><strong>Kibana／Elasticsearch</strong>（NVD登録 2026-09-27 06:16 JST）: Kibana Agent Builder の Confused Deputy による権限昇格（CVE-2026-72668、7.3）、ユーザー制御キーによる認可バイパス（CVE-2026-72662、6.3）、Elasticsearch／Kibana の資源枯渇によるDoS（CVE-2026-82294、82300、94396〜94400 等）。</li>
+<li><strong>Joomla 拡張</strong>: UP プラグインの未認証リモートコード設置（CVE-2026-97163、CVSSv3.1 10.0）、AcyMailing Enterprise のRCE（CVE-2026-94132、9.5）、YouTube Gallery の未認証SQLi（CVE-2026-94130、9.3）。</li>
+<li><strong>WordPress プラグイン</strong>: miniOrange OTP Login の認証バイパス（CVE-2026-85984、9.8）、Ultra Addons for Contact Form 7 の任意ファイルアップロード（CVE-2026-82901、9.8）、Request a Quote for WooCommerce の任意ファイルアップロード（CVE-2026-18143、9.8）、Groups プラグインの権限昇格（CVE-2026-77203、8.8）、MCP Server for WordPress の nonce 検証不備（CVE-2026-96524）等。</li>
+</ul>
+
+<p class="empty-notice">Claude Code・Hermes Agent については、本対象期間内の新規リリース・セキュリティ修正は確認されませんでした（最新版はそれぞれ 2.1.283／v2026.9.24）。Next.js・Hono・Django 本体・GCP／AWS／Azure についても、本対象期間内に直接関連する新規セキュリティ情報は確認されませんでした。</p>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>米CISA、KEVに「WordPress Core」の未認証RCEなど3件を追加 — 悪用を確認（2026-09-25付）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（悪用確認済み）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-87902（WordPress Core）、CVE-2026-65660（Microsoft SharePoint）、CVE-2026-67279（MikroTik RouterOS）</td></tr>
+<tr><th>期限</th><td>米連邦機関は 2026-09-28 までに対応</td></tr>
+<tr><th>公開日</th><td>CISA KEVカタログ 2026-09-25 付で追加</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-87902</strong>: WordPress Core のリモートファイルインクルージョン。未認証の攻撃者が、有効テーマディレクトリ外の読み取り可能なローカル PHP ファイルをページテンプレート解決に読み込ませ、リモートコード実行に至るおそれがあります。稼働中の WordPress は 7.1.1 以降への更新をお早めに。</li>
+<li><strong>CVE-2026-65660</strong>: Microsoft SharePoint のコードインジェクション。ネットワーク経由でコード実行が可能。オンプレミスの SharePoint を運用している場合は、Microsoft の更新ガイドに従った適用をご検討ください。</li>
+<li><strong>CVE-2026-67279</strong>: MikroTik RouterOS のセッションチャネル処理不備。未認証クライアントがセッションチャネルを開いて exec 要求を送信でき、既報の CVE-2026-86060 と連鎖させることで未認証での悪用が成立します。ルーターの管理面を外部公開している場合は早急な対処を。</li>
+<li>上記3件はいずれも「実際に悪用が確認された脆弱性」として登録されており、深刻度にかかわらず優先度を上げた対応が必要です。あわせて、同カタログでは Adobe Commerce／Magento（CVE-2026-71362）と WSO2（CVE-2026-5430）の期限が 2026-09-27 に設定されています（いずれも既報）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">国内主要インシデントの新規公表なし — 本対象期間は土曜日にあたり、企業・官公庁・教育機関等からの新規の被害公表は確認されませんでした。Security NEXT・ScanNetSecurity・JVN・JPCERT/CC のいずれも、最新記事は 2026-09-25 付までとなっています。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
