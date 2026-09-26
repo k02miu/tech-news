@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-26 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-26 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-25 09:00 〜 2026-09-26 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.283</h2>
+<p>対象期間内（2026-09-26 07:00 JST 公開）に <strong>v2.1.283</strong> がリリースされました。今回は <strong>エンタープライズ向けのモデル制御設定の追加</strong>、<strong>プラグイン管理まわりの堅牢化</strong>、<strong>エージェントゲートウェイの新機能</strong>が目玉です。vim モードの修正と、MCP サーバーのライフサイクルに関する修正も多数含まれます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>モデル制御のマネージド設定を追加</strong>: <code>availableModelsMatch</code>（<code>"exact"</code> 指定時は、<code>availableModels</code> に列挙したモデルバージョンのみを許可し、新しいリリースはリストに追加されるまでブロック）と <code>deniedModels</code>（<code>availableModels</code> が許可していても特定モデルをブロック）が追加されました。</li>
+  <li><strong>ゲートウェイのヒントヘッダ</strong>: 1 つのユーザープロンプトに対応するリクエストを LLM ゲートウェイ側でグループ化できるよう、<code>x-claude-code-prompt-id</code> が付与されます（<code>CLAUDE_CODE_GATEWAY_HINT_HEADERS=1</code> でオプトイン）。</li>
+  <li><strong>OpenTelemetry の拡充</strong>: <code>OTEL_LOG_TOOL_CONTENT=1</code> のとき、MCP ツール・WebFetch・WebSearch の出力が <code>tool.output</code> スパンイベントに含まれるようになりました。</li>
+  <li><strong><code>/doctor prompt-audit</code>（<code>/checkup prompt-audit</code>）を追加</strong>: CLAUDE.md・スキル・エージェント・コマンドを監査し、旧モデル向けに書かれたプロンプティングパターンを検出します。古いパス・古いコマンド・矛盾する指示ファイルがレポートの先頭に来るよう改善されています。</li>
+  <li><strong>Claude apps gateway</strong>: リクエストを構築・署名するが上流へは送らず、クライアントには定型応答を返す <code>load_test_mode</code> ブロック（オプトイン）と、Amazon Bedrock の Mantle エンドポイント向けの <code>mantle</code> アップストリームプロバイダが追加されました。</li>
+  <li><strong>起動・応答の高速化</strong>: <code>claude -p</code> と Claude Code Remote がインタラクティブ UI を読み込まなくなり、auto モード分類器のルールと Artifact ツールは起動時ではなく初回利用時に読み込まれます。事前接続済み API コネクションの再利用による初回リクエストの低遅延化、初回応答中のパターンコンパイル実行、claude.ai アカウントの初回起動時に最大 1.5 秒待たされる問題の解消も含まれます。</li>
+  <li><strong>UI の改善</strong>: <code>/mcp</code> のツール一覧が一度に多く表示され、ページキー・マウスホイール・クリックに対応し、組織がブロックしたツールに警告アイコンが付きます。<code>/tasks</code> は行にステータスアイコンが付き、タイトルとキーヒントが画面に残るようになりました。<code>/help</code>・<code>/hooks</code>・<code>/copy</code>・<code>/chrome</code>・<code>/memory</code>・<code>/ide</code>・<code>/release-notes</code>・<code>/rewind</code>・<code>/diff</code>・<code>/remote-env</code>・<code>/plugin</code> などの一覧と、<code>/skills</code>・<code>/artifacts</code> のような検索ボックス付き一覧の操作性も改善されました。compaction のスピナーは所要時間と要約トークン数をストリーム中にカウントする表示に変わり、パーセントバーを置き換えます。</li>
+  <li><strong>MCP ツール結果の改善</strong>: MCP ツールが返した画像がファイルにも保存され、Bash・Read などの他ツールから開けるようになりました。</li>
+  <li><strong>そのほか</strong>: フルスクリーンモードで他セッションの切り詰められたメッセージをクリックで展開、<code>--plugin-dir</code> の読み込み失敗エントリに読み込めなかった <code>path</code> を追加、<code>--system-prompt</code> と <code>--append-system-prompt</code> がテキスト形式と <code>-file</code> 形式の併用に対応（ファイルのテキストが先）など。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>SDK セッションの取りこぼしを修正</strong>: ターンが早期に終了した際に遅延ツール呼び出しや完了済みツール結果が失われる問題、worker 再起動後に承認プロンプトが保持される問題、非ストリーミングフォールバックの <code>result.usage</code> の問題が解消されました。</li>
+  <li><strong>MCP サーバーのライフサイクルを修正</strong>: 長時間実行ツールがバックグラウンドに移った後に進捗通知が破棄される問題、起動中にセッションが終了すると stdio MCP サーバーが残り続ける問題、ステートレスなリモート MCP サーバーの一時的な HTTP 404（再デプロイ中のプロキシなど）でそのセッション中ずっと使用不能になる問題、有効な URL を持たないサーバーへのサインインが不可解な SDK エラーで失敗する問題が修正されました。</li>
+  <li><strong>プラグイン管理を多数修正</strong>: <code>claude plugin validate</code> がインストール不能なプラグイン／マーケットプレイス名を合格としていた問題（<code>outputStyles</code>・<code>themes</code>・<code>monitors</code>・<code>lspServers</code> のパス欠落やプラグイン外参照も検出）、<code>claude plugin details</code> が <code>plugin.json</code> 宣言の MCP サーバーを 0 と表示する問題、大文字小文字だけが異なるプラグイン ID を誤って削除する問題、バージョン未宣言プラグインがキャッシュ欠落時に最新コミットで復元される問題、ホーム／設定ディレクトリの移動後（bind mount された devcontainer など）に「cache-miss」で読み込めなくなる問題、<code>installed_plugins.json</code> が読めない場合の復旧経路（内容を退避したうえで再構築し、その退避ファイル名を <code>claude plugin list</code> が示す）が修正・改善されました。</li>
+  <li><strong>モデル選択まわりを修正</strong>: 日付や <code>-v1:0</code> サフィックス付きの Sonnet 4.6／Sonnet 5 ID で <code>[1m]</code> が受け入れられる不整合、<code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code> で別モデルを固定しているのに <code>/model</code> ピッカーがハードコードされた Haiku のバージョンと価格を表示する問題、モデルフォールバック中に開始した動的ワークフローが全エージェントをフォールバックモデルで実行する問題、Haiku がセッションメインのときに <code>DISABLE_PROMPT_CACHING_HAIKU</code> が効かない問題が解消されました。</li>
+  <li><strong>テレメトリを無効にすると有料プランで <code>/usage</code> の週次 Fable 上限が表示されない問題</strong>（VS Code の使用量メーターも同様）を修正しました。</li>
+  <li><strong>マネージド sandbox 設定の適用漏れを修正</strong>: ネストした値が 1 つ不正だとブロック全体が無視されていた問題が解消され、不正値は fail closed で扱いつつ残りの設定は適用されます。</li>
+  <li><strong>Remote Control を修正</strong>: <code>DISABLE_TELEMETRY</code>／<code>DO_NOT_TRACK</code> でテレメトリを切ると有料プランで利用できなくなる問題、狭いターミナルで <code>/remote-control</code> の QR コードヒントが語の途中で切れる問題が修正されました。</li>
+  <li><strong>エディタ・ターミナル・シェル</strong>: vim モードの <code>.</code> が Shift+Enter の改行を落とす問題やアクセント付き文字内にカーソルが残る問題、正規モードで 10,000 文字超のプロンプトを呼び戻した際のカーソル位置、<code>J</code> の行結合が Vim と空白処理で異なる問題などを修正。type-ahead・キーリピート・ssh や tmux 経由のキー連打が古い状態に対して処理される問題、<code>keybindings.json</code> の綴り間違い修飾子（<code>ctl+k</code> など）が無言で受け入れられる問題も解消されました。Windows では PowerShell ツールが <code>cmd /c rd</code>・<code>rmdir</code>・<code>del</code>・<code>erase</code> でドライブ直下やホームフォルダを削除できてしまう問題が修正されました。</li>
+  <li><strong>そのほか</strong>: スクリーンリーダーモードの権限ダイアログが引用コマンドを自身のテキストとして読み上げる問題、<code>/context</code> が MCP サーバーの instructions を計上しない問題、Warp ターミナルで Markdown リンクがクリック不能になる問題、sandbox 内などで設定ファイルに書き込めないのに <code>claude mcp add</code> 系が成功を報告する問題、クラウドセッションで応答の冒頭がストリームされず遅れて表示される問題、worktree チェックアウトが <code>GIT_CONFIG_COUNT</code> 経由の CA 証明書指定で証明書検証に失敗する問題、Claude 自身の auto-memory ノートへの編集が git リポジトリのサブディレクトリ起動時に機密ファイル書き込みとしてブロックされる問題などが修正されました。</li>
+  <li><strong>VSCode / Cloud sessions / Claude Tag / Code Review</strong>: 権限モード表示が実態と異なる問題、Web から転送されたセッションで作業中に送ったメッセージが失われる問題、復元セッションの表示崩れ、実行中クラウドセッションへのリポジトリ追加（読み取りのみ可のプライベートリポジトリ対応）、サーバー再起動復帰後の重複プッシュ／重複コメント、ルーチン実行の既定時刻とタイムゾーン計算、Claude Tag のチャネル検索権限設定や二重投稿、Code Review の無音化・課金整合性などが修正されました。</li>
+</ul>
+
+<h3>⚙️ 動作変更</h3>
+<ul>
+  <li>サードパーティプロバイダ利用時、またはテレメトリ無効時は、権限モード未設定なら<strong>インタラクティブセッションが auto モードで開始</strong>します（<code>permissions.defaultMode</code> が優先）。</li>
+  <li>2.1.282 で行った <code>claude-ai</code> 名の予約を<strong>撤回</strong>しました。同名のスキル・コマンド・ワークフロー・MCP サーバーのスキルとプロンプトが再び読み込まれ、<code>Skill(claude-ai:*)</code> ルールは通常のプレフィックスルールとして扱われます。</li>
+  <li><code>Skill(anthropic-skills:&lt;name&gt;)</code> の拒否ルールが、Claude Desktop がプラグインとして届けた同名スキルもブロックし、<code>Skill(skill:&lt;name&gt;)</code> の拒否がスキルの別名と表示名にも一致するようになりました。</li>
+  <li>アーティファクトのウォッチは、自動で武装されたもの（明示的に要求したものではない）が無操作 3.5 時間で終了します（再公開・再ウォッチで再武装）。</li>
+  <li><code>claude plugin eval</code> は git がインストールされている場合に git 2.31 以降を要求します。<code>--ultrareview</code> の起動ダイアログは、ローカルブランチのレビューが未コミットの変更をアップロードし得る旨を表示するようになりました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-283">Claude Code changelog (v2.1.283)</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（v0.21.5、2026-09-24 19:09 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新タグ <code>v2026.9.24</code> の公開時刻は対象期間開始（2026-09-25 09:00 JST）より前であり、対象期間内に新たに公開されたタグはございません。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.6</strong>（2026-09-24 08:21 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新の安定版タグ <code>v2026.9.6</code> の公開時刻は対象期間開始より前で、直近の他タグ（<code>v2026.7.35</code>: 2026-09-21 22:14 JST、<code>v2026.9.5</code>: 2026-09-19 10:55 JST）も対象期間外です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.212 / v1.4.211</h2>
+<p>対象期間内に <strong>v1.4.211</strong>（2026-09-25 15:17 JST 公開）と <strong>v1.4.212</strong>（2026-09-26 07:10 JST 公開）の 2 版がリリースされました。v1.4.211 が機能面の中心で、v1.4.212 は Codex 連携の障害修正のみを収めた小さなパッチです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Muse Code を第一級の supervised worker ハーネスとして追加</strong>（v1.4.211）: モデルと effort 設定を受け付け、ローカルの使用量レポート用プロバイダも追加されました。オーケストレーション側でも Muse のモデル／effort を supervised worker に渡せるようになっています。</li>
+  <li><strong>ネイティブチャット</strong>: 確定した構造化ターンごとに通知が届き、ジャーナル行が生成元のエージェント名を示すようになりました。Codex のチャットでは composer の上にゴールが表示され、ゴールモードから設定できます。ツール呼び出し間でツール行が保持され、実行中のツールヘッダが呼び出し開始からターン終了まで 1 つに保たれます。</li>
+  <li><strong>エージェント状態の扱いを改善</strong>: 稼働中の子ワークを持つ構造化セッションが「作業中」として扱われるようになり、子エージェントの親子関係はブール値ではなく Codex が表明した parentage を読む方式に変更されました。</li>
+  <li><strong>ワークスペース・エディタ・ブラウザ</strong>: 大規模なローカルワークスペースでファイル名検索が可能になり、プレビュータブを無効化する設定が追加されました。サイドバーのコンテキストメニューからワークスペース名をコピーでき、Salesforce Apex 拡張子が <code>apex</code> 言語 ID にマップされます。作成前に取得した一覧が新規作成したワークスペースを退役させてしまう問題も解消されました。</li>
+  <li><strong>使用量レポート</strong>: GPT-6 Sol／Luna、Opus 5.5、Fable 5.1 の価格計算に対応し、GPT-5.6 の料金を修正しました。Codex の長コンテキストは集計単位ではなくリクエスト単位で課金計算されます。</li>
+  <li><strong>ターミナル／リモート</strong>: バックグラウンドで作成されたターミナルが起動クエリに応答し、明示的なクローズにはデーモンの即時 kill 判定まで猶予が確保されます。macOS ではデーモンのコード同一性が adoption／フォルダ拒否イベントで報告されるようになりました。relay はアジアのセル容量を拡大しつつ、セル単位のゲート・テーブルロック convoy のアラート・安全な rehome が入っています。</li>
+  <li><strong>モバイル（OTA ページ）</strong>: 端末の Back キーがページに届くようになり、未保存 Markdown 下書きでの離脱時に確認が入ります。認証失敗バナーから再ペアリングが可能になり、失敗した hybrid-shell 更新が端末側に記録されて Troubleshoot に表示されます。バンドル配信は capability ネゴシエーションと gzip 圧縮（384 KiB レンジ）に対応し、マニフェスト全体で 4 つのチャンク読み込みを並行実行します。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Codex 0.157 以降が SUN_LEN で失敗する問題を修正</strong>（v1.4.212）: Orca 管理下のホームで起動するようになりました。</li>
+  <li><strong>ブラウザのショートカット</strong>が、それを受け取った split／フローティングパネルに限定されるようになりました（back／forward／reload／zoom／grab）。</li>
+  <li><strong>ランタイム接続の拒否を正しく報告</strong>: 従来は Orca が無応答に見えていたケースで、拒否であることが明示されます。</li>
+  <li><strong>構造化履歴の削除項目を非表示化</strong>するとともに、テキスト選択や GitHub コードのコピーなどチャット操作の不具合が修正されました。</li>
+  <li><strong>opencode 連携</strong>: OpenCode 2 の <code>session_v2</code> トークン集計の読み取りと、question ツールのフォームをペインブロッカーとして扱う条件が修正されました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.211">Orca v1.4.211 リリースノート</a> · <a href="https://github.com/stablyai/orca/releases/tag/v1.4.212">v1.4.212</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースおよび公式ブログの新規記事は確認されませんでした。canary チャネルでは <strong>v16.4.0-canary.46〜48</strong> が 2026-09-25 20:38 JST から 2026-09-26 08:43 JST にかけて公開されています。最新の canary（.48）には、Server Actions が PPR ページへ遷移した後にハングする問題の修正、bundle analyzer の読み込み中サスペンドと低 DPI 環境でのツリーマップ表示修正、Edge SSR で metadata のストリーミングポリシーを尊重する修正などが含まれます。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>Amazon Transcribe がカスタムリソース向けのカスタマー管理 KMS キーに対応</strong>（2026-09-26 04:19 JST）: カスタム語彙・語彙フィルタ・カスタム言語モデルを、自ら所有・管理する対称 AWS KMS キーで保存時に暗号化できます。キー利用は CloudTrail に記録され、キーの無効化や別キーへの移行でアクセスを任意のタイミングで失効させられます。キーを指定しない場合は従来どおり AWS 所有キーで暗号化され、オプトインしない限り対応不要です。</li>
+  <li><strong>AWS IAM のアウトバウンド ID フェデレーションが OIDC ディスカバリ用のインターフェース VPC エンドポイントに対応</strong>（2026-09-26 02:54 JST）: AWS PrivateLink 経由で OIDC ディスカバリのメタデータと JWKS 検証鍵エンドポイントへ、パブリックインターネットを通さずアクセスできるようになりました。インターネット接続を制限した VPC で動作する検証側ワークロードのネットワーク要件を満たしやすくなります。</li>
+  <li><strong>AWS DataSync がタスク実行の監視ダッシュボードを提供開始</strong>（2026-09-26 00:24 JST）: ステータス・データ／ファイル転送レート・所要時間・転送量の合計を確認でき、ステータス・タスク・タスクモード・実行 ID・開始時刻でフィルタできます。失敗した実行を選択してエラーを確認でき、設定済みのタスク・ロケーション・エージェント数とリアルタイムの合計転送レートも表示されます。</li>
+  <li><strong>AWS Elastic Disaster Recovery が Graviton（arm64）ソースサーバーに対応</strong>（2026-09-25 17:00 JST）: arm64 ソースサーバーを自動検出し、Graviton インスタンスへアーキテクチャを維持したまま復旧します。x86 と同じ運用体験で保護・復旧が可能です。</li>
+  <li><strong>AWS End User Messaging が WhatsApp 上の音声通話に対応</strong>（2026-09-25 16:00 JST）: 検証済みビジネス ID を使い、チャットスレッドからそのまま音声通話へ移行できます。発信・着信の双方向に対応します。</li>
+  <li><strong>AWS Billing and Cost Management に請求コンテキスト取得 API を追加</strong>（2026-09-25 09:58 JST): <code>ListBillingViewSegments</code> が、指定期間におけるアカウントの請求階層上の位置（管理アカウント、メンバーアカウント、請求グループのプライマリアカウントなど）や適用中のレート設定（billable／pro forma）を返します。返すのは請求コンテキストのみで、コスト・使用量データは含みません。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>API Keys のリモート MCP サーバーが Preview で提供開始</strong>（2026-09-25）: AI アプリケーションから接続し、Google Cloud プロジェクトの API キーの作成・検査・制限・ライフサイクル管理を行えます。</li>
+  <li><strong>X5 シリーズが GA</strong>（2026-09-25）: X4 の 32TB というメモリ上限を破り、最大 <strong>48TB</strong> の構成を提供します。最大規模の SAP HANA や RISE with SAP のお客様が、ミッションクリティカルなデータベースを単一ノードでスケールアップできます。</li>
+  <li><strong>GKE Standard クラスタのノードあたり最大 Pod 数が 512 に拡大</strong>（2026-09-25）: 従来の 256 から倍増しました。257〜512 Pod 用に構成されたノードには <code>/22</code> の Pod CIDR ブロック（1,024 アドレス）が割り当てられます。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート（2026-09-25）</a></p>
+
+<h2>☁️ Microsoft Azure</h2>
+<ul>
+  <li><strong>[Preview] Azure HorizonDB が PostgreSQL 18 をサポート</strong>（2026-09-26 03:07 JST 公開）: フルマネージドで PostgreSQL 互換のクラウドネイティブデータベースサービスである Azure HorizonDB（パブリックプレビュー中）が PostgreSQL 18 に対応しました。</li>
+</ul>
+<p>なお、対象期間内に他に公開された Azure アップデートは確認されませんでした。</p>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/?id=573048">Azure Updates（HorizonDB / PostgreSQL 18）</a></p>
+
+<h2>⚛️ React</h2>
+<p class="empty-notice"><strong>React</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v19.3.0</strong>（2026-09-10 03:01 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">facebook/react Releases</a></p>
+
+<h2>🐍 Python / Django</h2>
+<p class="empty-notice"><strong>Python</strong>・<strong>Django</strong>については、対象期間内の新規リリースは確認されませんでした。Django の最新リリースは <strong>6.1.1</strong>（2026-09-03 02:30 JST 公開）です。</p>
+<p>🔗 <a href="https://www.djangoproject.com/weblog/">Django Weblog</a></p>
+
+<h2>🟠 Hono</h2>
+<p class="empty-notice"><strong>Hono</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v4.13.9</strong>（2026-09-24 10:32 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/honojs/hono/releases">honojs/hono Releases</a></p>
+
+<h2>🍃 Java / Spring Boot</h2>
+<p class="empty-notice"><strong>Java / Spring Boot</strong>については、対象期間内の新規リリースは確認されませんでした。最新のマイルストーンは <strong>v4.2.0-M2</strong>（2026-09-24 19:38 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/spring-projects/spring-boot/releases">spring-projects/spring-boot Releases</a></p>
+
+<h2>🤖 Claude API / SDK</h2>
+<p class="empty-notice"><strong>Claude API / 公式 SDK</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は anthropic-sdk-python <strong>v1.8.0</strong>（2026-09-23 01:25 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases">anthropic-sdk-python Releases</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
