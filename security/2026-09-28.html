@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-28 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-28 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>本対象期間（2026-09-27 08:00 〜 2026-09-28 08:00 JST）に、NVDへは143件のCVEが新規登録されました。最大の話題は <strong>Citrix NetScaler ADC／NetScaler Gateway の8件（Critical 3件）</strong> で、うち2件は米CISAの「悪用が確認された脆弱性カタログ（KEV）」に追加されています。ほかにも、Node.js向けサンドボックスライブラリ <strong>vm2</strong>、AIエージェント／MCP基盤 <strong>Obot</strong>、死活監視ツール <strong>Nezha</strong>、TLSライブラリ <strong>wolfSSL</strong> などに Critical／High がまとまって採番されました。</p>
+<p>なお、Claude Code・Hermes Agent・OpenClaw はいずれも本対象期間に新規リリースはなく、JVN／JPCERT/CCの新規アドバイザリも9月25日付以降の公表はありませんでした。</p>
+
+<h3>Citrix NetScaler ADC / NetScaler Gateway — 8件、Critical 3件、うち2件がCISA KEVに追加</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv4.0 9.5 ×2件・9.3 ×1件）／<span class="badge-high">High</span>（8.8 ×4件・7.0 ×1件）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-88771、CVE-2026-88772、CVE-2026-88773、CVE-2026-88774、CVE-2026-88775、CVE-2026-88776、CVE-2026-88777、CVE-2026-88778</td></tr>
+<tr><th>影響</th><td>NetScaler ADC 14.1-73.37 未満／13.1-64.23 未満、NetScaler Gateway 14.1-73.37 未満／13.1-64.23 未満（FIPS・NDcPP構成を含む）</td></tr>
+<tr><th>修正版</th><td>ADC 14.1-73.37 ／ 13.1-64.23（FIPS版は 14.1-73.37 FIPS ／ 13.1-64.23 相当）へ更新。ベンダ情報 CTX697096 を参照</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-28 02:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-88771（Critical・9.5／CWE-20 不適切な入力検証）</strong>: 未認証の攻撃者が任意のコマンドを実行できるおそれがあります。米CISAのKEVに2026-09-27付で追加され、米連邦機関には<strong>2026-09-30</strong>までの対応が求められています（悪用が確認済み）。</li>
+<li><strong>CVE-2026-88772（Critical・9.5／CWE-119 メモリバッファ境界の不適切な制限）</strong>: リモートコード実行またはサービス拒否（DoS）に至るおそれ。こちらも同じくCISA KEVに追加され、対応期限は<strong>2026-09-30</strong>です。</li>
+<li><strong>CVE-2026-88773（Critical・9.3／CWE-444 HTTPリクエストスマグリング）</strong>: HTTPリクエスト／レスポンスの解釈の不一致により、リクエストスマグリングが成立し、認可の回避や他ユーザーのリクエスト操作につながるおそれがあります。</li>
+<li>CVE-2026-88774（High・7.0）、およびメモリオーバーフロー系の CVE-2026-88775・88776・88777（High・8.8 ×3件）、予測可能な値の生成に関する CVE-2026-88778（High・8.8／CWE-342）。</li>
+<li>NetScaler は今年8月にもリモートコード実行の脆弱性 CVE-2026-8452 でJPCERT/CCが注意喚起を行っており、継続的に狙われやすい機器です。<strong>境界に設置されたNetScalerは最優先で更新をご検討くださいませ。</strong></li>
+</ul>
+
+<h3>vm2 3.12.2 — Node.jsサンドボックスの脱出ほか3件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-100721、CVSSv4.0 9.5）／<span class="badge-high">High</span>（CVE-2026-100722、8.9）／<span class="badge-medium">Medium</span>（CVE-2026-100723、6.9）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100721、CVE-2026-100722、CVE-2026-100723</td></tr>
+<tr><th>影響</th><td>vm2 3.12.2 未満（Node.js 上でサードパーティコードを実行するサンドボックス用途）</td></tr>
+<tr><th>修正版</th><td>vm2 3.12.2</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 11:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100721（Critical・9.5／CWE-863 認可の不備）</strong>: <code>require.external</code> に独自リゾルバを設定し <code>context: 'host'</code> を使う構成において、許可モジュールのパス判定が前方一致のみで境界を要求していないため、許可リスト外の隣接モジュール（例: <code>foo</code> を通した後に <code>foo2</code> の絶対パスを require）がホスト側プロセスで読み込まれ、サンドボックスを脱出して任意コードが実行されます。</li>
+<li><strong>CVE-2026-100722（High・8.9／CWE-248）</strong>: サンドボックスからホスト側への construct トラップで Promise の reject 処理が適用されず、未処理の rejection がNode.jsの厳格ポリシーによりホストプロセスの異常終了を引き起こすおそれ。</li>
+<li>CVE-2026-100723（Medium・6.9）は、ホスト組み込みモジュールから返る Buffer に所有権の不変条件が適用されない問題です。</li>
+<li>ユーザーコードやLLMが生成したコードを vm2 で隔離実行している構成は、速やかな更新をご検討くださいませ。</li>
+</ul>
+
+<h3>hMailServer 6.3.4 — 未認証のリモートコード実行（CVSS 9.8）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-100741、CVSSv3.1 9.8）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100741（CWE-95 評価インジェクション）</td></tr>
+<tr><th>影響</th><td>Windows版 hMailServer 6.0.0 〜 6.3.3</td></tr>
+<tr><th>修正版</th><td>hMailServer 6.3.4</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 17:16 JST</td></tr>
+</table>
+<ul>
+<li>JScriptのイベントスクリプトディスパッチャに評価インジェクションがあり、バックスラッシュ＋アポストロフィを含むパスワードを任意のログオン（SMTP AUTH／POP3／IMAP）で送るだけで、サービスアカウント権限で任意のJScriptが実行されます。リモートから未認証で到達可能です。</li>
+<li>悪用には非デフォルト構成（イベントスクリプト有効・スクリプト言語をJScript・<code>OnClientValidatePassword</code> 等のハンドラ定義）が必要です。外部POP3サーバのUIDや外部SMTPサーバのエラー応答経由でも到達しうる点に注意が必要です。VBScriptのイベントスクリプトおよびLinux版は影響を受けません。</li>
+</ul>
+
+<h3>Obot v0.23.0 — AIエージェント／MCP基盤に Critical 2件を含む6件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-101065・CVE-2026-101084、いずれもCVSSv4.0 9.3）／<span class="badge-high">High</span>（CVE-2026-101062、8.7）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101062、CVE-2026-101063、CVE-2026-101064、CVE-2026-101065、CVE-2026-101084</td></tr>
+<tr><th>影響</th><td>Obot（MCPサーバを統合管理するAIエージェント基盤）。CVE-2026-101065 は commit d7e6970 以前の全バージョン、CVE-2026-101084 は v0.21.1 未満</td></tr>
+<tr><th>修正版</th><td>CVE-2026-101065 は<strong>ドキュメント修正のみ</strong>（クイックスタートが認証を有効化）。既存環境では <code>OBOT_SERVER_ENABLE_AUTHENTICATION=true</code> を必ず設定。その他は v0.23.0 ／ v0.21.1 以降</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-28 06:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-101065（Critical・9.3／CWE-306 重要な機能に対する認証の欠如）</strong>: READMEのDockerクイックスタートが <code>0.0.0.0:8080</code> を認証無効のまま公開します。認証無効時は全リクエストが Owner／Admin 権限を持つ合成ユーザーに割り当てられるため、ポートに到達できる誰もが管理APIとUIを完全に掌握でき、攻撃者が用意したMCPサーバの登録・起動まで可能になります。加えてクイックスタートは <code>/var/run/docker.sock</code> をコンテナへマウントするため、ホストのDocker制御面まで到達しうる構成でした。</li>
+<li><strong>CVE-2026-101084（Critical・9.3／CWE-639 認可回避）</strong>: <code>/mcp-connect</code> でアクセス制御ルールが適用されず、認証済みユーザーがサーバIDを知っていれば制限されたMCPサーバへ接続でき、保存済みOAuth資格情報を使って機密バックエンドを操作できるおそれ。</li>
+<li>ほか、OAuth動的クライアント登録が認証なしで公開されリダイレクトURIも制限されない問題（CVE-2026-101062、8.7）、MCP Registry エンドポイントの認証欠如（CVE-2026-101063、6.9）、リモートMCPサーバ登録時のSSRF（CVE-2026-101064、8.3）。</li>
+</ul>
+
+<h3>Nezha 2.3.8 — 死活監視ダッシュボードに Critical 1件を含む6件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-101090、CVSSv4.0 9.3）／<span class="badge-high">High</span>（CVE-2026-101085・101086、各7.1）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101085、CVE-2026-101086、CVE-2026-101087、CVE-2026-101088、CVE-2026-101089、CVE-2026-101090</td></tr>
+<tr><th>影響</th><td>Nezha Dashboard（2.2.3 を含む複数バージョン帯）</td></tr>
+<tr><th>修正版</th><td>2.3.8 ／ 2.3.5 ／ 2.3.1 ／ 2.2.7 以降（CVE-2026-101090 は本アドバイザリ公開時点で<strong>修正版なし</strong>）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-28 06:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-101090（Critical・9.3／CWE-601 オープンリダイレクト）</strong>: <code>dashboard_host</code> 設定が空のとき、OAuth2リダイレクトエンドポイントが攻撃者指定のHostヘッダを <code>redirect_uri</code> に反映してしまいます。偽のHostヘッダで認証を開始させると認可コードが攻撃者のドメインへ渡り、アカウントを乗っ取られるおそれがあります。過去の修正（GHSA-9rc6-8cjv-rcvx）が退行したもので、公開時点でパッチ未提供です。<strong>暫定対策として <code>dashboard_host</code> を必ず設定してください。</strong></li>
+<li>ほか、アラート評価のパニックによるDoS（CVE-2026-101085／101088）、サービス監視タスク種別の制限不備（CVE-2026-101086）、Webhook URLの検証でIPv6移行レンジ（2002::/16 等）を拒否できていないSSRF（CVE-2026-101087）、プロフィールAPIがbcryptハッシュを返す情報漏えい（CVE-2026-101089）。</li>
+</ul>
+
+<h3>wolfSSL — TLS／証明書検証に関する11件（High 4件）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVSSv3.1 8.3 ×4件）／<span class="badge-medium">Medium</span>（6.3 ×4件・2.3 ×3件）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-89102、CVE-2026-89133、CVE-2026-89134、CVE-2026-89135、CVE-2026-89136、CVE-2026-93302、CVE-2026-93304、CVE-2026-94417、CVE-2026-94418、CVE-2026-94419、CVE-2026-15442</td></tr>
+<tr><th>影響</th><td>wolfSSL の TLS／DTLS 実装（証明書検証、OCSPステープリング、RPK、セッションキャッシュ）</td></tr>
+<tr><th>修正版</th><td>ベンダの最新版へ更新（個別のCVEで対象バージョンが異なります）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 18:16〜19:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-89102（High・8.3）</strong>: 5.7.2〜5.9.2 のクライアント側でRFC 6961の複数OCSPレスポンスステープリング実装に不備があり、証明書の偽造につながるおそれ。</li>
+<li><strong>CVE-2026-89136（High・8.3）</strong>: RPK（Raw Public Key）利用時、TLS 1.2／1.3／DTLS 1.2 のクライアントが要求していない <code>server_cert_type=RawPublicKey</code> を受け入れてしまい、悪意あるサーバがなりすませる問題。</li>
+<li><strong>CVE-2026-93302（High・8.3）</strong>: <code>MatchTrustedPeer</code> が使用公開鍵を無視するため、CAの複製を偽造して検証を通過させられます（<code>WOLFSSL_TRUST_PEER_CERT</code> 有効ビルド）。</li>
+<li>CVE-2026-89135（Medium・6.3）は、失敗した <code>X509_verify_cert</code> が未検証の攻撃者CAを共有 CertManager に残留させる重大な問題です。ほか NameConstraints の多段CAでの不備（CVE-2026-89133）、dNSName以外のSANでのCNフォールバック（CVE-2026-89134）、ChangeCipherSpec の早期受理（CVE-2026-93304）、OCSPとCRLの併用時にCRL検証をスキップする問題（CVE-2026-94417）、TLSシャットダウン時のヒープUSE-AFTER-FREE（CVE-2026-15442）など。</li>
+<li>組み込み機器やIoT製品で wolfSSL を採用している場合は、ベンダの更新情報をご確認くださいませ。</li>
+</ul>
+
+<h3>Sylius 2.2.9 / 2.1.16 ほか — PHP製EC基盤に High 4件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-100870・100871・100872、各CVSSv4.0 8.7）×3件／<span class="badge-high">High</span>（CVE-2026-100869、8.2）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100869、CVE-2026-100870、CVE-2026-100871、CVE-2026-100872</td></tr>
+<tr><th>影響</th><td>Sylius 1.12.25／1.13.17／1.14.20／2.1.16／2.2.9 より前のバージョン</td></tr>
+<tr><th>修正版</th><td>1.12.25、1.13.17、1.14.20、2.1.16、2.2.9</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 22:16 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100870（High・8.7／CWE-640）</strong>: 管理者のパスワードリセットリンクを検証なしのHostヘッダから生成しており、偽のHostヘッダでリセットトークンを攻撃者ドメインへ誘導し、管理者アカウントを乗っ取れます。</li>
+<li><strong>CVE-2026-100871（High・8.7）</strong>: Admin API と Shop API が発行するJWTにファイアウォール識別子が含まれず、Shop側で登録したアカウントのトークンで管理者権限の操作が可能。</li>
+<li><strong>CVE-2026-100872（High・8.7）</strong>: カート再計算時に支払金額を検証せず、決済代行の取引開始後に注文合計を改ざんできます。<strong>CVE-2026-100869（High・8.2）</strong>は完了済み注文に対する返金操作を顧客が実行できる問題です。</li>
+</ul>
+
+<h3>Parse Server 9.10.1-alpha.10 / 8.6.91 — コードベース認証アダプタの外部ID偽装</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-101042、CVSSv4.0 7.4）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101042（CWE-287 不適切な認証）</td></tr>
+<tr><th>影響</th><td>9.0.0 以上 9.10.1-alpha.10 未満、8.0.2 以上 8.6.91 未満（GitHub・Google Play Games・Instagram・LINE・LinkedIn・Microsoft・QQ・Spotify・WeChat・Weibo のコードベース認証アダプタを設定した環境）</td></tr>
+<tr><th>修正版</th><td>9.10.1-alpha.10 ／ 8.6.91。暫定回避策は該当アダプタの無効化</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-28 02:16 JST</td></tr>
+</table>
+<ul>
+<li>ログインエンドポイントでユーザー名・パスワードと併せて認証データを送ると、外部プロバイダでのコード検証が行われないまま任意のプロバイダIDを自分のアカウントに紐付けられます。プロバイダIDを信頼するアプリケーションロジックに対するなりすましや、未連携の被害者アカウントを先回りして乗っ取る「事前ハイジャック」が成立します。</li>
+</ul>
+
+<h3>開発・運用ツール群 — pnpm、Fleet、http4k、Flatpak、Penpot MCP、python-utcp（MCP）ほか</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 多数（pnpm 8.3／Fleet 8.9・7.1／http4k 8.3・8.3・8.2／utcp-http 8.4・7.1・7.1／Flatpak 7.5／MONAI 最大8.8 ほか）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101043、CVE-2026-101044、CVE-2026-101045、CVE-2026-101046、CVE-2026-101047、CVE-2026-100724、CVE-2026-100725、CVE-2026-100834、CVE-2026-101057〜101061、CVE-2026-96279〜96283、CVE-2026-100868、CVE-2026-100840〜100846、CVE-2026-100744、CVE-2026-100746、CVE-2026-100740、CVE-2026-100866、CVE-2026-100867、CVE-2026-101032、CVE-2026-101033、CVE-2026-100873〜100882 ほか</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 10:17 〜 2026-09-28 07:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>pnpm</strong>: 11.0.0〜11.11.0 未満／10.7.0〜10.34.5 未満で、<code>pnpm-workspace.yaml</code> の <code>httpProxy</code> 等に書かれた <code>${VAR}</code> を展開するため、リポジトリを取得するだけで環境変数（トークン等）を外部プロキシへ送信させられます（CVE-2026-101043、8.3）。pacquet のロックファイル由来パス未検証も修正されています（CVE-2026-101044、7.1）。</li>
+<li><strong>Fleet</strong>: macOSアプリのインストール／アンインストールスクリプトがHomebrew cask メタデータのエスケープ不備を抱え、2026-08-19 より前に生成されたマニフェストで任意コード実行のおそれ（CVE-2026-101045、8.9）。iOSアプリ配信エンドポイントのトークン保護欠如（CVE-2026-101047、6.9）、activities エンドポイントのSQLインジェクション（CVE-2026-101046）も修正されています。</li>
+<li><strong>http4k（Java／Kotlin）</strong>: <code>reverseProxy()</code> の Host ヘッダ検証が部分一致のため、リバースプロキシ経由のルーティングをすり替えられる問題（CVE-2026-100724、8.3）、BasicCookieStorage が RFC 6265 のパス・ドメイン属性を強制しない問題（CVE-2026-100725、8.3）、Digest認証の nonce 検証が既定で無効（CVE-2026-100834、8.2）。修正版は 6.49.0.0 ／ 6.48.0.0 系です。</li>
+<li><strong>python-utcp ／ utcp-mcp（MCPクライアント群）</strong>: ツールURLの検証をすり抜けるSSRF（CVE-2026-101060、8.4）、ループバック宛のツールURL検証欠如（CVE-2026-101058、7.1）、OAuth2 の <code>tokenUrl</code> 未検証による資格情報の転送（CVE-2026-101059、7.1）、<code>ensure_secure_url</code> を経由しないHTTP／WebSocket接続（CVE-2026-101057）。MCPサーバへ接続するエージェント環境ではご確認くださいませ。</li>
+<li><strong>Flatpak</strong>: 悪意あるOCIレジストリがホストの任意ファイルを展開先へハードリンクさせ内容を窃取できる問題（CVE-2026-96279、6.5）、デルタストリーム解析のサイズ不整合によるメモリ破壊（CVE-2026-96280、7.5）、システム全体アプリのダウングレード（CVE-2026-96281、6.2）ほか。</li>
+<li><strong>Penpot 2.18.0</strong>: シングルユーザーモードでMCPサーバプラグインのWebSocketブリッジが全インターフェースに無認証でバインドされます（CVE-2026-100868、5.3）。</li>
+<li><strong>MONAI 1.6.0</strong>: バンドル設定エンジンの <code>_target_</code> 解決が許可リストなしで任意の呼び出し可能オブジェクトを解決し、リモートコード実行に至ります（CVE-2026-100840、8.5）。ほか pickle の安全でないデシリアライズ（CVE-2026-100843、8.5）、OSコマンドインジェクション（CVE-2026-100844、8.6）、<code>numpy.load</code> の <code>allow_pickle=True</code> 固定（CVE-2026-100845、8.5）など。<strong>信頼できないモデルバンドルを読み込む運用は避けてください。</strong></li>
+<li><strong>Coolify 4.1.2 まで</strong>: ルートレベルミドルウェアの認可不備（CVE-2026-100744）と GitHub App セットアップのリダイレクト処理（CVE-2026-100746）が確認されています。自ホストのPaaSをお使いの場合はご確認を。</li>
+<li>デスクトップ／CLI系では、onefetch 2.28.1 までの制御文字未除去による端末エスケープシーケンス注入（CVE-2026-100866、4.8）、spaceship-prompt 4.22.5 までの同種の問題（CVE-2026-100867、4.8）、navi 2.24.0 までのシェルメタ文字注入（CVE-2026-101032、7.3）。ほか AzuraCast 0.23.8 未満（DQLインジェクション CVE-2026-100847、8.7／コマンド注入 CVE-2026-100852、8.7 ほか）、heym 0.0.109 未満（ワークフローノードのSSRF・サンドボックス脱出多数）、Contrast（Kubernetes機密コンテナ基盤）1.16.0 未満のリモート認証リレー攻撃（CVE-2026-100835、9.1）などが登録されています。</li>
+</ul>
+
+<h3>CMS／プラグイン — WordPress 18件、Joomla「Event Gallery」5件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>〜Low（WordPress プラグイン分はNVDのCVSS未採点）／<span class="badge-high">High</span>（Joomla CVE-2026-97164、7.0）</td></tr>
+<tr><th>CVE</th><td>WordPress: CVE-2026-81655、82841、84069、85002、86609、86839、86841、89000、89001、89003、89006、92436、92995、96895、96896、96897、96899、97227、97319 ／ Joomla: CVE-2026-100747、100748、100749、97164、97165</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-27 15:17 JST（WordPress）、2026-09-27 21:17 JST（Joomla）</td></tr>
+</table>
+<ul>
+<li><strong>WordPress</strong>: 権限チェックやnonce検証の欠如、パス検証なしのローカルファイル読み込み（WebFacing 5.4 未満）、格納型XSS、フィードURL取得のSSRF、デジタル商品ファイルの無認証ダウンロード（Verge3D 4.13.0 まで）など、寄与小規模プラグインの脆弱性がまとめて公表されました。UpdraftPlus（1.26.8／2.26.8.26 未満）やWPeMatico RSS Feed Fetcher（2.8.27 未満）など著名どころも含まれます。<strong>自動更新の対象外にあるプラグインは手動での更新をご確認くださいませ。</strong></li>
+<li><strong>Joomla「Event Gallery」6.5.0 未満</strong>: CSRFトークン欠如による画像アップロード・カート操作（CVE-2026-100747〜100749）、<code>cache.process</code> タスクの任意パス削除（CVE-2026-97164、7.0）、<code>return</code> パラメータのbase64デコード後の未検証による反射型XSSとオープンリダイレクト（CVE-2026-97165、5.3）。</li>
+</ul>
+
+<h3>その他 — 本対象期間の参考情報</h3>
+<ul>
+<li><strong>CISA KEVへの追加</strong>: 本対象期間に追加されたのは Citrix NetScaler の CVE-2026-88771・CVE-2026-88772 の2件のみです（いずれも米連邦機関の対応期限は2026-09-30）。</li>
+<li><strong>D-Link DIR-895L（A1_102b07）</strong>: L2TP制御チャネルパーサの <code>tunnel_set_params</code> にスタックベースのバッファオーバーフロー（CVE-2026-100740、CVSSv3.1 8.6）。</li>
+<li><strong>Cloudreve・Krayin CRM・KitchenOwl・vulnerability-lookup</strong> など、PHP／Python／Go製の自ホスト型アプリにも High〜Low が登録されています（CVE-2026-101048・101051・101056、100882、101033、101041 ほか）。</li>
+<li>Claude Code（最新 2.1.283）・Hermes Agent（最新 v0.21.5 / v2026.9.24）・OpenClaw（最新 2026.9.6）は、いずれも本対象期間に新規リリース・セキュリティ修正の公表はありませんでした。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<hr>
+<p class="empty-notice">国内主要インシデントの新規公表はありませんでした。対象期間が土日（9月27日は日曜）にあたり、Security NEXT・ScanNetSecurity のいずれのインシデント欄も9月25日付が最新となっております。国内の継続案件（ロート製薬・コープやまぐち・ファイブフォックス・ワシントンホテル・日本トレクス等）については、新たな進展の公表は本対象期間には確認されませんでした。</p>
+<hr>
+<p>悪用が確認された動きとしては、上述の Citrix NetScaler（CVE-2026-88771・CVE-2026-88772）が米CISAのKEVに追加されたことが最も重要です。境界機器は侵害後の横展開の起点になりやすいため、該当バージョンをご利用の場合は侵害の痕跡確認もあわせてご検討くださいませ。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
