@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-27 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-27 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-26 09:00 〜 2026-09-27 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.283（新規リリースなし）</h2>
+<p class="empty-notice"><strong>Claude Code</strong> については、対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.283</strong>（2026-09-26 07:00 JST 公開）です。</p>
+<p>公式 changelog の RSS フィード（<code>https://code.claude.com/docs/en/changelog/rss.xml</code>）と HTML 版の双方を確認いたしましたが、対象期間内に <code>pubDate</code> を持つエントリはありませんでした。最新の <strong>v2.1.283</strong> は対象期間開始（2026-09-26 09:00 JST）より約 2 時間前の公開であり、対象期間外でございます。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（v0.21.5、2026-09-24 19:09 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新タグ <code>v2026.9.24</code> の公開時刻は対象期間開始より前であり、対象期間内に新たに公開されたタグはございません。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.6</strong>（2026-09-24 08:21 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新の安定版タグ <code>v2026.9.6</code> および直近の他タグ（<code>v2026.7.35</code>: 2026-09-21 22:14 JST、<code>v2026.9.5</code>: 2026-09-19 10:55 JST）はいずれも対象期間外でございます。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.214</h2>
+<p>対象期間内に <strong>v1.4.214</strong>（2026-09-27 07:36 JST 公開）がリリースされました。今回は <strong>Jupyter ノートブック（.ipynb）のネイティブ対応</strong>が最大の目玉で、加えてネイティブチャットのコンテキスト使用量表示、ZCode のハーネス対応、プロファイル保存の SQLite 移行が入っております。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Jupyter ノートブックをネイティブ表示</strong>: <code>.ipynb</code> がそのままノートブックとして描画され、セルをクリックして直接編集できます。セル実行は永続的な Jupyter カーネル上で行われ、<code>pip</code> がロックされている環境では <code>.venv</code> を自動作成し、ipykernel のセットアップ進捗も表示されます。ワークスペースのインタプリタは、ノートブックが信頼されるまで実行されません。</li>
+  <li><strong>ネイティブチャットの拡充</strong>: composer に<strong>コンテキストウィンドウの使用量</strong>が表示され、送信済みメッセージにはホバーでコピーボタンが出ます。スクロールすると古い履歴が自動で読み込まれ、メッセージレールには読み込み済みでないユーザーメッセージも含めて全件が表示されます。構造化チャットは再起動後もクリーンに再開します。</li>
+  <li><strong>Codex 0.157 以降が Orca 管理下のホームで正常起動</strong>: パス長（<code>SUN_LEN</code>）による失敗を回避し、単一のシェル環境設定で全構造化チャットを扱えるようになりました。Codex の各ジャーナル行には生成元エージェントが記録されます。</li>
+  <li><strong>子ワーク／サブエージェントの状態追跡</strong>: Codex・Claude・Pi・Grok をまたいで子ワークの状態が統合表示されます。<strong>ZCode が第一級のサポート対象ハーネス</strong>として加わりました。</li>
+  <li><strong>ターミナル・エディタ・ワークスペース</strong>: 単一ターミナルペインに明示的なクローズボタンが付き、再マウントされた SSH タブはシェルを正しく再生成します。管理下の WSL ターミナルには Orca CLI が自動で提供されます。ワークスペースのフォルダトグルは即時反映となり、AI ノートの UI も刷新されました。</li>
+  <li><strong>永続化と性能</strong>: プロファイル保存が <strong>SQLite に移行</strong>し、バックグラウンド書き込みと、ヘッドレス Orca 向けのバンドル済み Bun が導入されました。検索はバンドル済み ripgrep がローカル・WSL・SSH を担い、並行トランスクリプト読み込み・レディネスプローブ・ターミナルマーカー走査が大幅に低遅延化しています。</li>
+  <li><strong>リモート／relay／ブラウザ</strong>: リージョナル rehome オペレータが新しいプロダクションセルを受け入れ、relay のドレイン時間により接続断が防止されます。ブラウザのピクセルキャプチャは必要な場合のみ待機します。</li>
+  <li><strong>モバイル</strong>: OTA ページでネイティブのセーフエリア制御を獲得し、ストリーミングされるブラウザペインの扱いが滑らかになり、Android のライブ入力エコーが修正されました。ペアリング後もマシン名が保持されます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>構造化チャットの再開まわり</strong>: 再開に失敗したチャットがステータスバーに残り続けて対処法を示すようになり、Claude 自身が再開したターンを provider が再度開けるよう修正されました。境界付きテール読み込みが未適用行を飛び越えてカーソルを進める問題も解消されています。</li>
+  <li><strong>エージェント状態の集計</strong>: 統計がエージェントの作業のみを数えるようになり、Grok のバックグラウンドサブエージェントが「作業中」として扱われます。OpenCode のサブエージェントの系譜解決により、子ワークがペインを乗っ取る問題が修正されました。</li>
+  <li><strong>OpenCode 連携</strong>: OpenCode Go の使用量を Go API キーで読むよう修正し、rate-limit プラグインに固有の ID を付与、未確認のハンドオフを成功と報告しないようにしました。</li>
+  <li><strong>フック</strong>: タイムアウトした hook は「検証不能」として報告され、そのプロセスツリーが終了されます。</li>
+  <li><strong>そのほか</strong>: Windows で巨大な数値ファイル ID を読めるよう修正、不正な Base64 パディングの拒否、リモートが存在しない場合の upstream プローブ省略、PTY の EAGAIN 再試行のペーシング（停滞したリーダーがデーモンスレッドを飽和させる問題）など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.214">Orca v1.4.214 リリースノート</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースおよび公式ブログの新規記事は確認されませんでした。最新の安定版は <strong>v16.3.6</strong>（2026-09-23 02:15 JST 公開）です。canary チャネルでは <strong>v16.4.0-canary.49</strong>（2026-09-27 06:04 JST）と <strong>v16.4.0-canary.50</strong>（2026-09-27 08:44 JST）が対象期間内に公開されています。</p>
+<ul>
+  <li><strong>canary.49</strong>: export mangling のためだけに facade を分割しないよう変更、Turbopack が依存関係の読み込みでファイルシステムのルートを越えて webpack ローダーを許可するようになりました。</li>
+  <li><strong>canary.50</strong>: プレリリースチャネルにおける agentic upgrades の扱い（Git なしでも許可、プレリリースのセキュリティアップグレード制限の説明を追加）に関する調整です。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS</h2>
+<p class="empty-notice"><strong>AWS</strong>については、対象期間内に新規の「What's New」発表は確認されませんでした。最新の発表は「Amazon Transcribe adds customer-managed KMS keys for custom resources」（2026-09-26 04:19 JST 公開）で、対象期間開始より前の公開です。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<p class="empty-notice"><strong>Google Cloud</strong>については、対象期間内の新規リリースノートは確認されませんでした。最新のエントリは <strong>2026-09-25</strong> 付（2026-09-25 16:00 JST 更新）です。</p>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>☁️ Microsoft Azure</h2>
+<p class="empty-notice">Azure 公式アップデートフィードの取得が不安定であったため、対象期間内の新規アップデートは確認できませんでした。取得を試みたエンドポイントはいずれも応答せず（Microsoft のリリース情報 API は 502、RSS フィードは不正な応答）、内容を検証できないため本稿では取り上げません。</p>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h2>⚛️ React</h2>
+<p class="empty-notice"><strong>React</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v19.3.0</strong>（2026-09-10 03:01 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">facebook/react Releases</a></p>
+
+<h2>🐍 Python / Django</h2>
+<p class="empty-notice"><strong>Python</strong>・<strong>Django</strong>については、対象期間内の新規リリースは確認されませんでした。Python の最新タグは <strong>v3.15.0rc2</strong>（2026-09-01 18:14 JST）、Django の最新リリースは <strong>6.1.1</strong>（2026-09-03 02:30 JST 公開）です。</p>
+<p>🔗 <a href="https://www.python.org/downloads/">Python Downloads</a> · <a href="https://www.djangoproject.com/weblog/">Django Weblog</a></p>
+
+<h2>🟠 Hono</h2>
+<p class="empty-notice"><strong>Hono</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v4.13.9</strong>（2026-09-24 10:32 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/honojs/hono/releases">honojs/hono Releases</a></p>
+
+<h2>🍃 Java / Spring Boot</h2>
+<p class="empty-notice"><strong>Java / Spring Boot</strong>については、対象期間内の新規リリースは確認されませんでした。最新のマイルストーンは <strong>v4.2.0-M2</strong>（2026-09-24 19:38 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/spring-projects/spring-boot/releases">spring-projects/spring-boot Releases</a></p>
+
+<h2>🤖 Claude API / SDK</h2>
+<p class="empty-notice"><strong>Claude API / 公式 SDK</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は anthropic-sdk-python <strong>v1.8.0</strong>（2026-09-23 01:25 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases">anthropic-sdk-python Releases</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
