@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-28 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-28 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-27 09:00 〜 2026-09-28 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p class="empty-notice"><strong>Claude Code</strong>については、対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.283</strong>（2026-09-26 07:00 JST 公開）です。</p>
+<p>公式 changelog の RSS フィード（<code>https://code.claude.com/docs/en/changelog/rss.xml</code>）を第一の情報源として全エントリの <code>pubDate</code> を JST に換算して確認いたしました。対象期間内に該当するエントリはなく、最新の <strong>v2.1.283</strong>、<strong>v2.1.282</strong>（2026-09-25 03:46 JST 公開）、<strong>v2.1.281</strong>（2026-09-24 04:28 JST 公開）はいずれも対象期間外でございます。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（v0.21.5、2026-09-24 19:09 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code>（UTC）を JST に換算して確認いたしました。最新タグ <code>v2026.9.24</code> は約 460 件の PR をロールアップしたパッチリリースで、対象期間開始より前の公開でございます。対象期間内に新たに公開されたタグはございません。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.6</strong>（2026-09-24 08:21 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新の安定版タグ <code>v2026.9.6</code>、および直近の他タグ（<code>v2026.7.35</code>: 2026-09-21 22:14 JST 公開、<code>v2026.9.5</code>: 2026-09-19 10:55 JST 公開）はいずれも対象期間外でございます。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.215</h2>
+<p>対象期間内に <strong>v1.4.215</strong>（2026-09-27 12:08 JST 公開）がリリースされました。本パッチは <strong>v1.4.214 に 1 件の修正を加えたもの</strong>で、v1.4.214 が公開された後に main へ入った PR は含まれておりません。今回の主眼は、<strong>プロファイルの JSON コピーと SQLite コピーが食い違った際の解決手段をユーザー自身に委ねる</strong>という一点でございます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プロファイル二重管理の衝突を UI で解決</strong>: v1.4.214 でプロファイル保存が SQLite へ移行したことに伴い、JSON と SQLite の両コピーが存在して内容が一致しない状態が起こり得ます。従来はコマンドを実行して解決するよう促されるのみでしたが、今回から <strong>Orca が両コピーの最終保存時刻を並べて提示し、どちらを保持するかを選ばせ、その選択を自動で適用</strong>します。ユーザーが手動でコマンドを叩く必要はなくなりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.215">Orca v1.4.215 リリースノート</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースおよび公式ブログの新規記事は確認されませんでした。最新の安定版は <strong>v16.3.6</strong>（2026-09-23 02:15 JST 公開）です。canary チャネルでは <strong>v16.4.0-canary.51</strong>（2026-09-28 08:49 JST 公開）が対象期間内に公開されています。</p>
+<ul>
+  <li><strong>canary.51</strong>: DevTools 上で <strong>security upgrade insights を表示</strong>する変更（#99002）、および npm advisories を絞り込み「準備の整ったアップグレード」のみを促すよう調整する変更（#99222）が含まれます。いずれも雑多な変更（Misc Changes）枠での収録です。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<p>対象期間内に <strong>2026-09-27 付</strong>のリリースノート（2026-09-27 16:00 JST 更新）が確認されました。</p>
+<ul>
+  <li><strong>Google SecOps SOAR — Release 6.3.101</strong>: 記載のリージョン群のうち<strong>第一フェーズのリージョンへ順次展開中</strong>です。本リリースは内部および顧客報告のバグ修正を含みます。機能追加の記載はございません。</li>
+</ul>
+<p>なお、対象期間内に該当する他のプロダクト更新は確認されませんでした（2026-09-28 付エントリは本稿作成時点で未公開）。</p>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>☁️ AWS</h2>
+<p class="empty-notice"><strong>AWS</strong>については、対象期間内に新規の「What's New」発表は確認されませんでした。最新の発表は「Amazon Transcribe adds customer-managed KMS keys for custom resources」（2026-09-26 04:19 JST 公開）で、対象期間開始より前の公開です。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Microsoft Azure</h2>
+<p class="empty-notice">Azure 公式アップデートページは本文が JavaScript で描画される構成のため静的取得では内容を検証できず、対象期間内の新規アップデートは確認できませんでした。Azure 公式ブログ（RSS）についても、対象期間内に該当する記事はございません（直近の記事は 2026-09-17 01:00 JST 公開）。</p>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a> · <a href="https://azure.microsoft.com/en-us/blog/">Azure Blog</a></p>
+
+<h2>⚛️ React</h2>
+<p class="empty-notice"><strong>React</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v19.3.0</strong>（2026-09-10 03:01 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">facebook/react Releases</a></p>
+
+<h2>🐍 Python / Django</h2>
+<p class="empty-notice"><strong>Python</strong>・<strong>Django</strong>については、対象期間内の新規リリースは確認されませんでした。Python の最新タグは <strong>v3.15.0rc2</strong>、Django の最新安定版は <strong>6.1.1</strong> です。</p>
+<p>🔗 <a href="https://www.python.org/downloads/">Python Downloads</a> · <a href="https://www.djangoproject.com/weblog/">Django Weblog</a></p>
+
+<h2>🟠 Hono</h2>
+<p class="empty-notice"><strong>Hono</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v4.13.9</strong>（2026-09-24 10:32 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/honojs/hono/releases">honojs/hono Releases</a></p>
+
+<h2>🍃 Java / Spring Boot</h2>
+<p class="empty-notice"><strong>Java / Spring Boot</strong>については、対象期間内の新規リリースは確認されませんでした。最新のマイルストーンは <strong>v4.2.0-M2</strong>（2026-09-24 19:38 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/spring-projects/spring-boot/releases">spring-projects/spring-boot Releases</a></p>
+
+<h2>🤖 Claude API / SDK</h2>
+<p class="empty-notice"><strong>Claude API / 公式 SDK</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は anthropic-sdk-python <strong>v1.8.0</strong>（2026-09-23 01:25 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases">anthropic-sdk-python Releases</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
