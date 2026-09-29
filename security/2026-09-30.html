@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-30 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-09-30 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>本対象期間（2026-09-29 08:00 〜 2026-09-30 08:00 JST）に、NVDへは549件のCVEが新規登録されました。基盤ライブラリの更新が重なった一日で、<strong>OpenSSL 4.0.3</strong>（TLS／X.509／QUICの4件）、<strong>Pythonのurllib3 2.8.0</strong>（プロキシTLSの分離不備とチャンク解析のメモリ枯渇）、<strong>Node.jsのsimple-git 4.0.0／4.0.1</strong>（安全でないオプション検出の回避により任意コマンド実行、Critical 2件）が目立ちます。AI／エージェント周辺では <strong>Ollama のBash承認バイパス</strong>、<strong>Google MCP Toolbox for Databases のsymlink経由の境界回避</strong>、<strong>AWS GluonTS のモデル読込デシリアライズRCE</strong> が採番されました。</p>
+<p>リリース面では <strong>Claude Code 2.1.285</strong>、<strong>OpenClaw 2026.8.33（extended-stable／セキュリティロールアップ）</strong> が公開され、<strong>Hermes Agent は新規リリースなし（最新 v0.21.5 / v2026.9.24）</strong>でした。また米CISAは悪用確認済みカタログ（KEV）に <strong>Apple の CVE-2026-86950</strong> を追加し、同件は既報のとおりiOS／macOS向け修正が提供済みです。</p>
+
+<h3>OpenSSL 4.0.3 — TLS・X.509・QUICに4件（CVE-2026-84783 ほか）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-84782、CVSSv3.1 8.2）／<span class="badge-high">High</span>（CVE-2026-72897・84783・84784、各7.5）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-84782（CWE-125 域外読み取り）、CVE-2026-84783（CWE-416 Use After Free）、CVE-2026-72897（CWE-125）、CVE-2026-84784（CWE-770 資源の無制限割当）</td></tr>
+<tr><th>影響</th><td>OpenSSL 4.0（CVE-2026-84783・72897・84784）。CVE-2026-84782 はDTLSを利用するバージョン。3.6／3.5／3.4／3.0／1.1.1／1.0.2 は CVE-2026-84783 の対象外</td></tr>
+<tr><th>修正版</th><td>OpenSSL 4.0.3（セキュリティアドバイザリ 20260929）</td></tr>
+<tr><th>公開日</th><td>OpenSSL 2026-09-29／NVD登録 2026-09-29 16:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-84783（7.5）</strong>: 同一のX.509証明書を複数スレッドが同時に初回利用すると、拡張情報のキャッシュが解放済みのまま他スレッドが参照するUse After Freeです。<strong>信頼済みCA証明書は全接続で共有される</strong>ため、マルチスレッドのTLSクライアントやクライアント証明書を要求するTLSサーバが、同一CAへの証明書チェーンを同時に構築した場合に到達します。遠隔・未認証の相手がプロセスをクラッシュさせられるため、事実上のDoSとなります。</li>
+<li><strong>CVE-2026-72897（7.5）</strong>: ハンドシェイク途中に <code>SSL_set_SSL_CTX()</code> で接続を別のSSL_CTXへ切り替えるサーバで、置換後のコンテキストがより多くの署名アルゴリズムを認識している場合に内部配列の終端を越えて参照します。<code>SSL_set_SSL_CTX()</code> を呼ばないアプリケーションは影響を受けません。</li>
+<li><strong>CVE-2026-84782（8.2）</strong>: DTLSのハンドシェイクメッセージ送信が途中で中断（WANT_WRITE）した状態で再送タイマが発火すると、再送の読み取り位置がリセットされず、<strong>送信されるはずのない別メッセージの残余バイトが送信</strong>され、さらにバッファ終端を越えて参照されます。</li>
+<li><strong>CVE-2026-84784（7.5）</strong>: QUICスタックが NEW_CONNECTION_ID を受けるたびに RETIRE_CONN_ID を送る仕様を悪用し、相手がACKを保留すると<strong>約400MBのメモリを消費</strong>させられます。</li>
+<li>いずれもFIPSモジュール境界の外側で、FIPSへの影響はありません。OpenSSL 4.0系をご利用の環境は 4.0.3 への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>urllib3 2.8.0 — HTTPSプロキシのTLS設定混同とチャンク解析のメモリ枯渇（CVE-2026-97687・97689）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-97689、CVSSv3.1 8.9）／<span class="badge-high">High</span>（CVE-2026-97687、7.6）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-97687（CWE-295 不適切な証明書検証）、CVE-2026-97689（CWE-770）</td></tr>
+<tr><th>影響</th><td>urllib3 1.10.3〜2.8.0 未満（CVE-2026-97689）／1.26.0〜2.8.0 未満（CVE-2026-97687）</td></tr>
+<tr><th>修正版</th><td>urllib3 2.8.0</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 16:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-97687（7.6）</strong>: HTTPSプロキシ利用時に、ターゲットサーバ向けのTLS設定（<code>proxy_ssl_context</code>、<code>proxy_assert_hostname</code>、<code>cert_reqs</code>、<code>verify_mode</code> 等）がプロキシ接続へ誤って適用され、両者の分離が保てなくなります。特に <code>cert_reqs=CERT_NONE</code> は <code>proxy_ssl_context.verify_mode</code> を<strong>その場で書き換え、以後の接続でも証明書検証が無効</strong>になりえます。細工した証明書を提示するプロキシに中間者として振る舞われ、転送内容の傍受・改ざんやクライアント証明書の取得に至るおそれがあります。</li>
+<li><strong>CVE-2026-97689（8.9）</strong>: <code>HTTPResponse.read_chunked</code>／<code>stream</code> が、改行で終端されないチャンクサイズ行を長さ上限なしでバッファリングするため、悪意あるHTTPサーバが際限なくメモリを消費させてクライアントプロセスを枯渇させられます。</li>
+<li>PythonのHTTPクライアントはrequests・各種SDKの下層で広く使われています。依存の洗い出しをおすすめいたします。</li>
+</ul>
+
+<h3>simple-git 4.0.0／4.0.1 — 安全でないオプション検出を回避され任意コマンド実行（CVE-2026-102826〜102829）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-102828・102829、各CVSSv3.1 9.2）／<span class="badge-high">High</span>（CVE-2026-102826・102827、各8.1）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102826（CWE-88）、CVE-2026-102827（CWE-88）、CVE-2026-102828（CWE-78）、CVE-2026-102829（CWE-88）</td></tr>
+<tr><th>影響</th><td>simple-git 4.0.0 未満（102826・102827）、3.15.0〜4.0.1 未満（102828）、<code>@simple-git/argv-parser</code> 2.0.1 未満（102829）</td></tr>
+<tr><th>修正版</th><td>simple-git 4.0.0／4.0.1、<code>@simple-git/argv-parser</code> 2.0.1</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 19:17 JST</td></tr>
+</table>
+<ul>
+<li>既定の <code>blockUnsafeOperationsPlugin</code> が危険なGitオプションを<strong>字面の完全一致</strong>で判定しているため、Gitが受理する<strong>曖昧な省略形</strong>（<code>--receive-pack</code> や <code>--exec</code> の短縮形など）で検出を回避できます（CVE-2026-102827）。また <code>config</code>／<code>-c</code> 経由で <code>trailer.&lt;token&gt;.cmd</code> を指定できることを検出できず、<code>git interpret-trailers</code> 実行時に<strong>Node.jsプロセス権限で攻撃者の選んだコマンドが起動</strong>します（CVE-2026-102828、9.2）。</li>
+<li>CVE-2026-102826 は <code>git.clone()</code> の <code>customArgs</code> 経由の <code>include.path</code>／<code>includeIf.&lt;条件&gt;.path</code> の分類漏れで、攻撃者が用意した設定ファイルを読み込ませ <code>core.sshCommand</code> 等の実行オプションを成立させられます。CVE-2026-102829 は <code>parseEnv</code> が <code>VISUAL</code> を <code>GitEnvKeys</code> に含めておらず、環境値を転送するアプリケーションで<strong>任意のエディタが起動</strong>します。</li>
+<li>いずれもアプリケーションが攻撃者の影響を受ける引数・環境値をGit操作へ渡していることが前提です。CIツールやリポジトリ管理UIなどでsimple-gitをお使いの場合は優先度を上げてご確認くださいませ。</li>
+</ul>
+
+<h3>lib0 — 未認証の隣接メモリ読み出し、セッショントークンが奪取されうる（CVE-2026-102360・102521）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102360・102521、各CVSSv3.1 8.6）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102360（CWE-125）、CVE-2026-102521（CWE-125）</td></tr>
+<tr><th>影響</th><td>lib0 0.2.1〜0.2.117／1.0.0-rc.32 以前、および <code>readFromDataView</code> を含む 0.2.119 未満</td></tr>
+<tr><th>修正版</th><td>lib0 0.2.118／0.2.119、1.0.0-rc.33</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 14:17 JST</td></tr>
+</table>
+<ul>
+<li><code>readUint8Array</code> がワイヤ上の長さ指定とデコーダ自身のビューを比較していないため、長すぎる長さプレフィックスを1つ送るだけで<strong>ホストプロセスが隣接して確保したメモリを丸ごと読み出し、返送させられます</strong>。他テナントのドキュメント内容、個人情報、生きたベアラセッショントークンが対象になりえます。</li>
+<li>ソケットを開ける相手（<strong>認証前を含む</strong>）が到達でき、読み出した値をエコー・保存・再配信する実装ではそのまま攻撃者へ渡ります。リアルタイム共同編集（Yjs系）を採用しているサービスは、依存バージョンの確認を強くおすすめいたします。</li>
+</ul>
+
+<h3>Electron — サンドボックス境界の取りこぼし5件（CVE-2026-102673〜102677）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102676、CVSSv3.1 8.3）／<span class="badge-high">High</span>（CVE-2026-102673・102674、各8.2）／<span class="badge-high">High</span>（CVE-2026-102677、7.8）／<span class="badge-medium">Medium</span>（CVE-2026-102675、7.4）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102673、CVE-2026-102674、CVE-2026-102675、CVE-2026-102676、CVE-2026-102677</td></tr>
+<tr><th>影響</th><td>Electron 41.10.4／42.5.2／43.0.0 より前、41.10.6／42.9.2／43.4.1／44.0.0-beta.5 より前、42.3.3〜42.10.0 ほか（サンドボックス化したiframe・トップレベル文書で信頼できないコンテンツを読み込むアプリ）</td></tr>
+<tr><th>修正版</th><td>41.10.6、42.10.0、43.5.0、44.0.0-beta.6</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 17:17／18:17 JST</td></tr>
+</table>
+<ul>
+<li>サンドボックス化したiframeからのポップアップ（<code>target="_blank"</code>・中クリック）が<strong>HTMLサンドボックス制約を継承せず</strong>アプリの完全なオリジンを与える問題（CVE-2026-102673）、サンドボックス化したトップレベル文書から開いたウィンドウが制約を継承しない問題（CVE-2026-102674）、<code>&lt;webview&gt;</code> のゲストが Node.js 統合を無効化した埋め込み側を超えて<strong>Worker で Node を有効化</strong>できる問題（CVE-2026-102676、8.3）など。</li>
+<li>CVE-2026-102677 では、サンドボックス化されたプリロードのコードキャッシュが<strong>どのプリロード向けかを検証していない</strong>ため、侵害したレンダラが書き込んだキャッシュを後のロードで再利用させ、より高い権限のプリロード文脈でコードを実行させられます。</li>
+<li>「信頼できないコンテンツを読み込まない」「<code>setWindowOpenHandler</code> でポップアップを拒否する」といった構成は影響を避けられますが、デスクトップアプリでは更新適用が最善です。</li>
+</ul>
+
+<h3>AI／エージェント基盤 — Ollama のBash承認バイパス、Google MCP Toolbox のsymlink境界回避、AWS GluonTS のデシリアライズRCE</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102697、CVSSv3.1 8.5）／<span class="badge-high">High</span>（CVE-2026-102242、8.6）／<span class="badge-high">High</span>（CVE-2026-100308、8.4）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102697（CWE-863 不適切な認可）、CVE-2026-102242（CWE-59／CWE-22）、CVE-2026-100308（CWE-502 信頼できないデータのデシリアライズ）</td></tr>
+<tr><th>影響</th><td>Ollama 0.14.0〜0.31.2 未満（実験的エージェントモードのBashツール）／Google MCP Toolbox for Databases 1.2.0〜1.9.0／Amazon GluonTS 0.17.0 未満</td></tr>
+<tr><th>修正版</th><td>Ollama 0.31.2、MCP Toolbox（修正コミット）、GluonTS 0.17.0</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 16:17〜18:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>Ollama（8.5）</strong>: エージェントモードのBashツール承認機構がシェル構文を正しく解析しないため、<strong>プロンプトインジェクションでモデル出力を操作できる攻撃者は、承認済みコマンドにセミコロンや <code>&amp;&amp;</code> を付けて追加コマンドを実行</strong>させ、セッション単位の承認要件を回避できます。AIエージェントに任意コマンド実行を許可している構成は、承認プロンプトの表示だけを信頼しないようご注意くださいませ。</li>
+<li><strong>Google MCP Toolbox for Databases（8.6）</strong>: <code>allowedLocalRoots</code> のパス検証がディレクトリを<strong>字句的にのみ判定しシンボリックリンクを解決しない</strong>ため、ツール実行権限を持つ認証済みの攻撃者が許可ルート外の任意ローカルファイルを読み書きできます。</li>
+<li><strong>Amazon GluonTS（8.4）</strong>: モデル読み込みコンポーネントが信頼できないデータをデシリアライズするため、細工したシリアライズ済みモデルディレクトリを読み込ませて<strong>読み込みプロセスの権限で任意のOSコマンドを実行</strong>させられます（AWS セキュリティ速報 2026-119-aws）。</li>
+</ul>
+
+<h3>Python ツールチェーン — virtualenv のactivateインジェクションとseed wheelの検証欠如（CVE-2026-102925・102930・102937）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102925、CVSSv3.1 7.8）／<span class="badge-high">High</span>（CVE-2026-102930、7.7）／<span class="badge-high">High</span>（CVE-2026-102937、7.3）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102925（CWE-78）、CVE-2026-102930（CWE-494 完全性検証の欠如）、CVE-2026-102937（CWE-78）</td></tr>
+<tr><th>影響</th><td>virtualenv 21.7.13 未満（102925）、21.7.12 未満（102930・102937）</td></tr>
+<tr><th>修正版</th><td>virtualenv 21.7.12／21.7.13</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 21:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-102925（7.8）</strong>: 生成される <code>activate</code>（bash／zsh）・<code>activate.fish</code> が、<code>shlex.quote()</code> 済みの値をさらに引用符で囲むため、細工した仮想環境パスやTcl／Tkライブラリパスによって<strong>引用の範囲を終端させ、利用者がactivateした時点でシェルメタ文字がコマンドとして実行</strong>されます。Fish版・Windows版（CVE-2026-102937、<code>--prompt</code> 経由）も同種の欠陥を持ちます。</li>
+<li><strong>CVE-2026-102930（7.7）</strong>: <code>download_wheel()</code> が seed wheel（pip／setuptools）を取得する際、同梱ホイールと同等のダイジェスト検証を行いません。侵害されたインデックス・古いミラー・傍受されたTLSにより<strong>同名・同バージョンの別ホイールへ差し替えられ、以後作成される環境へ混入</strong>します。カスタムインデックス（<code>PIP_INDEX_URL</code> 等）構成では検証が意図的に省略されます。</li>
+<li>開発・CI環境の前提を揺るがす問題です。virtualenv の更新とあわせて、seed wheel を同梱する方式（<code>--no-seed</code> 等の見直し）もご検討くださいませ。</li>
+</ul>
+
+<h3>Apache XmlSchema 2.3.3 — 深いネスト・循環によるスタック枯渇DoS（CVE-2026-102495〜102497）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102495・102496・102497、各CVSSv3.1 7.5）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102495、CVE-2026-102496、CVE-2026-102497（いずれもCWE-674 制御されない再帰）</td></tr>
+<tr><th>影響</th><td>Apache XmlSchema 2.3.3 未満（<code>xmlschema-walker</code> を含む）</td></tr>
+<tr><th>修正版</th><td>Apache XmlSchema 2.3.3</td></tr>
+<tr><th>公開日</th><td>Apache公開 2026-09-29／NVD登録 2026-09-29 12:17 JST</td></tr>
+</table>
+<ul>
+<li>スキーマの import／include のネスト段数、スキーマ構造のネスト段数、型派生・置換グループ・モデルグループ・属性グループの循環のいずれも上限がなく、<strong>悪意あるXMLスキーマを解析させるとスタックオーバーフローでサービスが停止</strong>します。</li>
+<li>外部からスキーマを受け付けるWebサービス・ETLでは、入力スキーマの出所制限とあわせて更新をご検討くださいませ。</li>
+</ul>
+
+<h3>ブラウザ — Firefox 157／ESR 153.4 と Chrome 154.0.8037.92 の更新</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（Firefox のサンドボックスエスケープ多数、CVSSv3.1 9.6）／<span class="badge-critical">Critical</span>（Chrome の域外書き込み・Use After Free 多数、9.6）</td></tr>
+<tr><th>CVE</th><td>Firefox: CVE-2026-100762・100770・100778・100786・100800・100804・100811・100818・100819（9.6）ほか多数／Chrome: CVE-2026-102304・102306・102308・102309・102316・102331（9.6）ほか</td></tr>
+<tr><th>影響</th><td>Firefox 157 未満、Firefox ESR 153.4／115.42／140.17 未満／Google Chrome 154.0.8037.92 未満</td></tr>
+<tr><th>修正版</th><td>Firefox 157、Firefox ESR 153.4・115.42・140.17（MFSA 2026-97／98／100）／Google Chrome 154.0.8037.92</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 13:17／20:17 JST</td></tr>
+</table>
+<ul>
+<li>Firefoxは<strong>サンドボックスエスケープ（Use After Free・境界条件の不備）が9.6で9件</strong>採番される大規模な修正です。DOM・Graphics・Widget: Gtk・XPCOM・Preferences など広範なコンポーネントが対象で、レンダラ侵害後の権限昇格・脱サンドボックスにつながります。</li>
+<li>Chromeは 154.0.8037.92 で、Passwords・Bluetooth・Views・FullScreen・ANGLE のUse After Free／バッファオーバーフロー（各9.6）をはじめ多数を修正しています。</li>
+<li>いずれもマネージド環境では配信状況の確認を、個人環境では速やかな再起動と更新適用をおすすめいたします。</li>
+</ul>
+
+<h3>JupyterLab／Notebook／JupyterLite — クリップボード貼り付けで出力サニタイズを回避（CVE-2026-102831）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（CVE-2026-102831、CVSSv3.1 8.1）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102831（CWE-79 クロスサイトスクリプティング相当の文脈）</td></tr>
+<tr><th>影響</th><td>JupyterLab 4.5.0〜4.5.11 未満・4.6.4 未満、Notebook 7.5.0〜7.6.3 未満、JupyterLite Core 0.7.0〜0.8.4 未満</td></tr>
+<tr><th>修正版</th><td>JupyterLab 4.5.11／4.6.4、Notebook 7.6.3、JupyterLite Core 0.8.4</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 19:17 JST</td></tr>
+</table>
+<ul>
+<li>システムクリップボード経由のセル貼り付け（<code>useSystemClipboardForCells</code> が有効、<code>pasteCodeCellsWithoutOutput</code> が無効）で、<strong>攻撃者が用意したセルJSONの <code>metadata.trusted</code> がクリアされない</strong>ため、貼り付けだけでHTML出力が「信頼済み」と扱われ、セルを実行しなくてもサニタイズを迂回してスクリプトが動きます。</li>
+<li>共同利用のJupyter環境では、貼り付け元のノートブック・メッセージの出所管理が新たな前提となります。解析基盤を提供されている場合は更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Claude Code 2.1.285 — マネージド設定・プラグイン検証・ログのマスキングまわりを修正</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>セキュリティ関連の不具合修正（CVE採番なし）</td></tr>
+<tr><th>影響</th><td>Claude Code 2.1.284 以前（マネージド設定・MCP・プラグイン運用環境）</td></tr>
+<tr><th>修正版</th><td>Claude Code 2.1.285</td></tr>
+<tr><th>公開日</th><td>2026-09-30 04:27 JST（2026-09-29 19:27 UTC）</td></tr>
+</table>
+<ul>
+<li><strong><code>allowedProviders</code> マネージド設定を追加</strong>。端末が利用できるAPIプロバイダ（Anthropic API、カスタムエンドポイント、Bedrock、Mantle、Vertex AI、Foundry、Claude Platform on AWS、クラウドゲートウェイ）を組織側で制限できます。</li>
+<li><strong><code>CLAUDE_CODE_DISABLE_WEB_FETCH</code></strong> でWebFetchツール自体を無効化できるようになりました。外部取得を禁じたい環境での統制が効きます。</li>
+<li>マネージド設定ファイルの読み取りをOSが拒否した場合、従来は起動を拒否していた挙動を<strong>警告のうえポリシーなしで起動</strong>するよう変更（他の読み取りエラーや解析不能ファイルは従来どおり全セッション停止）。統制の効き方に直結する変更のため、運用側での把握をおすすめいたします。</li>
+<li>SSH経由のプラグイン／マーケットプレイス導入・更新が <code>GIT_SSH</code> や <code>core.sshCommand</code> の指定を無視していた問題、<code>claude mcp list</code> 等がMCPサーバ名・設定値に含まれる<strong>改行や端末エスケープシーケンスを出力していた問題</strong>、URLパスワードの一部が<code>@</code>を含む場合に紅葉済みログへ露出していた問題を修正。<code>claude plugin install</code> が id の僅かな差（<code>.</code>、<code>-</code>、<code>@</code>、大文字小文字）で別プラグインのフォルダへ導入する問題は<strong>導入自体を拒否</strong>するようにしています。</li>
+</ul>
+
+<h3>OpenClaw 2026.8.33（extended-stable）— セキュリティロールアップを収載</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>セキュリティ更新を含むLTS系列リリース</td></tr>
+<tr><th>影響</th><td>extended-stable（LTS相当）系列 2026.8.2 を対象とする全リポジトリアドバイザリの和解</td></tr>
+<tr><th>修正版</th><td>openclaw 2026.8.33（最新版は 2026.9.6。本リリースはゲートウェイのみの配信）</td></tr>
+<tr><th>公開日</th><td>2026-09-29 12:12 JST（2026-09-29 03:12 UTC）</td></tr>
+</table>
+<ul>
+<li>extended-stable 系列に対する<strong>セキュリティロールアップ</strong>として、2026.8.2 に影響する全リポジトリアドバイザリを和解（PR #136700、#137433、#140334、#140903）。<strong>Prometheusメトリクスの認可</strong>、<strong>Discordのアセット／ボイス所有権判定</strong>を強化し、本番環境のNodemailerアドバイザリゲートを解消しています。</li>
+<li>最新機能系列は引き続き 2026.9.6 です。LTS系列をお使いの環境は 2026.8.33 で脆弱性面の追いつきが図れます。</li>
+</ul>
+
+<h3>参考 — OpenClaw／Hermes Agent のリリース状況</h3>
+<table class="cve-table">
+<tr><th>OpenClaw</th><td>最新は <strong>2026.9.6</strong>（2026-09-24 08:21 JST）。本対象期間には extended-stable の <strong>2026.8.33</strong>（上記）が公開されました。</td></tr>
+<tr><th>Hermes Agent</th><td>最新は <strong>v0.21.5（v2026.9.24）</strong>（2026-09-24 19:09 JST）。本対象期間に新規リリースおよびセキュリティ修正の公表はありませんでした。</td></tr>
+</table>
+
+<h3>そのほか、本対象期間に登録・公表された主な脆弱性</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（9.8・9.3 ほか）／<span class="badge-high">High</span>（8.9〜7.0）多数／<span class="badge-medium">Medium</span>／<span class="badge-low">Low</span></td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-29 08:17〜22:19 JST（ベンダCNA／GitHubアドバイザリ由来を含む）、および 2026-09-30 早朝</td></tr>
+</table>
+<ul>
+<li><strong>HPE Networking Instant ON</strong>（CVE-2026-76721・76722、各9.8／CVE-2026-76723〜76725、各9.6）: APの管理インターフェイスにおけるバッファオーバーフロー・書式文字列・CLIコマンドインジェクション・隣接未認証での認証回避。未認証で任意コード実行に至る深刻な一群です。同シリーズで認証バイパス（76726、8.1）、SSRF（76728、7.2）も採番されています。</li>
+<li><strong>WatchGuard AP</strong>（CVE-2026-86102・101891、各9.3／CVE-2026-87969）: 内部APIサービスのOSコマンドインジェクション（ネットワーク到達で基盤OS上の任意シェル実行）、アクセス制御不備（<strong>未認証で有効なAPIセッションを取得</strong>）、診断CLIのコマンドインジェクション。Security NEXT 2026-09-29。</li>
+<li><strong>Octopus Server</strong>（CVE-2026-101169、8.7）: 環境／プロジェクト編集権限を持つ認証済みユーザーが細工したJSONを設定すると、安全でないデシリアライズにより<strong>サーバプロセス上で任意コードが実行</strong>されます（アドバイザリ sa2026-10）。</li>
+<li><strong>TeamViewer 15.82</strong>（CVE-2026-92370、8.8／CVE-2026-92368、7.8／CVE-2026-92369、7.3／CVE-2026-19743・92371、各7.8・7.0）: セッション確立時に被災者の権限設定を回避して<strong>拒否済み機能を実行</strong>され遠隔コード実行に至るおそれ、<code>.tvs</code> 録画ファイル処理のヒープバッファオーバーフロー、インストーラのTOCTOU競合など。</li>
+<li><strong>Email・OS基盤</strong>: <code>rpm</code> のヒープバッファオーバーフロー（CVE-2026-95520、7.1／<code>rpm2cpio</code> 等で任意パッケージを処理）、<code>libexpat</code> 2.7.2〜2.8.5 の整数オーバーフロー（CVE-2026-102633、8.2／32bit環境）、<code>libsoup</code> のWebSocket群（CVE-2026-102555〜102560、8.2〜8.6／ペイロード長の切り詰めによるヒープ破壊）、<code>Ghostscript for Windows</code> のローカル権限昇格（CVE-2026-19547、7.0）。</li>
+<li><strong>AI／データ基盤</strong>: <code>SGLang</code> 0.5.20 のMooncake KV転送における <code>bootstrap_room</code> 重複未検証でスケジューラを停止させられる問題（CVE-2026-102634、8.7）、<code>CTranslate2</code> 4.8.1 未満のモデルローダのヒープバッファオーバーフロー（CVE-2026-102566、8.5）、<code>@socket.io/cluster-engine</code> 0.1.1 未満のプロトタイプチェーン参照によるDoS（CVE-2026-102600、7.5）、<code>Russh</code> 0.63.1 未満のチャネルID検証欠如（CVE-2026-102823、7.5）。</li>
+<li><strong>Web／CMS</strong>: Joomla! Core（CVE-2026-92222 のSSRF、8.9／CVE-2026-92227 のMFAバイパス、8.2／ほかACL不備・格納型XSS・任意ディレクトリ削除）、Joomla拡張 Balbooa Forms 2.4.3.4 未満（<strong>CVE-2026-102425 の未認証RCE、9.5</strong>、CVE-2026-102424 のパストラバーサル、8.9）、<code>Weblate</code> のMercurialバックエンド引数インジェクション（CVE-2026-86035、8.5）、<code>Marmite</code> 0.4.2 の開発サーバのパストラバーサル・認証欠如（CVE-2026-102810・102811、各8.7）。</li>
+<li><strong>組み込み・IoT</strong>: NetX Duo／ThreadX 群（CVE-2026-102710・102761、各9.3ほか多数）、U-Boot 群（CVE-2026-15390、9.0／NFS・DHCPv6・lwIP wget のメモリ破壊）、PX4 Autopilot 1.17.0（CVE-2026-102808・102809）、HPE OneView（CVE-2026-76718・76719、各8.2／セッションハイジャック）、Dell Secure Connect Gateway（CVE-2026-73598、7.8）、VLC 3.0.24 未満の <code>.vlt</code> スキンパストラバーサル（CVE-2026-102875、8.5）。</li>
+<li><strong>米CISA KEV</strong>: 2026-09-29付で <strong>CVE-2026-86950（Apple CoreGraphics の域外書き込み）</strong> を追加（連邦機関の対応期限 2026-10-02）。既報のとおり iOS 26.7.1／iPadOS 26.7.1／macOS Tahoe 26.7.1 等で修正済みですが、<strong>「特定の個人を狙った攻撃で悪用された」との報告に基づくKEV収載</strong>であるため、未適用端末の更新を優先くださいませ。カタログ版は 2026.09.29（収載1,729件）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js 本体・Hono・Django 本体・React・Spring Boot・Azure について、本対象期間内に直接関連する新規セキュリティアドバイザリは確認されませんでした（AWS 関連は上記の Amazon GluonTS、Google 関連は MCP Toolbox for Databases を掲載しています）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<p>本対象期間は国内の大規模・生活密着型の被害公表が集中しました。<strong>タイムズモビリティ（パーク24）のカーシェア「タイムズカー」で会員約660万件の個人情報流出</strong>、<strong>セイコーマートのアプリ経由で会員情報サーバが第三者に侵害（約57万アカウント）</strong>、<strong>東京メトロのポイントサービス「メトポ」で会員メールアドレス約5万9000件の流出のおそれ</strong> が並んでいます。警察庁は2026年上半期のランサムウェア被害報告が<strong>123件と半期で過去最多</strong>となったことを公表しました。</p>
+
+<h3>タイムズモビリティ（パーク24）— カーシェア「タイムズカー」のシステム侵害、会員約660万件の個人情報が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>パーク24株式会社（子会社 タイムズモビリティ株式会社）</td></tr>
+<tr><th>事象</th><td>システムへの第三者アクセス（侵害）・個人情報流出</td></tr>
+<tr><th>影響範囲</th><td>「タイムズカー」「タイムズビジネスサービス」あわせて<strong>約660万件</strong>（退会者を含む）。氏名・住所・電話番号・生年月日・メールアドレス・免許情報・本人確認書類・法人会員の所属部署・連携サービスID、および復元できないよう処理されたパスワード</td></tr>
+<tr><th>対応</th><td>2026-09-25に侵害を検知。第三者がシステムにアクセスした形跡と個人情報の流出を確認。外部協力のもとフォレンジック調査を実施し、個人情報保護委員会へ報告済み。サービス提供への影響はなし</td></tr>
+<tr><th>公表日</th><td>2026-09-29（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>免許情報・本人確認書類まで含む<strong>本人確認水準の情報が数百万件規模で流出</strong>した事案です。会員アカウントのなりすまし、SMS・メールによる誘導、他社サービスでの本人確認書類の悪用といった二次被害が長期に及びうるため、対象会員への注意喚起と当該IDの再利用停止の周知が重要ですわ。</li>
+<li>車両予約・決済を担う基盤への侵害であり、取引先・法人契約先への波及範囲の確定が待たれます。</li>
+</ul>
+
+<h3>セイコーマート — アプリ経由で会員情報サーバに第三者アクセス、約57万アカウントに影響</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>セイコーマート（北海道セイコーマートグループ）</td></tr>
+<tr><th>事象</th><td>不正アクセス（アプリのサーバ経由で会員情報サーバへ第三者アクセス）</td></tr>
+<tr><th>影響範囲</th><td>会員情報サーバに保存された<strong>約57万アカウント</strong>のセイコーマートクラブ会員情報。氏名・住所・電話番号・性別・生年月日・メールアドレス・入会年月日・退会年月日などが流出した可能性</td></tr>
+<tr><th>対応</th><td>2026-09-24にアカウント1件で退会処理が不正に実施され、09-28にアプリのサーバ経由で会員情報サーバへアクセスされた可能性が判明。侵害サーバへのアクセスを遮断。影響により新規入会・会員情報変更・カード変更・退会・マイページログインを停止、公式通販サイトとネット予約サイトのログインも安全性確認のため一時停止。原因を調査中</td></tr>
+<tr><th>公表日</th><td>2026-09-28 判明／2026-09-29（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>小売の生活インフラで、<strong>会員向け機能とECログインが同時に停止</strong>する影響が出ています。なりすましメールへの注意喚起が行われているほか、対象会員の他サービスでのパスワード再利用状況の確認をおすすめいたします。</li>
+</ul>
+
+<h3>東京メトロ — ポイントサービス「メトポ」のサーバが第三者に侵害、会員メールアドレス約5万9000件</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東京地下鉄株式会社（東京メトロ）</td></tr>
+<tr><th>事象</th><td>サーバへの第三者アクセス（侵害）</td></tr>
+<tr><th>影響範囲</th><td>ポイントサービス「メトロポイントクラブ（メトポ）」で利用するサーバ。会員の登録メールアドレス<strong>約5万9000件</strong>が保存されており流出したおそれ</td></tr>
+<tr><th>対応</th><td>侵害を受けたと見られる部分を特定して対策を講じ、原因・影響範囲を調査中。該当メールアドレスはメール送信が不能となったため配信を停止。対象会員へメールで連絡し、なりすましメール等への注意を呼びかけ</td></tr>
+<tr><th>公表日</th><td>2026-09-29（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>「メール送信が不能になった」という挙動は<strong>大規模な配信停止措置に伴うもの</strong>と説明されていますが、アドレス一覧が第三者に取得された可能性を示すものです。鉄道利用者アカウントを狙ったフィッシングの起点になりえますわ。</li>
+</ul>
+
+<h3>モンベル — 海外向けグローバルサイトに不正アクセス、最大15人分の個人情報が取得された可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社モンベル</td></tr>
+<tr><th>事象</th><td>不正アクセス（海外向け発送を扱うグローバルサイト）</td></tr>
+<tr><th>影響範囲</th><td>顧客<strong>最大15人分</strong>。1人は氏名・住所・電話番号、14人は氏名と電話番号。対象者の特定は困難</td></tr>
+<tr><th>対応</th><td>2026-09-11にシステム侵害を検知。調査の結果、2026-08-09〜08-10にかけて登録ユーザー情報の一部が第三者に取得された可能性を確認。脆弱性は修正済み。国内向けサイトでは同様の問題は確認されていない。二次被害は未確認</td></tr>
+<tr><th>公表日</th><td>2026-09-29（Security NEXT・ScanNetSecurity）</td></tr>
+</table>
+<ul>
+<li>被害件数は小規模ですが、<strong>検知から原因特定まで約2週間を要した</strong>点、海外向けサイトの分離状況が国内と異なっていた点が示唆的です。越境ECの運用分離と検知体制の点検材料となりますわ。</li>
+</ul>
+
+<h3>三重大 — オープンキャンパスの受付名簿292人分が所在不明</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>国立大学法人三重大学</td></tr>
+<tr><th>事象</th><td>個人情報記載の受付名簿の所在不明（紛失の可能性）</td></tr>
+<tr><th>影響範囲</th><td>2026-08-08開催のオープンキャンパス「工学部模擬授業」の情報工学コース・応用化学コース受付名簿。<strong>参加者292人分</strong>の氏名・居住都道府県・在籍高校名・学年・性別</td></tr>
+<tr><th>対応</th><td>イベント終了後の片付け時に見当たらず。関係者ヒアリングと探索を行ったが発見に至らず。対象参加者へメールで経緯を報告し謝罪</td></tr>
+<tr><th>公表日</th><td>2026-09-29（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>受験生の在籍高校名を含むため、<strong>進学・身元情報を狙うなりすましや勧誘の標的</strong>になりえます。紙媒体のイベント資料は廃棄・回収までを一工程として管理する運用が望まれますわ。</li>
+</ul>
+
+<h3>新潟市中学校 — 大規模改修時の移動中に生徒387人分の健康記録を紛失</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>新潟市（市内中学校）</td></tr>
+<tr><th>事象</th><td>個人情報記載書類の所在不明（紛失の可能性）</td></tr>
+<tr><th>影響範囲</th><td>全校生徒<strong>387人分</strong>の健康の記録および歯の記録（段ボール箱1個）</td></tr>
+<tr><th>対応</th><td>2026-07-28に箱1個の所在不明が判明。07-17の大規模改修に伴い教室資料を収めた約300箱を移動したうちの1箱。捜索したが見つからず08-20に警察へ相談。08-28に保護者説明会を開催し経緯を説明・謝罪</td></tr>
+<tr><th>公表日</th><td>2026-09-29（Security NEXT）</td></tr>
+</table>
+<ul>
+<li>学校の大規模改修という非日常の作業が契機となった事案です。教育機関の物理的な情報資産管理（箱単位の台帳化・移動時点呼）の必要性が改めて示されています。</li>
+</ul>
+
+<h3>警察庁 — 2026年上半期のランサムウェア被害報告が123件、半期として過去最多</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>警察庁（サイバー警察局便り R8 Vol.16「ランサムウェア被害拡大中」）</td></tr>
+<tr><th>事象</th><td>統計・注意喚起（脆弱性悪用型の被害拡大）</td></tr>
+<tr><th>影響範囲</th><td>令和8（2026）年上半期の国内ランサムウェア被害報告件数が<strong>123件</strong>。半期の件数として過去最多</td></tr>
+<tr><th>対応</th><td>政府広報オンラインの動画、JC3のポッドキャスト、IPA「ランサムウェア被害から学ぶ教訓集」、個人情報保護法サイバーセキュリティ連絡会「不正アクセス発生時のフォレンジック調査の有効活用に向けた着眼点」など各機関の対策情報を紹介</td></tr>
+<tr><th>公表日</th><td>2026-09-18 公表（発表資料）／ScanNetSecurity 2026-09-30 報道</td></tr>
+</table>
+<ul>
+<li>本対象期間の国内事案（タイムズカー約660万件、セイコーマート、東京メトロ、モンベル等）とあわせて見ると、<strong>報告件数の増加が統計上の傾向にとどまらず実害として継続している</strong>ことが読み取れます。</li>
+<li>公表された一次資料（政府広報・IPA教訓集・フォレンジック着眼点）は、経営層向けの意思決定資料として有用ですわ。対策予算の説明資料にそのままご活用いただけます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">本対象期間に国内で新たに公表されたその他の事案として、扶桑電通のクラウドストレージ不正アクセス第2報（26,489件）や旭化成元従業員の逮捕、熊本県サイトの改ざん、愛知県「あいこんナビ」の誤掲載などが報じられていますが、いずれも<strong>企業・機関の発表日が対象期間より前</strong>であるため、本朝刊の対象期間内の新規公表としては扱っておりません。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
