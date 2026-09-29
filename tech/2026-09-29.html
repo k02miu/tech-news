@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-29 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-29 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-28 09:00 〜 2026-09-29 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.284</h2>
+<p>対象期間内に <strong>v2.1.284</strong>（2026-09-29 03:15 JST 公開）がリリースされました。公式 changelog の RSS フィードを第一の情報源として全エントリの <code>pubDate</code> を JST に換算して確認しております。今回の目玉は <strong>Claude Sonnet 5.5 の追加と Sonnet のデフォルトモデル刷新</strong>でございます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Sonnet 5.5（<code>claude-sonnet-5-5</code>）を追加</strong>: Anthropic API における<strong>デフォルトの Sonnet モデル</strong>となりました。1M コンテキスト、$2 / $10 per Mtok（キャッシュ読み出しは $0.20 / Mtok）。</li>
+  <li><strong>作業ディレクトリ外の読み取りに「Yes, but ask again next time」を追加</strong>: auto モードの確認プロンプトで、その 1 回だけ許可しつつ以後も確認を継続できます。</li>
+  <li><strong>対話ターミナルと VS Code セッションが auto モードで開始</strong>: 権限モード未設定時、すべてのプラン・プロバイダーで auto モードが既定に（<code>permissions.defaultMode</code> で上書き可能）。</li>
+  <li><strong>Ultracode を <code>/effort</code> の独立トグルに変更</strong>: Tab もしくは <code>/effort ultracode [on|off]</code> で操作。xhigh effort を強制しなくなり、任意の effort レベルで有効にできます。</li>
+  <li><strong><code>/mcp reconnect all</code> を追加</strong>: 接続失敗・要認証の MCP サーバーをまとめて再試行できます。</li>
+  <li><strong>使用量上限の待機表示を改善</strong>: 上限の状態とカウントダウン、usage-credits オプションがプロンプト下の 1 ブロックにまとまりました。</li>
+  <li><strong><code>/usage</code>・ステータスラインに金額を表示</strong>: ゲートウェイの支出上限を「$271.40 / $500.00 spent this month」の形式で表示します。</li>
+  <li><strong>auto-memory の読み込みを強化</strong>: <code>MEMORY.md</code> および想起メモ中の不可視文字や Claude Code 自身のマークアップを模したタグを無害化します。</li>
+  <li><strong>[VS Code] 各プロンプト・応答に時刻表示</strong>（設定で既定オフ）、プラグイン読み込みエラーの表示、Effort スライダー下の Ultracode スイッチなどを追加。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>応答ストリーム破損時に「JSON Parse error」等の生エラーが表示されたり回答中に「undefined」が混入したりせず、再試行または中断として扱われるよう修正。</li>
+  <li>thinking ブロック直後にオーバーロード／サーバーエラーが届いてターンがエラー終了する問題を修正。</li>
+  <li>compact 後も「Prompt is too long」が解消しない場合、もう一度 compact して直近会話の保持量を減らすよう修正。</li>
+  <li>再開セッションで MCP ツール呼び出しが「No such tool available」で失敗する問題を修正（サーバー接続を最大 10 秒待機）。</li>
+  <li>vim モードの <code>.</code> 反復が高速入力・tmux / ssh 経由で動作しない問題、画像プレースホルダ周辺のカーソル破損を修正。</li>
+  <li>プラグインが管理ポリシー下で <code>allowed-tools</code> による自己ツール事前承認を行う問題を修正。</li>
+  <li>その他、多数の UI・フルスクリーン描画・プラグイン・ゲートウェイ関連の修正を含みます。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（v0.21.5、2026-09-24 19:09 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code>（UTC）を JST に換算して確認いたしました。最新タグ <code>v2026.9.24</code> は v0.21.4 以降の約 460 件の PR をロールアップしたパッチリリースで、対象期間開始より前の公開でございます。対象期間内に新たに公開されたタグはございません。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.6</strong>（2026-09-24 08:21 JST 公開）です。</p>
+<p>GitHub Releases API の <code>published_at</code> を JST に換算して確認いたしました。最新の安定版タグ <code>v2026.9.6</code>、および直近の他タグ（<code>v2026.7.35</code>: 2026-09-21 22:14 JST 公開、<code>v2026.9.5</code>: 2026-09-19 10:55 JST 公開）はいずれも対象期間外でございます。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.216</h2>
+<p>対象期間内に <strong>v1.4.216</strong>（2026-09-29 04:46 JST 公開）がリリースされました。本パッチは <strong>v1.4.215 に 1 件の修正を加えたもの</strong>で、v1.4.215 の公開後に main へ入った PR は含まれておりません。</p>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>小さい画面・狭いウィンドウでのステータスバー</strong>: 折り返しや見切れが発生していたステータスバーが、項目を凝縮して<strong>常に 1 行で収まる</strong>ようになりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.216">Orca v1.4.216 リリースノート</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースおよび公式ブログの新規記事は確認されませんでした。最新の安定版は <strong>v16.3.6</strong>（2026-09-23 02:15 JST 公開）です。canary チャネルでは <strong>v16.4.0-canary.52</strong>（2026-09-29 08:47 JST 公開）が対象期間内に公開されています。</p>
+<ul>
+  <li><strong>canary.52</strong>: Turbopack の side-effect import・<code>with</code> 句・split_module の修正、<code>navigation()</code> / <code>prefetch()</code> からの <code>unstable_</code> 接頭辞削除、初回リクエストでカスタムキャッシュハンドラーが欠落する不具合の修正、バンドルアナライザーの仮想化などを含みます（いずれも Misc Changes 枠）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS</h2>
+<p>対象期間内に複数のアップデートが公開されました。</p>
+<ul>
+  <li><strong>Claude Sonnet 5.5 が Amazon Bedrock / AWS で利用可能に</strong>（2026-09-29 00:00 JST 公開）: AWS GovCloud (US) でも同時提供。Claude Code v2.1.284 の Sonnet 刷新と歩調を合わせた展開でございます。</li>
+  <li><strong>Grok 4.7 が Amazon Bedrock で利用可能に</strong>（2026-09-29 03:29 JST 公開）。</li>
+  <li><strong>Amazon EC2 Future-dated Capacity Reservations が開始日の延期に対応</strong>（2026-09-29 06:17 JST 公開）。</li>
+  <li><strong>Amazon Rekognition Face Liveness が Feedback Codes を返すように</strong>（2026-09-29 05:41 JST 公開）。</li>
+  <li><strong>Amazon Corretto 2026年9月 パッチアップデート</strong>（2026-09-28 23:00 JST 公開）。</li>
+  <li><strong>AWS Backup が FSx for NetApp ONTAP 向けの論理エアギャップ保管庫をサポート</strong>（2026-09-28 17:00 JST 公開）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<p>対象期間内に <strong>2026-09-28 付</strong>のリリースノートが確認されました。</p>
+<ul>
+  <li><strong>BigQuery 連続クエリの出力を Apache Iceberg 管理テーブルへ直接書き込み可能に</strong>: <code>INSERT</code> DML により、BigQuery のストリーミング処理結果をオープンフォーマットのレイクハウスへ継続的に書き込めます。</li>
+  <li><strong>Cloud Run のカスタム URL（Preview）</strong>: <code>example.cloud.run</code> のような覚えやすいグローバル URL を、DNS 設定・ロードバランサー・追加コストなしで作成できます。</li>
+  <li><strong>Cloud Product Registry API が GA</strong>: Google Cloud の第 1 者プロダクト階層をプログラムから取得できる正式版 API に。</li>
+  <li><strong>Cloud Service Mesh の in-cluster / managed ISTIOD コントロールプレーンが非推奨化</strong>（2026-09-28 付、サポート終了は 2028-03-01）。GKE では TRAFFIC_DIRECTOR コントロールプレーンのマネージド Cloud Service Mesh への移行が必要です。</li>
+  <li><strong>レガシー Logging / Monitoring エージェントがサポート終了</strong>: 標準メンテナンスとバグ修正が停止。サポート対象の代替への移行が推奨されています。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>🔷 Hono — v4.13.10</h2>
+<p>対象期間内に <strong>v4.13.10</strong>（2026-09-28 17:24 JST 公開）がリリースされました。あわせて <code>@hono/deno@1.0.2</code>、<code>@hono/netlify@1.0.1</code> も公開されています。</p>
+<ul>
+  <li><strong>ランタイムアダプターが独立パッケージ化</strong>: <code>@hono/bun</code>、<code>@hono/deno</code>、<code>@hono/cloudflare-workers</code>、<code>@hono/aws-lambda</code>、<code>@hono/lambda-edge</code>、<code>@hono/netlify</code>、<code>@hono/vercel</code>、<code>@hono/service-worker</code> として公開。<code>@hono/deno</code> は JSR でも提供されます。</li>
+  <li><strong>移行は import 文の変更のみ</strong>: <code>hono/&lt;adapter&gt;</code> は v4 では引き続き動作しますが非推奨で、<strong>v5 で削除予定</strong>です（例: <code>import { serveStatic } from 'hono/bun'</code> → <code>from '@hono/bun'</code>）。</li>
+  <li><code>hono/cloudflare-pages</code> は代替パッケージなしで非推奨化（Cloudflare は静的アセット付き Workers を推奨）。</li>
+  <li>ビルド基盤の刷新: パッケージマネージャーを bun から pnpm へ、prettier / eslint を oxfmt / oxlint へ移行。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.10">honojs/hono v4.13.10</a></p>
+
+<h2>🔶 Claude API / SDK</h2>
+<p>対象期間内に Anthropic 公式 Python SDK <strong>v1.9.0</strong>（2026-09-29 03:03 JST 公開）がリリースされました。</p>
+<ul>
+  <li><strong><code>claude-sonnet-5-5</code> に対応</strong>: Claude Code v2.1.284 と同日の追加でございます。</li>
+  <li><strong>between_tools thinking タイプを追加</strong>、API のワークスペースレート制限に <code>include_inherited</code> と <code>source</code> を追加。</li>
+  <li><strong>キャッシュ診断が GA</strong>: Message / MessageCreateParams で diagnostics が利用可能に。</li>
+  <li><strong>ツール呼び出しを応答ストリーミング中に実行可能に</strong>（オプション）。</li>
+  <li>修正: 無名ファイルアップロード時にプレースホルダーのファイル名を送らない、フォールバック時に between_tools thinking を disabled へ降格 など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v1.9.0">anthropic-sdk-python v1.9.0</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新 v19.3.0: 2026-09-10 公開）、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新 v4.2.0-M2: 2026-09-24 公開）、<strong>Python / CPython</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
