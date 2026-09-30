@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-09-30 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-09-30 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-29 09:00 〜 2026-09-30 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.285</h2>
+<p>2026-09-30 04:37 JST 公開。CLI・プラグイン・サンドボックス・クラウドセッション・VSCode 拡張まで広範に手を入れた大型のリリースです。新機能は6点、修正は100項目を超えます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>CLAUDE_CODE_DISABLE_WEB_FETCH</strong>: 環境変数で WebFetch ツール自体を無効化できるようになりました。</li>
+  <li><strong>claude --desktop</strong>: カレントディレクトリ、または <code>--continue</code> / <code>--resume &lt;id&gt;</code> で指定したセッションを Claude デスクトップアプリで開けます。</li>
+  <li><strong>claude plugin configure &lt;plugin&gt;</strong>: プラグインのオプションと未設定項目を表示し、<code>--values-stdin</code> で標準入力から新しい値を保存できます。</li>
+  <li><strong>allowedProviders 管理設定</strong>: マシンが利用できる API プロバイダ（Anthropic API、カスタムエンドポイント、Bedrock、Mantle、Vertex AI、Foundry、AWS 上の Claude Platform、Cloud ゲートウェイ）を制限できます。</li>
+  <li><strong>CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES</strong>: タイムアウトした非ストリーミング・フォールバック要求の再送上限を指定できます。</li>
+  <li><strong>claude plugin install --config</strong> に <code>&lt;server&gt;.&lt;key&gt;=&lt;value&gt;</code> 形式を追加。バンドルされた <code>.mcpb</code> MCP サーバー設定をインストール時に指定でき、<code>/plugin</code> → Configure を経由せず起動します。</li>
+  <li><strong>改善</strong>: Claude in Chrome のネイティブホストがコンピュータ名を報告するようになり、接続ブラウザが「Browser 1」ではなくマシン名で識別されます。Bedrock / Vertex AI で既定モデルへのアクセスが管理者に剥奪された場合、同一ティアの旧モデルへ自動的に切り替わるようになりました。</li>
+  <li><strong>改善</strong>: 背景 Bash / PowerShell コマンドに実行時間上限（既定30分、最大2時間）が設けられ、停止時には Claude に通知されます。</li>
+  <li><strong>変更</strong>: カスタム <code>ANTHROPIC_BASE_URL</code> 配下のセッションでも、1M コンテキスト対応モデル（Opus 4.7+、Sonnet 5+、Fable）は 1M ウィンドウを使用します（ゲートウェイが 200K で止まる場合は <code>/autocompact 200k</code>）。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>claude -p + CLAUDE_CODE_FORK_SUBAGENT=1</strong>: サブエージェント自身の Agent 呼び出しがフォアグラウンドで動作し、子の結果を受け取れるようになりました。</li>
+  <li><strong>プラグイン / マーケットプレイスの SSH 導入</strong>: <code>GIT_SSH</code> や git config の <code>core.sshCommand</code> が無視されていた問題を修正。</li>
+  <li><strong>managed settings ファイル</strong>: OS が読み取りを拒否した場合に起動を拒否していた挙動を修正。警告のうえポリシーなしで起動します（その他の読み取りエラー・パース不能ファイルは従来どおり全セッションを停止）。</li>
+  <li><strong>セッション途中のモデル切替</strong>: <code>set_model</code>（Agent SDK の <code>setModel</code> 等）で切替後、再起動まで出力トークン上限と自動コンパクト枠が旧モデルのままになる問題を修正。</li>
+  <li><strong>サンドボックスの自動許可</strong>: <code>python3 -c</code> や <code>node -e</code> など <code>=</code> を含むだけのインラインスクリプトで毎回承認を求められる問題を修正。</li>
+  <li><strong>MCP サーバー名の出力</strong>: <code>claude mcp list</code> / <code>get</code> や削除・ログイン・ログアウトの not-found エラーが、サーバー名や値に含まれる改行・端末エスケープシーケンスを表示していた問題を修正。</li>
+  <li><strong>フックのハング</strong>: 同期フックが起動した背景プロセス（例: <code>some-daemon &amp;</code>）が出力を開いたままにすると Claude Code が固まる問題を修正。</li>
+  <li><strong>API リトライ</strong>: ストリーミング失敗時に最大21回再試行されることがあった問題を修正。非ストリーミング・フォールバックが要求本体のリトライ予算を共有するようになりました。</li>
+  <li><strong>VSCode 拡張</strong>: スラッシュコマンド入力後の Enter がファジーマッチで無関係なメニュー項目を実行する問題、拡張再起動後にタブが空白のままになる問題、エディタが自動保存に応答しないとファイル Read/Write/Edit が10分間停止する問題など、20件超を修正。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-285">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24（v0.21.5）</strong>（2026-09-24 19:09 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐙 OpenClaw — v2026.8.33</h2>
+<p>2026-09-29 12:12 JST 公開。現行の LTS 相当にあたる <code>extended-stable</code> ラインの gateway 限定リリースです。2026年8月末時点の OpenClaw を土台に、重要なセキュリティ更新・信頼性／性能修正・新モデル対応をまとめて取り込んでいます。最新版は <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.6">2026.9.6</a> です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>フラッグシップモデル対応</strong>: Meta Muse Spark 1.3、Anthropic Fable 5.1、OpenAI GPT-6 Astra、OpenAI/fal GPT Image 2.5 を extended-stable ラインに追加。</li>
+  <li><strong>GPT-5.6 ファミリー完全対応</strong>: Sol / Terra / Luna のカタログ、ルーティング、マイグレーション、画像、ビジョン、thinking 挙動を維持。モデル実行環境をまたぐ Ultra reasoning と Bedrock の tool-result 画像にも対応。</li>
+  <li><strong>extended-stable セキュリティ・ロールアップ</strong>: 2026.8.2 に影響する全リポジトリ勧告を解消し、Prometheus メトリクス認可と Discord のアセット／ボイス所有権を強化。本番 Nodemailer 勧告ゲートもクリア。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Anthropic reasoning の継続性</strong>: モデル切替やランタイムイベントをまたいで Fable 5.1 の reasoning を保持。</li>
+  <li><strong>OpenAI モデル検出</strong>: OAuth 経由で GPT-6 Astra を提示する前に、モデル検出の成功を必須化。</li>
+  <li><strong>Doctor のスキル状態</strong>: 自動更新時に明示的に有効化されたスキルを保持。</li>
+  <li><strong>生成メディア</strong>: 後続のツール呼び出しが失敗しても生成画像を保持。</li>
+  <li><strong>Prometheus 認可</strong>: 設定された operator-read スコープを持たないメトリクス scrape を拒否。</li>
+  <li><strong>Discord メディアポリシー</strong>: ギルドのアセットアップロードに送信者メディアポリシーを適用。リアルタイムの speaker / playback 所有権をボイス・ライフサイクル遷移をまたいで保持。</li>
+  <li><strong>依存関係セキュリティ</strong>: IMAP 依存グラフを Nodemailer 9.1.1 に上書きし、アドレスパーサの DoS および関連するドメイン／コンテンツアクセス勧告を解消。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.8.33">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐋 Orca — v1.4.217</h2>
+<p>2026-09-30 04:40 JST 公開。9月27日のデイリービルドに main からの修正を摘まんだパッチリリースです。Codex 連携の不具合修正が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Codex ワーカー復旧</strong>: Codex 0.158 で削除されたウェルカム画面ラベルを待ち続けて全 Codex ワーカーがタイムアウトしていた問題に対応。空の入力ボックスを認識するようになりました。モデルや reasoning effort を指定した Codex ワーカー起動時のハングも解消。</li>
+  <li><strong>Codex タブのサーバー分離</strong>: Codex 0.157 以降、Orca 内の全 Codex タブが最初のタブのバックグラウンドサーバーを共有し、ステータスや結果が誤ったタブに紐付き、最初のタブを閉じると他が全て落ちる問題を修正。各タブが独自サーバーで動作します（<code>export ORCA_CODEX_ISOLATE=0</code> で従来の共有動作に戻せます）。</li>
+  <li><strong>ステータスバー / サイドバー</strong>: 狭い画面ではエージェントがステータスラベルより先に「+N」バッジへ折り畳まれ、1行に収まります。コンパクトなエージェント行に未読強調を表示。フローティング端末エージェントのアクティビティスレッドが右ペインで開きます。</li>
+  <li><strong>リモート / SSH</strong>: 検証コードなど多要素プロンプトを要求する SSH ホストに対応。リモートファイルアクセスはリポジトリ所有権に従い、中断されたリモートインストールは使用中のファイルを削除せず復旧します。</li>
+  <li><strong>エディタ / ブラウザ</strong>: Solidity・Typst・Twig のハイライトを追加。Markdown ソースがリッチテキスト編集後も維持されます。狭い画面ではブラウザツールがメニューに折り畳まれます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>オーケストレーション</strong>: 端末が見つからなくなったワーカーが溜まり続けず、適切に停止されるようになりました。</li>
+  <li><strong>Hermes 連携</strong>: フック導入時に Hermes の YAML 設定を保持。</li>
+  <li><strong>端末</strong>: Git Bash をインストールレイアウトで判別。日本語のファイルリンクで中黒やチルダが失われる問題を修正。Windows 端末の寿命管理を同期。</li>
+  <li><strong>背景タスク</strong>: ウィンドウのリロードや要求キャンセル時に、多くのバックグラウンドタスクが自ら後始末をするようになりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.217">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>⚡ Next.js — v16.3.7</h2>
+<p>2026-09-29 17:54 JST 公開。バックポートによるバグ修正リリースです（canary 上の未確定機能・変更は含みません）。</p>
+<ul>
+  <li><strong>turbo-tasks-backend</strong>: キャンセルされたタスクで strong consistency 読み取りがハングする問題を修正（#98931）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.7">ソースへのリンク</a></p>
+
+<h2>🔥 Hono — v4.13.11（セキュリティ修正）</h2>
+<p>2026-09-29 15:19 JST 公開。<strong>重要なセキュリティ修正</strong>を含みます。</p>
+<ul>
+  <li><strong>serveStatic のパス二重デコード</strong>（GHSA-5r4p-p66f-jhc7）: <code>hono/serve-static</code> およびその上に構築されたアダプタ（<code>hono/bun</code>、<code>hono/deno</code>、<code>hono/cloudflare-workers</code>、<code>@hono/bun</code>、<code>@hono/deno</code>、<code>@hono/cloudflare-workers</code>）が影響を受けます。すでにデコード済みのパスを再度デコードしていたため、細工したリクエストが別のパスとしてルーティングされつつ別のパスとして配信され、静的プレフィックスにマウントされたミドルウェアを迂回できる可能性がありました。修正後はデコード後に <code>%</code> が残るリクエストパスを拒否します。名前にリテラルの <code>%</code> を含むファイルを配信する場合は <code>allowPercentInPath: true</code> を設定してください。同一の修正は <code>@hono/node-server</code> v2.1.3 にも含まれます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.11">ソースへのリンク</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>OpenAI GPT-6.1 Sol が Amazon Bedrock で一般提供開始</strong>（2026-09-30 05:17 JST）: GPT-6 Sol のアップグレード版。エージェント型コーディング、コンピュータ操作、プロフェッショナル業務で高い性能を示し、要求の厳しい評価では GPT-6 Astra に近づきつつコストは約5分の1とされています。Bedrock 上での明示的プロンプトキャッシュにも対応。</li>
+  <li><strong>Amazon ElastiCache Serverless for Valkey がパブリックエンドポイントに対応</strong>（2026-09-29 16:00 JST）: VPN・踏み台・SSH トンネルなしで、ラップトップやサーバーレス関数、AWS 外のアプリから直接キャッシュへ接続できます。接続は IAM 認証 + TLS 1.3。Valkey GLIDE 2.2 以降（IAM サポート内蔵）または Developer Toolkit for ElastiCache を併用した Valkey クライアントを利用します。</li>
+  <li><strong>Amazon Route 53 Resolver DNS Firewall の Palo Alto Networks Advanced DNS Security が GA</strong>（2026-09-29 10:03 JST）: 32の AWS リージョンで一般提供。別途ファイアウォールを配備したり VPC 構成を変更したりせず、VPC からの悪性 DNS トラフィックを PANW のルールで検知・遮断できます。</li>
+  <li><strong>Amazon RDS がスナップショットのフルサイズ情報を追加</strong>（2026-09-30 06:00 JST）: <code>DescribeDBSnapshots</code> API の新フィールド <code>FullSnapshotSizeInBytes</code> とコンソールの「Full Snapshot Size」列で、増分スナップショットが参照する全ブロックを含む合計サイズを確認できます。</li>
+  <li><strong>AWS Systems Manager が AWS RAM 経由のドキュメント共有に対応</strong>（2026-09-29 17:00 JST）: SSM ドキュメントを組織全体や特定の OU と共有でき、組織へのアカウント追加・削除に応じて共有が自動追従します。</li>
+  <li><strong>AWS DataSync が共有 VPC に対応</strong>（2026-09-29 17:00 JST）: RAM で共有されたサブネットを使って DataSync エージェントの作成と転送タスクの実行が可能になり、アカウントごとの VPC エンドポイント作成が不要になります。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>API Gateway がストリーミング配信に対応（Public Preview）</strong>（2026-09-29）: バッファリングせずにリクエスト／レスポンスをストリーミングできます。HTTP/2、HTTP/1.1 の chunked transfer encoding、Server-Sent Events（SSE）、WebSockets、gRPC 双方向ストリーミングに対応。LLM のトークン単位のレスポンス配信が主な用途です。ゲートウェイ作成時に <code>--enable-streaming</code> を指定します（モードは作成後に変更不可）。</li>
+  <li><strong>gcloud CLI 587.0.0</strong>（2026-09-29）: <code>gcloud</code> が Python v3.15 をサポート。Linux / Windows 同梱の Python で <code>grpcio</code> を 1.84.0 に更新し <code>setuptools</code> を削除。破壊的変更として <code>gcloud storage buckets anywhere-caches pause</code> コマンドを削除。</li>
+  <li><strong>BigQuery / AI 関数</strong>: <code>AI.KEY_DRIVERS</code> 関数が GA。合計可能な指標に対して統計的に有意な変化を引き起こすデータセグメントを特定できます。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソースへのリンク</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（対象期間内に公式アップデートの確認が取れず）、<strong>React</strong>（最新は v19.3.0 / 2026-09-10 公開で、対象期間内の新規リリースなし）、<strong>Python / Django</strong>（GitHub Releases 上に対象期間内のリリースなし）、<strong>Spring Boot</strong>（最新は v4.2.0-M2 / 2026-09-24 公開で、対象期間内の新規リリースなし）、<strong>Java（Amazon Corretto）</strong>（Corretto 9月パッチは 2026-09-28 発表で対象期間外）、<strong>Claude API / SDK</strong>（Anthropic Python SDK 最新 v1.9.0 は 2026-09-29 03:03 JST 公開で対象期間の開始前）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
