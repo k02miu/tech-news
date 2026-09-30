@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-01 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-01 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>本対象期間（2026-09-30 08:00 〜 2026-10-01 08:00 JST）に、NVDへは657件のCVEが新規登録されました。Java基盤に深刻な一群が集中しており、<strong>Apache MINA SSHD</strong> の認証バイパス（Critical 3件）、<strong>Apache PLC4X</strong> のOPC UAドライバにおける証明書検証不備（CVSS 9.2）が採番されています。AI／LLM周辺では <strong>LightLLM 1.2.0 までの未認証リモートコード実行（9.8）</strong>、そして <strong>Claude Code の組織管理ポリシーが適用されないおそれのある脆弱性 CVE-2026-103012</strong> が公開されました。製品側では <strong>Google Chrome の32件修正アップデート</strong>、<strong>SailPoint IdentityIQ の未認証RCE（9.6）</strong>、<strong>GitLab の旧ブランチ向けCritical修正（CVSS 10.0、悪用確認済み）</strong> が続いています。</p>
+<p>リリース面では <strong>Claude Code 2.1.286</strong> と <strong>OpenClaw 2026.9.7</strong> が公開され、<strong>Hermes Agent は新規リリースなし（最新 v0.21.5 / v2026.9.24）</strong>でした。また IPA と JPCERT/CC が <strong>Citrix NetScaler の脆弱性が世界中で積極的に悪用されている</strong>として注意喚起を行っています。</p>
+
+<h3>Claude Code — 組織のサーバ管理設定が適用されないおそれ（CVE-2026-103012）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-low">Low</span>（CVE-2026-103012、CVSSv4.0 2.0）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-103012（不適切な認可・管理ポリシーの回避、GHSA-gfvf-j8jh-jxxw）</td></tr>
+<tr><th>影響</th><td>Claude for Enterprise は 2.0.68 以降、Claude for Work（Team）は 2.1.38（サーバ管理設定が利用可能になった版）以降</td></tr>
+<tr><th>修正版</th><td>Claude Code 2.1.260 以降（自動更新の場合は適用済み）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-30 21:17 JST</td></tr>
+</table>
+<ul>
+<li>組織のサーバ管理設定を取得する際、Claude Code が <strong>自身の設定に保存されたAPIキー（過去の <code>/login</code> や直接書き込まれたもの）を、有効な Enterprise／Team サインインより優先して選択</strong>していました。セッション自体は Enterprise／Team アカウントで認証されているにもかかわらず、設定エンドポイントがその保存済みキーを拒否すると、フォールバックとして <strong>組織のサーバ管理ポリシー（権限のdenyルール、モデル制限、managed-only ロックなど）が適用されない状態でセッションが開始</strong>されます。</li>
+<li>マシン上に以前のポリシーのキャッシュが存在する場合は、その古いコピーを適用し続け、その後のポリシー変更を受け取りません。いずれの場合も、セッションは組織アカウントとして動作し続けます。</li>
+<li>成立には当該端末へのローカルアクセスが必要で、ポリシー未適用のケースは過去に管理設定がキャッシュされていないことも条件です。<strong>MDMやファイルベースのエンドポイント管理設定は影響を受けません。</strong></li>
+<li>報告は Tamas Voros 氏（NVIDIA AI Red Team）。同氏は Claude Code へ貢献済みであり、クラウド側の管理ポリシーが黙って無効化されうる点は、統制目的でご利用の組織にとっては看過できない挙動ですわね。</li>
+</ul>
+
+<h3>Apache MINA SSHD（Java）— 認証バイパス等 Critical 3件（CVE-2026-77185・94052・94053）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-77185・94052・94053、各CVSSv3.1 9.1）／<span class="badge-high">High</span>（CVE-2026-93994 ほか）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-77185・94052・94053・93994・93995・93996・94002・94029</td></tr>
+<tr><th>影響</th><td>Apache MINA SSHD 2.0.0〜2.19.0、3.0.0-M1〜3.0.0-M5（sshd-ldap は 1.2.0 以降）</td></tr>
+<tr><th>修正版</th><td>Apache MINA SSHD 2.20.0 または 3.0.0-M6</td></tr>
+<tr><th>公開日</th><td>Apache Software Foundation 公開／NVD登録 2026-09-30 19:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-77185（9.1）</strong>: サーバ側の「非同期認証」機構の実装が誤っており、公開鍵認証・ホストベース認証での<strong>署名検証が省略される、あるいは誤った結果が返る</strong>おそれ。この機構を明示的に使う実装のみが該当します。修正版では当該機構の使用自体が禁止されます。</li>
+<li><strong>CVE-2026-94052（9.1）</strong>: オプションコンポーネント sshd-ldap の <code>LdapPasswordAuthenticator</code> にチェック漏れがあり、認証チェックが迂回されます。</li>
+<li><strong>CVE-2026-94053（9.1）</strong>: 同じく sshd-ldap でLDAPフィルタのメタ文字がエスケープされておらず、<strong>ユーザー名「*」・パスワード「*」で認証が成立</strong>してしまいます。sshd-ldap をパスワード／公開鍵認証に用いているSSHサーバのみが影響を受けます。</li>
+<li><strong>CVE-2026-93994（8.1）</strong>: 複数認証スキーム（例：2つの異なる公開鍵）を要求する構成での認証バイパス。ほか、sshd-scp／sshd-sftp のメモリ枯渇によるDoS（CVE-2026-93996・94002・94029）などが含まれます。</li>
+</ul>
+
+<h3>Apache PLC4X — OPC UAドライバの署名・証明書検証不備（CVE-2026-102508、CVSS 9.2）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-102508、CVSSv3.1 9.2）／<span class="badge-high">High</span>（CVE-2026-102509・102510、各8.7）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102508（署名検証・証明書検証の不備）、CVE-2026-102509（Java実装の資源枯渇）、CVE-2026-102510（Go実装の資源枯渇）</td></tr>
+<tr><th>影響</th><td>PLC4J の OPC UA ドライバ（0.9.0〜0.13.1）。PLC4J／PLC4Go の該当コンポーネント</td></tr>
+<tr><th>修正版</th><td>Apache Software Foundation のアドバイザリに準じた更新</td></tr>
+<tr><th>公開日</th><td>Apache 公開／NVD登録 2026-09-30 17:16 JST</td></tr>
+</table>
+<ul>
+<li>クライアントとサーバの間に位置する攻撃者が <strong>OPC UA サーバをなりすまし、セキュアチャネルの通信（クライアントが送るユーザー資格情報を含む）を読み取り・偽造・改ざん</strong>できるおそれがあります。0.9.0〜0.11.0 ではメッセージ署名の検証失敗がログ出力のみで強制されず、サーバ証明書を検証する仕組みもなく、未認証の GetEndpoints 応答から取得した証明書でパスワードが暗号化されていました。0.12.0〜0.13.1 では署名検証の結果が反転しています。</li>
+<li>CVE-2026-102509・102510 は、悪意ある／なりすまされたデバイスがJava実装・Go実装のメモリ資源を枯渇させ、サービス停止に至りうる問題です。産業用プロトコルを扱う基盤だけに、影響は軽くありません。</li>
+</ul>
+
+<h3>LightLLM 1.2.0 まで（Python）— 未認証のリモートコード実行（CVE-2026-103040・103041、各CVSS 9.8）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-103040・103041、各CVSSv3.1 9.8）／<span class="badge-high">High</span>（CVE-2026-103042、7.5）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-103040・103041・103042</td></tr>
+<tr><th>影響</th><td>LightLLM 1.2.0 まで（<code>--enable_profiling</code> 付き起動、マルチモーダル構成、<code>--pd_trans_mode nccl</code> 構成）</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-30 08:17 JST</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-103040（9.8）</strong>: <code>--enable_profiling</code> で起動したルータのプロファイラサービスが、<strong>pickleデシリアライズを有効にした未認証のRPyCサーバ</strong>を公開しており、細工したシリアライズ済みオブジェクトをプロファイラのコマンドキューへ送るだけで任意コード実行に至ります。</li>
+<li><strong>CVE-2026-103041（9.8）</strong>: マルチモーダル構成で、同じく pickleデシリアライズが有効な未認証のRPyCキャッシュサービスが<strong>全インターフェース</strong>に公開されます。</li>
+<li><strong>CVE-2026-103042（7.5）</strong>: NCCL制御チャネルのメモリ枯渇による未認証DoS。推論基盤を外部公開している環境は、到達範囲を今一度ご確認くださいませ。</li>
+</ul>
+
+<h3>Google Chrome 154.0.8037.93／92 — 32件の脆弱性を修正、Critical 1件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 1件／<span class="badge-high">High</span> 25件／<span class="badge-medium">Medium</span> 1件／<span class="badge-low">Low</span> 5件</td></tr>
+<tr><th>CVE</th><td>CVE-2026-102331（ANGLEのバッファオーバーフロー、Critical）ほか31件</td></tr>
+<tr><th>影響</th><td>Google Chrome（Windows／macOS／Linux）</td></tr>
+<tr><th>修正版</th><td>Chrome 154.0.8037.93（Windows・macOS）／154.0.8037.92（Windows・macOS・Linux）</td></tr>
+<tr><th>公開日</th><td>Google 2026-09-29 公開／Security NEXT 2026/09/30</td></tr>
+</table>
+<ul>
+<li>最重要とされる <strong>CVE-2026-102331</strong> はグラフィックス処理コンポーネント ANGLE のバッファオーバーフローで、2026年8月24日に外部のセキュリティ研究者から報告されたものです。</li>
+<li>「高」25件には、スクリプトエンジン V8 の型取り違え・バッファオーバーフロー、Bluetooth／Views／Passwords／FullScreen／PictureInPicture の解放後メモリの使用、GPU／WebGPU の初期化されていないリソースの取り扱い、WebUI のXSS、Mojo の権限管理の問題などが含まれます。前日（9月29日）にも 154.0.8037.92 が公開されており、<strong>短期間で連続した更新</strong>となっています。自動更新をお待ちいただくのが確実ですわ。</li>
+</ul>
+
+<h3>SailPoint IdentityIQ — 未認証でのコード実行（CVE-2026-12342、CVSS 9.6）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-12342、CVSSv3.1 9.6）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-12342（入力検証の不備）</td></tr>
+<tr><th>影響</th><td>SailPoint IdentityIQ のサポート対象バージョン</td></tr>
+<tr><th>修正版</th><td>サポート対象バージョン向けの修正プログラム（今後のパッチレベルにも収録予定）</td></tr>
+<tr><th>公開日</th><td>SailPoint 2026-09-28 アドバイザリ公開／Security NEXT 2026/09/30</td></tr>
+</table>
+<ul>
+<li>ウェブサービスAPIへ送信されたコンテンツの検証が不十分で、不正な入力を処理させることで<strong>隣接ネットワークから認証を必要とせず IdentityIQ サーバ上でコードを実行</strong>できるおそれがあります。ID管理の中核製品だけに、早期の適用をおすすめいたします。</li>
+</ul>
+
+<h3>GitLab 19.0.9／18.11.12 — 旧ブランチ向けCritical修正（CVE-2026-85706、CVSS 10.0）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-85706、CVSSv3.1 10.0／悪用確認済み）／<span class="badge-critical">Critical</span>（CVE-2026-87719、9.9）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-85706（パスの制限・認証処理の問題）、CVE-2026-87719（EEのみ、Advanced Search の情報取得）</td></tr>
+<tr><th>影響</th><td>GitLab 19.0.9 未満、18.11.12 未満（通常のメンテナンスポリシー対象外の旧ブランチ）</td></tr>
+<tr><th>修正版</th><td>GitLab 19.0.9／18.11.12（現行系列は 19.3.2／19.2.6／19.1.8 で対応済み）</td></tr>
+<tr><th>公開日</th><td>GitLab 2026-09-23 公開／Security NEXT 2026/09/30</td></tr>
+</table>
+<ul>
+<li>CVE-2026-85706 は <strong>commits API</strong> のパス制限と認証処理の問題で、一定の条件下で<strong>認証なしにGitLabサーバ内の任意ファイルを読み取る</strong>ことが可能となります。CVSSのベーススコアは最高値の10.0で、<strong>すでに悪用が確認</strong>されており、GitLabは悪用の試行を検出するための情報も公開しています。</li>
+<li>CVE-2026-87719 は EE のみに影響し、Advanced Search の設定情報や機密性の高い認証情報を取得されるおそれがあります（CVSS 9.9）。旧ブランチのまま運用されているリポジトリは、この機会に棚卸しをなさってはいかがでしょう。</li>
+</ul>
+
+<h3>OpenClaw 2026.9.7 — 接続レート制限の既定値変更と権限まわりの改善</h3>
+<table class="cve-table">
+<tr><th>種別</th><td>機能追加・改善（個別のCVE記載なし）</td></tr>
+<tr><th>主な点</th><td>未認証WebSocket接続の保留上限をIPあたり既定 32 → 128 に引き上げ（管理側で引き下げ可能）、デバイス参加リンク・QRセットアップ、ブラウザの管理アクセス承認、ローカル検証済みの更新バックアップとロールバック保護</td></tr>
+<tr><th>公開日</th><td>2026-09-30 13:44 JST（2026-09-30 04:44 UTC、2,818 PR／518 direct commits／334 contributors）</td></tr>
+</table>
+<ul>
+<li>共有ネットワーク上での同時接続試行に余裕を持たせるため、<strong>IPごとの未認証WebSocket接続の保留上限が 32 から 128 へ引き上げ</strong>られました。これはサーバ資源を消費できるソケット数の増加を意味するため、管理者は必要に応じてレート制限を引き下げるよう案内されています。</li>
+<li>デバイス参加リンクとQRセットアップは、構成された公開HTTPSアドレスを利用可能に。使用済み・期限切れのダッシュボードリンクは再取得方法を案内するようになり、<strong>リンクは従来どおり単回使用で10分後に失効</strong>します。ブラウザからの管理アクセス要求時は、承認コマンドがInboxに表示されます。</li>
+<li>アップデート時のバックアップとロールバック保護が改善され、2026.9.5 からのアップグレードに関する修正も含まれます。</li>
+</ul>
+
+<h3>Citrix NetScaler ADC／Gateway — 世界中で悪用が活発化（IPA・JPCERT/CC 注意喚起）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-88771・88772、各CVSSv4.0 9.5）ほか計8件</td></tr>
+<tr><th>CVE</th><td>CVE-2026-88771・88772（CISA KEV 追加済み）、88773・88774・88775・88776・88777・88778</td></tr>
+<tr><th>影響</th><td>NetScaler ADC／Gateway 14.1-73.37 より前の14.1系、13.1-64.23 より前の13.1系、ADC FIPS／NDcPP の各該当版</td></tr>
+<tr><th>修正版</th><td>14.1-73.37／13.1-64.23／14.1-73.37 FIPS／13.1.37.279 以降</td></tr>
+<tr><th>公開日</th><td>IPA・JPCERT/CC 2026-09-28 発表／ScanNetSecurity 2026/10/01</td></tr>
+</table>
+<ul>
+<li>本件は既報ですが、CISAの情報として <strong>CVE-2026-88771・88772 について世界中の脅威アクターが積極的に悪用しているとの報告</strong>があり、今後被害が拡大するおそれがあるとして、IPAとJPCERT/CCが早急なアップデートを呼びかけています。悪用された場合は、遠隔の第三者による任意コード実行やDoSの被害を受けます。</li>
+<li>前日の朝刊でもお伝えしたとおり、両CVEは米CISAの悪用確認済みカタログ（KEV）に収載済みです。辺縁に置かれた機器だけに、優先度を最上位に置いてご確認くださいませ。</li>
+</ul>
+
+<h3>Apache Tomcat — JVN iPedia に15件の脆弱性が掲載</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>JVN iPedia 掲載（個別スコアはApacheアドバイザリ参照）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-73581・75973・76183・77756・77762・77791・78383・78437・79677・86243・86246・86247・86248・86350 ほか</td></tr>
+<tr><th>影響</th><td>Apache Tomcat</td></tr>
+<tr><th>修正版</th><td>Apacheのアドバイザリに記載の修正版</td></tr>
+<tr><th>公開日</th><td>IPA 2026-09-25 JVN iPedia 登録／ScanNetSecurity 2026/10/01</td></tr>
+</table>
+<ul>
+<li>The Apache Software Foundation が2026年9月23日に公開した15件のアドバイザリが、JVN iPedia に掲載されました。WebSocketエンドポイントのセキュリティ制約バイパス（CVE-2026-76183）、Jakarta Authentication構成時のクロスコンテキスト認証混同（CVE-2026-75973）、OpenSSL／FFM実装がキーストア使用時にCRLを無視する問題（CVE-2026-73581）、複数のDoSなどが含まれます。既報のJVNVU#94625787と同じ内容ですわ。</li>
+</ul>
+
+<h3>WordPress「GiveWP」— 認証バイパス（CVE-2026-97196、CVSS 9.1）ほか</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVE-2026-97196、9.1）ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-97196（GiveWP の認証バイパス）、CVE-2026-103321（MISP の格納型XSS、8.3）</td></tr>
+<tr><th>影響</th><td>Liquid Web / StellarWP GiveWP、MISP</td></tr>
+<tr><th>公開日</th><td>NVD登録 2026-09-30</td></tr>
+</table>
+<ul>
+<li>GiveWP の認証バイパスは「安全でない等価性の入力検証不備」に分類される問題です。寄付・決済系のプラグインだけに、導入済みサイトは速やかな更新をご検討くださいませ。あわせて、脅威情報共有基盤 MISP のイベントグラフプレビューにサーバ側検証の欠如による格納型XSS（CVE-2026-103321）も登録されています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js／React／Django／Hono／GCP／AWS／Azure／Spring Boot については、本対象期間に直接関連する新規のセキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ヤマト運輸 — 「クロネコ代金後払いサービス」が第三者アクセスを受けサービス停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ヤマト運輸株式会社</td></tr>
+<tr><th>事象</th><td>決済サービスのサーバが第三者によってアクセスされ、サービスを停止</td></tr>
+<tr><th>確認・対応</th><td>2026-09-28 に侵害を確認、同日22時28分にサービス停止。外部からのアクセスを制限する対策を実施</td></tr>
+<tr><th>影響</th><td>「クロネコ代金後払いサービス」が停止中（復旧時期は未定）。宅配便などほかのサービスは平常どおり</td></tr>
+</table>
+<ul>
+<li>物流インフラの中核企業における決済サービスへの侵害です。外部協力のもと原因と影響範囲を調査中とされており、<strong>宅配事業への影響はない</strong>としています。代金後払いを導入されているEC事業者さまは、決済フローの代替手段をご確認いただくのがよろしいでしょう。</li>
+</ul>
+
+<h3>イープラス — 「スマチケ」管理システムへの侵害で払戻し申請者1,463件の個人情報が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社イープラス（チケット販売プラットフォーム「イープラス」）</td></tr>
+<tr><th>事象</th><td>電子チケット「スマチケ」管理システムの一部が第三者による複数回のアクセスを受け、個人情報が流出</td></tr>
+<tr><th>侵害時期</th><td>2026-09-11 20時頃 〜 9-12 2時半過ぎ。個人情報の流出は 9-14〜9-15 に確認</td></tr>
+<tr><th>影響</th><td>払戻し申請を行った顧客 1,463件（銀行振込751件＝カタカナ氏名・メールアドレス・口座情報、クレジットカード返金644件＝カタカナ氏名・メールアドレス、郵便振替68件＝カタカナ氏名・メールアドレス・氏名・住所）</td></tr>
+</table>
+<ul>
+<li>公演の中止・延期に伴う<strong>払戻し情報を管理するシステム</strong>が狙われています。払戻し対象の公演名・会場・開催日時も含まれ、金融情報に及ぶ区分がある点が深刻です。対象のお客さまには個別の案内と注意喚起が行われています。</li>
+</ul>
+
+<h3>佐賀大学 — 事務情報システムのNASがランサムウェア被害、事務用端末を一時停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>国立大学法人 佐賀大学</td></tr>
+<tr><th>事象</th><td>事務部門が利用するNAS内のファイルが暗号化される、ランサムウェアと推測される被害</td></tr>
+<tr><th>確認・対応</th><td>2026-09-24 8時42分に確認。CSIRT中心に初動対応、同日16時45分に事務用端末の利用を停止。警察へ相談し、9-27 11時3分に端末利用を再開、9-28 から通常業務を再開</td></tr>
+<tr><th>影響</th><td>事務情報システム（約4日間の業務影響）</td></tr>
+</table>
+<ul>
+<li>教育機関のNASを標的としたランサムウェア被害です。初期対応から再開まで約4日で復旧されており、<strong>端末停止という思い切った被害拡大防止策</strong>が奏功した形です。同学は情報セキュリティ対策の一層の強化と再発防止を図るとしています。</li>
+</ul>
+
+<h3>長野県大町市 — デジタルアーカイブサイトが改ざん、行政サービスを停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>長野県大町市（市デジタルアーカイブサイト「デジまち」）</td></tr>
+<tr><th>事象</th><td>システムの脆弱性を悪用した不正アクセスにより、一部ページがオンラインカジノサイトへの誘導ページに改ざん</td></tr>
+<tr><th>経緯</th><td>不正アクセスは2026-07-14 21時20分。8-28 16時頃に外部からの通報で発覚。9-10 に市が発表</td></tr>
+<tr><th>影響</th><td>当該システムをネットワークから遮断。行政サービスの提供を停止中。個人情報は保存しておらず、流出や二次被害の痕跡は現時点で確認されず</td></tr>
+</table>
+<ul>
+<li>発覚まで<strong>約1か月半を要した</strong>点が気がかりです。市は情報資産が破壊されたとしており、調査結果を踏まえて脆弱性対応・再発防止策・サイト再開時期を検討するとしています。</li>
+</ul>
+
+<h3>鎌倉市 児童発達支援センターあおぞら園 — 個人情報の誤送付、5年間で13件の問題</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>神奈川県鎌倉市（鎌倉市児童発達支援センターあおぞら園／指定管理者：社会福祉法人県央福祉会）</td></tr>
+<tr><th>事象</th><td>2026年6月に個人情報の誤送付事案が発生。2025年3月にも同様の事案が判明。総点検の結果、5年間の指定管理期間で13件の個人情報管理上の問題を確認</td></tr>
+<tr><th>その他</th><td>2025年4月の保護者からの申出を受け調査し、2025年12月に保育上の不適切な対応を認定。障害者虐待防止センターへの通報後、虐待の事実は認められなかったが職員間の不適切な対応等を確認</td></tr>
+<tr><th>対応</th><td>市が9-4付で業務改善指示。個人情報保護規程の改定、年6か月ごとのセキュリティ研修、郵送物のダブルチェック体制などを盛り込んだ再発防止策を報告</td></tr>
+</table>
+<ul>
+<li>指定管理者の組織風土・報告体制の機能不全と、慢性的な人材不足が背景要因として挙げられています。<strong>システム的な防御では防げない類型</strong>であり、支援現場の体制整備が再発防止の要となります。</li>
+</ul>
+
+<h3>青森みちのく銀行 — 2支店で顧客情報記載の書類が所在不明（計 約13,700件）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>青森みちのく銀行（問屋町支店・石堂支店）</td></tr>
+<tr><th>事象</th><td>顧客情報が記載された書類が所在不明。問屋町支店33種類（約5,200件）、石堂支店49種類（約8,500件）</td></tr>
+<tr><th>経緯</th><td>問屋町支店の店舗統合作業の過程で保存箱の個数を確認したところ紛失が判明。全店調査の結果、石堂支店での紛失も判明</td></tr>
+<tr><th>影響</th><td>顧客の氏名・住所・電話番号・生年月日・性別・勤務先・口座番号・残高・印影・顧客番号・整理番号など。関連する問い合わせは確認されず</td></tr>
+</table>
+<ul>
+<li>保存期間が経過した保存箱を廃棄する際、<strong>誤って一緒に廃棄した可能性が高い</strong>との説明です。金融機関における記録管理の統制と、廃棄プロセスの複数人確認が課題として残ります。</li>
+</ul>
+
+<h3>京王電鉄 — ランサムウェア被害、一部グループ会社の営業システムに影響（続報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>京王電鉄株式会社およびグループ会社</td></tr>
+<tr><th>事象</th><td>ランサムウェア攻撃により、一部グループ会社の営業システムに影響</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/09/28、ScanNetSecurity 2026/09/30</td></tr>
+</table>
+<ul>
+<li>鉄道本体の運行への影響は報じられていませんが、グループ会社の営業システムが対象となっています。続報が入り次第、あらためてお伝えいたします。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
