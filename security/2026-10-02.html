@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Apache HTTP Server 2.4.69 - Critical 3件を含む18件（CVE-2026-59797・57941・56154 ほか）</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Apache HTTP Server 2.4.0〜2.4.68</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CRITICAL</span> 3件 / <span class="badge-high">HIGH</span> 多数</td></tr>
+  <tr><th>修正版</th><td>2.4.69</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-59797（CVSSv3.1 9.8）</strong>：mod_ssl の SSLRequire とファイル関連式における権限管理の不備。2.4.0〜2.4.68 が対象。</li>
+  <li><strong>CVE-2026-57941（9.8）</strong>：mod_http2 が session-&gt;bbtmp を共有した状態での再入により Use After Free。</li>
+  <li><strong>CVE-2026-56154（9.8）</strong>：mod_rewrite で先読み式（%{LA-U:HTTP:...}）を使った際の Use After Free。</li>
+  <li><strong>CVE-2026-93546（8.8）</strong>：mod_dav_fs の整数オーバーフロー。WebDAV 書き込み権限を持つ攻撃者がプロパティデータベースを恒久的に破壊しうる。</li>
+  <li><strong>CVE-2026-73636（8.1）</strong>：mod_auth_digest のダイジェスト認証情報のキャプチャ＆リプレイ（MITM）。<strong>CVE-2026-73637（7.3）</strong>は同モジュールの同時認証処理による Use After Free。</li>
+  <li>High 7.5 が多数：mod_proxy_uwsgi の HTTP レスポンススマグリング（CVE-2026-63718）、mod_xml2enc の NULL 参照（63686）、mod_vhost_alias のスタックバッファオーバーフロー（63292）、mod_proxy_ftp の PASV 検証不備（63045）、Windows の 8.3 名展開による境界外書き込み（59685）、mod_proxy_html（56449）、mod_charset_lite（56153）、mod_auth_digest の認証欠如（48005）、mod_session_cookie の情報露出（47360）、mod_heartmonitor の NULL 参照（46729）。</li>
+  <li>対策は 2.4.69 以降への更新。前バージョン 2.4.68 も直近に大量修正が入っており、複数世代まとめての更新が望ましい。</li>
+</ul>
+
+<h3>Teledyne FLIR Aware2（PackBot／FirstLook ロボット制御）- 未認証で設定読取、CVSS 10.0（CVE-2026-55393 ほか）</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Teledyne FLIR Aware2（PackBot 6.9.0.2まで／FirstLook 1.7.9まで）</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CRITICAL</span> 2件 / <span class="badge-high">HIGH</span> 3件</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-55393（CVSSv3.1 10.0）</strong>：Web インターフェースのパス名検証不備。未認証の遠隔攻撃者がロボットの設定・セキュリティパラメータを読み出せる。</li>
+  <li><strong>CVE-2026-55395（9.4）</strong>：アクセス制御にハードコードされたパスワードが存在し、未認証で PackBot／FirstLook にアクセス・再設定が可能。</li>
+  <li><strong>CVE-2026-14984（9.4）</strong>：主要な制御エンドポイントが平文通信で、セッショントラフィックの傍受・乗っ取り・改ざんが成立。</li>
+  <li><strong>CVE-2026-55396（8.5）</strong>：操作端末とロボット間の UDP 通信が平文かつ暗号学的整合性チェックなし。</li>
+  <li><strong>CVE-2026-14983（7.1）</strong>：Web インターフェースの認証欠如により未認証でサービス拒否攻撃が可能。</li>
+  <li>ロボット／ICS 用途のため、ネットワーク分離状況の見直しとベンダ修正版の適用を優先されたい。</li>
+</ul>
+
+<h3>WordPress エコシステム - 未認証バックアップ窃取（CVSS 10.0）から権限昇格まで多数</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>WordPress プラグイン／テーマ 多数</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CRITICAL</span> 5件以上 / <span class="badge-high">HIGH</span> 多数</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST、Patchstack／WPScan 系）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-101148（CVSS 10.0）</strong>：WordPress Backup Plugin（BackupSheep）1.8以下。連携キーが未設定・空白でも有効とみなすため、未認証の攻撃者がバックアップの作成・ダウンロードを行える。</li>
+  <li><strong>CVE-2026-75957（9.8）</strong>：Ultimate Multisite 2.15.0以下。login の checkout_form パラメータ経由の認証バイパス。</li>
+  <li><strong>CVE-2026-15989（9.8）</strong>：Super Forms 6.3.316以下。Register &amp; Login アドオン経由の権限昇格。</li>
+  <li><strong>CVE-2026-103752（9.8）</strong>：Authorizer 3.15.3以下。未認証での権限昇格。</li>
+  <li><strong>CVE-2026-62071（9.3）</strong>：WordPress File Upload 5.1.10以下。未認証 SQL インジェクション。</li>
+  <li><strong>CVE-2026-92966（9.1）</strong>：LatePoint 5.7.0以下。任意ショートコード実行。</li>
+  <li><strong>CVE-2026-19807／CVE-2026-103068（各8.8）</strong>：ByteCoreStack – MCP Connector for AI Tools の権限昇格（wp_update_user_meta を実行する MCP ツール）。</li>
+  <li>ほか Icegram（8.8 PHP オブジェクトインジェクション）、FIFU（8.8 REST nonce 検証不備）、Prime Mover（8.6／7.0 Zip Slip・任意ディレクトリ削除）、Cache Enabler（8.7）、Pro Like Button（8.6 SQLi）、AcyMailing SMTP Newsletter（8.6 任意ファイル削除）など。</li>
+</ul>
+
+<h3>Foreman／Red Hat Satellite - サンドボックス回避によるRCE（CVE-2026-96658、CVSS 9.9）</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Foreman／Red Hat Satellite（foreman_remote_execution を含む）</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CRITICAL</span> 2件 / <span class="badge-high">HIGH</span> 4件</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-96658（CVSSv3.1 9.9）</strong>：低権限の認証済み攻撃者がテンプレートエンジンの safemode サンドボックスを回避し、委譲の取り扱い不備を通じてリモートコード実行に至る。</li>
+  <li><strong>CVE-2026-96659（9.1）</strong>：Viewer 権限のユーザーがテンプレートプレビューエンドポイントへの細工した要求で情報漏えいを引き起こせる。</li>
+  <li><strong>CVE-2026-12405（8.8）</strong>：foreman_remote_execution。effective_user を上書き可能なジョブテンプレートで /api/v2/job_invocations 経由のコマンドインジェクション。</li>
+  <li><strong>CVE-2026-12541／12540（各8.2）</strong>：foreman-rake の db:dump／db:import_dump と errors:fetch_log における OS コマンドインジェクション。</li>
+  <li><strong>CVE-2026-12423（7.5）</strong>：/unattended/provision の認証バイパス（host_verifier.rb の論理不備）。</li>
+</ul>
+
+<h3>n8n - 資格情報漏えい・パストラバーサル等（2.39.6／2.40.1で修正）</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>n8n（1.123.80未満、2.0.0〜2.39.6未満、2.40.0〜2.40.1未満）</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span> 多数（最大CVSS 8.5）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-103259（8.5）</strong>：Dynamic Credentials の authorize／revoke エンドポイントでセッショントークンが漏えい。resolver 登録権限を持つ攻撃者が他者の認証情報を捕捉しうる。</li>
+  <li><strong>CVE-2026-103246（8.3）</strong>：インラインのエージェントノード・ツール内省で資格情報の所有権を検証せず、任意の資格情報 ID を参照して平文を復号・持ち出せる。</li>
+  <li><strong>CVE-2026-103257（8.1）</strong>：リソース識別子の検証不備によるパストラバーサル。<strong>CVE-2026-103255</strong>（Supabase ノードの tableId）、<strong>CVE-2026-103254</strong>（Send-and-Wait 承認 URL）も同種。</li>
+  <li><strong>CVE-2026-103251（7.5）</strong>：キューモードでのコミュニティパッケージ導入検証バイパス。<strong>CVE-2026-103252（7.1）</strong>は資格情報テストエンドポイントの認可バイパス。</li>
+  <li><strong>CVE-2026-103256（7.1）</strong>：Wekan／Baserow 資格情報が未検証のホストへ平文送信される。<strong>CVE-2026-103253（7.0）</strong>は Oracle Database ノードの SQLi、<strong>CVE-2026-103250（7.0）</strong>は MongoDB Chat Memory の NoSQL インジェクション。</li>
+</ul>
+
+<h3>Python 関連 - Tornado・pgvector・Amazon Ion Python</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Tornado 6.5.9未満 / pgvector 0.8.7未満 / Amazon Ion Python 0.15.0未満</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-103262（8.7）</strong>：Tornado の CurlAsyncHTTPClient が圧縮応答でメモリを無制限に蓄積し、遠隔からサービス拒否が可能。</li>
+  <li><strong>CVE-2026-103263（8.2）</strong>：Tornado の StaticFileHandler が静的ルート内のシンボリックリンクをたどり、解決先がルート外でも確認しないためパストラバーサル。</li>
+  <li><strong>CVE-2026-103484（8.8）</strong>：pgvector の IVFFlat インデックス構築でデータベースユーザーが境界外書き込みを行え、任意コード実行に至りうる。0.8.7 で修正。</li>
+  <li><strong>CVE-2026-104020（8.7）</strong>：Amazon Ion Python の Ion リーダーが制御されない再帰でアプリケーションをクラッシュさせる（DoS）。0.15.0 で修正。</li>
+  <li><strong>CVE-2026-103651（7.6）</strong>：MISP の OTP 認証フローで使用済みの HOTP トークンがリプレイ可能、カウンタを巻き戻せる。</li>
+</ul>
+
+<h3>Java 関連 - jackson-dataformats-binary・Apache Camel Quarkus・Apache APISIX</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>jackson-dataformats-binary / camel-quarkus-support-xalan / Apache APISIX</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-68495／CVE-2026-68496（各7.5）</strong>：jackson-dataformats-binary の CBOR パーサおよび Smile パーサが、デコード時に StreamReadConstraints.validateNameLength() を呼ばないため maxNameLength 制限が機能しない。</li>
+  <li><strong>CVE-2026-88789（8.6）</strong>：Apache Camel Quarkus の XSLT サポート拡張（3.2.0〜3.33.2、3.34.0〜3.39.x）で XML 外部エンティティ参照の制限不備。</li>
+  <li><strong>CVE-2026-94250（8.2）</strong>：Apache APISIX の batch-requests プラグインに資源制限がなく、未認証の呼び出しでゲートウェイワーカーを OOM に至らしめられる。</li>
+</ul>
+
+<h3>AI・MCP 基盤 - Obot・Budibase・DeepWiki-Open</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Obot / Budibase / DeepWiki-Open</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span></td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-103758（8.6）</strong>：Obot 0.21.1〜0.24.1。checkUI の拒否リストが /mcp-connect-composite/ ルートを欠いているため、認証済みの Basic ロール利用者が制限された MCP サーバへ到達できる。</li>
+  <li><strong>CVE-2026-103757（8.3）</strong>：Budibase 3.41.0まで。AI テーブル生成の uploadUrl が fetchWithBlake ではなく raw の node-fetch を用いるため SSRF が成立。</li>
+  <li><strong>CVE-2026-103591（8.7）</strong>：DeepWiki-Open（commit d92819a まで）。GET /codemap/file の repo_url パラメータで未認証の任意ファイル読み取り。</li>
+</ul>
+
+<h3>日立製作所「Hitachi Coding Software Suite」- Critical 4件を含む6件（3.3.0まで）</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Hitachi Coding Software Suite 3.3.0まで</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-critical">CRITICAL</span> 4件 / <span class="badge-high">HIGH</span> 2件</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-01（JST）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-82829（9.3）</strong>：隠し機能（バックドアアカウントやハードコード資格情報）により未認可のアクセスが可能。</li>
+  <li><strong>CVE-2026-82827（9.3）</strong>：JWT 署名秘密鍵のハードコード。攻撃者が不正な Bearer トークンを生成し管理者操作を悪用できる。</li>
+  <li><strong>CVE-2026-82825（9.3）</strong>：重要機能に対する認証の欠如。未認証攻撃者が重要 API を呼び出せる。</li>
+  <li><strong>CVE-2026-82824（9.3）</strong>：パストラバーサルによりファイルの閲覧・作成・改変・削除が可能。</li>
+  <li><strong>CVE-2026-82828（8.7）</strong>：不適切な認可。非特権ユーザーが管理者相当の操作を実行できる。<strong>CVE-2026-82826（8.7）</strong>は資格情報の平文送信。</li>
+</ul>
+
+<h3>Microsoft Defender「RedSun」（CVE-2026-41091、CVSS 7.8）- エクスプロイトコードが公開</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Microsoft Malware Protection Engine 1.1.26030.3008以上 1.1.26040.8未満</td></tr>
+  <tr><th>深刻度</th><td><span class="badge-high">HIGH</span>（CVSSv3.1 7.8）</td></tr>
+  <tr><th>公表</th><td>Scan Tech Report 2026-10-01（ラック デジタルペンテスト部）</td></tr>
+</table>
+<ul>
+  <li>Microsoft Defender を構成する Malware Protection Engine に存在。クラウド関連としてタグ付けされたファイルを検出・分析し元の場所へ書き戻す際のファイル検証に不備があり、SYSTEM 権限で意図しない場所へファイルを書き込ませられる。</li>
+  <li>攻撃者は Windows のサービスが用いるプログラムを上書きし、SYSTEM 権限で任意コードを実行して管理者権限を奪取できる。Windows 侵入に成功した攻撃者にとって有効な権限昇格経路となる。</li>
+  <li>エクスプロイトコードは 0-day として公開され「RedSun」の通称で知られる。CISA KEV にも収載済み。対策は 2026年5月分の Microsoft 公式セキュリティ更新プログラムの適用。</li>
+</ul>
+
+<h3>Claude Code 2.1.287 - 権限ガードとサンドボックスまわりを修正</h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>Claude Code 2.1.287</td></tr>
+  <tr><th>公開</th><td>2026-10-01 18:00 UTC（JST 2026-10-02 03:00）</td></tr>
+</table>
+<ul>
+  <li>危険な <code>rm</code>（<code>/</code> やホームディレクトリ対象）が、同じコマンドで <code>~</code> やワイルドカード宛のリダイレクトを併用した場合に「常に確認」のセーフガードを失う問題を修正。</li>
+  <li><code>__proto__</code> という名前の MCP ツールで、組織の per-tool 権限上限が黙って無視される問題を修正。</li>
+  <li>Linux のサンドボックス化 Bash コマンドが Claude Code 実行ファイルへの開いたハンドルを継承する問題を修正。</li>
+  <li>リポジトリがコミットしたシンボリックリンク経由で機密ファイルや作業ツリー外へシェル書き込みが及ぶ場合、着地点を明示して人の承認を待つよう変更（<code>~</code> 宛の行も対象）。</li>
+  <li>MCP サーバが対応プロトコル版を変更した際にコネクタのツール呼び出しが二重実行される問題、<code>asyncRewake</code> フックの暴走、マネージド設定の <code>availableModels</code> が Bedrock／Vertex の起動時チェックで無視される問題なども修正。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw・Hermes Agent については、本対象期間内にセキュリティ関連の新規リリースは確認されませんでした（OpenClaw 最新 2026.9.7、Hermes Agent 最新 v2026.9.24）。Next.js・Hono・Django・Spring Boot・React・GCP・AWS・Azure についても、本対象期間に直接関連する新規のセキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本郵政・日本郵便 - 「郵便局アプリ」への不正アクセスで19人分の個人情報が流出</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>日本郵政／日本郵便</td></tr>
+  <tr><th>公表</th><td>2026-10-01（Security NEXT 報道）</td></tr>
+  <tr><th>対象</th><td>顧客情報69件・19人分</td></tr>
+</table>
+<ul>
+  <li>「郵便局アプリ」が不正アクセスを受け、無料会員向けサービス「ゆうID」と郵便局アプリに関する顧客情報69件・19人分が不正に取得された。</li>
+  <li>流出情報は対象者により異なるが、ゆうID会員については氏名・住所・電話番号・生年月日・性別・メールアドレス・勤務先情報・家族状況のほか、住所録に登録された氏名・住所・電話番号・企業名・メールアドレス。郵便局アプリで作成した送り状の差出人・受取人の氏名・住所・電話番号・企業名・メールアドレス・追跡番号・品名・発送配達予定も含まれる。</li>
+  <li>2026年9月25日にゆうIDと郵便局アプリの緊急メンテナンスを実施し、セキュリティ対策を講じたうえで翌26日にサービスを再開。不正利用は確認されていない。対象顧客には書面などで個別に連絡。</li>
+  <li>生活インフラ事業者の会員基盤が対象となった事案であり、フィッシング等の二次被害への注意が必要。</li>
+</ul>
+
+<h3>スターツ出版「オズモール」- 会員のメールアドレス最大447,610名分が漏えいした可能性</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>スターツ出版株式会社</td></tr>
+  <tr><th>公表</th><td>2026-09-27（ScanNetSecurity 報道 2026-10-01）</td></tr>
+  <tr><th>初回検知</th><td>2026-09-26</td></tr>
+</table>
+<ul>
+  <li>9月26日、同社システム部門が「オズモール」への海外からの大量の不正アクセスを検知。調査の結果、顧客の個人情報が閲覧された可能性が判明した。</li>
+  <li>漏えいの可能性があるのは会員のメールアドレス最大447,610名分と、一部の氏名および住所（都道府県まで）。</li>
+  <li>一時的に該当ページへのアクセスを停止し、原因を特定のうえで不正アクセス遮断措置のシステム修正を実施。プログラム改ざんなどの被害が発生していないことを確認しサービスを再開している。</li>
+</ul>
+
+<h3>ニッポンレンタカーサービス - アプリへの不正アクセス、運転免許証情報が閲覧されたおそれ</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ニッポンレンタカーサービス株式会社</td></tr>
+  <tr><th>公表</th><td>2026-09-26（ScanNetSecurity 報道 2026-10-01）</td></tr>
+  <tr><th>対象</th><td>会員41名</td></tr>
+</table>
+<ul>
+  <li>「ニッポンレンタカーアプリ」のシステムに第三者から不正アクセスがあり、会員情報が不正に閲覧された可能性を確認した。</li>
+  <li>対象会員の閲覧された可能性のある情報は氏名・電話番号・メールアドレス・ログインID・利用履歴・予約情報。運転免許証情報やクレジットカード番号・名義人名を登録した会員については、運転免許証情報（免許証番号・住所・生年月日）とクレジットカード番号下4桁・名義人名も閲覧された可能性がある。</li>
+  <li>対象会員にはメールで個別に連絡。原因の究明と再発防止、情報セキュリティ体制の強化に取り組むとしている。</li>
+</ul>
+
+<h3>大興印刷「PhotoGoods」- 決済画面にスキミングプログラム、クレジットカード情報が流出した可能性</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>大興印刷株式会社（「PhotoGoods」運営）</td></tr>
+  <tr><th>公表</th><td>2026-10-01（Security NEXT 報道）</td></tr>
+  <tr><th>侵害期間</th><td>2026-08-06 〜 2026-09-11</td></tr>
+</table>
+<ul>
+  <li>写真からオリジナルグッズを作成するサービス「PhotoGoods」が不正アクセスを受け、個人情報が流出した可能性がある。システムの脆弱性やファイルアップロード機能を悪用された。</li>
+  <li>2026年9月11日にサービス内で不審なプログラムが読み込まれているとの連絡を受け調査を実施。2026年8月6日から、決済画面に入力されたクレジットカード情報を不正に取得するプログラムが設置されていた。</li>
+  <li>利用者の氏名・住所・電話番号・メールアドレス・変換処理されたパスワード関連情報が流出した可能性に加え、8月6日〜9月11日に決済画面に入力されたクレジットカードの番号・有効期限・セキュリティコードが流出した可能性がある。</li>
+  <li>サービスを一時停止し不正プログラムを削除、不正な管理者アカウントを無効化した。対象利用者を確定後に順次案内し、サービス再開時期は未定。</li>
+</ul>
+
+<h3>産業経済新聞社 - 「RESPECTion!シンポジウム」参加申込フォームの設定不備で149名分が閲覧可能に</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社産業経済新聞社 RESPECTion!推進委員会 事務局</td></tr>
+  <tr><th>公表</th><td>2026-09-11（ScanNetSecurity 報道 2026-10-01）</td></tr>
+  <tr><th>対象</th><td>149名</td></tr>
+</table>
+<ul>
+  <li>参加申込フォームで「回答の概要を表示する（サマリー機能）」が有効になっていたため、送信完了画面の「前の回答を表示」から他の申込者の回答概要が閲覧できる状態となっていた。</li>
+  <li>閲覧可能だった期間は8月24日午後1時30分から9月10日午後6時47分で、対象件数は当該期間中の申し込み149名。名前・メールアドレス・出演者への質問（任意）がテキスト一覧として表示されていたが、同一回答者の情報が名簿形式で紐づいて表示されていたものではない。全体集計グラフも個人ごとの回答内容ではなく統計表示であったことを確認している。</li>
+  <li>不備の発覚後、該当フォームの設定を修正し、第三者から一切の回答内容および集計結果が閲覧できない状態とした。フォーム作成・公開時の事前チェック体制強化と複数担当者によるダブルチェックを徹底するとしている。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
