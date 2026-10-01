@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-01 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-01 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-09-30 09:00 〜 2026-10-01 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.286</h2>
+<p>2026-10-01 04:19 JST 公開。権限プロンプトの使い勝手、フルスクリーン表示、認証・ログイン周り、サブエージェント、クラウドセッション、VSCode 拡張まで幅広く手を入れた大型リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>権限プロンプトの件数表示</strong>: 複数の権限リクエストが溜まったとき、プロンプトに「2 of 5」のような進捗カウントが表示されるようになりました。</li>
+  <li><strong>フルスクリーンでのマウス操作</strong>: リストの「N more」行をクリックしてリストの端へジャンプできるようになり、ホバー／押下状態も表示されます。</li>
+  <li><strong>commit 前の verify スキル</strong>: プロジェクトまたはユーザーのスキルに <code>verify</code> という名前のものがある場合、コミット直前に実行するよう Claude に指示されます（ドキュメントのみ・テストのみのコミットを除く）。</li>
+  <li><strong>外部エディタ（Ctrl+G）</strong>: 行番号を受け取るエディタでは、プロンプト内のカーソル行で開くようになりました。</li>
+  <li><strong>出力スタイル／テーマピッカー</strong>: 出力スタイルは「Default」ではなく現在のスタイルで開き、説明が名前の下の行に表示されます。テーマピッカーはターミナルに収まるスクロールリストになりました（いずれも数字キーでの選択は廃止）。</li>
+  <li><strong><code>/hooks</code> の刷新</strong>: イベント別にグループ化した1つのリストで開くようになり、フックの確認が Enter 1回で済みます。</li>
+  <li><strong>フォールバック通知の明確化</strong>: フォールバックでコンテキストウィンドウが 1M から 200K に縮小した場合、その旨を通知するようになりました。</li>
+  <li><strong><code>--bare</code> の挙動変更</strong>: コマンドラインで指定した MCP サーバーのみを接続し、モデルへシステムリマインダーを送らず、バックグラウンドタスクも開始しません。タイムアウトしたシェルコマンドはバックグラウンドへ移行せず停止します。</li>
+  <li><strong>リトライ方針の変更</strong>: 1つのモデル呼び出し全体で上限を管理するようになり、既定設定では失敗した呼び出しの送信は最大14リクエストに抑えられます。</li>
+  <li><strong>[VSCode] ブックマーク</strong>: Claude の応答を保存し、Bookmarks サイドパネルで見続けられるようになりました。質問カードの回答履歴や選択肢プレビューも追加されています。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>認証・ログイン</strong>: <code>gcpAuthRefresh</code> / <code>awsAuthRefresh</code> の資格情報失効時に、複数の Claude Code プロセスや IDE 拡張がそれぞれログイン用ブラウザを開いてしまう問題を修正。macOS で <code>/login</code> 成功後も「Not logged in」と表示される問題も修正されました。</li>
+  <li><strong>セッション復元</strong>: <code>claude --resume</code> / <code>--continue</code> で、並列ツール呼び出しのバッチ後にセッションがクラッシュ・強制終了されると以降のターンが失われる問題を修正。</li>
+  <li><strong>API 400 エラー</strong>: ツールやフックがテキスト以外（オブジェクト・数値・真偽値）を返した場合に 400 エラーになる問題を修正（再開セッション含む）。</li>
+  <li><strong>MCP</strong>: 再認証成功後も「MCP servers require authentication」が繰り返し表示される問題、サーバーが旧ハンドシェイクを切った後最大1日ツールが列挙されない問題、再サインイン要求が保留中のリンクを上書きして壊す問題などを修正。</li>
+  <li><strong>シークレットのマスキング</strong>: エラーメッセージに Bearer/Basic 資格情報の値が表示される問題、パーセントエンコードされたトークンが部分的にしか隠されない問題、ゼロ幅スペースなど不可視文字を含むキー名のシークレットが露出する問題を修正。</li>
+  <li><strong>サブエージェント</strong>: タスク追跡ツール（TaskCreate/Get/Update/List、TodoWrite）がフォアグラウンドのサブエージェントで欠落する問題、worktree 分離時に <code>CLAUDE.md</code> とその import を二重ロードする問題、接続停滞時に元のプロンプトで再起動される問題などを修正。</li>
+  <li><strong><code>/compact</code>・<code>/clear</code>・<code>/rewind</code></strong>: バックグラウンドエージェントのトランスクリプト表示中に入力すると、無言でメイン会話に作用してしまう問題を修正。対象を明示して確認するダイアログが表示されます。</li>
+  <li><strong>モデルフォールバック</strong>: 既定モデルまたはモデルエイリアスが Anthropic API に拒否された場合に全ターン失敗する問題を修正。同一ティアの旧モデルで1回だけ再試行します。</li>
+  <li><strong>リモートコントロール</strong>: 組織ポリシーで Remote Control が無効化された後も接続が残る問題、終了中に届いたメッセージが配信済み扱いになり応答されない問題を修正。</li>
+  <li><strong>クラウドセッション</strong>: 回答済みの質問カードや承認済みツール呼び出しへの返信が来ない問題、履歴が非常に大きいセッションが復帰しない問題、ルーチン実行が「Succeeded」と誤表示される問題などを修正。</li>
+  <li><strong>Windows</strong>: 信頼記録の大文字小文字が異なる場合に <code>claude --bg</code> がフォルダを拒否する問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-286">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24（v0.21.5）</strong>（2026-09-24 19:09 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐙 OpenClaw — v2026.9.7</h2>
+<p>2026-09-30 13:44 JST 公開。負荷時の応答性と長い会話のなめらかさを改善し、更新時のバックアップとロールバック保護を強化したリリースです。2026.9.5 からのアップグレード修正も含みます。リリース規模は 2,818 プルリクエスト・518 直接コミット・344 コントリビュータです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>OpenAI Agents API と Sign in with ChatGPT（Beta）</strong>: 新たに対応しました。</li>
+  <li><strong>Mac / iPhone / iPad のチャット改善</strong>: 再起動後に作業を再開しやすくする導線も追加されています。</li>
+  <li><strong>オンボーディングの高速化</strong>: セットアップが最初の質問に早く到達し、サインイン・ペアリング・インストールで注意が必要な場合の案内が明確になりました。<code>openclaw setup --baseline --skip-bootstrap</code> は選択を記憶し、既存ファイルを保持します。</li>
+  <li><strong>デバイスペアリング</strong>: 設定済みの公開 HTTPS アドレスをデバイス参加リンクと QR セットアップに利用できます。使用済み・期限切れのダッシュボードリンクは、新しいリンクの取得方法を案内します。</li>
+  <li><strong>接続許容量の拡大</strong>: 同一 IP あたりの保留中・未認証接続の既定上限が 32 から 128 に引き上げられました（<code>OPENCLAW_MAX_PREAUTH_CONNECTIONS_PER_IP=32</code> で旧値に戻せます）。</li>
+  <li><strong>Control UI</strong>: 長い会話のスクロールがなめらかになり、過去メッセージの読み込み時の停止が減りました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>npm の新規インストールに不足していた依存（Undici）を同梱し、起動できない問題を修正。</li>
+  <li>Windows でターミナルが OpenClaw を見つけられない場合、インストーラが失敗として報告し <code>openclaw doctor</code> を案内するようになりました。</li>
+  <li>Bun のみの環境での初回インストール時のフォールバック、Windows の Bun 実行時のデータベース・デバイストークン保存の問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.7">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐋 Orca — v1.4.218</h2>
+<p>2026-10-01 05:53 JST 公開。9月29日のデイリービルドを基に、main から修正を取り込んだパッチです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Codex ターミナルの専用サーバー設定</strong>: 設定 → Agents に「Run each Codex terminal on its own server」スイッチが追加されました。既定でオンになり、エージェントのステータスとタブを閉じる動作が正しく保たれます。オフにすると Codex の共有サーバーと agents overview に戻ります（新規ターミナルに適用）。</li>
+  <li><strong>組み込みエージェントの追加</strong>: DeepSeek Harness、Freebuff、Qoder、CodeBuddy がビルトインされ、Orca から起動でき、サイドバーにステータスが表示されます。ZCode CLI の会話がセッション履歴に、Coding Plan のクォータが使用量に表示されます。</li>
+  <li><strong>Reset Terminal</strong>: ターミナルの右クリックメニューに追加され、クラッシュしたプログラムが残したキーボード・マウスモードを解除できます。</li>
+  <li><strong>ブラウザ</strong>: ページがクラッシュした際にビューポートのリサイズで Orca が落ちる問題を修正。グループ間で移動したタブが空白になる問題も修正されました。</li>
+  <li><strong>ネイティブチャット（実験的）</strong>: 構造化チャット自身がオーケストレーションを実行し、ワーカーの結果を受け取れるようになりました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>多数のファイルが同時に変更されたとき、大きな差分で Orca がフリーズする問題を修正。</li>
+  <li>数百のターミナルを開くと出力が止まる問題、ターミナル保存の失敗がディスク不足と誤って報告される問題を修正。</li>
+  <li>SSH ターミナルがクラッシュしたプログラムの後始末をローカルと同様に行うようになりました。</li>
+  <li>Codex 0.150〜0.157 のビジーなタブが idle と誤表示される問題、オーケストレーションワーカーが Codex 0.157 の起動画面を待たずに入力してしまう問題を修正。</li>
+  <li>Windows ホストでデスクトップアプリ再起動後、Codex ターミナルでのスマホのスワイプが誤入力を起こす問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.218">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js — v16.3.8 / v15.5.27（セキュリティリリース）</h3>
+<p>2026-10-01 01:13 JST 公開。16.3 系と 15.5 系の両ラインにセキュリティ修正が提供されました。</p>
+<ul>
+  <li><strong>High</strong>: 画像最適化におけるサーバーサイドリクエストフォージェリ（SSRF: GHSA-cjq9-62q9-8jv4）。</li>
+  <li><strong>Medium</strong>: App Router の metadata 画像ルートにおける dynamicParams バイパス経由の情報漏えい、セルフホスト環境での SSG / ISR ページのキャッシュポイズニング（複数件）、<code>use cache</code> フィル中の Draft Mode コンテンツ漏えい、ネストした <code>use cache</code> 関数でのルートパラメータ間のキャッシュリーク。</li>
+  <li><strong>Low</strong>: 開発サーバーの Model Context Protocol エンドポイントにおける情報漏えい。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.3.8">ソースへのリンク</a></p>
+
+<h3>🔥 Hono — v4.13.12</h3>
+<p>2026-09-30 18:43 JST 公開。バンドルされる型定義の内部型公開と自己参照する <code>JSX.IntrinsicElements</code> の問題を修正し、<code>etag</code> ミドルウェアの <code>retainedHeader</code> で大文字小文字混在のヘッダー名を正しく扱うようになりました。JSX の <code>gridGap</code> 系に <code>px</code> が付与されない問題、<code>combine</code> の短絡ミドルウェアが Response を返さない問題も修正されています。</p>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.12">ソースへのリンク</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>2026-09-30 付のリリースノートより。</p>
+<ul>
+  <li><strong>Apigee hybrid v1.17.1</strong>: 別の Kubernetes クラスタで動作する Cassandra データストアへ接続する「external datastore mode」をサポート。あわせて Apigee operator の Kubernetes マネージャーロールに core <code>endpoints</code> 権限が付与されました（自前で RBAC を管理している場合はアップグレード前に追加が必要）。</li>
+  <li><strong>BigQuery Security center が GA</strong>: データセキュリティ態勢の分析、行・列レベルのセキュリティポリシーの作成管理、データガバナンスとポリシータグの構成が Google Cloud コンソールから行えます。</li>
+  <li><strong>Apigee API hub</strong>: API insights に AI performance / Tool performance ダッシュボードが追加され、LLM のトークン使用量・レイテンシや MCP ツールのトラフィック・スループット・レイテンシを可視化できます。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソースへのリンク</a></p>
+
+<h3>☁️ AWS</h3>
+<p>2026-09-30 の発表より抜粋。</p>
+<ul>
+  <li><strong>Amazon S3 Vectors のメタデータ・プリフィルタリング</strong>: 類似検索の前にメタデータフィルタを評価し、選択的なフィルタで最大5倍の再現率を実現。<code>$startsWith</code> プレフィックス一致演算子も追加。</li>
+  <li><strong>Amazon Aurora serverless の高速スケーリング</strong>: 1秒以内に最大 16 ACU を追加し、最大 256 ACU まで拡張可能に。プラットフォームバージョン3・4で既定有効。</li>
+  <li><strong>Aurora PostgreSQL が Apache Iceberg / Parquet の直接クエリに対応</strong>: DuckDB のクエリエンジンを PostgreSQL に組み込み、ETL なしでデータレイクを参照できます（Aurora PostgreSQL 17.11 / 18.6 以降、追加料金なし）。</li>
+  <li><strong>Aurora / RDS が AMD ベースの R8a・M8a インスタンスに対応</strong>（第5世代 AMD EPYC、vCPU が物理コアに対応）。</li>
+  <li><strong>CloudTrail Event Coverage</strong>: アカウント／組織レベルでデータプレーン操作のログ取得状況を可視化し、未設定のサービスを特定できます。</li>
+  <li><strong>Amazon Bedrock で OpenAI GPT-6 Astra の UltraFast モード</strong>が利用可能に（最大6倍高速な推論、最大 300 tokens/秒）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<p class="empty-notice">対象期間内の新規リリース・アップデートが確認されなかったもの: <strong>React</strong>（最新版 v19.3.0、2026-09-10 公開）、<strong>Spring Boot</strong>（最新 GA v4.1.1）、<strong>Django</strong>、<strong>Python</strong>、<strong>Azure</strong>（アップデート一覧がJavaScriptレンダリングのため、一次ソースでの確認ができませんでした）。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
