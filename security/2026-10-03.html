@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-03 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-03 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Apache HTTP Server 2.4.69 - 20件の脆弱性を修正、CVSS 9.8の脆弱性を複数含む <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Apache HTTP Server 2.4.68 以前</td></tr>
+  <tr><th>修正版</th><td>2.4.69（2026年10月1日リリース）</td></tr>
+  <tr><th>主要CVE</th><td>CVE-2026-63292（CVSSv3.1 7.5 / mod_vhost_alias スタックバッファオーバーフロー）、CVE-2026-57941（mod_http2 Use After Free）、CVE-2026-59685（Windows パス処理の境界外書き込み）</td></tr>
+  <tr><th>公開</th><td>JVN JVNVU#94648869（2026/10/02 10:00）、Security NEXT 2026/10/02</td></tr>
+</table>
+<ul>
+  <li>Apache開発チームは現地時間2026年10月1日に 2.4.69 をリリースし、あわせて20件の脆弱性に対処いたしました。開発者による重要度評価では「クリティカル」「重要」は含まれず「中（Moderate）」が5件、残り15件が「低（Low）」ですわ。</li>
+  <li>ただしCVSSベーススコアが9.8とされる脆弱性も複数含まれており、実運用では早急な適用が望ましゅうございます。</li>
+  <li>CVE-2026-63292 は特定の構成で8192バイトを超えるHostヘッダを受信するとサービス拒否や任意コード実行につながる可能性があります。CVE-2026-57941 は mod_http2 の解放済みメモリ使用、CVE-2026-59685 はWindows環境のパス処理における境界外書き込みでございます。</li>
+  <li>JVNは2026/10/02 10:00に「Apache HTTP Server 2.4における複数の脆弱性に対するアップデート（2026年10月1日）」として日本語情報を公開いたしました。</li>
+</ul>
+
+<h3>OpenClaw 2026.8.35（extended-stable）- 重要なセキュリティ更新を含むLTS相当リリース <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>openclaw 2026.8.35（extended-stable / LTS相当）</td></tr>
+  <tr><th>リリース</th><td>2026-10-02 14:06 UTC（JST 10/02 23:06）</td></tr>
+  <tr><th>位置づけ</th><td>2026年8月末時点のOpenClawに、重要なセキュリティ更新・信頼性／性能修正・新モデル対応を加えたゲートウェイ専用リリース</td></tr>
+  <tr><th>最新版</th><td>本リリース時点の最新は 2026.9.7</td></tr>
+</table>
+<ul>
+  <li>署名・検証済みのタグとして公開されております。セキュリティおよび所有権まわりの強化として、シークレットストアのローテーション中に種別が変わらないよう保持し、許可済みのシークレット持ち出し実行を復旧し、cronツールの明示的な許可リストを維持しつつ陳腐化した自動スナップショットを修復する変更が含まれております。</li>
+  <li>更新の安全性に関しても、プラグイン設定の保持、重複ゲートウェイの抑止、pnpmパッケージ更新時のターミナル障害回避、移行時のプラグイン目録保持が図られております。</li>
+  <li>extended-stableブランチをご利用の環境は本バージョンへの更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Claude Code 2.1.288 - 権限モード・サンドボックス・自動モードまわりの修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>2.1.288（最新）</td></tr>
+  <tr><th>主な内容</th><td>権限判定・自動モード・MCP OAuth再認証・プラグインLSP設定の取り違え修正など</td></tr>
+  <tr><th>出典</th><td>anthropics/claude-code CHANGELOG.md</td></tr>
+</table>
+<ul>
+  <li>自動モードの拒否時に、遮断されたツールがBashでないにもかかわらずBash権限ルールを案内してしまう問題を修正いたしました。</li>
+  <li>プラグインのLSPサーバが initializationOptions／settings 内の <code>${user_config.*}</code>・<code>${CLAUDE_PLUGIN_ROOT}</code> プレースホルダを実際の値やマニフェスト既定値へ置換せず受け取っていた問題、およびプラグインの <code>tool.call</code> フックがBashを失敗させファイル検索が誤ったフォルダを参照する問題を修正しております。</li>
+  <li>MCPサーバがツール呼び出し中に追加のOAuthスコープを要求した場合の再認証プロンプトを追加し、サンドボックス内の未クォートヒアドキュメント処理も修正いたしました。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / SpringBoot / Python / Django / Hono / GCP / AWS / Azure / React および Hermes Agent（GitHub Releases に新規リリースなし）については、本対象期間内に直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Fortinet FortiMail - GUIコンポーネントのゼロデイ脆弱性（CVE-2026-104286、CVSS 9.8）、悪用報告あり <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-104286（CVSSv3.1 9.8 / Critical）</td></tr>
+  <tr><th>影響</th><td>未認証の攻撃者が細工したHTTPリクエストでシステム上へ任意ファイルを書き込み可能</td></tr>
+  <tr><th>対策</th><td>FortiMail 8.0.2 / 7.6.7 / 7.4.9（準備中）。7.2ブランチは7.4以降へ移行が必要</td></tr>
+  <tr><th>悪用状況</th><td>ゼロデイとして悪用が報告済み。米CISA KEVに2026-10-01付で追加</td></tr>
+</table>
+<ul>
+  <li>Fortinetは現地時間2026年10月1日にセキュリティアドバイザリ FG-IR-26-175 を公開いたしました。パストラバーサルとNULLバイト／NULL文字を適切に無害化できないことに起因する脆弱性でございます。</li>
+  <li>同社は内部で発見したとする一方、攻撃で悪用されているとの報告もあるとしており、修正版の提供とあわせて回避策の実施を呼びかけております。</li>
+  <li>米CISAはKEVカタログに追加し、連邦機関へ2026年10月4日を期限とした対応を求めております。</li>
+</ul>
+
+<h3>米CISA KEV追加（2026-10-02）- Zammad のセッション固定（CVE-2026-102489）とローカル権限昇格（CVE-2026-102490） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-102489（CWE-384 / セッション固定、連鎖でzammadユーザ権限のRCE）、CVE-2026-102490（CWE-269 / ローカル権限昇格でrootへ）</td></tr>
+  <tr><th>追加日</th><td>2026-10-02（米連邦機関の対応期限 2026-10-05）</td></tr>
+  <tr><th>出典</th><td>CISA Known Exploited Vulnerabilities Catalog（収載1,733件）</td></tr>
+</table>
+<ul>
+  <li>Zammadのセッション固定はリモートコード実行に連鎖しうるもので、攻撃での悪用が報告されております。CVE-2026-102490 はzammadユーザからrootへ権限昇格が可能で、両者は連鎖して悪用されうるとされております。</li>
+  <li>2026-10-02付でKEVに追加されたのはこの2件のみでございます。</li>
+</ul>
+
+<h3>佐川急便 - 荷物問い合わせサービスが侵害、9つのWebサービスを停止 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>検知</th><td>2026年9月30日（第三者による侵害を確認）</td></tr>
+  <tr><th>影響</th><td>荷物問い合わせサービス等9サービスを停止。集荷・配達は平常どおり</td></tr>
+  <tr><th>対象情報</th><td>送り主・届け先の氏名／会社名、担当者名、住所、電話番号（9月30日以前の約100日間の累計）、運賃契約顧客の情報、通販サイト「スマートクラブ」会員の情報（氏名・住所・電話・メール・会員ID）</td></tr>
+  <tr><th>出典</th><td>Security NEXT 2026/10/02</td></tr>
+</table>
+<ul>
+  <li>国内大手物流事業者でございます。被害拡大を防ぐため、インターネット貨物お荷物問い合わせや飛脚宅配便受付など9つのWebサービスを停止いたしました。</li>
+  <li>流出件数は調査中とされております。9月30日以前の約100日間の累計データが対象に含まれる可能性がある点にご留意くださいませ。</li>
+</ul>
+
+<h3>日本原子力研究開発機構（JAEA）- 研究支援サイトがサイバー攻撃、利用者175人の身分証明書などが流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>検知</th><td>2026年9月25日（原子力科学研究所の研究支援サイトで侵害を確認）</td></tr>
+  <tr><th>流出</th><td>登録ファイル2,419件が不正に外部ダウンロード。うち個人情報を含む367件</td></tr>
+  <tr><th>内訳</th><td>顔写真付き身分証明書の画像200件、特殊健康診断結果146件、放射線業務従事者証明書21件など</td></tr>
+  <tr><th>対象者</th><td>重複を除き175人。うち6人にマイナンバーが含まれる</td></tr>
+</table>
+<ul>
+  <li>同サイトは研究用原子炉「JRR-3」の外部利用者が施設利用時の手続きに用いるものでございます。2026年5月以降に利用者本人が登録したファイルが対象ですわ。</li>
+  <li>研究用原子炉の利用手続き情報――特殊健康診断結果や放射線業務従事者証明書――が外部へ流出した事案で、影響の性質上きわめて重大でございます。</li>
+</ul>
+
+<h3>【続報】タイムズカー（タイムズモビリティ）- 本人確認書類の流出が約160万件に <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>初報</th><td>2026年9月25日にシステムへの侵害を検知、9月29日に会員情報流出を公表</td></tr>
+  <tr><th>対象アカウント</th><td>「タイムズカー」「タイムズビジネスサービス」あわせて約660万件</td></tr>
+  <tr><th>続報</th><td>運転免許証画像などの本人確認書類が流出したアカウント数は約160万件と判明</td></tr>
+  <tr><th>出典</th><td>Security NEXT 2026/10/02</td></tr>
+</table>
+<ul>
+  <li>流出情報には氏名、住所、電話番号、生年月日、メールアドレス、免許情報、本人確認書類、法人会員の所属部署、連携サービスIDが含まれ、復元できないよう処理されたパスワードも流出いたしました。</li>
+  <li>本人確認書類には運転免許証のほか、現住所確認書類、学生向けプランの学生証、家族プランの家族確認書類などの画像が含まれます。同社は対象会員へ個別にメールで案内を進めております。</li>
+</ul>
+
+<h3>東京都足立区 - 都市農業公園のメーリングリスト設定ミスで50人分の個人情報が公開状態に <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>発覚</th><td>2026年8月4日（匿名投稿により判明）、翌5日に設定を修正</td></tr>
+  <tr><th>期間</th><td>2021年4月24日 〜 2026年8月5日に投稿されたメール1,356件が閲覧可能</td></tr>
+  <tr><th>影響</th><td>50人分の個人情報。うち32人は氏名・住所・電話・メールのいずれか、15人は写真、3人は動画で顔が判別可能</td></tr>
+</table>
+<ul>
+  <li>指定管理者が使用するメーリングリストが公開設定となっており、公園スタッフ向けの業務連絡がインターネット上で閲覧できる状態でございました。</li>
+  <li>同区は指定管理者の個人情報管理チェックリストを見直し、メーリングリスト利用時のチェック項目を追加するとともに、個人情報保護委員会へ報告しております。</li>
+</ul>
+
+<h3>InsydeH2O IHISI - SMMにおける安全でないメモリ書き込みの脆弱性（JVNVU#92911062） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>アドバイザリ</th><td>JVNVU#92911062 / CERT/CC VU#553437</td></tr>
+  <tr><th>公開</th><td>JVN 2026/10/02 10:00</td></tr>
+  <tr><th>内容</th><td>Insyde H2OファームウェアのIHISIインターフェース（SMM）における安全でないメモリ書き込み</td></tr>
+</table>
+<ul>
+  <li>CERT/CCのVulnerability Note「InsydeH2O IHISI SMM is vulnerable to unsafe memory write operations」の日本語版ミラーでございます。影響を受けるシステム・想定される影響・対策方法はCERT/CCアドバイザリを参照するよう案内されております。ファームウェア（UEFI）レイヤーの脆弱性は、OS側の対策のみでは完結しない点にご留意くださいませ。</li>
+</ul>
+
+<h3>CISA ICS Advisory / ICS Medical Advisory（2026年10月01日）- 新規6件・更新1件（JVNVU#91842649） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>公開</th><td>JVN 2026/10/02 10:00（米CISA 2026年10月1日付のミラー）</td></tr>
+  <tr><th>新規</th><td>ICSA-26-274-01 Armatura One、-02 Monta monta.app、-03 ABB PCM600、-04 / -05 Johnson Controls EasyIO Neo Series EC・CW Controllers、-06 Meari IoT Cloud Platform OpenAPI Service</td></tr>
+  <tr><th>更新</th><td>ICSA-26-254-01 CISA Malcolm</td></tr>
+</table>
+<ul>
+  <li>制御システム（ICS）および医療機器分野のアドバイザリでございます。個別の影響範囲・対策はCISAの各アドバイザリを参照くださいませ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
