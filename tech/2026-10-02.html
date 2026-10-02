@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-02 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-02 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-01 09:00 〜 2026-10-02 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.287</h2>
+<p>2026-10-02 03:14 JST 公開。プラグインがより深い挙動まで改変できる「Claude Mods」機構の導入を筆頭に、MCP の URL プロンプト対応、画面読み上げモードの大量修正、Bedrock / Vertex / Foundry での 1M コンテキスト既定化などを含む大型リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Mods</strong>: プラグインがより深いレベルの挙動を変更できるようになりました。</li>
+  <li><strong>「You should know」組み込み mod</strong>: サイドエージェントが見落としがちな点を監視して指摘する組み込み mod が追加されました。<code>/plugin enable cc-plugin-you-should-know@builtin</code> で有効化します（テレメトリが有効なファーストパーティセッション向け）。</li>
+  <li><strong>agents ビューの絞り込み</strong>: <code>n:&lt;text&gt;</code> フィルタでセッション名とタスクを照合できるようになり、折りたたまれたセクション内の一致も表示され、Enter で最初の一致を開けます。</li>
+  <li><strong>OpenTelemetry の <code>user_prompt</code> イベント</strong>: ドット付きキーを入れ子にするバックエンド向けに、<code>prompt</code> の複製である <code>prompt_text</code> が追加されました（<code>prompt</code> を破棄・マスクする箇所では同様の扱いが必要です）。</li>
+  <li><strong>MCP サーバーからの URL プロンプト</strong>: 2025-11-25 プロトコルで、サインインなどのための URL プロンプトに対応しました。更新後にサーバーへ接続できなくなった場合は、その MCP 設定に <code>"bareElicitationCapability": true</code> を追加します。</li>
+  <li><strong>セルフホストランナーの <code>gh api</code></strong>: GitHub CLI が未インストールの macOS / Linux でも、Anthropic 管理の git を使うセッション向けに組み込みの <code>gh api</code>（REST のみ）が利用可能になりました。</li>
+  <li><strong>1M コンテキストの既定化</strong>: Bedrock・Vertex・Foundry・Claude apps ゲートウェイにおいて、Opus 4.7 以降と Fable が <code>[1m]</code> サフィックスなしで 1M コンテキストを使うようになりました（<code>CLAUDE_CODE_DISABLE_1M_CONTEXT=1</code> で 200K を維持）。</li>
+  <li><strong>agents の応答がキュー投入型に</strong>: <code>claude agents</code> からの応答はキュー投入メッセージとして届き、ターン実行中に送った <code>/stop</code> 以外のスラッシュコマンドはターン終了時に実行されます。</li>
+  <li><strong><code>/config</code> の操作改善</strong>: 値を循環させる設定は ‹ › を表示して ←/→ で双方向に移動でき、狭いターミナルではラベルの下に値を積んで表示、PgUp/PgDn でページ送りできます。</li>
+  <li><strong><code>/memory</code> と <code>/skill</code></strong>: <code>/memory</code> は左右の矢印キーで Auto-memory などのオン／オフを切り替えられます。メッセージ途中で入力した <code>/skill</code> 名は、<code>disable-model-invocation</code> のものを含めてスキルであると Claude に伝わるようになりました。</li>
+  <li><strong>プラグイン関連の改善</strong>: マーケットプレイスのエラーが、無視・拒否された理由と対処を平易な言葉で説明します。依存が未インストールの場合はプラグイン一覧に表示され、プラグイン更新時に未完了のインストールを再試行します。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Remote Control</strong>: 再接続要求への応答が無いまま数分間メッセージを受信できなくなる問題を修正。30秒で諦めて再試行するようになりました。macOS では Mac がアイドルスリープするとターン途中で停止する問題も修正されています。</li>
+  <li><strong>フック</strong>: <code>asyncRewake</code> のスクリプトファイルが存在しない場合に「found issues」通知で Claude を繰り返し起こし続ける問題を修正。壊れたフックは1回だけ報告されます。</li>
+  <li><strong>危険な <code>rm</code> の保護</strong>: <code>/</code> やホームディレクトリを対象とするコマンドが、出力を <code>~</code> やワイルドカードへリダイレクトした場合に「常に確認」の保護を失う問題を修正しました。</li>
+  <li><strong>モデルフォールバック</strong>: <code>claude -p</code> や SDK セッションで、応答実行中にモデルを切り替えた後、以降の毎メッセージでフォールバックが繰り返される問題を修正。Bedrock / Vertex の起動時モデルチェックが強制 <code>availableModels</code> リストを無視し、<code>/model</code> が Opus 1 行に潰れる問題も修正されました。</li>
+  <li><strong>セッション復帰</strong>: 再開やコンパクション後にフォルダの <code>CLAUDE.md</code> が二重に添付される問題、コンパクション中に再起動したクラウドセッションで以前の会話が失われる問題、エージェント終了時に worktree が削除されて <code>claude agents</code> から再オープンできない問題を修正。</li>
+  <li><strong>画面読み上げモード</strong>: 検索ボックスやサインイン用コード入力でカーソルが入力テキストから離れる問題、ファイル編集承認プロンプトの変更行が読み上げられない問題、承認プロンプトに無効な「Tab to amend」ヒントが出る問題、<code>/permissions</code> や <code>/mcp</code> で動作しない矢印キーを案内する問題など、多数を修正しました。</li>
+  <li><strong>MCP</strong>: サーバーが対応プロトコルバージョンを変えた際にツール呼び出しが二重実行される／再起動まで失敗する問題、ヘッドレスセッションで1回の拒否後に認証要否を誤報告する問題を修正。大きな MCP 結果を JSON として Read の offset/limit でページングするよう誤って指示していた問題も修正されました。</li>
+  <li><strong>Windows</strong>: 入力がパイプ／リダイレクトされた際に <code>Raw mode is not supported</code> でハング・クラッシュする問題を修正し、理由を表示して終了するように（パイプ入力には <code>-p</code> を使用）。Bash ツールはコマンドごとに走っていたサブシェルを除去して高速化されました。</li>
+  <li><strong>ファイル転送</strong>: クラウド／Remote Control セッションで 30 秒のタイムアウト直後に完了したアップロードが失敗する問題を修正（35 秒待機）。タイムアウト・ネットワークエラー・502/503/504 では1回再試行され、8,000 ピクセル超の PNG/JPEG/WebP は縮小コピーが送信されます。</li>
+  <li><strong>その他</strong>: リモートセッションで fast mode がオフのままになる問題、Claude in Chrome のブラウザピッカーが JSON パースエラーを表示する問題、HTTP プロキシ配下で <code>claude remote-control</code> の登録に失敗し誤った権限エラーになる問題などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-287">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24（v0.21.5）</strong>（2026-09-24 19:09 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.7</strong>（2026-09-30 13:44 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.218</strong>（2026-10-01 05:53 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js — v16.4.0-canary.55</h3>
+<p>2026-10-01 23:30 JST 公開（canary）。Turbopack の共有ランタイムが <code>experimental.turbopackSharedRuntime</code> として既定で有効化され、<code>ensureStatic</code> の安定化作業が入りました。</p>
+<ul>
+  <li><strong>ビルド ID</strong>: 明示的に設定されている場合は必ず <code>generateBuildId</code> を使用するようになりました。</li>
+  <li><strong>再検証</strong>: <code>after()</code> からの繰り返しタグ再検証が正しく伝播するよう修正。</li>
+  <li><strong>トレーサー</strong>: トレーサーライブラリのバージョン指定を更新。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.55">ソースへのリンク</a></p>
+
+<h3>☁️ AWS</h3>
+<p>2026-10-01 の発表より抜粋。</p>
+<ul>
+  <li><strong>AWS Well-Architected Agent がプレビュー</strong>: Trusted Advisor と Well-Architected Tool の次世代版にあたる AI 駆動サービス。コスト・セキュリティ・性能・信頼性を横断して分析し、ビジネス目標に沿って優先順位付けした推奨を提示します。Terraform / CDK / CloudFormation テンプレートを解析し、SSM ランブックや CLI スクリプト付きの自動化可能な修正案を返します（AWS Support 経由、米国リージョンで提供）。</li>
+  <li><strong>Amazon DynamoDB のフィルタ付き S3 エクスポート</strong>: テーブル全体ではなく、指定した条件に一致する項目だけを Amazon S3 へエクスポートできるようになりました。</li>
+  <li><strong>Amazon Redshift のデータレイク横断クエリ</strong>: リージョンをまたいでデータレイクのデータをクエリできるようになりました。</li>
+  <li><strong>Amazon GuardDuty の Organizations 宣言的ポリシーによる集中管理</strong>: AWS Organizations の宣言的ポリシーで GuardDuty を一元管理できるようになりました。</li>
+  <li><strong>AWS Security Hub の remediation plans</strong>: セキュリティ上の露出を優先順位付けして修正するためのプラン機能が導入されました。</li>
+  <li><strong>Route 53 Global Resolver / DNS Firewall の DNS アナリティクス</strong>: DNS の分析・インサイト機能が発表されました。</li>
+  <li><strong>IAM Identity Center のマルチリージョン対応拡大</strong>と、<strong>AWS Secrets Manager コンソールの改善推奨</strong>（シークレット管理態勢の改善提案）も発表されています。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>2026-10-01 付のリリースノートより抜粋。</p>
+<ul>
+  <li><strong>BigQuery の会話型アナリティクスで「グラフとの対話」が GA</strong>: 複数のグラフ・テーブル・ビュー・UDF をデータソースとして組み合わせて利用できます。</li>
+  <li><strong>BigQuery pipelines のメタデータ強化と Knowledge Catalog データ品質スコアカード連携が GA</strong>: Data Engineering Agent がパイプライン資産のセマンティックメタデータを能動的に生成します。</li>
+  <li><strong>Data Agent Kit が GA</strong>: IDE やコーディングエージェントから Bigtable のインスタンス・テーブルの閲覧、スキーマ設計、GoogleSQL クエリ実行が可能になりました。</li>
+  <li><strong>Google Cloud VMware Engine の BYOL ライセンス管理が GA</strong>: VCF のライセンスキーを Cloud Billing アカウント配下のプロジェクト間で登録・管理できます。</li>
+  <li><strong>Network Services Monitoring がプレビュー</strong>: ambient networking を有効にした GKE のサービス／ワークロードについて、通信経路とネットワークメトリクスを可視化します。</li>
+  <li><strong>Pub/Sub</strong>: Gemini Enterprise を使って、ユーザー定義関数（UDF）のシングルメッセージ変換（SMT）のコードを生成できるようになりました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソースへのリンク</a></p>
+
+<p class="empty-notice">対象期間内の新規リリース・アップデートが確認されなかったもの: <strong>React</strong>（最新版 v19.3.0、2026-09-10 公開）、<strong>Hono</strong>（最新版 v4.13.12、2026-09-30 18:43 JST 公開）、<strong>Spring Boot</strong>（最新 GA v4.1.1、プレビュー v4.2.0-M2）、<strong>Django</strong>、<strong>Python</strong>、<strong>Claude Agent SDK for Python</strong>（最新版 v0.2.163、2026-10-01 04:47 JST 公開）、<strong>Azure</strong>（アップデート一覧がJavaScriptレンダリングのため、一次ソースでの確認ができませんでした）。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
