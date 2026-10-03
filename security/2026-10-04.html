@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-04 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-04 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Bouncy Castle for Java 1.86 / LTS 2.73.13 - 暗号ライブラリに複数の脆弱性、MLSの資格情報束縛不備はCVSS 9.2 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Bouncy Castle for Java 1.86 未満（bcprov-jdk18on 等）、Bouncy Castle for Java LTS 2.73.13 未満</td></tr>
+  <tr><th>修正版</th><td>1.86 / LTS 2.73.13</td></tr>
+  <tr><th>主要CVE</th><td>CVE-2026-71885（CVSSv4.0 9.2 / MLSでX.509資格情報がリーフのsignature_keyへ束縛されず成りすまし）、CVE-2026-71888（8.7 / CMS AuthenticatedDataのダイジェスト検証不整合）、CVE-2026-71889（8.7 / PKIXCertPathReviewerがX.509証明書ポリシーを検証せず）、CVE-2026-71883（8.2 / LTSのネイティブパケット暗号が呼び出し元の鍵・IV・AAD配列を解放）、CVE-2026-85515（8.2 / 切り詰めたOpenPGP暗号文を無検査で受理）ほか</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-03 18:17 JST、GitHub Advisory 2026-10-03</td></tr>
+</table>
+<ul>
+  <li>Java基盤で広く使われる暗号・証明書・OpenPGP・MLSライブラリでございます。Java／SpringBoot環境でTLS、署名検証、CMSやOpenPGPの処理に用いている場合は影響範囲のご確認をお勧めいたしますわ。</li>
+  <li>とりわけCVE-2026-71885は、MLS（RFC 9420）の実装がリーフの署名をリーフ自身が持つsignature_keyで検証する一方、資格情報のX.509証明書チェーンを保存するだけで解析・検証していなかった問題でございます。独立した資格情報審査なしに外部コミットを受理する構成では、未認証の攻撃者が被害者のX.509アイデンティティでグループへ入り込み、被害者を追い出し、現エポックを導出して以降のメッセージを復号できます。basicクレデンシャルのみの構成は影響を受けません。</li>
+  <li>ほかにも、OpenPGPの第三者証明・サブキー束縛の検証漏れ（CVE-2026-71886 / 71887）、BLS12-381の鍵検証不備（CVE-2026-71891）、レガシーPBES1／PKCS#12鍵導出が信頼できない入力の反復回数を用いる問題（CVE-2026-97873）などが含まれます。1.86 または LTS 2.73.13 以降への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>OpenClaw 2026.9.8 - ローカルTLSヘルスチェックの証明書指紋検証とログ秘匿の修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>openclaw 2026.9.8（最新）</td></tr>
+  <tr><th>リリース</th><td>2026-10-03 03:21 UTC（JST 10/03 12:21）</td></tr>
+  <tr><th>規模</th><td>43 pull requests・12 direct commits・8 contributors</td></tr>
+  <tr><th>主な内容</th><td>セキュリティとプライバシー（ローカルTLSヘルスチェック／ログ秘匿）、Control UIの表示修正、OpenAIプロバイダでのGPT-6.1 Sol対応</td></tr>
+</table>
+<ul>
+  <li>セキュリティとプライバシーの項で、ローカルのHTTPSヘルスチェックがマネージドなプロキシ設定下でも動作し、接続のたびに設定済みの証明書フィンガープリントを検証するようになりました。OpenClawが起動しているかを確認する処理でも、この保護が維持されますわ。</li>
+  <li>Bunランタイム上で、長く難読化されたログ代入に含まれる機密値が従来の秘匿処理をすり抜けうる問題を修正いたしました。取りこぼしの原因となっていたパターンマッチの後読みを取り替え、当該代入も秘匿されるようにしております。</li>
+  <li>あわせて、リリース用ツールが用いるUndiciを6.28.1へ更新し、WebSocketのDoSアドバイザリ GHSA-rfgv-xxqx-mfg5 に対処しております。ただし本ツールはOpenClawの配布パッケージには含まれないため、製品側の脆弱性修正ではございません。</li>
+  <li>サンドボックスやClaude CLIセッションでのスキル複製が読み取り専用ディレクトリ権限を引き継ぎ更新に失敗する問題も、元のインストールを保ったまま複製先を書き込み可能とすることで修復されております。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / SpringBoot / Python / Django / Hono / GCP / AWS / Azure / React に関する新規の個別アドバイザリは確認されませんでした。また Hermes Agent は GitHub Releases の最新が v2026.9.24（v0.21.5）、Claude Code は最新が 2.1.288 であり、いずれも本対象期間内に新規リリース・新規セキュリティ情報はございませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>MikroTik RouterOS - Web管理サービスの未認証リモートコード実行（CVE-2026-84411、CVSSv3.1 9.8） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-84411（CVSSv4.0 9.3 / CVSSv3.1 9.8、CWE-191 整数アンダーフロー）</td></tr>
+  <tr><th>影響</th><td>RouterOS 7.24 未満</td></tr>
+  <tr><th>想定される影響</th><td>未認証のネットワーク攻撃者が単一の細工したリクエストでroot権限の任意コード実行、またはサービス拒否</td></tr>
+  <tr><th>対策</th><td>RouterOS 7.24 以降へ更新（MikroTik 公式ダウンロード）</td></tr>
+  <tr><th>出典</th><td>CISA ICS Advisory ICSA-26-272-06（初回公開 2026-09-29）、NVD登録 2026-10-03 08:16 JST</td></tr>
+</table>
+<ul>
+  <li>RouterOSのWeb管理サービスにおきまして、HTTPリクエストボディ処理の整数アンダーフローが認証前に到達可能とのことでございます。通信分野・IT分野を対象とする重要インフラ向けのICSアドバイザリとして公表され、世界規模で配備されている製品ですわ。</li>
+  <li>本件は2026年9月29日付のCISA ICSアドバイザリ群に含まれておりましたが（JVNミラーは9月30日付）、CVSSスコアと影響バージョンといった詳細がNVDに登録されたのは本対象期間に入ってからでございます。CISAは本CVEについて現時点で公開された悪用を確認していないとしていますが、同社製品では過去にCVE-2026-67279が米CISA KEVへ追加されております。インターネットへ露出した管理画面の点検をお勧めいたします。</li>
+</ul>
+
+<h3>OpenAM 16.1.3 - 未認証の任意クラス実体化を含む脆弱性14件 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>OpenAM 16.1.3 未満</td></tr>
+  <tr><th>主要CVE</th><td>CVE-2026-105115（CVSSv3.1 8.8 / レガシーJAX-RPC SOAPインターフェースで未認証の任意クラス実体化）、CVE-2026-105119（7.6 / OAuth2のPKCE強制がresponse_type=codeのみに限定）、CVE-2026-105120・CVE-2026-105121（各6.9 / セッションREST操作とレルム越えのセッション破棄）、CVE-2026-105122（5.3 / OAuth2クライアント経由のSSRF）ほか</td></tr>
+  <tr><th>公開</th><td>NVD 2026-10-03 23:16 JST、GitHub Advisory 2026-10-04 00:30 JST</td></tr>
+</table>
+<ul>
+  <li>認証・シングルサインオン基盤でございます。CVE-2026-105115は、レガシーなJAX-RPC SOAPインターフェースにおきまして認証なしに任意のクラスを読み込ませられる問題で、Java環境のアイデンティティ基盤では優先的な対応が必要ですわ。</li>
+  <li>ほかにも、PKCE強制の抜け道、レルム管理者が全レルムのセッションを列挙できる認可不備、委任管理者による領域外セッションの破棄、リフレクテッドXSS、オープンリダイレクト、通知メール本文へのインジェクションが含まれております。16.1.3以降への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Nezha Dashboard 2.3.13 - 認証済みユーザーによるサービス停止 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Nezha 1.8.0 以上 2.3.13 未満</td></tr>
+  <tr><th>主要CVE</th><td>CVE-2026-105113（CVSSv3.1 7.1 / nilマップのパニック経路でミューテックスが解放されず、認証済み非管理者が4回の要求でサービスを停止）、CVE-2026-105112（6.0 / UpdateGroup・DeleteGroupのロック順序反転でアラート機構がデッドロック）</td></tr>
+  <tr><th>公開</th><td>NVD / GitHub Advisory 2026-10-03 23:16 JST</td></tr>
+</table>
+<ul>
+  <li>セルフホスト型のサーバ監視パネルでございます。いずれも認証済みの非管理者メンバーが細工した要求でサービスを停止させられる問題で、悪用にはアカウントを要しますが、監視基盤そのものが沈黙する影響は大きゅうございます。2.3.13以降への更新をご検討くださいませ。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">国内の企業・官公庁・大学・医療機関等につきましては、本対象期間内に新規の被害公表は確認されませんでした（Security NEXT・ScanNetSecurity のいずれも10月3日付の新規記事はなく、同日は土曜日にあたります）。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
