@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-03 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-03 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-02 09:00 〜 2026-10-03 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.288</h2>
+<p>2026-10-03 05:34 JST 公開。プラグイン／mod 向けの選択範囲 API、クラウドセッション向けの組み込み <code>gh api</code>、<code>Ctrl+C</code> で消したプロンプトの復元などが入り、あわせて <code>--resume</code> 周りやプラグイン、権限チェックに関する多数の修正が含まれる大型リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>mod 向け <code>$.ui.selection()</code></strong>: フルスクリーンで最後に選択したテキストを取得できます。選択範囲が1つのトランスクリプト行に収まる場合はその行も返します。</li>
+  <li><strong>クラウドセッションの組み込み <code>gh api</code></strong>: GitHub CLI を含まないイメージでも利用可能になりました。ファイル名・jq フィルタ・GitHub のエラーに含まれる制御文字がターミナルへ送出される不具合も修正されています。</li>
+  <li><strong><code>Ctrl+C</code> で消したプロンプトの復元</strong>: 空のプロンプトで ↑ を押すと、貼り付けたテキストや画像も含めて下書きが戻ります。</li>
+  <li><strong>MCP の OAuth スコープ追加要求</strong>: ツール呼び出し中に MCP サーバーが追加スコープを求めた際、再認証を促すプロンプトが表示されるようになりました。</li>
+  <li><strong><code>/code-review</code> の <code>--max-findings &lt;n&gt;|all</code></strong>: 通常の上限より多く／少なく指摘を報告できます。<code>--max-findings default</code> を渡すまで選択が再利用されます。</li>
+  <li><strong>agents ビューの操作性</strong>: <code>Ctrl+F</code> でセッション名検索、<code>Alt+↑/↓</code> でグループ間移動ができるようになりました（リネームとあわせて <code>keybindings.json</code> で再割り当て可能）。</li>
+  <li><strong>画面読み上げモード</strong>: プラン承認時に新しい権限モードを読み上げます（<code>Shift+Tab</code> 使用時も含む）。削除した単語などの短い通知は、次のキー入力か画面上の変化まで表示され続けるようになりました。</li>
+  <li><strong>auto mode の改善</strong>: 会話が長くなりクライアント側の安全分類器で審査できなくなった場合、ツール呼び出しごとにプロンプトを出す／失敗させるのではなくコンパクションするようになりました。</li>
+  <li><strong>その他の改善</strong>: 新規会話の最初のターンが <code>alwaysLoad: false</code> の stdio MCP サーバーを待たなくなりました。<code>/usage-credits</code> のメッセージ、artifact データベースの容量上限エラー、Bash 権限プロンプトの理由表示も改善されています。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>応答途中の API タイムアウト</strong>: 非対話セッションとサブエージェントが部分応答から継続できるようになり、thinking のみの応答は再試行されます。</li>
+  <li><strong>長い会話の「Prompt is too long」</strong>: 直前の応答がトークン使用量ゼロを報告した場合に自動コンパクションへ移行せず失敗する問題を修正しました。</li>
+  <li><strong><code>--resume</code> 関連</strong>: コンパクションで復元した直後のファイル等のコンテキストが落ちる問題、ターンの最後の応答が保存されず次回の <code>--resume</code> で未回答に見える問題、読み込み中に同一セッションがファイルを書き換えると途中までのトランスクリプトを読む問題を修正。2.1.286 以前に開始した会話を再開すると以前の thinking が失われる問題も修正されました。</li>
+  <li><strong>危険な <code>rm</code> の保護強化</strong>: <code>bash -c</code> / <code>sh -c</code> のスクリプト内で <code>/</code> やホームディレクトリへの <code>rm</code> が、bypassPermissions モードやシェルの許可ルール下で確認なしに実行される問題を修正しました（anthropics/claude-code#96300）。</li>
+  <li><strong>structured outputs 非対応環境</strong>: Mantle 上や structured outputs を拒否するゲートウェイ配下で、セッションタイトル・メモリ想起・プロンプトフックが失敗する問題を修正。<code>CLAUDE_CODE_DISABLE_STRUCTURED_OUTPUTS</code> で無効化も可能です。</li>
+  <li><strong>プラグイン</strong>: <code>git-subdir</code> インストールが古い git（2.39 未満、Ubuntu 22.04 の 2.34 など）で失敗／不完全にキャッシュされる問題、リロードや無効化で実行中のタイマー・読み取りがあるとバックグラウンドセッションが終了する問題、<code>Code</code> 要素に解析不能な diff があるとペインが空になる問題などを修正しました。</li>
+  <li><strong>LSP ツールのハング</strong>: 動的ケイパビリティ登録を使う言語サーバーや応答停止時に無限に待ち続ける問題を修正し、60秒（サーバー単位の <code>requestTimeout</code>）でタイムアウトするようにしました。</li>
+  <li><strong>MCP ツール呼び出しの二重実行</strong>: リモートサーバーの結果が 16MB 超、または解析できなかった場合に二重実行されることがある問題を修正しました。</li>
+  <li><strong>フック</strong>: マッチング失敗やツール入力の JSON シリアライズ失敗時に PreToolUse / PermissionRequest フックがスキップされていた問題を修正（該当呼び出しはブロックされます）。バックグラウンドエージェント実行中に <code>idle_prompt</code> 通知フックが発火する問題も修正されました（#93672）。</li>
+  <li><strong>マネージド環境のログイン</strong>: 資格情報を安全なストレージへ保存できなかった場合でも「Login successful」と表示していた問題を修正し、失敗表示と再試行を提示するようになりました（#73861）。</li>
+  <li><strong>自動更新</strong>: プラットフォームネイティブのバイナリ取得に失敗しプレースホルダの <code>claude</code> スタブのみが入った状態でも成功と報告していた npm 側の自動更新を修正しました。</li>
+  <li><strong>クラウド／Remote Control</strong>: 再起動後に組織の強制モデル一覧が拒否するモデルを復元する問題、まだ接続中／別プロセスが再アタッチ直後のセッションを Remote Control のクリーンアップがアーカイブする問題、5分間未応答の WebFetch 権限プロンプト後も「入力待ち」のままになる Cowork クラウドセッションの問題を修正しました。</li>
+  <li><strong>その他</strong>: 非常に多くの <code>Agent(...)</code> を持つエージェント起動時の停滞、Claude 3 Opus / Sonnet で PDF 投入後の全ターン失敗、Windows 再起動後のキーボード不能、画面読み上げモードの <code>/permissions</code> の番号入力などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-288">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24（v0.21.5）</strong>（2026-09-24 19:09 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐙 OpenClaw — v2026.8.34 / v2026.8.35</h2>
+<p>対象期間内に extended-stable（LTS 相当）の 2 リリースが公開されました。<strong>v2026.8.34</strong>（2026-10-02 09:12 JST 公開）と <strong>v2026.8.35</strong>（2026-10-02 23:06 JST 公開）です。いずれも gateway 専用の extended-stable ビルドで、メインラインの最新版は v2026.9.7（2026-09-30 13:44 JST 公開）です。</p>
+
+<h3>🔧 v2026.8.35 の主な変更</h3>
+<ul>
+  <li><strong>GPT-6.1 Sol 対応</strong>: OpenAI のルーティング・ディスカバリ・reasoning・harness、および Reef guard-model の境界に Sol モデルを追加（#161400, #162955）。</li>
+  <li><strong>更新と復旧の安全性</strong>: 互換性のないプラグイン設定を復旧時に保持し、Gateway の二重起動を防止、pnpm によるパッケージ更新のターミナル失敗を回避、マイグレーション時もプラグイン一覧を維持します。</li>
+  <li><strong>エージェント完了の信頼性</strong>: 委譲・CLI サブエージェントの回答を欠落なく保持し、停止していた子キャパシティを解放、cron 出力を完全に復旧、失敗したリクエストが steer で以前の質問を置き換える問題を防止します。</li>
+  <li><strong>セキュリティと所有権の強化</strong>: ローテーション中も secret-store の種別を安定させ、secret-egress の実行を復旧、cron の明示的なツール許可リストを維持しつつ古い自動スナップショットを修復します。</li>
+  <li><strong>チャネル／連携の信頼性</strong>: Gmail・IMAP ウォッチャー、Matrix の直接マッピング、Telegram の進捗表示、リモート MCP の起動、クリーンな Windows ホストでの llama.cpp 起動を修復しました。</li>
+  <li><strong>性能と UI 継続性</strong>: モデルカタログ待機に上限を設定し、Codex フリートのヒープ使用量を削減、履歴更新と競合しても保存済み WebChat の返信が表示され続けるようにしました。</li>
+</ul>
+
+<h3>🔧 v2026.8.34 の主な変更</h3>
+<ul>
+  <li><strong>extended-stable の修正ロールアップ</strong>: アップグレード、Doctor、認証、セッション、チャネル、プラグイン、サンドボックス、ファイルシステム安全性、モデルランタイム、リリースパッケージングにまたがる、監査で選定された 113 件の修正ユニットをバックポートしました。</li>
+  <li><strong>網羅的な再スキャン</strong>: 2026.8.33 の探索範囲全体、混在目的の大きな PR、2026.7.35 の系譜を、前回のバックポートカーソルから進めるのではなく改めて評価しています。</li>
+  <li><strong>アップグレード／復旧の強化</strong>: 資格情報、エージェント状態、プラグイン一覧、トランスクリプト、スケジュール、サービス所有権、ランタイムリンクを、アップグレード・再起動・Doctor 修復をまたいで保持します。</li>
+  <li><strong>境界の修正</strong>: リモートファイルシステムの変更、プラグイン／スキルのスキャン、ブラウザ認証、チャネル応答の識別、プライベートスキルの取り込み、スコープ付きランタイム所有権を厳格化しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐋 Orca — v1.4.219</h2>
+<p>2026-10-03 05:59 JST 公開。9月30日のデイリービルドに main からの修正をピックしたパッチリリースです。Codex のターミナル共有サーバー問題への警告と修復、エージェント起動時のフォルダ信頼の事前応答、ネイティブチャットの操作性向上が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Codex ターミナルの共有サーバー警告と修復</strong>: Codex タブが他のタブと1つのバックグラウンドサーバーを共有すると、タブ上部に通知が表示されます。そのサーバーでは1つのタブを閉じると他が終了し、エージェントのステータスも不正確になることがあります。通知の <strong>Fix</strong> で共有を解除でき、実行されるコマンドも表示されます。更新前に開いていたターミナルでは新しいターミナルを開く案内が出ます。プレーンな fish タブで <code>codex</code> を実行すると、zsh / bash と同様に専用サーバーで動くようになりました。</li>
+  <li><strong>Codex 設定の破損防止</strong>: ターミナルを開く際に <code>~/.codex</code> から Orca のステータスフックが消える問題、フォルダの trust エントリが <code>config.toml</code> に二重書き込みされて全 <code>codex</code> コマンドが動かなくなる問題を修正し、既に書き込まれた重複もクリーンアップします。バックグラウンドの Codex 使用量チェックが Codex の更新プロンプトで「Update now」を押して壊す問題も修正されました。</li>
+  <li><strong>エージェント起動時のフォルダ信頼</strong>: Orca が Claude Code、Codex、Cursor、Copilot、Qoder、Antigravity をフォルダ内で起動する際、「このフォルダを信頼しますか？」に事前に回答するようになりました。オーケストレーションのワーカー、自動化、スマートフォンから起動したエージェントがこのプロンプトで止まらなくなります（設定 → Agents → 「Trust the folder when Orca starts an agent」で無効化可能）。</li>
+  <li><strong>エージェントステータスの修正</strong>: OpenCode 2 のペインが複数あっても、各ペインが自身の Working / Done を表示します。Windows で Claude Code が Windows PowerShell 5.1 のフックを実行する場合のステータスが復旧し、Codex がタブ名を変えてもサイドバーの行が実行中は残り、起動直後の Hermes はビジーではなく準備完了として表示されます。</li>
+  <li><strong>ネイティブチャット（実験的）</strong>: エージェント実行中に送ったメッセージが、デスクトップでもスマートフォンでも入力欄の上のカードとして待機します。<strong>Steer</strong> で実行中のターンへ送る、編集、削除が可能で、それ以外はターン終了時に送信されます。サブエージェントの作業は会話に混ざらず専用セクションに表示され、<code>/compact</code> は独立した行になります。未完了の <code>/clear</code> がチャットをロックする問題や、Stop が遅い／「Cancellation was not confirmed」と誤表示する問題も解消しました。</li>
+  <li><strong>オーケストレーション</strong>: 会話のコンパクション後にワーカーの完了報告が拒否される問題を修正し、Orca に一時的に到達できない場合は約2分間再試行するようになりました。<code>worker-abandon</code> はスタックしたワーカーを毎回確実に解決します。</li>
+  <li><strong>ファイルとエディタ</strong>: 保存した無題ノートがタブを閉じても削除されなくなり、リッチ Markdown エディタのクリックで先頭へジャンプする問題、開いているファイルがシステムのライト／ダークモードに追随しない問題を修正。スパースチェックアウトでは作業フォルダを起点にファイルエクスプローラを開きます。</li>
+  <li><strong>ターミナル</strong>: <code>download (1).png</code> のようにファイル名に括弧や空白を含む画像もエージェントへ添付できるようになりました。スキップされた場合の理由表示、タブが多いときの現在タブの可視性、Codex や Claude Code の起動が遅い／バックグラウンドの場合の色表示も改善しています。</li>
+  <li><strong>Linux / Windows</strong>: Hyprland・sway・river・niri で、キーリングが動作・解錠されている場合は保存済みの API キーとトークンを暗号化します。暗号化されずに保存された資格情報があると設定に警告が表示されます。Windows の <code>orca</code> コマンドはネイティブプログラムになり、ウイルス対策による削除を回避し、Visual C++ 再頒布可能パッケージなしで動作します。</li>
+</ul>
+
+<h3>🐛 主な修正・既知の問題</h3>
+<ul>
+  <li>Codex ペインで入力中に約1秒フリーズする問題、Codex が bare リポジトリの worktree で信頼プロンプトなしに起動する問題を修正しました。</li>
+  <li>新しく追加・削除した worktree はそのプロジェクトのみ再スキャンするようになり、main を止める git 同期呼び出しも削減されました。</li>
+  <li><strong>既知の問題</strong>: Windows on ARM では ARM64 パッケージに x64 の <code>orca.exe</code> が同梱され、Windows 10 on ARM では動作しません（#24094）。OpenCode 2 は更新前から動いているペインでステータスが出ないことがあり、再起動が必要です。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.219">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js — v16.4.0-canary.56 / .57 / .58</h3>
+<p>canary が3件公開されました（.56: 2026-10-02 09:07 JST、.57: 2026-10-02 12:44 JST、.58: 2026-10-03 08:49 JST 公開）。</p>
+<ul>
+  <li><strong>Turbopack</strong>: ビルド時の export 名マングリングが既定で有効化され、<code>DiskFileSystemMap</code> に FrozenMap を採用、<code>import.meta.url</code> の追加ルート対応や ResolveMap の全ルート照合など、リゾルバ周りの整備が進みました。</li>
+  <li><strong>デプロイ診断</strong>: 空の <code>generateStaticParams</code> に関する診断が有効化され、パラメータマッチングのテストはアダプタでゲートされるようになりました。</li>
+  <li><strong>バンドルアナライザ</strong>: 非同期モジュールスコープの表示、比較ツリーマップでの差分表示、ルートサマリーの追加など UI が再編成されました。</li>
+  <li><strong>アップグレード支援（Agent）</strong>: AI によるアップグレードのナッジ・ハンドオフ・完了の計測、React / ESLint アップグレードのスキップ、宣言されたパッケージマネージャの優先などが入りました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.0-canary.58">ソースへのリンク</a></p>
+
+<h3>☁️ Google Cloud</h3>
+<p>2026-10-02 付のリリースノートより抜粋。</p>
+<ul>
+  <li><strong>BigQuery の Rust SDK が GA</strong>。</li>
+  <li><strong>Data Engineering Agent が <code>gemini-3.7-flash</code> に対応</strong>（us / eu / global マルチリージョナル エンドポイント）。</li>
+  <li><strong>Private NAT の NAT64 が GA</strong>: Cloud NAT ゲートウェイで IPv6 → IPv4 のアドレス変換をサポートします。</li>
+  <li><strong>GKE の VPA + HPA 併用がパブリックプレビュー</strong>: CPU 利用率でレプリカをスケールするワークロードの CPU リクエストを自動最適化できます（GKE 1.36.3-gke.1630000 以降）。</li>
+  <li><strong>既知の問題</strong>: GKE 1.36.3-gke.1244000 以降で、Cloud Storage FUSE CSI driver（<code>gcsfusecsi-node</code>）の DaemonSet Pod が特定のノードプールで起動に失敗します（カーネルのバージョン差異による hostPath 検証失敗が原因）。</li>
+  <li>Network Connectivity Center のサイト間データ転送が Poland に対応しました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソースへのリンク</a></p>
+
+<p class="empty-notice">対象期間内の新規リリース・アップデートが確認されなかったもの: <strong>React</strong>（最新版 v19.3.0、2026-09-10 公開）、<strong>Hono</strong>（最新版 v4.13.12、2026-09-30 18:43 JST 公開）、<strong>Spring Boot</strong>（最新 GA v4.1.1、プレビュー v4.2.0-M2、2026-09-24 公開）、<strong>Django</strong>・<strong>Python</strong>・<strong>Java (JDK)</strong>（GitHub Releases に該当期間の新規公開なし）、<strong>Claude API / SDK</strong>（リリースノートの最新項目は 2026-09-30 付）、<strong>AWS</strong> および <strong>Azure</strong>（アップデート一覧が JavaScript レンダリングのため、一次ソースでの確認ができませんでした）。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
