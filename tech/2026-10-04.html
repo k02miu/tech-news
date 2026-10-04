@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-04 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-04 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-03 09:00 〜 2026-10-04 09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.289</h2>
+<p>2026-10-04 08:19 JST 公開。プラグイン／mod まわりの不具合修正が中心のリリースで、マネージド環境やサンドボックス下での <strong>deny / ask ルールのすり抜け</strong>、シンボリックリンク経由の <code>Read</code> 拒否ルールの適用漏れ、組織管理 MCP サーバーの説明書き換えなど、セキュリティ境界に関わる修正が複数含まれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>チームメイト向け <code>agent.spawn</code></strong>: プラグインのフックイベントをまたいで1つのエージェント ID を扱えるようになり、<code>$.agent.list()</code> にアイドル状態と待機状態が追加されました。</li>
+  <li><strong>プラグインコードペインの大ファイル表示</strong>: ハイライト表示を最終幅で一度だけレイアウトするようにし、大きなファイルを開く速度が改善しました。</li>
+  <li><strong>mod 描画失敗時の表示改善</strong>: mod のバンドまたはペインが描画に失敗した際、mod 名を明示し「何も描画されなかった」ことを伝える行を改善しました。</li>
+  <li><strong>右寄せコンテンツの余白</strong>: mod のペイン／バンドの右寄せコンテンツが閉じマークや <code>[-]</code> の下に描画されないよう、ターミナル端から1列を確保するようになりました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>複合シェルコマンドの deny / ask ルール（マネージド環境）</strong>: ネストされた部分に対する deny / ask ルールが、ユーザーインストールの mod の承認によって上書きされてしまう問題を修正しました。</li>
+  <li><strong>環境変数プレフィックス越しの Bash ルールすり抜け</strong>: 展開値を持つ環境変数プレフィックス付きのコマンド（例: <code>TZ="$HOME" rm -rf build</code>）が、サンドボックスの自動許可時に deny / ask ルールを回避してしまう問題を修正しました。コマンド直前に裸の変数代入がある場合にルールがスキップされる問題も修正されています。</li>
+  <li><strong>シンボリックリンク経由の <code>Read</code> 拒否ルール</strong>: IDE から @メンション・変更・選択されたファイル（シンボリックリンク経由）に <code>Read</code> の deny ルールが適用されない問題を修正しました。</li>
+  <li><strong>組織管理 MCP のサインインツール保護</strong>: ユーザーインストールのプラグインが、組織が管理する MCP サーバーのサインインツールの説明を書き換えられてしまう問題を修正しました。</li>
+  <li><strong>ターミナルのフリーズ</strong>: 閉じられていない <code>&lt;script&gt;</code> タグを多数含む短いコードブロックや、深くネストした <code>${</code> 置換でターミナルがフリーズする問題を修正しました。公開された artifact ページで読者のブラウザタブがフリーズ／クラッシュする問題もあわせて修正されています。</li>
+  <li><strong>[VSCode] サインアウト頻発の revert</strong>: <code>claude auth status</code> に対する 2.1.288 の変更（サインアウトが頻発する可能性があったもの）を巻き戻しました。</li>
+  <li><strong>プラグイン一覧の古いコピー</strong>: ローカルフォルダの marketplace からインストールしたプラグインについて <code>plugin list</code> / <code>plugin eval</code> / <code>plugin update</code> が古いコピーを表示する問題、およびシンボリックリンクされた <code>--plugin-dir</code> のホットリロードを修正しました。</li>
+  <li><strong>アップグレード直後の mod 未読込</strong>: アップグレード後の最初のセッションでインストール済み mod が読み込まれない問題を修正しました。</li>
+  <li><strong>プラグイン描画失敗でのセッション終了</strong>: プラグインの on-screen ハンドラが非同期に throw した場合、高さのないリージョンが成長し続けた場合、mod の <code>ui.render</code> が書いた値で行の描画が throw した場合などに、セッションがインターフェースエラーで終了する問題を修正しました。</li>
+  <li><strong><code>claude plugin validate</code></strong>: フォルダに marketplace マニフェストも含まれる場合にプラグインをスキップしてしまう問題を修正しました。</li>
+  <li><strong>その他</strong>: 不明なボーダースタイルの Box を描画した際の起動時フリーズ／強制終了、フルスクリーンでバックグラウンドタスクダイアログを開いている間にプラグインの行が古い表示になる問題、タブ・C1 制御文字・CRLF を含むテキストが下の行に描画される問題などを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-289">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24（v0.21.5）</strong>（2026-09-24 19:09 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐙 OpenClaw — v2026.9.8</h2>
+<p>2026-10-03 12:21 JST 公開。43 pull requests・12 direct commits・8 contributors のリリースで、OpenAI プロバイダ経由の <strong>GPT-6.1 Sol</strong> 対応、Control UI と更新修復の不具合修正、Windows 起動問題への対処が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>GPT-6.1 Sol の追加</strong>: アクセス権のあるアカウント向けに、OpenAI プロバイダ経由のモデル選択肢として追加されました。</li>
+  <li><strong>Control UI のタブ継続性</strong>: 更新・再起動をまたいで開いたままのタブが、保持されているそのバージョンのファイルを待ってビューの読み込みを継続できるようになりました。保持は最大3世代・96 MiB に制限されます。</li>
+  <li><strong>キーボードによる誤割り当ての修正</strong>: Control UI でキーボード操作により意図しないセッションが割り当てられる問題を修正しました。</li>
+  <li><strong>silent-reply ヘルプの明確化</strong>: 既存の20ロケールで、silent-reply 設定がグループ向けであり、直接チャットと内部セッションには返信が必要である旨を説明するようになりました（挙動の変更はありません）。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>更新修復がプラグイン選択を保持</strong>: 互換性のないプラグインが存在しても allowlist と有効エントリを維持し、パッケージ変更がなくても Doctor の保留中の移行確認を完了できるようになりました。完了レシートは更新履歴を書き換えずに古い警告を抑制します。</li>
+  <li><strong>Windows 起動問題</strong>: コンパイルキャッシュのパスを短縮し、長すぎるパスを警告付きで無効化しました。子プロセスも安全でない継承キャッシュパスを回避します。</li>
+  <li><strong>Gateway の所有権</strong>: 直接起動およびコンテナのオンボーディングで共有状態の排他的所有を強制し、競合する Gateway の起動を防止します。一時的な SQLite 競合には、メンテナンスリースが有効な間に限定的なリトライを行います。</li>
+  <li><strong>委譲結果の一度きりの配信</strong>: 内部セッション（サブエージェントや Control UI セッション）が <code>NO_REPLY</code> で完了するのではなく、結果を返すか作業を継続するようになりました。<code>sessions_send</code> は要求元の ID を維持しつつ、その場で確定した返信を返すか後で一度だけ配信します。</li>
+  <li><strong>Anthropic バックグラウンド結果の保持</strong>: Bash・agent・workflow の結果が消費されるまでターンに紐付くようになりました（失敗は引き続きターンを終了させます）。</li>
+  <li><strong>セッション修復</strong>: 深い所有権チェーンを再帰スタックオーバーフローなしでたどり、トランスクリプトの所有権と履歴を保持します。</li>
+  <li><strong>セキュリティと信頼</strong>: ローカル TLS ヘルスプローブが管理プロキシポリシーを保持し、接続ごとに設定された証明書フィンガープリントを検証するようになりました。ログの秘匿は繰り返し処理を避け、Bun 上で見落としていた長い難読化代入を修正しています。</li>
+  <li><strong>互換性の変更</strong>: 自動ピアのやり取りとターゲット告知ターンが廃止されました。カスタムワークフローは明示的なフォローアップまたはメッセージツール呼び出しが必要です。<code>silentReply.internal</code> / <code>silentReply.direct</code> は Doctor が削除しますが、<code>silentReply.group</code> と無関係な設定は保持されます。</li>
+  <li><strong>Telegram 移行</strong>: Doctor は検証済みの空の退役 version-1 バインドファイルのみをアーカイブし、非空・不確実なファイルはオペレータの確認用に残します。書き込み権限を持つキュー済みプレビューは送信前に権限を再確認します。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.8">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🐋 Orca</h2>
+<p>デスクトップ版の Orca は対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.219</strong>（2026-10-03 05:59 JST 公開）です。</p>
+<p>なお、別ラインの <strong>Orca Mobile Android</strong> でプレリリース <strong>mobile-android-v0.0.52</strong> が 2026-10-03 09:39 JST に公開されています。モバイルの RPC 移行（typed <code>RpcOperations</code> への段階移行）やエージェント attention 境界のリファクタリング、<code>fix: show unexpected signout notice only once across versions</code>、認証コールバック失敗の報告、native-chat の競合修正などが含まれます。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+─・─・─・─・─・─・─・─
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js</h3>
+<p>安定版の新規リリースは対象期間内に確認されませんでした。最新の安定版は <strong>v16.3.8</strong>（2026-09-30 公開）で、16.4 系は canary が進行中です（最新 canary v16.4.0-canary.58 は 2026-10-03 08:49 JST 公開で、対象期間の直前となります）。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">ソースへのリンク</a></p>
+
+<p class="empty-notice">対象期間内の新規リリース・アップデートが確認されなかったもの: <strong>Google Cloud</strong>（総合リリースノートの最新項目は 2026-10-02 付）、<strong>React</strong>・<strong>Python</strong>・<strong>Django</strong>・<strong>Java (JDK)</strong>・<strong>Spring Boot</strong>・<strong>Hono</strong>・<strong>Claude API / SDK</strong>（該当期間の新規公開なし）、<strong>AWS</strong> および <strong>Azure</strong>（アップデート一覧が JavaScript レンダリングのため、一次ソースでの確認ができませんでした）。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
