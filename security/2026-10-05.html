@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-05 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-05 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Claude Code 2.1.289 - 権限ルール・サンドボックス・プラグイン隔離まわりを修正 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>バージョン</th><td>Claude Code 2.1.289（最新）</td></tr>
+  <tr><th>リリース</th><td>2026-10-03 23:07 UTC（JST 2026-10-04 08:07）</td></tr>
+  <tr><th>主な内容</th><td>複合シェルコマンドの入れ子部分に対する deny / ask ルールの適用、シンボリックリンク経由の Read 拒否ルール、サンドボックス自動許可時の権限バイパス、プラグインによる組織管理設定の書き換えの修正</td></tr>
+</table>
+<ul>
+  <li>マネージド端末におきまして、複合シェルコマンドの入れ子部分に設定された deny または ask ルールが、ユーザーが導入したmodの承認を打ち消せていなかった問題が修正されました。承認の持ち越しが意図どおりに効くようになり、組織側のポリシーが優先されますわ。</li>
+  <li>Read の拒否ルールが、シンボリックリンク経由で @ メンション・IDEからの変更操作・選択されたファイルに適用されていなかった問題も修正されております。リンク越しの参照でファイル保護をすり抜けられておりました。</li>
+  <li>サンドボックスの自動許可が働く構成で、環境変数のプレフィックス付きコマンド（例：<code>TZ="$HOME" rm -rf build</code>）や、コマンド前に単独の変数代入が置かれた場合に Bash の deny / ask ルールが素通りしていた問題も修正されました。破壊的なコマンドを抑止したい運用では重要な修正ですわ。</li>
+  <li>加えて、ユーザー導入プラグインが組織管理のMCPサーバのサインインツールの説明文を書き換えられていた問題、アップグレード後の初回セッションで導入済みmodが読み込まれない問題なども修正されています。2.1.289 以降への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Citrix NetScaler - CVE-2026-88779 がCISA KEVに追加、悪用確認済み機器は調査対象に <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-88779（CVSSv4.0 8.7 / CWE-119 メモリバッファ境界の不適切な制限）</td></tr>
+  <tr><th>影響</th><td>NetScaler ADC 14.1-73.41 未満 / 13.1-64.28 未満 / 14.1-73.41 FIPS 未満 / 13.1-37.282 未満<br>NetScaler Gateway 14.1-73.41 未満 / 13.1-64.28 未満</td></tr>
+  <tr><th>想定される影響</th><td>サービス運用妨害（DoS）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-04 13:16 JST、CISA KEV追加 2026-10-04（連邦機関の対応期限 2026-10-07）</td></tr>
+</table>
+<ul>
+  <li>NetScaler ADC（旧Citrix ADC）および NetScaler Gateway（旧Citrix Gateway）におきまして、メモリバッファ境界の不適切な制限によりサービス停止に至りうる脆弱性が新たに採番されました。米CISAは本CVEを「悪用が確認された脆弱性カタログ（KEV）」へ2026年10月4日付で追加し、連邦機関に10月7日までの対応、および forensics triage の実施を求めております。</li>
+  <li>一連のNetScaler脆弱性（CVE-2026-88771、CVE-2026-88772）では、2026年9月24日以降に日本国内のNetScalerを標的とする攻撃試行が展開されているとの情報がございます。侵害事例ではウェブサーバ設定の変更、ウェブシェルの設置、シェルへの権限付与といった永続化活動が観測されております。インターネットへ露出した機器は、バージョンの確認と侵害痕跡の点検を優先して行うことをお勧めいたしますわ。</li>
+</ul>
+
+<h3>ZITADEL - 認証バイパスとアカウント乗っ取り 10件、Critical 3件（CVE-2026-105207 ほか） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>ZITADEL 3.4.15 / 4.17.3 より前の各系列</td></tr>
+  <tr><th>主要CVE</th><td>CVE-2026-105207（CVSSv4.0 9.8 / 一次要素の検証なしに外部IdPのIDを被害者アカウントへ紐付け、なりすまし）、CVE-2026-105209（9.6 / パスキー・パスワードレスの登録コード発行がヘッダの組織IDのみを検証、他組織ユーザーのアカウント掌握）、CVE-2026-105215（9.1 / Login V1の「外部アカウント未検出」登録がクライアント指定の外部IDを信頼）、CVE-2026-105210（8.2 / Login V1の第二要素登録がidentify-onlyセッションで動作）、CVE-2026-105211（8.1 / Login V2の returnCode 配信でOTPコードを取得）、CVE-2026-105213（8.2 / 無効化された組織のユーザーがログイン可能）、CVE-2026-105212（7.5 / 一次要素前のパスキー登録受理）、CVE-2026-105208（7.7 / IdP intentトークンの暗号化改ざん）ほか</td></tr>
+  <tr><th>修正版</th><td>4.17.3 / 4.17.1 / 4.16.2 / 3.4.15 / 3.4.14（脆弱性により修正版が異なります）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-05 00:16 JST</td></tr>
+</table>
+<ul>
+  <li>オープンソースの認証・アイデンティティ基盤でございます。ログイン名さえ知っていれば、パスワードやMFAを経ずに攻撃者自身の認証器を被害者アカウントへ登録できる経路が複数あり、管理者アカウントの掌握まで到達しうる内容ですわ。</li>
+  <li>とりわけ深刻なのは、Login V1 / V2 の登録・第二要素登録が identify-only セッション（一次要素の検証前）で動作していた点でございます。CVE-2026-105211 では OTP-Email と OTP-SMS の両コードがサーバアクションの応答から読めるため、MFA済みセッションを得られてしまいます。</li>
+  <li>ZITADEL をご利用の場合は、稼働系列に応じた修正版（3.4.14 / 3.4.15、4.16.2 / 4.17.1 / 4.17.3）への速やかな更新と、不審な IdP リンク・認証器登録の有無の点検をお勧めいたします。</li>
+</ul>
+
+<h3>TLS証明書検証を無効化するCVE群 - go-micro・gopay・Cockpit CMS <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>主要CVE</th><td>CVE-2026-105216（CVSS 7.4 / go-micro 6.0.0未満、共通TLSヘルパーが InsecureSkipVerify=true を既定で設定し、サービスなりすましと中間者攻撃が成立）、CVE-2026-105218（7.4 / gopay 1.5.119未満、defaultClient() がTLS検証を無効化し決済事業者APIへなりすまし可能）、CVE-2026-105217（3.1 / Cockpit CMS 2.12.0〜2.14.1未満、cron.php のワーカー再起動要求でTLS検証を無効化しワーカートークンを窃取されうる）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-05 03:16 JST</td></tr>
+</table>
+<ul>
+  <li>Go製のマイクロサービス基盤、決済クライアント、ヘッドレスCMSで、いずれも暗号化通信の相手認証が働かない構成になっておりました。gRPCやHTTPブローカー、Consul・etcdのレジストリ通信に加え、認証トークンや資格情報そのものが中間者へ渡るおそれがございます。</li>
+  <li>該当ライブラリをご利用の場合は修正版への更新を、直ちに難しい場合はアプリケーション側で独自のTLS設定（ルート証明書の明示指定）を行うことで緩和できますわ。</li>
+</ul>
+
+<h3>mammoth.js 1.12.3未満 - スタイルマップ解析の正規表現DoS（CVE-2026-105219） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-105219（CVSS 7.5 / lib/styles/parser/tokeniser.js の重複する正規表現選択肢）</td></tr>
+  <tr><th>影響</th><td>Mammoth.js 1.3.0 以上 1.12.3 未満</td></tr>
+  <tr><th>想定される影響</th><td>終端のない引用符と繰り返しのバックスラッシュエスケープを含む .docx を与えると、Node.jsのイベントループが停止</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-05 03:16 JST</td></tr>
+</table>
+<ul>
+  <li>Word文書（.docx）をHTMLへ変換するNode.jsライブラリでございます。利用者がアップロードした文書をサーバ側で変換する構成では、単一の細工された文書でサービスが停止しうるため、1.12.3以降への更新をお勧めいたします。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / Java / SpringBoot / Python / Django / Hono / GCP / AWS / Azure / React につきましては、本対象期間内に新規のCVE・セキュリティアドバイザリは確認されませんでした。OpenClaw の GitHub Releases 最新版は 2026.9.8（2026-10-03 公開、既報）で新規リリースはなく、Hermes Agent も最新が v2026.9.24（v0.21.5）のままで、本対象期間内に新規リリース・新規セキュリティ情報はございませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>弥生「Misoca」- メール送信機能を悪用した不審メール、新規登録の制限を実施 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>事象</th><td>第三者が新規アカウントを作成し、Misocaの文書メール送信機能を用いて不特定多数へ不審メールを送信</td></tr>
+  <tr><th>確認時期</th><td>2026年9月18日以降に検出、弥生が2026年9月28日に注意喚起を発表</td></tr>
+  <tr><th>影響</th><td>Misocaへの不正アクセス、顧客アカウントの不正利用、保有個人情報の利用はいずれも確認されず</td></tr>
+  <tr><th>対応</th><td>不正利用が疑われるアカウントの停止、サービス利用制限、不正利用につながる新規登録の制限、監視強化、大量送信・不正登録を抑止する仕組みの導入</td></tr>
+  <tr><th>出典</th><td>弥生 2026-09-28 発表、ScanNetSecurity 2026-10-05 8:00</td></tr>
+</table>
+<ul>
+  <li>正規のクラウドサービスから送信されるがゆえに、送信元ドメインの評価をすり抜けやすい手口でございます。送信元【noreply@misoca.jp】から心当たりのないメールが届いた場合は、本文中のリンクや添付ファイルを開かずに削除するよう案内されております。</li>
+  <li>SaaSの正規機能を踏み台にした大量送信は、フィッシングの到達率を高める手段として継続的に観測されております。業務で利用している請求・文書サービスの通知であるかを、送信元アドレスだけで判断しない運用が肝要ですわ。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">国内の企業・官公庁・大学・医療機関等につきましては、本対象期間内に新規の被害公表は確認されませんでした（Security NEXT・ScanNetSecurity のいずれも10月4日付の新規記事はなく、同日は日曜日にあたります）。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
