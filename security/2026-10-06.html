@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-06 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-06 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>GitLab AI Gateway 19.4.1 / 19.3.2 / 19.2.4 — プロンプトテンプレート処理でサンドボックス回避、任意コマンド実行（CVE-2026-90970） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-90970（CVSSv3.1 9.9 Critical）</td></tr>
+  <tr><th>影響</th><td>GitLab AI Gateway（セルフホスト環境）19.4.1 / 19.3.2 / 19.2.4 より前</td></tr>
+  <tr><th>想定される影響</th><td>サンドボックス回避による任意コマンド実行</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>カスタムフローのプロンプトテンプレート処理に問題があり、Duo Agent Platform へアクセスできる認証済みユーザーが細工したフロー設定を用いることで、一定の条件下でサンドボックスを回避し任意のコマンドを実行できるとのことですわ。AI Gateway はエージェントへツール実行を委ねる構成ゆえ、サンドボックス境界の破れはそのままホスト侵害に直結いたします。</li>
+  <li>GitLab がホストする AI Gateway はすでに修正適用済みですが、セルフホストで運用されている場合は 19.4.1 / 19.3.2 / 19.2.4 のいずれかへ速やかに更新くださいませ。認証済みユーザーが起点となるため、Duo Agent Platform の利用者を限定している環境でも例外とは言い切れません。</li>
+</ul>
+
+<h3>Google Chrome 154.0.8037.97 / 98 — 11件を修正、WebGL の域外メモリ書き込みが Critical（CVE-2026-103628） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-103628（Critical）、CVE-2026-103631（High）ほか計11件</td></tr>
+  <tr><th>影響</th><td>Windows / macOS: 154.0.8037.97・154.0.8037.98、Linux: 154.0.8037.97 より前</td></tr>
+  <tr><th>想定される影響</th><td>WebGL の域外メモリ書き込み、解放後メモリ使用、整数オーバーフロー等</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05（Google リリース 2026-10-01）</td></tr>
+</table>
+<ul>
+  <li>Critical 1件は WebGL の域外メモリ書き込み CVE-2026-103628（Google が8月に報告）。High 9件には FileSystem の不適切な認可、Compositing・Skia の整数オーバーフロー、FedCM・Contextual Tasks・SVG・MediaStream の解放後メモリ使用、V8 の型取り違えが含まれますわ。</li>
+  <li>WebRTC のバッファオーバーフロー CVE-2026-103631 は、Anthropic の Xinyang Ge 氏が Claude の支援を受けて報告したものです。順次展開されておりますので、ブラウザの再起動と更新状況の確認をお願いいたします。</li>
+</ul>
+
+<h3>cPanel &amp; WHM — Multilang adminbin の入力検証不備で root 権限の任意コマンド実行、3件いずれも Critical <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-93698（CVSSv3.0 9.9）、CVE-2026-93697、CVE-2026-93029</td></tr>
+  <tr><th>影響</th><td>cPanel &amp; WHM（2026-09-29 の修正リリースより前）</td></tr>
+  <tr><th>想定される影響</th><td>root 権限での任意 OS コマンド実行、管理者セッション上の格納型 XSS</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05（WebPros リリース 2026-09-29）</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-93698 はコンポーネント「Multilang adminbin」の入力検証不備で、低権限アカウントから root 権限で任意の OS コマンドを実行され、管理下のアカウント・ウェブサイト・データベースの制御を奪われるおそれがありますわ。共用ホスティングでは影響が特に大きくなります。</li>
+  <li>残る2件はいずれも格納型 XSS で、CVE-2026-93697 は WHM の「Mass Modify Accounts」インターフェースに存在し、権限を持たない利用者が WHM 管理者のセッション上でスクリプトを実行し管理者として操作できてしまいます。cPanel &amp; WHM をご利用のサーバ管理者は最優先で更新くださいませ。</li>
+</ul>
+
+<h3>GROWI v7.5.5 より前 — アクセス制限不備で非公開ページのファイルが未認証で閲覧可能（CVE-2026-100727） <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-100727（CVSSv4.0 6.9 / CVSSv3.0 5.3、CWE-552）</td></tr>
+  <tr><th>影響</th><td>GROWI v7.5.5 より前（ファイルのアップロード方法が「Local」に設定されている場合）</td></tr>
+  <tr><th>想定される影響</th><td>未認証の第三者が非公開ページのファイルを読み取り可能</td></tr>
+  <tr><th>公開</th><td>JVN#24352487 2026/10/05 15:00</td></tr>
+</table>
+<ul>
+  <li>株式会社GROWI が提供する GROWI に、外部からアクセス可能なファイルまたはディレクトリ（CWE-552）の問題がございます。認証されていない第三者によって、製品内に保存された非公開ページのファイルが読み取られるおそれがあります。</li>
+  <li>影響はファイルのアップロード方法が「Local」に設定されている場合に限られます。修正版は GROWI v7.5.5。開発者自らが JPCERT/CC へ報告し調整のうえ公表された案件ですわ。</li>
+</ul>
+
+<h3>Citrix NetScaler — SAML 構成の DoS 脆弱性 CVE-2026-88779、悪用確認済みで CISA KEV 追加 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-88779（CVSSv4.0 8.7 / CWE-119 メモリバッファ境界の不適切な制限）</td></tr>
+  <tr><th>影響</th><td>NetScaler ADC / Gateway 14.1-73.41 未満、13.1-64.28 未満（SAML SP / IdP 構成）</td></tr>
+  <tr><th>想定される影響</th><td>サービス運用妨害（DoS）</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05、CISA KEV 追加 2026-10-04（対応期限 2026-10-07）</td></tr>
+</table>
+<ul>
+  <li>SAML サービスプロバイダまたは SAML アイデンティティプロバイダとして構成している環境が影響を受けます。修正版は 14.1-73.41 / 13.1-64.28、FIPS・NDcPP 版も併せて提供されております。</li>
+  <li>すでに悪用が確認されており、米CISA は 2026年10月4日付で KEV へ追加、連邦機関へ10月7日までの対応を求めております。一連の NetScaler 脆弱性では日本国内を標的とする攻撃試行も観測されておりますので、露出機器の点検を重ねてお勧めいたします。</li>
+</ul>
+
+<h3>米CISA KEV 追加 — FortiMail・Zammad・NetScaler の4件、いずれも悪用確認済み <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>FortiMail パストラバーサル CVE-2026-104286（10/01 追加）<br>Zammad セッション固定 CVE-2026-102489・権限管理不備 CVE-2026-102490（10/02 追加）<br>NetScaler ADC / Gateway DoS CVE-2026-88779（10/04 追加）</td></tr>
+  <tr><th>想定される影響</th><td>未認証での任意ファイル書き込み、権限昇格、サービス停止</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>米CISA が 2026年10月1日から4日にかけて、悪用が確認された脆弱性カタログ（KEV）へ4件を追加いたしました。FortiMail の CVE-2026-104286 は細工した HTTP リクエストにより認証不要で任意のファイルを書き込めるもので、修正版は準備中とされております。</li>
+  <li>Zammad の2件は連鎖して悪用されうるもので、CVE-2026-102489 はセッション固定、CVE-2026-102490 はローカルの zammad ユーザから root への権限昇格ですわ。米行政機関の対応期限はいずれも登録から3日後と短く設定されております。</li>
+</ul>
+
+<h3>その他の新着脆弱性 — YAML.pm・NextChat・sglang・Net::Whois::Raw ほか <span class="badge-low">LOW</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2019-25777 / CVE-2017-20285（Perl YAML.pm）<br>CVE-2026-105238（NextChat、CVSSv3.1 5.5）<br>CVE-2026-105245（sglang、CVSSv3.1 2.9）<br>CVE-2026-19954（Net::Whois::Raw）<br>CVE-2026-105246（SourceCodester Online Reviewer Management System、CVSSv3.1 5.5）</td></tr>
+  <tr><th>公開</th><td>NVD 登録 2026-10-05</td></tr>
+</table>
+<ul>
+  <li>Perl 向け YAML（YAML.pm）は 1.27_001 未満で perl/glob 文書により任意パッケージ変数を書き換えられ（CVE-2019-25777）、1.30 未満で perl/hash:Class 文書の DESTROY を通じてディレクトリツリーを削除されうる（CVE-2017-20285）問題が新たに採番されました。修正版は 1.28 / 1.30 ですわ。</li>
+  <li>NextChat（ChatGPTNextWeb）2.16.1 まではプロキシハンドラの SSRF（CVE-2026-105238）、sglang 0.5.21 までは HTTP エンドポイントでの api_key 平文送信（CVE-2026-105245）、Net::Whois::Raw 2.99044 未満は IDNA 処理不備で誤ったドメインへの WHOIS 照会（CVE-2026-19954）が確認されております。NextChat と sglang はいずれも修正 PR が未マージの状態です。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Apache HTTP Server 2.4.69（JVNVU#94648869、JVN 公開 2026/10/02）は既報です。Hermes Agent・Claude Code につきましては、対象期間内にセキュリティ関連の新規リリースは確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>物語コーポレーション「焼肉きんぐ」アプリ — 会員情報 1,078万8,963件が流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>物語コーポレーション（外食チェーン「焼肉きんぐ」公式アプリ）</td></tr>
+  <tr><th>発生日</th><td>2026-10-02（侵害判明）／2026-10-03（流出確認）</td></tr>
+  <tr><th>影響</th><td>1078万8963件（登録1080万8784件）の氏名・メールアドレス・電話番号・会員番号</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>2026年10月2日に第三者によって外部から会員管理システムへのアクセスが行われたことが判明し、翌3日に公式アプリの会員情報が流出したことを確認いたしました。アプリ登録名である氏名、メールアドレス、電話番号、会員番号が対象ですわ。</li>
+  <li>同社は原因を不正アクセスと見て、侵害に至った経緯や原因の詳細を調査中。個人情報保護委員会への報告と警察への被害届提出に向けて対応を進めております。会員には、なりすましメールやフィッシング詐欺への注意が呼びかけられております。</li>
+</ul>
+
+<h3>LEAN BODY — 分析ツール「Metabase」の脆弱性を悪用され、約44万件の顧客情報を取得される <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社 LEAN BODY</td></tr>
+  <tr><th>発生日</th><td>2026-08-11（初回不正アクセス）〜2026-09-09（経路遮断）</td></tr>
+  <tr><th>影響</th><td>退会者を含む約44万件（メールアドレス、ニックネーム、性別、生年月日、都道府県、身体情報、暗号化済みパスワード、決済識別番号・カード下4桁など）</td></tr>
+  <tr><th>公開</th><td>ScanNetSecurity 2026-10-05 8:05</td></tr>
+</table>
+<ul>
+  <li>社内のデータ分析に用いていた Metabase の脆弱性を突かれ、第三者がデータベースから顧客情報を取得いたしました。8月11日に最初の不正アクセスがあり、8月31日・9月7日に情報取得、9月9日には再度の取得が行われております。</li>
+  <li>当該ツールの脆弱性情報を定期的に確認し必要な更新を実施できていなかったことが、不正アクセスの要因になった可能性が高いと同社は認識しております。Metabase は SQL インジェクションのゼロデイ攻撃が 2026年8月に確認された製品ですわ。同社は利用を終了し、より安全な環境へ移行するとのことです。</li>
+</ul>
+
+<h3>池上通信機 — 一部サーバで不正アクセスの痕跡とファイル暗号化、社内ネットワークを切断 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>池上通信機株式会社</td></tr>
+  <tr><th>発生日</th><td>2026-09-21（外部からの情報提供）／2026-09-24（初報）／2026-09-30（続報）</td></tr>
+  <tr><th>影響</th><td>一部サーバ内の一部ファイルが暗号化。同社資料とみられる情報の外部流出の可能性</td></tr>
+  <tr><th>公開</th><td>ScanNetSecurity 2026-10-05 8:05</td></tr>
+</table>
+<ul>
+  <li>9月21日に外部からサイバー攻撃の可能性について情報提供があり調査を開始。一部サーバで外部からの不正アクセスが疑われる痕跡と、当該サーバ内の一部ファイルが暗号化されていることを確認しております。</li>
+  <li>外部から提供された情報の一部に同社資料とみられる情報が含まれていたことも把握されております。被害拡大防止を最優先とし、社内ネットワークを切断した状態を継続し、外部専門機関の協力のもと原因および影響範囲の特定を進めているとのことですわ。</li>
+</ul>
+
+<h3>あいの風とやま鉄道 — 観光列車の座席管理システムに不正アクセス、予約改ざんと1,409名の情報漏えいのおそれ <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>あいの風とやま鉄道株式会社（観光列車「一万三千尺物語」）</td></tr>
+  <tr><th>発生日</th><td>2026-09-02（最初の不正アクセス）〜2026-09-08（複数回確認）</td></tr>
+  <tr><th>影響</th><td>乗車済み・予約済みの顧客計1,409名の氏名・住所・電話番号・メールアドレス。複数の予約が不正にキャンセル・作成</td></tr>
+  <tr><th>公開</th><td>ScanNetSecurity 2026-10-05 8:05</td></tr>
+</table>
+<ul>
+  <li>9月8日朝に社員が座席管理システムへアクセスしたところ、複数の予約がキャンセルされ、正規の手順によらない予約が確認されたため、新規予約の受付を停止して調査いたしました。最初の不正アクセスは9月2日で、以降9月8日までに複数回確認されております。</li>
+  <li>対象顧客へは9月12日付でお詫びとお知らせを郵送済みです。ネットによる新規予約の受付停止は現在も継続しており、予約系システムを標的とした改ざん事案として注意が必要ですわ。</li>
+</ul>
+
+<h3>集英社 — ブロガー情報管理システム「ハピコミュ」に不正アクセス、2,835件の個人情報が流出 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社集英社</td></tr>
+  <tr><th>発生日</th><td>2026-09-09（2回にわたる侵害）</td></tr>
+  <tr><th>影響</th><td>ブロガー2,835件の氏名・住所・電話番号・生年月日・メールアドレス・SNSアカウントなど。案件情報630件、送信メール情報1万1,237件、取引先一覧の会社名1万780件ほか</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>ファッション誌で活動するブロガーの情報管理・連絡に用いる「HAPPY PLUS COMMUNITY（ハピコミュ）」が、9月9日0時半過ぎ〜1時半ごろ、および同日13時半過ぎ〜16時半過ぎの2度にわたり外部の第三者による不正アクセスを受けております。</li>
+  <li>侵害時に100人のメールアドレスへ同システムのテンプレートを用いたメールが3件送信され、受信者からの連絡で発覚いたしました。正規のシステムから不審メールが配信される手口ですので、受信者はリンクや添付に触れぬようご注意くださいませ。</li>
+</ul>
+
+<h3>ベネッセグループ会社「アップ」— プラグイン脆弱性を突かれ2サイトに不正アクセス、採用応募者の情報流出の可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社アップ（ベネッセコーポレーションのグループ会社）</td></tr>
+  <tr><th>発生日</th><td>2026-08-24（判明）</td></tr>
+  <tr><th>影響</th><td>洛西進学教室の講師採用応募者10人とサイト管理者3人の氏名・住所・電話番号・年齢・大学など。外部持ち出しの痕跡は未確認</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>プロモーションサイト「洛西進学教室」と「進学館」が不正アクセスを受けました。利用していたプラグインの脆弱性が悪用され、サーバ内に不正なプログラムが設置されております。</li>
+  <li>同社はアクセスを遮断してサーバを隔離し、不正プログラムの除去と脆弱性の修正を実施。対象の関係者へ連絡のうえ、個人情報保護委員会へ報告しております。CMS プラグインの脆弱性を起点とする手口は依然として多数を占めておりますわ。</li>
+</ul>
+
+<h3>日本大学 — 教員アカウント5件に不正アクセス、1,333件の不審メール送信の踏み台に <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>日本大学</td></tr>
+  <tr><th>発生日</th><td>2026-08-07（不正アクセス）／2026-08-29（確認）</td></tr>
+  <tr><th>影響</th><td>計5名の教員アカウント。学内外へ1,333件の不審メール送信。大規模な抽出・持ち出しの痕跡は未確認も一部データへのアクセスの可能性</td></tr>
+  <tr><th>公開</th><td>ScanNetSecurity 2026-10-05 8:05</td></tr>
+</table>
+<ul>
+  <li>第三者がフィッシングメール等の手段で認証情報を窃取し、アカウントを乗っ取ったことが原因と推測されております。検知後は当該アカウントを停止・無効化し、不正アクセスを遮断いたしました。</li>
+  <li>同大学では多要素認証（MFA）の導入推進、アカウント管理の適正化、情報セキュリティ教育の再徹底を図るとのことです。同学では学部単位でも同種のアカウント乗っ取りが繰り返されており、教育機関を狙うフィッシングの執拗さがうかがえますわ。</li>
+</ul>
+
+<h3>東産業 — 公式サイトに WordPress 脆弱性「wp2shell」を悪用した不正アクセス <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社東産業</td></tr>
+  <tr><th>発生日</th><td>2026-09-08（公表 9月14日）</td></tr>
+  <tr><th>影響</th><td>問い合わせフォームを通じて取得した顧客情報</td></tr>
+  <tr><th>公開</th><td>ScanNetSecurity 2026-10-05 8:05</td></tr>
+</table>
+<ul>
+  <li>公式サイトに対し、WordPress の脆弱性（CVE-2026-60137、CVE-2026-63030：wp2shell）を悪用した第三者からの不正アクセスを確認いたしました。当該脆弱性は IPA が7月22日に注意喚起を公表したものです。</li>
+  <li>同社はすでに対策を実施済みで、不正アクセスの発生時期と影響範囲を調査中。対象情報は問い合わせフォーム経由の顧客情報のみとのことですわ。修正版公開後も攻撃の検知が続いておりますので、未更新の WordPress サイトは早急な更新をご検討くださいませ。</li>
+</ul>
+
+<h3>横浜市 — 水道料金の減免解除通知書が所在不明、個人情報含む書類を紛失 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>横浜市</td></tr>
+  <tr><th>影響</th><td>未達で返戻となった水道料金の減免解除通知書（個人情報を含む書類）の所在が不明</td></tr>
+  <tr><th>公開</th><td>Security NEXT 報道 2026/10/05</td></tr>
+</table>
+<ul>
+  <li>水道料金の減免解除通知書が所在不明となっていることが判明いたしました。通知書には利用者の個人情報が含まれております。</li>
+  <li>自治体における書類の所在不明は、郵送物の返戻処理や保管・廃棄の運用不備として繰り返し報告されております。委託先を含めた文書管理の点検が求められる案件ですわ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
