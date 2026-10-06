@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-07 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-07 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-06 08:00 〜 2026-10-07 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Atlassian 8製品 - 認証不要の任意ファイルアクセス（CVE-2026-21589）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv4.0 9.3</td></tr>
+  <tr><th>対象</th><td>Bitbucket / Confluence / Jira Service Management / Jira Software / Bamboo / Crowd Data Center、Crucible、Fisheye</td></tr>
+  <tr><th>公開</th><td>2026-10-05（現地・Atlassian アドバイザリ）／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191078" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>ファイルアクセスに関する脆弱性。対象ファイルの名称やパスを事前に把握していれば、<strong>認証を必要とすることなく</strong>ウェブアプリケーションのルートディレクトリ内の特定ファイルへアクセスできる。</li>
+  <li>構成によっては機微な情報を含むファイルが取得されるおそれがある。Atlassianは特にデータセンター製品はリスクが高いとし、早急な修正版適用を求めている。</li>
+  <li>直ちに更新できない場合はアクセス制限等の緩和策を実施し、侵害の痕跡を確認するよう案内している。</li>
+</ul>
+
+<h3>JetBrains 6製品 - 脆弱性57件を修正、Critical 2件はいずれもCVSSv3.1 9.8</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2026-86480 / CVE-2026-86478</td></tr>
+  <tr><th>対象</th><td>GoLand、Hub、IntelliJ IDEA、Rider、TeamCity、YouTrack</td></tr>
+  <tr><th>公開</th><td>Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191058" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-86480：<strong>Hub</strong>で信頼済みサービスを登録するとスーパーユーザー権限を取得できてしまう。</li>
+  <li>CVE-2026-86478：<strong>YouTrack Helpdesk</strong>でメールアドレスを申告するだけでアカウントを乗っ取れる。</li>
+  <li>あわせてTeamCityの3件を含むHigh 16件、Medium 28件、Low 11件を修正済み。各製品の修正版が提供されている。</li>
+</ul>
+
+<h3>Fortinet FortiMail - ゼロデイ（CVE-2026-104286）の修正版提供開始</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv3.1 9.8</td></tr>
+  <tr><th>対象</th><td>FortiMail 8.0.2未満 / 7.6.7未満 / 7.4.9未満（7.2ブランチも影響）</td></tr>
+  <tr><th>公開</th><td>2026-10-05（現地・アドバイザリ更新）／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191061" target="_blank" rel="noopener noreferrer">Security NEXT</a> ／ <a href="https://fortiguard.fortinet.com/psirt/FG-IR-26-175" target="_blank" rel="noopener noreferrer">FG-IR-26-175</a></td></tr>
+</table>
+<ul>
+  <li>細工したHTTPリクエストにより、認証を必要とすることなくシステム上へ任意のファイルを書き込める脆弱性。ゼロデイ攻撃での悪用が確認されており、IoCも公開されている。</li>
+  <li>Fortinetは予定どおりの修正版となる<strong>FortiMail 8.0.2 / 7.6.7 / 7.4.9</strong>の提供を開始した。7.2ブランチは影響を受けるため7.4以降へ移行が必要。</li>
+</ul>
+
+<h3>Claude Code 2.1.292 - サンドボックス・権限まわりを修正</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-medium">Medium</span> セキュリティ修正を含む</td></tr>
+  <tr><th>公開</th><td>2026-10-06 18:59 UTC（JST 2026-10-07 03:59）</td></tr>
+  <tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.292" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+  <li>Security：PreToolUseフックの承認と自動モードが、ネットワーク（UNC）パスからのファイル読み取りで権限プロンプトを回避していた問題を修正。</li>
+  <li>サンドボックス内コマンドが <code>/ultrareview</code> アップロードのステージング済みコピー（<code>~/.claude/seed-admin</code>）を読める問題、macOS/WindowsでのPDF・ノートブック読み取りが承認範囲外のファイルを返しうる問題、改ざんされたサーバ管理設定キャッシュが組み込みポリシープラグインを停止できた問題などを修正。</li>
+  <li>Windowsでホームフォルダやドライブの代替表記（8.3短縮名等）に対する <code>rm -rf</code> が削除と扱われない問題、マネージド設定の読み込み前に <code>claude plugin</code> コマンドが実行される問題も修正。</li>
+</ul>
+
+<h3>MCC製 Universal Library for Linux (uldaq) - スタックベースのバッファオーバーフロー（JVN#13510969 / CVE-2026-19477）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-high">High</span> CVSSv4.0 8.6（CVSSv3.0 7.8）</td></tr>
+  <tr><th>対象</th><td>uldaq v1.2.1 およびそれ以前</td></tr>
+  <tr><th>公開</th><td>JVN 2026-10-06 12:00</td></tr>
+  <tr><th>出典</th><td><a href="https://jvn.jp/jp/JVN13510969/index.html" target="_blank" rel="noopener noreferrer">JVN#13510969</a></td></tr>
+</table>
+<ul>
+  <li>Measurement Computing Corporation（National Instruments）提供のデータ収集ライブラリにスタックベースのバッファオーバーフロー（CWE-121）。システム内の情報漏えいや任意コード実行のおそれ。</li>
+  <li>対策は最新版へのアップデート。報告者はパナソニックホールディングスの鶴見淳一氏で、JPCERT/CCが開発者と調整した。</li>
+</ul>
+
+<h3>Androidアプリ「チケット流通センター」 - ハードコード認証情報とCustom URL Schemeのアクセス制限不備（JVN#53292492）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-medium">Medium</span> CVE-2026-92861（CVSSv4.0 5.1）／CVE-2026-92862（CVSSv4.0 4.6）</td></tr>
+  <tr><th>対象</th><td>チケット流通センター 4.1.9 およびそれ以前</td></tr>
+  <tr><th>公開</th><td>JVN 2026-10-06 12:00</td></tr>
+  <tr><th>出典</th><td><a href="https://jvn.jp/jp/JVN53292492/index.html" target="_blank" rel="noopener noreferrer">JVN#53292492</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-92861はハードコードされた認証情報の使用（CWE-798）で、外部サービス連携用APIキーが窃取されるおそれ。</li>
+  <li>CVE-2026-92862はCustom URL Schemeハンドラのアクセス制限不備（CWE-939）で、悪意あるアプリからintentを受けて任意サイトへ誘導されフィッシング被害につながるおそれ。</li>
+  <li>4.2.0で修正済み・旧APIキーは無効化済みで、影響版は起動時に即時アップデートが強制される。報告者はブロードバンドセキュリティの佐藤光喜氏。</li>
+</ul>
+
+<h3>OpenClaw / Hermes Agent</h3>
+<table class="cve-table">
+  <tr><th>OpenClaw</th><td>対象期間内の新規リリースなし（最新の本体リリースは 2026.10.1-beta.1＝2026-10-05、Linux版は v2026.9.5）</td></tr>
+  <tr><th>Hermes Agent</th><td>対象期間内の新規リリースなし（最新は v0.21.5 / v2026.9.24）</td></tr>
+</table>
+<hr>
+<p class="empty-notice">web / Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本経済新聞社 - 従業員のMicrosoft 365アカウントに不正アクセス、取材先へ約9,000件のなりすましメール</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>日本経済新聞社</td></tr>
+  <tr><th>発生</th><td>2026-09-30（なりすましメール送信）／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191072" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>従業員が利用していた「Microsoft 365」アカウントが不正アクセスを受け、第三者が不正にログインしたとみられる。送信先のメールアドレスや氏名のほか、一部メールの内容が流出した可能性がある。</li>
+  <li>2026年9月30日、社内および複数従業員とやりとりがあった取材先などに対し、悪質なサイトへ誘導する内容の「なりすましメール」が約9,000件送信された。</li>
+  <li>対象アカウントのパスワードを変更し、以降の不正ログインは確認されていない。なりすましメールの送信先には個別連絡と削除依頼を実施。</li>
+</ul>
+
+<h3>第一ライフグループ／第一生命保険 - 人事システムへの不正アクセスで従業員・退職者ら約12万人分の情報が流出か</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>第一ライフグループ、第一生命保険（ほかグループ各社）</td></tr>
+  <tr><th>発生</th><td>2026-09-24 侵害検知／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/190994" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>従業員向け人事システムで2026年9月24日に侵害を検知。同システムに保存されていた個人情報が外部に流出した可能性があることを確認した。</li>
+  <li>対象は両社の従業員・退職者に加え、第一フロンティア生命保険や第一ネオ生命保険などグループ会社への出向者、在籍型出向で勤務していた関係者などあわせて<strong>約12万人</strong>。</li>
+  <li>氏名・住所・電話番号・性別・従業員番号・所属・職位・職務・上長の氏名などが含まれる。顧客情報に対する第三者のアクセスは確認されていないとしている。</li>
+</ul>
+
+<h3>大起水産 - 公式アプリが侵害、登録者17万4,933人分の情報が流出か</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>大起水産（回転ずしチェーン）</td></tr>
+  <tr><th>発生</th><td>2026-09-15 侵害確認／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191070" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>「大起水産公式アプリ」が侵害され、顧客の個人情報が流出した可能性があることを公表。2026年9月15日に確認し、対策と監視体制強化を実施した。</li>
+  <li>対象は2024年11月1日から2026年9月15日までに同アプリに登録した<strong>17万4,933人</strong>（退会者を含む）。氏名・生年月日・性別・住所・電話番号・メールアドレスが含まれる。</li>
+  <li>10月5日時点で外部での流通や不正利用は確認されていない。個人情報保護委員会へ報告し、対象顧客にはアプリ登録メールアドレスへ案内を送付。アプリは平常どおり利用できるとしている。</li>
+</ul>
+
+<h3>大和証券 - 委託先スカラコミュニケーションズの侵害で問い合わせ顧客の情報が流出か（約11万人・合計約22万件）</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>大和証券（委託先：スカラコミュニケーションズ）</td></tr>
+  <tr><th>発生</th><td>2026-10-02 20:30 〜 10-03 08:00 ごろ／Security NEXT 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191068" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>インターネット経由の問い合わせ管理を委託しているスカラコミュニケーションズが侵害を受け、大和証券の顧客情報が取得された形跡を確認。10月3日に同社から報告を受けた。</li>
+  <li>流出の可能性があるのはインターネット経由で問い合わせた顧客<strong>約11万人</strong>の氏名・メールアドレス・口座番号など。個人を特定できる情報を含まない問い合わせ情報も含め合計約22万件。</li>
+  <li>10月5日時点で関連する不正取引や情報の外部公開・拡散は確認されておらず、大和証券が運用するシステムへの侵害も確認されていない。不正取引の監視を継続している。</li>
+</ul>
+
+<h3>ベネフィット・ワン「ベネワン・プラットフォーム」 - アンケート機能の不具合で他企業・団体の個人情報がダウンロード可能に</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社ベネフィット・ワン（ベネッセグループ）</td></tr>
+  <tr><th>発生</th><td>2026-09-30 公表（2025-06の改修に起因）／ScanNetSecurity 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/06/56394.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>福利厚生サービスの企業・団体担当者向け機能「ベネワン・プラットフォーム」のアンケート機能で、担当者がアンケート結果をダウンロードした際に、本来アクセスできない他企業・団体の従業員の個人情報の一部が表示される状態だった。</li>
+  <li>対象は<strong>2,322企業・団体の13,460名</strong>分（社員・職員番号、氏名、性別、生年月日、企業・団体名、所属／役職、入退社情報）。第三者への転送等は行われていないことを確認している。</li>
+  <li>2025年6月のシステム改修による条件設定不備が原因。2025年10月の社内調査で不具合を認知していたものの、その後の解消作業が適切に実施されていなかった。</li>
+</ul>
+
+<h3>信濃毎日新聞デジタル - 信毎ポイント交換システムへの不正アクセス、一部履歴データが一時消去</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>信濃毎日新聞株式会社</td></tr>
+  <tr><th>発生</th><td>2026-09-07 判明／9-28 公表／ScanNetSecurity 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/06/56393.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>「信濃毎日新聞デジタル」の信毎ポイント交換システムへの外部からの不正アクセスが9月7日に判明し、一時的に一部の履歴データが消去される事象が発生していた。</li>
+  <li>調査の結果、現時点で個人情報の流出は確認されていない。該当システムに修正措置を講じ、データの復旧も完了。顧客が保有するポイント数への影響はないとしている。</li>
+</ul>
+
+<h3>ムラウチドットコム - 不正アクセスによる個人情報漏えい 第二報、確認された漏えいは7,716,811件</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社ムラウチドットコム</td></tr>
+  <tr><th>発生</th><td>2026-07-15 障害発生（初報7-24）／第二報 2026-09-15／ScanNetSecurity 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/06/56391.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>7月15日未明の障害に続き、翌16日の復旧作業中に第三者の不正アクセス痕跡を確認。フォレンジック調査の結果、Webシステムの一部に存在した脆弱性を起点に複数システムへの不正アクセスが判明した。</li>
+  <li>漏えいが確認されたのは<strong>7,716,811件</strong>の個人情報（氏名、住所、電話番号、メールアドレス、生年月日、性別）。9月15日から対象顧客に個別通知メールを送信している。</li>
+  <li>アクセス権限・認証情報の管理方法の見直し、監視・検知体制の強化、定期的な脆弱性診断に取り組むとしている。</li>
+</ul>
+
+<h3>PhotoGoods（大興印刷） - 不正アクセスでクレジットカード情報等が漏えいした可能性</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>大興印刷株式会社（ネットサービス「PhotoGoods」）</td></tr>
+  <tr><th>発生</th><td>2026-09-11 不審プログラム確認／9-16 公表／ScanNetSecurity 2026-10-06</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/06/56392.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>9月11日、「PhotoGoods」内に不審な外部プログラムが読み込まれているとの連絡があり、決済画面等に入力されたクレジットカード情報を不正取得する機能を持つプログラムの設置を確認。あわせてシステム上の脆弱性とファイルアップロード機能の悪用による不正アクセスも確認した。</li>
+  <li>クレジットカード情報（カード番号・有効期限・セキュリティコード）は、不正プログラムが稼働していた<strong>2026年8月6日から9月11日</strong>までに決済画面へ入力した顧客が対象。ほか氏名・住所・電話番号・メールアドレス、会員パスワードに関する情報も含む。</li>
+  <li>サービス停止、不正プログラムの停止・削除、不正な管理者アカウントの無効化、外部アクセス制限などを実施し、安全が確認できるまでサービスを再開しないとしている。</li>
+</ul>
+
+<h3>参考：注目の脅威レポート</h3>
+<table class="cve-table">
+  <tr><th>偽サポート</th><td>Check Pointは、SNSに投稿された顧客の苦情を監視し、航空会社・旅行ブランドのカスタマーサポートを装って接触する組織的ソーシャルエンジニアリングキャンペーンを確認。SNSでの接触からWhatsAppでの個別会話、支払いへと誘導される（ScanNetSecurity 2026-10-07）</td></tr>
+  <tr><th>ゾンビカード</th><td>マサチューセッツ大学アマースト校の研究チームが、有効期限切れの一部非接触型クレジットカードで決済が通ってしまう攻撃手法をUSENIX Security 2026で報告。有効期限の確認・運用が一貫していない点を悪用（ScanNetSecurity 2026-10-06）</td></tr>
+</table>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
