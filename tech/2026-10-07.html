@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-07 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-07 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.292 / v2.1.291</h2>
+<p>対象期間（2026-10-06 09:00 〜 2026-10-07 09:00 JST）内に、Claude Code の新バージョンが<strong>2件</strong>公開されました。v2.1.291 が 2026-10-06 13:05 JST、v2.1.292 が 2026-10-07 04:14 JST の公開です。v2.1.292 は、プラグイン／mod フック周りの修正とセキュリティ修正を多数含む大型の更新となっています。</p>
+
+<h3>🔧 新機能・改善（v2.1.292）</h3>
+<ul>
+  <li><strong>Agent ツールの effort パラメータ</strong>: サブエージェントを任意の effort レベルで実行できるようになりました。</li>
+  <li><strong><code>claude plugin install --marketplace &lt;source&gt;</code></strong>: 必要に応じてマーケットプレイスを追加し（<code>claude plugin marketplace add</code> と同じポリシーチェック下）、そこからプラグインをインストールします。</li>
+  <li><strong>過負荷リトライの調整</strong>: 環境変数 <code>CLAUDE_CODE_OVERLOADED_RETRY_BASE_DELAY_MS</code> で、529（overloaded）リトライ時のバックオフ基準遅延を引き延ばせます。</li>
+  <li><strong>mod 向け API 拡充</strong>: <code>prompt.autocomplete</code> イベント、<code>$.model.complete</code> のプロンプトキャッシュ（<code>cache: true</code>）、<code>agent.spawn</code> フックへの workflow agents 追加。</li>
+  <li><strong>起動の高速化</strong>: <code>claude -p</code> および Agent SDK セッションの初回ターンが、HTTP/SSE MCP サーバーの <code>resources/list</code> 応答を待たなくなりました。</li>
+  <li><strong>MCP プロトコル交渉の既定変更</strong>: ローカル（stdio）MCP 接続が全インストールで既定でプロトコル版 <code>2026-07-28</code> を交渉するようになりました（Bedrock / Vertex / Foundry を含む）。<code>MCP_PROTOCOL_NEGOTIATION=legacy</code> でオプトアウト可能です。</li>
+  <li><strong>レンダリング性能</strong>: 長い箇条書き・番号付きリストの返答が、トランスクリプト（ctrl+o）でのストリーミング・リサイズ・再展開ともに大幅に高速化されました。</li>
+  <li><strong>Artifact ツール</strong>: 公開済み artifact の件数を Claude が把握でき、一覧取得が 50 件から最大 200 件に拡大しました。</li>
+  <li><strong>sandbox auto-allow の緩和</strong>: 厳格な sandbox モードでも <code>FOO=bar python3 app.py</code> のような環境変数プレフィックス付きインタプリタコマンドがプロンプトなしで実行されます。</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.292）</h3>
+<ul>
+  <li>プラグイン／mod のフックまわりを多数修正（<code>tool.check</code> が承認必須ツールをダイアログなしで許可してしまう問題、<code>config.set</code>/<code>state.set</code>/<code>env.set</code>/<code>agent.spawn</code> が <code>next(e)</code> 後に deny した場合の扱い、フック worker 再起動中の tool call が権限フックを通らない問題、<code>claude plugin validate</code> の誤検出など）。</li>
+  <li><code>permissionMode: auto</code> のサブエージェント定義が、auto モード利用不可時に auto モードへ入ってしまう問題を修正。</li>
+  <li>スケジュールタスク関連: <code>/resume</code>・<code>/branch</code>・<code>/clear</code> 以降に作成した保存済みタスクが発火しない問題、タスクファイルへのミリ秒差の2回書き込み後に以降の作成・削除が無視される問題を修正。バックグラウンドセッションの <code>/loop</code> がプロセス再起動で無音停止する問題も修正。</li>
+  <li>Read ツール: PDF の <code>pages</code> に <code>"6,9,15"</code> のようなリストを渡した際、先頭のみを無言で返していた問題を修正（各ページ／範囲を個別に読むようエラーを返す）。256KB 超の @ メンション付きテキストファイルが無言で除外される問題も修正。</li>
+  <li>Grep / Glob が読み取り不能なファイル・フォルダに対して「一致なし」を返していた問題を修正（1回リトライするか、その旨を報告）。</li>
+  <li><code>NO_PROXY</code> が <code>HTTPS_PROXY</code> 設定時に Claude Code 自身の API リクエストで無視される問題、128文字超の MCP ツール名で全リクエストが失敗する問題を修正。</li>
+  <li>No launch: <code>claude -p</code> のワンショット実行が最終結果の5秒後にバックグラウンドコマンドを停止していた問題、スケジュールされた wakeup が失われる問題を修正。</li>
+  <li>ターミナル UI: vim モードのカーソル行末越え、<code>/add-dir</code> のパス入力欄、iTerm2 検出時の全画面クリア多発、高速タイピング時の入力欠落などを修正。</li>
+</ul>
+
+<h3>🔒 セキュリティ（v2.1.292）</h3>
+<ul>
+  <li><strong>UNC パスのファイル読み取り</strong>: PreToolUse フックの承認と auto モードが、ネットワーク（UNC）パスからのファイル読み取りで権限プロンプトを迂回していた問題を修正。</li>
+  <li>sandbox 化されたコマンドが <code>~/.claude/seed-admin</code> 配下の <code>/ultrareview</code> アップロードのステージング済みコピーを読める問題、macOS/Windows での notebook・PDF 読み取りが読み取り中に差し替えられたリンク経由で承認範囲外のファイルを返し得る問題を修正。</li>
+  <li>サーバー管理設定のディスクキャッシュ改竄により、設定取得失敗中に組み込みポリシープラグインを無効化・除名できてしまう問題、管理 sandbox の read-deny パスが再指定された際にプロジェクト権限が残る問題を修正。</li>
+</ul>
+
+<h3>🐛 v2.1.291 の修正</h3>
+<ul>
+  <li>2.1.290 のリグレッションで、クラウドセッションが権限プロンプトへの回答を失うことがある問題を修正。</li>
+  <li>2.1.288 のリグレッションで、終了時にセッションの最後のメッセージが失われることがある問題を修正。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（2026-09-24 19:09 JST 公開 / Hermes Agent v0.21.5）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.8</strong>（2026-10-03 12:21 JST 公開）です。なお最新の公開物はプレリリースの v2026.10.1-beta.1（2026-10-06 04:47 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.221</strong>（2026-10-06 08:49 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>AWS Batch が Amazon CloudWatch へジョブメトリクスを発行</strong>（2026-10-07 02:30 JST 発表）: ジョブのライフサイクル全体でメトリクスを出力し、キュー健全性・失敗率・実行時間を可視化します。状態遷移メトリクス（submitted / running / succeeded / failed など）と所要時間メトリクスを <code>AWS/Batch</code> 名前空間に <code>JobQueueName</code> ディメンション付きで発行。AWS Batch が利用可能な全リージョンで提供されます。</li>
+  <li><strong>AWS Certificate Manager が AWS PrivateLink 経由の ACME 発行に対応</strong>（2026-10-06 23:01 JST 発表）: 公開 TLS 証明書の要求・更新を、AWS ネットワーク内に留まるプライベートパスで行えます。VPC インターフェースエンドポイントを作成すると、Private DNS が既存の ACME ディレクトリ URL を自動解決するため、クライアント設定の変更は不要です。AWS Batch 同様、全商用リージョンで利用可能です。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>Cloud Monitoring — App Hub への一括登録が GA</strong>（2026-10-06 公開）: 検出されたサービスとワークロードを App Hub アプリケーションへ一括登録する機能が一般提供となりました。</li>
+  <li><strong>Google Cloud SDK 588.0.0</strong>（2026-10-06 公開）: 破壊的変更として、Cloud Managed Flink Client コンポーネント（<code>managed-flink-client</code>）が gcloud CLI から削除されました。加えて <code>gcloud alpha|beta agent-identity auth-providers authorizations</code> 系コマンドの追加、<code>gcloud apigee apis import</code> の GA 昇格とテンプレート取込の不具合修正、Apihub の <code>--service-type-enum-values</code> フラグ追加などが含まれます。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<h2>☕ Django — セキュリティリリース 6.1.2 / 6.0.9 / 5.2.18</h2>
+<p>2026-10-06 22:00 JST、Django チームがセキュリティリリースを公開しました。対象は main / 6.1 / 6.0 / 5.2 系で、早急なアップグレードが推奨されています。</p>
+<ul>
+  <li><strong>CVE-2026-77050</strong>（severity: low）: <code>get_supported_language_variant()</code> における DoS。多数の長大な言語コードを処理する際、長さ制限前にキャッシュキーとして使われメモリを消費し得ました。500文字超の言語コードは拒否または切り詰められます。</li>
+  <li><strong>CVE-2026-84429</strong>（severity: moderate）: HTTP ヘッダ解析時の DoS。<code>parse_header_parameters()</code> が引用符付きパラメータ内に多数の区切り文字を持つ値を解析する際に二次時間計算量となり、<code>Accept</code> や <code>Content-Type</code> 経由の未認証リクエストから到達可能でした。Python の <code>email.message.Message</code> を用いる実装に変更されています。</li>
+  <li><strong>CVE-2026-87890</strong>（severity: moderate）: 空間ルックアップにおけるリクエスト偽造。raster 値を <code>GDALRaster</code> でラップせずに <code>bytes</code> で渡せてしまい、外部ソースを参照する VRT 文書によって GDAL がネットワークリクエストを発行し得ました。CVE-2026-15307 の修正で見落とされていたもので、後方互換性がありません。</li>
+  <li><strong>CVE-2026-87975</strong>（severity: moderate）: 編集可能な主キーを持つモデルフォームセットにおける権限濫用。</li>
+</ul>
+<p>🔗 <a href="https://www.djangoproject.com/weblog/2026/oct/06/security-releases/">Django security releases 6.1.2, 6.0.9, and 5.2.18</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版のリリースは確認されませんでした。最新の安定版は <strong>v16.3.8</strong>（2026-10-01 01:13 JST 公開）です。期間内には canary ビルド（v16.5.0-canary.0/1、v16.4.0-canary.62/63）のみが公開されています。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">GitHub Releases</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの機械可読な取得が当日は行えず、対象期間内の新着を確認できませんでした）、<strong>React</strong>（最新安定版 v19.3.0 は 2026-09-10 公開）、<strong>Python</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース）、<strong>Hono</strong>（最新 v4.13.13 は 2026-10-04 公開）、<strong>Claude API / SDK</strong>（最新 v1.11.0 は 2026-10-01 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
