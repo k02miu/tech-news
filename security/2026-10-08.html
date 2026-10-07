@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-08 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-08 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-07 08:00 〜 2026-10-08 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Cisco 大規模セキュリティアドバイザリ - NX-OS・APIC・License On-Prem に Critical 多数</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv3.1 9.8（CVE-2026-76471 ほか）</td></tr>
+  <tr><th>対象</th><td>Cisco NX-OS（Nexus 3000／9000 シリーズ）、Application Policy Infrastructure Controller（APIC）、License On-Prem（旧 SSM On-Prem）、Finesse、Meraki</td></tr>
+  <tr><th>公開</th><td>2026-10-07（現地・アドバイザリ）／NVD登録 2026-10-08 02:17 JST</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-76471" target="_blank" rel="noopener noreferrer">NVD CVE-2026-76471</a> ／ <a href="https://www.security-next.com/190900" target="_blank" rel="noopener noreferrer">Security NEXT（事前通知）</a></td></tr>
+</table>
+<ul>
+  <li>事前通知どおり2026年10月7日に複数製品のアドバイザリが公開され、NVDへ一括登録された。最大は <strong>CVE-2026-76471</strong>（CVSSv3.1 9.8）で、NX-OS の NX-API 機能に未認証の遠隔攻撃者が root 権限で任意コードを実行できる脆弱性。</li>
+  <li><strong>CVE-2026-76485／76486</strong>（各 9.8）は NX-OS の VXLAN OAM（NGOAM）機能、<strong>CVE-2026-76501</strong>（9.8）は SRv6 OAM（NGOAM）、<strong>CVE-2026-76465</strong>（9.8）は MPLS OAM 機能においていずれも未認証の任意コード実行が成立する。</li>
+  <li>APIC では <strong>CVE-2026-76498／76499／76500</strong>（各 9.8）、License On-Prem（旧 SSM On-Prem）では <strong>CVE-2026-20328・76454・76483</strong>（各 9.1）／<strong>CVE-2026-76480・76482</strong>（各 9.8〜10.0）が登録されている。</li>
+  <li>修正版は各製品のアドバイザリに従って適用し、緩和策（未使用機能の無効化、管理インターフェースのアクセス制限）の適用と侵害痕跡の確認が推奨される。</li>
+</ul>
+
+<h3>SonicWall SMA1000シリーズ - 未認証のサーバサイドリクエストフォージェリ（CVE-2026-102255、CVSSv3.0 10.0）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv3.0 10.0</td></tr>
+  <tr><th>対象</th><td>SonicWall SMA1000シリーズ（WorkPlace インターフェース）</td></tr>
+  <tr><th>公開</th><td>2026-10-06（現地・アドバイザリ）／Security NEXT 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191125" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>SonicWallは現地2026年10月6日、4件の脆弱性を明らかにし、アドバイザリの重要度を4段階中もっとも高い<strong>「クリティカル」</strong>と評価した。公開時点で悪用は確認されていない。</li>
+  <li><strong>CVE-2026-102255</strong>はWorkPlaceインターフェースに意図しない代替アクセス経路が存在することに起因するSSRF。アプライアンスをフォワードプロキシとして悪用し、<strong>認証を必要とすることなく</strong>内部機能へアクセスしたり不正な操作を行える。CVSSv3.0 は最高値の10.0。</li>
+  <li>ほか、認証済み管理者が悪用可能なOSコマンドインジェクション <strong>CVE-2026-102256</strong>、細工したアーカイブにより展開先ディレクトリ外へファイルを書き出しコード実行に至る <strong>CVE-2026-102257</strong> などが含まれる。アップデートが提供されている。</li>
+</ul>
+
+<h3>Movable Type 9.2.1以前ほか - アップグレードスクリプトのコードインジェクション（JVN#91153973）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2026-96408（CVSSv4.0 9.3）／CVE-2026-103668（CVSSv4.0 8.8）</td></tr>
+  <tr><th>対象</th><td>Movable Type 9.2.1以前・9.0.9以前・8.8.5以前・8.0.12以前（Advanced含む）、Movable Type Premium 9.2.1以前・9.0.9以前・2.17以前。サポート終了の8.4系・7系以前およびPremium 1系も影響</td></tr>
+  <tr><th>公開</th><td>JVN 2026-10-07 14:00／Security NEXT 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://jvn.jp/jp/JVN91153973/index.html" target="_blank" rel="noopener noreferrer">JVN#91153973</a> ／ <a href="https://www.security-next.com/191159" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-96408</strong>（CWE-94）はアップグレードスクリプトのコードインジェクションで、<strong>認証を必要とすることなく</strong>システム上で任意のPerlコードやSQLクエリが実行されうる。</li>
+  <li><strong>CVE-2026-103668</strong>（CWE-89）はサイト内検索機能のSQLインジェクションで、非公開とされるデータも含めて出力されるおそれ。</li>
+  <li>対策は 9.3.0／9.0.10／8.8.6／8.0.13（Premiumは 9.3.0／9.0.10／2.18）へのアップデート。直ちに適用できない場合は <code>mt-upgrade.cgi</code>・<code>mt-search.cgi</code>・<code>mt-ftsearch.cgi</code> の削除または実行権限剥奪、<code>mt-config.cgi</code> への <code>RestrictedPSGIApp</code> 設定が案内されている。報告者はGMO Flatt SecurityのRyotaK氏。</li>
+</ul>
+
+<h3>Google Chrome 155 - 247件を修正、Critical 4件／WordPress 7.1.3 セキュリティリリース</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2026-106382・106197・106358・106347（Chrome）／<span class="badge-high">High</span> WordPress 7件</td></tr>
+  <tr><th>対象</th><td>Chrome（Windows／macOS 155.0.8059.40・39、Linux 155.0.8059.39）／WordPress 7.1.3</td></tr>
+  <tr><th>公開</th><td>Chrome 2026-10-06（現地）／WordPress 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191113" target="_blank" rel="noopener noreferrer">Security NEXT（Chrome）</a> ／ <a href="https://www.security-next.com/191115" target="_blank" rel="noopener noreferrer">Security NEXT（WordPress）</a></td></tr>
+</table>
+<ul>
+  <li>Chrome 155はセキュリティ関連で247件を修正。Critical 4件はいずれも解放後メモリの使用（Use After Free）で、Chromecast（CVE-2026-106382）、Browser（CVE-2026-106197）、Navigation（CVE-2026-106358）、Track（CVE-2026-106347）。High 53件には認可処理の不備、未初期化リソース、型の取り違え、整数オーバーフローなどが含まれる。</li>
+  <li>WordPress 7.1.3はセキュリティ7件と不具合4件を修正。承認待ちコメントを悪用した管理画面での<strong>格納型XSS</strong>、URL処理に起因するDoS、WXRエクスポート機能の<strong>SQLインジェクション</strong>、非公開・未公開投稿のコメントが未認証の第三者へ漏えいする問題、Imgur埋め込みのXSSなどを解消した。早急な更新が呼びかけられている。</li>
+</ul>
+
+<h3>Veeam Backup &amp; Replication 12 - Backup Viewer権限からサーバ上でSYSTEM権限のコード実行（CVE-2025-64393、CVSSv4.0 9.4）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2025-64393（CVSSv4.0 9.4）／ほか6件</td></tr>
+  <tr><th>対象</th><td>Veeam Backup &amp; Replication 12系（12.3.2.4934未満）、Agent for Windows、Backup Enterprise Manager</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-07 18:17 JST／Security NEXT 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-64393" target="_blank" rel="noopener noreferrer">NVD CVE-2025-64393</a> ／ <a href="https://www.security-next.com/191141" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2025-64393</strong>（CWE-502）はMount Service経由で受信した信頼できないデータを安全でない形でデシリアライズする問題。<strong>Backup Viewer</strong>のロールを持つ低権限ユーザーが、リモートからバックアップサーバ上でコードを実行されるおそれがある。</li>
+  <li>あわせて、認証済みのVeeam Cloud Connectテナントがサービスプロバイダ側ホスト上の任意ファイルを読み取れる <strong>CVE-2026-58069</strong>（8.3）、Backup Enterprise ManagerのXSS（CVE-2025-64392）、Agent for Windowsの任意ファイル書込み・プロセス終了（CVE-2025-64391・58068）などが登録された。修正版が提供されている。</li>
+</ul>
+
+<h3>VMware Workstation／Fusion - VMXNET3とHGFSの脆弱性（CVE-2026-59346・59347）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2026-59346（CVSSv3.1 9.3）／<span class="badge-high">High</span> CVE-2026-59347（8.1）</td></tr>
+  <tr><th>対象</th><td>VMware Workstation 25H2・26H1、Fusion 25H2・26H1（26H1u1で修正）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-07 15:16 JST</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-59346" target="_blank" rel="noopener noreferrer">NVD CVE-2026-59346</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-59346</strong>はVMXNET3仮想ネットワークアダプタの整数オーバーフローで、仮想マシン上でローカル管理者権限を持つ攻撃者が<strong>ホスト上でコードを実行</strong>できるおそれ。</li>
+  <li><strong>CVE-2026-59347</strong>はHGFS（ホスト・ゲスト間ファイル共有）のスタックベースバッファオーバーフローで、同様にホスト側のVMXプロセス権限でコード実行に至りうる。Broadcomセキュリティアドバイザリ 38288、修正版は26H1u1。</li>
+</ul>
+
+<h3>Flexera FlexNet Publisher lmadmin - ハードコードされた認証バイパス（CVE-2026-19572、CVSSv4.0 9.3）</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv4.0 9.3</td></tr>
+  <tr><th>対象</th><td>FlexNet Publisher lmadmin 11.19.11以下（Windows／Linux／macOS／Solaris）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-07 13:18 JST</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-19572" target="_blank" rel="noopener noreferrer">NVD CVE-2026-19572</a></td></tr>
+</table>
+<ul>
+  <li>lmadminのSOAPハンドラにハードコードされた認証バイパスが存在し、<strong>未認証の攻撃者が正規の資格情報を提示することなく特権管理者セッションを取得</strong>できる。ライセンス管理基盤への侵入経路となるため優先的な対応が望まれる。</li>
+</ul>
+
+<h3>Java・AI基盤 - Apache Jackrabbit／Impala、LMCache、llama.cpp、AsyncHttpClient</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.3〜9.8 複数／<span class="badge-high">High</span> 8.1〜8.8 複数</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-07 20:17 〜 2026-10-08 07:17 JST</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-92414" target="_blank" rel="noopener noreferrer">NVD（Jackrabbit）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-105192" target="_blank" rel="noopener noreferrer">NVD（LMCache）</a></td></tr>
+</table>
+<ul>
+  <li><strong>Apache Jackrabbit</strong>：<strong>CVE-2026-92414</strong>（CVSSv4.0 9.3）はWebDAVサーバがキャッシュした認証済みセッションをユーザー間で再利用してしまうセッション固定の問題で、他ユーザーへのなりすましに至りうる（9.3）。</li>
+  <li><strong>Apache Impala 4.5.2まで</strong>：<strong>CVE-2026-97720</strong>はエグゼキュータのJWT/OAuth署名を検証しない認可バイパス（CWE-303）。ほか <code>trusted_jar_paths</code> のパストラバーサル（CVE-2026-90466）とWeb UIの格納型XSS（CVE-2026-93684）。修正版は4.5.3。</li>
+  <li><strong>LMCache 0.5.5まで</strong>：分散モードが未認証のZeroMQ ROUTERを公開し、任意のPythonコードを実行される <strong>CVE-2026-105192</strong>（9.8）・<strong>CVE-2026-107204</strong>（9.3）、マルチプロセスコーディネータ／HTTPサーバの認証欠如（各8.8）。</li>
+  <li><strong>llama.cpp</strong> b11393未満：<code>common_chat_peg_mapper::map</code> の解放後使用・二重解放 <strong>CVE-2026-107183</strong>（9.2）、未認証の遠隔攻撃者から到達可能。あわせて <strong>AsyncHttpClient</strong>（Java）の <strong>CVE-2026-107282</strong>（9.4）・<strong>CVE-2026-107279</strong>（8.8）も登録され、修正版は3.0.13。</li>
+</ul>
+
+<h3>Keycloak - SMTP STARTTLS有効時も平文へフォールバック（CVE-2026-107121）／Splunk Enterprise など</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVE-2026-76268（Splunk 9.8）／<span class="badge-medium">Medium</span> CVE-2026-107121（Keycloak 6.5）</td></tr>
+  <tr><th>公開</th><td>NVD登録 2026-10-07 17:16 JST（Keycloak）／2026-10-08 06:17 JST（Splunk）</td></tr>
+  <tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-107121" target="_blank" rel="noopener noreferrer">NVD CVE-2026-107121</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-76268" target="_blank" rel="noopener noreferrer">NVD CVE-2026-76268</a></td></tr>
+</table>
+<ul>
+  <li><strong>Red Hat Build of Keycloak</strong>：<strong>CVE-2026-107121</strong>（CWE-319）はSMTP設定でSTARTTLSを有効にしても暗号化接続が厳格に強制されず、要求が改ざんされると平文通信へフォールバックしうる。メールの資格情報や本文を平文で窃取されるおそれ（CVSSv3.1 6.5）。</li>
+  <li><strong>Splunk Enterprise</strong> 10.4.3／10.2.7未満：<strong>CVE-2026-76268</strong>（9.8）はネットワーク到達可能な未認証ユーザーがPatroniのRESTエンドポイントを悪用できる問題。</li>
+  <li>あわせてWordPressプラグインの一括登録分として、<strong>The Events Calendar</strong>の安全でないデシリアライズによるオブジェクトインジェクション <strong>CVE-2026-95606</strong>（9.8）、WP Data AccessのSQLインジェクション（9.3）、Unlimited Elements for Elementorのデシリアライズ（8.8）なども公開されている。</li>
+</ul>
+
+<h3>JVN - CISA ICS Advisory / ICS Medical Advisory（2026年10月06日）新規6件</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-medium">Medium</span> 詳細はCISAアドバイザリ参照</td></tr>
+  <tr><th>公開</th><td>JVN 2026-10-07（JVNVU#94062711）</td></tr>
+  <tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU94062711/index.html" target="_blank" rel="noopener noreferrer">JVNVU#94062711</a></td></tr>
+</table>
+<ul>
+  <li>米国CISAが公表したICS / ICS Medical Advisoryの日本語版ミラー。2026年10月6日付で新規6件。産業制御システム（ICS）および医療機器を対象とする脆弱性情報で、影響範囲・対策はCISAアドバイザリを参照のこと。</li>
+</ul>
+
+<h3>Claude Code 2.1.293 - 権限・サンドボックスまわりの修正</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td><span class="badge-medium">Medium</span> セキュリティ関連の修正を含む</td></tr>
+  <tr><th>公開</th><td>2026-10-07 以降リリース（<code>2.1.292</code> の次のバージョン）</td></tr>
+  <tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a> ／ <a href="https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">CHANGELOG</a></td></tr>
+</table>
+<ul>
+  <li>HTTP MCP接続が送信済みリクエストを接続終了まで保持し続けるメモリリークの修正、<code>claude agents</code> が bypass 権限を提示しながらバックグラウンドセッションで無視していた問題（同意取得の順序を修正）、および権限プロンプトやサブエージェントのツール可否判定に関する複数の不整合を修正した。</li>
+  <li>既定のHaikuモデルを <code>claude-haiku-5-5</code> へ更新。組織のサーバ管理設定（permissions / autoMode / worktree / attribution ブロック）やsandbox設定が、ネスト値の1つが不正な場合にブロック全体が無視されてしまう問題はフェイルクローズ化されている。</li>
+</ul>
+
+<h3>OpenClaw / Hermes Agent</h3>
+<table class="cve-table">
+  <tr><th>OpenClaw</th><td>対象期間内の新規リリースなし（最新は <code>2026.10.1-beta.1</code>＝2026-10-05 リリースのプレリリース。直近の安定版は <code>2026.9.8</code>）</td></tr>
+  <tr><th>Hermes Agent</th><td>対象期間内の新規リリースなし（最新は v0.21.5 / v2026.9.24）</td></tr>
+</table>
+
+<hr>
+<p class="empty-notice">Next.js / Django / Hono / GCP / AWS / Azure / React / SpringBoot に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>GMOリサーチ＆AI「infoQ」- アンケートサイトへの不正アクセス、最大94万8,498件とポイント不正交換611件</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>GMOリサーチ＆AI（GMOインターネットグループ）</td></tr>
+  <tr><th>発生</th><td>2026-10-02 以降に不正アクセス／10-03 会員からの問い合わせで発覚／Security NEXT 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://www.security-next.com/191138" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>アンケートサイト「infoQ」のサーバが第三者による不正アクセスを受け、会員の個人情報が外部に流出した。<strong>ソフトウェアの脆弱性が悪用されサーバに侵入された</strong>ことが判明している。攻撃経路を遮断するとともに、サービスとGMOポイントの交換を停止した。</li>
+  <li>対象は同サイトの全会員情報で<strong>最大94万8,498件</strong>。氏名・住所・電話番号・生年月日・性別・メールアドレス・会員ID・暗号化されたパスワード・ニックネーム・保有ポイント数などが含まれる。</li>
+  <li><strong>611件の会員</strong>でポイントの不正交換が判明し、第三者がAmazonギフトコードへ交換していた。被害総額は<strong>286万9,500円相当</strong>。個人情報保護委員会へ10月5日に報告済み。</li>
+</ul>
+
+<h3>日経BP／日本経済新聞社 - フィッシング起点のMicrosoft 365不正アクセス、26件の個人情報漏えいと約9,000件のなりすましメール</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社日経BP、株式会社日本経済新聞社</td></tr>
+  <tr><th>発生</th><td>2026-09-30 不正アクセス／なりすましメール送信／日経BPは10-04 公表／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56402.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（日経BP）</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56401.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（日経）</a></td></tr>
+</table>
+<ul>
+  <li>日経BPの従業員メールアカウントが不正アクセスを受け、メール送受信先の一部の個人情報が漏えいした可能性がある。漏えいした可能性があるのは<strong>26件</strong>（個人名・メールアドレス）。対象者へ個別連絡している。</li>
+  <li>当該従業員は、<strong>日本経済新聞社社員のメールアドレスで届いたフィッシングメール</strong>から認証情報を窃取されている。日本経済新聞社側では、従業員のMicrosoft 365アカウントが不正アクセスを受け、社内や取材先などへ悪性サイトへ誘導するなりすましメールが<strong>約9,000件</strong>送信された。</li>
+  <li>いずれも発覚後に該当アカウントへの接続を遮断し、パスワード変更などの封じ込め措置を実施。系列会社をまたぐフィッシング起点のM365侵害事案として、取引先へのなりすまし波及が生じている点に注意が必要である。</li>
+</ul>
+
+<h3>ニッポンレンタカーサービス - アプリに「別手法」の不正アクセス、会員55名の情報が閲覧されたおそれ</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ニッポンレンタカーサービス株式会社</td></tr>
+  <tr><th>発生</th><td>2026-09-19 〜 09-21（新たに判明分）／10-01 続報公表／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56403.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>9月26日に公表した「ニッポンレンタカーアプリ」への不正アクセスについて続報を発表。調査の過程で、公表済みのものとは<strong>異なる手法による別の不正アクセス</strong>が判明した。</li>
+  <li>新たに判明した攻撃は9月19日から21日にかけて行われ、<strong>会員55名</strong>の会員情報ページへの不正アクセスを確認。氏名・電話番号・メールアドレス・ログインID・利用履歴・予約情報、運転免許証情報またはクレジットカード情報を登録していた会員については免許証番号・住所・生年月日、カード番号下4桁・名義人名も対象となりうる。</li>
+  <li>対象会員へメールで個別連絡を実施。必要な対策と封じ込め措置は講じているとしている。</li>
+</ul>
+
+<h3>国家公務員共済組合連合会 KKR京都くに荘 - 不正アクセス調査の結果、個人情報漏えいは確認されず</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>国家公務員共済組合連合会（KKR京都くに荘）</td></tr>
+  <tr><th>発生</th><td>2026-08-25 漏えい可能性を公表／09-16 最終報／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56406.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>KKR京都くに荘のメールサーバへの不正アクセスについて、メールシステム運用事業者と外部専門事業者による詳細調査を実施した結果、<strong>第三者からのメールアカウントのメールボックスへのアクセスやメール閲覧を示す記録は確認されず、個人情報が漏えいした事実は確認されなかった</strong>。</li>
+  <li>メールシステムのセキュリティ対策強化と再発防止に取り組むとしている。国内のメールサーバ侵害事案としては、影響が確認されなかった数少ない事例である。</li>
+</ul>
+
+<h3>シンカ「カイクラサービス紹介サイト」- CMSプラグインの脆弱性を起点に不正プログラム設置、外部送信の形跡なし</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社シンカ（カイクラサービス紹介サイトほか）</td></tr>
+  <tr><th>発生</th><td>2026-08-24 検知／08-28 公表／09-17 調査結果／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56404.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>「カイクラサービス紹介サイト」（kaiwa.cloud）で複数の不正プログラムの設置を検知。うち1件はサーバからの情報取得を技術的に可能にするものだったため、同一サーバで運用していた3サイトを含めアクセスを一時停止し、外部専門機関へログ解析を依頼した。</li>
+  <li>調査の結果、<strong>不正プログラムが実行されサーバ内データを外部に送信した形跡は確認されなかった</strong>。侵入経路は<strong>当該サイトのCMSプラグインの脆弱性</strong>を悪用されたものと判明している。</li>
+  <li>サーバ環境の再構築、認証情報の刷新とアクセス制御の強化、防御・検知機構の導入、保有個人情報の非保有、運用管理組織の変更などの再発防止策を実施。「カイクラ」等のサービス提供は通常どおり継続している。</li>
+</ul>
+
+<h3>九州電子 台湾子会社MOST社 - ランサムウェア被害の最終報、事業運営に必要なシステム復旧を完了</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>九州電子株式会社（台湾子会社 MOST社）</td></tr>
+  <tr><th>発生</th><td>2026-03-21 ウイルス感染確認（初報 03-23）／09-15 最終報／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56405.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>2026年3月21日未明にMOST社のメールサーバでウイルス感染を確認し、その後の調査で<strong>ランサムウェア攻撃</strong>を受けたことが判明。九州電子は初動としてMOST社とのネットワーク接続を遮断し、外部専門機関と連携して調査・安全確認を実施した。</li>
+  <li>調査の結果、MOST社から九州電子への感染拡大を示す痕跡、外部からの不正アクセスや情報漏えいにつながる通信の痕跡はいずれも確認されなかった。</li>
+  <li>MOST社では影響調査と復旧作業を進め、<strong>事業運営に必要なシステム環境の復旧を完了</strong>。グループ全体でエンドポイント対策、ネットワーク監視・アクセス制御、認証・アカウント管理、インシデント対応手順の見直しなどの再発防止策を実施した。</li>
+</ul>
+
+<h3>小田原エンジニアリング - 従業員メールアカウントへの不正アクセス、なりすましメールで取引先に金銭的被害</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>小田原エンジニアリング株式会社</td></tr>
+  <tr><th>発生</th><td>2026-10-07 公表（初回公表は期間内）／ScanNetSecurity 2026-10-07</td></tr>
+  <tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/10/07/56400.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+  <li>小田原エンジニアリングの従業員メールアカウントが不正アクセスを受け、当該アカウントを悪用した<strong>なりすましメールにより取引先に金銭的な被害</strong>が発生したことが公表された。</li>
+  <li>メールアカウントの乗っ取りが、取引先に対するビジネスメール詐欺（BEC）へ発展した事案である。同種の被害が国内製造業で継続しており、多要素認証の徹底と送金手続きの複線化が求められる。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
