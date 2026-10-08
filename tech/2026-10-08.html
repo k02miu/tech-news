@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-08 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-08 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.293</h2>
+<p>対象期間（2026-10-07 09:00 〜 2026-10-08 09:00 JST）内に、Claude Code の新バージョン <strong>v2.1.293</strong> が 2026-10-08 03:26 JST に公開されました。既定の Haiku モデルが <strong>Claude Haiku 5.5</strong> に切り替わり、サブエージェントやスキル、Remote Control まわりを含む多数の修正が入っています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Haiku 5.5 を追加</strong>（<code>claude-haiku-5-5</code>）: Anthropic API における既定の Haiku モデルとなりました。1M コンテキスト対応、100K トークンまでのプロンプトで $0.10 / $0.50 per Mtok（100K 超は $0.50 / $2.50）。</li>
+  <li><strong><code>agentType</code> を <code>subagentStatusLine</code> ペイロードに追加</strong>: スクリプトからカスタムサブエージェント種別を判別できます。</li>
+  <li><strong><code>$.tool.register</code> に <code>isDeferred</code> を追加</strong>（mod 向け）: <code>false</code> を指定すると、ツールスキーマが tool search の背後ではなく最初からプロンプトに列挙されます。</li>
+  <li><strong>Team / Enterprise の起動改善</strong>: ポリシーおよび管理設定をより早く取得し、停滞したリクエストは 3 秒後に再試行します。</li>
+  <li><strong>Claude in Chrome の改善</strong>: タブ報告が遅いブラウザでのページ操作拒否が減少。クラウドセッションでブラウザに到達できない場合のメッセージも、複数組織所属時に拡張機能のサインイン先に関する案内を行うようになりました。</li>
+  <li><strong>Artifact</strong>: ライブラリを「2週間以上前の正確なバージョン」に固定します。</li>
+  <li><strong>その他の変更</strong>: claude.ai スキル同期のチェック間隔を約10分から約40分へ。エージェント一覧と MCP サーバー告知順で非 ASCII 名は ASCII 名の後にソート。OpenTelemetry の <code>claude_code.at_mention</code> ログは1プロンプトあたり最大100件ずつに。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>コンパクション後の誤動作</strong>: コンテキスト圧縮の直前に行った自身の操作を「完了済み」と誤認し、完了した作業を取り消したりやり直したりする問題を修正。</li>
+  <li><strong>HTTP MCP 接続のメモリリーク</strong>: 接続が閉じるまで送信済みの全リクエストを保持していた問題を修正。</li>
+  <li><strong><code>←</code> によるバックグラウンド移行時のメッセージ消失</strong>: 移行できないキュー済みメッセージがある場合、<code>←</code> はその場に留まり警告するようになりました。プロンプト未送信テキストがある状態での10秒後の強制バックグラウンド化も取り消されます。</li>
+  <li><strong>サブエージェント関連</strong>: ホスト・権限ルール・<code>--tools</code> リストにより <code>SendMessage</code> が除去されたセッションで、サブエージェントへの継続指示が送られてしまう問題を修正。</li>
+  <li><strong><code>claude logs/stop/kill/rm</code>・daemon 操作</strong>: ログイン期限切れ・期限間際に意図せずサインアウトされる問題を修正。</li>
+  <li><strong>その他の修正</strong>: <code>/model</code> の effort ←/→ の巻き戻り（Low 既定の誤保存）、<code>/tui</code> の Chrome 切断、Bash ツールの単一ファイル <code>cat/head/tail/sed -n/grep</code> 表示時にパス限定ルールやネストした CLAUDE.md が読み込まれない問題、貼り付けたテキストが誤って「入力済み」扱いされる問題、vim モードの各種挙動など多数。</li>
+  <li><strong>Windows</strong>: ステータスライン・フック・シェルコマンドの停止が、同じプロセス ID を持つ無関係なプロセスを終了させることがある問題を修正。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.24</strong>（2026-09-24 19:09 JST 公開 / Hermes Agent v0.21.5）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.10.1-beta.1</strong>（2026-10-06 04:47 JST 公開、プレリリース）です。安定版の最新は <strong>v2026.9.8</strong>（2026-10-03 12:21 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.222</h2>
+<p>対象期間内に <strong>v1.4.222</strong> が 2026-10-07 11:20 JST に公開されました。OpenCode ワーカーのタスク受け渡し、サイドバー操作、CSV ビューア、エディタ、日本語・中国語・韓国語入力まわりなど、幅広い改善と修正が含まれます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>CSV ファイル</strong>: 大きな CSV をファイル全体を読み込まずに開けるようになりました。列幅の変更、リンクのオープン、セルの編集、行・列の追加削除、範囲のコピー＆ペースト、並べ替え・絞り込みに対応し、列幅は記憶されます。</li>
+  <li><strong>OpenCode ワーカー</strong>: マシンが混雑していても、タスクが OpenCode の入力欄に未送信のまま残らず、送信可能になってから渡されるようになりました。ワーカーは他の起動に影響を与えずに指定モデルを使えます。</li>
+  <li><strong>利用状況メニュー</strong>: Claude の利用クレジット、OpenCode Zen の残高、Codex のクレジットを利用上限と並べて表示します。</li>
+  <li><strong>Jira</strong>: Issue 作成時に担当者を選択できます。</li>
+  <li><strong>アカウント切替</strong>: Codex アカウント切替後の再起動で、空のターミナルではなく同じ会話が再開されます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>日本語・中国語・韓国語の入力</strong>: テキスト確定の Enter が、フィールドの送信・ファイル作成・コメント送信を同時に引き起こさなくなりました（Orca 全体）。</li>
+  <li><strong>ネイティブチャット（実験的）</strong>: チャットを開いても履歴が削除されなくなりました（新しい Orca で保存された履歴も含む）。メッセージはホスト確認まで「Sending…」、配信失敗時は理由付きの「Not sent」を表示します。</li>
+  <li><strong>サイドバー / ワークスペース</strong>: サイドバーで表示したリモートコンピュータが設定保存中に再び消える問題、子が折りたたまれたワークスペースをドラッグできない問題、ワークスペースのドラッグでクラッシュし得る問題を修正。</li>
+  <li><strong>エディタ</strong>: プロジェクト外ファイルのタブが再起動後に「Access denied」で復帰する問題、別コンピュータ上の同一パスファイルがテキスト・Undo 履歴を共有してしまう問題を修正。</li>
+  <li><strong>その他</strong>: リモートタブで Claude Code に戻った際に古いシェル出力が Claude の画面越しに見える問題、同じフラグを二重送信してエージェントが起動しない問題、Cursor の利用状況が誤ったアカウントを参照する問題などを修正。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>⚡ Next.js — v16.4.0</h2>
+<p>対象期間内に安定版 <strong>v16.4.0</strong> が 2026-10-07 19:03 JST に公開されました。Turbopack の改善や App Router のレンダリング／プリフェッチパイプラインの内部リファクタリング（プリレンダリング経路の分離、キャッシュ再検証の整理）などが含まれます。全体像は公式の 16.4 発表記事を参照してください。</p>
+<p>🔗 <a href="https://nextjs.org/blog/next-16-4">Next.js 16.4 announcement</a> · <a href="https://github.com/vercel/next.js/releases">GitHub Releases</a></p>
+
+<h2>🟣 Anthropic — Claude Haiku 5.5 モデル公開</h2>
+<p>Claude 5.5 ファミリーの最新小型モデル <strong>Claude Haiku 5.5</strong>（<code>claude-haiku-5-5</code>）が公開されました。高ボリューム・低コスト用途向けで、Haiku 系として初めて effort コントロールに対応しています。</p>
+<ul>
+  <li><strong>提供範囲</strong>: Claude.ai（Web / iOS / Android）、Claude Platform、Amazon Web Services、Google Cloud、Microsoft Foundry、そして Claude Code。</li>
+  <li><strong>料金</strong>: 100K トークンまで $0.10 / $0.50 per Mtok、100K 超は $0.50 / $2.50。プロンプトキャッシュで最大90%、バッチ処理で50%削減。</li>
+  <li><strong>用途</strong>: 要約・分類・ルーティング・コンパクションなどの高ボリューム処理、レイテンシ敏感なチャット・音声エージェント・ライブサポート、Fable/Opus からサブタスクを委譲されるサブエージェント。</li>
+</ul>
+<p>🔗 <a href="https://www.anthropic.com/claude/haiku">Claude Haiku（Anthropic）</a></p>
+
+<h2>🧩 Claude API / SDK — v1.12.0</h2>
+<p>Anthropic の Python SDK <strong>v1.12.0</strong> が 2026-10-08 02:57 JST に公開されました。<code>claude-haiku-5-5</code> の追加、型付きの computer / browser toolset ツール呼び出し、モデル capabilities への web search / code execution 対応、<code>display_name</code> の RBAC ロール対応などが含まれます。</p>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases">GitHub Releases</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>Anthropic Claude Haiku 5.5 が Model Garden で利用可能</strong>（2026-10-07 公開）: 前述の Haiku 5.5 が Google Cloud の Model Garden に追加されました。</li>
+  <li><strong>Apigee hybrid v1.14.9</strong>（2026-10-07 公開）: Apigee hybrid の更新版が公開されました。アップグレード手順は公式ドキュメントを参照。</li>
+  <li><strong>CodeMender v0.13.0</strong>（2026-10-07 公開）: 重複検出の一貫性向上（<code>cm find</code> / <code>--deep</code> / <code>--diff</code> / <code>--parallel</code> スキャン間）や、並行スキャン時のローカル状態の信頼性改善、中断時の状態・ログのクリーン保存など。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<p class="empty-notice"><strong>AWS</strong>（対象期間内の新着を機械可読に取得できず、確認できませんでした）、<strong>Azure</strong>（同様に公式アップデートフィードの取得が行えませんでした）、<strong>React</strong>（最新安定版 v19.3.0 は 2026-09-10 公開）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース）、<strong>Hono</strong>（最新 v4.13.13 は 2026-10-04 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
