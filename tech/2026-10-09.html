@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-09 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-09 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.295 / v2.1.294</h2>
+<p>対象期間（2026-10-08 09:00 〜 2026-10-09 09:00 JST）内に、Claude Code の新バージョンが2件公開されました。大規模な機能追加を含む <strong>v2.1.295</strong>（2026-10-09 04:55 JST 公開）と、フックの挙動修正を行う <strong>v2.1.294</strong>（2026-10-08 14:14 JST 公開）です。</p>
+
+<h3>🔧 新機能・改善（v2.1.295）</h3>
+<ul>
+  <li><strong>フックの <code>onFailure: "block"</code></strong>: command / HTTP フックが起動できない・タイムアウト・想定外の終了コードで終わった場合に、アクションを通さずブロックできるようになりました。</li>
+  <li><strong>Program Status Protocol（OSC 7501）対応</strong>: 対応ターミナルで、Claude Code が「作業中／入力待ち／完了」のどれかを表示できるようになりました。</li>
+  <li><strong><code>/copy</code> ピッカーに引用テキストを追加</strong>: 下書きメッセージを <code>&gt;</code> マーカーなしでコピーできます。</li>
+  <li><strong>Claude apps gateway の強化</strong>: <code>timeouts.upstream_ttfb_ms</code> によるストリーム開始の制限、上流ごとの <code>models</code> リスト（<code>*</code> ワイルドカード対応）、成功応答への <code>request-id</code> ヘッダ付与、<code>inference</code> 監査イベントへの <code>upstream_request_id</code> 追加など。</li>
+  <li><strong><code>forceLoginMethod: "gateway"</code> / <code>forceLoginGatewayUrl</code></strong>: 管理設定のない端末のユーザー設定で指定可能になり、<code>/login</code> がその gateway で開きます。</li>
+  <li><strong>mod 向け</strong>: <code>$.ui.notify</code> によるネイティブ通知、mod の <code>Button</code> に子要素（文字列・<code>Text</code>）を追加。</li>
+  <li><strong><code>CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS</code></strong>: 無人リトライモードで 429 / 529 エラーの待機時間を制限できます。</li>
+  <li><strong>[VSCode]</strong>: Claude が送ってきたファイル用のチャット行を追加。ファイル名クリックでエディタで開き、Focus ビューでも表示が維持されます。</li>
+</ul>
+
+<h3>🔄 主な変更（v2.1.295）</h3>
+<ul>
+  <li>tool search 経由でモデルが読み込む MCP ツール説明の上限を 2,048 文字から <strong>16,384 文字</strong>へ拡大。</li>
+  <li>サブエージェントが <code>skills</code> フィールドから先読みするスキルは最大 <strong>32 件</strong>（各1回）に。</li>
+  <li>claude.ai コネクタが既定で MCP プロトコル <strong>2026-07-28</strong> をネゴシエート（<code>MCP_PROTOCOL_NEGOTIATION=legacy</code> でオプトアウト）。</li>
+  <li>WebSocket（<code>ws</code>）MCP サーバーは <strong>16 MiB 超</strong>のメッセージを解析せず接続を閉じるように（他トランスポートと同水準）。</li>
+</ul>
+
+<h3>🐛 主な修正（v2.1.294）</h3>
+<ul>
+  <li>命令文として書かれた <code>prompt</code> / <code>agent</code> フック（例: 「Block commands that...」）が、本来ブロックすべきものを通してしまう問題を修正。</li>
+  <li>Stop / SubagentStop の <code>prompt</code> フック（例: 「Carry on if the build is broken」）の判定を改善し、Claude が早期に停止しにくくなりました。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.21.6</h2>
+<p>対象期間内に <strong>Hermes Agent v0.21.6</strong> が 2026-10-08 20:51 JST に公開されました。v0.21.5 以降にマージされた約 2,100 件の PR を、Docker / Hermes Cloud 向けの安定タグ付きリリースとしてまとめたパッチリリースです。新設された安定版リリースパイプラインによる最初のリリースで、この期間の curate された完全なリリースノートは v0.22.0 で提供される予定です。</p>
+
+<h3>🔒 セキュリティ修正</h3>
+<ul>
+  <li><strong>ダッシュボード認証の強化</strong>: なりすまし <code>X-Forwarded-For</code> ヘッダによるパスワードログインのレート制限リセット／IP 上限回避、認証リクエストによる監査ログへの無制限書き込み、<code>/auth/</code> 公開ルートのリクエストボディサイズ未制限、ネイティブサインインが非ループバックへログインコードを送信し得るセッション乗っ取りの4件を修正（Tenable Research が報告、TRA-725〜728）。</li>
+  <li><strong>リポジトリ git filter の強化</strong>: セッションワークスペースのスナップショット、サブエージェント worktree、kanban、worktree クリーンアップ、<code>hermes -w</code> などの自動 git 呼び出しまわりを堅牢化。</li>
+</ul>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li>統計: v0.21.5 以降で 8,867 非マージコミット、2,106 マージ PR、3,027 クローズ Issue、変更ファイル 8,342。</li>
+  <li>Docker / Hermes Cloud は <code>nousresearch/hermes-agent:stable</code>（または <code>:latest</code>）で更新。CLI は <code>hermes update</code>。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.9.9</h2>
+<p>対象期間内に安定版 <strong>OpenClaw v2026.9.9</strong> が 2026-10-08 19:23 JST に公開されました（185 コミット / 112 PR / 91 コントリビューター）。Codex モデル一覧への GPT-6.1 Sol 追加、Claude Haiku 5.5 対応、更新失敗後のリカバリ改善、iMessage 返信の欠落修正などが含まれます。なお、プレリリース <strong>v2026.10.1-beta.2</strong> も 2026-10-08 09:41 JST に公開されています。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>モデル・プロバイダ</strong>: Codex モデル一覧に <strong>GPT-6.1 Sol</strong> を追加（利用には適格なアカウントと対応する Codex 設定が必要）。<strong>Claude Haiku 5.5</strong> を Anthropic API / Claude CLI 経由で選択可能に（<code>haiku</code> エイリアスと Anthropic ユーティリティモデル既定が 5.5 になり、adaptive thinking が既定でオン）。同梱 Codex を 0.160.0 に更新。</li>
+  <li><strong>更新とメンテナンス</strong>: データ保存と同時の更新失敗を解消。失敗した更新からの復旧、FUSE ストレージ上のバックアップ／リストア、古いメモリ DB の Doctor アップグレード、pnpm 更新の「not a terminal」失敗、Windows 更新チェックの互換問題などを修正。</li>
+  <li><strong>メッセージング</strong>: iMessage で回答を書き終えても送信されない問題を修正。Telegram の Mini App は <code>/controlui</code> で開く方式に（<code>/dashboard</code> はセッションダッシュボードへ）。Discord の委譲タスク結果が「失敗」と誤認される問題、Google Chat / Slack のスレッド維持を修正。</li>
+  <li><strong>Web UI</strong>: Windows での空ワークスペース作成失敗を修正。会話タイトル命名の再試行、チャットのスクロール／読書位置保持、チャンネル会話履歴の関連付けを改善。</li>
+  <li><strong>メモリ</strong>: 返信前の長いメモリチェックポイントがチャンネルのタイムアウトとメッセージ再送を招く問題を修正。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a> · <a href="https://docs.openclaw.ai/releases/2026.9.9">Release notes</a></p>
+
+<h2>🐋 Orca — v1.4.223</h2>
+<p>対象期間内に <strong>Orca v1.4.223</strong> が 2026-10-09 07:09 JST に公開されました。ネイティブチャット（実験的）の強化、SSH ワークスペースの復元性、リモートサーバー／スマホ連携、エージェントとターミナル、サイドバー、ファイル・検索、タスク・レビューにわたる広範な改善が含まれます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ネイティブチャット（実験的）</strong>: Settings → Chat UI の「Use updated structured native chat」を有効にすると、Grok が構造化チャットとして開きます（SSH / WSL はターミナルチャットのまま）。会話の巻き戻し、モデル一覧検索、<code>@</code> によるワークスペースファイル選択、文字サイズ・コードサイズ・幅・コントラストの設定に対応。チャットは最初のメッセージから命名され、承認待ちで通知、未送信ドラフトはリロード／終了をまたいで保持されます。</li>
+  <li><strong>SSH ワークスペース</strong>: ファイル、ライブのエージェントタブ、一時停止中の Claude / Codex の再開オファーが SSH 再接続と再起動をまたいで維持されます。</li>
+  <li><strong>リモートサーバーとスマホ</strong>: ホストアプリ再起動後もペアリング済みターミナルが入力を受け付け、ネットワーク断後のリモートブラウザタブ復帰、<code>orca serve</code> 再起動後もスマホの全ターミナル維持に対応。</li>
+  <li><strong>エージェントとターミナル</strong>: macOS / Linux での長い・複数行の起動コマンドが分割されず正しく届くように。Codex 起動ごとに <code>~/.codex</code> フックを書き換える問題を解消し、Claude / Codex / OpenCode 用のヘルパープロセスは Orca 終了時に停止します。</li>
+  <li><strong>アカウントとエージェント</strong>: Claude アカウント切替時に MCP サーバーのサインインを維持。モデル一覧に <strong>Grok 4.7</strong> を追加。</li>
+  <li><strong>サイドバー / ファイル / タスク</strong>: 左サイドバーの開閉状態を記憶。音声・動画ファイルの再生、Quarto / R Markdown のハイライト、Quick Open の複数語クエリ対応。<strong>GitHub Projects Board</strong> ビューをドラッグ可能な kanban として表示し、SSH ワークスペースの GitLab MR / Issue 操作が正しいサーバーに届くようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>Claude API / SDK（Python）v1.12.1</strong>（2026-10-08 12:41 JST 公開）: PR で changelog 更新を必須化する CI チェック、Console の spend limit 一覧が early access である旨のドキュメント追記などの chores が中心です。</li>
+  <li><strong>Hono v5.0.0-rc.0</strong>（2026-10-08 14:56 JST 公開、プレリリース）: メジャー v5 系のリリース候補が公開されました。あわせて <code>@hono/vercel@1.0.1</code>、<code>@hono/service-worker@1.0.1</code>、<code>@hono/netlify@1.0.2</code>、<code>@hono/lambda-edge@1.0.1</code>、<code>@hono/deno@1.0.3</code> などのアダプタパッケージも更新されています。</li>
+  <li><strong>Next.js</strong>: 安定版の最新は <strong>v16.4.0</strong>（2026-10-07 19:03 JST 公開・対象期間外）。対象期間内には canary <code>v16.5.0-canary.4</code> / <code>.5</code> が公開されています（プレリリース）。</li>
+  <li><strong>AWS</strong>: 対象期間（10/8 UTC）の What's New / アナウンスフィードは「No updates」でした。ブログ側では Bedrock の自動推論チェックや DynamoDB → S3 の filtered export などの記事が公開されています。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの機械可読な新着を確認できませんでした）、<strong>Google Cloud</strong>（対象期間内の目立った新着は確認されませんでした）、<strong>React</strong>、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース、対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
