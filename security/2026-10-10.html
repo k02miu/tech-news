@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-10 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-10 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-09 08:00 〜 2026-10-10 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>NetScaler ADC／Gateway - SAML構成に影響する深刻なRCE（CVE-2026-107406、CVSSv4.0 9.5）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-107406</td></tr>
+<tr><th>CVSS</th><td>v4.0 9.5（Critical）</td></tr>
+<tr><th>影響</th><td>NetScaler ADC（旧Citrix ADC）／NetScaler Gateway（旧Citrix Gateway）</td></tr>
+<tr><th>修正版</th><td>14.1-73.46／13.1-64.29（FIPS・NDcPP版は 14.1-73.46 FIPS／13.1.37.283）</td></tr>
+</table>
+<ul>
+<li>Cloud Software Groupは現地2026年10月8日にアドバイザリ（CTX697191）を公開。メモリオーバーフローに起因し、リモートからの任意コード実行またはDoSにつながる。</li>
+<li>認証連携「SAML」で Identity Provider（IdP）として構成された環境が影響を受け、一部旧バージョンでは Service Provider（SP）も影響を受ける。</li>
+<li>一連のNetScaler脆弱性（CVE-2026-88771／88772／88779）はCISA KEVに収載され、国内でも攻撃試行が観測されている。早急な更新が求められる。</li>
+</ul>
+
+<h3>Splunk Enterprise - 46件の脆弱性、Patroni RESTの認証不備がCritical（CVE-2026-76268、CVSSv3.1 9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-76268（Critical）／CVE-2026-76266（High 7.7）ほか計46件</td></tr>
+<tr><th>CVSS</th><td>v3.1 9.8／7.7</td></tr>
+<tr><th>影響</th><td>Splunk Enterprise および関連アプリ</td></tr>
+</table>
+<ul>
+<li>Splunkは現地2026年10月7日に3件のアドバイザリを公開。製品本体・関連アプリ17件、内部確認5件、サードパーティ製パッケージ24件の計46件。</li>
+<li>CVE-2026-76268は検索ヘッドクラスタでPostgreSQLクラスタ管理に用いるPatroniのREST APIに認証不備があり、ネットワーク経由でAPIへ到達できる場合、認証なしに任意のOSコマンドを実行されうる。</li>
+<li>CVE-2026-76266はLinux環境のパッケージ更新処理に起因する権限昇格で、特定条件下でroot権限のOSコマンド実行が可能（CVSS 7.7）。</li>
+</ul>
+
+<h3>IBM DataPower Gateway - 36件の脆弱性、6件がCritical（CVE-2026-14269ほか、CVSSv3.1 9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-14269／15762／16340／14991／14992／14502 ほか計36件</td></tr>
+<tr><th>CVSS</th><td>v3.1 9.8（6件がCritical相当）</td></tr>
+<tr><th>公開</th><td>IBMアドバイザリ 2026-09-28</td></tr>
+</table>
+<ul>
+<li>CVE-2026-14269はヒープ領域のバッファオーバーフローで、認証不要のリモートからの任意コード実行のおそれ。CVE-2026-15762／16340は域外メモリ書き込みによる任意コード実行。</li>
+<li>CVE-2026-14502はLDAP認証時に空のパスワードを適切に拒否せず、管理者権限でアクセスされうる。</li>
+</ul>
+
+<h3>Tenable Nessus 10.12.5 - 9件の脆弱性、ダウンロードコンテンツ検証不備がCritical（CVE-2026-103947、CVSSv3.1 9.1）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-103947（9.1）／CVE-2026-103946（8.3、SQLi）ほか計9件</td></tr>
+<tr><th>CVSS</th><td>v3.1 9.1／8.3／7.2 など</td></tr>
+<tr><th>修正版</th><td>Nessus 10.12.5</td></tr>
+</table>
+<ul>
+<li>CVE-2026-103947はダウンロードした一部コンテンツの検証不十分に起因し、高い権限を要するもののシステム侵害に至りうる。CVE-2026-103946は低権限ユーザーが保存データを読み書きできるSQLインジェクション。</li>
+<li>域外メモリ書き込み（CVE-2026-103951）、型取り違え（103950）、長さ値の不整合（103948）なども含む。High 4件、Medium 3件、Low 1件。</li>
+</ul>
+
+<h3>Microsoft／Azure 製品群 - Critical多数を含むCVEが一括登録（CVE-2026-96207 CVSS 10.0 ほか）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-96207（10.0）／CVE-2026-94510（9.9）／CVE-2026-88131（9.8）／CVE-2026-77900（9.8）／CVE-2026-69435（9.6）ほか</td></tr>
+<tr><th>CVSS</th><td>v3.1 最大 10.0</td></tr>
+</table>
+<ul>
+<li>Microsoft Partner Center の証明書検証不備（CVE-2026-96207、10.0）、Microsoft Bookings の認可バイパス（CVE-2026-94510、9.9）、Microsoft Dataverse の安全でないデシリアライズによるコード実行（CVE-2026-88131、9.8）。</li>
+<li>Azure App Service の重要機能に対する認証欠如（CVE-2026-77900、9.8）、Azure SRE Agent の認可欠如（CVE-2026-69435、9.6）、Azure API Center の情報漏えい（CVE-2026-83943、8.7）、Azure Event Grid のなりすまし（CVE-2026-83947、7.7）。Azure利用者はパッチ適用状況の確認が推奨される。</li>
+</ul>
+
+<h3>Nginx UI 2.5.0 - 認証・認可まわりの複数脆弱性（CVE-2026-107806 CVSSv4.0 9.4 ほか）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-107806（9.4）／CVE-2026-107807・107809・107811・107813（8.8）／CVE-2026-107810（8.1）ほか計7件</td></tr>
+<tr><th>影響</th><td>Nginx UI 2.0.0〜2.5.0未満（2.3.8〜2.5.0で特に）</td></tr>
+<tr><th>修正版</th><td>2.5.0</td></tr>
+</table>
+<ul>
+<li>認証済み管理者セッションを起点とした操作、Node.Secretマスター資格情報のクエリ受容、OTP有効時にWebAuthnアサーションを要求しないログイン、復元処理のアーカイブ展開順序など、認証・認可境界の不備がまとまっている。</li>
+</ul>
+
+<h3>Apache Camel Karavan - パストラバーサルと入力検証不備（CVE-2026-103412／103413、各CVSS 8.8）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-103412／CVE-2026-103413</td></tr>
+<tr><th>CVSS</th><td>v3.1 8.8</td></tr>
+</table>
+<ul>
+<li>デプロイ開始時にプロジェクトの kubernetes.yaml をアンマーシャルして適用する処理、およびプロジェクトファイル名のパス制限不備により、意図しないファイル参照・設定適用に至りうる。Java／Kubernetes環境でKaravanを利用する場合は更新を。</li>
+</ul>
+
+<h3>NVD一括登録 約356件 - MariaDB・snappy-java・Bouncy Castle・Guava・Argo CD ほか</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>2026-10-09 08:00〜翌 08:00 JSTにNVDへ登録された新規CVE（計 約356件）</td></tr>
+<tr><th>主なもの</th><td>gvproxy パストラバーサル（CVE-2026-107935、9.3）／Astron Agent コード実行（CVE-2026-108263、9.9）／x64dbg-MCP Server（CVE-2026-107824、9.3）／Contao CMS（CVE-2026-107845、9.3）／Pingvin Share X アカウント乗っ取り（CVE-2026-108157、9.2）／Argo CD repo-server（CVE-2026-55797、8.8）／MariaDB 4件（CVE-2026-107814・107815・107818・107821）／snappy-java メモリ枯渇（CVE-2026-108106、8.7）／Bouncy Castle Java LTS（CVE-2026-71884、8.2）／Google Guava デシリアライズ資源枯渇（CVE-2026-102554、8.2）／WordPressプラグイン（Zombify Webシェル設置 CVE-2026-94503 10.0、SQLi 9.3群）／Zephyr・Linuxカーネル・gVisor ほか多数</td></tr>
+</table>
+<ul>
+<li>スタック関連では Java基盤（snappy-java、Bouncy Castle、Guava、Apache Camel）、コンテナ／GitOps（Argo CD、gVisor）、Web基盤（Nginx UI、Contao）にHigh〜Criticalが目立つ。</li>
+<li>FalkorDB（CVE-2026-107908〜107911）、OpenPrinting CUPS、MongoDB Ops Manager、Backdrop CMS は同日中の既報どおり。</li>
+</ul>
+
+<h3>Claude Code 2.1.296 - マネージド設定フック・秘匿情報リダクション・プラグインMCPの修正</h3>
+<table class="cve-table">
+<tr><th>版</th><td>2.1.296（npm公開 2026-10-10 01:58 JST）</td></tr>
+<tr><th>区分</th><td>セキュリティ・権限境界に関わる修正</td></tr>
+</table>
+<ul>
+<li>マネージド設定の PreToolUse／prompt フックがツール呼び出しを拒否した際にターンを終了させずに通してしまう問題、PostToolUseフックが updatedMCPToolOutput を適用しない場合がある問題を修正。</li>
+<li>ヘッドレスセッションが、そのフォルダで無効化した .mcp.json／プラグインMCPサーバを起動してしまう問題を修正。共有トランスクリプト・デバッグログの秘匿情報リダクションで、キーの直後に値が続く形式（シェル文字列内JSON含む）の取りこぼしを修正。</li>
+<li>Managed policies に code キーを追加、Readツールに allow_large オプションを追加するなど設定面の拡張も含む。</li>
+</ul>
+
+<h3>米CISA KEV追加 - ProFTPD・ONLYOFFICE Docs・Strapi・Apache Struts・BIND の5件（対応期限 2026-10-11）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>出典</th><td>米CISA 悪用が確認された脆弱性カタログ（KEV）2026-10-08付</td></tr>
+<tr><th>対象</th><td>ProFTPD／ONLYOFFICE Docs／Strapi／Apache Struts／BIND</td></tr>
+</table>
+<ul>
+<li>いずれも2015〜2023年に採番されたCVEで、実際に悪用が確認されたもの。StrapiのCVE-2023-22894は機密情報が平文保存される問題で、CVE-2023-22621と組み合わせるとRCEに至る。サポート終了製品の該当も懸念される。</li>
+<li>米行政機関の対応期限は2026年10月11日。Apache Struts／BINDを利用する環境は構成とバージョンの確認を。</li>
+</ul>
+
+<h3>JVN - CISA ICS Advisory / ICS Medical Advisory（2026年10月08日分）</h3>
+<table class="cve-table">
+<tr><th>JVN ID</th><td>JVNVU#91137775（公開 2026/10/09 09:00）</td></tr>
+</table>
+<ul>
+<li>制御システム（ICS）・医療機器に関する米CISAの新規アドバイザリの日本語版ミラー。影響範囲・対策はCISAアドバイザリを参照。</li>
+</ul>
+
+<h3>Hermes Agent／OpenClaw</h3>
+<table class="cve-table">
+<tr><th>状態</th><td>対象期間内の新規リリース・セキュリティ修正は確認されず</td></tr>
+</table>
+<ul>
+<li>Hermes Agent は v0.21.6（2026-10-08）、OpenClaw は 2026.9.9（2026-10-08）が最新で、いずれも前日までに既報。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Movable Type（JVN#91153973）・MCC uldaq（JVN#13510969）・Androidアプリ「チケット流通センター」（JVN#53292492）は、ニュース記事化が10/09でも一次公表が10/05〜10/07のため本対象期間の新規分からは除外しました。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ブックオフグループHD - 子会社の会員管理システムに不正アクセス、会員情報 最大約643万件が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ブックオフグループホールディングス（子会社）</td></tr>
+<tr><th>確認</th><td>2026-10-06 に不正アクセスを確認、10-09 に公表</td></tr>
+<tr><th>規模</th><td>会員番号ベースで最大約643万件</td></tr>
+</table>
+<ul>
+<li>流出したおそれのある情報は氏名・住所・電話番号・生年月日・性別・メールアドレス・パスワードのハッシュ値・ポイントカード番号・会員番号。クレジットカード等の決済情報は同システムで保有していないため含まれない。</li>
+<li>対象システムへの外部アクセスを遮断し脆弱性を修正。外部での情報公開・第三者悪用・会員情報の書き換えは確認されていない。全システムの緊急総点検と再発防止策を実施。</li>
+</ul>
+
+<h3>ローソン - 「ローソンID」「ローソンアプリ予約」に不正アクセス、215万5,345件が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ローソン</td></tr>
+<tr><th>侵害期間</th><td>ローソンID：2026-09-12〜09-14 ／ アプリ予約：2026-09-17</td></tr>
+<tr><th>規模</th><td>ローソンID 215万5,345件 ／ アプリ予約 26件</td></tr>
+</table>
+<ul>
+<li>アプリ上で利用者本人に情報を表示するためのセキュリティ機構が第三者による不正アクセスを受けたと説明。氏名・住所・電話番号・性別・メールアドレス・メルマガ取得情報が流出。アプリ予約では氏名・電話番号・クレジットカード番号の一部も。</li>
+<li>アクセス元からの通信を遮断し、アプリの予約機能を停止。個人情報保護委員会へ報告し、対象利用者へ順次連絡。</li>
+</ul>
+
+<h3>アバハウスインターナショナル - システム不正アクセス、会員・受注情報が流出のおそれ</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アバハウスインターナショナル（アパレル）</td></tr>
+<tr><th>判明</th><td>2026-09-28（顧客への不審な返金案内メールの問い合わせ契機）、10-09 公表</td></tr>
+</table>
+<ul>
+<li>社内システムで不正にログインされたことを起点に、システムの不備を悪用した不正プログラムが設置・実行され、会員情報や受注情報を保管するデータベースが侵害されたとみられる。</li>
+<li>退会済みを含むオンラインストア顧客の氏名・住所・電話番号・会員ID・生年月日・性別・メールアドレス・注文情報などが対象の可能性。なりすましメールも確認され注意喚起。</li>
+</ul>
+
+<h3>JGC Digital - BIツール「Metabase」に不正アクセス、約6万件の情報が取得</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>JGC Digital</td></tr>
+<tr><th>規模</th><td>約6万件（アザス 約4万件／するーぷ 約2万件）</td></tr>
+</table>
+<ul>
+<li>Metabaseに存在した脆弱性を悪用した不正アクセスで、9月16日に異常検知し同日中に経路を遮断。氏名・生年月日・性別・メールアドレス・勤務年数・役割・体温情報などを含む。</li>
+<li>再発防止としてMetabaseの利用を終了し、より安全な環境へ移行する方針。</li>
+</ul>
+
+<h3>戸田建設 - 支払管理システム等への不正アクセス、取引先・従業員情報が漏えい</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>戸田建設（大手総合建設）</td></tr>
+<tr><th>期間</th><td>2026-10-01〜10-05 に情報漏えいの形跡</td></tr>
+</table>
+<ul>
+<li>取引先担当者のメールアドレス（最大7,200件）と取引データ（最大6,000件）、および従業員4,778名分の氏名・住所・電話番号・メールアドレス・所属部署。</li>
+<li>通信遮断（ネットワーク隔離）など応急措置を講じ、外部の専門機関と被害全容の解明と原因特定を進めている。</li>
+</ul>
+
+<h3>大気社 - マレーシアグループ会社の従業員メールアカウントに不正アクセス</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>大気社（空調設備）／Taikisha Engineering (M) Sdn. Bhd.</td></tr>
+<tr><th>確認</th><td>2026-09-17</td></tr>
+</table>
+<ul>
+<li>従業員1名のメールアカウントへの不正アクセスを確認し、当該アカウントから複数宛先へ不審メールが送信された事象も確認。現時点で具体的な被害は確認されていない。</li>
+</ul>
+
+<h3>ランドハウジング - 他社の内見予約システムでアカウントが不正利用</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ランドハウジング（不動産）</td></tr>
+<tr><th>確認</th><td>2026-07-16頃、8-22 警視庁へ被害申告</td></tr>
+</table>
+<ul>
+<li>他社予約システムで同社アカウントから不正な内見予約が複数行われたことを認識。全デバイスの強制ログアウトと登録メールアドレス・パスワードの変更を実施。</li>
+<li>原因究明を予約システム運営会社へ要請し、顧問弁護士に相談。専門業者と再発防止を協議。</li>
+</ul>
+
+<h3>TOPPAN - 委託業務で個人情報を誤送付、17万7,426人分</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>TOPPAN</td></tr>
+<tr><th>事象</th><td>2026-09-01 に手作業でのファイル送付で誤送信</td></tr>
+</table>
+<ul>
+<li>損害保険各社向けの「保険料控除証明書発行サービス」関連業務で、担当者がドラッグ＆ドロップを誤り、損害保険ジャパンの契約者情報を含むアーカイブを他社向けファイルに混入させて送付。送付前の再確認も行っていなかった。</li>
+<li>対象は契約者17万7,426人のカタカナ氏名・保険料控除用証券番号・業務ID。誤送付先からの問い合わせで判明。</li>
+</ul>
+
+<h3>鴨川市 - ふるさと納税アンケートの設定ミスで個人情報が閲覧可能に</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>千葉県鴨川市（受託：鴨川観光プラットフォーム）</td></tr>
+<tr><th>期間</th><td>2026-08-31〜09-01、回答者 218人</td></tr>
+</table>
+<ul>
+<li>アンケート調査システムの設定ミスにより、回答者が以前の回答者の氏名・住所・電話番号などを閲覧できる状態だった。回答者からの連絡で発覚し、キャンペーンを中止して全回答者へ謝罪。</li>
+</ul>
+
+<h3>IDCフロンティア「IDCFクラウド」 - ランサムウェア攻撃、495の企業・自治体に影響（続報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社IDCフロンティア（ソフトバンクグループ）</td></tr>
+<tr><th>影響</th><td>IDCFクラウド契約の495の企業・自治体</td></tr>
+</table>
+<ul>
+<li>東日本リージョン1で2026年10月7日午前3時40分頃から障害が発生し、第三者からの不正アクセスおよびランサムウェア攻撃が原因と判明。東日本リージョン1以外のリージョンでも安全性確認のため管理コンソールを停止。</li>
+<li>政府のセキュリティ要件を満たすとして自治体・企業が利用していた基盤そのものが侵害された点が特徴で、入居先のシステム停止・ホームページ閲覧不能などの波及が生じている。復旧時期は未定。</li>
+</ul>
+
+<h3>経済産業省・国家サイバー統括室（NCO）- 不正アクセスによる情報漏えい事案を踏まえた注意喚起</h3>
+<table class="cve-table">
+<tr><th>出典</th><td>経済産業省 注意喚起（2026-10-09 公開）</td></tr>
+</table>
+<ul>
+<li>相次ぐ不正アクセスによる情報漏えい事案を踏まえ、国家サイバー統括室（NCO）から対応に関する注意喚起が示された。一次情報は経済産業省の公表資料を参照されたい。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
