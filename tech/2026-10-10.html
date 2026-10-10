@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-10 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-10 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.296</h2>
+<p>対象期間（2026-10-09 09:00 〜 2026-10-10 09:00 JST）内に、<strong>v2.1.296</strong> が 2026-10-10 04:44 JST に公開されました。Claude apps gateway のポリシー制御、サブエージェントのコンテキスト管理、コスト計算まわりの調整を含む更新です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>gateway の <code>managed.policies[]</code> に <code>code</code> キーを追加</strong>: <code>cli</code> と同じ設定を Claude Desktop の Code タブにも適用でき、<code>desktop</code> と併記すると Claude Desktop の gateway モードが有効になります。</li>
+  <li><strong><code>autoCompactWindow</code></strong>: サブエージェントの frontmatter と <code>--agents</code> 定義で指定可能に。サブエージェントをメイン会話より早く自動コンパクトできます。</li>
+  <li><strong><code>CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL</code></strong>: 他のサブエージェントのモデルを変えずに、ワークフロー系エージェントだけを1つのモデルで実行できます。</li>
+  <li><strong><code>CLAUDE_CODE_OVERLOADED_RETRY_MAX_DELAY_MS</code></strong>: 過負荷（529）リクエストの再試行バックオフの最大待機時間を長めに設定できます。</li>
+  <li><strong>Read ツールに <code>allow_large</code> オプションを追加</strong>: コンテキストに余裕がある場合、通常のサイズ上限を超えたテキストファイルを1回の呼び出しで読み込めます。</li>
+  <li><strong><code>/plugin</code> の注意表示</strong>: 同名の別プラグインが有効なためフックが省略されたプラグインについて、その旨を表示します。</li>
+  <li><strong>[Cloud sessions]</strong>: セルフホスト環境の Activity タブで、Sessions / Runners リストにステータスフィルタ（複数選択可）を追加。</li>
+  <li><strong>[Claude Tag]</strong>: Claude Tag Admin 権限のメンバーが、Activity ページの Memory タブでワークスペース／チャンネルのメモリファイルを作成・編集・削除できるように。</li>
+</ul>
+
+<h3>🔄 主な変更</h3>
+<ul>
+  <li><strong>Sonnet 5.5 のキャッシュ読み取り価格を <code>$0.10</code>/百万トークンに変更</strong>（従来 <code>$0.20</code>）。<code>/cost</code>、ステータスライン、<code>--max-budget-usd</code>、SDK のコスト表示に反映されます。</li>
+  <li><strong>MCP ツール説明の既定上限を 2,048 文字から 4,096 文字へ拡大</strong>（事前送信分および MCP サーバー指示）。</li>
+  <li><strong><code>←</code> の挙動変更</strong>: セッションがバックグラウンドへ移る間に開始されたターンや <code>!</code> コマンドは、完了させず停止するようになりました。</li>
+  <li><strong>同梱 dataviz スキルを更新</strong>: ライトモードの第7系列に薄いバイオレット、ダークモードの主要テキストを柔らかく、<code>1K</code> のようなコンパクトな Y 軸ラベルに対応。</li>
+  <li><strong>[VSCode]</strong>: Claude in Chrome が、<code>@browser</code> で接続したセッションを含むすべてのセッションで、ブラウザ操作の前に確認するように（ターミナルと同様）。</li>
+  <li><strong>[Claude Tag]</strong>: Slack のフッター（セッションリンク・モデル・コスト）は、スレッド内の最新の返信にのみ表示されるように。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-296">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.21.6</strong>（2026-10-08 20:51 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.9</strong>（2026-10-08 19:23 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.223</strong>（2026-10-09 07:09 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>Claude API / SDK（Python）v1.13.0</strong>（2026-10-10 00:28 JST 公開）／ <strong>TypeScript sdk-v0.133.0</strong>（2026-10-10 00:35 JST 公開）: Chat と Cowork の統合分析メトリクスの型を追加。あわせて Managed Agents に workflows・multiagent 設定・スレッドステータスのフィルタリングを追加しました。</li>
+  <li><strong>AWS</strong>: <strong>Amazon Bedrock</strong> が OpenAI モデルの reasoning summaries に対応（2026-10-10 02:44 JST）。<strong>AWS Lambda</strong> がセルフマネージド Apache Kafka イベントソースの OAuth 認証をサポート（2026-10-10 01:30 JST）。<strong>AWS Security Hub</strong> が検出結果を S3 へ CSV / JSON（OCSF）形式でエクスポート可能に（2026-10-10 07:00 JST）。<strong>TwelveLabs Pegasus 1.5</strong> が Amazon Bedrock で利用可能に（2026-10-09 14:32 JST）。ほか EC2 R8gd / R8g の追加リージョン展開、S3 Vectors のメタデータ事前フィルタリング（GovCloud）など。</li>
+  <li><strong>Google Cloud</strong>: <strong>Gemini Code Assist</strong> の Standard / Enterprise サブスクリプションの新規販売が 2026年10月9日をもって終了（既存は 2026年内は自動更新、2027年に自動更新終了。代替として Antigravity を案内）。<strong>Model Armor</strong> が Workspace データ向けのプロンプトインジェクション／ジェイルブレイク保護を強化。<strong>Datastream</strong> が SQL Server の GEOMETRY / GEOGRAPHY 空間型のレプリケーションに対応しました。</li>
+  <li><strong>Next.js</strong>: 対象期間内に canary <code>v16.5.0-canary.7</code>（2026-10-10 08:48 JST 公開・プレリリース）と <code>v16.5.0-canary.6</code>（2026-10-10 01:11 JST 公開・プレリリース）が公開。安定版の最新は <strong>v16.4.0</strong>（2026-10-07 19:03 JST 公開・対象期間外）です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの機械可読な新着を確認できませんでした）、<strong>React</strong>、<strong>Python / Django</strong>（Django の新規リリースなし）、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース、2026-09-24 公開・対象期間外）、<strong>Hono</strong>（最新は v5.0.0-rc.0 プレリリース、2026-10-08 14:56 公開・対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
