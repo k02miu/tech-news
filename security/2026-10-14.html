@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-14 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-14 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-10-13 08:00 〜 2026-10-14 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Microsoft 2026年10月の月例更新（Patch Tuesday）— Windows／QUIC／Schannel に CVSSv3.1 9.8 の Critical が多数 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Microsoft Windows（Message Queuing／QUIC／Text Shaping／Network Policy Server／Search／Schannel ほか）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-100202、CVE-2026-105016、CVE-2026-100219、CVE-2026-102210、CVE-2026-100222、CVE-2026-105010、CVE-2026-105008 ほか計131件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv3.1 9.8 が複数）</td></tr>
+<tr><th>影響</th><td>未認証のリモート攻撃者による任意コード実行、権限昇格、なりすまし</td></tr>
+</table>
+<ul>
+<li>NVD 登録は 2026-10-13 19:17 UTC（<strong>JST 2026-10-14 04:17</strong>）。当該時間帯だけで131件が一括登録されました。米国の月例更新（Patch Tuesday）に相当するまとまった公開です。</li>
+<li>CVE-2026-100202（CVSSv3.1 9.8）: Windows Message Queuing Queue Manager の use-after-free。未認証のリモート攻撃者がネットワーク越しに任意コードを実行できるおそれ。</li>
+<li>CVE-2026-105016／CVE-2026-100219（各9.8）: Microsoft QUIC のヒープベースのバッファオーバーフローおよび use-after-free。いずれも未認証でネットワーク越しにコード実行。</li>
+<li>CVE-2026-102210（9.8）: Windows Text Shaping のヒープベースのバッファオーバーフロー。CVE-2026-100222（9.8）: Network Policy Server（NPS）のヒープベースのバッファオーバーフロー。CVE-2026-105010（9.8）: Windows Search コンポーネントの use-after-free による権限昇格。</li>
+<li>CVE-2026-105008（9.0）: Windows Schannel におけるなりすまし（CWE 未採番）。</li>
+<li>同時刻には Adobe Commerce の CVE-2026-103849（CVSSv3.1 <strong>10.0</strong>、テンプレートエンジンの不適切な無害化によるリモートコード実行）と CVE-2026-100133（9.3、格納型XSS）、Dockhand 1.0.45 未満の認証バイパス CVE-2026-110130（10.0、グローバル認証フックが特定パスで認証を飛ばす）、youlai-boot 2.21.1 までの認可欠如 CVE-2026-110215（8.8）、Wukong AICRM の認可欠如 CVE-2026-110207（8.8）も登録されています。</li>
+<li>前段の 19:17 JST（10-13）には、Siemens の SIMATIC WinCC／RUGGEDCOM CROSSBOW／APOGEE MBC 等を含む ICS 関連の一括登録（65件）も実施されています。</li>
+</ul>
+
+<h3>米CISA KEV 追加（2026-10-13）— Microsoft Windows Shell のコマンドインジェクションと Ivanti Connect Secure の認証バイパス <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Microsoft Windows Shell／Ivanti Connect Secure</td></tr>
+<tr><th>CVE</th><td>CVE-2026-96951、CVE-2026-104935</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（悪用が確認済み）</td></tr>
+<tr><th>影響</th><td>セキュリティ機能の回避、未認証での任意コマンド実行</td></tr>
+</table>
+<ul>
+<li>米CISA が 2026-10-13 付で「悪用が確認された脆弱性カタログ（KEV）」に2件を追加しました（カタログは1,741件に増加）。</li>
+<li>CVE-2026-96951: Microsoft Windows Shell のコマンドインジェクション（CWE-77）。未認証の攻撃者がネットワーク経由でセキュリティ機能を回避してコマンドを実行できるおそれ。</li>
+<li>CVE-2026-104935: Ivanti Connect Secure のなりすましによる認証バイパス（CWE-290）。リモートの未認証攻撃者が任意のコマンドを実行できるおそれ。</li>
+<li>米連邦機関の対応期限は<strong>いずれも 2026-10-16</strong>。外部公開している Ivanti Connect Secure は直ちに緩和策の適用状況を確認してください。</li>
+</ul>
+
+<h3>Mozilla Firefox 158／ESR 153.5／ESR 115.43／Thunderbird 158 — サンドボックス脱出を含む多数の脆弱性 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Firefox 158、Firefox ESR 153.5／115.43、Thunderbird 158</td></tr>
+<tr><th>CVE</th><td>CVE-2026-109705、CVE-2026-109707、CVE-2026-109709、CVE-2026-109756 ほか多数（CVE-2026-109704〜109778 以降）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv3.1 9.6 が2件）／<span class="badge-high">High</span>（8.8 が2件）</td></tr>
+<tr><th>影響</th><td>サンドボックス脱出、権限昇格、情報漏えい、サービス拒否</td></tr>
+</table>
+<ul>
+<li>NVD 登録は 2026-10-13 13:17 UTC（JST 22:17）。Firefox 158 で修正される一連の脆弱性がまとめて登録されました。</li>
+<li>CVE-2026-109705・CVE-2026-109707（各 CVSSv3.1 9.6）: Networking コンポーネントの use-after-free／境界条件の不備によるサンドボックス脱出（サイト分離の問題）。</li>
+<li>CVE-2026-109709（8.8）: Security: Process Sandboxing における情報漏えい・権限昇格。CVE-2026-109756（8.8）: DOM: Navigation の権限昇格。CVE-2026-109704 は Application Update の権限昇格、CVE-2026-109739・CVE-2026-109778 は WebExtensions の権限昇格です。</li>
+<li>ほか JavaScript: JIT の JIT 誤コンパイル、Graphics、DOM: Web Serial のサンドボックス脱出、Enterprise Policies の緩和策バイパス、PDF Viewer の情報漏えいなど多数。ESR 115.43・ESR 153.5 は長期サポート版のため、社内端末は優先的に更新してください。</li>
+</ul>
+
+<h3>GitLab CE/EE 19.4.2／19.3.4／19.2.8 — CVE-2026-97229 は CVSSv3.1 10.0、未認証での任意コード実行 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>GitLab Community Edition（CE）／Enterprise Edition（EE）19.4.2、19.3.4、19.2.8</td></tr>
+<tr><th>CVE</th><td>CVE-2026-97229（Critical）、CVE-2026-92883／16301／14814／81839／96893（High）ほか計24件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（10.0）1件、<span class="badge-high">High</span> 5件、<span class="badge-medium">Medium</span> 14件、<span class="badge-low">Low</span> 4件</td></tr>
+<tr><th>影響</th><td>認証なしでの任意コード実行、権限制約の回避、キャッシュ汚染</td></tr>
+</table>
+<ul>
+<li>CVE-2026-97229（CVSSv3.1 <strong>10.0</strong>）: CI/CD 設定に含まれる正規表現の処理に起因する整数オーバーフロー。検証が不十分なため、特定条件下で<strong>認証されていない攻撃者</strong>が GitLab サーバ上で任意のコードを実行できるおそれがあります。</li>
+<li>CVE-2026-92883（High）: 構文ハイライト処理に起因するクロスサイトスクリプティング。CVE-2026-16301（High）: Developer 権限の利用者が権限の制約を回避して CI/CD パイプラインを実行可能。CVE-2026-14814（High）: リポジトリファイルのキャッシュ汚染。</li>
+<li>GitLab は現地 2026-10-08 に修正版を公開済み。自社ホスト型の GitLab は直ちに 19.4.2／19.3.4／19.2.8 以降へ更新してください。</li>
+</ul>
+
+<h3>Ghostscript 10.08.0 未満 — JPEG 2000 処理のヒープバッファオーバーフローで任意コード実行 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Ghostscript（Artifex）10.08.0 より前</td></tr>
+<tr><th>CVE</th><td>CVE-2026-39919（CVSSv3.1 9.8／CVSSv4.0 9.3）、CVE-2026-19547（CVSSv4.0 7.0）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>／<span class="badge-high">High</span></td></tr>
+<tr><th>影響</th><td>細工した PDF の処理を契機とした任意コード実行、Windows での権限昇格</td></tr>
+</table>
+<ul>
+<li>CVE-2026-39919: JPEG 2000 画像の処理に起因。画像コンポーネント間で解像度が異なり、サンプル精度が8ビット未満の場合に確保領域を超えてデータが書き込まれメモリ破壊が発生します。細工した PDF を処理させると任意コード実行に至るおそれがあります。</li>
+<li>CVE-2026-19547: Windows 版の PostScript リソースファイル検索処理に起因。認証済みのローカルユーザーが特定ディレクトリに不正なファイルを配置すると、他ユーザーやサービスが Ghostscript を起動した際にそのプロセスの権限で任意コードが実行されるおそれがあります。</li>
+<li>脆弱性は 2026年9月のアップデートで修正済み。PDF 変換を行っているサーバは 10.08.0 以降へ更新してください。</li>
+</ul>
+
+<h3>IBM Db2 Mirror for i 7.4／7.5／7.6 — 管理 GUI の権限昇格（CVSSv3.1 9.9） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>IBM Db2 Mirror for i 7.6／7.5／7.4</td></tr>
+<tr><th>CVE</th><td>CVE-2026-96012</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv3.1 9.9）</td></tr>
+<tr><th>影響</th><td>認可処理・入力検証の回避による悪意あるコードの実行と権限昇格</td></tr>
+</table>
+<ul>
+<li>IBM は現地 2026-09-30 にセキュリティアドバイザリを公開。管理用 GUI において、認証されたユーザーが細工したリクエストを送信することで認可処理や入力検証を回避し、システム上で権限を昇格できるおそれがあります。</li>
+<li>一時修正プログラム（PTF）は 7.6 向け「SJ11625」、7.5 向け「SJ11624」、7.4 向け「SJ11623」。</li>
+</ul>
+
+<h3>AnyDesk 8.0.3 未満 — セッション通信のパケット長検証不備によるヒープバッファオーバーフロー（PoC 公開済み） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>製品</th><td>AnyDesk Software「AnyDesk」8.0.3 より前</td></tr>
+<tr><th>CVE</th><td>CVE-2026-109390</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（CVSSv3.1 9.8）</td></tr>
+<tr><th>影響</th><td>認証不要で域外メモリへの書き込み、任意コマンド実行</td></tr>
+</table>
+<ul>
+<li>セッション通信におけるパケット処理の不備でヒープベースのバッファオーバーフローが生じます。受信パケットに含まれるデータ長を適切に検証していないことが原因で、認証を必要とせず域外のメモリへ書き込みが可能です。</li>
+<li>現地 2026-06-23 リリースの 8.0.3 で修正済みですが、更新履歴では言及されていませんでした。その後 2026-09-23 には 8.1.0 がリリースされています。</li>
+<li>AnyDesk 8.0.2 の Linux 版で、TCP 7070 番ポートへ直接接続できる環境において root 権限で動作するサービスを通じて任意のコマンドを実行できる実証コードが公開されています。</li>
+</ul>
+
+<h3>NVD 一括登録・そのほか（2026-10-13 19:17〜19:18 JST、および 10-13 深夜帯）</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Dockhand／youlai-boot／Wukong AICRM／conductor-oss conductor／Payload CMS／SeldonIO MLServer ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-110130、CVE-2026-110215、CVE-2026-110207、CVE-2026-109190／109402〜109405、CVE-2026-63316、CVE-2026-109153／109155／109156 ほか</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>〜<span class="badge-medium">Medium</span></td></tr>
+</table>
+<ul>
+<li>CVE-2026-110130（CVSSv3.1 10.0）: Dockhand 1.0.45 未満の認証バイパス。グローバル認証フックが特定パスで認証をスキップします。</li>
+<li>CVE-2026-109190／109402〜109405: conductor-oss conductor の MCP 関連処理（MCPService.listTools／A2AService／KafkaPublishTask 等）に認可不備・コードインジェクション。</li>
+<li>CVE-2026-63316（Payload CMS の SQL インジェクション）、CVE-2026-109153／109155／109156（MosaicML Composer・DeepPavlov・SeldonIO MLServer のモデル展開時の tar 展開処理）、CVE-2026-109832（Red Hat Enterprise Linux 同梱 gnome-remote-desktop の VNC TLS I/O ハンドラ）も登録されています。</li>
+<li>10-13 23:17 JST 以降の追加分として、CVE-2026-109160（PublicCMS）・CVE-2026-109157（TRENDnet TEW-432BRP のスタックベースのバッファオーバーフロー）なども確認されています。</li>
+</ul>
+
+<h3>JVNVU#99982995 — Thelia 2.6.0／2.6.1 における複数の脆弱性</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Thelia 2.6.0、2.6.1</td></tr>
+<tr><th>情報源</th><td>JVN（JVNVU#99982995）／CERT/CC VU#162329</td></tr>
+<tr><th>深刻度</th><td>—（CERT/CC アドバイザリ参照）</td></tr>
+</table>
+<ul>
+<li>JVN が 2026/10/13 に公開。CERT/CC の Vulnerability Note VU#162329「Multiple vulnerabilities in Thelia 2.6.0 and 2.6.1」の日本語版ミラーです。</li>
+<li>影響範囲・想定される影響・対策は CERT/CC のアドバイザリを参照してください。</li>
+</ul>
+
+<h3>OpenClaw 2026.10.3／2026.10.5-beta.3 — 資格情報保持とメッセージ再実行に関する修正</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>openclaw 2026.10.3（安定版）、2026.10.5-beta.3（プレリリース）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>（セキュリティ・トラスト関連の修正）</td></tr>
+</table>
+<ul>
+<li>2026.10.3 は現地 2026-10-13 13:49 公開（90 commits／79 PR／99 contributors）。2026.10.5-beta.3 は同日 10:00 公開のプレリリースです。</li>
+<li>2026.10.5-beta.3 のセキュリティ・トラスト関連: Doctor が旧認証ストアを読み取れない場合に OAuth プロファイルを削除しなくなったこと、退避された状態をデータベース移行前に拒否すること、停止した Gateway をクリーンアップ失敗時に復元すること。Telegram のレガシースプールに残った 24 時間超の更新を「stale」として取り込み、更新後に過去のメッセージを新たな指示として再実行しないようになりました。</li>
+<li>プラグイン SDK の互換性（<code>createSessionHeaderLink</code> の非推奨エクスポート復元）も含まれます。個別の CVE 採番はありません。</li>
+</ul>
+
+<h3>Claude Code／Hermes Agent — 対象期間内の新規セキュリティリリースなし</h3>
+<hr>
+<p class="empty-notice">Claude Code は最新版が 2.1.296（既報）、Hermes Agent は最新版が v0.21.7（2026-10-12 公開・既報）であり、本対象期間（2026-10-13 08:00 〜 2026-10-14 08:00 JST）に公開された新規のセキュリティ関連アップデート・脆弱性修正・CVE は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ローソン — アカウントサービスへの不正アクセス、ローソンID 215万5,345件が漏えい</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ローソン</td></tr>
+<tr><th>種別</th><td>不正アクセスによる個人情報漏えい</td></tr>
+<tr><th>対象</th><td>ローソンID 215万5,345件／ローソンアプリ予約 26件</td></tr>
+<tr><th>公表</th><td>2026-10-08（発表）、ScanNetSecurity 2026-10-13 8:05</td></tr>
+</table>
+<ul>
+<li>10月7日に実施した調査の中で、<strong>9月12日〜9月14日</strong>の間に「ローソンID」への、<strong>9月17日</strong>に「ローソンアプリ予約」への不正アクセスが判明しました。</li>
+<li>ローソンアプリに関連するシステムが不正に利用されたことで発生したと推測されており、本来アプリ上で利用者本人に情報を表示するためのセキュリティ機構に第三者から不正アクセスがあり、情報漏えいが確認されています。</li>
+<li>漏えいした情報: ローソンIDはメールアドレス・氏名・性別・電話番号・住所・メルマガ取得情報（215万5,345件）。ローソンアプリ予約は氏名・電話番号・クレジットカード番号の一部（26件）。</li>
+<li>同社は不審なアクセス元のブロックとローソンアプリ予約機能の停止を実施し、対象顧客へ順次個別案内を行っています。再発防止として対象システムのセキュリティ対策・監視体制・インシデント対応体制の強化を進めています。</li>
+</ul>
+
+<h3>ディップ「バイトル」「バイトルNEXT」 — 会員メールアドレス最大388万5,771件が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ディップ</td></tr>
+<tr><th>種別</th><td>不正アクセスによるメールアドレス流出の可能性</td></tr>
+<tr><th>対象</th><td>最大388万5,771件</td></tr>
+<tr><th>公表</th><td>2026-10-13</td></tr>
+</table>
+<ul>
+<li>アルバイト求人情報サイト「バイトル」および「バイトルNEXT」において、登録会員のメールアドレスが外部に流出したことが判明しました。</li>
+<li>2026年10月6日にウェブサイトの一部機能に第三者からアクセスが行われたことを確認。同社は海外からのアクセスを遮断し、プログラムを改修しています。</li>
+<li>個人情報保護委員会や総務省関東総合通信局へ報告するとともに警察へ相談。対象会員にはサービス上で告知するとともに順次メールで案内し、「なりすまし」メール等への注意を呼びかけています。</li>
+</ul>
+
+<h3>アルカディア「SpeeCAN RAIDEN」 — 自治体等が利用する一斉同報サービスに不正侵入</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アルカディア</td></tr>
+<tr><th>種別</th><td>不正侵入・個人情報流出の可能性</td></tr>
+<tr><th>対象</th><td>連絡先の氏名・メールアドレス・電話番号・FAX番号、担当者／契約者情報、配信履歴の本文</td></tr>
+<tr><th>公表</th><td>2026-10-13</td></tr>
+</table>
+<ul>
+<li>音声合成エンジンを搭載し、災害情報などをメール・電話・ファックス・SNSで一斉配信できるクラウドサービス「SpeeCAN RAIDEN」。気象情報や全国瞬時警報システム（J-ALERT）との連携にも対応しており、<strong>自治体なども導入</strong>しています。</li>
+<li>10月11日16時30分ごろに侵害が疑われる不審な挙動を確認。翌12日3時ごろに侵入経路を遮断する応急措置を講じ、調査を開始しました。</li>
+<li>13日に外部からの侵入経路を特定し、同日11時より「SpeeCAN RAIDEN」の一部環境と「ライデン・スクール」の一部環境を停止しています。生活インフラ・防災用途に直結するサービスであり、影響の確認が急がれます。</li>
+</ul>
+
+<h3>EPARKリラク&amp;エステ「PeakManager」 — 第二報、流出可能性は約2,218万レコード</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社EPARKリラク&amp;エステ</td></tr>
+<tr><th>種別</th><td>不正アクセスによる顧客情報の外部転送</td></tr>
+<tr><th>対象</th><td>約3,300万レコード → 名寄せ後 約2,218万レコード</td></tr>
+<tr><th>公表</th><td>2026-09-24（第二報）、ScanNetSecurity 2026-10-13 8:05</td></tr>
+</table>
+<ul>
+<li>7月31日に公表した予約管理・顧客管理プラットフォーム「PeakManager」への不正アクセスについての第二報です。7月27日に一部データベースへの不正アクセスと顧客情報の削除を確認していました。</li>
+<li>外部専門機関と連携した調査の結果、顧客情報を保管するデータベース内の情報が<strong>外部に転送された</strong>こと、その後データが削除されたことを確認。侵入経路と手法は同種の攻撃を誘発するおそれがあるとして公表を差し控えています。</li>
+<li>漏えいした可能性がある約3,300万レコードについて、電話番号・メールアドレスの一致で名寄せした結果、約2,218万レコード。正確な個人の人数への置き換えは困難と判断し、個人情報保護委員会へ報告しています。</li>
+<li>漏えい項目は氏名・フリガナ・生年月日・性別・住所・電話番号・メールアドレス、および加盟店が施術の申し送り等として入力した備考欄の記載情報（健康状態等、要配慮個人情報に該当する情報を一部含む）。備考欄にはクレジットカード情報に該当する可能性のある情報が5件含まれていました。</li>
+</ul>
+
+<h3>くふうカンパニー「くふう Zaim」 — 不正アクセスで一部ユーザーの登録情報が書き換え</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社くふうカンパニー</td></tr>
+<tr><th>種別</th><td>不正アクセスによるデータ書き換え（情報漏えいなし）</td></tr>
+<tr><th>対象</th><td>14名の登録情報</td></tr>
+<tr><th>公表</th><td>2026-09-22（発表）、ScanNetSecurity 2026-10-13 8:05</td></tr>
+</table>
+<ul>
+<li>9月18日20時9分から9月19日1時42分にかけて、外部の第三者が家計簿アプリ「くふう Zaim」のシステムに対して不正なデータの書き込みを行い、一部顧客（14名）の名前（ニックネーム）・メールアドレス・旧認証方式で使用していたパスワード関連情報（現在はログインに使用されていないもの）が本来とは異なる内容に書き換えられました。</li>
+<li>不正な書き込みの影響で、9月19日から21日にかけて新規登録した一部顧客で家計簿の記録が一時保存できないエラーが発生しましたが、顧客データへの影響はありません。</li>
+<li>本件は情報を書き換えるもので、元の登録情報や家計簿の内容を第三者が読み取ることはできない仕組みであったため<strong>情報漏えいはありません</strong>。ログインは「くふうアカウント」で行われており同アカウントは影響を受けていないため、顧客アカウントへの不正ログインもありません。</li>
+<li>同社は9月21日15時47分ごろにシステムのエラー通知をもとに事象を把握し、同日中に保存エラーの解消・悪用箇所の修正・14名のデータ復旧を完了しています。原因は同社システムの一部処理の不具合を第三者に悪用されたことによるものです。</li>
+</ul>
+
+<h3>穴吹ハウジングサービス — オーナーズサイトを一時停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社穴吹ハウジングサービス</td></tr>
+<tr><th>種別</th><td>ランサムウェア被害後の追加対策に伴う予防的サービス停止</td></tr>
+<tr><th>対象</th><td>オーナーズサイト全コンテンツおよび連携サービス</td></tr>
+<tr><th>公表</th><td>2026-10-09（発表）、ScanNetSecurity 2026-10-13 8:05</td></tr>
+</table>
+<ul>
+<li>同社は2月に発生したランサムウェア被害以降、外部専門機関による診断や安全性の確認を継続。オーナーズサイトについても外部専門機関による診断を実施した結果、直ちに情報漏えい等につながるものではないものの、より安全に利用するために追加の対策を講じることが望ましい事項が確認されました。</li>
+<li>顧客情報を守ることを最優先に考え、予防的な措置として、必要な対策および安全性の確認が完了するまでの間、10月9日午前0時にオーナーズサイトのサービスを一時停止しています。</li>
+<li>停止対象はオーナーズサイト（会員優待や掲示板などサイト内のすべてのコンテンツ）、オーナーズサイト経由のサービス（会員優待、理事会コンテンツ、LINE連携「あなぶきNavi」、お部屋の推定価格・クルマの簡易査定など）、新規登録の受付です。</li>
+</ul>
+
+<h3>JR東海 — IDCフロンティアの不正アクセスに伴い、ECサイトのメール配信データで約15,000件が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東海旅客鉄道株式会社（JR東海）／株式会社IDCフロンティア</td></tr>
+<tr><th>種別</th><td>委託先の侵害に伴う取引先への波及（サプライチェーン）</td></tr>
+<tr><th>対象</th><td>「JR東海MARKET」「いいもの探訪」合計 約15,000件</td></tr>
+<tr><th>公表</th><td>2026-10-13</td></tr>
+</table>
+<ul>
+<li>10月9日にお知らせしたとおり、株式会社IDCフロンティアで発生した不正アクセスに伴い、当社が運営するECサイト「JR東海MARKET」および「いいもの探訪」ではログインや商品購入等におけるメール配信に影響が生じていました。</li>
+<li>10月13日、両サイトからメールを配信した一部のお客様のメールアドレス等の個人情報が漏えいした可能性があるとして、<strong>個人情報保護委員会への報告</strong>を行いました。現時点で実際に外部へ漏えいしたことを示す事実は確認されていません。</li>
+<li>漏えいした可能性のある情報は配信先メールアドレスと、配信されたメール本文に記載された氏名・住所・電話番号・注文内容・配送先情報・アンケート回答およびコメント。クレジットカード情報およびログインパスワードは漏えいの可能性はありません。</li>
+<li>件数は、IDCフロンティアが第三者による不正アクセスを確認したと公表している10月7日時点でデータを保存していた件数で算出した約15,000件（両サイト合計）です。クラウド事業者の侵害が複数の委託先企業へ連鎖した事例として注目されます。</li>
+</ul>
+
+<h3>教育産業株式会社 — フィッシングで Microsoft 365 アカウントが侵害、取引先担当者情報が閲覧された可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>教育産業株式会社</td></tr>
+<tr><th>種別</th><td>フィッシングによるアカウント侵害・メール情報の閲覧</td></tr>
+<tr><th>対象</th><td>取引先担当者の会社名・部署・氏名・メールアドレス・電話番号</td></tr>
+<tr><th>公表</th><td>2026-09-18（最終報）、ScanNetSecurity 2026-10-13 8:05</td></tr>
+</table>
+<ul>
+<li>同社は8月24日、従業員1名が利用するメールアカウントから一部の取引先宛への不審メールの送信を確認し、外部専門家の協力のもと調査。同従業員1名の Microsoft365 アカウントに第三者からの不正アクセスが判明しました。フィッシングメールにより認証情報が窃取されたと推測されています。</li>
+<li>当該アカウント内のファイルが外部に持ち出された痕跡は確認されていませんが、メール情報の一部について第三者に閲覧された可能性を否定できないとしています。</li>
+<li>漏えいした可能性があるのは、同社とメールの送受信をしていた一部の取引先担当者の会社名・部署・氏名・メールアドレス・電話番号を含む情報です。</li>
+</ul>
+
+<h3>神奈川県 — 障害者雇用事業の参加企業一覧に担当者32人分の個人情報を誤掲載</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>神奈川県</td></tr>
+<tr><th>種別</th><td>公開情報への個人情報の誤掲載</td></tr>
+<tr><th>対象</th><td>参加企業の担当者 32人分</td></tr>
+<tr><th>公表</th><td>2026-10-13</td></tr>
+</table>
+<ul>
+<li>2026年9月1日にウェブサイトへ公開した障がい者雇用開拓・体験実習支援事業の参加企業一覧に、参加企業の担当者32人分の氏名・電話番号・メールアドレスを誤って掲載するミスがありました。</li>
+<li>個人情報を削除したファイルをアップロードすべきところ、内容を十分確認しないまま、個人情報が削除されていないファイルを誤ってアップロードしたことが原因です。9月2日に職員がウェブサイトの内容を確認した際に判明し、個人情報を削除したファイルへ差し替えました。</li>
+<li>同県は対象となる参加企業に報告と謝罪を行っています。</li>
+</ul>
+
+<h3>注意喚起の連続 — NICT の「A2B攻撃」、JPCERT/CC・警察庁・個人情報保護委員会が相次いで呼びかけ</h3>
+<table class="cve-table">
+<tr><th>主体</th><td>情報通信研究機構（NICT）／JPCERT/CC／警察庁／個人情報保護委員会</td></tr>
+<tr><th>種別</th><td>攻撃手法の分析・注意喚起</td></tr>
+<tr><th>公表</th><td>2026-10-09〜2026-10-13</td></tr>
+</table>
+<ul>
+<li>NICT の脅威情報共同分析チームは、スマホアプリを活用した会員サービスで情報流出事故が相次いでいる原因のひとつとして「<strong>A2B攻撃（App-to-Backend Attack）</strong>」を挙げました。一般に公開されている Android アプリが攻撃者に解析され、接続先サーバが特定されたうえで攻撃にさらされるという手法です。アプリ自体に脆弱性がなくとも、接続先のサーバやAPIに脆弱性がある場合、認証・認可が適切に管理されていない場合は不正侵入や情報窃取に発展するおそれがあり、サーバ側の対策と侵害調査を呼びかけています。</li>
+<li>JPCERT/CC は10月9日、国内組織で相次ぐ不正アクセスへの注意喚起を公開。標的ごとに既知の脆弱性をスキャンして悪用を試行するケース、アプリの管理用APIへの不正リクエスト（外部公開アプリの解析によるAPIエンドポイント・キーの特定、画面操作では実行できない内部APIへの攻撃、NoSQLインジェクションによるアカウント特定、他システム侵害で窃取したAPIキーの利用）、<strong>Metabase の SQL インジェクション（CVE-2026-72898）</strong>、公開ウェブサーバから到達可能なアプリケーションサーバ上への WAR ファイル（Webシェル）設置を確認しています。</li>
+<li>JPCERT/CC の推奨対策は、API への単位時間あたりリクエスト数の制限、ログイン／パスワードリセット／SMS送信／検索など悪用リスクの高い機能への個別レート制限、非公開APIを含む全エンドポイントでのアクセス制御、APIトークンへの最小権限と有効期限の設定、不要・漏えいの疑いがあるトークンの速やかな無効化などです。加えて、アクセス元地域の制限、既知脆弱性の修正適用、Webサーバ侵害後の横展開対策の見直し、不正アクセス検知体制の点検、多要素認証などの顧客への呼びかけ、業務上不要な管理機能の公開停止、保存期間を過ぎたデータの削除が挙げられています。</li>
+<li>警察庁「サイバー警察局便り」は情報流出への注意を呼びかけ、企業から個人まで基本的対策の再点検を求めました。個人情報保護委員会も大規模な漏えい等事案を踏まえた対応について注意喚起を行っています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
