@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-13 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-13 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p>対象期間（2026-10-12 09:00 〜 2026-10-13 09:00 JST）内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.296</strong>（2026-10-10 04:44 JST 公開）です。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.21.7</h2>
+<p>対象期間内に <strong>v0.21.7</strong>（2026-10-12 14:53 JST 公開）がリリースされました。v0.21.6 以降にマージされた約204件の PR を、デスクトップアプリ（macOS Apple silicon / Windows）、Microsoft Store・MSIX、インストーラ、Docker、Hermes Cloud 向けの安定版として取りまとめたパッチリリースです。v0.21.0 以降の全内容をまとめた公式キュレーション版ノートは次期 v0.22.0 で提供予定です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>更新がタグ付きリリースに追従</strong>: 公式リポジトリのソースインストールは、main の全コミットではなく公開済みの最新 <code>vX.Y.Z</code> リリースへ更新されるようになりました。最新リリースより新しいインストールはその場に留まり、次回リリースを待ちます（巻き戻しは発生しません）。全コミットを追う場合は <code>hermes update --set-channel main</code> を使用します。</li>
+  <li><strong>デスクトップアプリで更新チャンネルを選択</strong>: 設定 ▸ About ▸ Updates に「Stable releases / Every commit」の切替スイッチが追加され、更新ダイアログに現在のチャンネルが表示されるようになりました。</li>
+  <li><strong>推論がレジューム後も保持</strong>: 署名付き thinking が <code>hermes chat --resume</code> 後および次の Gateway ターンで再生されます。Bedrock Converse の推論モデルがレジュームされたセッションで拒否される問題も解消しました。</li>
+  <li><strong>一部ファイアウォール下での更新失敗を解消</strong>: main 系のインストールが、地域ファイアウォールに 403 で応答され得るリリースレコードを取得しなくなりました。安定版チェックは GitHub トークン（<code>GITHUB_TOKEN</code> または <code>gh auth login</code>）が設定されていればそれを使用し、GitHub のレート制限はレート制限として報告します。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.21.7">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.2</h2>
+<p>対象期間内に安定版 <strong>v2026.10.2</strong>（2026-10-12 14:34 JST 公開）がリリースされました。あわせてプレリリース <strong>v2026.10.5-beta.2</strong>（2026-10-12 21:10 JST 公開）も確認されています。v2026.10.2 は更新処理・Doctor・プロバイダー別コンパクション・秘匿情報のマスク・プロンプトキャッシュ安定性・Gateway 応答性を中心とした修正リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>2026.10.1 からの更新</strong>: 安定版 2026.10.1 からの初回アップグレードが正常に完了するようになり、インプレース更新がエラーで終了しなくなりました。Windows・クローン済みファイルシステム・プライベート Node の更新パスも、停止やロールバックを起こさず完了します。</li>
+  <li><strong>プロバイダー標準のコンパクション</strong>: OpenAI と Anthropic の API キールートがプロバイダー標準のコンパクションを既定で使用するようになり、主認証プロファイルがクールダウン中でもコンパクションから復帰します。</li>
+  <li><strong>秘匿情報のマスク強化</strong>: 長いツール出力でチャンク境界をまたぐ資格情報がマスクされるようになり、大きなテキストのマスクがスタックをオーバーフローさせず高速化しました。</li>
+  <li><strong>プロンプトキャッシュの安定化</strong>: Anthropic の会話チェックポイント、拡充されたユーザープロンプト、ツール結果、セッション間の来歴が、フォローアップ・再生・Gateway 再起動・サブエージェント完了をまたいでバイト単位で同一に保たれ、キャッシュ済みプレフィックスがヒットし続けます。</li>
+  <li><strong>Gateway の応答性</strong>: Control UI の再接続、大規模プラグイン下でのモデル変更、ダッシュボードのタイトル処理、カタログ読み込みが Gateway をフリーズさせたり新規セッションをハングさせたりしなくなりました。</li>
+  <li><strong>その他の Changes</strong>: <code>openclaw update</code> が古いハンドオフリース・完了済みレシート・旧 2026.9.8 の復旧レコードを処理。更新成功や抑制されたチャンネルをエラーではなく警告として報告。既に検証済みのリリース候補を npm の dist-tag ドリフトで失敗させないように変更。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Doctor とデータ保護</strong>: 残存する旧式インポート、古い Gateway ロック、遅い状態検査、メモリ再インデックスのロック、削除済みチャンネルアカウントの許可リストで Doctor が停止しなくなり、古いレシートのセッションは現在のデータを保持します。</li>
+  <li><strong>応答の欠落</strong>: エージェント起動中に失われる応答、Telegram のストリーム応答が置換メッセージ不着で消える問題、Telegram がローカル所有者の拒否を曖昧な配信として扱う問題を修正。</li>
+  <li><strong>Claude CLI セッション</strong>: ランタイムプロンプトがユーザーメッセージとして表示される問題、CLI プロンプトが履歴の所有者側に現れる問題、長時間ストリーム後の応答欠落、Anthropic API キー無しでのターン後コンパクション失敗を修正。</li>
+  <li><strong>サブエージェントと ACP</strong>: 回答の切り捨て、遅延レシートによる古い子回答の配信、完了配信の期限切れでリクエスタターンが停止する問題を修正。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.2">GitHub Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.224</strong>（2026-10-10 13:30 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>Next.js</strong>: 対象期間内に安定版の新規リリースは確認されませんでした。最新の canary は <code>v16.5.0-canary.9</code>（2026-10-13 08:53 JST 公開・対象期間内）です。</li>
+  <li><strong>AWS</strong>: 対象期間内に複数のアナウンスがありました。主なものは <strong>AWS Lambda Web Functions</strong>（2026-10-13 04:30 JST）、<strong>Amazon EC2 G7 インスタンス</strong>の Europe (Frankfurt) / (Stockholm) 追加（2026-10-13 07:30 JST）、<strong>Amazon Bedrock AgentCore</strong> 短期メモリの従量課金化（2026-10-13 01:00 JST）、<strong>Amazon EMR</strong> の Apache Spark ジョブ向けネイティブ品質チェック（2026-10-12 16:00 JST）、<strong>Amazon ElastiCache for Valkey Insights</strong>（2026-10-12 16:00 JST）、<strong>Amazon OpenSearch Service</strong> のインデックス単位暗号化（2026-10-12 11:30 JST）です。</li>
+  <li><strong>Google Cloud</strong>: 2026-10-12 付の公式リリースノートが公開されました（2026-10-12 16:00 JST 公開・対象期間内）。BigQuery Data Transfer Service の PostgreSQL / ServiceNow 向け増分転送が GA、Cloud Build のリリースチャンネル選択、Cloud DNS のアウトバウンドエンドポイントが Preview、Agent Platform Workbench のパッケージ更新と gcloud / gsutil の OpenSSL 関連バグ修正が含まれます。</li>
+  <li><strong>Node.js</strong>: 対象期間内に新規リリースは確認されませんでした。最新は <strong>v26.11.1</strong>（2026-10-08 08:55 JST 公開）です。</li>
+  <li><strong>Claude API / SDK</strong>: 対象期間内に新規リリースは確認されませんでした。Python SDK の最新は <strong>v1.13.0</strong>（2026-10-10 00:28 JST 公開）、TypeScript SDK の最新は <strong>sdk-v0.133.0</strong>（2026-10-10 00:35 JST 公開）です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの機械可読な新着を確認できませんでした）、<strong>React</strong>（最新は v19.3.0、2026-09-10 公開）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース、2026-09-24 公開）、<strong>Hono</strong>（最新は v5.0.0-rc.1 プレリリース、2026-10-10 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
