@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-14 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-14 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p>対象期間（2026-10-13 09:00 〜 2026-10-14 09:00 JST）内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.296</strong>（2026-10-10 04:44 JST 公開）です。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.21.7</strong>（2026-10-12 14:53 JST 公開）です。v0.21.6 以降の約204件の PR を取りまとめたパッチリリースで、更新のタグ付きリリース追従、デスクトップアプリの更新チャンネル選択、レジューム後の推論保持などが含まれます。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.3</h2>
+<p>対象期間内に安定版 <strong>v2026.10.3</strong>（2026-10-13 22:49 JST 公開）がリリースされました。あわせてプレリリース <strong>v2026.10.5-beta.3</strong>（2026-10-13 19:00 JST 公開）も確認されています。v2026.10.3 は約79件の PR と8件の直接コミットを含み、更新ブロッカーの解消、Doctor 修復時のサインイン情報・メモリファイルの保全、Mac アプリのローカルセットアップ接続性、コンパクション後やプロバイダー応答中断後の会話継続を中心とした修正リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>更新のブロック解消</strong>: 更新時に、該当する残存リカバリ作業のクリアと完了済み更新レコードのアーカイブが行われ、次のアップグレードがブロックされなくなりました。既にブロックされた古いアップデータは手動インストール／リカバリの第一手順が必要で、独立したリカバリヘルパーが完了レコードを保持したままアンロックできます。</li>
+  <li><strong>中断された 2026.9.8 更新の復旧</strong>: 更新後の CLI が、別の更新を妨げていたサポート対象の中止レコードを処理できるようになりました。このレガシー復旧パスは、パッケージ内容を再確認できない場合に警告を出します。</li>
+  <li><strong>FreeBSD のパッケージ復旧</strong>: 修正済みアップデータが生成するリカバリヘルパーで、FreeBSD 上の中断された npm パッケージ更新を修復・廃止できます。パッケージ復旧は Gateway の再起動・検証とは分離されています。</li>
+  <li><strong>残存アップデータコピーの掃除</strong>: Doctor が、次の更新を妨げる該当の放棄された npm アップデータコピーを削除できるようになりました（<code>openclaw doctor --fix</code> で実行）。</li>
+  <li><strong>Mac アプリのローカルセットアップ接続</strong>: ローカル環境でのセットアップ時に Mac アプリが接続しやすくなる修正が含まれます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Doctor 修復時のデータ保全</strong>: 該当の Doctor 修復において、保存済みのサインイン情報とメモリファイルが保持されるようになりました。</li>
+  <li><strong>会話の継続</strong>: コンパクション後、およびプロバイダー応答が中断した後でも会話を続行できるようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.3">GitHub Releases</a></p>
+
+<h2>🐋 Orca — mobile-android-v0.0.55</h2>
+<p>対象期間内にモバイル向けプレリリース <strong>mobile-android-v0.0.55</strong>（2026-10-13 09:07 JST 公開）がリリースされました。デスクトップ版の最新安定版は <strong>v1.4.224</strong>（2026-10-10 13:30 JST 公開）です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Over-the-air 更新</strong>: スマートフォン版 Orca は、画面と機能の多くをアプリ本体ではなくペアリングしたデスクトップから取得するようになりました。PC 側の Orca を更新すると、次回接続時にスマートフォンが新バージョンを取り込みます。新機能が早く届き、スマートフォンとデスクトップのバージョンが常に一致し、アプリ自体の更新頻度も減ります。</li>
+  <li><strong>ダウンロード進捗バー</strong>: 最新版を PC からダウンロードする際に進捗バーが表示され、ダウンロードが高速化しました。</li>
+  <li><strong>対応チャットの拡大</strong>: Grok・OpenCode・OMP・Pi のチャットがスマートフォンで開けるようになり、デスクトップ同様にチャット表示とサブエージェントがインライン表示されます。</li>
+  <li><strong>メッセージキューイング</strong>: エージェント稼働中に送ったメッセージはコンポーザーの上に待機し、順番どおりに送信されます。配信できなかったメッセージは「Not sent」表示となりドラフトに戻ります。</li>
+  <li><strong>その他</strong>: 数字キーでエージェントの質問に回答、SSH ホストの接続健全性表示とデスクトップのピン留めワークスペース設定への追従、ファイルプレビューでの動画・音楽再生、ペアリングリンクの安全性向上（新コードのスキャンで古いペアリングを置換）、Android でのメモリ使用量削減・チャットスクロールの滑らか化・ターミナルの信頼性向上。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>⚡ Next.js — v16.5.0-canary.10</h2>
+<p>対象期間内に canary 版 <strong>v16.5.0-canary.10</strong>（2026-10-14 08:50 JST 公開）がリリースされました。安定版の新規リリースは確認されていません。</p>
+
+<h3>🔧 新機能・改善・修正</h3>
+<ul>
+  <li><strong>next.config.ts の相対 import</strong>: 相対 import が設定ファイルのあるディレクトリを基準に解決されるようになりました。</li>
+  <li><strong>next/headers の誤診断を解消</strong>: クライアントコンポーネント経由で import された <code>next/headers</code> について、Pages Router のせいにしなくなりました。</li>
+  <li><strong>Turbopack の改善</strong>: セグメント設定のパース改善、遅延 dynamic-import のチャンクリスト衝突の修正、<code>_app</code> の next/dynamic チャンクのプリロード、キャッシュハンドラ設定時の edge ルートハンドラ修正など。</li>
+  <li><strong>その他</strong>: CNA テストでのローカル Next.js 兄弟パッケージのインストール、ナビゲーション API 安定化に伴う eval の更新、next-code-frame の可視ウィンドウの文字境界スナップなど。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.10">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>AWS</strong>: 対象期間内に複数のアナウンスがありました。主なものは <strong>AWS Agent Registry</strong> のレジストリレコード向けカスタムメタデータ対応（2026-10-14 06:00 JST）、<strong>Amazon DCV 2026.0</strong>（RHEL 10 対応、新 macOS クライアントなど、2026-10-14 04:35 JST）、<strong>AWS Deadline Cloud</strong> の Deadline Cloud モニターでのアクセス可能リソース発見機能（2026-10-14 03:54 JST）、<strong>Amazon Location Service</strong> のインタラクティブ API Playground（2026-10-14 03:46 JST）、<strong>Agent Toolkit for AWS</strong> への AWS AI/ML スキル追加（2026-10-13 23:00 JST）、<strong>AWS DataSync Enhanced モード</strong>の FSx for OpenZFS・NFS 4.2・オブジェクトメタデータ制御対応（2026-10-13 17:00 JST）、<strong>Amazon Route 53 Domains</strong> のプレミアムドメイン登録・移管・更新対応（2026-10-13 17:00 JST）です。</li>
+  <li><strong>Google Cloud</strong>: 2026-10-13 付の公式リリースノートが公開されました（2026-10-13 16:00 JST 公開・対象期間内）。BigQuery の <code>AI.AGG</code> 関数が GA となり自然言語指示による非構造化データの意味的集約が可能になったほか、BigQuery の生成 AI 関数が <code>gemini-4-argon</code> モデル（GA）をサポート、Cloud Billing のスペンドキャップ予算（対象サービス限定）が GA となりました。</li>
+  <li><strong>Node.js</strong>: 対象期間内に新規リリースは確認されませんでした。最新は <strong>v26.11.1</strong>（2026-10-08 08:55 JST 公開）です。</li>
+  <li><strong>Claude API / SDK</strong>: 対象期間内に新規リリースは確認されませんでした。Python SDK の最新は <strong>v1.13.0</strong>（2026-10-10 00:28 JST 公開）、TypeScript SDK の最新は <strong>sdk-v0.133.0</strong>（2026-10-10 00:35 JST 公開）です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの最新項目は 2026-10-10 05:27 JST 公開）、<strong>React</strong>（最新は v19.3.0、2026-09-10 公開）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>、<strong>Hono</strong>（最新は v5.0.0-rc.1 プレリリース、2026-10-10 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
