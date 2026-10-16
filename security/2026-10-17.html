@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Linux カーネル - ネットワーク機能のデータ検証不備「DirtyClone」、エクスプロイトコードが公開（CVE-2026-43503）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-43503（CVSSv3.1 8.8 / vector: AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+<tr><th>影響</th><td>Linux カーネル 3.9 以上 5.10.257 未満 / 5.11〜5.15.208 未満 / 5.16〜6.1.174 未満 / 6.2〜6.6.141 未満 / 6.7〜6.12.91 未満 / 6.13〜6.18.33 未満 / 6.19〜7.0.10 未満 / 7.1 rc1〜rc4</td></tr>
+<tr><th>公開</th><td>2026-10-16（Scan Tech Report）。脆弱性自体は 2026 年 5 月に修正済み</td></tr>
+</table>
+<ul>
+<li>ネットワークソケット処理で共有データであることを示す <code>SKBFL_SHARED_FRAG</code> を設定せずにデータを複製・移動するため、本来書き込みが許されない領域（ページキャッシュ）を上書きできてしまう問題ですわ。</li>
+<li>SUID 付きファイルがキャッシュされているページ領域を書き換えることで、任意のプログラムを root 権限かつ SUID 設定済みの状態で実行でき、結果として root 権限を奪取されます。</li>
+<li>攻撃対象 OS に合わせた調整が不要で 1 つのエクスプロイトコードを使い回せるため、Linux 環境へ侵入した攻撃者が悪用を試みる可能性が高いとされています。GitHub に実証コード（0xBlackash/CVE-2026-43503）が公開済みです。</li>
+<li>各ディストリビューションのカーネル更新を適用し、速やかに修正版へ引き上げてくださいませ。</li>
+</ul>
+
+<h3>Google Chrome 155.0.8059.85 / 155.0.8059.84 - 10件の脆弱性修正、Critical 1件（CVE-2026-110922）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110922（Critical）、CVE-2026-110913 / 110917 / 110918 / 110919 / 110920 / 110921（High）、CVE-2026-110914 / 110915 / 110916（Medium）</td></tr>
+<tr><th>影響</th><td>Google Chrome（Windows / macOS / Linux）</td></tr>
+<tr><th>公開</th><td>2026-10-15（現地時間、リリース）。Security NEXT 報道 2026/10/16</td></tr>
+</table>
+<ul>
+<li>CVE-2026-110922 はページの事前レンダリング機能「Prerender」における解放済みメモリの使用（Use After Free）で、4段階中もっとも高い Critical と評価されています。10月2日に外部の研究者から報告されたとのことですわ。</li>
+<li>High 6件のうち CVE-2026-110919・CVE-2026-110921 はスクリプトエンジン V8 の解放済みメモリ使用、残る4件は複数コンポーネントのメモリ破損です。</li>
+<li>前回更新（10月13日、37件修正）からわずか2日での追加アップデートです。順次展開中ですので、更新を確認してくださいませ。</li>
+</ul>
+
+<h3>Adobe - アドバイザリ11件を公開、Critical 多数（ColdFusion の2件は CVSS 10.0）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-105899（CVSSv3.1 10.0）、CVE-2026-106622（CVSSv3.1 10.0）ほか</td></tr>
+<tr><th>影響</th><td>Adobe ColdFusion（APSB26-144）、Adobe Commerce（APSB26-153）、Adobe Experience Manager（APSB26-152）、Photoshop、Bridge、FrameMaker、Dimension、Substance 3D 各製品、Content Credentials SDK</td></tr>
+<tr><th>公開</th><td>2026-10-13（現地時間）。Security NEXT 報道 2026/10/16</td></tr>
+</table>
+<ul>
+<li>ColdFusion の CVE-2026-105899 はファイルアップロード制限の不備による任意コード実行、CVE-2026-106622 は権限昇格につながる SSRF で、いずれも CVSSv3.1 の最高値 10.0 ですわ。</li>
+<li>Experience Manager で Critical 14件、ColdFusion で 10件、Commerce で 5件が確認されています。任意コード実行・権限昇格・セキュリティ機能回避に至るおそれがあります。</li>
+<li>悪用は確認されておらず適用優先度「1」のものはありませんが、該当製品をご利用でしたら更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Cloud Software Group - XenServer / Citrix UniconOS / Workspace app の9件（CVE-2026-79610 ほか）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>XenServer: CVE-2026-79610 / CVE-2026-102700 / CVE-2026-102701 / CVE-2026-79611、Citrix UniconOS: CVE-2026-53562 / CVE-2026-53563 / CVE-2026-53564、Citrix Workspace app for Windows: CVE-2026-84419 / CVE-2026-84420</td></tr>
+<tr><th>影響</th><td>XenServer、Citrix UniconOS、Citrix Workspace app for Windows</td></tr>
+<tr><th>公開</th><td>2026-10-13（現地時間）。Security NEXT 報道 2026/10/16。アドバイザリ CTX697170 / CTX697187 / CTX697181</td></tr>
+</table>
+<ul>
+<li>XenServer の 3件（CVE-2026-79610 / 102700 / 102701）は、ゲスト仮想マシン内の特権ユーザーによってホストを侵害またはクラッシュさせられるおそれがあります。CVE-2026-79611 はゲスト仮想マシン内から同 VM をクラッシュさせられる問題です。</li>
+<li>いずれも CVSS ベーススコアは示されていません。修正版が提供されていますので、仮想化基盤をご利用の場合は優先的にご確認くださいませ。</li>
+</ul>
+
+<h3>米CISA KEV - AhsayCBS の2件を追加、組み合わせで未認証のOSコマンド実行が可能（CVE-2026-105133 / CVE-2026-105134）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-105133（API の認証不備）、CVE-2026-105134（レプリケーション機能のコマンドインジェクション）</td></tr>
+<tr><th>影響</th><td>AhsayCBS（バックアップ管理サーバ）。ホットフィックス AhsayCBS 10.3.4.45 / 9.15.2.70</td></tr>
+<tr><th>公開</th><td>KEV 登録 2026-10-14（現地時間）。Security NEXT 報道 2026/10/16</td></tr>
+</table>
+<ul>
+<li>2件を組み合わせることで、認証を必要とせずに OS コマンドを実行されるおそれがあります。従来の修正パッチでは対応できないとして、ホットフィックスが提供されています。</li>
+<li>同日に Cisco Secure Email Gateway（CVE-2026-76519）と PAN-OS（CVE-2026-0322）が、翌15日に Atlassian 製品（CVE-2026-21589）が KEV へ追加されていますが、これら3件は既報ですわ。</li>
+<li>米行政機関には登録から3日以内の対処と、CVE-2026-105133 を除く4件について侵害状況の調査が求められました。</li>
+</ul>
+
+<h3>AssetView - 重要なリソースへの不適切なアクセス権の割り当て（CVE-2026-101020、JVN#38664315）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-101020</td></tr>
+<tr><th>影響</th><td>AssetView Ver 13.2.7B より前、AssetView CLOUD Ver 13.2.7B より前（13.2系）/ Ver 13.3.7 より前（13.3系）、AssetView Cloud ＋ Ver 2600.201.11 より前</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-13。ScanNetSecurity 報道 2026.10.16 8:00</td></tr>
+</table>
+<ul>
+<li>ハンモック製 AssetView において、管理コンソールまたはクライアントモジュールが動作する Windows システムにログイン可能な攻撃者から、SYSTEM 権限を取得されるおそれがあります（CWE-284 系）。</li>
+<li>報告者はサイバーディフェンス研究所の永岡悟氏。最新版へのアップデート、またはパッチ適用が呼びかけられています。</li>
+</ul>
+
+<h3>SiteGuard Server Edition - 統計機能のOSコマンドインジェクション、悪用を確認（CVE-2026-106931、JVN#88474777）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-106931</td></tr>
+<tr><th>影響</th><td>SiteGuard Server Edition Ver2.20 およびそれ以降（IIS版 Ver3.10〜Ver4.00 Update4 は非該当）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-14。ScanNetSecurity 報道 2026.10.16 8:00。JPCERT/CC 注意喚起 AT260032</td></tr>
+</table>
+<ul>
+<li>EGセキュアソリューションズ提供のホスト型WAFで、統計機能に OS コマンドインジェクションが存在し、当該サーバ上で root または SYSTEM 権限で任意の OS コマンドを実行されるおそれがあります。</li>
+<li>開発者は既に本脆弱性の悪用を確認しています。Apache版・Nginx版・IIS版は Ver8.00 Update5、FreeBSD Apache版・Nginx版は Ver7.00 Update6 で修正済みですわ。</li>
+<li>バージョンアップが困難な利用者向けには、統計処理の対象ファイルを差し替えるパッチが提供されています。</li>
+</ul>
+
+<h3>JVN - CISA ICS Advisory（2026年10月15日）新規5件・更新1件（JVNVU#96928590）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>JVNVU#96928590（新規: ICSA-26-280-01 / ICSA-26-288-01 / ICSA-26-288-02 / ICSMA-26-288-01 / ICSMA-26-288-02、更新: ICSA-26-281-01 Update A）</td></tr>
+<tr><th>影響</th><td>CISA Malcolm、Eclipse Foundation Eclipse Milo、Guangzhou Juan IoT Technology EseeCloud、Thermo Fisher Torrent Suite Software、J4Care dcm4che</td></tr>
+<tr><th>公開</th><td>JVN 2026/10/16 09:15</td></tr>
+</table>
+<ul>
+<li>Java 製 OPC UA スタックの Eclipse Milo や、医療系ソフトウェアの Torrent Suite Software（ICSMA-26-288-01）、dcm4che（ICSMA-26-288-02）が対象に含まれています。</li>
+<li>制御系・医療系システムをお使いの場合は、各アドバイザリの影響範囲と対策をご確認くださいませ。</li>
+</ul>
+
+<h3>JVN - Siemens製品に対するアップデート（2026年10月）新規18件・更新21件（JVNVU#90141693）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>JVNVU#90141693（SSA-055299、SSB-091449、SSA-159454、SSA-333035、SSA-550198、SSA-591731、SSA-911336 ほか）</td></tr>
+<tr><th>影響</th><td>SIMATIC S7 PLC / IPC、WinCC、RUGGEDCOM CROSSBOW、APOGEE / TALON / Desigo、Industrial Edge 各製品、SENTRON、SINAMICS 関連 ほか</td></tr>
+<tr><th>公開</th><td>JVN 2026/10/16 09:00（公開日 2026/10/14、更新日 2026/10/16）</td></tr>
+</table>
+<ul>
+<li>新規18件には SIMATIC IPC のハードコード鍵（SSA-159454）、WinCC の認証済みリモートコード実行（SSA-550198）、Industrial Edge Device Kit のパストラバーサル（SSA-377139）などが含まれます。</li>
+<li>更新21件では、RUGGEDCOM APE1808 上の PAN-OS / Fortigate NGFW、OpenSSL のバッファオーバーフロー（SSA-434797）、OPC UA の認証バイパス（SSA-858251）などが改訂されました。</li>
+</ul>
+
+<h3>楽天モバイル - 一部スマートフォンの Android Verified Boot に AOSP テスト用鍵が残存（CVEなし・JVN#47427200）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>JVN#47427200（CVE は採番されていません）</td></tr>
+<tr><th>影響</th><td>Rakuten Mini、Rakuten Hand、Rakuten Hand 5G、Rakuten BIGs（いずれも全バージョン）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-14。ScanNetSecurity 報道 2026.10.16 8:00</td></tr>
+</table>
+<ul>
+<li>Android Verified Boot（AVB）に AOSP のテスト用鍵がそのまま使用されており、端末への物理的アクセスにより細工されたシステムイメージをインストールされるおそれがあります。</li>
+<li>開発者は既にサポートを終了しており、JVN は後続製品への乗り換え等の検討を呼びかけています。報告者は松原正佳氏です。</li>
+</ul>
+
+<h3>Claude Code 2.1.302 - 巨大画像の読み込み制限など、安全性・堅牢性まわりを修正</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.302（CVE 記載なし）</td></tr>
+<tr><th>影響</th><td>Claude Code 全ユーザー</td></tr>
+<tr><th>公開</th><td>CHANGELOG 反映 2026-10-16（JST）</td></tr>
+</table>
+<ul>
+<li>Read ツールが任意サイズの画像ファイル、または画像と同名のパイプ・デバイスを丸ごとメモリへ読み込んでしまう問題を修正し、128 MB を超える画像ソースは拒否されるようになりました。</li>
+<li><code>claude plugin</code> などのサブコマンドが、待機中の設定・構成書き込みの完了前に終了し、変更が失われたり <code>.tmp</code> ファイルが残ったりする問題、およびプラグインの git 既定が reftable 形式の場合に毎回再クローンされる問題を修正しています。</li>
+<li>自動モードの分類器まわりでは、安全チェックに対して長すぎる会話を圧縮するよう改善され、チェック対象のツール呼び出しがすべて拒否される事態を回避します。<code>CLAUDE_CODE_AUTO_MODE_MODEL</code> も追加されました。</li>
+</ul>
+
+<h3>Hermes Agent / OpenClaw - 対象期間内の新規セキュリティ情報はありませんでした</h3>
+<hr>
+<p class="empty-notice">Hermes Agent（NousResearch/hermes-agent）の最新リリースは v0.22.2（2026-10-15 公開）で、既報のとおりです。OpenClaw も最新は 2026.10.10-beta.1（2026-10-15 公開）で既報済み、対象期間内に新たなリリースタグおよびセキュリティ関連の脆弱性修正・CVE は確認されませんでした。加えて、対象期間内に Next.js / React / Hono / Django / Spring Boot / GCP / AWS / Azure 各製品に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ソースネクスト - 会員情報管理システムが侵害され、会員情報 22,519,960 件が流出した可能性<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-10-13 9時ごろ（侵害は 2026-10-09）</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/10/16</td></tr>
+<tr><th>影響規模</th><td>最大 22,519,960 件</td></tr>
+</table>
+<ul>
+<li>ソフトウェア販売のソースネクストで、会員情報の管理システムが外部の第三者によりアクセスされていたことを 10月13日に確認しました。不正通信を遮断したうえで調査したところ、10月9日に侵害を受け、会員情報を取得する API を通じて登録済みの会員情報が第三者に窃取されていたことが判明しています。</li>
+<li>対象項目は会員ごとに異なりますが、氏名・住所・電話番号・生年月日・性別・メールアドレス・パスワード・会社名・役職名・部署名・システム固有の識別情報などが含まれます。</li>
+<li>同社は外部協力のもと調査を継続するとともに、全システムを対象とした点検を実施しています。パスワードを含むため、他サービスとの使い回しがある場合は速やかな変更をおすすめいたしますわ。</li>
+</ul>
+
+<h3>手間いらず（TEMAIRAZU シリーズ）- 不正アクセスで最大約 445 万人の宿泊予約情報に影響、なりすましメッセージが拡散<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-09-21 深夜ごろ（予約者への不審メッセージ）</td></tr>
+<tr><th>公表</th><td>2026-09-28（第一報）。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+<tr><th>影響規模</th><td>最大 約 445 万人分の宿泊予約情報</td></tr>
+</table>
+<ul>
+<li>宿泊施設向け予約管理システム「TEMAIRAZU シリーズ」で、予約者に対し WhatsApp・メール・SMS 等で不審なメッセージが届いたことを契機に発覚しました。メッセージには予約情報を把握しているとみられる内容が含まれ、予約確認・クレジットカード情報の再入力・緊急の支払い等を求めて不審サイトへ誘導するものがあります。</li>
+<li>予約者の氏名・電話番号・メールアドレス等の連絡先、宿泊施設名、チェックイン／アウト日、宿泊料金等を含む宿泊予約情報が第三者に閲覧または取得された可能性があるとのことです。</li>
+<li>同社は原因箇所の特定とアクセス制御・監視体制の強化を実施し、外部のセキュリティ専門機関と連携して調査を継続しています。</li>
+</ul>
+
+<h3>アエナ - ECアプリが不正アクセスを受け、会員 817,215 人の個人情報が流出した可能性<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-10-13 6時ごろ</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/10/16</td></tr>
+<tr><th>影響規模</th><td>アプリ会員 最大 817,215 人</td></tr>
+</table>
+<ul>
+<li>化粧品・健康食品のオフプライスストアを展開するアエナで、eコマースアプリが不正アクセスを受け、第三者によって会員のマイページが不正に閲覧されていたことが、システムログの解析により判明しました。</li>
+<li>氏名・住所・電話番号・生年月日・性別・メールアドレス・職業、および登録済みクレジットカードの名義・番号下4桁・有効期限、届け先の住所・氏名・電話番号などが含まれます。</li>
+<li>会員情報の改ざん、購入の決済、退会手続きといった不正操作は行われておらず、悪用や二次被害も確認されていないとのことです。同社は EC サイトへのアクセスを遮断し、原因調査と改修を進めています。</li>
+</ul>
+
+<h3>大分県 - システム業者への不正アクセスで、防災メール等配信システムの新規登録を停止<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-10-13（同日 16:25 から新規登録等を停止）</td></tr>
+<tr><th>公表</th><td>ScanNetSecurity 2026.10.16 8:05</td></tr>
+<tr><th>影響規模</th><td>登録者のメールアドレス 27,667 件が漏えいした可能性</td></tr>
+</table>
+<ul>
+<li>大分県の県民安全・安心メール等配信システムのシステム業者に不正アクセスがあり、情報漏えいの可能性があるため、新規登録・変更・配信解除が停止されています。</li>
+<li>登録者への気象警報等の配信は通常どおり行われています。県は安全を確認し次第、再開する予定としています。</li>
+</ul>
+
+<h3>三井不動産 - 不正アクセスの第二報、攻撃者による資格情報の不正利用を確認（役職員等 最大19,000件・社外関係者 最大36,000件）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-08-28（初公表 2026-09-01）</td></tr>
+<tr><th>公表</th><td>2026-09-28（第二報）。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+<tr><th>影響規模</th><td>同社およびグループ会社の役職員等 最大 19,000 件、社外関係者 最大 36,000 件</td></tr>
+</table>
+<ul>
+<li>同社が利用する一部システムへの不正アクセスについて、システムのログを詳細に調査した結果、漏えいした可能性のある情報が判明しました。役職員等は氏名・メールアドレス・部署・役職、社外関係者はメールアドレス・メールの表示名です。</li>
+<li>両情報を合わせ最大 5.5 万件規模となり、9月7日から9月17日にかけて対象者へメールで連絡が行われています。原因調査では攻撃者による資格情報の不正利用が確認されました。</li>
+<li>再発防止策として、不正アクセスに利用された資格情報等の無効化、全アカウントの棚卸しと設定確認、当該システムへの監視強化、不正アクセス検知ロジックの追加実装が実施されています。</li>
+</ul>
+
+<h3>TOPPAN - 受託運用業務でデータ誤送付、損害保険ジャパンの契約者 177,426 名分が他社へ<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-09-01 17:15（送信先の損害保険会社からの連絡）</td></tr>
+<tr><th>公表</th><td>2026-09-29。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+<tr><th>影響規模</th><td>契約者 177,426 名分</td></tr>
+</table>
+<ul>
+<li>TOPPAN が日本損害保険協会に所属する損害保険各社から受託する「保険料控除証明書 発行サービス」の運用業務で、損害保険ジャパンの契約者情報を他の損害保険会社へ誤送付しました。</li>
+<li>原因は、手作業でリストデータを送信する際に運用担当者がドラッグ&amp;ドロップ操作を誤り、契約者情報が入った ZIP ファイルを他社向けの ZIP ファイル内に混入させたことです。対象は契約者 177,426 名のカナ氏名・保険料控除用証券番号・業務ID です。</li>
+<li>誤送付データは送信先で廃棄・削除されています。再発防止策として、添付ファイル選択方法の統一、作業者とは別の確認者の配置と全工程の確認、容量・タイムスタンプの照合、送付プロセスのシステム化が進められます。</li>
+</ul>
+
+<h3>サンポー食品 - ウェブサイトに不正アクセス、管理者権限の取得と改ざんを確認<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-08-25</td></tr>
+<tr><th>公表</th><td>2026-09-28。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+</table>
+<ul>
+<li>サンポー食品のウェブサイトに対する第三者からの不正アクセスが確認され、サイトを停止して制作会社・システム会社と連携して調査を実施しました。</li>
+<li>当該サイトで使用している web システムの脆弱性を悪用された可能性が高いと判断されています。管理者権限の取得やウェブサイト改ざん等が行われていたことが判明しました。</li>
+<li>対象情報の持ち出しや不正利用を示す痕跡は確認されていませんが、不正アクセス期間中にデータへアクセス可能な状態だった可能性は否定できないとしています。問い合わせフォームの個人情報はウェブサイトシステム内に保存していないとのことです。</li>
+</ul>
+
+<h3>フクビ化学工業 - 英語版ウェブサイトの一部サーバに不正アクセス</h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-09-16</td></tr>
+<tr><th>公表</th><td>2026-09-28（第一報）・09-30（続報）。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+</table>
+<ul>
+<li>同社が運営する英語版ウェブサイトの一部サーバで、第三者からの不正アクセスと考えられるシステム障害が発生し、同日中に対象の全サイトを停止するなどの対策が実施されました。</li>
+<li>不正アクセスを受けたのは外部事業者のレンタルサーバ上で運用していた海外向けの一部英語版サイト（建材製品特設サイト、FUKUVI VIETNAM・FUKUVI THAILAND サイト、ファンダラインサイト）で、基幹システム・社内ネットワーク・国内コーポレートサイトとは異なる環境です。</li>
+<li>全ドメイン・サブドメインを含むアカウント全体について、全データと全自動実行設定の削除・復旧、侵入方法や経路の特定、外部流出の可能性を含めた影響範囲の調査が進められています。</li>
+</ul>
+
+<h3>コロンビア珈琲「極上珈琲 生豆本舗」- SQLインジェクション攻撃でサイト障害、攻撃試行は約1万件</h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-09-26 22:50 頃（障害は 9/26 23:00〜9/27 13:15 頃）</td></tr>
+<tr><th>公表</th><td>2026-09-28。ScanNetSecurity 報道 2026.10.16 8:05</td></tr>
+</table>
+<ul>
+<li>「極上珈琲 生豆本舗」でサイトが正常に表示されない障害が発生しました。9月25日から外部の自動攻撃ツールによる SQL インジェクション試行が集中的に行われ、件数は約1万件、国内の100以上の回線を経由していました。</li>
+<li>9月26日 22:50 頃、攻撃の一環として商品検索に特殊な文字列が送り込まれ、データベースで極端に重い処理が発生したことでサイト全体が応答不能となりました。</li>
+<li>アクセス記録の調査では、攻撃はいずれもシステムにより拒否または無効化されており、顧客情報や注文情報の取得に至った形跡は確認されていません。データベース処理の上限時間（60秒）設定と、不正な文字列を含むリクエストの Web サーバ側での遮断が実施されています。</li>
+</ul>
+
+<h3>ムーンスター - サーバ侵害による個人情報流出が確定、なりすましメールに過去の注文情報</h3>
+<table class="cve-table">
+<tr><th>発覚</th><td>2026-03-26（侵害公表）、2026-09-20 前後（なりすましメールの問い合わせ）</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/10/16</td></tr>
+</table>
+<ul>
+<li>シューズメーカーのムーンスターは、一部サーバが不正アクセスを受けた問題で、顧客の個人情報が流出したことを明らかにしました。</li>
+<li>2026年9月20日前後に顧客から問い合わせがあり、同社を装ったなりすましメールが送信されていることが判明しました。メールには第三者が通常知り得ない過去の注文情報が記載されており、顧客情報が窃取されたものと判断されています。</li>
+<li>2026年5月14日から5月19日にかけて、システムサーバ経由で個人情報が流出した可能性が高いとのことです。</li>
+</ul>
+
+<h3>IPA - 不正アクセスによる情報漏えい事案を受け、「不正アクセス特別相談窓口」を開設・対策を公表</h3>
+<table class="cve-table">
+<tr><th>公表</th><td>2026-10-09（速やかに実施すべき対策）、2026-10-16（特別相談窓口）。ScanNetSecurity 報道 2026.10.16 8:00</td></tr>
+</table>
+<ul>
+<li>国内の金融機関や通信事業者等で不正アクセスによる情報漏えい事案の公表が相次いでおり、特に大量の個人情報を扱うオンラインサービス・アカウントサービス等のシステムが不正侵入され、個人情報を含むデータが窃取される事案が続いています。</li>
+<li>IPA は、被害を受けた企業や組織を支援する「不正アクセス特別相談窓口」を開設し、被害が疑われる段階でも電話やメールで相談できるとしています。あわせて、大量の情報資産を保有する事業者等の経営者に対し、経営責任として対策の点検・見直しを至急実施するよう呼びかけています。</li>
+<li>速やかな点検項目として、外部公開アプリケーションの精査、利用中の外部サービスの洗い出し、保有データの再点検を、対策として外部公開範囲・認証機能・権限付与・ログ取得の見直しとデータ暗号化などを挙げています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
