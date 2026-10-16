@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-16 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-16 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.301</h2>
+<p>対象期間内に <strong>v2.1.301</strong>（2026-10-16 04:52 JST 公開）がリリースされました。OpenTelemetry による可観測性の拡充、mod（プラグイン）API の細かな整備、VSCode 拡張の使い勝手向上が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>無人リトライの待機上限を制御</strong>: 環境変数 <code>CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS</code> が追加されました。無人リトライモード（<code>CLAUDE_CODE_RETRY_WATCHDOG</code>）において、利用上限のリセットが遠すぎる場合は待ち続けずにリクエストを終了できます。</li>
+  <li><strong>OpenTelemetry の判定情報を拡充</strong>: <code>tool_decision</code> イベントに <code>classifier_verdict</code> と <code>permission_mode</code> が追加され、自動モードの分類器による判断と権限ルールによる判断を区別できるようになりました。あわせて <code>classifier_category</code> も追加され、<code>OTEL_LOG_TOOL_DETAILS=1</code> のときに分類器がブロックした組み込みルール名が分かります。</li>
+  <li><strong>claude-api スキルのトレーシング指針</strong>: <code>claude-api</code> スキルに OpenTelemetry トレーシングのガイダンスが追加され、<code>ant</code> CLI でトレース送信先を設定する手順も含まれます。</li>
+  <li><strong>vim モードの <code>%</code> モーション</strong>: 対応する括弧へジャンプする <code>%</code> が vim モードに追加されました（単独、または d/c/y と組み合わせて使用可能）。</li>
+  <li><strong>mod の複数行入力</strong>: mod の <code>Input</code> に <code>rows</code> が追加され、ターミナル上で複数行のテキストフィールドを扱えます。Enter で送信、Shift+Enter または Enter 前のバックスラッシュで改行します。</li>
+  <li><strong>モデル切替時のコンテキスト処理</strong>: コンテキストウィンドウが小さいモデルへ切り替える際、新モデルに対して長すぎる会話は先に旧モデルで要約されるようになりました。</li>
+  <li><strong>描画パフォーマンス</strong>: 長時間稼働するサブエージェントの進捗表示が、毎回全体を再処理するのではなく差分更新されるようになりました。</li>
+  <li><strong>[VSCode] LaTeX 数式レンダリング</strong>: Claude の応答で LaTeX 数式が描画されます（<code>$$</code>、複数行の <code>\[ … \]</code>、インラインの <code>$…$</code> と <code>\(…\)</code> に対応）。あわせて Pro / Max プラン向けに、利用上限バナーへ「Get more usage」リンクが追加されました。</li>
+  <li><strong>mod の <code>$.env.set</code> とフックの <code>.catch</code></strong>: <code>$.env.set</code> は変数の設定／解除が済むと <code>{}</code> で解決し、書き込みが行われない場合は理由を示す <code>{ deny }</code> を返すようになりました。また mod フックの <code>.catch</code> はフックが例外を投げたかタイムアウトした場合のみ実行されます。</li>
+  <li><strong>アーティファクトと mod の表示改善</strong>: Claude が書き出すページが、スティッキーヘッダー上の帯を塗るようになり、モバイルアプリでスクロール時にテキストが透けなくなりました。mod では VS Code・デスクトップ／モバイルアプリで質問ダイアログ上部のツリーが Markdown と最大48行を保持できます（ターミナルは従来どおり12行）。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-301">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.22.2</h2>
+<p>対象期間内に <strong>v0.22.2</strong>（2026-10-15 17:21 JST 公開）がリリースされました。v0.22.1 が誤ったコミットからビルドされ未リリースのゲートウェイ作業を含んでいたため、それを正した版です。既知の問題として、v0.22.1 のゲートウェイで動いたセッションは v0.22.2 では削除できない点が挙げられています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>再起動後にゲートウェイが起動するように</strong>: 再起動後、Linux が早期の PID を無関係なプロセスへ割り当てると、ゲートウェイが稼働中と誤認し、systemd / launchd / Docker 配下の監視対象ゲートウェイが起動を拒否される問題が修正されました。起動したブートを記録し、判別できない場合は稼働中ゲートウェイのみが保持するホストロックに問い合わせます。</li>
+  <li><strong>ノート PC でのローカルモデル実行の安定化</strong>: ローカルリクエストは常にプロンプト読込の進捗を伴ってストリーミングされ、ストール判定タイマーはマシンがスリープしていた時間を除外します。復旧したローカルサーバーは再度試行され、長い会話をサーバーが読み込んでいる間の圧縮がタイムアウトしなくなりました。Windows のユニファイドメモリ機では、モデル起動とプロンプトキャッシュが空きメモリに合わせて調整されます。</li>
+  <li><strong>モデル関連</strong>: nemotron super 3.5 の既定パラメータ、NVIDIA NIM の既定モデル一覧への nemotron 追加、モデルピッカー上部への厳選モデル一覧表示が入りました。</li>
+  <li><strong>プラグインカタログ</strong>: 韓国語デスクトップ言語パック（hermes-lang-ko）、ブラジルポルトガル語パック（hermes-lang-pt-br）、TeamoRouter、author-feed、wait-ledger などが追加され、aux-ledger は 1.4.0 に更新されました。</li>
+  <li><strong>リリース基盤</strong>: Microsoft Store バンドルが専用の windows-store レーンに分離され、安定版リリースのビルド／テスト内容をレーンで選択できるようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.22.2">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.9.33 / v2026.10.10-beta.1</h2>
+<p>対象期間内に、LTS 相当の <strong>v2026.9.33</strong>（2026-10-15 19:39 JST 公開）と、最新のプレリリース <strong>v2026.10.10-beta.1</strong>（2026-10-16 03:03 JST 公開）が確認されました。あわせてプレリリース <strong>v2026.10.5-beta.4</strong>（2026-10-15 15:10 JST 公開）も公開されています。v2026.9.33 は 2026年9月末時点の OpenClaw に重要セキュリティ更新・信頼性修正を加えた extended-stable リリースです（本リリース時点の最新版は 2026.10.3）。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>v2026.9.33（extended-stable）</strong>: 2026.9 系のアップデートが状態・プラグインデータ・サービス所有権・Windows の状態パスを保ったまま行われ、帰属不明の Doctor 書き込みに対する自動復元を拒否します。pnpm 12 の Gateway サービスとランチャーがネイティブ更新を乗り越え、Windows の更新が Doctor のドライバ系譜再確認後にロールバックしなくなりました。Meta Muse Wonder の実行、MiniMax M3.1 の thinking effort レベル、MiniMax ポータル OAuth のトークン期限後もサインイン維持に対応。エージェント実行はライブの thinking レベルに従い、ローカルプロバイダーに応答ヘッダー期限が設定され、ChatGPT WebSocket の正常クローズから復旧し、Codex の応答が最終トークンを保持します。中断された自動化ターン、ステアされたセッション、クラウドワーカーのクレーム、部分的なワーカー応答は Gateway 再起動後に再開・永続化されます。</li>
+  <li><strong>v2026.10.10-beta.1</strong>: Gateway のチャットターン・セッション一覧・起動・アイドル時の SQLite とメインスレッドの処理が大幅に削減され、データベース処理がワーカースレッドへ移されました。2026.10.1 以前からのアップグレードが完了するようになり、ビジーな Gateway や遅い Doctor 手順が更新を拒否・ロールバックしなくなり、失敗した更新が半インストール状態を残さず、macOS / Windows / Bun の各固有障害から復旧できます。中断・未完了の応答が Gateway 再起動後に再開します。</li>
+  <li><strong>v2026.10.10-beta.1 のクラウドセッション</strong>: セッションメニューからローカルとクラウドの間でセッションを移動でき、クラウド環境をリポジトリ単位で整理、検証済み Node ツールチェーンでの環境レシピに対応しました。初回スナップショットのアップロード完了前にセッションを開始でき、スナップショット進捗が表示されます。</li>
+  <li><strong>v2026.10.10-beta.1 のデスクトップアプリ</strong>: Windows デスクトップアプリと新規 Tauri インストールがローカル Gateway を実行でき、新規 macOS インストールはガイド付きダッシュボード設定で開始し、初回セットアップで推論バックエンドを自動選択します。</li>
+  <li><strong>v2026.10.10-beta.1 の新モデル</strong>: Gemini 4 Argon が Gemini 3.8 Flash と並ぶ既定の Gemini モデルとなり、Nemotron 3.5 Super VL、xAI Imagine Image 2.0 が追加、Meta モデルは Muse Code 経由で動作、廃止モデルはピッカーに表示されなくなりました。</li>
+  <li><strong>v2026.10.10-beta.1 の動作要件</strong>: ネイティブアプリと Control UI は macOS 26.2、iOS 26.2、Safari 26.2 以降が必要になりました。</li>
+  <li><strong>v2026.10.5-beta.4</strong>: macOS 更新がエイリアスされた一時ディレクトリでタイムアウトしなくなり、systemd ユーザーインストールが放棄されたランタイムを回収、pacman と FreeBSD のパッケージインストールはパッケージマネージャーに委ねられます。ChatGPT 一覧のモデルが既定 Codex ランタイムで事前失敗しなくなり、ヘッドレスブラウザのサインインがパスキー待ちの間も操作を受け付けます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ</strong>: Tlon がグループ DM の投稿者をオーナーとして扱わないようにしました（v2026.10.5-beta.4）。</li>
+  <li><strong>Gateway アクセス</strong>: tailnet が Tailscale Serve を拒否してもローカルアクセスが継続し、ライフサイクル通知が発行元の終了後も保持されます（v2026.10.5-beta.4）。</li>
+  <li><strong>ターンと応答</strong>: Claude CLI セッションが告知済みサブエージェント結果を次ターンで記憶し、エージェントのプラグインリロードが自ターンを待たなくなり、前ターン停止後に ACP のフォローアップ応答が消えなくなりました（v2026.10.5-beta.4）。</li>
+  <li><strong>Gateway ライフサイクル</strong>: 応答タグ付きストリーム中も Gateway が応答し続け、長い引用ツール XML が毎トークンの Markdown 解析を誘発せず、スリープや時計変更後に状態所有権を回復します（v2026.10.5-beta.4）。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>mobile-android-v0.0.55</strong>（2026-10-13 09:07 JST 公開）です。デスクトップ版の最新安定版は <strong>v1.4.224</strong>（2026-10-10 13:30 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>⚡ Next.js — v16.4.2</h2>
+<p>対象期間内に安定版 <strong>v16.4.2</strong>（2026-10-16 05:44 JST 公開）がリリースされました。LTS 系（lts-active）のバックポートを中心とした保守リリースです。あわせて <strong>v16.5.0-canary.12〜15</strong>（2026-10-15 08:49 〜 2026-10-16 08:44 JST 公開）の canary も公開されています。</p>
+
+<h3>🔧 主な修正</h3>
+<ul>
+  <li><strong>Turbopack の安定化</strong>: turbo-tasks のスナップショット整合性修正、完全に破棄しきれていない依存エッジを残す2つの GC パスの修正、モジュール解決時の realpath エラーを Node の挙動に合わせて無視する対応、遅延 dynamic-import のチャンクリスト衝突の修正が含まれます。</li>
+  <li><strong>Pages Router 対応</strong>: Turbopack における Pages Router 開発時モジュールグラフのチェーン化がバックポートされました。</li>
+  <li><strong>next-code-frame</strong>: 表示ウィンドウを文字境界にスナップする修正が入りました。</li>
+  <li><strong>ドキュメント</strong>: v16.4.0 以降のドキュメント修正がバックポートされました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.2">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>AWS</strong>: 対象期間内に多数のアナウンスがありました。主なものは <strong>Web Search on Amazon Bedrock AgentCore</strong> の GovCloud および3リージョンへの拡大（2026-10-16 05:40 JST）、<strong>Amazon DynamoDB Streams</strong> のタイムスタンプベースのストリーム処理対応（2026-10-16 03:30 JST）、<strong>AWS Lambda Durable Execution SDK for Go</strong> の GA（2026-10-16 03:23 JST）、<strong>Amazon SageMaker Studio</strong> の新規サインインオプションによる初学者向け簡素化（2026-10-16 05:10 JST）、<strong>Amazon CloudFront</strong> の VPC オリジン向けデュアルスタック対応（2026-10-16 01:00 JST）、<strong>PostgreSQL 19 RC1</strong> の Amazon RDS Database Preview Environment での提供開始（2026-10-16 01:00 JST）、<strong>Amazon CloudWatch</strong> のログルーティングと連鎖ログパーサー（2026-10-15 07:14 JST）、<strong>Amazon MWAA</strong> の AI エージェントスキル提供（2026-10-15 17:00 JST）、<strong>AWS Security Hub CSPM</strong> の Cyber Risk Institute プロファイル v2.2 対応（2026-10-15 17:00 JST）です。</li>
+  <li><strong>Google Cloud</strong>: 2026-10-15 付の公式リリースノートが公開されました。Gemini Enterprise アプリで Anthropic モデル（Claude Opus 5.5 / Claude Sonnet 5.5）を管理者が有効化して利用可能にする機能が GA、GoogleSQL のカラムエイリアス対応が GA（オプトイン）、BigQuery の会話分析エージェントの回答を PDF / CSV へエクスポートする機能が GA、Apigee Edge for Public Cloud の SSO 更新の配布開始、Dataflow Auto VM Selection の第4世代 Compute Engine マシンシリーズ対応、Google 管理の公開 SSL 証明書の有効期間を 90 日から 45 日へ段階的に短縮、などが含まれます。</li>
+  <li><strong>Claude API / SDK</strong>: 対象期間内に新規リリースがありました。Python SDK は <strong>v1.15.0</strong>（2026-10-16 04:45 JST 公開）で、<code>thinking</code> 型への <code>between_tools</code> 追加、Messages への <code>speed</code> パラメータと <code>usage.speed</code> の追加、Console 組織の利用階層スペンドキャップを読み取り専用のスペンドリミットとして返す対応が入りました。TypeScript SDK は <strong>sdk-v0.135.0</strong>（2026-10-16 04:42 JST 公開）です。</li>
+  <li><strong>Node.js</strong>: 対象期間内に新規リリースは確認されませんでした。最新は <strong>v26.12.0</strong>（2026-10-15 00:22 JST 公開）です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの取得が対象期間中に完了せず、新着の確認ができませんでした）、<strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース、2026-09-24 公開）、<strong>Hono</strong>（最新は v5.0.0-rc.1 プレリリース、2026-10-10 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
