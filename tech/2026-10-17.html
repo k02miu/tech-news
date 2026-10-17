@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-17 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-17 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.302</h2>
+<p>対象期間内に <strong>v2.1.302</strong>（2026-10-17 06:03 JST 公開）がリリースされました。auto モードの分類器モデル選択、アイドル圧縮のオン／オフ設定、フォークサブエージェントの既定挙動の統一が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>auto モード分類器のモデル選択</strong>: 環境変数 <code>CLAUDE_CODE_AUTO_MODE_MODEL</code> が追加され、クライアント側 auto モードの分類器が使うモデルを選べるようになりました。サーバー側 auto モードのモデルは変わりません。</li>
+  <li><strong>アイドル圧縮の切り替え</strong>: <code>/config</code> に <strong>Idle compaction</strong> 行が追加され、アイドル圧縮をオフ／オンにできます。アイドル圧縮後に表示される通知にも、オフにする方法が示されるようになりました。</li>
+  <li><strong>Claude Design 終了の予告表示</strong>: <code>/design-sync</code> と <code>/design-login</code> に、スタンドアロンの Claude Design（claude.ai/design）が 2026年12月14日をもって終了する旨の通知が追加されました。</li>
+  <li><strong>[Cloud sessions] ルーティンの実行失敗理由</strong>: ルーティンのページに、直近の実行が開始されなかった理由を示すバナーが追加されました（例: 組織の同時クラウドセッション上限への到達）。</li>
+  <li><strong>フォークサブエージェントの既定化</strong>: フォークサブエージェント（<code>subagent_type: "fork"</code>）が <code>claude -p</code>、Agent SDK、デスクトップアプリ、VS Code でも既定で有効になりました（ターミナルでは従来から有効）。<code>CLAUDE_CODE_FORK_SUBAGENT=0</code> で無効化でき、<code>claude mcp serve</code> では提供されません。</li>
+  <li><strong>サブエージェントの実行位置の統一</strong>: デスクトップアプリと VS Code は、メイン会話のサブエージェントをターミナルと同様に常にバックグラウンドで実行するようになりました（Claude の判断に委ねない）。また <code>claude -p</code>、Agent SDK、デスクトップアプリ、VS Code で、サブエージェント自身の Agent 呼び出しは既定でフォアグラウンド実行になります。</li>
+</ul>
+
+<h3>🐛 主な変更・修正</h3>
+<ul>
+  <li><strong>権限モードの既定</strong>: 権限モード指定のない <code>claude -p</code> と Agent SDK のセッションは、サードパーティプロバイダー・テレメトリ無効・新規インストールのいずれの場合も <code>default</code> モードで開始されます（<code>--permission-mode auto</code> は auto を維持）。</li>
+  <li><strong>フックの同時実行数</strong>: プロンプトフックとエージェントフックは、1つのイベントにつき最大12件まで同時に実行し、残りは順番待ちになります。</li>
+  <li><strong>プロンプトキャッシュ</strong>: Claude in Chrome の指示をシステムプロンプト内の別の位置へ移し、新しい会話が共有プロンプトキャッシュから読めるようにしました。</li>
+  <li><strong>UI の細かな調整</strong>: セッション開始から10秒後に <code>← for agents</code> のフッター表示が消えるようになりました（応答待ちのエージェント数の表示は残ります）。組織ポリシーで <code>/feedback</code> が無効な場合のメッセージは、組織管理者ではなく GitHub Issues を案内するようになりました。</li>
+  <li><strong>[Claude Tag]</strong>: 管理設定が Bundles、Connectors、Skills and plugins、Channels の4タブに整理されました。組織設定の Roles ページは、Claude Tag のチャネル管理者向けに作成されたロールを折りたたみセクションにまとめるようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-302">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.2</strong>（2026-10-15 17:21 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.4</h2>
+<p>対象期間内に安定版 <strong>v2026.10.4</strong>（2026-10-16 09:36 JST 公開）がリリースされました。2026.10.3 に対する安定性パッチで、新機能や設定変更は含まれません。本リリース時点の最新安定版は v2026.10.4 です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>スリープ・時刻変更後の Gateway 維持</strong>: コンピューターがスリープした後やシステムクロックが飛んだ後に、所有権ハートビートが古いと見なされて Gateway が自己再起動してしまう問題が修正され、稼働を継続するようになりました。</li>
+  <li><strong>シャットダウン／再起動のハング解消</strong>: 停止したトランスクリプトワーカーや処理中のセッションライフサイクルイベントによって、Gateway のシャットダウンと再起動がハングしなくなりました。</li>
+  <li><strong>手動 <code>/compact</code> の挙動</strong>: 手動 <code>/compact</code> がアクティブな実行を中断して保留中のリクエストを破棄するのではなく、実行の決着を待ってから圧縮するようになりました。</li>
+  <li><strong>ヘッドレスブラウザ</strong>: サイトがパスキー待ちの間も、ヘッドレスページがクリックに応答し続けるようになりました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ</strong>: Tlon のグループ DM が他の参加者をオーナーとして扱ってしまう、オーナーなりすましの経路を塞ぎました。</li>
+  <li><strong>Gateway</strong>: 長い返信タグ付きストリーム中も応答し続け、ツールコール XML を引用した長文返信がトークンごとに Markdown を再解析しなくなりました。スリープやウォールクロック変更後に状態所有権を回復し、検証済みの外部 macOS ターミナルから <code>openclaw gateway restart</code> を実行できます。</li>
+  <li><strong>エージェント</strong>: 起動されたプラグインのターンが writer-claim エラーで失敗しなくなり、Claude CLI セッションがメッセージ経路をまたいで履歴を分岐しなくなりました。</li>
+  <li><strong>OpenAI</strong>: api.openai.com の Completions 経路で、推論モデルのツールターンが 400 で失敗しなくなりました。</li>
+  <li><strong>更新処理</strong>: スナップショット取得中にエージェントのデータベースが変更済みと誤判定されなくなり、Linux の更新が保護された systemd ユーザーマネージャー配下の放棄されたランタイムディレクトリを清掃できるようになりました。</li>
+  <li><strong>その他</strong>: Doctor のオフライン状態修復、Tailscale の中断時処理と Doctor チェック、macOS のアプリ復旧、POSIX パスエイリアス（<code>/tmp</code> と <code>/private/tmp</code>）によるチャネル再起動の抑止、MCP OAuth のループバックリダイレクト対応、Telegram・Discord・Feishu・IRC の各修正が含まれます。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.4">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.227</h2>
+<p>対象期間内に <strong>v1.4.227</strong>（2026-10-16 12:42 JST 公開）がリリースされました。ネイティブチャットの権限モードの独立化と、チャットセッションの再開・管理の改善が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>チャットごとの権限モード</strong>: 新規の Claude / Codex チャットごとに権限を Settings → Chat → Behavior から選べるようになりました。既存チャットはそれまで使っていたモードを維持し、モデルを変更してもモードがリセットされなくなりました。</li>
+  <li><strong>チャットセッションの再開</strong>: 大きなターミナル会話を新しいネイティブチャットで再開でき、再起動後にバックグラウンドのみで処理が走っていたチャットも復旧できます。Session History では対応する全チャットプロバイダーが正確に表示されます。</li>
+  <li><strong>Claude アカウントと Codex チャット設定</strong>: Claude アカウントが再び個別フォルダを使うようになり、サインインリンクをコピーできます。Codex チャットはバージョン 0.136.0 以降が必須となり、速度オプションとして Codex Ultrafast が選べるようになりました。</li>
+  <li><strong>ブラウザ自動化</strong>: エージェントのブラウザコマンドが意図したページを対象とするようになり、ブラウザのポップアップが Chrome に近い挙動になりました。キーボード操作が確実に戻ります。</li>
+  <li><strong>その他</strong>: worktree のクリーンアップがより安全になり、既読の macOS 通知が Notification Center から消えるようになり、長いチャットがスマートフォンでより良く読み込まれ、コールド時のセッション履歴読み取りで不要な再インデックスを避けるようになりました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.227">GitHub Releases</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に新規安定版リリースは確認されませんでした。最新安定版は <strong>v16.4.2</strong>（2026-10-16 05:44 JST 公開、対象期間の開始前）です。プレリリースとして <strong>v16.5.0-canary.16</strong>（2026-10-17 08:47 JST 公開）が確認されています。</p>
+
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>AWS</strong>: 対象期間内に10件のアナウンスがありました。主なものは <strong>Amazon CloudWatch ログ集約</strong>の GovCloud および13の商用リージョンへの拡大（2026-10-17 05:04 JST）、<strong>AWS Lambda durable functions</strong>の AWS GovCloud（US-East / US-West）提供開始（2026-10-17 03:26 JST）、<strong>Nemotron 3.5 Super VL</strong>モデルの Amazon SageMaker JumpStart での提供（2026-10-17 02:59 JST）、<strong>Reflection の Beam モデル</strong>の SageMaker JumpStart / AWS Trainium での提供（2026-10-17 01:00 JST）、<strong>AWS Transform</strong>の Azure→AWS クラウドネイティブコード変換（2026-10-16 22:50 JST）、第2世代 AWS Outposts ラックの AWS メキシコ（中央）リージョン対応（2026-10-16 17:00 JST）です。AWS End User Messaging ではブランドプロファイル対応、RCS 登録動画のガイド付きウィザード、マネージド OTP 検証のエンドツーエンド提供、登録改善の4件が同時に公開されました。</li>
+  <li><strong>Google Cloud</strong>: 2026-10-16 付のリリースノートが公開されました。<strong>Dialogflow</strong> の <code>gemini-3.5-flash-lite</code> が GA、<strong>Gemini Enterprise</strong> の Workflow Builder から Confluence Data Center / Jira Data Center への接続、<strong>Agent Search</strong> の回答生成の安定版モデルを <code>gemini-3.5-flash/answer_gen/v1</code> へ更新、が含まれます。</li>
+  <li><strong>Claude API / SDK</strong>: 対象期間内に新規リリースは確認されませんでした。最新は Python SDK <strong>v1.15.0</strong> / TypeScript SDK <strong>sdk-v0.135.0</strong>（いずれも 2026-10-16 04:42〜04:45 JST 公開、対象期間の開始前）です。</li>
+  <li><strong>React</strong>: 対象期間内に新規リリースは確認されませんでした。最新は <strong>v19.3.1</strong>（2026-10-15 02:06 JST 公開）です。</li>
+  <li><strong>Node.js</strong>: 対象期間内に新規リリースは確認されませんでした。最新は <strong>v26.12.0</strong>（2026-10-15 00:22 JST 公開）です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードの取得が対象期間中に完了せず、新着の確認ができませんでした）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.2.0-M2 プレリリース、2026-09-24 公開）、<strong>Hono</strong>（最新は v5.0.0-rc.1 プレリリース、2026-10-10 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
