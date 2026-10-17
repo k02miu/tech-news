@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>WordPress「LearnPress」- チェックアウト経由の未認証PHPオブジェクトインジェクション（CVE-2026-104736、CVSSv3.1 9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-104736（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8）、同一プラグインに格納型XSSの CVE-2026-109208（7.2）</td></tr>
+<tr><th>影響</th><td>WordPress用LMSプラグイン「LearnPress – WordPress LMS Plugin for Create and Sell Online Courses」4.4.10およびそれ以前</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 04:16 UTC（JST 13:16）。報告はWordfence</td></tr>
+</table>
+<ul>
+<li>チェックアウトのAJAX処理で受け取る <code>checkout-email</code> パラメータが <code>sanitize_text_field()</code> のみを通され、シリアライズ構文が除去されないままセッションテーブルへ保存されます。その後、次回リクエスト時の <code>LP_Session_Handler::get()</code> から <code>LP_Helper::maybe_unserialize()</code> → <code>unserialize()</code> へ、しかも <code>allowed_classes</code> 制限なしで渡されるため、未認証の攻撃者がPHPオブジェクトを注入できるというものですわ。</li>
+<li>脆弱版自体にはPOPチェーンが存在しないため、対象サイトに別のプラグインやテーマ由来のPOPチェーンがある場合に限り実害が生じます。その場合は任意ファイルの削除、機微情報の取得、コード実行まで到達しうるとされています。</li>
+<li>併せて修正された CVE-2026-109208 は、数量（REST）／<code>order_comments</code>（チェックアウト）パラメータのサニタイズ不足による格納型XSSで、ゲスト購入が有効な構成では完全に未認証で成立します。修正版への更新をお勧めいたしますわ。</li>
+</ul>
+
+<h3>WordPress「LatePoint」- OTP検証の競合状態による認証バイパス、顧客アカウント乗っ取り（CVE-2026-110653、CVSSv3.1 9.1）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110653（CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N = 9.1）</td></tr>
+<tr><th>影響</th><td>WordPress用予約プラグイン「Appointment Booking Plugin – LatePoint | Calendar &amp; Scheduling for WordPress」5.7.4およびそれ以前（5.7.5で修正）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 03:16 UTC（JST 12:16）。報告はWordfence</td></tr>
+</table>
+<ul>
+<li><code>verifyOTP</code> 関数の試行回数カウンタの更新が非アトミックで、<code>UPDATE</code> に <code>attempts &lt; 10</code> の条件句がなく、<code>SELECT ... FOR UPDATE</code> による行ロックも取られていません。このTOCTOU（検査と使用の時間差）により、同時リクエストで10回のロックアウト上限を回避できてしまいます。</li>
+<li>対象顧客の登録メールアドレスまたは電話番号を知る未認証の攻撃者は、<code>auth__verify_otp</code> エンドポイントへ並行リクエストを投げ、6桁のOTPコードを総当たりして顧客として認証を通過できます。アカウント・予約・個人データへ完全にアクセスされるおそれがあります。</li>
+<li>エンドポイントのnonce検査は緩和策になりません。<code>request_otp</code> と <code>resend_otp</code> が未認証でnonceを払い出しており、誰でも事前に取得できるためですわ。5.7.5以降への更新をご確認くださいませ。</li>
+</ul>
+
+<h3>phpMyFAQ 4.1.9未満 - WebAuthn登録エンドポイントの認証バイパスによるアカウント乗っ取り（CVE-2026-111911、CVSSv3.1 9.8 / CVSSv4.0 9.3）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111911（CVSSv3.1 9.8、CVSSv4.0 9.3）、CWE-287</td></tr>
+<tr><th>影響</th><td>phpMyFAQ 4.0.0以上4.1.9未満、4.2.0-alpha以上4.2.0-beta未満（4.1.9および4.2.0-betaで修正）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 19:16 UTC（JST 2026-10-18 04:16）。報告はVulnCheck</td></tr>
+</table>
+<ul>
+<li>WebAuthnの登録エンドポイントが、認証もチャレンジ検証も行わずに任意のアカウントへ資格情報を紐付けてしまいます。攻撃者は被害者のユーザー名を先に用意し、<code>fmt=none</code> の偽造アテステーションを送ってパスキーを登録したうえで、パスワードとTOTPの両方を回避してログインできるというものですわ。</li>
+<li>同日、phpMyFAQにはHigh相当が7件まとめて登録されています。IdP認証済みユーザーがKeycloak／Entra IDのSSOコールバック経由でTOTP二要素を回避できる問題（CVE-2026-111882、8.1）、メールアドレス変更時に現行パスワードを要求しないためセッション奪取からパスワードリセットで乗っ取られる問題（CVE-2026-111884、8.3）、カテゴリ制限付き編集者が権限外FAQの添付を操作できる認可バイパス（CVE-2026-111897、7.1）、Keycloakの暗黙的なアカウント紐付けによるsuperadmin奪取（CVE-2026-111898、7.5）、未認証のAPIページングによるDoS（CVE-2026-111901、7.5）、<code>update-database</code> のCSRF（CVE-2026-111907、7.1）、FAQ更新APIのBOLA（CVE-2026-111908、8.3）、<code>deleteUser</code> でsuperadminを削除できる認可欠如（CVE-2026-111909、8.1）です。</li>
+<li>いずれも修正版は 4.1.9（および4.2.0-beta）です。4.0系をご利用の場合は優先的に更新なさってくださいませ。</li>
+</ul>
+
+<h3>WordPressプラグイン一括 - Kirki／User Registrationほか、High 7件（CVE-2026-92798 は 8.1）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-92798（8.1）、CVE-2026-111110（7.5）、CVE-2026-107762（7.5）、CVE-2026-108123（7.5）、CVE-2026-104734（7.2）、CVE-2026-103899（7.2）、CVE-2026-100316（7.2）、CVE-2026-96660（7.2）</td></tr>
+<tr><th>影響</th><td>User Registration &amp; Membership（5.2.8以下）、GetPaid（2.8.61以下）、Kirki（6.3.2以下）、WP Booking System（2.1.0.3以下）、EU VAT Assistant for WooCommerce（2.1.30.260413以下）、European VAT Compliance Assistant for WooCommerce（1.36.10以下）、LearnPress（4.4.10以下）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 03:16〜08:16 UTC（JST 12:16〜17:16）。報告はWordfence</td></tr>
+</table>
+<ul>
+<li>最も高いのは「User Registration &amp; Membership」の任意ショートコード実行（CVE-2026-92798、8.1）です。<code>UR_Smart_Tags::process()</code> の <code>referrer_url</code> 分岐で、攻撃者が制御する <code>HTTP_REFERER</code> ヘッダを <code>sanitize_text_field()</code> のみ通してコンテンツ制限メッセージへ差し込み、<code>apply_shortcodes()</code>／<code>do_shortcode()</code> で実行してしまいます。{{referrer_url}} スマートタグを使う制限ページがある構成では未認証で任意の登録済みショートコードが実行されます。</li>
+<li>「GetPaid」（CVE-2026-111110）・「EU VAT Assistant for WooCommerce」（CVE-2026-103899）・「European VAT Compliance Assistant」（CVE-2026-100316）・LearnPress（CVE-2026-96660）はいずれも格納型XSSです。特に EU VAT Assistant は <code>vat_number</code> に仕込んだペイロードが管理者の注文編集画面で実行され、不正な管理者アカウント作成によるサイト全体の乗っ取りまで至りうるとされています。European VAT Compliance Assistant はゲスト購入時に <code>CF-IPCountry</code> ヘッダ値がそのまま注文メタへ保存されるため、アカウント不要で成立します。</li>
+<li>「Kirki」はインポートエンドポイントのPHPオブジェクトインジェクション（CVE-2026-104734、既定でEditor権限までFULL_ACCESS）に加え、<code>context</code> パラメータの検証欠如による未認証IDOR（CVE-2026-107762）があり、任意ユーザーのメールアドレス・表示名・ユーザーメタをREST応答経由で読み取られます。「WP Booking System」は <code>booking_id</code> と <code>email_log_id</code> を総当たりするだけで、本来管理者のみが閲覧できる予約通知メール本文（氏名・メール・電話・問い合わせ内容・予約日）を未認証で読み出せます（CVE-2026-108123）。</li>
+</ul>
+
+<h3>FreeRDP - NTLM MICオフセット未検証によるヒープ境界外書き込みほか2件（CVSSv3.1 最大 7.6 / CVSSv4.0 最大 8.3）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111880（CVSSv4.0 8.3 / CVSSv3.1 7.4）、CVE-2026-111881（CVSSv3.1 7.6 / CVSSv4.0 7.2）</td></tr>
+<tr><th>影響</th><td>FreeRDP 2.0.0以上3.32.0未満（CVE-2026-111880）、FreeRDP 3.14.1以上3.32.0未満（CVE-2026-111881）。いずれも3.32.0で修正</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 19:16 UTC（JST 2026-10-18 04:16）。報告はVulnCheck</td></tr>
+</table>
+<ul>
+<li>CVE-2026-111880 はサーバ側ハッシュコールバックのNTLM処理でMICオフセットを検証していない問題です。未認証の攻撃者が、後方へ向かうセッションキーオフセットとMICオフセットを持つ細工済み <code>AUTHENTICATE_MESSAGE</code> を送ることで、確保領域の外側へ16バイトのゼロを書き込めます（CWE-787）。</li>
+<li>CVE-2026-111881 はWinPRのBMPライターにおける整数アンダーフローです。サブバイト画像でストライド計算が食い違い、<code>Stream_Zero</code> に <code>SIZE_MAX - 3</code> が渡されます。悪意あるRDPクリップボード相手がCF_DIB／CF_DIBV5向けに細工した1bpp BMPを返すと、クライアントがクラッシュするか境界外書き込みが発生します（CWE-191）。</li>
+<li>RDPクライアントをご利用の環境では、3.32.0以降への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Fleet（fleetdm）- 未認証でサーバを停止させるDoS 2件（CVSSv4.0 8.7）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111923（CVSSv4.0 8.7 / CVSSv3.1 7.5、CWE-674）、CVE-2026-111924（CVSSv4.0 8.7 / CVSSv3.1 7.5、CWE-409）</td></tr>
+<tr><th>影響</th><td>Fleet 4.89.0未満（CVE-2026-111923）、Fleet 4.83.0未満（CVE-2026-111924）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 19:16 UTC（JST 2026-10-18 04:16）。報告はVulnCheck、GHSA-x467-vgxf-2g6h / GHSA-3982-g48v-9rwh</td></tr>
+</table>
+<ul>
+<li>CVE-2026-111923 はApple MDM登録のプロパティリスト解析における無制限再帰です。約150バイトの細工したバイナリplistを登録エンドポイントへ送るだけで、指数的なメモリ確保ないし無限再帰によりCPUとメモリを枯渇させ、サーバをクラッシュさせられます。認証は不要です。</li>
+<li>CVE-2026-111924 は <code>Content-Encoding: gzip</code> を付けた高圧縮リクエストボディによるメモリ枯渇です。未認証エンドポイントへ小さな圧縮リクエストを送るだけで展開時に肥大化し、Fleetインスタンス全体が停止します。</li>
+<li>端末管理基盤としてFleetをご利用の場合は、修正版への更新を優先なさってくださいませ。</li>
+</ul>
+
+<h3>Coder - ワークスペースプロキシのホスト名前方一致による資格情報窃取（CVE-2026-111927、CVSSv3.1 7.7 / CVSSv4.0 8.7）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111927（CVSSv3.1 7.7、CVSSv4.0 8.7、CWE-522）</td></tr>
+<tr><th>影響</th><td>Coder 2.29.20未満 / 2.33.0以上2.33.12未満 / 2.34.0以上2.34.8未満 / 2.35.0以上2.35.4未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 19:16 UTC（JST 2026-10-18 04:16）。報告はVulnCheck、GHSA-h58h-qvv5-xvwg</td></tr>
+</table>
+<ul>
+<li><code>GetWorkspaceProxyByHostname</code> のホスト名検証が不適切で、<code>SIMILAR TO</code> パターンが前方一致になっています。そのため、ワークスペースプロキシのアクセスURLの文字列プレフィックスとなるドメインを所有する攻撃者は、正規のプロキシとして信頼されてしまいます。</li>
+<li>攻撃者は認証済みの被害者を細工した <code>/api/v2/applications/auth-redirect</code> リンクへ誘導し、リダイレクト先で <code>application_connect</code> APIキーを取得して再生することで、被害者のワークスペースアプリへアクセスできます。</li>
+</ul>
+
+<h3>Perl「Text::CSV_XS」1.65未満 - メモリ枯渇・解放後使用・メモリリークの3件（CVE-2026-110752 / 110753 / 110754）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110752（CWE-770）、CVE-2026-110753（CWE-416 / CWE-911）、CVE-2026-110754（CWE-401）。NVDのCVSSは本報告時点で未採点</td></tr>
+<tr><th>影響</th><td>Perlモジュール Text::CSV_XS 1.65未満（1.65で修正）。CVE-2026-110753 は1.46以降が対象</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-16 23:17 UTC（JST 2026-10-17 08:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-110752 は <code>fragment</code>／<code>csv</code> の脆弱性です。RFC 7111セレクタを配列へ展開する際、データを読む前に選択インデックス1つにつき1要素を確保し、<code>cell=</code> セレクタの明示的な終端列をローへクランプしないため、2行のファイルに対して <code>row=1-400000000</code> を指定すると4億要素が確保されます。リクエスト由来のfragmentをそのまま渡すアプリケーションでは、evalで捕捉できないOut of memoryでプロセスが終了します。</li>
+<li>CVE-2026-110753 は <code>bind_columns</code> 利用時の解放後使用です。パーサはフィールドを呼び出し元のスカラーへ直接書き込み参照を保持しませんが、<code>skip_empty_rows</code> が空の最終行を飛ばす際、バウンドされているかを確認せず現在のフィールドスカラーを解放し、アプリ側の参照を1つ落としてしまいます（<code>eof</code> モードでは空行すべてで同様）。</li>
+<li>CVE-2026-110754 はパースに失敗したレコードのフィールドを解放しないメモリリークです。<code>getline</code> は成功時のみ配列への参照を返すため、構文エラーのレコードで確保済み配列とフィールドが残ります。信頼できないCSVを解析し続ける長時間プロセスでは、不正な入力の反復でメモリを枯渇させられます。1.65以降へ更新なさってくださいませ。</li>
+</ul>
+
+<h3>THU-MIG yoloe - AutoBackendモデル読み込みのevalを介したコードインジェクション（CVE-2026-111865、CVSSv3.1 5.3）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111865（CVSSv3.1 5.3 / CVSSv4.0 1.9、CWE-94・CWE-95）</td></tr>
+<tr><th>影響</th><td>THU-MIG yoloe（ultralytics/nn/autobackend.py の AutoBackend Model Loading、コミット 40cd606 まで）。バージョン管理を行っていないため影響・非影響リリースの情報はありません</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-17 21:16 UTC（JST 2026-10-18 06:16）。VulDB、実証コード公開済み</td></tr>
+</table>
+<ul>
+<li><code>ultralytics/nn/autobackend.py</code> の <code>eval</code> 関数に <code>imgsz</code>／<code>names</code>／<code>kpt_shape</code> を操作して渡すことで、動的に評価されるコード内のディレクティブが適切に中和されず、ローカルでの攻撃が成立します。攻撃経路はローカルに限定され、深刻度は中程度にとどまります。</li>
+<li>実証コードが公開済みで悪用されうる状態ですが、プロジェクトはIssueでの事前報告に応答しておらず、本報告時点で修正版はありません。信頼できないモデルファイルや設定を取り込む運用は避けてくださいませ。</li>
+</ul>
+
+<h3>Claude Code / Hermes Agent / OpenClaw / JVN・国内ベンダ - 対象期間内の新規セキュリティ情報はありませんでした</h3>
+<hr>
+<p class="empty-notice">Claude Code の最新版は 2.1.302（2026-10-16 反映、既報）で、対象期間内に新しいバージョンおよびセキュリティ関連の修正は確認されませんでした。Hermes Agent（NousResearch/hermes-agent）の最新リリースは v0.22.2（2026-10-15 公開、既報）、OpenClaw も最新は 2026.10.10-beta.1（2026-10-15 公開、既報）で、いずれも対象期間内に新たなリリースタグおよび脆弱性修正・CVEは確認されませんでした。JVN／JPCERT/CC の最新公開は 2026/10/16 09:15（CISA ICS Advisory）止まりで、10/17 は土曜日のため新規アドバイザリの公表はありません。加えて、対象期間内に Next.js / React / Hono / Django / Spring Boot / GCP / AWS / Azure 各製品に直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>国内主要インシデント - 対象期間内の新規公表はありませんでした</h3>
+<hr>
+<p class="empty-notice">対象期間（2026-10-17 08:00 〜 2026-10-18 08:00 JST）に、日本企業・官公庁・大学・医療機関等による新たな被害公表は確認されませんでした。10月17日は土曜日のため、Security NEXT・ScanNetSecurity の両媒体とも新規記事の公開がなく（Security NEXT の10月分アーカイブは 2026/10/16 が最新、ScanNetSecurity も 2026.10.16 が最新）、ITmedia NEWS のセキュリティ関連新着記事も 2026年10月15日以降の更新はありませんでした。JVN／JPCERT/CC にも 10/17 付の新規公表はありません。読売新聞の「サイバー攻撃で個人情報などの流出が判明した企業・団体の一覧」は 2026-10-17 01:17 に更新されていますが、追加された案件はいずれも16日までに判明したもので対象期間外ですわ。国内の新規公表が出そろい次第、次号以降でお伝えいたします。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
