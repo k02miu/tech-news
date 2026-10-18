@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-19 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-19 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Gitea 28.2.0 - 可視性チェック欠如・組織横断のラベル削除ほか、12件の脆弱性を一括公開（CVE-2026-97204 / CVE-2026-97859 ほか）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-97204、CVE-2026-97859、CVE-2026-104627、CVE-2026-105661、CVE-2026-105964、CVE-2026-107618、CVE-2026-107686、CVE-2026-109553、CVE-2026-109844、CVE-2026-110311、CVE-2026-110324、CVE-2026-110494（計12件、CVSSは本報告時点で未採点）</td></tr>
+<tr><th>影響</th><td>セルフホスト型Gitサービス「Gitea」。修正版は 28.2.0（一部は 1.27.3 / 28.0.0 で先行修正）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 19:16 UTC（JST 2026-10-19 04:16）。Gitea 28.2.0 のリリースに合わせて一括開示</td></tr>
+</table>
+<ul>
+<li>CVE-2026-97859 は <code>/api/v1/users/{username}</code> 配下の7つのAPIルート（followers、following、following/{target}、starred、subscriptions、keys、gpg_keys）が、対象ユーザーの可視性を強制する <code>individualPermsChecker</code> ミドルウェアを通さずに登録されていた問題ですわ。認証済みユーザーが、本来は閲覧できない限定公開・非公開のユーザーについて、フォロー関係やスター／ウォッチ中のリポジトリ、公開SSH鍵・GPG鍵を読み取れてしまいます（CWE-862）。</li>
+<li>CVE-2026-97204 はラベル削除処理が、リクエスト中のリポジトリIDと組織ラベルの組織IDを比較していた問題です。両者のID体系が重複しうるため、リポジトリのIssueへの書き込み権限を持つユーザーが、同じ数値IDを持つ別組織のラベルを削除できてしまいました（CWE-863）。現在はラベルが自リポジトリ／自組織の範囲内でのみ削除されるよう修正されています。</li>
+<li>CVE-2026-104627 はセキュリティ設定のOpenID連携コールバックが、OpenID 2.0 のアサーションを適切に確認せずに受理してしまう問題です。残る9件の詳細はGiteaのリリースノートおよびGHSAアドバイザリをご確認くださいませ。</li>
+<li>インターネットに公開しているGiteaインスタンスは、28.2.0以降へ速やかに更新なさることをお勧めいたしますわ。限定公開ユーザーの情報が読み取られる問題は、更新の手間に対して被害が過大になりがちです。</li>
+</ul>
+
+<h3>WordPress プラグイン一括 28件 - Salon Booking System の管理者権限昇格（7.2）、Modern Events Calendar の SQL インジェクション（7.7）ほか<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110031 / 110032 / 110033 / 110035（Salon Booking System）、CVE-2026-96534 / 110069 / 110070（Modern Events Calendar Lite・Pro）、CVE-2026-110981（WP Photo Album Plus、7.1）、CVE-2026-109937（Otter Blocks）、CVE-2026-110026（Tasty Recipes Lite）、CVE-2026-110976 / 111041（AI Engine）、CVE-2026-87844（PickPlugins Product Designer for WooCommerce）ほか全28件</td></tr>
+<tr><th>影響</th><td>WordPress 本体ではなく各プラグイン／テーマ（WPScan・Patchstack 経由の開示）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 07:16 UTC 前後（JST 2026-10-18 16:16 前後）</td></tr>
+</table>
+<ul>
+<li>最も影響が大きいのは「Salon Booking System」10.31.11 未満の権限昇格です（CVE-2026-110031、CVSSv3.1 7.2）。独自のサロンスタッフ権限を持つユーザーが、顧客の編集画面から他アカウントへ任意の権限を付与でき、管理者権限へ昇格させてサイトを掌握できてしまいます。同プラグインでは、サロンスタッフが管理者を含む他ユーザーのロールを顧客へ変更したり任意のプロフィール項目を上書きできる問題（CVE-2026-110032、管理者アクセス喪失・サイトロックアウト）、利用者指定の画像URLをサーバ側で取得して公開領域へ書き込む問題（CVE-2026-110033）、REST APIエンドポイントがサロンスタッフ限定になっておらず非表示のクーポンまで購読者権限で取得できる問題（CVE-2026-110035）が同時に修正されています。</li>
+<li>「Modern Events Calendar Lite / Pro」7.37.0 未満では、最小権限（購読者以上）の認証済みユーザーがパラメータをエスケープなしにSQL文へ渡せるSQLインジェクション（CVE-2026-96534、CVSSv3.1 7.7、スコープ変更あり）があります。加えて、予約・参加者データ（氏名、メールアドレス、トランザクションID、支払額）を権限・nonce・所有権のチェックなしに取得できる問題（CVE-2026-110069）と、購読者権限で任意の投稿・固定ページのタイトル・本文・抜粋を改ざんできる問題（CVE-2026-110070、7.36.4 未満）も確認されています。</li>
+<li>「WP Photo Album Plus」9.2.11.002 未満の格納型XSS（CVE-2026-110981、CVSSv3.1 7.1）は、ギャラリーのパンくずリンクに埋め込まれたスクリプトが、リンクを踏んでパンくずをクリックした管理者のブラウザで実行されるため、未認証の攻撃者からサイト乗っ取りまで到達しうる点にご注意くださいませ。</li>
+<li>そのほか、PHPオブジェクトインジェクション（Strong Testimonials 3.3.12 以下、Conversational Forms for ChatBot 1.5.1 以下）、権限昇格（OttoKit 1.1.40 以下、Login with phone number 1.8.77 以下）、アクセス制御不備（Advanced File Manager 5.4.14 以下、Kit 3.4.6 以下）、SQLインジェクション（Booktics 1.0.29 以下、Support Genix 1.4.54 以下）、認証不備（2Way VideoCalls and Random Chat 6.1.5 以下）、IDOR（Electronic Signature Add-on for Fluent Forms 2.0.5 以下）、XSS（eStore テーマ 1.6.13 以下、Simply Schedule Appointments 1.6.12.35 以下、PowerPack Lite for Beaver Builder 1.3.1 以下など）がまとめて報告されています。ご利用中のプラグインが一覧に含まれていないか、いま一度ご確認くださいませ。</li>
+</ul>
+
+<h3>WSO2 製品群 - JDBC ユーザーストア設定の入力検証不備による任意コード実行（CVE-2024-4457）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2024-4457（CWE-78、CVSS は本報告時点で未採点）</td></tr>
+<tr><th>影響</th><td>WSO2 Enterprise Integrator 6.6.0 系、WSO2 API Manager 3.1.0〜4.3.0 系、WSO2 Identity Server 5.10.0〜7.0.0 系、WSO2 Open Banking AM / IAM、WSO2 Identity Server as Key Manager、WSO2 Carbon User Manager Kernel（<code>org.wso2.carbon.user.core</code>）各系</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 18:16 UTC（JST 2026-10-19 03:16）。WSO2 Security Advisory WSO2-2023-3084</td></tr>
+</table>
+<ul>
+<li>Management Console が JDBC ユーザーストアの構成に関する入力を適切に検証しておらず、細工した入力によって影響を受けるサーバ上で任意のコードが実行されうる問題ですわ（Java 製ミドルウェア）。</li>
+<li>悪用に成功した場合、攻撃者は WSO2 製品の権限でサーバ上の任意コードを実行でき、システム全体が掌握されうるとされています。管理コンソールを外部公開している構成は優先的にご確認くださいませ。</li>
+<li>各製品の修正リリース（例: API Manager 4.3.0.21、Identity Server 7.0.0.15、Carbon User Manager Kernel 4.10.9.10 以降）へ更新のうえ、管理コンソールへの到達経路そのものも制限なさるのが宜しいかと存じます。</li>
+</ul>
+
+<h3>JeecgBoot 3.9.5 未満 - SqlInjectionUtil のブロックリスト回避による SQL インジェクション（CVE-2026-112017、CVSSv4.0 7.1 / CVSSv3.1 6.5）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-112017（CVSSv4.0 7.1、CVSSv3.1 6.5、CWE-89）</td></tr>
+<tr><th>影響</th><td>Java 製ローコード開発基盤「JeecgBoot」3.9.5 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 12:17 UTC（JST 2026-10-18 21:17）。報告は VulnCheck、3.9.5 で修正</td></tr>
+</table>
+<ul>
+<li><code>SqlInjectionUtil</code> のキーワードブロックリストを、辞書やオンラインレポートのSQL断片へ改行文字を挿入することで回避できる問題です。認証済みの攻撃者が <code>/sys/dict/getDictItems</code> などのエンドポイントへ改行区切りのペイロードを送り、ブールベース／時間ベースのブラインドSQLインジェクションを成立させられます。</li>
+<li>結果として、<code>sys_user</code> テーブルの管理者パスワードハッシュを含むデータベースの内容を抽出されうるとされています。Spring Boot 系の社内基盤でご利用の環境は、3.9.5 以降への更新をご検討くださいませ。</li>
+</ul>
+
+<h3>DataStax pulsar-jms 9.0.3 まで - PulsarObjectMessage のデシリアライズ（CVE-2026-111868、CVSSv3.1 6.3）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111868（CVSSv3.1 6.3、CVSSv4.0 2.1、CWE-20・CWE-502）</td></tr>
+<tr><th>影響</th><td>DataStax 製 Java メッセージング実装 pulsar-jms 9.0.0〜9.0.3</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 01:16 UTC（JST 2026-10-18 10:16）。実証コードが公開済み、ベンダ未応答</td></tr>
+</table>
+<ul>
+<li><code>PulsarObjectMessage.java</code> の <code>decode</code> 関数に起因する安全でないデシリアライズです。リモートからの攻撃が可能で、実証コードが公開され悪用されうる状態にあります。</li>
+<li>本報告時点でベンダからの応答はなく修正版も示されていません。信頼できない送信元のメッセージを復号する運用では、メッセージブローカーへの到達制御とペイロードの検証を強化なさってくださいませ。</li>
+</ul>
+
+<h3>npm「ip-address」10.7.4 未満 - Address6 コンストラクタ経由の ReDoS によるサービス停止（CVE-2026-111997、CVSSv4.0 6.3）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111997（CVSSv4.0 6.3、CWE-1333）</td></tr>
+<tr><th>影響</th><td>npm パッケージ「ip-address」10.7.4 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 01:16 UTC（JST 2026-10-18 10:16）。GHSA-rxp7-6hxx-x8q5、CISA の SSVC 評価は自動化可能</td></tr>
+</table>
+<ul>
+<li><code>Address6</code> コンストラクタへ到達する入力に多数の <code>%</code>（ゾーン識別子）文字を含めることで、二次関数的な計算量によるCPU消費とアプリケーションの停止を引き起こせます。</li>
+<li>IPアドレス文字列をリクエストから受け取って検証するNode.jsアプリは影響を受けます。CISAのSSVCでは「自動化可能（automatable: yes）」と評価されており、未認証で繰り返し叩ける箇所は早めに塞いでおきたいところですわ。10.7.4以降へ更新なさってくださいませ。</li>
+</ul>
+
+<h3>AUTOMATIC1111 stable-diffusion-webui - カードビルダー等のクロスサイトスクリプティング／コードインジェクション4件（CVE-2026-111984〜111987）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111984（CVSSv3.1 4.3）、CVE-2026-111985、CVE-2026-111986、CVE-2026-111987（いずれも CWE-79 / CWE-94）</td></tr>
+<tr><th>影響</th><td>AUTOMATIC1111 stable-diffusion-webui 1.10.1 およびそれ以前</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 12:17 UTC（JST 2026-10-18 21:17）。VulDB、実証コード公開済み・ベンダ未応答</td></tr>
+</table>
+<ul>
+<li><code>modules/ui_extra_networks.py</code> の <code>create_item_html</code>（Card Builder コンポーネント）で、<code>filename</code> 引数の操作によりクロスサイトスクリプティングが成立します。リモートからの攻撃が可能で、実証コードが公開されています。</li>
+<li>ローカル／社内で生成AIのWeb UIを共有している環境では、外部公開していなくても同一ネットワーク内の第三者から到達しうる点にご留意くださいませ。修正版は本報告時点で示されていないため、到達経路の制限とファイル名の取り扱い見直しで対応するのが現実的ですわ。</li>
+</ul>
+
+<h3>OneUptime 14.0.2〜14.0.69 - Kubernetes AI 操作の認可不備、クラスタ範囲外への操作が可能（CVE-2026-112047、CVSSv4.0 5.3）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-112047（CVSSv4.0 5.3、CVSSv3.1 5.4、CWE-863）</td></tr>
+<tr><th>影響</th><td>オープンソースの可観測性基盤 OneUptime 14.0.2 以上 14.0.69 未満（14.0.69 で修正）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 13:16 UTC（JST 2026-10-18 22:16）。VulnCheck / GHSA-8fph-9j9f-xxgc</td></tr>
+</table>
+<ul>
+<li>プロジェクト単位の権限チェックに起因し、認証済みのプロジェクトメンバーが本来の権限範囲外のKubernetesクラスタに対して操作を行える問題ですわ。AIアクセステスト、エージェントのリセット、kubectl変更の承認、インシデントAI会話の各機能を呼び出すことで、エージェントのRBAC権限を把握したり、エージェントを切断したり、範囲外のリソースに対してコマンドを実行できてしまいます。</li>
+<li>AIエージェントに運用権限を委ねる構成では、認可の粒度がそのまま侵害影響の大きさになります。14.0.69以降への更新をお勧めいたします。</li>
+</ul>
+
+<h3>Linux カーネル - stable 系の CVE が 436 件一括登録（JST 2026-10-19 01:16）</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Linux カーネル CNA（<code>416baaa9-…</code>）由来の CVE 436 件（例: CVE-2026-98464 RISC-V KVM の use-after-free、CVE-2026-98669 IIO バッファの競合、CVE-2026-98546 arm64 PMZR_EL0 トラップの欠落 ほか）</td></tr>
+<tr><th>影響</th><td>Linux カーネル（各 stable ブランチ。修正は 6.12.112、6.18.55、7.2.9 系などへ取り込み済み）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-18 16:16〜16:17 UTC（JST 2026-10-19 01:16）</td></tr>
+</table>
+<ul>
+<li>週次の stable レビュー分がまとめて登録されたものです。大半がローカルアクセスや特権を要するものですが、RISC-V KVM のハードタイマ競合による use-after-free、IIO サブシステムのバッファ競合、arm64 ハイパーバイザのトラップ設定漏れなど、仮想化環境に影響しうる項目が含まれています。</li>
+<li>本朝刊の対象スタック（web / Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot）に直接関係するものではありませんが、ホストOSの更新判断のために件数としてお伝えいたしますわ。ご利用のカーネル系列が上記の修正版に到達しているか、`uname -r` でご確認くださいませ。</li>
+</ul>
+
+<h3>Claude Code 2.1.303 / OpenClaw 2026.10.5 / Hermes Agent - ツール承認まわりの修正と更新状況</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.303、OpenClaw 2026.10.5、Hermes Agent v0.22.2（既報）</td></tr>
+<tr><th>影響</th><td>各エージェントランタイム／CLI</td></tr>
+<tr><th>公開</th><td>Claude Code 2026-10-18 22:26 UTC（JST 2026-10-19 07:26）、OpenClaw 2026-10-18 21:47 UTC（JST 2026-10-19 06:47）</td></tr>
+</table>
+<ul>
+<li>Claude Code 2.1.303 が公開されました。変更内容は「バグ修正と信頼性の向上」とのみ記載されており、セキュリティに関わる個別の修正・CVEは本対象期間では示されていません（前版 2.1.302 のReadツールの巨大画像読み込み制限などは既報です）。</li>
+<li>OpenClaw 2026.10.5 では、ツール承認フックの挙動が厳格化されました。通常のフックが「信頼済みインライン承認（trusted-inline）」されたツール引数を、追加承認なしに書き換えることができなくなり、引数を変換するプラグインは最終的な引数について別途承認を求めるか、呼び出し自体がブロックされます。既存プラグインをお使いの場合は <code>docs/plugins/hooks/tool-policy.md</code> の移行手順をご確認くださいませ。</li>
+<li>Hermes Agent（NousResearch/hermes-agent）の最新リリースは v0.22.2（2026-10-15 公開）のままで、対象期間内に新たなリリースタグおよびセキュリティ関連の修正・CVEは確認されませんでした。</li>
+</ul>
+<hr>
+<p class="empty-notice">対象期間内に、Next.js / React / Hono / Django / Spring Boot / GCP / AWS / Azure の各製品に直接関連する新規のセキュリティ情報、および JVN／JPCERT/CC の新規アドバイザリ（最新公開は 2026/10/16 09:15 の CISA ICS Advisory）は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>政府機関が相次いで注意喚起 - 不正アクセスによる個人情報窃取事案を受け、NCO・総務省が所管事業者へ対策徹底を要請</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>内閣官房国家サイバー統括室（NCO）および総務省による注意喚起（発表は 2026-10-09、ScanNetSecurity が 2026-10-19 08:00 に報道）</td></tr>
+<tr><th>経緯</th><td>ウェブシステムの脆弱性悪用、サプライチェーン経由の侵害、データ管理の不備により、大量の個人情報を扱う事業者のシステムが不正アクセスを受け、個人情報を含むデータが窃取される事案が複数確認されたもの</td></tr>
+<tr><th>出典</th><td>内閣官房国家サイバー統括室「不正アクセスによる漏えい等の事案を踏まえた対応について」/ 総務省 注意喚起 / ScanNetSecurity 2026.10.19、Security NEXT 2026/10/16（IPA「不正アクセス特別相談窓口」）</td></tr>
+</table>
+<ul>
+<li>10月に入り、ソースネクスト（約2,252万件）、アエナ（最大81万件）、第一ライフグループ／第一生命保険（約12万名）、バイトル（最大約389万件）、手間いらずの宿泊予約情報（最大約445万人）など、大規模な個人情報漏えいの公表が国内で相次いでいます。この流れを受けて、政府側の対応が本対象期間に相次いで報道されました。</li>
+<li>NCOは、大量の個人情報や機微な情報を扱う事業者に対し、(1) ウェブシステム等の適切な管理（脆弱性管理、MFA導入、管理者アカウントの最小化、ログ取得・監視・侵入検知の活用）、(2) サプライチェーンを通じた侵害への対策（委託先の対策状況把握、契約におけるセキュリティ要件の明確化、再委託先を含む管理、情報共有範囲の適正化）、(3) データの適切な管理（保有情報の最小化、アクセス制御、保存データと通信経路の暗号化、公開設定・アクセス権限設定の確認）の徹底を求めています。</li>
+<li>総務省は所管事業者および関係団体へ同内容の注意喚起を行い、IPAも被害が疑われる段階から相談できる「不正アクセス特別相談窓口」を10月16日に開設しました。委託先経由の侵害が目立つ状況ですので、自社システムだけでなく委託契約と再委託先の管理状況も、この機会に棚卸しなさるのが宜しいかと存じます。</li>
+<li>本件は10月9日付の発表を本対象期間に各媒体が報じたものであり、新たな被害公表そのものではありません。進展としてお伝えいたしますわ。</li>
+</ul>
+
+<h3>国内主要インシデント - 対象期間内の新規公表はありませんでした</h3>
+<hr>
+<p class="empty-notice">対象期間（2026-10-18 08:00 〜 2026-10-19 08:00 JST）に、日本企業・官公庁・大学・医療機関等による新たな被害公表は確認されませんでした。10月18日は日曜日のため、Security NEXT・ScanNetSecurity の両媒体とも新規記事の公開がなく（Security NEXT の10月分アーカイブは 2026/10/16 付が最新で、10/19 は特別企画のみ、ScanNetSecurity も 2026.10.16 付が続いており 10/19 分は発表の再報のみ）、ITmedia NEWS のセキュリティ関連新着記事も 2026年10月15日以降の更新はありませんでした。JVN／JPCERT/CC にも 10/17〜10/18 付の新規公表はなく、最新は 2026/10/16 09:15 の CISA ICS Advisory ですわ。なお ScanNetSecurity が 10/19 付で報じた「ゲオアプリ」「Creema」の脆弱性は、いずれも JVN が 2026/10/15 に公表済みの既報です。国内の新規公表が出そろい次第、次号以降でお伝えいたします。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
