@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-20 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-20 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Apache Camel 4.18.5 / 4.22.1 - デシリアライズによる任意コード実行 CVSS 10.0 を含む38件を一括公開<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-78162（CVSSv4.0 10.0）、CVE-2026-88900 / 78165 / 83531（8.8）、CVE-2026-88901 / 80344 / 80343 / 80312 / 78164（8.2）ほか計38件</td></tr>
+<tr><th>影響</th><td>Apache Camel 4.0.0〜4.18.5 未満、4.19.0〜4.22.1 未満（Java統合フレームワーク。各コンポーネントに跨る）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 10:17〜11:17 UTC（JST 2026-10-19 19:17〜20:17）</td></tr>
+</table>
+<ul>
+<li>最も深刻なのは <code>camel-hazelcast</code> の脆弱性（CVE-2026-78162、CVSSv4.0 10.0）ですわ。同コンポーネントが自らの構成からインスタンスを生成する際、既定の <code>JavaSerializationFilterConfig</code> を適用しておらず、Javaネイティブのデシリアライズを経由した任意コード実行に到達しうる問題です。</li>
+<li>CVE-2026-78165 は <code>camel-spring-redis</code> で、serializer オプションが未指定のとき素の <code>JdkSerializationRedisSerializer</code> が遅延生成されてしまう問題（8.8）。CVE-2026-88900 は <code>camel-jgroups</code> の <code>createExchange(Message)</code>、CVE-2026-83531 は式言語インジェクションで、いずれも8.8です。</li>
+<li>このほか、リモートファイル消費系のパストラバーサル4件（FTP・SFTP・SMB・Azure Files、各7.4）、OAuthコンポーネントの認証スキップ（8.2）と state 欠如によるCSRF（6.1）、Netty HTTP のセキュリティ制約がパス大文字小文字を区別していた問題（8.2）、AS2の非同期MDN要求によるSSRF（8.2）、XXE（8.2）、Shiroの資格情報検証スキップ（5.9）、Tika・Mail・MLLPへのヘッダ／秘匿情報の流出などがまとめて修正されています。</li>
+<li>Camelは業務統合のハブになりがちで、経路上の秘匿情報がそのまま外部へ流れる種類の不備が混在しております。とくに外部と通信するコンポーネント（HTTP系、FTP/SMB系、OAuth、AS2）をご利用でしたら、4.18.5 または 4.22.1 以降への更新を優先なさってくださいませ。</li>
+</ul>
+
+<h3>Apache Answer 2.0.3未満 - 反応APIの可視性制御欠如（CVSS 9.8）を含む13件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-90910（9.8）、CVE-2026-86589、CVE-2026-79633、CVE-2026-79624、CVE-2026-79620、CVE-2026-79613、CVE-2026-76994、CVE-2026-71563、CVE-2026-68482、CVE-2026-67249、CVE-2026-64945、CVE-2026-64944、CVE-2026-64943（計13件）</td></tr>
+<tr><th>影響</th><td>Apache Answer 2.0.2 以下（Java／Spring Boot ベースのQ&amp;Aプラットフォーム。修正版は 2.0.3）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 10:16 UTC（JST 2026-10-19 19:16）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-90910（9.8）は、リアクションAPIがコンテンツの可視性制御を実施していない問題です。非公開コンテンツに紐づくリアクションのメタデータを権限のない利用者が読み取れるほか、自分自身のリアクションを追加・削除できてしまいます（CWE-306）。</li>
+<li>同製品では、MCPの回答取得ツールがグローバルAPIキー保持者に対して非公開・削除済み・審査中の回答本文へのアクセスを許す問題、非公開質問に紐づく招待ユーザー一覧の可視性チェック欠如、類似質問検索の認可不備、hide/show 操作が誤った権限（hide ではなく unpin）で判定される問題も確認されています。</li>
+<li>さらに、セッション失効が不完全で、失効した利用者が古い visit トークンのまま非公開のアップロードファイルへ到達できる問題、メール用の検証コードが用途を区別せず別フローの認証に流用できる問題、外部IDを欠いた外部ユーザーセッションが生成され以降のリクエストで本人確認を回避できる問題、APIキーが全認証リクエストでログへ平文記録される問題も含まれます。</li>
+<li>社内ナレッジやサポートポータルとしてApache Answerをお使いの場合は、2.0.3へ更新のうえ、公開済みのAPIキーの失効とログの取り扱いも併せてご確認くださいませ。</li>
+</ul>
+
+<h3>Java系基盤の一括開示 - Apache Kylin 9件、Camunda 7 の式インジェクション（9.8）、openGauss JDBC、RHACS<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-108762〜108766 / 108771 / 108776 / 108780 / 108823 / 108833 / 108837（Apache Kylin、CVSSは本報告時点で未採点）、CVE-2026-109432（Camunda 7、9.8）、CVE-2026-109431（8.6）、CVE-2026-109433（6.0）、CVE-2026-111440（openGauss-connector-jdbc、7.0）、CVE-2026-111441（openGauss-server、8.1）、CVE-2026-103314（RHACS、7.4）</td></tr>
+<tr><th>影響</th><td>Apache Kylin 4.0.0〜5.0.4、Camunda 7.24.14 未満および 7.23.17 未満、openGauss 各版、Red Hat Advanced Cluster Security for Kubernetes</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 10:16〜13:16 UTC（JST 2026-10-19 19:16〜22:16）</td></tr>
+</table>
+<ul>
+<li><strong>Apache Kylin</strong> は5.0.5で9件を修正しました。メタデータバックアップ削除時のパス脱出、ジョブサービスのSSRF、JDBCソース設定更新の認可欠如、社内ブロードキャストの認証欠如とポリモーフィックデシリアライズ、クエリ専用モードでのSQLインジェクション、既定起動プロファイルでセキュリティ設定が抜ける問題、キャッシュAPIによる計算列の資源枯渇などです。公開網に直接露出していない社内配置では影響は限定的とされています。</li>
+<li><strong>Camunda 7</strong> では、<code>AdhocQueryValidator.validate()</code> が <code>TaskQueryDto</code> の <code>orQueries</code> 配下のサブクエリ式マップを検査しないため、認証済みユーザーが式インジェクションで任意の式評価制限を回避できる問題（CVE-2026-109432、9.8）が最も深刻です。engine-rest のタスク配下リソースで認可チェックが抜け、権限を持たない認証済みユーザーがコメント・添付を読み書きできる問題（8.6）と、Cockpitの権限判定が反転していた問題（6.0）も修正されています。7.24.14 / 7.23.17 以降へ更新なさってください。</li>
+<li><strong>openGauss</strong> では、JDBCドライバの <code>LogFactory</code> が接続パラメータの logger クラス名を <code>Class.forName</code> で読み込み、<code>asSubclass(Log.class)</code> の検証なくインスタンス化するため、接続文字列を制御できる攻撃者がクライアント側で任意クラスをロードできる問題（CVE-2026-111440、7.0）が報告されました。加えてサーバ側のHLL解析における長さ検証欠如（8.1）と複製接続のHBA認可バイパスも確認されています。</li>
+<li><strong>RHACS</strong> はSAML認証のACSエンドポイントが使用済みアサーション識別子を保持せず、リプレイ攻撃が成立する問題（CVE-2026-103314、7.4）が公開されました。</li>
+</ul>
+
+<h3>AIエージェント基盤 - Google OSS Agent Mesh の認可欠如（9.3）と Progress DataDirect ARC のコマンドインジェクション（9.6）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-102503 / CVE-2026-103091（Google OSS Agent Mesh、CVSSv4.0 9.3）、CVE-2026-91140（Progress DataDirect Autonomous REST Connector、CVSSv3.1 9.6）</td></tr>
+<tr><th>影響</th><td>Google OSS Agent Mesh（SAM）0.1.0-alpha.1〜0.1.0-alpha.2、Progress DataDirect ARC（AIエージェントの定義ファイル）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 03:16 UTC（JST 12:16）／Progress Software アドバイザリ 2026-10-06、Security NEXT 2026/10/19 報道</td></tr>
+</table>
+<ul>
+<li>Google の OSS Agent Mesh（SAM）では、<code>/libp2p-http</code> のイングレスサーバ（<code>StartIngressServer</code>）に認証・認可の欠如（CWE-306 / CWE-862）があり、未認証のリモートlibp2pピアがアクセス制御を迂回できます（CVE-2026-102503、9.3）。MCPプロキシの <code>HandleStreamPassThrough</code> とOIDC登録フロー（<code>GET /info</code>・<code>POST /register</code>）にも認可欠如と安全でない既定値の問題があります（CVE-2026-103091、9.3）。</li>
+<li>Progress DataDirect の「Autonomous REST Connector（ARC）」では、GitHubの公開リポジトリで配布されているAIエージェントの定義ファイルに入力検証の不備があり、細工されたデータをエージェントに処理させるとシェルコマンドが実行されるおそれがあります（CVE-2026-91140、9.6）。同社は10月6日付でアドバイザリを公開しアップデートを提供しています。</li>
+<li>AIエージェントに外部データを読ませる構成は、定義ファイルやツール記述そのものが攻撃面になります。MCPサーバやエージェント定義を外部から取得している場合は、取得元の固定と差分確認を運用に組み込むのが宜しいかと存じますわ。</li>
+</ul>
+
+<h3>Node.js - 3系統（26.x / 24.x / 22.x）のセキュリティアップデートを10月21日以降に公開予定<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>未採番（CVE番号・CVSSは予告段階では公表されず）</td></tr>
+<tr><th>影響</th><td>Node.js 26.x / 24.x / 22.x。サポート終了版も影響を受けるとされている</td></tr>
+<tr><th>公開</th><td>Security NEXT 2026/10/19 報道（現地時間2026-10-21以降に公開予定）</td></tr>
+</table>
+<ul>
+<li>Node.jsの開発チームは、複数の脆弱性を解消するセキュリティアップデートを現地時間10月21日またはその直後に公開すると予告しました。重要度はもっとも高いもので「High」とされています。</li>
+<li>予告段階のため対象CVE・CVSS・件数・悪用の有無は公表されていません。公開され次第、サポート対象版へ更新なさるのが安全ですわ。旧版は影響を受けるとして、サポート対象バージョンの利用が求められています。</li>
+</ul>
+
+<h3>WordPress プラグイン23件超とnpm - 決済Webhookの真正性検証欠如が多発、Picomatch の ReDoS（7.5）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-106014 / 106028 / 106010 / 86791 / 94272 / 94273（決済系プラグインの検証欠如）、CVE-2026-94228 / 94229 / 94230 / 94231（TrueBooker）、CVE-2026-94294 / 112328 / 112329 / 89286 / 91046 / 91047 / 74921 / 74922 / 106933 / 103311 / 112111 / 91831 / 110034 ほか計23件超、CVE-2026-112366（Picomatch、7.5）</td></tr>
+<tr><th>影響</th><td>WordPress各プラグイン（Vantiv for WC、ActiveTrail for WooCommerce、Snap Finance、iPOSpays、Coinbase Commerce、BDM Digital、Document Gallery、Blaze Demo Importer、TrueBooker、Sensei LMS 4.26.4未満、Bootstrap Shortcodes 3.4.6未満 ほか）／npm パッケージ picomatch 4.0.7 以下</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 06:17〜16:17 UTC（JST 2026-10-19 15:17〜2026-10-20 01:17）</td></tr>
+</table>
+<ul>
+<li>目立つのは<strong>決済系プラグインの検証欠如</strong>です。Vantiv for WC（1.0.1以下）、Snap Finance（3.11.0以下／3.12.0未満）、iPOSpays（1.4.7未満）、Coinbase Commerce（1.4.1以下）、BDM Digital（1.3.12以下）では、決済プロバイダからの通知の真正性を検証しない、あるいは共有シークレットが既定で空であるため、未認証の攻撃者が任意の注文を「支払済み」に変更できてしまいます。ActiveTrail for WooCommerce（1.2.6以下）は認可チェックなしに100%オフのクーポンを生成でき、100%オフ＋送料無料のクーポンが作られると実害に直結します。</li>
+<li>TrueBooker 1.3.0未満では、セットアップ処理の権限チェック欠如、予約の所有者確認欠如による予約者の個人情報取得、AJAXアクションの認可欠如とサーバ側の価格検証欠如が一度に修正されました。Document Gallery 5.1.1以下では、共有シークレット未設定時のWebhook署名未検証と、ショートコード属性のエスケープ不足（Contributor以上の権限で任意イベントハンドラを注入可能）が問題です。</li>
+<li><strong>picomatch</strong> は単一分岐の繰り返しextglobパターン（<code>+(*)</code> など）で指数的な解析が発生し、イベントループを停止させられるReDoS（CVE-2026-112366、7.5）が公開されました。ビルドツール経由で間接的に取り込まれることが多いパッケージですので、lockfileの更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Python／AI推論基盤 - Mercury のJupyter認証回避（10.0）ほか、SGLang・docTR・Crawl4AI など<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111057（10.0）、CVE-2026-111058（9.8）、CVE-2026-112304（docTR、7.5）、CVE-2026-112082（SGLang、7.5）、CVE-2026-112083、CVE-2026-112264（BentoML、7.8）、CVE-2026-112265（LangBot、6.5）、CVE-2026-112308（crewai-tools、7.4）、CVE-2026-112363（Crawl4AI、5.3）ほか</td></tr>
+<tr><th>影響</th><td>Mercury 3.2.4未満／3.2.6未満、docTR 1.1.0以下、SGLang 0.5.19以下、BentoML 1.4.39以下、LangBot 4.11.0以下、crewai-tools 1.15.28以下、Crawl4AI 0.8.7〜0.9.5 ほか</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-19 06:16〜16:17 UTC（JST 2026-10-19 15:16〜2026-10-20 01:17）</td></tr>
+</table>
+<ul>
+<li><strong>Mercury</strong>（JupyterノートブックをWebアプリ化するPythonフレームワーク）で最も深刻な2件が公開されました。1件は <code>BLOCKED_PATTERNS</code> のカンマ欠落により <code>/lab</code> と <code>/api/terminals</code> の正規表現リテラルが連結され、匿名エンドポイントのブロックリストを <code>/api/terminals</code> がすり抜けてしまう問題（CVE-2026-111057、10.0）。もう1件はトークン未設定の既定構成で、匿名クライアントがJupyterカーネルを生成し任意のPythonを実行できる問題です（CVE-2026-111058、9.8）。3.2.6以降へ更新なさってください。</li>
+<li><strong>docTR</strong> は学習済みパラメータの読み込みに <code>weights_only=True</code> を付けず <code>torch.load</code> を使うため、チェックポイントを差し替えられると任意コードが実行されます（7.5）。<strong>SGLang</strong> は公開エンドポイント経由のDoSや、Mooncake分離バックエンドでの未認証登録受理などが報告されました。<strong>BentoML</strong> のDockerfile命令インジェクション（7.8）、<strong>crewai-tools</strong> のSeleniumScrapingToolにおけるSSRF（プロンプトインジェクション経由で内部資源へ到達、7.4）、<strong>Crawl4AI</strong> のDocker APIサーバにおけるSSRF（5.3）、<strong>LangBot</strong> のLark/Feishuイベント署名検証スキップ（6.5）も含まれます。</li>
+<li>推論基盤やエージェントのツール群は、既定構成のまま公開しがちな領域ですわ。トークン未設定・認証なしで待ち受ける既定値が攻撃面にならないよう、公開範囲と認証の有無を今一度ご確認くださいませ。</li>
+</ul>
+
+<h3>Claude Code 2.1.304 / OpenClaw 2026.10.10-beta.2 を公開、Hermes Agent は新規リリースなし<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.304、OpenClaw 2026.10.10-beta.2、Hermes Agent（最新 v0.22.2、変更なし）</td></tr>
+<tr><th>影響</th><td>各エージェントランタイム／CLI</td></tr>
+<tr><th>公開</th><td>Claude Code 2026-10-19 19:47 UTC（JST 2026-10-20 04:47）、OpenClaw 2026-10-19 12:23 UTC（JST 21:23）</td></tr>
+</table>
+<ul>
+<li>Claude Code 2.1.304 が公開されました。サンドボックス関連の修正として、<code>sandbox.filesystem.denyRead</code> のglobに文字クラスでない括弧（<code>[user-id]</code> のようなルートフォルダ）が含まれるとLinuxでサンドボックス化コマンドが起動できなかった問題、マウントドライブや最上位フォルダ（<code>/Volumes</code>・<code>/media</code>・WSLの <code>/mnt/c</code>）に対する <code>rm -r</code> に安全確認が出なかった問題が修正されています。権限まわりでは、プラグインが <code>--max-turns</code> や停止指示を超えてヘッドレス実行を継続できた問題、PreToolUseフックの拒否理由がタイムアウトエラーで上書きされる問題、マネージド設定の権限層を書き換える <code>settings.read</code> フックの仕様変更も含まれます。CVEの記載はありません。</li>
+<li>OpenClaw 2026.10.10-beta.2 では、ワークスペース安全性の修正として、複数ファイルに対する <code>apply_patch</code> が後続の更新対象の欠落やコンテキスト不一致を検知した場合、ファイルを変更する前に拒否し元のワークスペースを保持するようになりました（コミット時I/O失敗では部分適用が残りうる点に注意）。また、スタンドアロンの <code>openclaw agent exec</code> セッションでもプラグインの <code>before_tool_call</code> フックを実行するようになり、プラグイン側のツールガードが効くようになりました。</li>
+<li>Hermes Agent（NousResearch/hermes-agent）の最新リリースは v0.22.2（2026-10-15 公開）のままで、対象期間内に新たなリリースタグおよびセキュリティ関連の修正・CVEは確認されませんでした。</li>
+</ul>
+
+<h3>JVN - ヤマハ製 VOCALOID6 Editor の外部エンティティ参照の不適切な制限（CVE-2026-104679、7.1）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-104679（CWE-611、CVSSv3.1 7.1／CVSSv4.0 6.9）</td></tr>
+<tr><th>影響</th><td>VOCALOID6 Editor 6.13.2 およびそれ以前のバージョン</td></tr>
+<tr><th>公開</th><td>JVN 2026/10/19 公開（JVNVU#93520490）</td></tr>
+</table>
+<ul>
+<li>細工されたプロジェクトファイルを読み込むことで当該製品から意図しない通信が発生し、製品がインストールされた端末の機微な情報を取得されたり、サービス運用妨害（DoS）状態にされたりする可能性があります。開発者が提供する情報に基づき最新版へアップデートしてくださいませ。</li>
+<li>本件は Zero（wasthatzero.net）氏がJPCERT/CCへ報告し、JPCERT/CCが開発者との調整を行ったものです。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">対象期間内に、Next.js / React / Hono / Django / Spring Boot / GCP / AWS / Azure の各製品そのものに直接関連する新規のセキュリティ情報は確認されませんでした（Google OSS Agent Mesh は GCP 系のAIエージェント基盤ですが、独立製品として掲載しております）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>バーガーキング公式アプリ - 不正アクセスによる会員情報 約1,118万件の漏えいが確定（続報）</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>株式会社ビーケー・ジャパン（バーガーキング）公式アプリの会員情報システムへの第三者からの不正アクセス（発表 2026-10-15、ScanNetSecurity 2026.10.19 8:15 報道）</td></tr>
+<tr><th>被害</th><td>約1,118万件の会員情報（会員ID、メールアドレス、登録種別、都道府県、性別、生年月日、氏名（漢字・カナ）、電話番号、モバイルオーダー履歴の有無、メールアドレス認証の有無）</td></tr>
+<tr><th>経緯</th><td>10月2日から10月7日にかけて不正アクセスが行われ、10月13日に会員情報の漏えいが判明。同社は当該通信元からのアクセスを遮断し、対象顧客へメールで案内中。原因と経緯は外部専門機関と連携して調査中</td></tr>
+<tr><th>出典</th><td>ビーケー・ジャパン公式発表／ScanNetSecurity 2026.10.19／Security NEXT 2026/10/16（初報）</td></tr>
+</table>
+<ul>
+<li>10月16日の初報では影響範囲は調査中とされていましたが、約1,118万件という確定件数が本対象期間に明らかになりました。飲食チェーン系アプリの会員基盤が狙われる事例が10月に入り相次いでおり、モバイルオーダー履歴の有無まで含まれる点は、なりすましや標的型の足がかりになり得ます。</li>
+</ul>
+
+<h3>GMOリサーチ&amp;AI「infoQ」 - 第2報で89万4,082件の外部持ち出しを確定、ポイント不正交換611件</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>GMOリサーチ&amp;AI株式会社が運営するアンケートサイト「infoQ」への不正アクセス（第2報発表 2026-10-14、ScanNetSecurity 2026.10.19 8:15 報道）</td></tr>
+<tr><th>被害</th><td>個人情報が外部に持ち出された件数は 89万4,082件（初報の最大94万8,498件から確定）。ほか、持ち出されたが個人情報を含まないもの 9,068件、持ち出されなかったもの 4万5,348件。項目は氏名、フリガナ、性別、生年月日、メールアドレス、住所、電話番号、暗号化されたパスワード、会員ID、ニックネーム・保有ポイント・最終回答日等。一部会員のポイント611件（計286万9,500円）が本人の意思によらずAmazonギフトコードへ交換</td></tr>
+<tr><th>経緯</th><td>10月2日以降に不正アクセス。10月3日午前に会員からの問い合わせを受けて調査し発覚。10月3日からサービス停止、10月5日時点で全会員へメール連絡。第三者が同社サイトで使用していたソフトウェアの脆弱性を悪用して侵入したとしている。不正交換されたポイントは全額補填</td></tr>
+<tr><th>出典</th><td>GMOリサーチ&amp;AI 第2報／ScanNetSecurity 2026.10.19／Security NEXT 2026/10/16</td></tr>
+</table>
+<ul>
+<li>ポイントが金銭的価値を持ったまま流出し、実際に換金された事例ですわ。アンケートサイトのようにポイント残高を保持するサービスでは、認証情報の流出がそのまま金銭被害に直結します。ポイント交換時の追加認証や交換レートの監視が有効です。</li>
+</ul>
+
+<h3>佐川急便「お荷物問い合わせサービス」 - 第4報で流出し得る情報と停止中のサービスを整理</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>佐川急便株式会社のWebサイト「お荷物問い合わせサービス」への不正アクセス（第4報発表 2026-10-09、ScanNetSecurity 2026.10.19 8:15 報道）</td></tr>
+<tr><th>被害</th><td>9月30日から遡り約100日間の累計について、荷物の送り主・届け先の氏名（法人は法人名・担当者名）・住所・電話番号、運賃契約を締結している法人・個人顧客の同項目、Webサービス「スマートクラブ」登録顧客の同項目＋メールアドレス・会員IDが流出した可能性</td></tr>
+<tr><th>経緯</th><td>9月30日に第三者からの不正アクセスを確認。被害拡大防止のため、インターネット貨物お荷物問い合わせ（Web／API）、飛脚宅配便受付、飛脚往復便受付、飛脚往復便（ゴルフ）受付、商品回収返金サービス、受取先変更（事前・不在発生後）、回収くんの計9サービスを停止中。荷物の集荷・配達は通常通り</td></tr>
+<tr><th>出典</th><td>佐川急便 第4報／ScanNetSecurity 2026.10.19</td></tr>
+</table>
+<ul>
+<li>国内物流の基幹サービスが停止する事案ですわ。再開の見通しと、停止中サービスの代替手段（電話受付等）の案内状況にご注意くださいませ。</li>
+</ul>
+
+<h3>ファンケルとアテニア - eコマースサイトへの侵害、会員36万8,184人＋41万7,312人の情報が流出</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>キリンホールディングスグループのファンケルおよび子会社アテニアの通信販売サイトが外部の第三者によって侵害（Security NEXT 2026/10/19 報道）</td></tr>
+<tr><th>被害</th><td>ファンケル会員 36万8,184人、アテニア会員 41万7,312人。氏名、住所、電話番号、生年月日、性別、メールアドレス、顧客番号、サブメールアドレス、パスワードのハッシュ値、本人認証に使われる質問、ポイント情報、会員ステージ、店舗購入の有無</td></tr>
+<tr><th>経緯</th><td>2026年10月15日に内部で調査を実施し、10月3日から10月10日にかけて両社のeコマースサイトが侵害されたことが判明。会員情報の一部が外部に流出したことを確認。データの外部公開や二次被害は確認されていない</td></tr>
+<tr><th>出典</th><td>Security NEXT 2026/10/19（ファンケル・アテニア公表）</td></tr>
+</table>
+
+<h3>ココナラスキルマーケット - 不正アクセスで履歴書449件・職務経歴書関連書類1,845件が流出</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>ココナラが運営する「ココナラスキルマーケット」への不正アクセス（Security NEXT 2026/10/19 報道）</td></tr>
+<tr><th>被害</th><td>履歴書449件、職務経歴書関連書類1,845件（履歴書・職務経歴書を登録した一部会員）</td></tr>
+<tr><th>経緯</th><td>2026年10月8日2時過ぎに不正アクセスを検知し遮断。同日13時ごろに再検知し、15時ごろに会員の個人情報が持ち出された形跡を確認。脆弱性の修正と監視を実施しサービスは継続。警察へ通報し、個人情報保護委員会や関係省庁へ報告</td></tr>
+<tr><th>出典</th><td>Security NEXT 2026/10/19（ココナラ公表）</td></tr>
+</table>
+<ul>
+<li>履歴書・職務経歴書は氏名・連絡先・職歴が一式そろった書類ですので、流出すれば転職先へのなりすましや標的型攻撃の材料になり得ます。該当会員には注意喚起をお願いしたいところですわ。</li>
+</ul>
+
+<h3>交通系IC「nimoca」 - 利用履歴照会サービスへのサイバー攻撃で登録情報521件が流出</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>西日本鉄道子会社ニモカの交通系ICカード「nimoca」利用履歴照会サービスへのサイバー攻撃（Security NEXT 2026/10/19 報道）</td></tr>
+<tr><th>被害</th><td>サービスの登録情報521件（利用者の生年月日、メールアドレス、nimocaカード番号）</td></tr>
+<tr><th>経緯</th><td>攻撃を受け、サービスの自動送信機能を通じて登録情報の一部を含むメールが登録メールアドレス宛に送信。2026年10月4日に利用者から「身に覚えのないメールが届いた」との問い合わせがあり判明。同日17時40分にサービスを停止し、プログラム改修とセキュリティ対策を施したうえで10月15日に再開</td></tr>
+<tr><th>出典</th><td>Security NEXT 2026/10/19（ニモカ公表）</td></tr>
+</table>
+
+<h3>コミックシーモア（NTTソルマーレ）- サーバへの不正アクセスで会員情報とログが流出</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>電子書籍ストア「コミックシーモア」のサーバへの不正アクセス（Security NEXT 2026/10/19 報道）</td></tr>
+<tr><th>被害</th><td>一部会員のメールアドレス、生年月日、性別、ニックネームなどの登録情報とパスワードのハッシュ値。一部のシステムログファイルにもアクセス。対象件数は調査中。購入履歴の流出・消失・欠損は確認されていない</td></tr>
+<tr><th>経緯</th><td>2026年10月15日に、同ストアのサーバに対し外部から不正なアクセスが行われた可能性が高いことが判明。サービスを停止して原因・影響範囲を調査し、会員情報の外部流出とログへのアクセスを確認。会員情報の有無を確認するためログを精査中</td></tr>
+<tr><th>出典</th><td>Security NEXT 2026/10/19（NTTソルマーレ公表）</td></tr>
+</table>
+
+<h3>えきねっと・大人の休日倶楽部 - IDCフロンティアへの不正アクセス、個人情報の漏えいはなかったと判断（進展）</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>IDCフロンティアで発生した不正アクセスに伴う、JR東日本のえきねっと会員・大人の休日倶楽部会員の個人情報漏えい懸念（ScanNetSecurity 2026.10.19 8:15 報道）</td></tr>
+<tr><th>被害</th><td>当初はえきねっと会員 約167万件、大人の休日倶楽部会員 約39万件のメールアドレス等が閲覧・取得された可能性を否定できないとしていた</td></tr>
+<tr><th>経緯</th><td>10月9日時点では漏えいの可能性を否定できない状況であったが、IDCフロンティアからの報告を受けたメール配信用外部サービス会社から、両会員の個人情報の漏えいがなかったと判断したとの報告を受け、10月15日に公表</td></tr>
+<tr><th>出典</th><td>JR東日本 公表／ScanNetSecurity 2026.10.19</td></tr>
+</table>
+<ul>
+<li>委託先・再委託先を経由した事案で、最終的に「漏えいなし」と判断された数少ない事例ですわ。ただし委託先経由のインシデントは10月に相次いでおり、契約上の報告義務と報告経路の確認は引き続き重要です。</li>
+</ul>
+
+<h3>ホテルグランドヒル市ヶ谷 - サイトコントローラー「TEMAIRAZU」への不正アクセス、WhatsAppに不審メッセージ</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>ホテルグランドヒル市ヶ谷が導入するサイトコントローラー「TEMAIRAZU」シリーズ（手間いらず株式会社提供）への不正アクセス（発表 2026-09-29、ScanNetSecurity 2026.10.19 8:15 報道）</td></tr>
+<tr><th>被害</th><td>宿泊者情報の一部が第三者に閲覧または取得された可能性を否定できない状況（範囲・詳細は確認中）。2026年9月21日までに成立し、同日以降の宿泊日で、予約者がWhatsAppを利用している予約の一部について、予約者へWhatsApp経由の不審なメッセージが送信</td></tr>
+<tr><th>経緯</th><td>9月21日深夜、手間いらずに一部施設の予約者へ不審なメッセージが届いているとの問い合わせがあり調査。過去に提供していたインストール型サービスを構成する機能の一部にセキュリティ上の問題があり、第三者の不正アクセスが判明。確認されている不正アクセスは9月21日発生分に限られる。9月26日に原因箇所を特定し対策を完了</td></tr>
+<tr><th>出典</th><td>ホテルグランドヒル市ヶ谷・手間いらず 公表／ScanNetSecurity 2026.10.19</td></tr>
+</table>
+<ul>
+<li>予約管理システムの侵害が、宿泊者への直接的な詐欺メッセージに発展した事例ですわ。同社の宿泊予約情報については、10月に入り最大約445万人規模の漏えい可能性も別途公表されており、宿泊業界の予約系システムは今まさに狙われている領域とお考えくださいませ。</li>
+</ul>
+
+<h3>米CISA KEV - BeyondTrust Remote Support の認証回避ゼロデイと Fortinet 製品の脆弱性、悪用を確認</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>米CISAが2026年10月16日、悪用が確認された脆弱性カタログ（KEV）へ CVE-2025-61624 および CVE-2026-102764 を追加（Security NEXT 2026/10/19 報道）</td></tr>
+<tr><th>被害</th><td>BeyondTrust Remote Support のアプライアンス上でファイル操作が可能（認証不要）。侵害された機器にはウェブシェル等が設置され、アクセス経路の維持や権限昇格が図られた</td></tr>
+<tr><th>経緯</th><td>CVE-2026-102764 は内部コンポーネントでメッセージの送信元検証が不十分な認証回避（CVSSv4.0 9.3、Critical）。BeyondTrustは10月15日にアドバイザリを公開。Google Cloud 傘下 Mandiant によれば、中国との関連が疑われるグループ「ARMORY CASTLE」が8月下旬にゼロデイ攻撃を展開した</td></tr>
+<tr><th>出典</th><td>米CISA KEV／BeyondTrust アドバイザリ／Security NEXT 2026/10/19</td></tr>
+</table>
+<ul>
+<li>リモートサポート製品は踏み台として極めて相性が良く、侵害されれば管理対象先へ横展開され得ます。インターネットに露出しているリモートサポート／運用管理アプライアンスは、早急に最新版へ更新のうえ、ウェブシェル設置の有無と不審なプロセスを確認なさるのが宜しいかと存じます。</li>
+</ul>
+
+<h3>国内その他 - アイホン豪州法人への不正アクセス、唐津市情報メール（委託先アルカディア）、藤枝東高の生徒指導要録283人分紛失</h3>
+<table class="cve-table">
+<tr><th>事案</th><td>(1) アイホン株式会社の豪州販売子会社 AIPHONE PTY LTD の社内ネットワークへの不正アクセス（発表 2026-09-29）<br>(2) 佐賀県唐津市の情報メール配信サービスを業務委託する株式会社アルカディアへの不正アクセス（発表 2026-10-13）<br>(3) 静岡県立藤枝東高等学校の卒業生の生徒指導要録283人分の紛失（発表 2026-09-29）</td></tr>
+<tr><th>被害</th><td>(1) 現時点でグループ他拠点への影響および外部への情報漏えい・関係者への被害は確認されていない<br>(2) 登録者のメールアドレス等の個人情報が外部流出した可能性<br>(3) 平成18年度（平成19年3月）卒業生283人分の学籍に関する記録（氏名、生年月日、性別、現住所、保護者等の氏名・現住所、入学前の経歴、卒業・進学先・就職先、修得単位数等）</td></tr>
+<tr><th>経緯</th><td>(1) 事象確認後に他拠点間のネットワーク遮断等の応急処置を講じ、外部専門機関が調査中<br>(2) 唐津市は不審メールへの注意喚起を行い、10月13日17時から安全性確認まで新規会員登録を停止<br>(3) 情報が外部に流出した可能性は極めて低いとしているが、証明書発行等で不利益が生じないよう対応</td></tr>
+<tr><th>出典</th><td>ScanNetSecurity 2026.10.19（各組織の公表）</td></tr>
+</table>
+<ul>
+<li>いずれも公開から日を置いて報道された公表ですわ。海外子会社のネットワーク侵害、自治体サービスの委託先侵害、教育機関における紙媒体の管理不備と、類型はさまざまですが、共通するのは「保有情報の最小化」と「委託先を含む管理範囲の確認」が対策の出発点になるという点です。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
