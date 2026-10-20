@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-21 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-21 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Oracle Critical Patch Update 2026年10月 - 新規1,295件、WebLogic・Essbase・Identity Manager Connectorに9.8〜9.9<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-91323 / 87302 / 83399（WebLogic Server Core、9.8）、CVE-2026-91637 / 91658 / 91663 / 91638（Essbase、9.9）、CVE-2026-91665 / 91491 / 91495 ほか（9.8）、CVE-2026-91354 / 91341（Outside In、9.9 / 9.1）、CVE-2026-91622 / 91624（Agile PLM for Process、9.3 / 9.1）、CVE-2026-91415 / 91484（Java SE、7.0 / 7.5）ほか多数</td></tr>
+<tr><th>影響</th><td>Oracle Fusion Middleware（WebLogic Server 12.2.1.4.0 / 14.1.1.0.0 / 14.1.2.0.0 / 15.1.1.0.0、Identity Manager Connector、WebCenter Content、HTTP Server、Helidon 3.0.0〜3.2.21 / 4.0.0〜4.5.5 / 27.0.0）、Oracle Analytics（BIEE 8.2.0.0.0 / 12.2.1.4.0 / 26.1.0.0.0）、Essbase 21.8.3.0.0、E-Business Suite 12.2.3〜12.2.15、Oracle Database Server 19.3〜19.32 / 21.3〜21.23 / 23.4.0〜23.26.3、MySQL Server・Cluster・Connectors 8.4 / 9.7 / 26.7 系、Siebel CRM、PeopleSoft、Oracle VM VirtualBox 7.2.16 / 7.2.20 ほか</td></tr>
+<tr><th>公開</th><td>Oracle アドバイザリ 2026-10-20（米国時間）／NVD登録 2026-10-20 22:18〜22:21 UTC（JST 2026-10-21 07:18〜07:21）</td></tr>
+</table>
+<ul>
+<li>Oracleは10月定例の Critical Patch Update を公開し、製品ファミリ横断で<strong>1,295件</strong>の新規セキュリティパッチを提供しました（My Oracle Support の Executive Summary は CPU289）。四半期ごとの大型更新ですので、対象製品をお使いの場合は自社資産の棚卸しと併せて適用計画をご確認くださいませ。</li>
+<li>最優先は <strong>Oracle WebLogic Server Core</strong> の3件（CVE-2026-91323 / 87302 / 83399、いずれもCVSSv3.1 9.8）。ネットワーク経由・未認証・低複雑度でサーバを乗っ取り得る構成で、HTTP経由で到達できる配置は即時対応が望ましいところです。</li>
+<li><strong>Essbase 21.8.3.0.0</strong> はSecurityコンポーネントとFederated Partitionsで9.9が4件（CVE-2026-91637 / 91638 / 91658 / 91663）。低権限の認証済み利用者から到達し、スコープ変更により他製品にも影響が及ぶとされています。未認証TCPで到達できる9.8（CVE-2026-91665）も含まれます。</li>
+<li><strong>Identity Manager Connector</strong> はLDAP Gatewayコンポーネントで9.8（CVE-2026-91491）・9.1（CVE-2026-91490）、<strong>WebCenter Content</strong> も9.8（CVE-2026-91495）。ID連携基盤は侵害時の影響が広範に及ぶため、優先度を上げてご確認くださいませ。</li>
+<li>Java SEは 2D コンポーネントの7.0（CVE-2026-91415、8u503 / 11.0.32.1 / 17.x 系が対象）と Java plugin の7.5（CVE-2026-91484、8u503）。MySQL側は Connector/Python 26.7.0 の情報取得（CVE-2026-83404、7.5）などが含まれます。</li>
+<li>Java／Spring Boot系アプリの土台は今回まとめて更新対象が出ています。Tomcat（後述）と併せ、パッチ適用ウィンドウを今週中に確保なさるのが宜しいかと存じますわ。</li>
+</ul>
+
+<h3>Apache Tomcat - Critical 3件を含む8件、JNDIレルムのSASL認証バイパスとHTTP/2の入り混じり<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-101296（9.1）、CVE-2026-101356（9.1）、CVE-2026-103119（9.1）、CVE-2026-74048、CVE-2026-74049、CVE-2026-80353、CVE-2026-88041、CVE-2026-93446（計8件）</td></tr>
+<tr><th>影響</th><td>Apache Tomcat 11.0.0-M1〜11.0.26、10.1.0-M1〜10.1.60、9.0.0.M1〜9.0.122（CVE作成時点でEOLの 8.5.0〜8.5.100、7.0.0〜7.0.109 も影響）。修正版は 11.0.27 / 10.1.61 / 9.0.123</td></tr>
+<tr><th>公開</th><td>Apache Software Foundation セキュリティページ更新／NVD登録 2026-10-20 14:16〜14:17 UTC（JST 2026-10-20 23:16〜23:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-101296（9.1）は、<strong>JNDIレルムを非GSSAPIのSASL認証機構で構成していた場合に、正しいパスワードを提示せずに認証が成立してしまう</strong>問題です。認証の要となる手順が欠落しており、該当構成では実質的に認証バイパスとなります。</li>
+<li>CVE-2026-101356（9.1）はHTTP/2処理下の非同期サーブレットでオブジェクトの再利用が不適切に行われ、<strong>リクエスト／レスポンスが利用者間で入り混じる</strong>可能性がある問題。11.0.22〜11.0.26、10.1.55〜10.1.60、9.0.118〜9.0.122 が影響を受けます。</li>
+<li>CVE-2026-103119（9.1）はバッファのアンダーリードで、大きなノンブロッキング書き込み時に<strong>レスポンス本体が次のリクエストへ分割される</strong>問題。2番目のリクエストは失敗し、第一のレスポンスのデータが漏えいし得ます（11.0.0-M25〜11.0.26 が対象）。</li>
+<li>このほか、OpenSSLLifecycleListener設定時の「安全側に倒さない」不備（CVE-2026-74048）、リダイレクト後もハンドラを実行してしまうEAR（CVE-2026-74049）、UNIXドメインソケット作成時のTOCTOU競合（CVE-2026-80353）、trailer情報が次リクエストへ漏れる完全クリーンアップ不備（CVE-2026-88041）、TLS 1.3接続が断続的に失敗する不備（CVE-2026-93446）が同時に修正されています。</li>
+<li>Tomcatは各国の業務システムに深く入り込んでいる基盤です。9系／10系／11系いずれも修正版が出ていますので、まずバージョン確認からお願いいたしますわ。</li>
+</ul>
+
+<h3>Apache CouchDB 3.5.3 - サーバ管理者からの任意シェル実行（9.3）ほか3件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-86471（9.3）、CVE-2026-90800（8.1）、CVE-2026-90797（7.7）</td></tr>
+<tr><th>影響</th><td>Apache CouchDB 3.5.2 以下（全プラットフォーム）。修正版は 3.5.3</td></tr>
+<tr><th>公開</th><td>Apache Software Foundation アドバイザリ／NVD登録 2026-10-20 16:17 UTC（JST 2026-10-21 01:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-86471（9.3）は検証されない実行時設定値により、<strong>CouchDBのサーバ管理者がCouchDBのOSユーザー権限で任意のシェルコマンドを実行</strong>できる問題です。管理権限は本来信頼される側ですが、権限昇格・横断移動の足場になるため優先的な修正が必要です。</li>
+<li>CVE-2026-90800（8.1）は chttpd の認可チェック欠如で、任意のリクエストが接頭辞付きの _user / _replicator データベースの全内容を読める問題（接頭辞付きシステムDBの利用は稀とされています）。CVE-2026-90797（7.7）は chttpd のgzip展開が無制限で、遠隔からメモリ枯渇によるDoSを起こせます。</li>
+<li>3.5.3 へ更新なさってくださいませ。</li>
+</ul>
+
+<h3>Kubernetes / Argo CD - repo-serverでの任意コード実行3件（各9.9）とStrimzi Consoleの権限昇格（9.9）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-113672 / 113708 / 113709（Argo CD、いずれも9.9）、CVE-2026-105312（9.9）、CVE-2026-105311（7.7）、CVE-2026-113727（OpenChoreo、7.4）</td></tr>
+<tr><th>影響</th><td>Argo CD 0.9.0〜3.3.15未満／2.7.0〜3.4.10未満／2.1.0〜3.5.4未満／3.6.0-rc2未満（修正版 3.3.15 / 3.4.10 / 3.5.4 / 3.6.0-rc2）、Strimzi・StreamsHub Console operator、OpenChoreo 1.0.0〜1.0.5 / 1.1.0〜1.1.6 / 1.2.0〜1.2.4</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-20 12:17〜19:17 UTC（JST 2026-10-20 21:17〜2026-10-21 04:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-113672 はJsonnetの importer が import / importstr / importbin をリポジトリ配下に閉じ込めておらず、絶対パス・親ディレクトリ参照・リポジトリ内シンボリックリンクで <code>/proc/self/environ</code>、射影されたサービスアカウントトークン、マウント済み秘密鍵、リポジトリ資格情報を読み出せます。<code>/dev/zero</code> を対象にしたメモリ枯渇も成立します。</li>
+<li>CVE-2026-113708 はKustomizeがリモートURLの ref / version を終端オプション区切りなしで git fetch へ渡すため、先頭ハイフンの値が <code>--upload-pack</code> として解釈され、<strong>file:// などのローカルトランスポート経由で repo-server 内のコマンド実行</strong>に至ります。repo-serverの外向き通信を塞いでも防げない点が厄介ですわ。</li>
+<li>CVE-2026-113709 は <code>--enable-helm</code> 有効時に helmGlobals.configHome をリポジトリ側が制御できる問題で、<code>&lt;configHome&gt;/.data/plugins</code> に置いたダウンローダプラグインが repo-server 上で実行されます。3件とも「Applicationが参照するGitリポジトリにコミットする」か <code>POST /api/v1/applications/manifestsWithFiles</code> 経由で成立し、出力はマニフェスト生成エラーとして回収されます。</li>
+<li>CVE-2026-105312（9.9）はConsoleカスタムリソースの作成権限を持つKubernetesテナントが任意コンテナイメージをデプロイでき、ClusterRoleBinding経由でStrimzi CRDのクラスタ全域の読み書き権限を取得する問題。CVE-2026-105311（7.7）はStreamsHub Consoleオペレータが他namespaceのKafkaUser Secretを攻撃者namespaceへ写すconfused deputyです。</li>
+<li>GitOpsのリポジトリは「信頼済み入力」として扱われがちですが、今回の3件はいずれも<strong>リポジトリに書き込める者がそのままコマンド実行に到達する</strong>経路です。コミット権限・レビュー体制と repo-server の権限分離を今一度ご確認くださいませ。</li>
+</ul>
+
+<h3>AIエージェント基盤 - 未認証RCEとプロンプトインジェクションが集中（9.0〜9.3）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-75128（Langchain-Chatchat、9.3）、CVE-2026-77932 / 77933（DB-GPT、9.3）、CVE-2026-77936（Letta、9.3）、CVE-2026-109442（piflow、9.3）、CVE-2026-105772（Google ADK TypeScript、9.1）、CVE-2026-112380（Kiro Crew、9.0）、CVE-2026-109440（LangAlpha、8.6）、CVE-2026-111767（MCP TypeScript SDK、8.6）、CVE-2026-107366（IBM Langflow OSS、8.3）、CVE-2026-77937 / 77934 / 77930 / 109443 / 109444（各8.6〜8.7）</td></tr>
+<tr><th>影響</th><td>Langchain-Chatchat 0.3.1.3以下、DB-GPT 0.8.2以下、Letta 0.16.8以下、piflow 2.0.0〜2.0.1、Google ADK TypeScript 0.4.0〜0.6.0未満、Kiro Crew 0.7.2未満、LangAlpha 2026.09.07まで、MCP TypeScript SDK 1.24.0〜1.32.0未満、IBM Langflow OSS 1.0.0〜1.12.4</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-20 01:17〜20:17 UTC（JST 2026-10-20 10:17〜2026-10-21 05:17）</td></tr>
+</table>
+<ul>
+<li>共通する構図は同じです。<strong>未認証で叩けるエンドポイントが、そのままシェル／コード実行ツールに繋がっている</strong>——Langchain-Chatchat は <code>POST /tools/call</code> が認証なしに任意ツールを名前指定で呼び出し、常時登録されたshellツールが実行されます（配布Dockerイメージではroot）。</li>
+<li>DB-GPT は <code>/api/v1/chat/react-agent</code> が呼び出し元を常に管理者として扱い、サンドボックス化されていない code_interpreter / shell_interpreter がrootで動作（CVE-2026-77932）。既定の docker-compose.yml が MySQLのrootパスワードを固定し3306番を全インタフェース公開している問題（CVE-2026-77933）も併せて修正されました。</li>
+<li>Letta は <code>LETTA_SERVER_SECURE</code> が既定で無効のため認証ミドルウェアが組み込まれず、全APIが未認証で開き、さらに既定資格情報のPostgreSQLスーパーユーザポートが露出します（CVE-2026-77936）。<code>user_id</code> ヘッダを自称するだけで他テナントになりすませる問題（CVE-2026-77937）もあります。</li>
+<li>Kiro Crew は運用者が設定したWhatsAppグループのメンバーが、他エージェントセッションを操作しホスト上で任意コマンドを実行できる認可欠如（CVE-2026-112380、0.7.2で修正）。Google ADK TypeScript は <code>FileArtifactService</code> のuserId / sessionId にパストラバーサルが通り、成果物ルート外の読み書きが可能です（既定の InMemory 利用なら影響なし）。</li>
+<li>承認ゲートの欠如も目立ちます。LangAlpha（CVE-2026-109440）は取得したWebコンテンツ経由の間接プロンプトインジェクションでシェル実行とPython実行に到達し、保管庫の秘密情報が持ち出されます。OpenSRE・EvoScientist・JoySafeter（各8.6〜8.7）も承認なし実行の回避が報告されています。</li>
+<li>MCP TypeScript SDK の実験的tasks機能はタスク作成セッションを検証せず、共有InMemoryTaskStoreで他クライアントのタスクを列挙・閲覧・取消できました（CVE-2026-111767、1.32.0で修正）。自前のエージェント基盤をお使いの場合も、ツール呼び出しAPIの認証と承認ゲート、公開範囲は今一度ご点検くださいませ。</li>
+</ul>
+
+<h3>Node.js / npm - follow-redirects の資格情報除去漏れ（8.2）と @fastify/middie の認可すり抜け（9.1）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-112712（@fastify/middie、9.1）、CVE-2026-111756（follow-redirects、8.2）、CVE-2026-112942（launch-editor-middleware、7.5）、CVE-2026-113658 / 113711 / 113666 / 113653 / 112955 / 112956（ApostropheCMS、6.5〜7.5）ほか</td></tr>
+<tr><th>影響</th><td>@fastify/middie 9.0.0〜9.3.5、follow-redirects 1.16.0〜1.16.1未満、launch-editor-middleware 2.14.2未満、ApostropheCMS 4.33.0未満（import-exportは3.7.0 / 3.7.1前後）、Vitest 5.0.0-beta.6〜5.0.5</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-20 15:17〜18:17 UTC（JST 2026-10-21 00:17〜03:17）</td></tr>
+</table>
+<ul>
+<li>注意したいのは <strong>follow-redirects</strong>（axiosなど多数のHTTPクライアントが間接依存）です。リダイレクト時に Authorization / Proxy-Authorization / Cookie などの資格情報ヘッダを除去する処理が、headers を「名前と値の交互配列」で受け取る呼び出しでは <code>for...in</code> が数値インデックスを返すためマッチせず、<strong>別ホスト・プロトコルダウングレード時にも除去されないまま送信</strong>されます（CVE-2026-111756、8.2）。1.16.1以降へ更新なさってくださいませ。</li>
+<li><strong>@fastify/middie</strong>（9.1）はパス限定ミドルウェアのマウントパスとプラグインスコープ接頭辞の結合方法がFastify本体のパス解決と食い違い、認証などのパス限定ミドルウェアを特定パスで素通りさせる構成不備が成立します。</li>
+<li><strong>launch-editor-middleware</strong> はWindowsのファイル引数に親ディレクトリと行番号を混在させる形で任意ファイルを開かせられます（7.5）。<strong>ApostropheCMS</strong> は未認証のRich Text CSV変換でアップロードが一時ディレクトリに残留し、import系ルートのauthorizeコールバック欠如・展開サイズ未制限・projection除外パスがプロトタイプ連鎖を辿る問題などが一括修正されました。</li>
+<li>なお、Node.js本体のセキュリティアップデート（現地時間10月21日以降に公開予定と告知されていたもの）は<strong>本対象期間中には確認されませんでした</strong>。最新は10月14日の v26.12.0 / v24.22.0（Krypton）です。公開され次第、早めの更新をご検討くださいませ。</li>
+</ul>
+
+<h3>Python - virtualenv のアクティベートスクリプト引用不備（7.8）5件と FlexGet の任意ファイル書き込み（9.2）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-113613（FlexGet、9.2）、CVE-2026-113722 / 113725 / 113726 / 113732 / 113776（virtualenv、いずれも7.8）、CVE-2026-113718（virtualenv、7.1）、CVE-2026-112940（filelock、7.1）</td></tr>
+<tr><th>影響</th><td>FlexGet 3.20.7未満、virtualenv 21.14.9未満（条件により21.13.0〜21.14.4）、filelock 3.20.4〜4.2.1未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-20 16:17〜22:19 UTC（JST 2026-10-21 01:17〜07:19）</td></tr>
+</table>
+<ul>
+<li><strong>virtualenv</strong> は5件がまとめて公開されました。いずれも activate スクリプト生成時の引用の甘さが原因で、環境名やインタプリタのパスを攻撃者が制御できる状況では、bash・zsh・fish・xonsh のいずれかで<strong>任意コマンド実行</strong>に至ります。fish が POSIX の <code>shlex.quote()</code> を流用していた問題、bashのプロンプト文字列が2回展開される前提を満たしていなかった問題などが含まれます。</li>
+<li><strong>FlexGet</strong> は decompress プラグインがアーカイブ内のメンバー名（<code>../</code> や絶対パス）を検証せず、遠隔の攻撃者が任意のファイルを書き込めます（CVE-2026-113613、9.2）。</li>
+<li><strong>filelock</strong> は ReadWriteLock が SQLite のDBとサイドファイルを名前で再オープンするため、非stickyな親ディレクトリでrename権限を持つ攻撃者が名前を差し替えて上書きを起こせます。</li>
+</ul>
+
+<h3>クラウド - GCP Cloud Shellのセッション乗っ取り（8.7）、AWSのIAM昇格（8.7）、Azure Key Vault連携のSSRF、IBM DataStageのRedis不正書き込み（10.0）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-81212（IBM DataStage on Cloud Pak for Data、10.0）、CVE-2026-85267（Google Cloud Shell、8.7）、CVE-2026-112407（AWS CICD-toolchain-for-serverless-applications、8.7）、CVE-2026-105941（Kroxylicious Azure Key Vault KMS provider、8.1）</td></tr>
+<tr><th>影響</th><td>IBM DataStage on Cloud Pak for Data 5.4.0.0、Google Cloud Shell（2026-07-22以前）、AWS CICD-toolchain 1.0.7〜1.0.10、Kroxylicious（AKV KMSプロバイダ利用構成）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-20 10:17 / 13:16 / 21:17 / 22:19 UTC（JST 2026-10-20 19:17 / 22:16、2026-10-21 06:17 / 07:19）</td></tr>
+</table>
+<ul>
+<li>最も深刻なのは <strong>IBM DataStage on Cloud Pak for Data 5.4.0.0</strong> の未認証のRedis書き込み（CVE-2026-81212、CVSS 10.0）。任意テナントのキーへ書き込めるため、<strong>プラットフォームの資格情報暗号化境界が崩れ</strong>、匿名の呼び出し元が他テナントのフローパラメータのキャッシュを汚染できます。</li>
+<li><strong>Google Cloud Shell</strong> はクロスサイトWebSocketハイジャックにより、未認証の攻撃者が有効なセッションを乗っ取りOAuthアクセストークンを持ち出せる問題が公開されました（CVE-2026-85267、8.7）。2026年7月22日に修正済みで、利用者側の対応は不要とされています。</li>
+<li><strong>AWS</strong> のサンプルテンプレート CICD-toolchain-for-serverless-applications は、IAMポリシーの権限割り当てが不適切で、アプリケーションソースのpush権限を持つ利用者が特権昇格し他リソースを操作できます（CVE-2026-112407、8.7）。</li>
+<li><strong>Kroxylicious</strong> の Azure Key Vault KMSプロバイダは、ワイヤからデシリアライズしたEDEKの vaultName を形式検証せずに受理するためSSRFが成立し、プロキシのAzureベアラトークンが攻撃者ホストへ送信されます（CVE-2026-105941、8.1）。トークンの再生により権限昇格に至ります。</li>
+</ul>
+
+<h3>Claude Code 2.1.305 - サンドボックスの名前空間設定追加と、権限・管理設定まわりの修正<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.305</td></tr>
+<tr><th>影響</th><td>Claude Code CLI・デスクトップ各ホスト（VSCode / Cloud sessions / Code Review を含む）</td></tr>
+<tr><th>公開</th><td>2026-10-20 19:29 UTC（JST 2026-10-21 04:29）</td></tr>
+</table>
+<ul>
+<li>セキュリティに関わる変更として <code>sandbox.allowNestedUserNamespaces</code> が追加されました。Linuxのサンドボックス内コマンドがユーザー名前空間を作成できるようにする設定で、Chromiumやrootless podman等の用途を想定したものですが、<strong>サンドボックス自身のファイル保護を迂回し得る</strong>点が変更履歴に明記されています。有効化の是非は用途と脅威モデルに応じてご判断くださいませ。</li>
+<li>権限まわりでは、組織の管理設定で <code>allowManagedPermissionRulesOnly</code> を設定している場合、Claude Desktop がパス指定でマウントするプラグインが <code>allowed-tools</code> を保持しなくなる挙動に変更されました（意図しない事前承認を防ぐ方向）。</li>
+<li>修正項目：Bash権限ルールでパターン途中の「:*」が設定ファイルでは無視され <code>--allowedTools</code> では有効という不整合、復元された権限プロンプトで承認したコマンドがリモートセッションのワーカー再起動時に二重実行される問題、マネージド設定のboolean型ロックが誤値で無視される問題、ネスト値が1つ不正だと permissions / autoMode / worktree / attribution ブロック全体が無視される問題、リポジトリや <code>--add-dir</code> のスキルの <code>allowed-tools</code> 経由での自己事前承認。</li>
+<li>さらに、ゲートウェイがtool searchを拒否する構成で全リクエストが失敗していた 2.1.304 の回帰（Vertex / Bedrock など）が修正され、MCP同意ダイアログでEnterが意図せずAcceptとして扱われる問題も改善されています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React / Django / Hono / Spring Boot のフレームワーク本体に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした（Java系基盤はTomcatとOracle CPU、Node.js系はnpmパッケージの項をご参照ください）。OpenClaw は新規リリースなし（最新 2026.10.10-beta.2、JST 2026-10-19 21:23）、Hermes Agent も新規リリースなし（最新 v0.22.2、2026-10-15）です。なお JVN の新着は2026/10/19公開分が最新で、対象期間内の新規アドバイザリはありませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本経済新聞社 - システム開発に用いるクラウドサービスへの不正アクセス、約183万件<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社日本経済新聞社</td></tr>
+<tr><th>被害</th><td>約183万件。内訳は、氏名・メールアドレス・住所・電話番号・生年月日のいずれかを含む個人情報が約15万件（うちメールアドレスを含むもの約12万件）、単体では個人を特定できない識別子のみが約168万件</td></tr>
+<tr><th>経緯</th><td>2026年10月7日未明から朝にかけて、システム開発に利用するクラウドサービスへ不正アクセス。クラウドへアクセスするための<strong>認証情報が何らかの手段で窃取されたこと</strong>が原因。同社は不正アクセスに使われた認証情報を無効化し、侵害範囲と漏えい情報を精査、確認された対象者へ個別連絡</td></tr>
+<tr><th>出典</th><td>日本経済新聞社 2026-10-16 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>起点が<strong>クラウドの認証情報窃取</strong>である点が重要です。開発・検証用のクラウドは本番より監視が薄く、付与される権限は広い傾向があります。長期有効の認証情報を使い続けている環境では、短期トークン化と利用元の制限をご検討くださいませ。</li>
+<li>本人特定に直結する情報は約15万件にとどまる一方、識別子が約168万件に及びます。組み合わせ次第で再識別され得るため、社外に出す識別子の粒度も論点になりましょう。</li>
+</ul>
+
+<h3>ゴルフダイジェスト・オンライン - サーバ侵害で従業員等1,789件の流出を確認、顧客情報55件は外部照会の可能性<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ゴルフダイジェスト・オンライン（GDO）</td></tr>
+<tr><th>被害</th><td>従業員・退職者・委託先／パートナー企業の氏名（一部フリガナ）と社用メールアドレス <strong>1,789件（流出を確認）</strong>。顧客情報は識別子IDのみ51件、識別子ID＋個人情報（氏名・性別・生年月日・電話・メール・住所・ログインID・保有ポイント等）が4件で、いずれも<strong>外部から照会された可能性</strong>を確認</td></tr>
+<tr><th>経緯</th><td>2026年10月13日 7:09頃にセキュリティ監視ツールが不正アクセスの兆候を検知し、7:41頃に該当サーバの通信を遮断。10月14日14:00頃に操作ログから攻撃者による一部ファイルのダウンロードを確認。10月15日に外部のセキュリティ監視窓口からの報告を受けて調査した結果、<strong>別のサーバ1台も侵害</strong>され、10月13日10:16〜10:20頃に会員情報が照会されていたことが判明</td></tr>
+<tr><th>影響</th><td>ネットワークの一部遮断に伴い、クーポンの利用、商品配送の遅延、プレーチケット（前払い価格プラン）の購入などに影響</td></tr>
+<tr><th>出典</th><td>GDO 2026-10-16 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>検知から32分で遮断していながら、翌日にファイルのダウンロードを確認し、さらに<strong>別サーバ1台の侵害と会員情報の照会</strong>が判明しています。初動の遮断対象が侵害範囲と一致していなかった例で、遮断範囲の決定には横展開の前提確認が欠かせません。</li>
+<li>流出を確認したのは従業員・取引先側の情報で、顧客側は照会の可能性にとどまります。委託先・パートナー企業の従業員への連絡は「企業の特定ができ次第」とされており、取引先への波及が生じていますわ。</li>
+</ul>
+
+<h3>らしんばん - 運営サービスへの不正アクセスで顧客情報が漏えいした可能性<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社らしんばん</td></tr>
+<tr><th>被害</th><td>氏名（フリガナ含む）・郵便番号・住所・メールアドレス・電話番号・生年月日・性別・職業、<strong>本人確認書類の種別と番号情報</strong>、会員番号、買取明細（品名・数量・単価）・買取金額、買取申込み時に入力した銀行名・支店・口座番号・名義、注文内容・注文金額・決済方法、配送先氏名・配送希望日時・伝票番号、付与ポイント数、買取にかかわる同意書画像</td></tr>
+<tr><th>経緯</th><td>2026年9月14日から16日にかけて、同社が運営するサービスへ第三者が不正アクセスし、顧客情報の一部が外部に漏えいした可能性が判明。判明後に不正アクセスを遮断し、原因・影響範囲の調査と再発防止対応を実施</td></tr>
+<tr><th>出典</th><td>らしんばん 2026-10-01 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>本人確認書類の種別と番号、買取時の<strong>銀行口座情報</strong>、同意書画像まで含まれる点が重いですわ。なりすましによる金融取引や、本人確認情報を使った新規契約のリスクを想定し、対象顧客への注意喚起と併せて継続監視が必要な案件です。</li>
+</ul>
+
+<h3>ALSOKジョイライフ - 端末への不正遠隔操作で入居者134件の情報が閲覧された可能性<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ALSOKジョイライフ株式会社</td></tr>
+<tr><th>被害</th><td>「ベルパージュ奈良あやめ池」に過去・現在入居している顧客134件の在所状況、利用者コード、氏名、フリガナ、性別、生年月日、居室番号、受付サービスの内容（一般入居・体験入居）、入退去日、契約日・解約日</td></tr>
+<tr><th>経緯</th><td>2026年7月4日、同社端末に外部の第三者から不正アクセスがあり不正な遠隔操作が行われたことを確認。フォレンジック調査の結果、個人情報の一部が閲覧された可能性を確認（流出を示す事実は確認されず）。7月31日に公表した事案の調査結果として10月1日に発表</td></tr>
+<tr><th>出典</th><td>ALSOKジョイライフ 2026-10-01 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>侵入経路は端末への不正な遠隔操作です。遠隔操作ツールの運用ルールと、端末からの個人情報参照範囲の最小化を併せて見直す契機とすべき事例ですわ。</li>
+</ul>
+
+<h3>ジー・プラン「Gポイント」 - 最大約7万件の会員識別子が漏えいした可能性、関連サービスを停止<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ジー・プラン株式会社（ポイントサービス「Gポイント」）</td></tr>
+<tr><th>被害</th><td>最大約7万件の会員識別子</td></tr>
+<tr><th>経緯</th><td>2026年9月25日にシステムで異常を検知して調査した結果、外部からの不正アクセスが判明。同日、本システムを停止して外部からのアクセスを遮断し、「Gポイント」関連サービスの提供も停止。原因と影響範囲を調査中（9月30日公表）</td></tr>
+<tr><th>出典</th><td>ジー・プラン 2026-09-30 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>ポイントサービスは提携先が多く、コンテンツ保護と併せて<strong>提携サービスの利用可否</strong>まで影響が及びます。保有ポイントの失効や不正交換の有無について、利用者向けの案内が待たれるところです。</li>
+</ul>
+
+<h3>吉野家ホールディングス - 採用管理プラットフォーム「ApplyNow」経由で応募者5,366件が漏えい（続報）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社吉野家ホールディングス（株式会社吉野家・株式会社はなまる）／委託先：株式会社ApplyNow</td></tr>
+<tr><th>被害</th><td>2022年4月11日〜2024年6月30日の応募分。吉野家 <strong>4,998件</strong>・はなまる <strong>368件</strong>（氏名（カナ）・メールアドレス・電話番号・生年月日・性別・一部の住所・職業など）。加えてグループ従業員418件の採用担当者のユーザー名・メールアドレス・暗号化されたパスワード・権限</td></tr>
+<tr><th>経緯</th><td>ApplyNowの採用管理プラットフォームは2026年8月9日〜9月7日にデータ分析ツールの脆弱性を悪用した不正アクセスを受け、9月7日にデータベースから一部データが不正に出力されたことを確認。契約終了後も応募者情報が同データベースに残っていたことを9月28日に確認（9月30日公表）</td></tr>
+<tr><th>出典</th><td>吉野家ホールディングス 2026-09-30 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>SaaSの委託先を起点とした漏えいで、近年繰り返し観測される構図です。加えて、<strong>利用規約に基づく削除が実際の運用と一致していなかった</strong>点が明らかになりました。委託先の運用実態の確認（定期的な監査、保存期間の検証）が論点になりますわ。</li>
+</ul>
+
+<h3>コミックシーモア（NTTソルマーレ）- 第3報、一部システムログの閲覧・取得も判明（続報）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>NTTソルマーレ株式会社（電子書籍ストア「コミックシーモア」）</td></tr>
+<tr><th>被害</th><td>会員情報を管理するシステムへの不正アクセスで、登録メールアドレス・ハッシュ化されたパスワード・生年月日・性別・ニックネームを含む会員情報が第三者へ流出（件数は精査中）。さらに第3報で<strong>一部のシステムログファイルも閲覧・取得された</strong>ことを公表し、ログに含まれる会員情報の有無を精査中</td></tr>
+<tr><th>経緯</th><td>10月15日にサービスを停止して調査、10月16日の第2報で会員情報の流出を確認、10月18日の第3報でログ取得を公表。原因の特定と被害拡大防止措置を実施済みで、安全性確保後に購入済書籍のWEB閲覧から順次再開を準備</td></tr>
+<tr><th>出典</th><td>NTTソルマーレ 2026-10-18 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>会員情報に加えて<strong>運用ログの持ち出し</strong>が確認された点が進展です。ログには認証の手掛かりや内部構成が含まれやすく、精査の結果次第では対象範囲が広がる可能性があります。</li>
+</ul>
+
+<h3>東京商工リサーチ - 2026年は100万件以上の個人情報漏えいが既に10件、過去最悪ペース<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>主体</th><td>株式会社東京商工リサーチ（調査・レポート）</td></tr>
+<tr><th>内容</th><td>上場企業とその子会社が公表した個人情報の漏えい・紛失事故について、2026年は10月5日までに<strong>100万件以上の漏えいが10件</strong>に達し、2025年通年の6件を上回った。2012年以降の集計で1,000万件以上の漏えいは2025年までの14年間で3回だったのに対し、2026年は既に3回発生。最大はKDDIのメールシステム不正アクセスによる12,231,954件、次いで物語コーポレーションの公式アプリ経由1,078,896件、タイムズモビリティの約660万件（アカウント数）。2026年の大規模漏えいのうち5件が歴代ワースト10位に入る</td></tr>
+<tr><th>出典</th><td>東京商工リサーチ 2026-10-07 公表、ScanNetSecurity 2026.10.21 8:00</td></tr>
+</table>
+<ul>
+<li>件数だけでなく<strong>内容の精査</strong>が必要とされています（タイムズモビリティでは運転免許証画像を含む本人確認書類情報が漏えいした可能性）。本日の朝刊で扱った日経・GDO・らしんばん・Gポイントはいずれもこの傾向の延長線上にあります。自組織の外部公開面と保存情報の最小化を、四半期ごとに見直す仕組みが要る時期ですわ。</li>
+</ul>
+
+<h3>大阪市 - 放課後事業の活動室3ヶ所でサポート詐欺被害、最大2,272名分の個人情報が閲覧可能に<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>大阪市（こども青少年局青少年課）／運営・管理の委託先：一般財団法人大阪教育文化振興財団</td></tr>
+<tr><th>被害</th><td>児童いきいき放課後事業の活動室3ヶ所（A・B・C）のパソコンで、第三者が遠隔操作アプリを用いて約15分〜50分にわたり操作・閲覧した形跡を確認。<strong>最大で2,272名分の個人情報が第三者によって閲覧できる状態</strong>（利用児童1,261名分の氏名など）。調査可能な範囲では外部へのデータ送信の痕跡は確認されず</td></tr>
+<tr><th>経緯</th><td>6月25日、A活動室の電話料金明細に海外への通話履歴があったことから発覚。5月23日に職員がパソコン使用中に表示された警告画面の番号へ電話し、Microsoftサポートを名乗る相手の指示に従って遠隔操作アプリをインストールしていた。6月30日〜7月18日に全活動室を外部委託で点検した結果、1月31日にB活動室、6月5日にC活動室でも同様の被害を確認。8〜9月の調査を経て9月30日に公表</td></tr>
+<tr><th>出典</th><td>大阪市 2026-09-30 公表、ScanNetSecurity 2026.10.20 8:05</td></tr>
+</table>
+<ul>
+<li>注意すべきは<strong>発覚の遅れ</strong>です。最初の被害は1月31日、次が5月23日、3件目が6月5日と約4ヶ月半にわたり、気付いたのは6月25日の電話料金明細でした。現場端末の警告画面に接する職員向けの訓練と、通話履歴・端末操作ログを監視対象に含める運用が有効ですわ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
