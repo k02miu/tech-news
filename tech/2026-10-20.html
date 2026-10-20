@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.304</h2>
+<p>2026-10-20 06:50 JST に v2.1.304 が公開されました。自動モードのセットアップ支援、Managed Agents のセキュリティ照合、Code Review のレビューレベル設定などが追加されています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong><code>/auto-mode-setup</code></strong>: プロジェクトと直近のセッションを読み取り、自動モードに環境を学習させるガイド付きセットアップ。Bedrock、Vertex、Foundry、Claude apps ゲートウェイ、テレメトリ無効のセッションでも利用可能になりました。</li>
+  <li><strong><code>/claude-api managed-agents-secure</code></strong>: Managed Agents エージェントの設定を Anthropic が公開するセキュリティガイドと照合します（設定は変更しません）。</li>
+  <li><strong>mod の <code>tool.check</code> 拡張</strong>: <code>decider: "person"</code>（権限ダイアログかホストのコールバックのみが承認でき、誰も確認できない場面では mod の理由付きで拒否）と、読み取り専用のツール呼び出しを示す <code>e.isReadOnly</code> が追加されました。</li>
+  <li><strong>コンパクション要約の改善</strong>: トランスクリプト表示（Ctrl+O）の圧縮サマリーに、それ以前に呼び出されたツール名が含まれるようになりました。</li>
+  <li><strong>使用量の警告</strong>: Pro / Max プランで、非アクティブな会話を再開すると5時間の使用量上限を大きく消費する場合に警告が表示されます。</li>
+  <li><strong>[VSCode]</strong>: Amazon Bedrock、Google Vertex AI、Microsoft Foundry、LLM ゲートウェイ経由、テレメトリ無効のセッションでもチャットパネルに mod の描画が表示されます。バックグラウンドのサブエージェントは各ステップを流し込む代わりに、Agent カード下の1行ステータスとして表示されます（全文は <code>/tasks</code>）。</li>
+  <li><strong>[Code Review]</strong>: 組織単位でレビューレベル（Quick / Standard＝既定 / Deep）を選べ、リポジトリごとに個別レベルも設定可能に。GitHub 組織内の全リポジトリ（後から追加されたものも含む）を個別選択なしでレビューする管理オプションも追加されました。</li>
+</ul>
+<h3>🐛 主な変更</h3>
+<ul>
+  <li>カスタム <code>ANTHROPIC_BASE_URL</code> 配下でツール検索が既定で有効になりました（ゲートウェイが 400 / 422 を返した場合はツール検索なしで再試行）。</li>
+  <li>コンパクション後にスキル一覧を再送するようになり、<code>/reload-skills</code> は新規・変更分のみを送信します。スキルフックは出所（リポジトリ・自分のフォルダ・プラグイン）ごとにセッションあたり最大 1,024 フック・16,384 マッチャ文字に制限されます。</li>
+  <li><code>/artifacts</code> の削除確認が番号選択（1 または Enter で保持、2 で削除）になりました。</li>
+  <li><code>/claude-api</code> スキルは Claude Platform on AWS 上で SDK や curl にフォールバックせず <code>ant</code> CLI を使うよう更新されました。Opus 5.5 の <code>/fast</code> ダイアログから「(research preview)」表記が外れています。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-304">ソースへのリンク</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.2</strong>（2026-10-15 17:21 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に安定版の新規リリースは確認されませんでした。最新の安定版は <strong>v2026.10.5</strong>（2026-10-19 06:47 JST 公開）です。なお、プレリリース版 <strong>v2026.10.10-beta.2</strong> が 2026-10-19 21:23 JST に公開されています。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+
+<h2>🐋 Orca — v1.4.230</h2>
+<p>2026-10-19 15:30 JST に v1.4.230 が公開されました。実験的なネイティブチャットの拡充、アカウント切り替え時のセッション再起動、SSH・リモートワークスペースの安定化が柱となっています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ネイティブチャット（experimental）</strong>: Antigravity をチャットで利用可能に。どのエージェントをチャットで開くか選択でき、チャットのホストに必要なエージェントが無い場合は Install を提示します。コピーしたファイルの貼り付けが添付として扱われ、画像メッセージはテキスト同様にキューに並びます。キュー操作や添付が処理中の間はコントロールがグレー表示になり、進行状況が分かりやすくなりました。</li>
+  <li><strong>アカウントとエージェント</strong>: Claude アカウントを切り替えた後、実行中のセッションを新しいアカウントで再起動できます。設定からダウンロード済みのエージェントランタイムを削除でき、Orca CLI 経由で Linear のコメントを編集・削除できます。</li>
+  <li><strong>モバイル</strong>: キュー内のメッセージをその場で編集でき、デスクトップ風のカードでツール実行を追跡。履歴から再開すると会話が即座に表示されます。横向きのスマートフォンではセッションタブがトップバーに配置され、Tasks 画面で使用中のデスクトップが分かります。</li>
+  <li><strong>SSH・リモートワークスペース</strong>: 切断した接続は切断のまま維持され、スリープ中のワークスペースはスリープを保ち、閉じたタブは再接続後も閉じたままになります。サーバー更新や再ペアリング時のメッセージが明確になり復旧しやすくなりました。</li>
+  <li><strong>日々の磨き込み</strong>: Quick Command のショートカットがフォーカス中の分割に追従し、タブプレビューはホバー待ち時間を経てから表示されます。ファイルヘッダに Reveal in Finder が追加され、ワークスペースのクリーンアップは他マシン上の同一パスプロジェクトをより保護するようになりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.230">ソースへのリンク</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<ul>
+  <li><strong>AWS</strong>: 対象期間内に複数のアップデートが公開されました。Amazon CloudWatch Omni が8つの追加リージョンで利用可能になり、Amazon GuardDuty は Runtime Monitoring 向けの任意の脅威検知ルールを追加、EC2 Image Builder は Auto Scaling グループと連携してイメージビルドを高速化します。ほか、Grok 4.7 の Amazon Bedrock（AWS GovCloud）での提供開始、IAM Identity Center のユーザー・グループに対する楽観的ロック対応、Amazon RDS for SQL Server のリードレプリカでのスナップショット取得、Amazon Connect Customer Global Resiliency のレジリエンス準備状況ページなどが確認されました。</li>
+  <li><strong>GCP</strong>: 2026-10-19 のリリースノートが更新されました。Compute Engine のグレースフルシャットダウンが一般提供となり、インスタンスの停止・削除時にゲスト OS が最大6時間かけて処理を完了できます。Cloud Tasks が asia-south2（デリー）と northamerica-northeast2（トロント）で利用可能になり、Cloud Armor のプリコンフィグ WAF v33-stable ルールセットにセキュリティ修正が入りました。</li>
+  <li><strong>Next.js</strong>: 対象期間内の安定版リリースは確認されませんでした。最新の安定版は v16.4.2（2026-10-16 05:44 JST 公開）です。プレリリースでは v16.5.0-canary.19（2026-10-20 08:54 JST 公開）が最新です。</li>
+  <li><strong>React</strong>: 対象期間内の新規リリースは確認されませんでした。最新は v19.3.1（2026-10-15 02:06 JST 公開）です。</li>
+  <li><strong>Claude API / SDK</strong>: 対象期間内の新規リリースは確認されませんでした。anthropic-sdk-python は v1.15.0（2026-10-16 04:45 JST 公開）が最新です。</li>
+  <li><strong>Hono / Spring Boot</strong>: Hono は v5.0.0-rc.1（2026-10-10 公開）、Spring Boot は v4.2.0-M2（2026-09-24 公開）が最新で、対象期間内の新規リリースは確認されませんでした。</li>
+  <li><strong>Azure</strong>: 公式アップデートフィードが正常な XML を返さない状態（HTML ページおよび空レスポンスを返す）となっており、対象期間内の新着アップデートは確認できませんでした。</li>
+</ul>
+
+<p class="empty-notice"><strong>Python / Django</strong>、<strong>Java</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
