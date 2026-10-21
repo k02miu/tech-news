@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>PHP 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35 - 未認証の遠隔コード実行2件（いずれもCVSSv4.0 9.2）の修正版が公開<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-109618（OOM処理の中断による内部データ未初期化）、CVE-2026-109619（解放済みメモリを指す古いグローバル状態の再利用）</td></tr>
+<tr><th>影響</th><td>PHP-FPM・Apache mod_php・php-cgi・FrankenPHP・LiteSpeedを含む、Webリクエストを処理するすべてのPHPインストール。修正版は 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35</td></tr>
+<tr><th>公開</th><td>協定世界時 2026-10-21 14:00（JST 同日23:00）リリース。事前予告 2026-10-20（Security NEXT 2026/10/21、php.net News Archive 2026）</td></tr>
+</table>
+<ul>
+<li>事前予告どおり、協定世界時10月21日14時に修正版が公開されました。両件ともCVSSv4.0ベーススコア<strong>9.2</strong>で、<strong>未認証のリクエストから遠隔コード実行に至る</strong>ものです。</li>
+<li>CVE-2026-109618（RCE via OOM corruption）は、メモリ枯渇（OOM）処理が内部のリクエストデータを<strong>部分初期化のまま</strong>PHPを中断させ得るため、リクエストの後処理が無効なデータを有効として扱う問題です。<strong>mod_phpではアプリケーションのコードが動く前に攻撃が成立する実証例</strong>が示されています。</li>
+<li>CVE-2026-109619（RCE via stale global state）は、リクエストに紐づく内部状態が、その背後のメモリが解放された後も生存しうるため、<strong>同一ワーカーが処理する後続のリクエストが通常の初期化より前に古い状態を利用してしまう</strong>問題です。</li>
+<li>PHPチームは「完全な緩和策はなく、更新が唯一の安全な選択」と明言しています。暫定措置は、memory_limit=-1をphp_admin_value等で上書き不能に設定（CVE-2026-109618）、session.upload_progress.enabled=0（PHP 8.5では fatal_error_backtraces=0）を全ワーカーの再起動を伴って適用（CVE-2026-109619）、post_max_sizeの低減やコンテナ／cgroupによる可用性境界の設定です。</li>
+<li>既にサポート外のPHP 7.4 / 8.0 / 8.1向けには<strong>最小ソースバックポート</strong>が提供されています。PHP 8.2は2026年12月31日にEOLを迎える予定です。注意点として <code>rpms.remirepo.net</code> は当日中の更新を提供しないため、ディストリビューションのパッケージかソースビルドへの切り替えが求められています。</li>
+<li>リリース直前の同日22時30分から、国内のセキュリティ情報サイトが「利用しているソフトウェアの重大な脆弱性」を理由に予防的な緊急メンテナンスへ入る例も観測されました。PHP製のWebサイトは社内システムから公開サイトまで幅広く存在しますわ。バージョン確認を今朝のうちにお願いいたします。</li>
+</ul>
+
+<h3>Node.js 26.12.1 / 24.22.1 / 22.23.4 - Brotliデコーダの領域外書き込みによるRCE等、CVEベース10件（最大High）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111497（High）、CVE-2026-105482（High）、CVE-2026-105483（High）、CVE-2026-106069（High）、CVE-2026-105481・106072・106074（Medium）、CVE-2026-106070・106071・106073（Low）</td></tr>
+<tr><th>影響</th><td>Node.js 26.x / 24.x / 22.x。修正版は 26.12.1 / 24.22.1 / 22.23.4（v22.23.4 は 'Jod' LTS）</td></tr>
+<tr><th>公開</th><td>GitHubリリース 2026-10-21 10:38 UTC（JST 19:38）／nodejs.org セキュリティリリース告知 2026-10-21</td></tr>
+</table>
+<ul>
+<li>前日の朝刊で「本対象期間中には確認されず」とお伝えしていた本体のセキュリティアップデートが、発表どおり<strong>10月21日に公開されました</strong>。最高深刻度はHighで、26.x / 24.x / 22.xの3系統すべてが対象です。</li>
+<li>最も重いのが<strong>Brotliデコーダの領域外書き込み（CVE-2026-111497、High）</strong>で、細工したデータにより<strong>遠隔コード実行</strong>に至るおそれがあります。関連して <code>BROTLI_DECODER_ERROR_FORMAT_BLOCK_SWITCH</code> の公開とbrotli側の修正が取り込まれました。</li>
+<li>TLS証明書のホスト名検証を回避するHigh 2件（<strong>IPアドレスを全角数字で記述した場合の CVE-2026-105483</strong>、緩やかな解釈でIPアドレスへ解決されるホスト名の CVE-2026-106069）と、<strong>dns.resolveがNUL文字を含む名前を切り詰める CVE-2026-105482</strong> も含まれます。証明書検証と名前解決に関わるため、TLS終端やSSRF対策を実装されたシステムでは特にご確認くださいませ。</li>
+<li>Mediumはkeep-aliveソケットでリクエスト送信前に書かれた応答が処理される問題（CVE-2026-105481）、非正準IPv4ホスト名の証明書検証不備（CVE-2026-106072）、<strong>crypto.randomUUID/randomIntのエントロピーキャッシュがスナップショットやSEAへ保存され全プロセスで同一値となる問題</strong>（CVE-2026-106074、ユーザーランドスナップショット利用構成が対象）。LowはZipFileがヘッダ検証失敗後に攻撃者制御の接頭辞バイトを返す問題、Permission Modelのワイルドカード過剰許可、fs.realpathSyncによるPermission Model回避です。</li>
+<li>依存更新として c-ares、<strong>ca-cert（eMudhra中間CA侵害への対応）</strong>、OpenSSL、SQLite、Undici 8.12.2 が取り込まれています。EOL済みの旧系統も影響を受けるため、常用のバージョンへ更新なさってくださいませ。</li>
+</ul>
+
+<h3>Chrome 156（353件・Critical 6件）とFirefox 158.0.1（eMudhra中間CA侵害に対応）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Chrome 156.0.8078.48 / 156.0.8078.47（CVEベース353件）、Firefox 158.0.1（CVE-2026-113399、CVE-2026-113470 ほか4件）</td></tr>
+<tr><th>影響</th><td>Google Chrome（Windows / macOS / Linux）、Mozilla Firefox（および延長サポート版の系譜）</td></tr>
+<tr><th>公開</th><td>Chrome 2026-10-20（米国時間）公開・Security NEXT 2026/10/21、Firefox 158.0.1 2026-10-20公開・Security NEXT 2026/10/21</td></tr>
+</table>
+<ul>
+<li><strong>Chrome 156</strong> は353件を修正し、Critical 6件はSkia・Accessibility・CSS・Paint・WebRTCのメモリ破損5件（CVE-2026-113341 / 113279 / 113072 / 113280 / 113303）とAccessibilityのUse After Free（CVE-2026-113271）です。High 61件、Medium 197件、Low 89件。更新は順次展開されます。</li>
+<li><strong>Firefox 158.0.1</strong> はHigh 2件を含む4件を修正。うち1件（CVE-2026-113470）は<strong>eMudhraの中間証明書が侵害された事案</strong>への対応で、10月17日にOneCRLを更新してRemoteSettings経由で配信済みのブロックリストを、RemoteSettingsが無効化されている環境やネットワークで到達できない場合でも確実に適用できるようにしたものです。</li>
+<li>eMudhraの中間CA侵害は、同じく10月21日に公開された<strong>Node.jsの依存更新（ca-cert）</strong>にも波及しています。証明書失効の影響はブラウザに限りません。自社サービスが当該CAに連鎖する証明書を使っていないか、併せてご確認くださいませ。</li>
+</ul>
+
+<h3>米CISA KEV追加 - Plex Media Server 4件（実際の悪用を確認）・SiteGuard Server Edition・Siemens Software Center<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-96652 / 96654 / 96655 / 96656（Plex Media Server 1.43.3.10861未満）、CVE-2026-106931（SiteGuard Server Edition）、CVE-2026-110936（Siemens Software Center）</td></tr>
+<tr><th>影響</th><td>Plex Media Server、EGセキュアソリューションズのWAF「SiteGuard Server Edition」、Siemens Software Center</td></tr>
+<tr><th>公開</th><td>米CISA 2026-10-20（現地時間）／Security NEXT 2026/10/21 13:09 JST</td></tr>
+</table>
+<ul>
+<li>Plex Media Serverの4件は個別にはSSRFやURIスキームの中和不備、ファイル名・パス制御の不備ですが、<strong>連鎖させることで認証なしのリモートコード実行が可能</strong>であり、実際の攻撃が確認されています。</li>
+<li>国産WAF「SiteGuard Server Edition」のOSコマンドインジェクション（CVE-2026-106931）とSiemens Software Centerの Uncontrolled Search Path（CVE-2026-110936）も追加されました。米行政機関には指定期日までの対応が義務付けられています。</li>
+<li>Plexのように家庭・社内に置かれたメディアサーバは、更新の優先順位が下がりがちです。<strong>実際に悪用されている</strong>点を重く見て、公開範囲の確認から始めていただくのが宜しいかと存じますわ。</li>
+</ul>
+
+<h3>Claude Agent SDK（Python）- resumeオプションの引数インジェクションで任意コマンド実行に至るおそれ（CVE-2026-96620）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-96620</td></tr>
+<tr><th>影響</th><td>Anthropic製「Claude Agent SDK」のPython実装。アプリケーションが信頼できない入力を、セッション再開のセッションIDとして用いている構成</td></tr>
+<tr><th>公開</th><td>修正版公開済み。Security NEXT 2026/10/20</td></tr>
+</table>
+<ul>
+<li>セッション再開に用いる <code>resume</code> オプションの処理が値を検証せずにClaude CLIへ渡すため、値が「-」で始まる場合、セッションIDとしてではなく<strong>新たなコマンドラインオプションとして解釈</strong>されます。</li>
+<li>これを悪用するとMCPサーバの定義などを読み込ませることができ、<strong>CLIの起動時に任意のコマンドが実行され、SDKが備える権限制御を回避</strong>されるおそれがあります。SDKを組み込んだエージェント基盤では、セッションIDを外部入力から直接受け取っていないか、今一度ご確認くださいませ。</li>
+</ul>
+
+<h3>nginxおよび関連製品（F5）- CVEベース11件、うち3件がCVSSv4.0 9.2<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-15176、CVE-2026-93479、CVE-2026-97205、CVE-2026-97629、CVE-2026-95101、CVE-2026-101025、CVE-2026-101019、CVE-2026-91184、CVE-2026-96615、CVE-2026-94197、CVE-2026-104939（計11件）</td></tr>
+<tr><th>影響</th><td>オープンソースnginx、NGINX Plus、NGINX Gateway Fabric、NGINX Ingress Controller など</td></tr>
+<tr><th>公開</th><td>F5 定例外アドバイザリ 2026-10-14（米国時間）／Security NEXT 2026/10/20</td></tr>
+</table>
+<ul>
+<li>nginx本体に5件、関連製品に6件が判明しました。nginx公式サイトは本体5件をいずれもMediumと評価していますが、<strong>F5のアドバイザリでは3件がCVSSv4.0 9.2（Critical相当）</strong>とされています。</li>
+<li>代表は <strong>CVE-2026-15176</strong> で、URLの書き換えやファイルパスの参照に関する特定の設定下での<strong>ヒープバッファオーバーフロー</strong>です。ほかにmapディレクティブと正規表現（CVE-2026-93479）、SSLモジュール（CVE-2026-97629）、HTTP/3（CVE-2026-95101）、JSモジュール（CVE-2026-101025 / 101019）、Gateway Fabric と Ingress Controller の各2件が含まれ、サービス拒否・コード実行・認証回避・機密情報漏えいに至り得ます。</li>
+<li>リバースプロキシの脆弱性は背後のアプリ資産全体に影響します。<strong>設定依存で再現条件が限られるものの、評価が大きく割れている</strong>点を踏まえ、修正版の適用状況をご確認くださいませ。</li>
+</ul>
+
+<h3>その他のスタック関連 - WordPressプラグイン45件、OpenStack Manila（9.9）、Vibe-Trading・Bp Premier（9.8）、sharp・uv・Dulwich、OpenJ9、Unbound<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-71195（OpenStack Manila、9.9）、CVE-2026-114108（HKUDS Vibe-Trading、9.8）、CVE-2026-114119（Bp Premier、9.8）、CVE-2026-114111 / 114112 / 114113（sharp、最大8.9）、CVE-2026-114109 / 114110（uv、8.8 / 5.3）、CVE-2026-114094〜114098（Dulwich、最大8.8）、CVE-2026-111074 / 111075 / 110938（OpenJ9、各8.7）、CVE-2026-97206 ほかUnbound関連5件、CVE-2026-81812 / 81813ほか（WordPressプラグイン）</td></tr>
+<tr><th>影響</th><td>OpenStack Manila 23.0.1未満、Vibe-Trading 0.1.0〜0.1.7、Bp Premier 1.14.1.1128未満、sharp 0.35.5未満、uv 0.11.15未満、Dulwich 1.2.9未満、Eclipse OpenJ9 0.63.0未満、NLnet Labs Unbound 1.26.1まで、WordPressの各種プラグイン</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-21（JST 10:17〜18:17）</td></tr>
+</table>
+<ul>
+<li><strong>OpenStack Manila（CVE-2026-71195、9.9）</strong>は、public shareに対する複数のAPI操作が呼び出し元プロジェクトの権限でのみ認可され、本来の所有者へ再認可されない問題です。任意の認証済みプロジェクトメンバーが、公開共有のUUIDを使って他テナント共有への読み書き権限の付与、アクセスルールの失効、読み取りから書き込みへの権限昇格、バックアップ経由でのデータ持ち出し、アクセスルール一覧からのIP・ユーザー名・<strong>CephFS鍵の漏えい</strong>まで行えます。</li>
+<li><strong>AIエージェント基盤の未認証・プロンプトインジェクション経由の実行</strong>は引き続き集中しています。AI取引エージェント基盤HKUDS Vibe-TradingはFastAPIエンドポイントに認証がなく未認証で任意にアクセスでき（CVE-2026-114108、9.8）、間接プロンプトインジェクションによるシェル実行（CVE-2026-114107、8.8）とパストラバーサル（CVE-2026-114106、7.5）も併存します。</li>
+<li><strong>Bp Premier（CVE-2026-114119、9.8）</strong>は豪州の診療所向け電子カルテ／診療管理ソフトで、<strong>全インストールで共有されるSQL Server管理者パスワードがハードコード</strong>されていました。医療機関向けソフトの共通資格情報は影響が広範に及びます。</li>
+<li>サプライチェーン経由の実行に注意が必要です。<strong>sharp</strong>は同梱のlibheifによりglibc系Linuxで細工した画像から<strong>遠隔コード実行</strong>（CVE-2026-114112、8.9）、<strong>uv</strong>は悪意あるwheelのconsole script名を介してscriptsディレクトリ外へ任意ファイルを書き込め（CVE-2026-114109、8.8）、<strong>Dulwich</strong>はWindowsでドライブレター検証が欠如し悪意あるリポジトリのclone/checkoutで任意ファイル書き込みが成立します（CVE-2026-114094、8.8）。開発環境の依存更新は、CIのキャッシュごと入れ替えるつもりで臨むのが宜しいかと存じますわ。</li>
+<li><strong>Eclipse OpenJ9（0.63.0未満）</strong>はJITServerで認証前のDoS（CVE-2026-111074）とクロスフィールド検証欠如（CVE-2026-111075）、境界チェック不備（CVE-2026-110938）の3件がいずれも8.7。Java系の実行基盤はOracle CPU 2026年10月（前日の朝刊でお伝えした1,295件）と併せて、適用計画の中で優先度をご判断くださいませ。</li>
+<li><strong>NLnet Labs Unbound</strong>はDNS-over-QUICのライフタイム不具合によるDoS（CVE-2026-97206、7.5）ほか5件、<strong>WordPressプラグイン</strong>はElementorのSVGサニタイズ不備（CVE-2026-81812 / 81813）を含む45件が一括登録されました。前日の朝刊でもお伝えしたとおり、プラグイン経由の侵入は国内の被害事例で繰り返し観測されている構図です。</li>
+</ul>
+
+<h3>Claude Code 2.1.306 / 2.1.307 - サンドボックスで停止したツール呼び出しの監査イベント追加と、MCP呼び出しの二重実行まわりの修正<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.306 / 2.1.307</td></tr>
+<tr><th>影響</th><td>Claude Code CLI・デスクトップ・VSCode・クラウドセッション・self-hosted runner</td></tr>
+<tr><th>公開</th><td>CHANGELOG 2026-10-21公開分（2.1.305は前日の朝刊で既報）</td></tr>
+</table>
+<ul>
+<li>監査面の変更として、<strong>権限ルール・autoモード・安全チェック・フック・サンドボックスがツール呼び出しを停止・確認・差し戻した際に <code>claude_code.safety_event</code> のOpenTelemetryイベント</strong>を発行するようになりました。承認・拒否の判断を外部へ流せるため、統制の証跡を取る運用に好都合です。</li>
+<li>修正では、<strong>接続が呼び出し途中で閉じた際にHTTP MCPツール呼び出しが二重送信されていた問題</strong>（読み取り専用・冪等なツールのみ再試行に限定）、<code>/permissions</code>の Recently denied が拒否されたシェルコマンドを表示せずautoモードのローカル分類器が承認を無視していた問題（承認行はコマンド名を表示）を解消しました。</li>
+<li>self-hosted runnerでは、<strong>前セッションが残した <code>.claude/settings.local.json</code> をコミットしてしまう問題</strong>、チェックアウトフックのプロセス残留、既定30分のタイムアウト追加などが修正されています。CIに組み込んでいる場合は、フックの所要時間が30分を超えていないかご確認くださいませ。</li>
+<li>2.1.306はクラウドセッションでのログイン誤判定とAPIエラー表示の回帰のみの修正で、セキュリティ関連の変更はありません。</li>
+</ul>
+
+<h3>Hermes Agent v0.22.3 / v0.22.4 と openclaw 2026.10.10-beta.3 - 新規リリース<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Hermes Agent v0.22.3（v2026.10.21）／v0.22.4（2026-10-21 18:49 UTC）／openclaw 2026.10.10-beta.3（2026-10-21 07:00 UTC）</td></tr>
+<tr><th>影響</th><td>Hermes Agent（CLI・インストーラ・Microsoft Store版・Docker・Hermes Cloud）、openclaw（プレリリース）</td></tr>
+<tr><th>公開</th><td>2026-10-21（JST 同日 12:21 / 18:49 / 16:00 相当）</td></tr>
+</table>
+<ul>
+<li><strong>Hermes Agent</strong> は v0.22.3 で v0.22.2以降の約620 PR（2,911非マージコミット、4,206ファイル変更）を安定版タグとして集約しました。個別のCVE・脆弱性修正の明示はありませんが、MCPの進捗通知、プラグインが宣言するOAuthクライアントのサインイン・更新、承認モードやキュープロンプトの操作、セッション自動削除のオプトイン化など権限・運用に関わる変更を含みます。v0.22.4 はプラグインの依存同意ステップのスキップ、デスクトップのプラグイン審査におけるプロトタイプ書き込みの人手確認への切り替え、承認モードチップのプロファイル追従など小さな修正のリリースです。</li>
+<li><strong>openclaw 2026.10.10-beta.3</strong> はプレリリースで、<strong>エージェント状態の初期化競合により2つのエージェントが同一のエージェントDBの所有権を主張しうる問題</strong>の修正、<strong>利用可能なツールカタログが変わった際に再利用中のCLIセッションを無効化</strong>してGateway再起動後にexec等のツールを回復し、古いカタログが生成エージェントへ渡らないようにする変更を含みます。自前のエージェント基盤をお使いの場合は、ツール権限の取り違えを防ぐ意味で早めの更新をおすすめいたします。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React / Django / Hono / Spring Boot のフレームワーク本体、および GCP / AWS / Azure の各サービスに直接関連する新規のCVEは本対象期間では確認されませんでした（Java系基盤はOpenJ9、Node.js系は本体のセキュリティリリース節、Python系はDulwich・uv・sharpの項をご参照ください）。JVNのVU新着は2026/10/19公開分が最新で、対象期間内の新規アドバイザリはありませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ヤマト運輸 - 「クロネコ代金後払いサービス」侵害で約526万件の個人情報流出を確認（続報）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ヤマト運輸株式会社</td></tr>
+<tr><th>被害</th><td>2018年10月以降に「クロネコ代金後払いサービス」を利用した一部顧客の氏名・住所・電話番号・商品明細・社内管理用情報など<strong>約526万件</strong>（うち約49万件にメールアドレスを含む）。加えて2021年2月5日以降の届け先の氏名・住所・電話番号・送り状番号など<strong>約5万件</strong>、2018年10月以降の一部加盟店の店名・加盟店コードなど<strong>約4,100件</strong></td></tr>
+<tr><th>経緯</th><td>2026年9月28日に同サービスの侵害を確認し、外部からのアクセスを制限して調査を実施。調査の結果、上記の流出を確認。当初懸念された請求金額・債権残高・社員氏名の窃取は確認されていない</td></tr>
+<tr><th>影響</th><td>同社は個人情報保護委員会へ報告し、対象顧客へ順次連絡。メール・メッセージ・電話・郵便物に対して慎重な対応を呼びかけ</td></tr>
+<tr><th>出典</th><td>ヤマト運輸 公表、Security NEXT 2026/10/21</td></tr>
+</table>
+<ul>
+<li>9月28日の侵害確認から約3週間をかけた調査で、<strong>2018年10月まで遡る約526万件</strong>という規模が判明しました。決済を伴う物流サービスは長期の取引履歴を保持するため、被害範囲が年単位で広がりますわ。</li>
+<li>流出項目に「社内管理用情報」が含まれる点も見落とせません。<strong>顧客情報だけでなく運用情報が持ち出されている</strong>ため、なりすましや二次的な侵入の足掛かりとして使われ得ます。加盟店（約4,100件）への波及も生じています。</li>
+</ul>
+
+<h3>トラストバンク「ふるさとチョイス」 - 第三者による不正アクセスで会員情報445万4,097件が流出、関連サービス停止<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社トラストバンク（ふるさと納税サイト「ふるさとチョイス」）</td></tr>
+<tr><th>被害</th><td>会員情報<strong>445万4,097件</strong>（10月20日時点で流出を確認）。氏名・住所・電話番号・メールアドレス・ハッシュ化されたパスワード・寄付金控除の試算額などを含む</td></tr>
+<tr><th>経緯</th><td>2026年10月19日に通常とは異なるアクセス傾向を検知。確認の結果、同月17日に侵害され会員情報が流出したことが判明。被害拡大防止のため関連サービスを停止</td></tr>
+<tr><th>影響</th><td>10月20日に個人情報保護委員会へ報告。外部協力のもと脆弱性への対応と詳細調査を進めており、サービス再開時期は未定</td></tr>
+<tr><th>出典</th><td>トラストバンク、Security NEXT 2026/10/21（RSS pubDate 2026-10-21 07:47 UTC）</td></tr>
+</table>
+<ul>
+<li>検知の2日前に侵害が成立していた例です。<strong>検知時点では既にデータが持ち出されている</strong>前提で、初動の調査範囲を決める必要があります。</li>
+<li>同社は利用者に対し、同じアカウント情報を他サービスでも使い回している場合の変更と、同社を装ったメール・メッセージ・郵便物・電話への注意を呼びかけています。寄付金控除の試算額という<strong>比較的機微な属性情報</strong>まで含まれる点が気がかりですわ。</li>
+</ul>
+
+<h3>ユミルリンク - メール配信の5システムへ不正アクセス、メールアドレスを含む情報がのべ約900万件流出のおそれ<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ユミルリンク（メール配信サービス）</td></tr>
+<tr><th>被害</th><td>同社が管理する5つのシステムが不正アクセスを受け、データが出力。メールアドレスを含む情報が<strong>のべ約900万件</strong>にのぼるとみられる（詳細調査中）</td></tr>
+<tr><th>経緯</th><td>2026年10月16日未明に一部システムの侵害を確認。アクセス記録から<strong>プログラムの脆弱性を突かれた</strong>ことが判明。サポート・品質管理担当従業員の認証情報が取得され、その認証情報を用いて他システムへの認証が試行され、不正なプログラムを設置されてデータベースからデータが出力されていた</td></tr>
+<tr><th>影響</th><td>侵害確認したサーバをネットワークから遮断し、脆弱性を修正、悪用された従業員の認証情報を削除。外部協力のもと詳細な調査を継続</td></tr>
+<tr><th>出典</th><td>ユミルリンク、Security NEXT 2026/10/20</td></tr>
+</table>
+<ul>
+<li>典型的な<strong>横展開</strong>の型です。脆弱性から1システムへ侵入し、そこで得た<strong>サポート・品質管理担当の認証情報</strong>を使って他システムへ認証を試行し、最終的に5システムからデータを持ち出しています。</li>
+<li>メール配信事業者は「他社の顧客名簿」を預かる立場です。のべ約900万件という数字は自社顧客に留まらない可能性があり、<strong>委託元企業への波及</strong>を含めた通知計画が問われますわ。</li>
+</ul>
+
+<h3>ニフティ - 光回線の回線申込・受付管理システムへの外部アクセス、最大54万2,513件が影響のおそれ<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ニフティ株式会社</td></tr>
+<tr><th>被害</th><td>2019年以降に同社Webサイト以外から「＠nifty光」「＠nifty MAX光」「＠nifty auひかりプラス」を申し込んだ顧客の氏名・住所・電話番号・性別・生年月日・メールアドレス・会員ID、<strong>最大542,513件</strong>が影響を受けたおそれ</td></tr>
+<tr><th>経緯</th><td>2026年10月19日、社内の「回線申込・受付管理システム」への外部からのアクセスを確認。アクセス元からの通信を遮断し、被害拡大を防ぐ暫定対策を実施</td></tr>
+<tr><th>影響</th><td>侵害されたのは情報登録用の<strong>管理用ツール</strong>で、顧客が申し込むWebサイトの申込フォームとは別システム。外部協力のもと調査し、個人情報保護委員会への報告を進めている</td></tr>
+<tr><th>出典</th><td>ニフティ、Security NEXT 2026/10/20</td></tr>
+</table>
+<ul>
+<li>顧客が触れる申込フォームではなく<strong>裏側の登録用管理ツール</strong>が標的です。公開面の防御を厚くしても、運用ツールが同一ネットワーク上で緩く守られていると被害が成立します。</li>
+<li>2019年以降の申込分が対象で、<strong>申込経路によって対象が分かれる</strong>点も特徴ですわ。影響範囲の特定には経路ごとのデータの持ち方の把握が要ります。</li>
+</ul>
+
+<h3>日本郵政 - 「ゆうゆうポイントサイト」を緊急サービス停止、ポイント残高・履歴の表示や利用が不可に<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>日本郵政株式会社</td></tr>
+<tr><th>被害</th><td>「ゆうゆうポイントサイト」を10月16日午前10時20分頃から緊急停止。サイトの利用、ポイント残高・履歴の表示、郵便局ネットショップでのポイント利用、かんぽアプリやアンケート回答によるポイント付与、QRポップ読み込みによる来局ポイント付与がいずれも不可</td></tr>
+<tr><th>経緯</th><td>2026年10月16日、緊急サービス停止を発表。復旧についてはゆうIDマイページで案内するとしている</td></tr>
+<tr><th>出典</th><td>日本郵政 ニュースリリース「ゆうゆうポイントサイトの緊急サービス停止」、ScanNetSecurity 2026.10.21 8:05</td></tr>
+</table>
+<ul>
+<li>日本郵政グループでは9月25日の「郵便局アプリ」への不正アクセスでも緊急メンテナンスを実施しており、<strong>短期間に同一グループでサービス停止が続いている</strong>状況です。</li>
+<li>ポイント基盤の停止は、決済手段にポイントを用いる利用者と、ポイントを付与する提携サービス双方に影響が及びます。復旧時の案内とポイントの補償方針をあわせて確認したいところですわ。</li>
+</ul>
+
+<h3>NEC - 業務委託先へのサイバー攻撃で顧客システムに障害、関係者間のクラウドストレージからファイル流出<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>NEC（システム開発・保守の業務委託先が侵害）</td></tr>
+<tr><th>被害</th><td>複数の顧客が影響。侵害された顧客システムでは<strong>サーバ内のファイルが暗号化されシステムが利用不可</strong>に。加えて顧客・NEC・委託先などの関係者間の情報共有に用いていたクラウドストレージからファイルが流出し、対象には<strong>顧客が保有する個人情報やシステム関連情報</strong>が含まれていた</td></tr>
+<tr><th>経緯</th><td>2026年9月下旬、委託先がサイバー攻撃を受け、正規アカウントの認証情報が窃取され悪用された。攻撃者は委託先の端末から顧客のシステム環境へアクセス</td></tr>
+<tr><th>影響</th><td>影響を受けた複数の顧客には個別に連絡済み。個人情報の詳細は判明次第顧客へ報告予定</td></tr>
+<tr><th>出典</th><td>NEC、Security NEXT 2026/10/20</td></tr>
+</table>
+<ul>
+<li><strong>巨大ベンダーのサプライチェーン侵害</strong>が顧客の基幹システムの停止にまで至った事例です。窃取されたのは正規アカウントの認証情報で、VPNやリモート保守経路の権限設計が焦点になります。</li>
+<li>情報共有用のクラウドストレージが第2の流出経路になっている点も重いところです。<strong>共同作業領域は「境界の外」になりやすい</strong>ため、契約関係の終了した委託先アカウントや共有リンクの棚卸しを今一度お願いいたしますわ。</li>
+</ul>
+
+<h3>パピレス「Renta！」 - サーバへの不正なアクセスの可能性、サービスを一時停止<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社パピレス（電子書籍販売サイト「Renta！」）</td></tr>
+<tr><th>被害</th><td>10月18日にサーバへの外部からの不正なアクセスの可能性を把握。同サービスを一時停止し緊急メンテナンスを実施。不正アクセスの詳細・影響範囲は調査中</td></tr>
+<tr><th>経緯</th><td>2026年10月19日、サービス一時停止を発表（TDnet適時開示）。再開時期は未定、業績への影響も精査中</td></tr>
+<tr><th>出典</th><td>パピレス 適時開示、ScanNetSecurity 2026.10.21 8:05</td></tr>
+</table>
+<ul>
+<li>10月中旬以降、国内の電子書籍サービスではコミックシーモア、BOOK☆WALKERの系譜に続き「Renta！」でも停止・調査が発生しています。<strong>同種の攻撃が特定セクターに集中している</strong>可能性を踏まえた横断的な注意が必要ですわ。</li>
+</ul>
+
+<h3>日本経済新聞社への不正アクセス - 日経ナショナル ジオグラフィックのサービス利用者情報へも波及（続報）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社日本経済新聞社／株式会社日経ナショナル ジオグラフィック</td></tr>
+<tr><th>経緯</th><td>日本経済新聞社は10月16日、システム開発に利用するクラウドサービスへの不正アクセスによる約183万件の個人情報漏えいを公表（クラウドの認証情報が窃取されたことが原因）。日経ナショナル ジオグラフィックは10月17日、<strong>漏えいした個人情報に同社サービス利用者の情報が一部含まれている可能性</strong>があると発表</td></tr>
+<tr><th>影響</th><td>日経ナショナル ジオグラフィックは調査を継続し、詳細が判明し次第改めて報告予定</td></tr>
+<tr><th>出典</th><td>日経ナショナル ジオグラフィック お知らせ 2026-10-17、ScanNetSecurity 2026.10.21 8:05</td></tr>
+</table>
+<ul>
+<li>開発用クラウドの認証情報窃取という起点から、<strong>グループ外の提携サービス利用者へ影響が広がった</strong>続報です。共通基盤を持つサービスの間では、1社の漏えいが利用者側の通知義務に直結します。</li>
+</ul>
+
+<h3>スターツ出版「オズモール」 - 第2報で退会者を含む最大442,779名分と判明<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>スターツ出版株式会社（ウェブサイト「オズモール」）</td></tr>
+<tr><th>被害</th><td>最大<strong>442,779名分</strong>のオズモール会員および一部の退会者のメールアドレス、一部の氏名および住所（都道府県まで）</td></tr>
+<tr><th>経緯</th><td>9月26日に海外からの大量の不正アクセスを検知。第2報（10月1日公表）で対象範囲を確定し、原因を特定のうえ脆弱性対策と不正アクセス遮断を実施。影響のなかったサーバにも形跡がないことを確認済み</td></tr>
+<tr><th>出典</th><td>スターツ出版 お知らせ（第2報）、ScanNetSecurity 2026.10.21 8:05</td></tr>
+</table>
+<ul>
+<li>初報の447,610名分から精査の結果442,779名分へと確定したもので、<strong>「退会者」の情報がメールアドレス等に含まれていた</strong>点が特徴ですわ。退会時に識別子を完全に消しているかは、多くのサービスで確認漏れになりやすいところです。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
