@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-23 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-23 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>PHP（PHP2Shell）- 米CISAが即時修正を勧告、悪用試行を観測。実証コードも公開<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-109618、CVE-2026-109619（通称「PHP2Shell」。JVN: JVNVU#99905564）</td></tr>
+<tr><th>影響</th><td>PHP 5.4以降（サポート終了版を含む）。PHP-FPM / mod_php / php-cgi / FrankenPHP / LiteSpeed など、Webリクエストを処理するすべての構成</td></tr>
+<tr><th>深刻度</th><td>Critical（未認証のリモートコード実行。米CISAが「重大な脆弱性」として即時適用を勧告）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-22 18:00 JST 公開。米CISA注意喚起 2026-10-21（現地時間）、Security NEXT 2026/10/22</td></tr>
+</table>
+<ul>
+<li>前日の朝刊でお伝えしたPHP本体の未認証RCE 2件について、<strong>米CISAが2026年10月21日付で注意喚起を発表し、修正プログラムのただちの適用を強く勧告</strong>いたしました。更新が困難な場合は<strong>PHPが稼働するシステムをオフラインで運用する必要がある</strong>と明言しており、WAFは「ある程度の保護に留まる」として根本対策とは見なされていません。</li>
+<li>CISAは、PHPのワーカープロセスからシェルが起動されたり、ツールがダウンロードされたりする挙動の監視を推奨しています。侵害の兆候を拾う観点として、今朝のうちにログの確認をお勧めいたしますわ。</li>
+<li>国内では<strong>JVN（JVNVU#99905564）が10月22日18時に日本語アドバイザリを公開</strong>し、「サーバ上で任意のコード実行が行われる可能性」「対策はパッチ適用」と明記しています。</li>
+<li>修正は 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35。Wizは<strong>WordPress・Drupal・Joomlaを利用した環境で認証を必要とせずコード実行できることを実証</strong>したと説明しており、ハニーポットでの<strong>悪用試行の観測</strong>も報告されています。実証コード（PoC）も公開済みで、当面は攻撃試行が増えると見られます。</li>
+</ul>
+
+<h3>GitLab CE/EE - 正規表現コンパイラの整数オーバーフローで未認証の任意コード実行（CVE-2026-110264、CVSSv3.1 10.0）ほか12件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110264（Critical / 10.0）、CVE-2026-15723（High / 8.2）、CVE-2026-112212（High / 7.5）、CVE-2026-12664（Medium / 6.8）、CVE-2026-16255（Medium / 5.9）ほか計12件</td></tr>
+<tr><th>影響</th><td>GitLab CE / EE 7.0以降の広範なバージョン。修正版 19.5.1 / 19.4.3 / 19.3.6 / 19.2.9 / 19.1.9 / 19.0.10 / 18.11.13</td></tr>
+<tr><th>公開</th><td>GitLab が現地2026-10-21に公開（GitLab Critical Patch Release）。Security NEXT 2026/10/22 08:23 JST</td></tr>
+</table>
+<ul>
+<li>最重要は<strong>CVE-2026-110264</strong>で、細工した正規表現のコンパイル処理に起因する整数オーバーフローにより、<strong>一定の条件下では認証を必要とすることなくGitLabサーバ上で任意のコードを実行</strong>できます。CVSSv3.1は最大値<strong>10.0</strong>。影響が7.0以降と極めて広い点が厄介ですわ。</li>
+<li>CVE-2026-15723は、OmniAuth SAMLとLDAPの自動リンクがともに有効な場合の認証済みユーザーによる権限昇格（8.2）。CVE-2026-112212は未認証ユーザーが共有リンクを汚染し得る問題（7.5）です。</li>
+<li>GitLabは今回は<strong>旧系統のブランチにも修正を提供</strong>しています。稼働中のインスタンスはメンテナンス時間を早めに確保なさるのが宜しいかと存じます。</li>
+</ul>
+
+<h3>Cisco Expressway シリーズ - Cookie悪用によりroot権限で任意OSコマンド実行（CVE-2026-76466）ほかCVEベース10件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-76466（リモートコード実行）、ほかCiscoアドバイザリ3件でCVEベース計10件</td></tr>
+<tr><th>影響</th><td>Cisco Expressway-C / Expressway-E（クラスタ構成の機器が特に影響大）</td></tr>
+<tr><th>公開</th><td>Cisco 現地2026-10-21 公開。Security NEXT 2026/10/22 15:39 JST</td></tr>
+</table>
+<ul>
+<li>CVE-2026-76466は、<strong>永続的なCookieの利用とクラスタ構成時のクライアント証明書検証不備</strong>に起因します。Cookieを入手して悪用することで、<strong>root権限で任意のOSコマンドを実行</strong>できるおそれがあります。</li>
+<li>アドバイザリ公開時点で悪用は確認されていません。あわせて10月のセキュリティハードニングリリースと情報漏えい脆弱性の公開情報の3本が発表されています。</li>
+</ul>
+
+<h3>Cisco Snort 3 - 計算処理・領域外書き込みの脆弱性（CVSSv3.1 9.0が2件）とCisco製品群への波及<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-20236（9.0）、CVE-2026-20043（9.0）、CVE-2026-20291（7.8）、CVE-2026-20356（7.5）</td></tr>
+<tr><th>影響</th><td>Snort 3 のほか、Cisco Secure Firewall Threat Defense（FTD）、Cisco Cyber Vision、Cisco Meraki MX、Cisco Secure Access、Cisco Cloud-delivered Firewall、Cisco IOS XE の Unified Threat Defense（UTD）</td></tr>
+<tr><th>公開</th><td>Cisco 現地2026-10-21 公開（Multiple Cisco Products Snort 3 Security Hardening Release）。Security NEXT 2026/10/22 16:30 JST</td></tr>
+</table>
+<ul>
+<li>社内セキュリティレビューで確認されたもので、悪用は確認されていません。修正版は <strong>Snort 3.12.4.0</strong> をはじめ各製品向けに提供されています。</li>
+<li>侵入検知エンジン自体の脆弱性は、防御装置が攻撃の踏み台や停止要因になり得ます。<strong>Snort 2 は影響を受けない</strong>とのことです。</li>
+</ul>
+
+<h3>Next.js - App Router と Server Action を組み合わせたCPU枯渇DoS（CVE-2026-94482、CVSS 8.2）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-94482（CWE-770）</td></tr>
+<tr><th>影響</th><td>Next.js 13.0.0以上 15.5.28未満、および 16.0.0以上 16.4.1未満。App Router かつ Server Action を1つ以上持つアプリケーション</td></tr>
+<tr><th>深刻度</th><td>High（CNA: GitHub 採点 8.2／CWE-770 資源の無制限割り当て）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22 01:16 UTC（JST 10:16）。修正版 15.5.28 / 16.4.1</td></tr>
+</table>
+<ul>
+<li>細工したリクエストにより<strong>CPUを過剰に消費し、同じプロセスで後続のリクエスト処理がブロック</strong>されます。Pages Router、およびServer Actionを持たないApp Routerアプリは影響を受けません。</li>
+<li>修正版の公開は今回の対象期間内です。Next.jsをご利用のサービスで、Server ActionでAPIルートを組んでいる構成は優先的にご確認くださいませ。</li>
+</ul>
+
+<h3>Node.jsエコシステム - Brotli領域外書き込み（CVE-2026-111497、9.2）とミドルウェア各件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111497（Brotli 9.2）、CVE-2026-112085（webpack-dev-server 8.2）、CVE-2026-111181（body-parser 7.5）、CVE-2026-113872（multer 7.5）、CVE-2026-114348（webpack-dev-server 5.3）</td></tr>
+<tr><th>影響</th><td>Google Brotli 1.0.3〜1.2.0（Node.js本体のBrotliデコーダにも波及）／webpack-dev-server 5.2.7未満・6.0.0／body-parser 1.20.9未満・2.0.0〜2.4.0／multer 2.0.0〜2.5.0</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22（JST 同日深夜〜早朝）</td></tr>
+</table>
+<ul>
+<li>Brotli（CVE-2026-111497）は、遠隔の未認証攻撃者が<strong>隣接するデコーダ状態メモリを破壊</strong>できるバッファオーバーフローです。Node.jsはこのデコーダを内包しているため、Node 24.22.1+ / 26.12.1+ への更新が引き続き有効な対策となります。</li>
+<li>body-parser と multer はいずれも<strong>1リクエストでプロセスをクラッシュ</strong>させ得るDoSです。multerは<strong>非同期のfileFilter構成</strong>が条件です。</li>
+<li>webpack-dev-server は、プロキシでWebSocket転送を設定している場合に非WebSocketリクエストを転送し得る問題（8.2）と、open-editorエンドポイントのHostヘッダ検証不備（5.3）です。<strong>開発サーバを外部公開している構成</strong>は特にご注意くださいませ。</li>
+</ul>
+
+<h3>AWS - Strands Agents SDK の会話状態分離不備（8.6）、SAM CLI のコマンドインジェクション（8.4）ほか<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115419（AWS Strands Agents SDK 8.6）、CVE-2026-115414（AWS SAM CLI 8.4）、CVE-2026-115417（aws-c-mqtt 8.2）、CVE-2026-115416（Amazon Athena エンジンv3 6.3）</td></tr>
+<tr><th>影響</th><td>strands-agents（Python）1.43.0未満 / @strands-agents/sdk（TypeScript）1.5.0未満、AWS SAM CLI 1.166.2未満、aws-c-mqtt 0.16.2未満、Amazon Athena エンジンバージョン3</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22（AMZN採番）。CNAスコアはCVSSv4.0ベース</td></tr>
+</table>
+<ul>
+<li><strong>AWS Strands Agents SDK（CVE-2026-115419）</strong>は、A2Aサーバコンポーネントが呼び出し元間で会話状態を適切に分離していない問題です。認証済みのリモートユーザーが<strong>別テナントの会話履歴を読み取り、持続的な命令を追加して後続呼び出し元のモデル挙動を変えられる</strong>おそれがあります（CWE-488）。マルチテナントのエージェント基盤では深刻ですわ。</li>
+<li>AWS SAM CLI の TerraformフックにOSコマンドインジェクション（CVE-2026-115414）。Terraformの設定やplanファイルに関与できる主体が、ビルドユーザー権限で任意コマンドを実行できます。<strong>CI/CDパイプラインのサプライチェーン経路</strong>として要注意です。</li>
+<li>Amazon Athena エンジンv3 の認可不備（CVE-2026-115416）は、他AWSアカウントのアカウント識別子とSQL文テキストのメタデータを読める可能性があったものです（修正済み・CVSS 6.3）。</li>
+</ul>
+
+<h3>Azure / Microsoft - VM Inspector と AKS Configuration Service がCVSS 10.0、Azure Pipelinesのコマンドインジェクションほか<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-110063（10.0）、CVE-2026-83938（10.0）、CVE-2026-105014（9.1）、CVE-2026-108456（7.7）、CVE-2026-96185（7.5）</td></tr>
+<tr><th>影響</th><td>VM Inspector for Azure Virtual Machines、Azure Kubernetes Configuration Service、Azure Pipelines、Azure AI Foundry、Microsoft Exchange Online</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22 22:17〜22:20 UTC（JST 2026-10-23 07:17〜07:20）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-110063</strong>はVM Inspector for Azure VMのリンク解決不備（link following）で、認証不要のネットワーク経由で権限昇格が可能。CVSSv3.1 <strong>10.0</strong> です。</li>
+<li><strong>CVE-2026-83938</strong>はAzure Kubernetes Configuration Serviceの重要機能に対する認証欠如（CWE-306）で、これも認証なしにネットワーク経由で権限昇格が可能な<strong>10.0</strong>。</li>
+<li><strong>CVE-2026-105014</strong>はAzure Pipelinesのコマンドインジェクションで<strong>9.1</strong>。<strong>パイプライン定義に影響できる主体が、ネットワーク経由でコード実行</strong>に至るおそれがあります。CVE-2026-108456はAzure AI FoundryのSSRF（7.7）、CVE-2026-96185はExchange Onlineのスタックベースバッファオーバーフロー（7.5）です。</li>
+<li>本件はAzureの10月分アドバイザリ群で、深夜にまとめてNVDへ登録されたものです。Azureを業務基盤に据えているシステムでは、10月の更新適用状況を棚卸しなさってくださいませ。</li>
+</ul>
+
+<h3>AIエージェント基盤 - LiteLLM の偽管理者資格情報による権限奪取（9.9）、mem0 の SQLインジェクション（9.2）ほか<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-114612（LiteLLM 9.9）、CVE-2026-115324（mem0 9.2）、CVE-2026-114661（OpenRemote 9.0）、CVE-2026-97635（Agent Zero 8.6）、CVE-2026-115384・115392（Wasmtime 9.4 / 8.8）</td></tr>
+<tr><th>影響</th><td>LiteLLM 1.87.0〜1.104.0-rc.2（修正: 1.100.4 / 1.101.3 / 1.102.2 / 1.103.1 / 1.104.0-rc.2）、mem0 0.1.117〜1.0.8未満、OpenRemote 1.2.0〜1.31.0未満、Agent Zero Web UI 1.15未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22（JST 同日夕〜深夜）</td></tr>
+</table>
+<ul>
+<li><strong>LiteLLM（CVE-2026-114612）</strong>は、保存時シークレットとセッショントークンで<strong>同一の暗号コンテキストを再利用</strong>している問題です。認証済みの内部ユーザーが、細工したメタデータを含む<strong>偽の管理者資格情報を暗号化してAPIキーフローから返させ</strong>、その暗号文をベアラトークンとして再生すると、プロキシが偽の管理者身元を信頼して<strong>MCP stdioエンドポイント経由で任意コマンドの実行</strong>に至ります。1.91.0より後のバージョンは<strong>既定構成で悪用可能</strong>とされています。</li>
+<li><strong>mem0（CVE-2026-115324）</strong>は、保存された記憶内容を介してDatabricksベクターストアのSQLへ注入できる問題です。<strong>「記憶」に書き込める主体がデータベースを操作できる</strong>構図で、エージェント型システム固有の攻撃面ですわ。</li>
+<li>Wasmtime（CVE-2026-115384 / 115392）はWASIのファイルシステムサンドボックス脱出を含みます。エージェントのツール実行をWasmで隔離している構成では境界の再確認をお勧めいたします。</li>
+</ul>
+
+<h3>コンテナ／インフラ - Incus の多数のエスカレーション（最大9.4）、Traefik の Ingress-NGINX 認証バイパス、HAProxy のDoS<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115375（9.4）、CVE-2026-115377（9.4）、CVE-2026-115372（9.0）、CVE-2026-115376（8.3）、CVE-2026-115371・115373・115374（7.1）、CVE-2026-114640・114638・114636（Traefik 7.0）、CVE-2026-110354・110353（HAProxy 7.5）、CVE-2026-113582（Apache Abdera 8.7）</td></tr>
+<tr><th>影響</th><td>Incus 6.x〜7.5.0未満、Traefik v3.7.0〜v3.7.14、HAProxy 3.2〜3.4.6未満、Apache Abdera（サポート終了）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22（JST 同日深夜）。Traefik・IncusはCNA採番</td></tr>
+</table>
+<ul>
+<li><strong>Incus</strong>はパストラバーサルによるホストへのファイル書き込み（CVE-2026-115375）、転送ボリュームへのシンボリックリンクによる任意ファイル書き込み（CVE-2026-115377）、プロジェクト制限の回避（CVE-2026-115372）などが連続して登録されました。<strong>インスタンス作成権限を持つ利用者は事実上ホストへ到達し得ます。</strong></li>
+<li><strong>Traefik</strong>はKubernetes Ingress-NGINXプロバイダで、平文HTTPルータにクライアント指定の <code>Ssl-Client-*</code> ヘッダを転送してしまう<strong>認証バイパス</strong>（CVE-2026-114640、7.0）など3件です。v3.7.14で修正されています。</li>
+<li>HAProxyはHTTP/1.1のchunkedリクエストとHTTP/2の切り詰めPINGフレームによる<strong>ワーカースレッドCPU枯渇</strong>（いずれも7.5）、Apache AbderaはXXE（8.7、サポート終了製品）です。</li>
+</ul>
+
+<h3>JVN新着 - LIFF SDK のDOMベースXSS（CVE-2026-112148）／ISC BIND 2026年10月分<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-112148（LIFF SDK）、CVE-2026-19630／94300／96888／97313（ISC BIND）</td></tr>
+<tr><th>影響</th><td>LIFF SDK 2.20.0〜2.31.0（修正: 2.31.1）、ISC BIND（詳細はISCアドバイザリ参照）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-22 10:00 JST（LIFF SDK）、2026-10-22 09:00 JST（ISC BIND）</td></tr>
+</table>
+<ul>
+<li><strong>LIFF SDK</strong> はLINEヤフー提供のライブラリにDOMベースのクロスサイトスクリプティング（CWE-79）があります。CVSSv4.0 5.1 / CVSSv3.1 6.1。<strong>2.31.1</strong>で修正済みです。</li>
+<li><strong>ISC BIND</strong> は、受信メッセージ処理での資源枯渇増幅（CVE-2026-19630）、並行するGSS-TSIGメッセージによるメモリ破損（CVE-2026-94300）、リダイレクトゾーンと厳格なQNAME最小化の併用で named が予期せず終了する問題（CVE-2026-96888）、特定のRPZ構成と問い合わせパターンによる予期しない終了（CVE-2026-97313）の4件です。</li>
+<li>10月23日08時ちょうどのScanNetSecurity掲載分として、<strong>アツミ電氣製DVRの非公開機能を悪用される問題</strong>、<strong>Lenovo製タブレットのAndroid Verified Bootに既知のテスト用鍵がそのまま使用されている問題</strong>、<strong>UnRTF の境界外書き込み</strong>も新たに公開されています（いずれもJVN本体の公開は2026-10-20）。</li>
+</ul>
+
+<h3>Claude Code 2.1.308 / 2.1.309 - サンドボックス境界と権限チェックの修正を多数<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>2.1.308（不具合修正と信頼性向上）、2.1.309（サンドボックス・権限まわりの修正多数）</td></tr>
+<tr><th>影響</th><td>Claude Code 全ユーザー（特にサンドボックス、マネージド設定、--mcp-config、worktree分離を利用する構成）</td></tr>
+<tr><th>公開</th><td>npmレジストリ 2.1.308: 2026-10-22 04:19 UTC（JST 13:19）、2.1.309: 2026-10-22 20:34 UTC（JST 2026-10-23 05:34）</td></tr>
+</table>
+<ul>
+<li><strong>2.1.309</strong>はセキュリティ境界に関わる修正が集中しています。macOS / Linuxのサンドボックス化されたBashコマンドが、<strong>各コマンド実行前にシェルの起動ファイルをサンドボックス外で実行していた</strong>問題、macOSサンドボックスの <code>denyWrite</code> グロブがシンボリックリンク経由の実パスに適用されない問題、<strong>サンドボックス化されたコマンドと自動承認された編集が <code>--mcp-config</code> のMCP設定ファイルを書き換えられる問題</strong>が修正されました。</li>
+<li>権限チェック側では、リダイレクトのオープンに失敗し得るコマンドが設定した変数をBash権限チェックが信頼してしまう問題、<code>Edit(path)</code> のdenyルールがサブシェルを伴うBashリダイレクトを防げない問題、worktree分離セッションがロケール接頭辞付きコマンドやzshの算術コマンドを受け入れてしまう問題が解消されています。</li>
+<li>あわせて、プロファイルストアの書き込み保護がシンボリックリンク経由で回避される問題、無効化されたMCPサーバが権限プロンプトで再接続される問題、取得元の異なる課金・組織構成でデスクトップアプリの機能が欠落する問題なども修正されています。<strong>サンドボックスとマネージド設定をお使いの環境では、2.1.309への更新をお勧めいたしますわ。</strong></li>
+</ul>
+
+<h3>openclaw 2026.10.6 - 侵害証明書鍵を拒否するNode実行環境を必須化<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>openclaw 2026.10.6（安定版）</td></tr>
+<tr><th>影響</th><td>openclaw をソースビルド・パッケージで導入している環境（Node実行環境の要件が変更）</td></tr>
+<tr><th>公開</th><td>GitHubリリース 2026-10-22 12:53 UTC（JST 同日21:53）</td></tr>
+</table>
+<ul>
+<li>今回の目玉は<strong>「パッチ適用済みNodeランタイムの必須化」</strong>です。openclawは24系で <strong>Node 24.22.1以上</strong>、26系で <strong>26.12.1以上</strong>を要求するようになりました。これは<strong>2026年10月のNode.jsセキュリティリリースで対処された侵害証明書鍵で署名されたTLSチェーンを拒否する</strong>ためです。</li>
+<li>DockerイメージはNode 24.22.1を同梱し、インストーラもパッチ済みランタイムを選択します。<code>openclaw update</code> は<strong>古いNode上でのインストールを拒否し、復旧手順を示す</strong>ようになり、稼働中のインストールを壊さない設計に改められました。</li>
+<li>ほかにも、更新時の安全でないサービス状態の拒否、破損したワークスペース取込の拒否、非UTF-8のwiki書き換えの拒否、復旧をまたいだ配信キュー・子プロセス結果・ストリーミング応答の保全など、信頼性修正が中心です。7日朝の朝刊でお伝えしたbeta.3系から安定版へ移行しておりますわ。</li>
+</ul>
+
+<h3>Hermes Agent - 対象期間内の新規セキュリティリリースなし</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>最新は v0.22.4（v2026.10.21）。脆弱性修正・CVEの新規記載はありません</td></tr>
+<tr><th>公開</th><td>v0.22.4: 2026-10-21 18:49 UTC（JST 2026-10-22 03:49、本対象期間の開始前）</td></tr>
+</table>
+<ul>
+<li>本対象期間（2026-10-22 08:00 〜 2026-10-23 08:00 JST）に新たなリリースは確認されませんでした。v0.22.3 / v0.22.4 は前日の朝刊で既報です。</li>
+</ul>
+
+<h3>HPE - セキュリティバレット（hpesbnw05162）に関連するCVEが71件一括登録、最大CVSSv3.1 10.0<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-79844 〜 79879 ほか計71件（HPE セキュリティバレット hpesbnw05162）</td></tr>
+<tr><th>影響</th><td>対象バージョンは 10.3.0.0〜10.4.1.13、10.6.0.0〜10.7.2.6、10.8.0.0〜10.8.1.1（CVEレコード上は製品名が「Unknown product」で、HPEのアドバイザリ参照が求められます）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-22 19:17 UTC（JST 2026-10-23 04:17）</td></tr>
+</table>
+<ul>
+<li>最高スコアは <strong>CVSSv3.1 10.0</strong>（<code>AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:N</code>）で、未認証・操作不要で機密性と完全性に高い影響を与える評価です。9.3〜10.0が多数を占めます。</li>
+<li>一方で全件が説明文「No description provided」のまま登録されており、製品名も未確定です。HPEのアドバイザリ（hpesbnw05162）で対象製品を確認のうえ、該当する機器の有無を点検なさるのが宜しいかと存じます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React 以外のフレームワーク本体（Django / Hono / Spring Boot）、Java系基盤（Tomcat・Spring Framework 等）、および Google Cloud の各サービスに直接関連する新規CVEは、本対象期間では確認されませんでした（AWS / Azure は上記セクションをご参照ください。Python系はMistune（CVE-2026-115353・115349）、Authlib（CVE-2026-114617）、OpenTelemetry（CVE-2026-114603）などが登録されています）。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>リクルート「カーセンサーnet」- 不審なアクセスを検知し全サービスを一時停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社リクルート</td></tr>
+<tr><th>事象</th><td>「カーセンサーnet」関連システムへの外部からの不審なアクセスを検知。同日午後5時頃から関連する<strong>すべてのサービスを一時停止</strong></td></tr>
+<tr><th>公表</th><td>2026-10-17 検知・一時停止／2026-10-17 発表・ScanNetSecurity 2026/10/22 08:05、Security NEXT 2026/10/22 22:47</td></tr>
+</table>
+<ul>
+<li>停止したのは「カーセンサーnet」、アプリ版「カーセンサー」、中古車販売店向け業務支援サービス「C-match」など関連サービス一式です。顧客および取引先の安全確保と影響確認のためとされています。</li>
+<li>中古車情報は査定・在庫・販売の業務そのものを支える基盤です。<strong>業務系サービスまで一斉に止める判断</strong>がなされた点は、影響範囲の見極めが難しかったことをうかがわせますわ。原因と影響範囲は調査中です。</li>
+</ul>
+
+<h3>ファンケル／アテニア - ECサイトへの不正アクセスで会員情報の漏えいを確認（ファンケル36万8千人・アテニア41万7千人）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ファンケル、株式会社アテニア</td></tr>
+<tr><th>事象</th><td>10月3日〜10月10日の期間に両社ECサイトへ不正アクセス。会員情報の一部が外部に漏えいしたことを確認</td></tr>
+<tr><th>規模</th><td>ファンケル: 393,785件・<strong>368,184名</strong>／アテニア: 441,162件・<strong>417,312名</strong>（メールアドレス、氏名、住所、電話番号、生年月日、性別、お客様番号、サブメールアドレスおよびそのパスワード（ハッシュ化）、本人認証質問項目、ポイント・会員ステージ等）</td></tr>
+<tr><th>公表</th><td>2026-10-16 発表（10月15日の内部調査で判明、同日に緊急対策本部を設置）／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>原因となった機能を特定し停止済み。現時点で本件以外の不正アクセスやマルウェア感染は確認されておらず、事業活動・サービスへの影響もないとしています。</li>
+<li>漏えい項目に<strong>「本人認証質問項目」（回答は含まず）</strong>やポイント・会員ステージ情報が含まれる点は、二次的ななりすましや標的型攻撃の材料になり得ます。対象顧客には順次個別にメールで連絡されるとのことです。</li>
+</ul>
+
+<h3>国土交通省「住宅省エネ2024キャンペーン」- 事務局システムへの不正操作で1万6,950件・2万3,918人分が流出のおそれ</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>国土交通省（事務局運営: 株式会社博報堂）</td></tr>
+<tr><th>事象</th><td>事業者からの補助金申請を受け付けるシステムへ外部から不正な操作。登録事業者情報が流出した可能性</td></tr>
+<tr><th>規模</th><td>2026年10月20日時点で<strong>事業者1万6,950件、2万3,918人分</strong>（代表者氏名、個人事業主の氏名・住所、補助金担当者の氏名・役職、業務用住所・電話番号、メールアドレス等）</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/10/22 11:29</td></tr>
+</table>
+<ul>
+<li>国が実施した補助金事業の事務局システムが対象です。<strong>補助金申請データは事業者の財務・取引情報に直結</strong>するため、流出した場合は補助金事業者を狙ったなりすましや標的型攻撃へ発展し得ます。</li>
+<li>原因・詳細な被害状況は調査中です。公的キャンペーンの事務局システムは委託先が運営する例が多く、<strong>委託先のセキュリティ統制がそのまま公的機関のリスクになる</strong>典型例と言えますわ。</li>
+</ul>
+
+<h3>フジテレビジョン - 番組宣伝システムが侵害、メディア関係者最大730件の情報流出か</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>フジテレビジョン</td></tr>
+<tr><th>事象</th><td>2026年10月19日夜に第三者によるアクセスを確認。番組宣伝システムに登録されたメディア関係者の氏名・会社名・メールアドレス等が流出した可能性</td></tr>
+<tr><th>規模</th><td>10月20日時点で最大<strong>730件</strong>。視聴者に関する個人情報は含まれない</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026/10/22 20:08</td></tr>
+</table>
+<ul>
+<li>不正アクセスの確認後、被害拡大防止のため同システムの利用を停止。原因究明と安全性の確認、再発防止策の検討を進めるとしています。</li>
+<li>件数は限定的ですが、<strong>報道機関が保有するメディア関係者の連絡先リスト</strong>は、なりすましやフィッシングの標的リストとして価値が高い情報です。関係各社への注意喚起が望まれますわ。</li>
+</ul>
+
+<h3>サミーネットワークス「777CON-PASS」- 不正アクセス続報、ホールデータにも不審なアクセス痕跡</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社サミーネットワークス</td></tr>
+<tr><th>事象</th><td>9月25日にユーザーデータへ不正アクセス、9月30日には<strong>ホールデータでも不審なアクセスの痕跡</strong>を確認。第三者がユーザー情報・ホール情報を取得するリクエストを不正に実行</td></tr>
+<tr><th>規模</th><td>電話番号、性別、生年月日、ユーザーID／ニックネーム、プロフィール写真、お気に入りホール、行動エリア（位置情報から生成）※対象件数は調査中</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表（続報）／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>週次のアクセス負荷監視で異常な増加を確認したことが発端です。9月30日午後8時までに攻撃元IPアドレスを特定して遮断し、<strong>不正なアクセスに情報を返さない仕様へ変更のうえ同日午後10時前に緊急リリース</strong>しています。</li>
+<li>位置情報から生成した「行動エリア」が対象に含まれる点が特徴的です。<strong>位置に由来するデータは再識別リスクが高く</strong>、他の漏えい情報と突合されると個人の特定に至り得ます。</li>
+</ul>
+
+<h3>JOGMEC（エネルギー・金属鉱物資源機構）- 不正アクセス、役職員約1,100件と外部約7,400件のメールアドレスが漏えいのおそれ</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>独立行政法人 エネルギー・金属鉱物資源機構（JOGMEC）</td></tr>
+<tr><th>事象</th><td>情報システムへの外部からの不正アクセス。2026年9月9日に漏えいの可能性が判明（<strong>外部機関からの情報提供</strong>が発覚の端緒）</td></tr>
+<tr><th>規模</th><td>役職員のメールアドレス約<strong>1,100件</strong>、機構以外のメールアドレス約<strong>7,400件</strong>の計約8,500件</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>外部専門事業者と連携して調査。アクセス制限や通信制御などの措置を実施し、今後は認証機能・監視機能の強化等の再発防止策を策定するとしています。</li>
+<li><strong>自主的な検知ではなく外部機関からの情報提供で発覚</strong>した点は重く受け止めるべきですわ。資源・エネルギー分野は国家の重要インフラに連なる領域であり、標的型攻撃の文脈も含めて警戒が必要です。</li>
+</ul>
+
+<h3>ジャパンタイムズ - グループ会社の管理サーバに不正アクセス、電子版サービスへの影響はなし</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ジャパンタイムズ（グループ会社）</td></tr>
+<tr><th>事象</th><td>グループ会社が管理するサーバの一部への不正アクセスを確認。情報漏えいの有無・影響範囲・原因を外部専門業者と連携して調査中</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>「The Japan Times Online」をはじめとする電子版サービス、各種購読者データベース、決済システムは<strong>当該サーバとは異なる独立したインフラ上で運用</strong>されており、影響や安全上の問題は確認されていないとしています。</li>
+<li>国内報道機関への不正アクセスは、10月の日本経済新聞社、10月の信濃毎日新聞デジタル、日経アメリカ社と続いています。<strong>報道機関が繰り返し狙われている</strong>傾向として押さえておくべきですわ。</li>
+</ul>
+
+<h3>Z会「Z-IDシステム」- 不正ログインで13件のパスワードが不正に変更</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社Z会</td></tr>
+<tr><th>事象</th><td>10月15日午前11時頃、一部顧客アカウントのパスワードが第三者に不正にリセット。10月15日未明に<strong>短時間で連続した計13件のパスワード変更</strong>が判明</td></tr>
+<tr><th>公表</th><td>2026-10-19 発表（第一報）／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>対象13件のアカウントに登録された顧客の氏名・メールアドレス・Z-IDが第三者に閲覧された可能性があります。該当アカウントは安全のため一時停止し、個別に案内しています。</li>
+<li>Z-IDシステムへの不正ログインであり、<strong>同社のサーバやデータベースへの直接の不正侵入やサイバー攻撃は確認されていない</strong>とされています。<strong>教育サービスは未成年の利用者が多く</strong>、アカウント乗っ取りの影響が保護者にも及び得ます。</li>
+</ul>
+
+<h3>ZonExpert - 委託元から付与されたAmazonセラーセントラルアカウントに不正アクセス</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ZonExpert株式会社</td></tr>
+<tr><th>事象</th><td>8月8日〜8月18日の期間、委託元から付与を受けていたAmazonセラーセントラルのユーザーアカウントが第三者に不正に変更され、<strong>委託元各社の管理画面上の購入者情報が閲覧され得る状態</strong>であったことが8月18日に判明</td></tr>
+<tr><th>規模</th><td>対象ストアで商品を購入した顧客の氏名・住所・電話番号・注文履歴（注文番号、購入商品、注文日時等）※件数は調査中</td></tr>
+<tr><th>公表</th><td>2026-10-01 発表／ScanNetSecurity 2026/10/22 08:05</td></tr>
+</table>
+<ul>
+<li>Amazon側のアクセス記録を確認できていないため、実際に個人情報が閲覧・取得された事実は確認されていないものの、漏えいした可能性があるとしています。</li>
+<li>EC運用代行の立場で<strong>委託元から預かったアカウントが侵害された</strong>構図です。運用代行・BPOのアカウント管理は、委託元と受託先の双方で棚卸しが必要ですわ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
