@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.305 / v2.1.306 / v2.1.307</h2>
+<p>対象期間内に3件のリリースが確認されました。v2.1.307（2026-10-22 07:29 JST 公開）では Claude API のバージョン移行コマンドが追加され、v2.1.306 は不具合修正のみ、v2.1.305 はサンドボックスや設定まわりの変更を含みます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>v2.1.307 — <code>/claude-api api-version</code></strong>: Claude API のコードを API version <code>2026-10-21</code> へ移行するコマンドが追加されました。</li>
+  <li><strong>v2.1.307 — <code>claude_code.safety_event</code> OpenTelemetry イベント</strong>: パーミッションルール、auto mode、安全チェック、フック、サンドボックスがツール呼び出しを停止・確認・差し戻した際に発火するイベントが追加されました。</li>
+  <li><strong>v2.1.307 — [Code Review] <code>@claude review stop</code></strong>: <code>off</code>・<code>pause</code> も含め、新しいレビューを開始せずに PR 上の <code>@claude review always</code> 購読を終了できるようになりました。</li>
+  <li><strong>v2.1.307 — [VSCode] 音声入力の停止通知</strong>: 15秒間の無音または2分上限で音声入力が自動停止した際、理由とそれまでのテキスト保持をマイクボタン上に表示します。</li>
+  <li><strong>v2.1.305 — <code>sandbox.allowNestedUserNamespaces</code></strong>: Linux のサンドボックス化コマンドがユーザー名前空間（Chromium、rootless podman）を作成できるようになりました。</li>
+  <li><strong>v2.1.305 — <code>CLAUDE_CODE_RETRY_WATCHDOG_USAGE_LIMIT_RECHECK_MS</code></strong>: 無人リトライモードが、リセット前に解除された利用制限を検知できるようになりました。</li>
+  <li><strong>v2.1.305 — [VSCode] 起動フックのスピナー表示</strong>: SessionStart / Setup フック実行中に「Running start-up hooks」のステータスが表示されます。</li>
+</ul>
+
+<h3>🐛 主な修正・変更</h3>
+<ul>
+  <li><strong>v2.1.306</strong>: 環境変数なしで起動したクラウドセッション内の <code>claude -p</code> が「Not logged in」を返す問題を修正。MCP ツールが多いセッションで API エラーが「prompt is too long」に置き換わり不要な compaction が走る問題も修正されました。</li>
+  <li><strong>v2.1.305</strong>: <code>allowedMcpServers</code> が <code>env</code> でのみ <code>${VAR}</code> を使う <code>managed-mcp.json</code> の stdio サーバーを除外しなくなったため、アップグレード時に許可リスト外のサーバーが読み込まれる場合があります（<code>deniedMcpServers</code> で抑止可能）。</li>
+  <li><strong>v2.1.305</strong>: <code>/artifacts</code> の削除確認のキーが変更され、1 または Enter で保持、2 で削除、Esc でキャンセルとなりました（<code>y</code>・<code>n</code> は無効）。</li>
+  <li><strong>v2.1.305</strong>: Code Review の再レビューが、未解決のブロッキング指摘がある状態で LGTM を先頭に出す問題を修正しました。</li>
+  <li><strong>v2.1.307</strong>: self-hosted runner の checkout フックが既定で30分後に停止してセットアップが失敗するようになりました（<code>--checkout-hook-timeout-min</code> で延長、<code>0</code> で無効化）。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">ソース: Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.22.3 / v0.22.4</h2>
+<p>対象期間内に2件のリリースが確認されました。最新版は <strong>v0.22.4</strong>（2026-10-22 03:49 JST 公開）です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>v0.22.4 — Desktop の suggestion pills を廃止</strong>: 理由もなくコンポーザー上部に表示されていた提案ピルと、それ専用のヘルパーが削除されました。</li>
+  <li><strong>v0.22.4 — 依存のないプラグインの同意ステップをスキップ</strong>: 依存を宣言していない、または <code>pyproject.toml</code> が何もインストールしないプラグインは、空の同意プロンプトなしで有効化できるようになりました。</li>
+  <li><strong>v0.22.4 — Dashboard 修正</strong>: WhatsApp をログアウト後に安全に再ペアリングできるようになりました。</li>
+  <li><strong>v0.22.4 — approval-mode チップがプロファイル追従</strong>: デスクトップの承認モードチップが、アクティブなプロファイルのモードに従うようになりました。</li>
+  <li><strong>v0.22.4 — プラグインカタログ新着</strong>: bubblewrap（Linux の bwrap ターミナルバックエンド）、Singularity/Apptainer、mcp-serve（Hermes を MCP サーバー化）、agent-importers（<code>hermes import-agent</code>、Cursor 対応）などが追加されました。</li>
+  <li><strong>v0.22.3</strong>: v0.22.2 以降にマージされた約620件の PR を安定版としてロールアップしたパッチリリースです。詳細な curated notes は v0.23.0 で提供されます。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソース: Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.10-beta.3</h2>
+<p>対象期間内にプレリリースが1件確認されました（2026-10-21 16:00 JST 公開）。安定版の最新は v2026.10.5（2026-10-19 06:47 JST 公開）です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Windows の信頼性向上</strong>: 新規状態の初期化と Gateway 起動を復旧し、アプリ更新中に SQLite のヘルパーウィンドウを隠すようになりました。</li>
+  <li><strong>アップグレード復旧の改善</strong>: アプリ所有プラグインをアップグレード後のコアバージョンへ収束させ、スキーマ変更を伴う更新後に保持対象のシステムエージェントを含むエージェントストアを復旧します。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>エージェント状態</strong>: 同時初期化で2つのエージェントが同じエージェントデータベースの所有権を主張できてしまう問題を修正しました。</li>
+  <li><strong>Codex / ネイティブアプリ</strong>: コンテキスト更新後にプレビューが返信をブロックする問題、ネイティブ子プロセス復旧後のセッション返信、app-server 再起動をまたぐ Codex 履歴の保持、再接続後のメッセージ送信を修正しました。</li>
+  <li><strong>Discord</strong>: チャンネルとスレッドでネイティブのスラッシュコマンドが復旧しました。</li>
+  <li><strong>Cron / CLI 継続性</strong>: cron の announce wake をまたいでも CLI チャットセッションがリセットされず保持されるようになりました。</li>
+  <li><strong>メモリ</strong>: コールド Gateway 起動時に全メモリインデックスを開かないようになり（2026.10.4 の起動メモリを復元）、プラグインリロード後もメモリファイルのインデックスが継続します。</li>
+  <li><strong>macOS</strong>: macOS アプリノード経由の長い exec コマンドが20秒で失敗する問題を修正しました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソース: OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.237</h2>
+<p>対象期間内に1件のリリースが確認されました（2026-10-21 16:25 JST 公開）。GitHub スターが <strong>100,000</strong> に到達したことを記念するリリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>スマートフォンからの作業を拡張</strong>: ノートの作成・編集、ヘッドレスホストへの Markdown 保存、相対ファイルリンクの追跡、埋め込み画像の表示に対応しました。バッファされたターミナルドラフトもワークスペース移動をまたいで保持されます。</li>
+  <li><strong>会話の再開性向上</strong>: Codex チャットが undo 後に正しく再開し、Claude は Orca のロールバックを経ても巻き戻したコンテキストを維持します。Codex のスキルピッカーが実際に読み込まれたスキルを反映するようになりました。</li>
+  <li><strong>作業内容の保護</strong>: 破棄時は同一ファイルの自動保存を全ワークスペースで一時停止します。読み取り専用の Markdown / CSV ビューが未保存の編集を保護し、新規の未ステージ Markdown 文書はリッチエディタで直接開きます。</li>
+  <li><strong>デスクトップ以外への音声入力対応</strong>: ヘッドレスの <code>orca serve</code> ホスト経由でスマートフォンの音声入力が再び動作し、ホストの OpenAI キーを設定する CLI コマンドも追加されました。</li>
+  <li><strong>リモート作業の改善</strong>: 再起動後に非表示のターミナルタブが再接続し、ホスト再ペアリング時にブラウザのログインが保持され、数千ホストの SSH 設定検索でインターフェースが固まらなくなりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソース: Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>⚛️ Next.js / React</h3>
+<p>対象期間内の安定版リリースは確認されませんでした。Next.js は canary のみが進行中で、最新の <code>v16.5.0-canary.21</code> は 2026-10-21 08:51 JST 公開（対象期間の開始前）です。React も新規リリースはありません。</p>
+
+<h3>🧩 Claude API / Anthropic Python SDK — v2.0.0 / v2.1.0</h3>
+<p>Anthropic Python SDK がメジャーバージョン <strong>v2.0.0</strong>（2026-10-22 00:51 JST 公開）をリリースしました。<strong>破壊的変更</strong>として新しい API version <code>2026-10-21</code> に対応しています（Claude Code v2.1.307 の <code>/claude-api api-version</code> と同じ API バージョンです）。spend limits の一覧に <code>workspace_id</code> フィルタと <code>usage_tier</code> スコープ種別が追加されました。続けて <strong>v2.1.0</strong>（2026-10-22 07:00 JST 公開）で、ユーザープロファイルに enforcement status・actions・filter が追加されています。</p>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Transform のストレージ移行アセスメント</strong>（2026-10-22 04:10 JST）: オンプレストレージの移行先として Amazon S3 / EBS / EFS / FSx を横断評価し、TCO ビジネスケースを生成します。</li>
+  <li><strong>Amazon Aurora / Amazon RDS が On-Demand Capacity Reservations に対応</strong>（2026-10-22 02:00 JST）。</li>
+  <li><strong>AWS Direct Connect が英国マンチェスターで 100G を拡張</strong>（2026-10-22 02:21 JST）。</li>
+  <li><strong>AWS Neuron 2.33</strong>（2026-10-22 00:00 JST）: ネイティブ PyTorch サポートと Neuron Observer などを追加。併せて Amazon SageMaker JumpStart / AWS Trainium で Reflection の Beam モデルが利用可能になりました。</li>
+  <li><strong>Amazon S3 のサーバーアクセスログの CloudWatch Logs 配信</strong>が5リージョンで追加（2026-10-21 22:00 JST）、<strong>AWS Network Firewall</strong> が Route 53 Resolved IP Validation に対応（2026-10-21 17:00 JST）。</li>
+  <li><strong>Amazon SageMaker AI</strong> のサーバーレスモデルカスタマイズジョブがカスタムシーケンス長をサポート（2026-10-21 17:00 JST）。</li>
+</ul>
+
+<h3>☁️ Google Cloud（2026-10-21 付）</h3>
+<ul>
+  <li><strong>BigQuery <code>AI.CHUNK_DOCUMENT</code> が GA</strong>: 非構造化ドキュメントをベクトル埋め込みと RAG に適した意味的に一貫したチャンクへ分割するテーブル値関数です。</li>
+  <li><strong>Cloud Billing の BigQuery 価格データエクスポート</strong>に SKU attributes と granular usage units がプレビューで追加されました。</li>
+  <li><strong>CodeMender v0.16.0</strong>: <code>cm find</code> が既定で並列のファイル単位ディープスキャン（<code>--deep</code>）を実行、<code>cm health</code> による事前ヘルスチェック、C++ ヘッダや拡張子なしスクリプトなどへのファイル探索拡張が含まれます。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（公式ブログの最新記事が 2026-10-19 公開で対象期間外）、<strong>Python / Django</strong>（新規リリースなし）、<strong>Java / Spring Boot</strong>（最新は 2026-09-24 公開の v4.2.0-M2 で対象期間外）、<strong>Hono</strong>（最新は 2026-10-10 公開の v5.0.0-rc.1 で対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
