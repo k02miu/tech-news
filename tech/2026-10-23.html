@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-23 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-23 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.309 / v2.1.308</h2>
+<p>対象期間内に2件のリリースが確認されました。最新は <strong>v2.1.309</strong>（2026-10-23 07:29 JST 公開）です。v2.1.308（2026-10-22 13:47 JST 公開）は不具合修正および信頼性改善のみでした。v2.1.309 では <code>/claude-api</code> スキルとセキュリティ関連の挙動が中心に変更されています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>v2.1.309 — [VSCode] 証明書検証失敗時の警告ログ</strong>: TLS 検査プロキシ配下などで音声入力や拡張機能自身のリクエストが証明書検証に失敗した際、対処方法を案内する警告がログに出力されるようになりました。</li>
+  <li><strong>v2.1.309 — dataviz スキルが APCA に対応</strong>: 同梱の dataviz スキルが APCA をテキストコントラスト指標として受け付けるようになり（AA 準拠が必要な箇所では WCAG 2 の比率を維持）、パレット検証スクリプトに <code>apca(text, background)</code> 関数が追加されました。色付きチャート塗りの中のラベルを白にするかほぼ黒にするかの判定も行います。</li>
+  <li><strong>v2.1.309 — <code>/claude-api</code> スキル</strong>: サービスアカウントキーと Workload Identity Federation トークンで OpenTelemetry の宛先を管理できるようになりました。また Managed Agents のサブエージェントチームを <code>coordinator</code> ではなく <code>multiagent_20261001</code> 上に構築し、動的ワークフローを既定で有効にするようになりました。</li>
+  <li><strong>v2.1.309 — <code>sed -i</code> の実行方式変更</strong>: 標準の Bash プロンプトが表示され、シミュレートされたファイル編集プレビューではなく記述どおりに実行されます。他の Bash 編集と同様、<code>/rewind</code> による復元対象ではなくなりました。</li>
+  <li><strong>v2.1.309 — <code>claude ultrareview</code> にワークスペース信頼が必須</strong>: ターミナル上では確認を求め、それ以外では拒否します。スクリプトからは値なしの <code>--trust-workspace</code>（PR 番号やベースブランチはその前に置く）を渡すか、<code>CLAUDE_CODE_DISABLE_ULTRAREVIEW_TRUST_CHECK=1</code> を設定します。</li>
+  <li><strong>v2.1.309 — 危険な <code>rm</code> / <code>rmdir</code> の扱い</strong>: Desktop アプリおよび VS Code の bypass permissions モードで、書き換えヒントとともに即座に拒否するようになり、無人セッションが停止しにくくなりました。</li>
+  <li><strong>v2.1.309 — サンドボックス除外コマンドの書き込み確認</strong>: 設定でサンドボックスから除外したコマンドは、サンドボックス有効かつ実行不能な場合に書き込みリストのパスへ書き込む前に確認を求めるようになり、サンドボックス外へのフォールバックは拒否されます。</li>
+  <li><strong>v2.1.309 — worktree 作成・再利用</strong>: 通常のクローンおよび Bash サンドボックス構成の部分クローンで、git がオンデマンドにオブジェクトを取得しなくなりました（部分クローンの場合は先に取得します）。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>v2.1.308</strong>: 不具合修正と信頼性改善のみのリリースです（個別項目の記載はありません）。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">ソース: Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.4</strong>（2026-10-22 03:49 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソース: Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.6</h2>
+<p>対象期間内に安定版が1件確認されました（<strong>v2026.10.6</strong>、2026-10-22 21:53 JST 公開）。ユーザー向けの新機能は含まない、信頼性修正に絞ったパッチリリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>パッチ適用済み Node ランタイムが必須に</strong>: Node 24 系は 24.22.1 以上、26 系は 26.12.1 以上が必要となり、2026年10月の Node.js セキュリティリリースで対処された侵害済み証明書鍵で署名された TLS チェーンを拒否します。Docker イメージは Node 24.22.1 を同梱し、インストーラはパッチ済みランタイムを選択します。<code>openclaw update</code> は古い Node 上でのインストールを壊す代わりに、復旧手順を示して拒否します。ソースビルドは pnpm 12.15.0 を固定します。</li>
+  <li><strong>更新と復旧の安全性向上</strong>: パッケージの入れ替えが安全でないサービス状態を拒否するようになり、Windows / macOS のパッケージマネージャ更新が各プラットフォーム固有の失敗から復旧します。停止した Gateway 起動オーナーもクリーンに退役させられます。</li>
+  <li><strong>データ保護型のマイグレーションとバックアップ</strong>: Doctor とマイグレーション経路が不正または損失を伴うワークスペース取り込みを拒否し、非 UTF-8 の wiki 書き換えを拒否、深い階層の SQLite バックアップを保持します。</li>
+  <li><strong>再起動をまたぐ配信の信頼性</strong>: キューされたターン、監視中の子プロセス結果、デッドレター配信、ストリーム返信が、復旧後も消失・重複・偽の未応答通知を起こさなくなりました。</li>
+  <li><strong>プロバイダ・モデルの耐性</strong>: GPT-5.6 のツールターン、OpenRouter 経由 DeepSeek のツール呼び出し、LM Studio のオーバーフロー復旧、OpenAI 推論設定の並列化、モデルのリトライ・フォールバック予算が一貫して動作するようになりました。</li>
+  <li><strong>チャネル配信の正確性</strong>: WhatsApp のリトライとスタンプ、Telegram のアルバムとデュアルスタック返信、Slack リレーの復旧、Discord の音声通話返信で、メッセージの欠落や重複が解消されました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>Windows / macOS</strong>: 新規 Windows 状態ストア、Proxy 経由環境、保存済み Anthropic 資格情報が起動を妨げなくなり、iOS の Talk とチャット接続が初回返信・タイムアウト失敗から復旧します。</li>
+  <li><strong>エージェントとツール呼び出し</strong>: 未完了のツールが可視的にタイムアウトし、コンテキストオーバーフローはツール結果のステア後にもコンパクションを行い、大きなパッチハンクが引数上限でクラッシュしなくなりました。</li>
+  <li><strong>状態・システムエージェントの復旧</strong>: 影響を受けたアップグレードで保持されたエージェントへのアクセス、スキーマ変更後のシステムエージェントデータベースの復旧、フォレンジックスナップショット失敗時の設定保持が修正されました。</li>
+  <li><strong>Doctor / マネージドプラグイン</strong>: 空の退役プラグインメタデータを修復し、解決済みマイグレーション警告を消去し、アプリ管理プラグインをインストール済みコアバージョンへ収束させます。</li>
+  <li><strong>SQLite の正確性</strong>: 警告ハンドラが例外を投げてもトランザクション結果を保持し、退役したキャッシュ世代がワーカー所有権を取得しないようにしました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソース: OpenClaw Releases</a></p>
+
+<h2>🐋 Orca</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.237</strong>（2026-10-21 16:25 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソース: Orca Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚛️ Next.js / React</h3>
+<p>対象期間内の安定版リリースは確認されませんでした。Next.js は canary のみが進行中で、最新は <code>v16.5.0-canary.24</code>（2026-10-23 08:53 JST 公開）、直前が <code>v16.5.0-canary.23</code>（2026-10-22 20:48 JST 公開）です。React の最新リリースは v19.3.1（2026-10-15 公開）で、対象期間外です。</p>
+
+<h3>☕ Java / Spring Boot — v4.1.2 / v4.0.9 / v4.2.0-RC1</h3>
+<p>Spring Boot のパッチリリース <strong>v4.1.2</strong> と <strong>v4.0.9</strong>、および <strong>v4.2.0-RC1</strong> が公開されました（いずれも 2026-10-23 02:04 JST 公開）。</p>
+<ul>
+  <li><strong>v4.1.2 / v4.0.9</strong>: JavaVersion enum に <code>TWENTY_SEVEN</code> を追加。<code>OriginTrackedPropertiesLoader</code> が <code>#</code> や <code>!</code> で始まる名前のプロパティを落とす問題、<code>issuer-uri</code> が空で <code>jwk-set-uri</code> を設定した場合に JWT が拒否される問題、MongoDB の資格情報に空白を含むと接続できない問題、Elasticsearch の URI のパスワードにコロンを含むと認証に失敗する問題、Tomcat / Jetty / Netty の graceful shutdown 直後の停止でハングや誤った <code>REQUESTS_ACTIVE</code> コールバックが起きる問題などを修正しました。</li>
+  <li><strong>v4.2.0-RC1</strong>: 実行可能 uber jar のパフォーマンス改善（ネストした jar 内のクラス・リソース直接検索、deflate 済みエントリへの <code>readAllBytes()</code> 最適化）、Docker Compose 連携の MariaDB / MySQL ランダム root パスワード対応、Caffeine 非同期キャッシュモードを有効にするプロパティ追加などが含まれます。</li>
+</ul>
+
+<h3>🧩 Claude Agent SDK for Python — v0.2.172 / v0.2.173</h3>
+<p>同梱する Claude CLI のバージョンを更新するリリースが2件公開されました。<strong>v0.2.172</strong>（2026-10-22 14:23 JST 公開）が CLI 2.1.308、<strong>v0.2.173</strong>（2026-10-23 08:15 JST 公開）が CLI 2.1.309 を同梱します。Anthropic Python SDK 本体の最新は v2.1.0（2026-10-22 07:00 JST 公開）で、対象期間外です。</p>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Continuum for code vulnerabilities が一般提供開始</strong>（2026-10-23 06:00 JST）: コードの脆弱性対応を支援するサービスが GA となりました。</li>
+  <li><strong>Amazon OpenSearch Serverless が既定 5 秒のリフレッシュ間隔をサポート</strong>（2026-10-23 03:34 JST）。</li>
+  <li><strong>AWS CloudFormation がスタック更新ロールバック操作を簡素化</strong>（2026-10-23 02:30 JST）。</li>
+  <li><strong>Amazon SageMaker AI にサーバーレスモデルカスタマイズ用の training session API</strong>（2026-10-23 01:30 JST）。併せて Muse Glimmer、Qwen 3.8、Ministral 3 モデルのサーバーレスモデルカスタマイズにも対応しました（2026-10-22 17:00 JST）。</li>
+  <li><strong>AWS Interconnect — last mile プレビュー（Megaport 連携）</strong>（2026-10-22 21:00 JST）。</li>
+  <li><strong>AgentCore Gateway が Bedrock InvokeModel API とモデルフォールバックをサポート</strong>（2026-10-22 17:00 JST）。</li>
+  <li><strong>AWS Lambda MicroVMs が4リージョンで追加提供</strong>（2026-10-22 16:06 JST）、<strong>Amazon Quick</strong> がシンガポールリージョンで利用可能になりました（2026-10-22 16:00 JST）。</li>
+  <li><strong>Amazon Connect Customer Profiles</strong> がエージェントワークスペース上のアプリをレイアウトでカスタマイズ可能になりました（2026-10-23 06:10 JST）。</li>
+</ul>
+
+<h3>☁️ Google Cloud（2026-10-22 付）</h3>
+<ul>
+  <li><strong>PHP 8.2 以降の全サポート版にパッチ</strong>: コア PHP の脆弱性への対応として、App Engine flexible environment のリソースを更新済み依存関係で再デプロイすることが推奨されています。</li>
+  <li><strong>BigQuery <code>AI.TRANSLATE</code> が GA</strong>: テキスト文字列を言語間で翻訳する関数で、標準の NMT ワークロードと Translation LLM（TLLM）の両方をサポートします。</li>
+  <li><strong>Cloud Run の Direct VPC ingress がプレビュー</strong>: VPC ネットワーク上の Cloud Run インスタンスが、自身の一時プライベート IP アドレスで相互および他のリソースと通信できるようになります。</li>
+  <li><strong>MIG のインスタンス分散表示</strong>: マネージドインスタンスグループがゾーンやマシンタイプ間でインスタンスをどう分散しているかを、コンソールの Monitoring タブから確認できます。</li>
+  <li><strong>Container-Optimized OS</strong>: <code>cos-gpu-installer</code> v2.7.11 と toolbox v20261020 への更新、eMudhra 中間証明書の侵害に対応した証明書更新、複数の CVE 修正が含まれる LTS Refresh リリースです。</li>
+</ul>
+
+<h3>🪟 Microsoft（Fabric）</h3>
+<p>Microsoft Fabric の Data Warehouse で <strong>増分マイグレーション（Preview）</strong>が公開されました（2026-10-22 公開）。毎回新しい Warehouse を作成することなく、業務ドメイン単位など段階的に対象オブジェクトを追加・再マイグレーションでき、既存 Warehouse への統合や名前衝突の解決にも対応します（移行対象はオブジェクト定義で、行データの継続同期は行いません）。</p>
+
+<p class="empty-notice"><strong>Azure</strong>（対象期間内の公式アップデートの新着は確認されず）、<strong>Python / Django</strong>（新規リリースなし）、<strong>Hono</strong>（最新は 2026-10-10 公開の v5.0.0-rc.1 で対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
