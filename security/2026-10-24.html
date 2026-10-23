@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-24 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-24 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>LiteLLM 1.107.0 - 正規配布パッケージに不正プログラム混入。開発者のGitHub認証情報が悪用されたサプライチェーン攻撃<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>LiteLLM 1.107.0（CVEなし・サプライチェーン攻撃）</td></tr>
+<tr><th>影響</th><td>PyPIで配布された7種類のwheelファイル、および「Docker Hub」「GitHub Container Registry」で配布された公式コンテナイメージ。安全なバージョンとして 1.106.2 などが案内されています</td></tr>
+<tr><th>深刻度</th><td>Critical（認証情報の窃取・外部コードの実行・開発環境トークンの奪取）</td></tr>
+<tr><th>公開</th><td>BerriAI が現地2026-10-21に表明。Security NEXT 2026/10/23</td></tr>
+</table>
+<ul>
+<li>開発元のリリース工程そのものが侵害されました。<strong>開発担当者3人のGitHub認証情報が不正に利用され、管理権限でブランチの保護機能を無効化したうえリリース工程を書き換え、攻撃者が用意した正規プロジェクトに似せたリポジトリを参照させて悪意あるパッケージを公開</strong>しています。</li>
+<li>問題のパッケージには、<strong>クラウドサービスの認証情報、SSHの秘密鍵、ブラウザ保存の認証情報、開発環境のトークン</strong>を窃取するコードと、外部から取得したコードを実行する機能が仕込まれていました。さらに<strong>LiteLLM自身が利用するデータベースから生成AIサービスのAPIキーを取得</strong>する機能も確認されています。</li>
+<li>配布用wheelの内容は正規のソースコードと異なっており、<strong>ソースだけを確認しても見落とす</strong>構成です。またPythonの起動時に自動実行される仕組みを悪用し、<strong>アプリケーションがLiteLLMを読み込まなくても不正コードが稼働</strong>します。感染環境ではPythonを起動するたびに再実行され得るため、復旧は慎重に進める必要がありますわ。</li>
+<li>認証情報の流出経路は特定に至っていませんが、<strong>一定の条件下で「Claude Code」が「GitHub CLI」のOAuthトークンを応答に含める現象</strong>が確認されており、関連性が調べられています。Claude Code をGitHub連携でお使いの環境は、トークンの棚卸しと再発行をご検討くださいませ。</li>
+<li>悪意あるパッケージはすでに削除されています。導入してしまった場合は、不正コードの除去だけでは不十分で、<strong>環境の再構築と認証情報の変更</strong>が必要です。JFrogがIoC（Indicators of Compromise）を公開しています。</li>
+</ul>
+
+<h3>Node.js - 脆弱性10件。Brotli圧縮データの処理でリモートコード実行のおそれ（CVE-2026-111497 ほか）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-111497（Brotli 8.1相当・High）、CVE-2026-105482（DNS 7.4）、CVE-2026-105483（TLS 7.4）、CVE-2026-106069（TLS 7.4）、Medium 3件（CVE-2026-105481、CVE-2026-106072、CVE-2026-106074）、Low 3件（CVE-2026-106070、CVE-2026-106071、CVE-2026-106073）</td></tr>
+<tr><th>影響</th><td>Node.js 26.x / 24.x / 22.x（Low 2件は 26.x のみ）</td></tr>
+<tr><th>深刻度</th><td>最高は High（Critical は含まれません）</td></tr>
+<tr><th>公開</th><td>Node.jsプロジェクト 現地2026-10-21 セキュリティリリース。Security NEXT 2026/10/23。NVD登録は 2026-10-23（JST 深夜〜早朝）</td></tr>
+</table>
+<ul>
+<li>最重要は<strong>CVE-2026-111497</strong>。Brotliデコーダが不正なブロックスイッチを「一時的な入力不足」と誤判定し、<strong>8バイトの内部バッファに追記を続けて領域外へ書き込む</strong>問題です。<code>node:zlib</code> で圧縮データを展開するアプリが標的となり、プロセスメモリの破壊・情報漏えい・リモートコード実行に至り得ます。</li>
+<li><strong>CVE-2026-105482</strong>は <code>dns.resolve*()</code> / <code>dns.reverse()</code> がNULバイトを含むホスト名を無言で切り詰める問題（CVE-2026-48930の不完全な修正）。<strong>CVE-2026-105483 / 106069</strong>は、全角数字（<code>１２７.0.0.1</code>）や先頭ゼロ付きIPv4表記（<code>0127.0.0.1</code>）でTLSのホスト名検証が別アドレスに対して成立してしまう問題です。<strong>ドメイン許可リストとDNS解決を組み合わせた検証は成立しなくなる</strong>ため、影響は広範です。</li>
+<li>修正版は <strong>26.12.1 / 24.22.1 / 22.23.4</strong>。あわせて <code>c-ares</code>、<code>ca-cert</code>（eMudhra中間CA侵害）、<code>OpenSSL</code>、<code>SQLite</code>、<code>Undici</code> の依存も更新されています。前日の朝刊でお伝えしたBrotliの件は、本件の一環として整理できるものですわ。</li>
+</ul>
+
+<h3>Electron - 侵害された eMudhra 中間CA証明書を拒否できず、TLSサーバを偽装され得る（CVE-2026-115570、CVSS 7.4）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115570</td></tr>
+<tr><th>影響</th><td>Electron 42.11.16 / 43.8.1 / 44.9.1 / 45.0.0-beta.6 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-23 19:17 UTC（JST 2026-10-24 04:17）</td></tr>
+</table>
+<ul>
+<li>Chromiumのネットワーキング、Node.js の <code>tls</code> / <code>https</code> / <code>fetch</code> のいずれにおいても、<strong>侵害された eMudhra 中間証明書をブロックしていません</strong>。当該中間証明書で発行された証明書を保有し、通信を傍受できる攻撃者は、<strong>影響を受けるアプリケーションに対してTLSサーバを偽装</strong>できます。</li>
+<li>Electronはデスクトップアプリの基盤として広く使われています。自動更新やAPI通信がTLSの検証に依存しているデスクトップ系アプリは、同系統のランタイム更新状況をご確認くださいませ。</li>
+</ul>
+
+<h3>AIエージェント基盤 - PraisonAI の未認証AgentOS（9.8）、Wasmtime のサンドボックス脱出（9.9）、Hugging Face Datasets のpickle実行（8.8）ほか<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-57116（PraisonAI 9.8）、CVE-2026-115889・115893（Wasmtime 9.9）、CVE-2026-115812（AWS Multi Model Server 9.8）、CVE-2026-115727（AgenticSeek 9.2）、CVE-2026-57845（Hugging Face Datasets 8.8）、CVE-2026-58497（Uni-CLI 8.6）、CVE-2026-107858（Google ADK for Java 7.2）、CVE-2026-106763・106764・106765（MCPサーバ 各7.5）</td></tr>
+<tr><th>影響</th><td>PraisonAI 4.2.1〜4.6.59未満（ほか多数のCVEが同製品に集中）、Wasmtime 36.0.19 / 48.0.7 / 49.0.4 未満、AWS Multi Model Server 1.1.11以下（End of Life）、AgenticSeek（commit 409840c 以前）、Hugging Face Datasets 5.1.0以下、Uni-CLI 0.225.2未満、Google ADK for Java 1.13.0未満、各MCPサーバパッケージ 1.0.1</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-23（JST 同日夕〜2026-10-24 早朝）</td></tr>
+</table>
+<ul>
+<li><strong>PraisonAI（CVE-2026-57116）</strong>は、AgentOS のFastAPI配信面が<strong>未認証のまま</strong>で、チャットルートがそのままエージェントを実行してしまいます。認証ヘッダが無い／誤ったベアラトークンのリクエストも実行される点が問題です。同製品には Slack / Discord / Telegram / Linear の承認フローやサンドボックスバックエンドに関するCVEが10件以上まとめて登録されました（<strong>SandlockSandbox がLandlock利用不可時にフェイルクローズせず素のサブプロセスへ縮退する CVE-2026-57144</strong> など、エージェントの隔離境界そのものを崩すものが目立ちます）。</li>
+<li><strong>Wasmtime（CVE-2026-115889 / 115893）</strong>はCraneliftバックエンドの不具合により、細工したWasmモジュールで<strong>サンドボックスを脱出</strong>し得るものです（SSAインデックスのビットパック溢れ、aarch64の <code>br_table</code> 分岐先不正）。エージェントのツール実行をWasmで隔離している構成では、修正版への更新を優先なさってください。</li>
+<li><strong>Hugging Face Datasets（CVE-2026-57845）</strong>は、非推奨のpandasパッケージビルダー経由で<strong>細工したpickleを読み込ませて任意のPythonコードを実行</strong>できる問題です。<strong>AWS Multi Model Server（CVE-2026-115812）</strong>はモデルアーカイブ展開時の相対パストラバーサルで任意コード実行に至りますが、製品はEOLで修正版がありません。<strong>サポートされたモデル配信先への移行</strong>が必要です。</li>
+<li><strong>MCPサーバ実装</strong>にも実行系の脆弱性が集中しました。<code>@justice8096/sagemath-mcp-server</code>、<code>@rog0x/mcp-git-tools</code>、<code>@rog0x/mcp-docker-tools</code>（各7.5）は関数の文字列処理を経由した任意コード実行、Uni-CLI（8.6）はループバック上のMCP HTTPトランスポートでOriginヘッダ検証を欠くため<strong>悪意あるWebページからローカルのMCPへJSON-RPCを送り込める</strong>問題です。ローカルでMCPサーバを起動したままにする運用は、見直しをご検討くださいませ。</li>
+</ul>
+
+<h3>XDG Desktop Portal - 悪意あるサンドボックスアプリがホストのファイルへ到達（CVE-2026-55888 8.8 / CVE-2026-55889 8.3）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-55888、CVE-2026-55889</td></tr>
+<tr><th>影響</th><td>XDG Desktop Portal 1.22.1 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-23（JST 同日22時台）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-55888</strong>は <code>FileChooser.SaveFiles</code> が任意のファイル名を受け入れ、バックエンド側で存在確認が行われないまま連結されるため、<strong>サンドボックス化されたアプリがホスト上に新しいファイルを作成・アクセス</strong>できる問題です。</li>
+<li><strong>CVE-2026-55889</strong>は <code>FileTransfer.RetrieveFiles</code> でトークンが他アプリへ流用され、<strong>ドラッグ＆ドロップやコピー＆ペーストの対象データを奪い取れる</strong>問題です。トークン生成に <code>g_random_int</code> / <code>g_uuid_string_random</code> を用いている点も指摘されています。コンテナやサンドボックスで開発環境を隔離している構成では、ランタイム側の更新をご確認ください。</li>
+</ul>
+
+<h3>Okta Access Gateway - 管理者権限のコマンド実行（CVE-2026-115547 9.1）と認証ソース検証不備（CVE-2026-115546 8.1）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115547（9.1）、CVE-2026-115546（8.1）</td></tr>
+<tr><th>影響</th><td>Okta Access Gateway（OAG）Admin Console</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-23 04:18 UTC（JST 13:18）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-115547</strong>は、Admin Consoleの入力検証不備により、<strong>認証済み管理者がOAGサービスアカウントの権限で任意のシステムコマンドを実行</strong>できる問題です。管理者権限が集中する製品だけに、内部不正・アカウント乗っ取り双方の観点で影響が大きいですわ。</li>
+<li><strong>CVE-2026-115546</strong>はサインオン時に選択した認証ソースが検証されず、<strong>アクティブなセッションを持つユーザーがパラメータを変更してAdmin Consoleへ到達するSAMLアサーションを得られる</strong>問題です。</li>
+</ul>
+
+<h3>JVN新着 - 三菱電機製 GENESIS/GENESIS64/ICONICS Suite ほか複数製品（2026-006）／CISA ICS Advisory（2026年10月22日）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2023-4863、CVE-2026-16436、CVE-2026-16437、CVE-2026-16438（JVNVU#93251594）／JVNVU#98747108</td></tr>
+<tr><th>影響</th><td>GENESIS、GENESIS64、ICONICS Suite、Hyper Historian、AnalytiX、MobileHMI、IoTWorX、MC Works64、GENESIS32、BizViz（MC Works64・GENESIS32・BizViz は全バージョン）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-23（JVNVU#93251594）、2026-10-23（JVNVU#98747108）</td></tr>
+</table>
+<ul>
+<li>SCADA／HMI領域の製品群です。<strong>CVE-2023-4863</strong>はlibwebpのヒープベースバッファオーバーフローで、細工したファイルのインポートにより<strong>任意コードが実行される</strong>おそれがあります（既知のCVEが同梱ライブラリ経由で残存していた形ですわ）。</li>
+<li><strong>CVE-2026-16436</strong>はシステムロック解除のチャレンジレスポンスが全ユーザーで共通の固定値である問題で、レスポンスを入手した遠隔の第三者にロックを解除され得ます。<strong>CVE-2026-16437</strong>は管理者権限のユーザーがレスポンス保存ファイルを改ざんできる問題、<strong>CVE-2026-16438</strong>は管理者にDCOM権限が付与されている問題です。</li>
+<li>対策はアップデートまたは回避策の適用ですが、<strong>対策版が提供されない製品・バージョンもあり</strong>、その場合は軽減策の適用が推奨されています。制御系ネットワークに接続されたWindows端末では、導入製品の棚卸しをお勧めいたします。</li>
+</ul>
+
+<h3>【続報】HPE「AOS-10」「AOS-8」- 無線LAN向けOSに72件、うちCritical 33件（CVSSv3.1 10.0が8件）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-79846、79847、79848、79849 ほか計72件（HPE セキュリティバレット hpesbnw05162）</td></tr>
+<tr><th>影響</th><td>HPE Networking 無線LAN向けOS「AOS-10」「AOS-8」を搭載するモビリティコントローラ、ゲートウェイ、アクセスポイント、仮想マシン等</td></tr>
+<tr><th>公開</th><td>HPE 現地2026-10-22 アドバイザリ公開。Security NEXT 2026/10/23。NVD一括登録 2026-10-22 19:17 UTC（JST 2026-10-23 04:17）</td></tr>
+</table>
+<ul>
+<li>前日の朝刊で「CVEが71件一括登録、製品名が『Unknown product』」とお伝えしたHPEのバレットについて、<strong>対象製品が無線LAN向けOS『AOS-10』『AOS-8』であることと、Critical が33件・うちCVSSv3.1 10.0が8件であることが判明</strong>いたしました。</li>
+<li>具体的には、<strong>AOS-10でバッファオーバーフロー（CVE-2026-79847）</strong>、<strong>AOS-8でコマンドインジェクション（CVE-2026-79846）とSQLインジェクション（CVE-2026-79848 / 79849）</strong>などが確認されています。いずれも<strong>認証を必要とせず、リモートからコードを実行されるおそれ</strong>があります。</li>
+<li>アドバイザリ公開時点で、言及や攻撃コードは確認されていません。無線インフラは社内ネットワークの入口にあたります。<strong>該当機器の有無とパッチ適用状況の確認</strong>を、今週のうちにご予定いただくのが宜しいかと存じます。</li>
+</ul>
+
+<h3>Claude Code 2.1.310 - npmへ公開（セキュリティ関連の変更内容は未公表）<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Claude Code 2.1.310</td></tr>
+<tr><th>公開</th><td>npmレジストリ 2026-10-23 21:20 UTC（JST 2026-10-24 06:20）</td></tr>
+</table>
+<ul>
+<li>本対象期間の末尾に新しいバージョンがnpmへ公開されました。ただし<strong>公式チェンジログ（CHANGELOG.md）への反映は本稿執筆時点でまだ確認できておらず</strong>、セキュリティに関わる修正が含まれるかは不明です。</li>
+<li>前日の朝刊でお伝えした <strong>2.1.309</strong>（サンドボックスのシェル起動ファイル実行、<code>--mcp-config</code> の書き換え、worktree分離の回避などを修正）が、現時点で確認できる最新の詳細情報です。チェンジログの反映後に改めてご報告いたしますわ。</li>
+</ul>
+
+<h3>Hermes Agent v0.22.5 - 依存関係のセキュリティ更新を含むパッチリリース<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>Hermes Agent v0.22.5</td></tr>
+<tr><th>影響</th><td>v0.22.4 以前を利用している環境（CLI・インストーラ・Microsoft Storeアプリ・Docker／Hermes Cloud）</td></tr>
+<tr><th>公開</th><td>GitHubリリース 2026-10-23 05:28 UTC（JST 同日14:28）</td></tr>
+</table>
+<ul>
+<li>v0.22.4以降の<strong>約81 PR・231非マージコミット・804ファイル変更</strong>を安定版タグとして集約したパッチリリースです。個別の脆弱性修正・CVEの記載はありませんが、<strong>依存関係のセキュリティ更新（dependency security bumps）をまとめて取り込んでいる</strong>旨が明記されています。</li>
+<li>あわせて、Nousサインインの刷新（全サインインがデバイスログインに統一され、ゲストからアカウントへの引き継ぎを明示）、委譲先バックエンドのプラグイン化、<code>hermes import-agent</code> による他エージェントからの移行、<code>hermes mcp serve</code> とSingularityバックエンドのコア外への切り出し、Electron 44 と Pillow 13 への更新などが含まれます。<strong>更新は <code>hermes update</code></strong> にて。</li>
+</ul>
+
+<h3>openclaw - 対象期間内の新規リリースなし</h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>最新の安定版は 2026.10.6（2026-10-22 21:53 JST、前日の朝刊で既報）</td></tr>
+<tr><th>公開</th><td>本対象期間（2026-10-23 08:00 〜 2026-10-24 08:00 JST）に新規リリースはありません</td></tr>
+</table>
+<ul>
+<li>最新のbeta系は 2026.10.10-beta.3（2026-10-21 16:00 JST）で、こちらも前日の朝刊の対象期間外です。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js / React / Django / Hono / Spring Boot のフレームワーク本体、Java系基盤（Tomcat・Spring Framework 等）、および Google Cloud・Azure の各サービスに直接関連する新規CVEは、本対象期間では確認されませんでした（AWS は Multi Model Server（CVE-2026-115812）を上記セクションに記載しています）。Python系では Twisted の事前認証DoS（CVE-2026-115775・115776・115778、各7.5）と pypdf の資源枯渇（CVE-2026-115572・115580・115585、各7.1）が登録されています。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ラクス／ラクスライトクラウド「ブラストメール」- API用サーバ2台に侵入され、契約者情報の持ち出しを確認。サービスは停止中</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ラクス（子会社: 株式会社ラクスライトクラウド）</td></tr>
+<tr><th>事象</th><td>メール配信システム「ブラストメール」で不審なアクセスを検知。<strong>外部の第三者がラクスライトクラウドのAPI用サーバ2台に侵入してコマンドを実行し、販売管理システムおよびサービスのデータベースに接続してデータを持ち出したことを確認</strong></td></tr>
+<tr><th>規模</th><td>販売管理システムに保存されていた<strong>全契約者</strong>の会社名・担当者名・電話番号・メールアドレス・請求先メールアドレス・契約および支払い履歴等。一部顧客については配信先リストなどメール配信に関する情報も漏えい</td></tr>
+<tr><th>公表</th><td>2026-10-21 発表（第2報）。サービスは同日午前0時30分から停止、再開日時は未定。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>検知後にただちに緊急停止していますが、<strong>すでにAPI用サーバへ侵入されコマンド実行を許し、データベースへ到達された</strong>ことが確認されています。入口から目的のデータまでの到達が速い事例ですわ。</li>
+<li>メール配信基盤の契約者情報は、<strong>配信先リストと組み合わせると大規模な標的型攻撃の材料</strong>になり得ます。同社は原因究明と再発防止を進めるとしています。</li>
+<li>国内ではユミルリンク（10/19公表・延べ約900万件と試算）と同種の<strong>メール配信サービスへの攻撃が続いて</strong>います。配信系SaaSを利用している組織は、委託先の状況把握をお勧めいたします。</li>
+</ul>
+
+<h3>リクルート「カーセンサーnet」「C-MATCH」- 続報: 漏えいの可能性がある個人情報は最大3,709,551件</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社リクルート</td></tr>
+<tr><th>事象</th><td>10月17日に「カーセンサーnet」関連システムへの外部からの不審なアクセスを検知し、同日午後5時頃から関連する全サービスを一時停止。個人情報漏えいの可能性が判明</td></tr>
+<tr><th>規模</th><td><strong>最大3,709,551件</strong>（①問い合わせ利用者 3,210,421件＝氏名・住所（原則市区町村名まで、最大447,670件は町名等まで含む可能性）・一部に問い合わせ内容/年代/性別/電話・FAX・メール）／②口コミ投稿者 5,289件（氏名、4件はメールアドレス含む）／③「C-MATCH」登録販売店 483,168件（代表者・担当者氏名、電話番号、古物商許認可番号・許認可保有者氏名、ログインID、個人事業主は住所・口座情報も）／④自社・委託先・販売代理店の従業員等 10,673件（氏名、メールアドレス、ログインID）</td></tr>
+<tr><th>公表</th><td>2026-10-21 発表（一次情報: リクルート プレスリリース）。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>前日の朝刊でお伝えした件の<strong>正式発表分</strong>です。件数の内訳と、<strong>個人事業主については引落口座情報まで含まれ得る</strong>ことが明らかになりました。</li>
+<li>対象者には順次個別に連絡されるとのことです。流出情報の性質上、<strong>取引先を装った連絡や請求書詐欺</strong>への警戒が必要ですわ。</li>
+</ul>
+
+<h3>アバハウスインターナショナル - 社内システムへの不正アクセス、会員情報・EC受注情報が漏えいの可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社アバハウスインターナショナル</td></tr>
+<tr><th>事象</th><td>9月27日深夜から28日にかけて海外の第三者から不正アクセスと推定。<strong>社内システムへの不正なログインを起点に、システムの不備を悪用して不正なプログラムが設置・実行され</strong>、会員情報・EC受注情報を保管するデータベースに不正アクセス。9月28日に複数の顧客から「注文情報と一致する不審な返金案内メールを受信した」との問い合わせがあり発覚</td></tr>
+<tr><th>規模</th><td>会員ID、氏名、住所、電話番号、メールアドレス、生年月日、性別、注文情報（注文日時・商品名・金額・届け先等）</td></tr>
+<tr><th>公表</th><td>2026-10-03 発表（続報 2026-10-09）。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li><strong>顧客からの問い合わせが発覚の端緒</strong>ですわ。10月2日に対象顧客へ個別連絡を実施し、不正アクセスを確認したアカウントの停止、関連パスワードの変更、侵入経路の遮断、管理システムの認証強化、ログイン履歴の監視強化を行っています。</li>
+<li>取得された情報の範囲を完全には特定できていないため、<strong>購入履歴に基づく推定で対象者を判断している</strong>点が特徴です。実際に漏えいした情報との差が出る可能性があります。</li>
+</ul>
+
+<h3>セーファーインターネット協会 - 「さくらのレンタルサーバ」への不正アクセスでホットライン通報内容等が漏えいの可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>一般社団法人セーファーインターネット協会</td></tr>
+<tr><th>事象</th><td>同協会が利用するさくらインターネットの「さくらのレンタルサーバ」への不正アクセスにより、保存していた個人情報が第三者に閲覧または取得された可能性</td></tr>
+<tr><th>規模</th><td>氏名、メールアドレス、<strong>各種ホットラインへの通報・連絡内容</strong>、お問い合わせフォーム送信内容、イベント・研修等への申込情報、同協会とのメール送受信内容</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>さくらインターネットの不正アクセス（会員情報1,360,563アカウントが影響を受けた可能性、8/20公表）の<strong>利用者側での被害顕在化</strong>にあたります。同社は9月17日に調査結果を公表し、全サーバの再構築などの再発防止策を掲げています。</li>
+<li>漏えい対象に<strong>通報・相談内容そのもの</strong>が含まれる点は重いですわ。相談者のプライバシーに関わる情報であり、二次的な被害への配慮が必要です。</li>
+</ul>
+
+<h3>富士急ハイランド「CLUB フジQ」- リスト型攻撃で159名の会員情報が閲覧された可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社富士急ハイランド</td></tr>
+<tr><th>事象</th><td>9月4日から9月7日にかけて、公式アプリおよび会員サイト「CLUB フジQ」に対し<strong>外部で入手したメールアドレスとパスワードの一覧を用いたリスト型攻撃</strong>による不正ログイン</td></tr>
+<tr><th>規模</th><td>159名の会員アカウント。氏名、メールアドレス、生年月日、性別、電話番号、郵便番号、都道府県、会員番号</td></tr>
+<tr><th>公表</th><td>2026-10-20 発表。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>現時点で不正な購入・決済、会員情報の変更、チケットの不正利用などの二次被害は確認されていません。対象アカウントのパスワードは初期化され、対象者へ個別連絡されています。</li>
+<li><strong>他サービスからの漏えい情報を突合する攻撃</strong>は、自組織に脆弱性がなくても成立します。会員基盤をお持ちのサービスでは、パスワードの使い回し検知と多要素認証の導入状況をご確認くださいませ。</li>
+</ul>
+
+<h3>ムーンスター - 続報: オンラインストア顧客の氏名・注文情報などが漏えいの可能性、なりすましフィッシングも確認</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ムーンスター</td></tr>
+<tr><th>事象</th><td>3月26日に公表したサーバへの不正アクセス疑惑の続報。社内調査の結果、<strong>当該アクセスの一部でシステムサーバへの不正ログインおよび情報取得が行われた可能性</strong>が判明。<strong>同社になりすましたフィッシングメールの一部顧客への配信も確認</strong></td></tr>
+<tr><th>規模</th><td>オンラインストアを利用した顧客の氏名、住所、電話番号、メールアドレス、過去の注文情報</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表（続報）。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>不正アクセスを受けたサーバの外部接続を遮断しパスワードを強制変更、脆弱性対策と多重防御を実施しています。現在も外部専門機関と連携した技術調査を継続中です。</li>
+<li><strong>「侵害の確認」と「なりすましメールの観測」が同時に報告される</strong>典型例ですわ。実際にフィッシングが飛んでいる以上、顧客側への周知は侵害範囲の確定を待たずに行うべきです。</li>
+</ul>
+
+<h3>講談社BECK - 従業員のメールアカウントに不正アクセス、50件の不審なメールを送信</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社講談社BECK</td></tr>
+<tr><th>事象</th><td>従業員1名のメールアカウントに第三者から不正アクセスがあり、9月14日午前10時47分頃に<strong>当該アカウントから外部へ50件の不審なメールを送信</strong>。アクセスログの精査により、<strong>過去にさかのぼって不正アクセスが行われメールボックス内の情報が取得された可能性</strong>が判明</td></tr>
+<tr><th>規模</th><td>当該メールボックスには多数のメールが保存されており、漏えいの全容と対象者全員の特定は困難としています</td></tr>
+<tr><th>公表</th><td>2026-10-02 発表。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>当該アカウントは<strong>合併前に旧株式会社講談社ビーシーで使用していたもの</strong>で、現在使用中のアカウントへの不正アクセスはないとされています。認証情報が何らかの手法で第三者に取得されたことが原因と推測されています。</li>
+<li>合併・組織再編の際に<strong>旧アカウントが無効化されずに残る</strong>のは、よく見られる統制の穴ですわ。M&amp;A後のID棚卸しを再確認なさるのが宜しいかと存じます。</li>
+</ul>
+
+<h3>「ふるさとチョイス」- 続報: 泉大津市で寄附の受付ができない状況に</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社トラストバンク（運営）／大阪府泉大津市（利用自治体）</td></tr>
+<tr><th>事象</th><td>ふるさと納税ポータルサイト「ふるさとチョイス」への第三者による不正アクセスで会員情報の一部が外部流出。<strong>同サービスの停止により、泉大津市では「ふるさとチョイス」を通じた寄附の受付ができない状況</strong></td></tr>
+<tr><th>規模</th><td>泉大津市の寄附者の個人情報への影響を含め、トラストバンクが事実関係と影響範囲を調査中（サービス全体では4,454,097件の会員情報が流出）</td></tr>
+<tr><th>公表</th><td>2026-10-20 泉大津市発表。ScanNetSecurity 2026/10/23 8:05</td></tr>
+</table>
+<ul>
+<li>ポータル側の障害が<strong>自治体の歳入業務そのものを止める</strong>構図が可視化されました。前日の朝刊でお伝えしたトラストバンクの事案の波及として、利用自治体側の公表が続いています。</li>
+<li>自治体がポータルに掲載する寄附者情報は、<strong>寄附者リストとしての価値が高い</strong>情報です。関係自治体からの注意喚起の有無をご確認くださいませ。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
