@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-24 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-24 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.310</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v2.1.310</strong>（2026-10-24 08:49 JST 公開）です。Monitor ツールの提供範囲拡大と、Enterprise 向けクラウドセッションの権限制御まわりが中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Monitor ツールとプラグインモニタの提供範囲拡大</strong>: Bedrock、Vertex、Foundry 上でも利用可能となり、テレメトリや非必須トラフィックが無効な場合にも動作します。これらの環境では長時間のフォアグラウンド sleep もブロックされるようになりました。</li>
+  <li><strong>[Cloud sessions] Enterprise カスタムロールに権限を追加</strong>: Claude Code クラウドセッションと Remote Control の権限を Enterprise のカスタムロールに付与できるようになり、Owner がロール単位でアクセスを制御できます。</li>
+  <li><strong>[Cloud sessions] セットアップスクリプトの読み込み</strong>: クラウド環境のセットアップスクリプトをファイルから読み込む「Choose file」ボタンが追加されました。</li>
+</ul>
+
+<h3>🐛 主な変更</h3>
+<ul>
+  <li><strong>MCP ツール呼び出しのタイムアウト時のエラー文言</strong>: 非対話セッションでサーバーの elicitation が未回答のままタイムアウトした場合、回答が得られなかったことと呼び出しを繰り返さないことを Claude に伝える内容に変更されました。</li>
+  <li><strong>[Cloud sessions] 管理設定での確認</strong>: クラウドセッションまたは Remote Control を有効にする際、確認を求めるとともに、当該権限を持つカスタムロールを列挙するようになりました。</li>
+  <li><strong>[Cloud sessions] クラウド環境ダイアログ</strong>: ネットワークアクセス、セットアップスクリプト、環境変数を一括表示ではなく行から開く方式に変更されました。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-310">ソース: Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.22.5</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。v0.22.4 以降にマージされた約81の PR をまとめたパッチリリースで、GitHub Releases・CLI / インストーラ・Microsoft Store アプリ・Docker / Hermes Cloud 向けの安定版としてタグが打たれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>規模</strong>: コミット <code>bf0203a794a</code> 時点で、v0.22.4 からの対象区間に 231 の非マージコミット、804 ファイルの変更（+35,212 / −17,885）、81 のマージ済み PR、30 のクローズ済み Issue を含みます。</li>
+  <li><strong>Nous サインインの刷新</strong>: すべてのサインインが通常のデバイスログインとなり、無料枠のゲストはアカウントへ引き継がれ、結果として誰がサインインしたかが表示されます。コネクタはゲストを開く代わりにサインインを案内するようになりました。</li>
+  <li><strong>アップデートの安全性</strong>: <code>hermes update</code> が拒否する安定版リリースを提示しなくなり、Windows では Python の再ピン後に旧ランチャーで固まらなくなりました。破損した <code>.git</code> から一時停止中のゲートウェイを復旧できます。</li>
+  <li><strong>使用量ウィンドウ型プランの対応</strong>: プランゲージ、上限カード、モデル切り替え時の復旧が追加されました。</li>
+  <li><strong>差し替え可能な委任バックエンド</strong>: サブエージェントをモデルマップやプロファイルでルーティングし、セッション単位で切り替えられます。</li>
+  <li><strong>エージェント移行の拡充</strong>: <code>hermes import-agent</code> と OpenClaw からの移行に対応し、別のエージェントを検出するとセットアップがインポータを提示します。<code>hermes mcp serve</code> と Singularity バックエンドはコアからプラグインへ移動しました。</li>
+  <li><strong>Desktop / プラグイン</strong>: サイドバーへのドラッグ&ピン、階層バッジ付きのワンクリックプラグイン導入、Electron 44 への更新、Pillow 13 を含む依存関係のセキュリティ更新が入りました。プラグインのスラッシュコマンドは選択肢を要求できるようになりました。</li>
+  <li><strong>堅牢性の改善</strong>: チャットの作業フォルダが失われた際の明確なメッセージ、Claude DirectSDK の長い回答がストールタイマーで切れないようにする修正、Desktop のグループチャットでどのボットが稼働中かを再表示する修正が含まれます。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.22.5">ソース: Hermes Agent v0.22.5</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.10.6</strong>（2026-10-22 21:53 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソース: OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.238</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v1.4.238</strong>（2026-10-24 06:47 JST 公開）です。エージェント・ファイル・ブラウザ・リモートマシン間の行き来を滑らかにすることに重点が置かれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>未保存の編集を共有</strong>: 同じファイルを開いたタブ間で未保存テキストがワークスペースをまたいで共有されます。コンフリクトレビューはその最新テキストを参照し、ワークスペース削除時には未保存ファイルを一覧表示します。古い Markdown やノートブックの編集が新しい作業を上書きすることもなくなりました。</li>
+  <li><strong>外部での操作に追従するチャット</strong>: Codex と Pi がチャット外で行われたターンを表示します。長い貼り付けはテキスト添付に変換でき、Codex の質問には回答カードが付き、OMP は画像送信と実行可能なプランレビューカードに対応しました。</li>
+  <li><strong>エージェントの制御</strong>: ワークスペース作成時にチャットかターミナルかを選択でき、既定のエージェントにもその選択を設定できます。対応するリモートサーバ上で Claude と Codex のアカウントを追加でき、11 種類の追加エージェントに共有スキルをインストールできます。</li>
+  <li><strong>ブラウザ機能の強化</strong>: ワークスペースを認識する新規タブ、アドレスバーの候補表示、サイト権限の記憶、サイトごとの外観とズーム、デスクトップとスマホでの読み込み進捗表示が追加されました。</li>
+  <li><strong>スマホ体験の改善</strong>: タブでエージェントの活動を確認でき、ダブルタップで名前変更、過去のチャットメッセージのスクロールバック、ターミナルテキストの自然な選択、再開後にターミナルの閲覧位置へ復帰できるようになりました。</li>
+  <li><strong>可視性と復旧</strong>: リソースマネージャでローカルターミナルを調査でき、ホストの Orca サーバへの移行がブロックされた場合はプレーン SSH を利用でき、マネージドサーバの更新と復旧をまたいでペアリングが維持されます。</li>
+  <li><strong>日常的な改善</strong>: ブラジルポルトガル語対応、オンボーディングでの言語選択、検索可能なリリースビルド、履歴スキャンの進捗表示の明確化、そして一時停止したマージ・リベース・チェリーピックに対する <strong>Resolve with AI</strong>（ファイル競合の解消後でも利用可能）が追加されました。</li>
+</ul>
+
+<h3>⚠️ 互換性・アップグレードの注意</h3>
+<ul>
+  <li><strong>リモートアカウント</strong>: 新しい Claude / Codex の Add Account フローのため、ペアリング済みサーバを更新してください。Windows サーバや古いホストでは従来の <code>orca account add</code> の案内が残ります。資格情報はサーバ上に保持されます。</li>
+  <li><strong>ネイティブチャット（実験的）</strong>: 最新の修正のためペアリング済みホストと SSH ホストも Orca と同時に更新してください。エージェントのバージョン検査は要件を満たす新しいリリースとプレリリースを受け入れるようになりました。</li>
+  <li><strong>その他</strong>: リソースマネージャの新しい PTY ビューはローカルターミナルが対象で、終了にはホスト側のセッション検証サポートが必要です。また HTML ファイルを既定でプレビュー表示する挙動は今回のリリースでは元に戻されました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.238">ソース: Orca v1.4.238</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js — v16.4.3</h3>
+<p><strong>v16.4.3</strong>（2026-10-23 22:32 JST 公開）が公開されました。canary の機能をすべて含むものではなく、LTS-active 系の不具合修正をバックポートしたリリースです。</p>
+<ul>
+  <li><strong>Google Fonts の URL 修正</strong>: 両方のバンドラで拡張子なしの Google Fonts URL を扱えるようにしました。</li>
+  <li><strong>proxy.ts のランタイム読み込み</strong>: <code>proxy.ts</code> で app-page ランタイムを読み込まないようにしました。</li>
+  <li><strong>Turbopack のローダー変更無効化をリバート</strong>。</li>
+  <li><strong>OpenTelemetry のリクエストトレース</strong>: トレースが分断されず一緒に保たれるようになりました。</li>
+  <li><strong>サーバーブートストラップ</strong>: standalone の React を読み込まないようにしました。併せて <code>v16.4.2</code> 相当の修正も取り込まれています。</li>
+</ul>
+
+<h3>🅰️ Anthropic SDK（Python / TypeScript）</h3>
+<ul>
+  <li><strong>Python SDK v2.3.0</strong>（2026-10-24 08:18 JST 公開）/ <strong>TypeScript SDK sdk-v1.3.0</strong>（2026-10-24 08:23 JST 公開）: Claude Enterprise 組織向けの <strong>Claude Tag エンドポイント</strong>が追加されました。Python 版では google-cloud の user profiles リクエストが組織エンドポイントへ送られるよう修正されています。</li>
+  <li><strong>Python SDK v2.2.0</strong>（2026-10-23 22:10 JST 公開）/ <strong>TypeScript SDK sdk-v1.2.0</strong>（2026-10-23 22:09 JST 公開）: <strong>メッセージスレッド</strong>のサポートと、ディメンション別の使用量・コストレポートが追加され、旧来のレポートは legacy 扱いになりました。</li>
+  <li><strong>TypeScript vertex-sdk-v1.1.0</strong>（2026-10-23 22:09 JST 公開）も同時に公開されています。</li>
+</ul>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Transit Gateway と AWS Cloud WAN が 1:1 NAT をサポート</strong>（2026-10-24 00:43 JST）: アタッチメント上でリージョナル Private NAT Gateway と統合した 1 対 1 の NAT を利用でき、CIDR が重複するプライベートネットワークを再番号付けや NAT アプライアンスの配備、戻りトラフィック用ルールなしで接続できます。</li>
+  <li><strong>Amazon Connect Customer Global Resiliency がリージョン間の永続チャットに対応</strong>（2026-10-24 02:00 JST）: リンクされた AWS リージョンをまたいで、コンテキスト・メタデータ・トランスクリプトを引き継いで会話を再開できます。</li>
+  <li><strong>Amazon Corretto 2026年10月四半期アップデート</strong>（2026-10-23 23:00 JST）: Corretto 27.0.1.0.10、25.0.5.0.9、21.0.13.0.10、17.0.21.0.10、11.0.33.0.9、8u512 が公開されました。</li>
+  <li><strong>Amazon EMR on EKS の EMR 課金を 30% 値下げ</strong>（2026-10-23 17:00 JST）: vCPU 時間単価と GB 時間単価の双方が引き下げられ、既存の EMR on EKS ワークロードに追加操作なしで適用されます。</li>
+  <li><strong>Amazon MWAA がメキシコ（中央）リージョンで提供開始</strong>（2026-10-23 17:00 JST）: Provisioned 環境が mx-central-1 で利用可能になりました。</li>
+</ul>
+
+<h3>☁️ Google Cloud（2026-10-23 付）</h3>
+<ul>
+  <li><strong>Cloud Monitoring Ops Agent 2.73.0</strong>: システムルート証明書に関わる Go の脆弱性 <code>CVE-2026-111943</code> へのパッチが含まれます。</li>
+</ul>
+
+<p class="empty-notice"><strong>Azure</strong>（対象期間内の公式アップデートの新着は確認されず）、<strong>React</strong>（最新は v19.3.1、2026-10-15 公開で対象期間外）、<strong>Spring Boot</strong>（最新は v4.1.2 / v4.0.9、2026-10-23 02:04 JST 公開で対象期間外）、<strong>Python / Django</strong>（新規リリースなし）、<strong>Hono</strong>（最新は v5.0.0-rc.1、2026-10-10 公開で対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
