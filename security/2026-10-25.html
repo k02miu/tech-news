@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-25 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-25 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Oracle Java SE / GraalVM（JSSE）- 未認証で到達できるCVSS 9.1の脆弱性がNVDに登録（CVE-2026-114820）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-114820（CVSSv3.1 9.1、CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N）</td></tr>
+<tr><th>影響</th><td>Oracle Java SE 8u511-b32 / 8u511-perf-b32、11.0.33.0.2、17.0.21.0.2、21.0.13.0.2、25.0.5.0.2、27.0.1.0.2／Oracle GraalVM for JDK 17.0.21.0.2・21.0.13.0.2／Oracle GraalVM Enterprise Edition 21.3.20.0.2（コンポーネント: JSSE）</td></tr>
+<tr><th>深刻度</th><td>Critical（機密性・完全性への高い影響）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24 19:17 UTC（JST 2026-10-25 04:17）。Oracle四半期定例パッチ（2026年10月）分の登録</td></tr>
+</table>
+<ul>
+<li>ネットワーク経由・認証不要（<code>PR:N</code>／<code>UI:N</code>）で悪用可能と評価されています。<strong>複数のプロトコルを用いた攻撃で、重要データの不正な作成・削除・変更や、参照可能なすべてのデータへの不正アクセスに至り得ます</strong>。</li>
+<li>該当コンポーネントのAPIを利用する<strong>Webサービス経由でも到達可能</strong>とされており、JSSE（TLS/SSL実装）を利用するサーバ側アプリケーションは影響範囲の確認をお願いいたします。サンドボックス前提のJava Web Startアプリやアプレットにも該当するとされています。</li>
+<li>Javaを業務でご利用の環境では、Oracle四半期定例パッチ（2026年10月、10/21公開）の適用状況を最優先でご確認くださいませ。</li>
+</ul>
+
+<h3>Python（CPython）sslモジュール - 侵害済み証明書の拒否リストを追加（CVE-2026-115557、CVSSv4.0 9.4）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115557（CVSSv4.0 9.4）</td></tr>
+<tr><th>影響</th><td>CPython の <code>ssl</code> モジュール（証明書失効の確認を構成していない構成も含む）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24 15:17 UTC（JST 2026-10-25 00:17）</td></tr>
+</table>
+<ul>
+<li>Pythonは <code>ssl</code> モジュールに<strong>「既知の侵害済み証明書」の拒否リスト（denylist）を追加</strong>しました。CRL・OCSPなどの失効確認を構成していない環境でも、当該証明書が自動的に拒否されます。<code>SSLContext</code> のポリシー設定に関わらず適用される、という挙動がポイントです。</li>
+<li>背景には <strong>eMudhra 中間CAの秘密鍵侵害</strong>があります。前日の朝刊でお伝えした Electron（CVE-2026-115570）、および同日登録の <strong>MongoDB Compass（CVE-2026-115929、CVSS 6.8／Compass 1.53.1＝Electron 44.9.1 で解決）</strong>、<strong>HCL BigFix Platform（CVE-2026-108013、CVSS 6.8／2026-10-20以降のMozilla CAバンドルで解決）</strong>と、製品側のCAバンドル・証明書検証の更新が連鎖しています。</li>
+<li>ランタイムおよび依存ライブラリの更新に加え、<strong>CAバンドルそのものの更新</strong>が必要です。長期間固定したコンテナイメージやオフライン環境はご注意くださいませ。</li>
+</ul>
+
+<h3>Postiz（OSSソーシャルメディア投稿基盤）- 共有シークレットによるトークン偽造（9.9）と任意ファイル読み出し（9.9・9.6）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115931（CVSSv3.1 9.9）、CVE-2026-115933（9.9）、CVE-2026-115932（9.6）</td></tr>
+<tr><th>影響</th><td>Postiz（自己登録が既定で有効なセルフホスト構成）</td></tr>
+<tr><th>深刻度</th><td>Critical（認証情報・秘密値の窃取、任意ファイルの外部送信、権限昇格）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24（JST 同日08:17〜16:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-115931</strong>: ログイン済みユーザーが接続チャネル上で<strong>任意の内部ヘルパー関数を実行させられる</strong>問題です。呼び出せる関数の制限がなく、そのうちの1つがサーバ上のファイルを読み出します。<strong>接続チャネルの保存トークンにファイルパスを仕込むと、<code>.env</code> をはじめとする任意のファイル内容が応答に含まれ</strong>、セッション署名用の秘密値・データベース接続先・連携サービスの認証情報が漏えいします。自己登録が既定で開いているため、既存アカウントは不要です。</li>
+<li><strong>CVE-2026-115933</strong>: セッション・招待・パスワードリセットの各トークンが<strong>単一の共有シークレットで署名され、用途を示す情報を持ちません</strong>。リクエスト中のデータを署名して返すルートがあるため、任意のクレームを含む正規署名済みトークンを得られ、<strong>セッション／任意ロールの組織招待／パスワードリセット／エンタープライズプロビジョニングトークンとして受理</strong>されます。</li>
+<li><strong>CVE-2026-115932</strong>: 投稿のメディアパスがURLでない場合にサーバ上のファイルとして扱われ、<strong>アップロードディレクトリ内かどうかを検証していない</strong>ため、任意ファイルを攻撃者が管理するDiscordサーバへ添付として送信させられます。</li>
+<li>セルフホストで公開している場合は<strong>直ちに更新、自己登録の無効化、秘密値とセッションの失効</strong>をご検討くださいませ。</li>
+</ul>
+
+<h3>yudao-cloud（Java / Spring Boot 業務基盤）- クライアント提供ヘッダを信用した認可バイパス（CVE-2026-116016、7.1）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-116016（CVSSv3.1 7.1）、CVE-2026-116015（4.3、IDOR）</td></tr>
+<tr><th>影響</th><td>yudao-cloud 2026.09 まで</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24 12:16 UTC（JST 同日21:16）</td></tr>
+</table>
+<ul>
+<li><code>/admin-api</code> へのリクエストに <strong><code>data-permission-enable: false</code> ヘッダを付けると、<code>DataPermissionRpcWebFilter</code> がそれを信用し、行レベルのデータスコープ制限を回避</strong>できます。同一テナント内の他部署・他ユーザーのレコードを閲覧・改変できてしまいます。</li>
+<li>認可の判定を<strong>クライアントが送信できるヘッダに委ねない</strong>——10月21日に触れたruoyi-vue-pro系（CVE-2026-97324）と同系統のJava業務基盤で、同じ設計上の落とし穴が繰り返されています。Java製の社内基盤をお使いの際は、権限判定の入力元をご確認くださいませ。</li>
+</ul>
+
+<h3>WordPressプラグイン - 未認証Object Injection 9.8が3件、空パスワードでの認証突破9.8、SQLインジェクション9.3が2件<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-115806（Prime Mover 9.8）、CVE-2026-110956（asVereinbase 9.8）、CVE-2026-94075（Newsletters 9.8）、CVE-2026-114196（Paytium 9.8）、CVE-2026-112866（Product Filter by WBW 9.3）、CVE-2026-111402（Newsletters 9.3）、CVE-2026-110018（aBlocks 8.8）、CVE-2026-114704（Relevanssi 7.2）、CVE-2026-114190（LiteSpeed Cache 5.9）ほか多数</td></tr>
+<tr><th>深刻度</th><td>最高は Critical（9.8）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24（JST 同日15時〜23時台）。WordPress脆弱性情報の一斉登録分（本対象期間のNVD新規登録75件の約半数を占めます）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-115806（Prime Mover – Backup and Migration 2.2.1以下）</strong>: 標準のコメント投稿エンドポイントからbase64エンコードしたシリアライズ値を保存させ、管理者がエクスポート／リストアを実行した際に <code>unserialize()</code> へ渡してしまいます。<strong>同梱のFreemiusライブラリにPOPチェーンが存在するため、他のプラグインやテーマを必要とせず任意コード実行に至ります</strong>。</li>
+<li><strong>CVE-2026-110956（asVereinbase 1.1.8未満）</strong>: 保存値が空の場合を「一致」とみなしてしまうため、<strong>有効なパスワードや第二要素なしで、管理者を含む任意のユーザーとしてログイン</strong>できてしまいます。</li>
+<li><strong>CVE-2026-110018（aBlocks 2.17.0以下）</strong>は <code>/ablocks/v1/form-builder/registration</code> の <code>permission_callback</code> が常に真で、投稿本文の<code>roleSlug</code>を検証しないため、<strong>Contributor以上の権限でEditor等へ昇格</strong>し得ます。</li>
+<li>ほか、GeoDirectory（2.8.194未満）に認可不備・XSSが8件、W3 Total Cache（2.10.7以下、7.1）、Download Monitor（5.3.4未満、7.1）、MAS Videos（1.3.4以下）などが同日に登録されました。更新の自動適用状況と、<strong>不要なプラグインの削除</strong>をご確認くださいませ。</li>
+</ul>
+
+<h3>その他のWeb系・ミドルウェア - Gravのallowlistバイパス（8.8）、Camaleon CMSのパストラバーサル経由RCE（8.8）ほか<span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>CVE-2026-116019（Grav 8.8）、CVE-2026-116009（Camaleon CMS 8.8）、CVE-2026-116014（open62541 8.1）、CVE-2026-116011（Crow 7.5）、CVE-2026-115969・115970（Opptrix 7.3・PoC公開済み）、CVE-2026-116020（BookStack 5.4）、CVE-2026-116013（lua-resty-dns 3.7）</td></tr>
+<tr><th>影響</th><td>Grav 2.0.15〜2.2.12、Camaleon CMS 2.9.3未満、open62541 1.5.0〜1.5.6、Crow 1.3.4未満、Travisun Opptrix 0.4.0、BookStack 26.09.2未満、OpenResty lua-resty-dns 0.24未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-10-24（JST 同日15時〜21時台）</td></tr>
+</table>
+<ul>
+<li><strong>Grav（CVE-2026-116019）</strong>: ページ編集権限があれば、frontmatterのFlexフォーム上書きで <code>data-*@</code> ディレクティブをずらし、<strong><code>Folder::delete</code> や <code>Utils::download</code> などの任意のpublic staticメソッドを呼び出せます</strong>。ディレクトリの削除、ファイルの上書き、ページツリー外の読み出しが可能です。</li>
+<li><strong>Camaleon CMS（CVE-2026-116009）</strong>: media権限のみで <code>name</code> パラメータに <code>../</code> を渡せるため、base64のdata URIで<strong>テーマのビューへERBテンプレートを書き込み、描画時にサーバ側コードを実行</strong>できます。</li>
+<li><strong>open62541（CVE-2026-116014）</strong>は、悪意あるOPC UAサーバがDataType定義を返すことでクライアントのヒープを破壊し、コード実行に至り得ます。<strong>Crow（CVE-2026-116011）</strong>は深いネストJSONで<strong>未認証のままワーカースレッドのスタックを枯渇</strong>させるDoSです。</li>
+<li>エクスプロイトが公開済みの製品として <strong>Travisun Opptrix 0.4.0（CVE-2026-115969 / 115970）</strong>があります。<code>/api/auth/setup</code> と <code>/api/system-update/import</code> のコマンド／コードインジェクションで、<strong>プロジェクトは終了（abandoned）扱い</strong>です。Faveo Helpdesk 2.0.3 の弱いパスワード回復（CVE-2026-115973）、Scada-LTS 2.8.0 の認可バイパス（CVE-2026-115803）も同日登録されています。</li>
+</ul>
+
+<h3>Claude Code 2.1.310 - チェンジログが公開。権限プロンプトとフック周りの修正を記載<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>2.1.310（CVEなし。前日の朝刊で「チェンジログ未反映」とお伝えした分の続報）</td></tr>
+<tr><th>公開</th><td>npm公開 2026-10-23 21:20 UTC（JST 2026-10-24 06:20）。CHANGELOGへの反映を確認</td></tr>
+</table>
+<ul>
+<li>セキュリティに関わる記載は、<strong>シンボリックリンクの参照先が表示されないファイル読取権限プロンプトの修正</strong>、および<strong>WindowsでGit Bashが無く、フックのコマンドが引用文字列のみの場合に PreToolUse / PermissionRequest フックがツール呼び出しを通してしまう問題の修正</strong>です。前者は、意図しないパスを承認してしまうリスクを減らします。</li>
+<li>ほか、<code>cleanupPeriodDays</code> が極端に大きい場合に直近ファイルを削除してしまう問題、コンパクション後に「Prompt is too long」が再発する問題、エディタを長時間編集した直後に自動継続のタイムアウトが発火する問題などが修正されました。</li>
+<li>npmレジストリ上の最新は 2.1.310 のままで、<strong>本対象期間内の新規リリースはありません</strong>。</li>
+</ul>
+
+<h3>OpenClaw 2026.10.7 - 復旧・状態保護まわりの修正（セキュリティ関連の記載）<span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>openclaw 2026.10.7（CVE・脆弱性の記載なし）</td></tr>
+<tr><th>公開</th><td>2026-10-24 09:53 UTC（JST 同日18:53）。署名・検証済みタグ（署名検証: 2026-10-24）</td></tr>
+</table>
+<ul>
+<li>セキュリティとトラストに関わる変更として、<strong>スナップショットが対応済みのレガシーなexec承認ポリシーを保持するようになった点</strong>、<strong>切り詰められた設定書き込み中も last-known-good スナップショットを維持する点</strong>、R2検証・リストア中断時の安全な再開、ネイティブcomputer controlのセッション失効後の回復が含まれます。</li>
+<li>ほか、claude CLIの下書きが最終応答に混入しない修正、子エージェントの完了バッチが要求元のコンテキストを超過しない修正、Gatewayがログディレクトリの日付切り替えでCPUを占有する問題の修正など。70のPRと直コミットを集約したリリースです。</li>
+</ul>
+
+<h3>Hermes Agent - 本対象期間内の新規リリースはありません<span class="badge-low">なし</span></h3>
+<table class="cve-table">
+<tr><th>識別子</th><td>最新は v0.22.5（2026-10-23 05:28 UTC、依存関係のセキュリティ更新を含むパッチリリース）</td></tr>
+<tr><th>公開</th><td>本対象期間（2026-10-24 08:00 〜 2026-10-25 08:00 JST）に新規リリースなし</td></tr>
+</table>
+
+<hr>
+<p class="empty-notice">Next.js・React・Hono・Django・Spring Boot 本体、および GCP・AWS・Azure の月例セキュリティアドバイザリについては、本対象期間で直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>GMOインターネット「お名前.com デスクトップクラウド」- 見舞金と損失補償を表明、攻撃者から金銭要求。政府へ「能動的サイバー防御」の適用を緊急要請</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>GMOインターネットグループ（「お名前.com デスクトップクラウド」／FX自動売買専用VPS）</td></tr>
+<tr><th>影響</th><td>影響の可能性があるサーバー 26,739件。利用者のFX等の取引口座のログイン情報が第三者に取得され、不正利用された可能性</td></tr>
+<tr><th>公開</th><td>続報 2026-10-24（Impress Watch 同日16:42、NHK 10/23 22:01、Security NEXT 10/23）</td></tr>
+</table>
+<ul>
+<li>10月19日に利用者からの問い合わせで調査を開始し、20日に一部利用者のサーバー環境へ<strong>不正なプログラムが設置されていることを確認</strong>。21日4時からサーバを順次停止しています。同サービスはWindowsのデスクトップ環境を提供するもので、証券・FX事業者の取引ツール「MT4」「MT5」の運用に使われていました。</li>
+<li>10月24日の続報で、<strong>被害の有無にかかわらず全利用者へ一律5,000円の見舞金</strong>を支払うこと、および<strong>取引口座の不正取引による損失の補償</strong>（取引所からの返金を差し引いた残額をGMOが負担、返金に応じない場合もGMOが支払う）を表明しました。申請方法は11月6日までに公式サイトと登録メールで案内し、代替サービスの提供と6カ月の無償化も行います。</li>
+<li>攻撃者とみられる者からは<strong>金銭要求と脅迫</strong>が届いています。内容は、国内外70を超える証券・FX会社の利用者口座への不正操作の継続、同サービスや接続先PCの情報の不正公開、<strong>ランサムウェア攻撃の実行</strong>、GMOのシステム・運用体制に関する情報の公開などを示唆するものです。GMOは「応じても取得情報の削除や不正利用の防止が保証されない」として応じない姿勢を表明し、警察などの関係機関と連携しています。</li>
+<li>あわせてGMOは、本件を<strong>民間サービスの障害や情報窃取にとどまらず「一般国民の取引口座（金融資産）を標的とした不正操作・資産毀損」</strong>と位置づけ、<strong>能動的サイバー防御の「発動第1号事案」として、国主導による攻撃基盤の追跡・遮断・無力化を政府関係機関へ緊急要請</strong>しました。能動的サイバー防御は10月1日に施行され、対象は15分野の特定社会基盤事業者ですが、<strong>GMOインターネットグループは含まれていません</strong>。政府関係者は「求めに応じ発動を決める制度ではない」と説明しています。</li>
+<li>暗号化や窃取ではなく、<strong>預かり資産そのものを毀損させる手口</strong>に踏み込んだ点が従来の攻撃と異なります。金融・証券・FXの取引環境を公開VPSで運用している構成は、代替手段を含めてご検討くださいますよう。</li>
+</ul>
+
+<h3>環境省 - メール配信サービスへの不正アクセスで最大2万2,000件が漏えいの可能性。「ブラストメール」の影響先が官公庁へ波及</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>環境省（6つのメールマガジンの配信に利用していたメール配信サービス）</td></tr>
+<tr><th>影響</th><td>登録者のメールアドレス等、最大 22,000件が漏えいした可能性</td></tr>
+<tr><th>公開</th><td>NHK 2026-10-24 02:00 JST</td></tr>
+</table>
+<ul>
+<li>10月23日にお伝えした<strong>ラクス／ラクスライトクラウド「ブラストメール」への不正アクセス</strong>（API用サーバ2台への侵入とデータ持ち出し、サービス停止中）の影響先が、利用機関にも広がりました。</li>
+<li>メール配信のような<strong>外部SaaSに委託した業務が、委託先の被災そのものによって自組織の情報漏えいとして顕在化する</strong>構図です。官公庁・自治体のほか、同サービスを利用している組織は、対象範囲の確認と利用者への周知をご検討くださいませ。</li>
+</ul>
+
+<h3>アンドエスティHD（旧アダストリア）- 業務用サーバーへの不正アクセスで顧客約250万件が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社アンドエスティHD</td></tr>
+<tr><th>影響</th><td>顧客の個人情報 約250万件（氏名・住所など）が外部に流出した可能性。クレジットカード情報・パスワードは含まれず</td></tr>
+<tr><th>公開</th><td>NHK 2026-10-23 21:47（10/24にも各社が続報）</td></tr>
+</table>
+<ul>
+<li>社内の業務で使用するサーバーが不正アクセスを受けたことが原因です。<strong>会員ポイントが使用できない状態</strong>が続いていますが、店舗・ECの営業は継続しています。</li>
+<li>アパレルは会員プログラム（ポイント・購買履歴）と個人情報が密接に結びつく業態です。同業他社も、会員基盤の棚卸しと不正ログイン検知の強化をご検討くださいませ。</li>
+</ul>
+
+<h3>佐川急便 - 「お荷物問い合わせサービス」への不正アクセス、流出の可能性は最大約5,323万件（第5報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>佐川急便（SGホールディングス）</td></tr>
+<tr><th>影響</th><td>最大約53,230,000件（送り状に記載された依頼主・届け先の氏名または会社名・担当者名・住所・電話番号など）。2026年に公表された国内案件では最大規模</td></tr>
+<tr><th>公開</th><td>2026-10-23 発表・報道（読売新聞・時事通信・産経新聞・LNEWS ほか）。第4報は10/18</td></tr>
+</table>
+<ul>
+<li>9月30日に同サービスの侵害を確認し、被害拡大を防ぐために9つのWebサービスを停止しました。第5報で<strong>対象件数が最大約5,323万件と確定</strong>し、荷物問い合わせサービスは再開しています。</li>
+<li>物流は<strong>取引先・荷受人という第三者を含む情報</strong>を大量に保持します。直接の顧客でない企業にも影響が及ぶ点が、報告・通知の負荷を押し上げます。なりすましメールへの警戒も併せてお願いいたします。</li>
+</ul>
+
+<h3>カプコン「CAPCOM ID」- 1,177万4,247件のメールアドレス等が流出、196件でパスワードが不正変更。うち19件で通販サイトの購入履歴まで</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社カプコン</td></tr>
+<tr><th>影響</th><td>国内外の 11,774,247件（メールアドレスとシステム固有の識別情報。うち43件は生年月日・性別・国または地域・ニックネームを含む）。196件でログインパスワードの不正変更、19件で通販サイト「イーカプコン」の氏名・住所・電話番号・購入履歴・問い合わせ履歴等が流出</td></tr>
+<tr><th>公開</th><td>2026-10-19 侵害の痕跡を検出、公表は10/22〜23（Security NEXT 2026/10/23、10/21に個人情報保護委員会へ報告）</td></tr>
+</table>
+<ul>
+<li>10月19日に侵害の可能性を示す痕跡を発見してアクセスを遮断し、調査で情報流出とパスワード改ざんを確認しました。<strong>不正変更された19件はいずれも国内アカウント</strong>で、第三者が通販サイトの顧客ページへアクセスしています。</li>
+<li>攻撃手段は特定済みで対策を講じたとされています。利用者数一千万超の共通ID基盤では、<strong>影響が確認された件数と実際に到達された範囲が大きく異なる</strong>点が示唆的です。ID基盤のログ保全と異常検知をご確認くださいませ。</li>
+</ul>
+
+<h3>モスフードサービス - プリペイドカード情報 約57万件が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>モスフードサービス（モスバーガー）</td></tr>
+<tr><th>影響</th><td>店舗・ネットの支払いに使用できるプリペイドカードの情報 約57万件</td></tr>
+<tr><th>公開</th><td>NHK 2026-10-23 22:13 JST</td></tr>
+</table>
+<ul>
+<li>不正アクセスにより、プリペイドカードの情報が外部へ流出しました。同社はカード所有者に対し、<strong>身に覚えのない利用がないかの確認を呼びかけ</strong>ています。</li>
+<li>決済手段そのものの情報が流出する案件が続いています。残高を伴うカード・ポイントは<strong>流出後の被害が即時に現金化される</strong>ため、残高移行や再発行の初動をあらかじめ決めておくことが有効です。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
