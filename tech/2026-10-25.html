@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-25 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-25 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.310</strong>（2026-10-24 08:49 JST 公開）です。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">ソース: Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソース: Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.7 / v2026.9.34</h2>
+<p>対象期間内に2件のリリースが確認されました。通常ラインの <strong>v2026.10.7</strong>（2026-10-24 18:53 JST 公開）と、LTS 相当の extended-stable ライン <strong>v2026.9.34</strong>（2026-10-24 20:38 JST 公開）です。いずれも堅牢性・復旧性の底上げが主題で、新機能の追加は限定的です。</p>
+
+<h3>🐙 v2026.10.7（通常ライン）</h3>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Google モデル</strong>: Gemini 4 Argon のサポートが追加されました。</li>
+  <li><strong>セッション復旧の再生安全性</strong>: 中断されたセッションが復旧の由来（provenance）と未完了のツール結果を保持するようになり、停止した会話は次のメッセージを受け付ける前に終端の復旧残骸を片付けます。</li>
+  <li><strong>アップデートの有効化と復旧</strong>: 検証済みのアクティベーションが、その後のメンテナンスや台帳（ledger）エラーを経ても成功状態を保ちます。中断されたパッケージ更新は安全に再開し、有効化後の Doctor 待機は上限付きとなり、古いレシートが正当な修復を拒否できなくなりました。</li>
+  <li><strong>データベースとワーカーの継続性</strong>: メンテナンス拒否時もピアの読み取り・借用を維持し、互換性のない保持中のエージェント DB は隔離され、空のトランスクリプト削除は不要なアーカイブ実体化をスキップします。</li>
+  <li><strong>バックアップと状態の耐久性</strong>: スナップショットが対応する旧形式の exec 承認ポリシーを保持し、中断された R2 検証・リストアが安全に再開。切り詰められた書き込みの間も config 監視は last-known-good スナップショットを保ちます。</li>
+  <li><strong>オペレーター制御の継続性</strong>: セッション期限切れ後もネイティブの computer control が復旧し、後から接続した GitHub オペレーターが PR を公開できるようになりました。</li>
+  <li><strong>プロバイダ／プラグインの継続性</strong>: モデル更新、設定済みアカウントの準備確認、GPT-5.6 のツールターン、OpenRouter のオンボーディング、プラグインの増分ロードが、妥当なセットアップを拒否せず現状の状態を保持します。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>macOS のオンボーディング</strong>: 新規プロファイルでも Gateway を起動し、自動セットアップを完了できるようになりました。</li>
+  <li><strong>Gateway のログ</strong>: 削除済み・古い一時ログディレクトリが日付切り替え時に Gateway を CPU 全開で固まらせる問題が修正されました（#130807）。</li>
+  <li><strong>更新ガイダンス</strong>: パッケージマネージャが無い場合に無関係な DB 修復案内を出さず、更新成功後は陳腐化した警告を消すようになりました。</li>
+  <li><strong>Control UI のキュー状態</strong>: キューのコマンドが消費された後に slash-steer チップがクリアされます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.7">ソース: OpenClaw v2026.10.7</a></p>
+
+<h3>🐙 v2026.9.34（extended-stable / LTS 相当）</h3>
+<p>Gateway 専用の extended-stable リリースです。2026年9月末時点の OpenClaw に、重要なセキュリティ更新・信頼性・性能の修正と新しいモデル対応を載せた位置づけで、公開時点の通常ライン最新版は 2026.10.6 でした。</p>
+<ul>
+  <li><strong>エージェントのファイル編集がより安全に</strong>: <code>apply_patch</code> がワークスペースを変更する前に順序付きエンベロープを検証するようになり、後続の不正なハンクが先行操作で変更したファイルを削除できなくなりました。</li>
+  <li><strong>マネージド更新の信頼性向上</strong>: アプリ所有の更新が core と並んで公式プラグインを収束させ、修復のための診断情報を保持します（#174120 を修正）。</li>
+  <li><strong>Memory Wiki のデータ安全性</strong>: OKF コンセプトの再インポート時に人手で書かれたノートが保持されます（#175700 を修正）。</li>
+  <li><strong>モデル起動・選択の信頼性</strong>: Gateway 起動がモデル更新時の所有権差し替えをまたいで生存し、カタログ準備が有効なプライマリモデルの設定済みアカウントピンを尊重します（#178502 を修正）。</li>
+  <li><strong>Gateway と連携の安定性</strong>: ログローテーションが削除済み <code>/tmp</code> で空回りせず、Buzz relay のクローズが認証中に Gateway を終了させなくなり、OpenRouter のオンボーディングが有効な資格情報を受け付けます。</li>
+  <li><strong>プラグインフックの復旧</strong>: <code>before_tool_call</code> フックが <code>openclaw agent exec</code> 配下でも実行されるようになりました（#158824 を修正）。</li>
+  <li><strong>セキュリティ</strong>: 脆弱な Node ランタイムを明確な案内付きで拒否するため、Node <code>&gt;=24.22.1 &lt;25 || &gt;=26.12.1</code> をインストール・更新・Docker イメージ・macOS アプリのランタイムチェックで要求します。あわせて <code>zod</code>（GHSA-mrhx-c7xc-m3w5）、<code>body-parser</code> ほかの本番依存アドバイザリが修正されました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.34">ソース: OpenClaw v2026.9.34</a></p>
+
+<h2>🐋 Orca — v1.4.239</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v1.4.239</strong>（2026-10-24 16:10 JST 公開）です。同日に v1.4.238 も公開されており、本版では「エージェントスキルの導入」「プロジェクト単位のブラウザプロファイル」「チャットとターミナルの行き来」「SSH 復旧」「スマホ操作」が主な柱となっています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>スキルを使う場所でそのまま導入</strong>: セットアップ画面からワンクリックで Orca のスキルをインストールでき、ペアリング済みサーバや SSH ホストへは Orca 自身のインストーラで導入・更新できます（従来の <code>npx skills</code> 依存を解消）。</li>
+  <li><strong>プロジェクトに合わせたブラウザ</strong>: 新規タブのプロファイルを「共有 / リポジトリ単位 / ワークスペース単位」から選べます（<strong>設定 → Browser → Profile for new tabs</strong>、既定は Shared）。Chrome 風のページコンテキストメニューと DevTools ショートカットも追加されました。</li>
+  <li><strong>エージェント対話の流動性</strong>: 現在のチャットの隣に新しいチャットを分割して開け、ペインヘッダからターミナルエージェントへ継続できます。キュー済みメッセージと複数画像の添付が保持されます。</li>
+  <li><strong>編集の安全性と静かなバックグラウンド動作</strong>: 共有ファイルのビューが undo / discard 後も最新に保たれ、非 UTF-8 ファイルは変換前に確認を求めます。ファイル監視は遅延から復帰し、監視対象の無関係なファイルが削減されました。</li>
+  <li><strong>リモート作業の復帰路</strong>: 設定から stale lock に陥った対応済みマネージド SSH サーバを復旧でき、パスワードサインイン後にターミナルが復元されます。ペアリング済みサーバの SSH アクセスリンクは再起動をまたいで保持されます。</li>
+  <li><strong>スマホからの操作性向上</strong>: 通知タップで送信元エージェントを開き、エージェントチャットのタブから音声入力を開始でき、ターミナルのコピー（Claude Code の <code>/btw</code> コピーを含む OSC 52 書き込み）がスマホのクリップボードに届きます。Android ではスクロール時にキーボードが退きます。</li>
+  <li><strong>日常的な仕上げ</strong>: 韓国語入力の改善、ベンガル語ほかインド系文字のターミナル描画、翻訳カタログの拡充、Jira のユーザーピッカー、PR コメントのリンクからエディタへ直接ジャンプ。</li>
+</ul>
+
+<h3>⚠️ 互換性・アップグレードの注意</h3>
+<ul>
+  <li><strong>ブラウザプロファイル</strong>: 既定は従来どおり <strong>Shared</strong> で、リポジトリ単位・ワークスペース単位の指定は新規タブに適用されます。ペアリング済みサーバのページはサーバ自身のプロファイルを使います。</li>
+  <li><strong>ネイティブチャット（実験的）</strong>: 最新のチャット・起動修正のため、ペアリング済みホストと SSH ホストも Orca と同時に更新してください。チャットの可用性はターミナル CLI とは別にチャットランタイムを検査するようになりました。</li>
+  <li><strong>SSH 復旧</strong>: 「Recover server…」は stale lock 拒否を報告する対応済みマネージド Linux ホスト向けです。ロックを確認し、同じホームを共有する他マシンが Orca を動かしていないことの確認を求めます。スマホからはデスクトップ設定へ誘導されます。</li>
+  <li><strong>実験的機能</strong>: コネクタ関連は既定無効の <code>experimentalConnectors</code> フラグの背後にあり、レイアウト所有権の下地も無効のままです。空グループの起動アクションと子ワークスペースの状態トグルはリリース前に revert されました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.239">ソース: Orca v1.4.239</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>⚡ Next.js — v16.5.0-canary.27</h3>
+<p><strong>v16.5.0-canary.27</strong>（2026-10-25 08:47 JST 公開）が公開されました。安定版の最新は v16.4.3（2026-10-23 22:32 JST 公開）です。</p>
+<ul>
+  <li><strong>Core</strong>: インライン Flight スクリプトを再エンコードせず React の文字列から構築するようになりました（#100142）。また、lockfile の実装が無い・限定的なファイルシステム（NFS など）で dist ディレクトリの lockfile を扱えるよう修正されました（#100684）。</li>
+  <li><strong>Turbopack / turbo-tasks</strong>: チャンクグループをキー付きセル経由で参照する最適化、チャンクグループ単位での可用性追跡、グラフ由来のチャンクグループ消費、SnapshotCoordinator の操作数ストライプ化とドレインのポーリング、大規模バッチ参照の並列デコード、turbo-persistence のシャード数制御の改善が含まれます。</li>
+</ul>
+
+<h3>☁️ AWS</h3>
+<p class="empty-notice"><strong>AWS</strong>（公式 What's New の最新項目は 2026-10-24 06:04 JST 公開の Bedrock Web Search 改善で、対象期間外）については、対象期間内の新着アップデートは確認されませんでした。</p>
+
+<h3>☁️ Google Cloud</h3>
+<p class="empty-notice"><strong>Google Cloud</strong>（公式リリースノートの最新エントリは 2026-10-23 付で対象期間外）については、対象期間内の新着リリースノートは確認されませんでした。</p>
+
+<p class="empty-notice"><strong>Azure</strong>（対象期間内の公式アップデートの新着は確認されず）、<strong>React</strong>（最新は v19.3.1、2026-10-14 公開で対象期間外）、<strong>Anthropic SDK</strong>（Python v2.3.0 は 2026-10-24 08:18 JST、TypeScript sdk-v1.3.0 は 2026-10-24 08:23 JST 公開でいずれも対象期間外）、<strong>Spring Boot</strong>（最新は v4.2.0-RC1、2026-10-23 02:04 JST 公開で対象期間外）、<strong>Python / Django</strong>（新規リリースなし）、<strong>Java</strong>（対象期間内の新着なし）、<strong>Hono</strong>（最新は v5.0.0-rc.1、2026-10-10 公開で対象期間外）、<strong>web 一般</strong>（対象期間内の主要ニュースなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
