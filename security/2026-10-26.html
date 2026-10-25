@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-26 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-26 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<p>本対象期間（2026-10-25 08:00 〜 2026-10-26 08:00 JST）にNVDへ新規登録された脆弱性は134件で、AI推論基盤（vLLM）とPHP/Node系Web製品、画像処理ライブラリ（ImageMagick）、バックアップ・同期ツール（rclone）に集中しました。Claude Code・OpenClaw・Hermes Agentの新規リリース、JVNの新規公表はいずれも本対象期間内には確認されませんでした。</p>
+
+<h3>vLLM 0.9.2〜0.31.0 - SSRF 8.8 を筆頭に認可・資源枯渇の脆弱性をまとめて修正 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8 High（最大）／複数</td></tr>
+  <tr><th>影響</th><td>vLLM 0.9.2〜0.31.0 の各版</td></tr>
+  <tr><th>対策</th><td>最新版（0.31.0以降）へ更新。公開APIを無認証で露出させない</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116176</strong>（8.8）：vLLM 0.9.2〜0.24.0。API呼び出し側が埋め込んだ値によってサーバに任意の外向き通信を強制できるSSRF。</li>
+  <li><strong>CVE-2026-116177</strong>（8.7）：0.10.2〜0.25.0。未認証の攻撃者がメモリを枯渇させられる資源消費。</li>
+  <li><strong>CVE-2026-116179</strong>（8.7）：0.18.0〜0.31.0。動画/JPEGのフレーム数上限を上書きして回避できる。</li>
+  <li><strong>CVE-2026-116180</strong>（8.3）：0.8.5〜0.31.0。<code>LogprobsTensors.empty_cpu()</code> が未初期化のint32テンソルを確保しDoSに至る。</li>
+  <li><strong>CVE-2026-116172 / 116173 / 116174 / 116178</strong>（各8.2）：Rust製gRPCサービスの入力検証不備、EngineCoreの停止、マルチモーダル入力の不整合によるクラッシュ。</li>
+  <li><strong>CVE-2026-116175</strong>（7.1）：音声入力経路が <code>max_duration</code> を適用せず「解凍爆弾」が成立。<strong>CVE-2026-116181</strong>（7.1）も入力検証不備でEngineCoreを停止させられる。</li>
+</ul>
+
+<h3>Parse Server 8.6.102未満 / 9.0.0〜9.10.5-alpha.2 - 認証バイパス9.1と未認可アクセス8.8 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 9.1 Critical（最大）／8.8 High</td></tr>
+  <tr><th>影響</th><td>Parse Server（Node.js／MongoDB構成）</td></tr>
+  <tr><th>対策</th><td>8.6.104 / 9.10.5-alpha.5 以降へ更新し、masterKey利用箇所を棚卸し</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116163</strong>（9.1）：<code>validateSetUp</code> / <code>validateLogin</code> / <code>validateUpdatePassword</code> の不備により、ユーザー名が一致するアカウントとしてログインできてしまう認証バイパス。</li>
+  <li><strong>CVE-2026-116165</strong>（8.8）：MongoDB構成で認可が欠落し、クライアントが他ユーザーのオブジェクトを操作できる。</li>
+  <li><strong>CVE-2026-116161</strong>（6.0）：LiveQueryの購読ハッシュがフィールドを網羅せず情報漏えい。<strong>CVE-2026-116162</strong>（2.1）はmasterKey付きログイン要求を丸ごと保存してしまう問題。</li>
+</ul>
+
+<h3>Snipe-IT 8.6.3未満 - Googleログインの認証バイパス9.2とSAMLアサーション再利用8.7 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 9.2 Critical（最大）／8.7 High</td></tr>
+  <tr><th>影響</th><td>Snipe-IT（PHP製の資産管理）</td></tr>
+  <tr><th>対策</th><td>8.7.0以降へ更新。SSO設定の見直し</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116199</strong>（9.2）：<code>GoogleAuthController::handleGoogleCallback</code> の認証バイパス。ユーザー名が一致するアカウントとして無条件にログインされる。</li>
+  <li><strong>CVE-2026-116201</strong>（8.7）：SAMLアサーションのnonce検証が非アトミックで、傍受したアサーションを再利用できる。</li>
+  <li><strong>CVE-2026-116200</strong>（8.2）：<code>ldap_start_tls()</code> の戻り値を無視し、中間者に平文LDAPバインドを強制される。<strong>CVE-2026-116198</strong>（5.3）はAPIキーを平文で保存する。</li>
+</ul>
+
+<h3>Dokploy 0.30.10まで - 組織横断の認可バイパスで他テナントのアプリを操作 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 8.7 High</td></tr>
+  <tr><th>影響</th><td>Dokploy 0.30.10以前</td></tr>
+  <tr><th>対策</th><td>修正版へ更新（自ホスト型PaaSのため露出面を限定する）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116068</strong>：任意の組織のowner/admin権限を持つ攻撃者が、他テナントのアプリケーションを制御できる。9月にJVNVU#94707104で扱われたDokployのOSコマンドインジェクションと同系の自ホスト型デプロイ基盤であり、パッチ適用の徹底が必要。</li>
+</ul>
+
+<h3>Firecrawl 2.11.586未満 - PlaywrightサービスのSSRFプロキシを回避 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 7.0 High</td></tr>
+  <tr><th>影響</th><td>Firecrawl 2.11.586以前（セルフホスト構成を含む）</td></tr>
+  <tr><th>対策</th><td>2.11.586以降へ更新。内部ネットワークへの到達をネットワーク側でも遮断</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116066</strong>：PlaywrightサービスのSSRFプロキシで検証を回避でき、攻撃者が内部向けの任意リクエストを発行できる。スクレイピング基盤を社内で運用している場合は到達可能範囲を確認すること。</li>
+</ul>
+
+<h3>YesWiki・phpMyFAQ・SiYuan - 未認証SQLi 8.8、オブジェクト単位認可バイパス 8.7 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8 High（最大）</td></tr>
+  <tr><th>影響</th><td>YesWiki 4.7.0未満／phpMyFAQ 4.1.10未満／SiYuan 3.8.7未満</td></tr>
+  <tr><th>対策</th><td>各修正版へ更新</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116207</strong>（8.8）：YesWiki 4.6.0〜4.7.0 および 5.0.0-alpha1〜alpha4 の <code>SearchManager::prepareSearch</code> に未認証SQLインジェクション。<strong>CVE-2026-116211</strong>（8.8）は <code>PageManager::save()</code> の <code>date_maj_fiche</code> を介したSQLi。</li>
+  <li><strong>CVE-2026-116183</strong>（8.7）：phpMyFAQ 4.1.10未満。オブジェクト単位の認可欠落により、未認証の攻撃者が任意の訪問記録を改変・削除できる。</li>
+  <li><strong>CVE-2026-116171</strong>（8.7）：SiYuan 3.5.4〜3.8.7（Windows）。<code>IsSensitivePath</code> が拡張長パス接頭辞（<code>\\?\</code>）を考慮せず、機微パスの拒否リストを回避できる。</li>
+  <li>あわせてSiYuanは、TLS設定 <code>networkServeTLS</code> を保存しても実際には適用しない問題（<strong>CVE-2026-116166</strong>、7.6）、MCPのアセットツールのパストラバーサル（<strong>CVE-2026-116168</strong>、6.9）、<code>history.db</code> を読み出せるSQLi（<strong>CVE-2026-116170</strong>、6.9）も修正。</li>
+</ul>
+
+<h3>rclone 1.75.2未満 - serve webdav の未認証パストラバーサル8.7ほか <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 8.7 High（最大）</td></tr>
+  <tr><th>影響</th><td>rclone 1.75.2未満（serve系サブコマンド）</td></tr>
+  <tr><th>対策</th><td>1.75.2以降へ更新。配信ルートの外への書き込み権限を剥奪</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116191</strong>（8.7）：<code>serve webdav</code> で未認証の攻撃者が配信ルートより上位へ書き込みできる。<strong>CVE-2026-116192</strong>（8.2）は http/netstorage でSSRF。<strong>CVE-2026-116193</strong>（6.9）はWebDAVの認証バイパス。</li>
+  <li><strong>CVE-2026-116189</strong>（7.7）：<code>stable selfupdate</code> が署名されていない前置バイトのチェックサムを信頼し、更新の署名検証を回避できる。<strong>CVE-2026-116195</strong>（7.0）はローカルbackendの <code>.rclonelink</code> 処理を介したパストラバーサル。</li>
+  <li><strong>CVE-2026-116194</strong>（7.6）：pCloud backendのlocalhost OAuthコールバックのCSRF。<strong>CVE-2026-116196</strong>（6.0）はb2 backendで認証トークンとSSE-C鍵が露出する。</li>
+</ul>
+
+<h3>ImageMagick - bzip2画像処理のスタックバッファオーバーフロー7.2ほか多数 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 7.2 High（最大）／Medium多数</td></tr>
+  <tr><th>影響</th><td>ImageMagick 6.9.13-58未満・7.1.2-33未満</td></tr>
+  <tr><th>対策</th><td>6.9.13-58 / 7.1.2-33 以降へ更新。ポリシーによるデコーダ制限も併用</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116149</strong>（7.2）：bzip2圧縮画像の処理でスタックベースのバッファオーバーフロー。</li>
+  <li>多数のメモリリーク（<strong>CVE-2026-116146/116151/116152/116154/116155/116156/116157/116158/116159/116150</strong>、最大6.9）、ポリシーバイパス（<strong>CVE-2026-116141</strong> UHDRの幅・高さ上限回避、<strong>CVE-2026-116143</strong> PS/PDF/XPSデコーダ、<strong>CVE-2026-116145</strong>）、MVGエンコーダのインジェクション（<strong>CVE-2026-116148</strong>）など。</li>
+</ul>
+
+<h3>WordPressプラグイン - 権限チェック不備・パストラバーサル・XSSが多数登録 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>NVD未採点（CNA採番分を含む）</td></tr>
+  <tr><th>影響</th><td>GiveWP 4.19.0.1未満、WPVR 9.1.3未満、Duplicator 5.0.0未満 ほか</td></tr>
+  <tr><th>対策</th><td>各プラグインを最新版へ更新</td></tr>
+</table>
+<ul>
+  <li><strong>GiveWP</strong>：寄付者住所変更の権限チェック欠落（CVE-2026-111976/111980/111981）、ユーザー指定ファイル名の検証不備（CVE-2026-111978）、フォームテンプレートのエスケープ不備（CVE-2026-111979）。</li>
+  <li><strong>WPVR</strong>：ツアー作成時のケイパビリティ確認欠落（CVE-2026-114740）、仮想ツアーのオブジェクト所有権・認可チェック不備（CVE-2026-114741/114742）。</li>
+  <li><strong>InstaWP Connect</strong> 0.1.4.2未満（CVE-2026-114743）、<strong>Duplicator</strong> 5.0.0未満（CVE-2026-115251）、<strong>Datawiza Proxy Auth</strong> 1.1.1未満（CVE-2026-115214）、<strong>Qi Addons For Elementor</strong> 1.11.2未満のXSS（CVE-2026-115183）など。</li>
+</ul>
+
+<h3>その他のWeb系・Java・Node・AI関連 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>CVSSv3.1 9.4〜2.0（各種）</td></tr>
+  <tr><th>影響</th><td>YunaiV ruoyi-vue-pro、adm-zip、designer-mcp、ash_postgres、Paisa、rotki、Unitree Go2、Starman ほか</td></tr>
+  <tr><th>対策</th><td>該当製品の修正版へ更新、依存関係の棚卸し</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-116006 / 116007</strong>（5.5 / 2.9）：YunaiV ruoyi-vue-pro（Java / Spring Boot系業務基盤）2026.09まで。10/21に報じた同系統の認可不備（CVE-2026-97324）に続く登録で、Java系業務システムでは認可判定の入力元の確認が必要。pig-mesh pig（<strong>CVE-2026-115997</strong>、2.1）も同様。</li>
+  <li><strong>CVE-2026-116137</strong>（6.3）：adm-zip 0.6.1まで。<code>readEntries()</code> の重複エントリ検証を、正規化後に等価な名前で回避できる（Node.js製アーカイブ処理）。</li>
+  <li><strong>CVE-2026-116045</strong>（2.1）：designer-mcp 2.1.0までの <code>get_reference</code>。<strong>CVE-2026-115635 / 115627</strong>（各6.0）はash_postgres（Elixir）で他テナントのレコードを読める認可不備。</li>
+  <li><strong>CVE-2026-116067</strong>（8.8）：Paisa 0.7.8未満の <code>GetFile</code> ほかで未認証のパストラバーサル。<strong>CVE-2026-116071</strong>（8.2）はrotki 1.44.2未満の弱い鍵導出。</li>
+  <li><strong>CVE-2026-115995</strong>（9.4）：Unitree Robotics Go2（1.1.11.4まで）の <code>set_volume</code>。<strong>CVE-2026-115996</strong>（6.3）は <code>WebSocketClient.connect</code>。ロボット個体へのネットワーク到達を前提とするため、露出させない運用が要点。</li>
+  <li><strong>Starman / HTTP::Server::PSGI</strong>（Perl、NVD未採点のVulDB採番分）：チャンク転送の無制限バッファによるメモリ枯渇、二次的正規表現バックトラックによるCPU枯渇、HEAD要求でのボディ送信による応答デシンクなど。あわせてEyouCMS、DedeCMS、SourceCodester系、Vocechat、TinyFileManager、OpenRemote、LinkStack、Alfresco Activiti、KodExplorer、ProjectSend、eventcatalog sdkなどの小規模製品にも登録が続いている。</li>
+</ul>
+
+<h3>Claude Code / OpenClaw / Hermes Agent - 本対象期間内の新規リリースはなし</h3>
+<table class="cve-table">
+  <tr><th>深刻度</th><td>—</td></tr>
+  <tr><th>影響</th><td>Claude Code（npm最新 2.1.310）／openclaw（2026.10.7）／Hermes Agent（v0.22.5）</td></tr>
+  <tr><th>対策</th><td>現行版を維持。次回リリースのチェンジログを継続監視</td></tr>
+</table>
+<ul>
+  <li>Claude Codeのnpm公開は2.1.310（2026-10-23 21:20 UTC）が最新で、2026-10-25 08:00〜2026-10-26 08:00 JSTに新規公開はありませんでした。</li>
+  <li>openclawは2026.10.7（2026-10-24 09:53 UTC）が最新、Hermes Agentはv0.22.5（2026-10-23 05:28 UTC）が最新で、いずれも本対象期間内の新規リリースはありませんでした。</li>
+  <li>JVNの新規公表も本対象期間内にはなく、最新は2026/10/23のJVNVU#93251594（三菱電機製複数製品）です。</li>
+</ul>
+
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<p>国内ではメール配信サービスやWeb制作基盤を踏み台にした情報漏えいが連鎖し、本対象期間だけで電力・鉄道・小売・金融・放送・自治体など幅広い業種の公表が続きました。攻撃の入口が「外部委託先の周辺システム」に移っている点が共通しています。</p>
+
+<h3>日本ピザハット - 決済APIへの不正アクセスで顧客情報が流出、最大約448万件の可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>日本ピザハット</td></tr>
+  <tr><th>発表</th><td>2026年10月25日（JST 19:56 報道）</td></tr>
+  <tr><th>影響</th><td>決済APIを介した顧客情報。セッションログイントークンも対象。最大約448万件</td></tr>
+  <tr><th>対応</th><td>公式オンラインサイトはシステムメンテナンスのため注文受付を停止中</td></tr>
+</table>
+<ul>
+  <li>決済APIに第三者が不正アクセスし、顧客情報が流出した可能性。決済連携のAPIが直接の標的となった事例で、セッションログイントークンまで含まれる点が特徴です。公式サイトは現在もオンライン注文を停止した状態にあります。</li>
+</ul>
+
+<h3>阪急阪神百貨店（エイチ・ツー・オー リテイリング）- H2O ID 約126万件の個人情報が漏えい <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>エイチ・ツー・オー リテイリング／阪急阪神百貨店</td></tr>
+  <tr><th>発表</th><td>2026年10月19日（報道は10月25日〜26日）</td></tr>
+  <tr><th>影響</th><td>H2O ID 会員 約126万件（氏名・住所・電話番号・生年月日・メールアドレス等）</td></tr>
+  <tr><th>対応</th><td>予約サイト・E-STORES・Remo Orderをシステム全体停止、個人情報保護委員会へ報告、警察へ被害申告</td></tr>
+</table>
+<ul>
+  <li>10月16日に「阪急百貨店・阪神百貨店予約サイト」経由で顧客管理システムへの不正アクセスを確認、17日には「HANKYU HANSHIN E-STORES」と「Remo Order」でも不正アクセスが判明し全サイトを停止。調査の結果、H2O ID 約126万件（ほぼ全会員）の個人情報の一部が漏えいしました。</li>
+  <li>クレジットカードは下4桁のみ保持のため全桁・セキュリティコードの漏えいはなく、ログインパスワードの漏えいも確認されていません。個人情報保護委員会への報告と所轄警察署への被害申告は確認後ただちに実施されています。</li>
+</ul>
+
+<h3>国土交通省「住宅省エネ2024キャンペーン」事務局（博報堂）- 登録事業者 23,918名分が漏えいの可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>国土交通省（事務事業者：株式会社博報堂）</td></tr>
+  <tr><th>発表</th><td>2026年10月20日（報道は10月25日）</td></tr>
+  <tr><th>影響</th><td>23,918名（16,950事業者）の個人情報（代表者氏名・肩書、個人事業主の氏名・住所、担当者の氏名・部署・役職・業務用連絡先）</td></tr>
+  <tr><th>対応</th><td>システムの全機能を停止、個別の謝罪・注意喚起、相談窓口を設置</td></tr>
+</table>
+<ul>
+  <li>補助金の交付申請を受け付けるシステムに外部からの不正操作があり、登録事業者の情報が漏えいした可能性があると報告を受けました。消費者（補助事業利用者）の個人情報漏えいは確認されておらず、他年度の同事業にも影響はないとしています。</li>
+  <li>申請受付を担う民間事務局のシステムが標的となった事例で、事業者情報がフィッシングやなりすましメールに悪用されるおそれがあります。</li>
+</ul>
+
+<h3>デジタル庁 - Web制作基盤「Studio」経由で問い合わせフォーム入力情報が漏えいの可能性 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>デジタル庁（サービス提供：Studio株式会社）</td></tr>
+  <tr><th>発表</th><td>2026年10月22日（報道は10月25日〜26日）</td></tr>
+  <tr><th>影響</th><td>お問い合わせフォーム入力内容 最大約13,323件（一般意見8,833／採用250／接種証明書アプリ3,661／着ぐるみ借用117／ワークショップ等462）＋職員・委託事業従事者のアカウント情報35件</td></tr>
+  <tr><th>対応</th><td>不審な連絡への注意喚起、関係機関への報告</td></tr>
+</table>
+<ul>
+  <li>デジタル庁がホームページ運営の一部に利用していたStudio株式会社のクラウド環境が第三者による不正アクセスを受け、環境内データが外部取得可能な状態になっていたものです。</li>
+  <li>対象は2021年5月〜2023年3月にお問い合わせフォームへ入力された内容で、氏名・メールアドレス・問い合わせ内容等が含まれます。案件ごとに公表日がずれる「周辺サービス起点」の典型例です。</li>
+</ul>
+
+<h3>野村證券 - 「i-Port」のメール配信委託先（ユミルリンク）への不正アクセスでメールアドレス等が漏えいの可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>野村證券株式会社（委託先：ユミルリンク株式会社）</td></tr>
+  <tr><th>発表</th><td>2026年10月23日</td></tr>
+  <tr><th>影響</th><td>「i-Port」加入者向けメール配信に用いた顧客メールアドレス等</td></tr>
+  <tr><th>対応</th><td>対象金融機関へ個別案内、委託先への事実確認と影響範囲の把握を継続</td></tr>
+</table>
+<ul>
+  <li>10月16日に委託先のメール配信システムの一部への不正アクセスが確認され、10月22日にデータベースから情報が外部へ持ち出されたことが確認されました。</li>
+  <li>i-Portのポートフォリオ情報や証券取引口座情報は漏えい対象に含まれておらず、本件に起因する不正利用も確認されていません。証券会社のメール配信業務が外部委託先経由で狙われた事例です。</li>
+</ul>
+
+<h3>NEXCO東日本 - 「ドラとら」への不正アクセスで登録情報の閲覧可能性 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>東日本高速道路株式会社（NEXCO東日本）</td></tr>
+  <tr><th>発表</th><td>2026年10月23日（報道は10月25日）</td></tr>
+  <tr><th>影響</th><td>「ドラとら」登録者のメールアドレス・パスワード・性別・都道府県・生年</td></tr>
+  <tr><th>対応</th><td>影響者への個別通知、他サイトで同一メールアドレス・パスワードを使う場合の変更依頼、「ドラとら」「MyRoute」の一時停止</td></tr>
+</table>
+<ul>
+  <li>高速道路情報サイト「ドラとら」（Drive Traffic）への第三者による不正アクセスにより、一部利用者の登録情報が閲覧された可能性があります。</li>
+  <li>パスワードが対象に含まれるため、他サービスへの「リスト型攻撃」への転用が懸念されます。同種の資格情報は速やかに使い回しを解消することが有効です。</li>
+</ul>
+
+<h3>Tokio Marine X少額短期保険 - 契約管理システムへの不正アクセスで7商品の新規申込・顧客ポータルを停止 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>Tokio Marine X少額短期保険株式会社</td></tr>
+  <tr><th>発表</th><td>2026年10月23日（報道は10月26日）</td></tr>
+  <tr><th>影響</th><td>カーローン返済支援保険・所得減少に備える保険・みんな安心葬儀保険・熱中症保険・インフルエンザ保険など7商品</td></tr>
+  <tr><th>対応</th><td>関連サービスを一時停止、新規申込みを停止、保険金請求と契約更新は継続受付</td></tr>
+</table>
+<ul>
+  <li>ご契約情報を管理するシステムで第三者による不正アクセスの可能性を確認したため、顧客情報の安全確保を優先してサービスを停止しています。現時点で個人情報等の漏えいは確認されていません。</li>
+  <li>顧客ポータルが利用できないため、登録情報変更・カード情報変更・保険契約確認証の閲覧ができない状態。保険料のクレジットカード引き落としと契約更新は継続しています。</li>
+</ul>
+
+<h3>モスフードサービス - 委託先への不正アクセスで「モスカード」約113万件のカード番号・PINが流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>モスフードサービス株式会社（委託先：バリューデザイン）</td></tr>
+  <tr><th>発表</th><td>2026年10月23日（適時開示）／詳細報道は10月25日〜26日</td></tr>
+  <tr><th>影響</th><td>プリペイドカード「モスカード」約113万件（カード番号・PIN・残高）</td></tr>
+  <tr><th>対応</th><td>個人情報保護委員会への報告、対象者への通知、カード利用の監視</td></tr>
+</table>
+<ul>
+  <li>プリペイドカードの管理を委託していた事業者への不正アクセスにより、カード番号とPIN、残高情報が流出しました。PINが含まれるため、残高の不正利用に対する注意が必要です。</li>
+  <li>前日までに報じていた不正アクセス事案の進展で、被害範囲がカード情報まで拡大したものです。</li>
+</ul>
+
+<h3>パーク24（タイムズカー）- 第5報で本人確認書類画像 約146万件の外部送信痕跡を確認、3,000円相当の見舞金 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>パーク２４株式会社（タイムズカー）</td></tr>
+  <tr><th>発表</th><td>2026年10月23日（第5報）／報道は10月25日〜26日</td></tr>
+  <tr><th>影響</th><td>氏名・住所等の会員情報、認証情報、本人確認書類（運転免許証等）画像 約146万件</td></tr>
+  <tr><th>対応</th><td>本人確認書類画像の保有ルール見直し（登録完了後は保有しない）と10月末までの削除、対象者へ3,000円相当の見舞金、調査委員会の設置</td></tr>
+</table>
+<ul>
+  <li>9月25日に検知したWebシステムへの不正アクセスについて、フォレンジック調査の結果、外部送信の痕跡が確認された本人確認書類画像データは約146万件（当初「約160万件のおそれ」）と確定しました。</li>
+  <li>原因はWebシステムに存在した脆弱性の悪用と判断され、攻撃者は侵入後に取得情報を用いてデータベースとファイル領域へアクセスしたことを確認。確認された侵害経路への対策は完了しています。</li>
+</ul>
+
+<h3>ラクスライトクラウド「ブラストメール」- 344契約で配信先リストの漏えいを確認、サービス再開は未定 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社ラクスライトクラウド（株式会社ラクス100%子会社）</td></tr>
+  <tr><th>発表</th><td>2026年10月25日 10:00 更新</td></tr>
+  <tr><th>影響</th><td>全契約者の販売管理システム情報（会社名・担当者名・電話番号・メールアドレス・契約と支払い履歴等）＋344契約の配信先リスト等</td></tr>
+  <tr><th>対応</th><td>10月21日0:30からサービス停止中、外部機関による調査、連名での個人情報保護委員会報告に対応、次回報告は10月26日10:00頃</td></tr>
+</table>
+<ul>
+  <li>外部の第三者がAPI用サーバ2台に侵入してコマンドを実行し、販売管理システムとサービスのデータベースへ接続してデータを持ち出したことが確認されています。侵入経路の詳細は調査中です。</li>
+  <li>クレジットカード番号は保持しておらず、配信先リスト等の漏えいが確認された契約は344件（前報から変更なし）。本件を起点に、利用先企業（NHK出版、ピッコマ、野村證券の委託先など）の公表が連鎖しています。</li>
+</ul>
+
+<h3>NHK出版 - 「みんなの趣味の園芸」メール配信先リスト 約12万7,000件が漏えい <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>NHK出版</td></tr>
+  <tr><th>発表</th><td>2026年10月23日 15時（報道は10月26日）</td></tr>
+  <tr><th>影響</th><td>約12万7,000件（メールアドレス、ニックネーム、性別、お住まいの都道府県）</td></tr>
+  <tr><th>対応</th><td>メール配信サービスを停止（復旧時期未定）、注意喚起</td></tr>
+</table>
+<ul>
+  <li>「みんなの趣味の園芸」サイトが利用する「ブラストメール」（ラクスライトクラウド運営）への不正アクセスにより、10月23日にメール送付先リスト全件の漏えいが確認されたとの報告を受けました。ブラストメール事案の利用先として公表された一例です。</li>
+</ul>
+
+<h3>福島県双葉町 - メールマガジン配信会社への不正アクセスで不審メールが配信 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>福島県双葉町</td></tr>
+  <tr><th>発表</th><td>2026年10月24日〜25日</td></tr>
+  <tr><th>影響</th><td>町メールマガジン登録者（配信元アドレスを悪用した不審メールの配信）</td></tr>
+  <tr><th>対応</th><td>町サイトの緊急情報で注意喚起、配信事業者へ確認</td></tr>
+</table>
+<ul>
+  <li>町がメールマガジン配信を委託している事業者への不正アクセスにより、町のメールマガジンと同一の送信元アドレスから、実在するクレジットカード会社を装った金銭請求メールが配信されました。</li>
+  <li>自治体の広報メールは開封率が高く、なりすましの信頼性を高めるために悪用されています。自治体からの注意喚起と併せて、送信元が正規でもリンクを開かない運用が重要です。</li>
+</ul>
+
+<h3>飛騨・高山観光コンベンション協会 - 「飛騨高山旅ガイド」がPHPの脆弱性対応で一時閲覧停止 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>飛騨・高山観光コンベンション協会</td></tr>
+  <tr><th>発表</th><td>2026年10月26日（岐阜新聞デジタル報道）</td></tr>
+  <tr><th>影響</th><td>観光サイト「飛騨高山旅ガイド」の閲覧・サービス停止、一部情報漏えい</td></tr>
+  <tr><th>対応</th><td>緊急のセキュリティ対策・メンテナンスを実施、再開時期は未定</td></tr>
+</table>
+<ul>
+  <li>サイトの運用基盤として利用しているプログラム（PHP）に世界的に重大な脆弱性が確認されたため、利用者情報の保護を優先して閲覧・サービスを一時停止しています。</li>
+  <li>10月21日に報じたPHPの深刻なRCE脆弱性（PHP2Shell）への対応として、国内でも自社サイト・業務サイトを停止する判断が相次いでいます。</li>
+</ul>
+
+<h3>GMOインターネット - 「お名前.com デスクトップクラウド」利用者へ一律5,000円の見舞金と不正取引損失の全額補償を開示 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>GMOインターネットグループ／GMOインターネット</td></tr>
+  <tr><th>発表</th><td>2026年10月24日（適時開示）／報道は10月25日</td></tr>
+  <tr><th>影響</th><td>FX自動売買専用VPSを含む「お名前.com デスクトップクラウド」利用者（影響可能性 26,739件）</td></tr>
+  <tr><th>対応</th><td>一律5,000円の見舞金、不正取引による損失の補償、代替サービスの提供と6カ月無償化</td></tr>
+</table>
+<ul>
+  <li>被害の有無にかかわらず全利用者へ一律5,000円を支払い、取引口座の不正取引による損失は取引所からの返金を差し引いた残額を負担する方針が開示されました。代表による謝罪と全額補償の意向も表明されています。</li>
+  <li>攻撃者とみられる者からの金銭要求と脅迫が続いており、金融資産を直接狙った事案として、政府への能動的サイバー防御の適用要請と併せて議論が続いています。</li>
+</ul>
+
+<h3>そのほか国内で公表された事案（報道ベース）</h3>
+<ul>
+  <li><strong>ヤマダデンキ</strong>：不正アクセスにより、ゴールド会員向けサービスや動画配信サービスなど一部を一時停止。</li>
+  <li><strong>ピッコマ</strong>：メール配信の委託先（ブラストメール）への不正アクセスにより、メルマガ配信先のメールアドレス 1,002,404件が流出。</li>
+  <li><strong>チャリロト</strong>：不正アクセスにより、チャリカ会員373名の銀行口座情報や投票履歴が漏えい。アプリは再開。</li>
+  <li><strong>メール配信サービス「アルカディア」</strong>：不正アクセスの影響で岡山市・香川県など36自治体がメール配信サービスを停止（総務省公表）。</li>
+  <li><strong>国交省系の補助事業者情報</strong>、<strong>イオン</strong>（グループ各社の一部ウェブサイト）、<strong>ユミルリンク</strong>（メール配信）など、外部委託先・周辺システムを起点とする公表が連鎖しています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">本対象期間において、上記以外のスタック（Next.js / Hono / React / Django / GCP / AWS / Azure 等）に直接関連する新規CVE・アドバイザリは確認されませんでした。</p>
+<hr>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
