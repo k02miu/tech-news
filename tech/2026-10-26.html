@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-26 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-26 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.310</strong>（2026-10-24 08:49 JST 公開）です。RSSフィードの最新版であり、対象期間内に公開されたエントリはありません。</p>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">ソース: Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソース: Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.34</strong>（2026-10-24 20:38 JST 公開）です。通常ラインの最新は <strong>v2026.10.7</strong>（2026-10-24 18:53 JST 公開）で、いずれも対象期間の開始前に公開されています。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソース: OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.240</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v1.4.240</strong>（2026-10-25 13:02 JST 公開）です。今回の主題は「より信頼できるワークスペース」で、内蔵ブラウザへの検索可能な履歴、エージェント状態の可視性、チャットとリモート端末の復旧性の底上げが柱です。あわせて Lean / Zig のシンタックスハイライト、クイックコマンドの大量登録、開発サーバの検出ポートを一覧する新コマンド <code>orca ports</code> が加わりました。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>対話が手元に残る</strong>: Orca の外で行われた Claude の会話ターンも表示され、保持されたメッセージはチャットを開き直さずに再接続後へ復帰します。クラッシュ復旧時に「送信済みメッセージが未配信」と誤判定しなくなりました。</li>
+  <li><strong>記憶力のあるブラウザ</strong>: 閲覧履歴の検索、ページの再オープン、不要なサジェストの削除、履歴クリア（Undo 付き）に対応しました。ページは File System Access を通じて選択・保存・ドロップしたローカルファイルを利用できます。</li>
+  <li><strong>中断の少ないリモート作業</strong>: 低速接続でも wake probe の取りこぼしで切断されず、再接続通知が原因を説明します。認証中に開いた端末は SSH サインインを待ち、新しい分割はペアリング済みサーバ上で開始されます。</li>
+  <li><strong>信頼できるエージェント状態</strong>: 完了した Codex サブエージェントが「Working」のまま残らず、<code>/side</code> の会話中も実行中のメインタスクが表示され続けます。承認が必要な Codex MCP ツールには承認カードが出ます。</li>
+  <li><strong>ワークフローに余裕を</strong>: クイックコマンドを40件超保存でき、<code>orca ports</code> で worktree の開発サーバ検出ポートを確認、古い開発 worktree の依存インストールやビルド出力を回収できます。</li>
+  <li><strong>細部の磨き込み</strong>: Lean / Zig のハイライト、セッション検索の抜粋表示の改善、ターミナルアプリでの Mac トラックパッドスクロールの滑らかさ、Windows と WSL 間で共有される未マージブランチ・worktree の保護強化。</li>
+</ul>
+
+<h3>⚠️ 互換性・アップグレードの注意</h3>
+<ul>
+  <li><strong>ネイティブチャット（実験的）</strong>: 最新のチャット・エージェント状態・起動修正のため、ペアリング済みホストと SSH ホストも Orca と同時に更新してください。Codex の新しい承認カードはフォーム入力を要さない MCP 承認が対象で、汎用 MCP フォームや URL ベースの検証はこの変更では未対応です。</li>
+  <li><strong>ブラウザ履歴</strong>: ページメニューの <strong>History</strong>、macOS は <strong>Cmd+Y</strong>、Linux / Windows は <strong>Ctrl+H</strong> から開きます。</li>
+  <li><strong>検出ポート</strong>: <code>orca ports</code> はワークスペース選択と JSON 出力に対応しますが、ホスト単位のポートスキャンが可能なランタイムが対象です。直接 SSH ホストは未対応で、ネイティブフォルダのワークスペースは <code>--all</code> が必要です。</li>
+  <li><strong>開発クリーンアップ</strong>: 手動の <code>pnpm reclaim-space</code> と開発起動時の自動クリーンアップが、古い兄弟 worktree の無視・未追跡の依存インストールと生成物を既定30日で回収します。選択中・実行中・除外対象の worktree は保護されます。手動実行時は兄弟アプリ・エージェント・インストール・ビルド・テストを停止し、回収後に使う場合は再インストール／再ビルドが必要です。</li>
+  <li><strong>端末のファイルリンク</strong>: 「クリックしたワークスペースでファイルリンクを開く」変更は本リリースで revert されました。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.240">ソース: Orca v1.4.240</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>🔥 Hono — v4.13.14</h3>
+<p><strong>v4.13.14</strong>（2026-10-25 16:19 JST 公開）が公開されました。バグ修正中心のパッチリリースです。</p>
+<ul>
+  <li><strong>serve-static</strong>: GET / HEAD リクエストのみを提供するようになり、事前圧縮ファイルでは <code>Accept-Encoding</code> の q値が尊重されます。</li>
+  <li><strong>JSX / CSS</strong>: <code>cloneElement</code> が自己閉じの void 要素を保持します。CSS ミニファイでは、引用符なし <code>url()</code> 内の <code>//</code> と、疑似クラス前の子孫結合子が保持されます。</li>
+  <li><strong>ルーター / コア</strong>: <code>trie-router</code> が重複したパスパラメータの最初の値を保持し、<code>hono-base</code> は <code>strict: false</code> の場合に <code>getPath</code> を禁止します。<code>basePath()</code> の正規表現パラメータ照合がルーターと同じ挙動になりました。</li>
+  <li><strong>アダプタ / ビルド</strong>: <code>hono</code> の peer レンジで Hono v5 のプレリリースを受け入れ、バンドルされた <code>d.ts</code> でバレルインポートが保持されます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.14">ソース: Hono v4.13.14</a></p>
+
+<h3>☁️ Google Cloud — 2026-10-25 付リリースノート</h3>
+<p>対象期間内に追加された 2026-10-25 付のリリースノートとして、<strong>Google SecOps</strong> が Case Wall のリッチテキストコメント内でインライン画像をリサイズできるようになりました（Release 6.3.104、段階的に展開）。同日の 2026-10-24 付では App Engine フレキシブル環境の .NET / Go / Java / Node.js / PHP ランタイムに対するセキュリティ更新が告知されていますが、こちらは対象期間外です。</p>
+<p class="empty-notice"><strong>Next.js</strong>（最新は v16.5.0-canary.27、2026-10-25 08:47 JST 公開で対象期間外。安定版の最新は v16.4.3、2026-10-23 22:32 JST 公開）、<strong>AWS</strong>（公式 What's New の最新項目は 2026-10-24 06:04 JST 公開の Bedrock Web Search のドメインフィルタ／位置情報対応で対象期間外）、<strong>Azure</strong>（公式アップデートの新着は確認されず）、<strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開で対象期間外）、<strong>Anthropic SDK</strong>（Python v2.3.0 は 2026-10-24 08:18 JST、TypeScript sdk-v1.3.0 は 2026-10-24 08:23 JST 公開でいずれも対象期間外）、<strong>Spring Boot</strong>（最新の安定版は v4.1.2、2026-10-23 02:04 JST 公開で対象期間外）、<strong>Python / Django</strong>（新規リリースなし）、<strong>Java</strong>（対象期間内の新着なし）、<strong>web 一般</strong>（対象期間内の主要ニュースなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
