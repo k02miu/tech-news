@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-27 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-27 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.311</h2>
+<p>対象期間内に1件のリリースが確認されました。<strong>v2.1.311</strong>（2026-10-27 07:02 JST 公開）です。自前ホストのランナー向けの待機制御、VS Code 拡張の表示改善、Claude Tag の分析ビュー追加が中心で、あわせて <code>ultrathink</code> の挙動と出力エンコーディングが変更されました。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>self-hosted-runner の待機制御</strong>: <code>--hold-idle-file</code> と <code>--max-hold-min</code> が追加され、ホストが「起動したままのプロセス」を報告している間、アイドルセッションを維持できるようになりました。</li>
+  <li><strong>Explanatory 出力スタイルのヒント</strong>: Claude に説明を求めた際に表示される Tips が追加されました。</li>
+  <li><strong>[VSCode] コードブロックのシンタックスカラー</strong>: Claude の返答内のコードブロックが、ライト・ダーク・ハイコントラストダークの各テーマで色付けされます。</li>
+  <li><strong>[VSCode] UserPromptSubmit フックの進行表示</strong>: フックが遅い場合のスピナー状態とスクリーンリーダー向けアナウンスが追加されました。</li>
+  <li><strong>[Claude Tag] Skills ビュー</strong>: Slack チャンネルで各スキルがどれだけ実行されたか、未使用のスキルはどれかを分析画面で確認できるようになりました。</li>
+</ul>
+
+<h3>🔄 主な変更</h3>
+<ul>
+  <li><strong>ultrathink</strong>: 対話端末での <code>ultrathink</code> が、Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.1 の Anthropic API 経由で xhigh effort のターンを実行するようになりました。レインボー表示は実際に effort を引き上げられる箇所のみに限定されます。</li>
+  <li><strong>出力エンコーディング</strong>: <code>--output-format json</code> / <code>stream-json</code> において、DEL・C1 制御文字・Unicode 書式文字が <code>\uXXXX</code> エスケープとして出力されるようになりました（パース後の値は不変）。</li>
+  <li><strong>モデル名</strong>: 効果のない <code>[1m]</code> サフィックスとその表示が削除されました（サフィックス自体は引き続き受け付け）。</li>
+  <li><strong>権限ルールの起動警告</strong>: settings ファイルの権限ルールに関する警告が、ルールが変わるまでユーザーごとに1回だけ表示されるようになりました。</li>
+  <li><strong>Bedrock / Mantle / Vertex / Foundry</strong>: モデル設定を downloads.claude.ai の署名済みファイルから読み込むよう変更（<code>CLAUDE_CODE_MODEL_CATALOG=off</code> で無効化）。</li>
+  <li><strong>Ctrl+D</strong>: エージェントビューで、空入力時に2回押すと終了するプロンプトの挙動に揃えられました。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-311">ソース: Claude Code changelog v2.1.311</a></p>
+
+<h2>🤖 Hermes Agent — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソース: Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.34</strong>（2026-10-24 20:38 JST 公開）です。通常ラインの最新は <strong>v2026.10.7</strong>（2026-10-24 18:53 JST 公開）で、いずれも対象期間の開始前に公開されています。</p>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソース: OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.241</h2>
+<p>対象期間内に2件のリリースが確認されました。デスクトップ版 <strong>v1.4.241</strong>（2026-10-26 12:48 JST 公開）と、モバイル版 <strong>mobile-android-v0.0.59</strong>（2026-10-26 13:21 JST 公開）です。今回は「期待どおりに動くチャットとブラウザ」が主題で、設定に追従するチャット、Chrome に近づいた内蔵ブラウザ、SSH 接続と管理サーバの復旧性の底上げが柱です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>設定に追従するチャット</strong>: 新規チャットは「設定 → Agents」の各エージェント権限を使用し、名前を変えたチャットは Session History で名前を保持します。ターミナルが実行中の会話にチャットが書き込むこともなくなりました。</li>
+  <li><strong>Chrome に近づいたブラウザ</strong>: DevTools をペイン内にドッキングでき、音を鳴らしているタブのミュート、ホバー時のリンク URL 表示、ページ内での Orca ショートカットとマウスの戻る／進むに対応しました。</li>
+  <li><strong>エージェントの閲覧を目視</strong>: カーソルとバッジでエージェントがどこをクリック／入力しているかを示し、チャットから該当ページへジャンプできます。ターミナルやチャットからのリンクは元のソースの隣で開きます。</li>
+  <li><strong>行き止まりの少ない SSH</strong>: 保存したポートフォワードが再起動後も復帰し、失敗理由を説明します。証明書のみのホストはシステムの <code>ssh</code> 経由で接続し、管理サーバはターミナルを閉じずに更新されます。</li>
+  <li><strong>起動・再開の信頼性</strong>: Hermes と Kimi のペインが安定し、チャットの書体設定やエージェントのライブ閲覧表示が加わりました。</li>
+  <li><strong>[モバイル] 起動の高速化</strong>: コンピュータ側の更新後に Orca を開く処理が約2倍高速化され、ダウンロードは差分のみを取得します。進捗バーが滑らかに伸び、既に開いている画面への「戻る」は複製を開かずそこへ戻ります。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.241">ソース: Orca v1.4.241</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>☁️ AWS — 複数のアップデートが公開</h3>
+<p>対象期間内に Amazon Bedrock をはじめ複数のアップデートが公開されました。</p>
+<ul>
+  <li><strong>OpenAI GPT-6.1 Terra が Amazon Bedrock で一般提供</strong>（2026-10-27 03:27 JST 公開）: GPT-6 ファミリに、能力・速度・コスト効率のバランスを取った新モデルが加わりました。詳細な視覚推論、正確なコンピュータ操作、事実性と自然な文章の改善が特徴とされています。</li>
+  <li><strong>AWS KMS が ML-KEM による耐量子鍵カプセル化に対応</strong>（2026-10-26 17:00 JST 公開）。</li>
+  <li><strong>AWS IAM Identity Center がリージョン間の Trusted Identity Propagation に対応</strong>（2026-10-26 17:00 JST 公開）。</li>
+  <li><strong>EC2 Auto Scaling がアカウントレベルの Launch Before Terminate に対応</strong>（2026-10-26 17:00 JST 公開）: インスタンス置換時の挙動を制御できます。</li>
+  <li><strong>Amazon WorkSpaces Core Managed Instances が ModifyVolume API に対応</strong>（2026-10-27 03:00 JST 公開）、<strong>Amazon SageMaker Unified Studio が IDC ベースドメインのライトモードに対応</strong>（2026-10-27 00:32 JST 公開）。</li>
+  <li><strong>Amazon Connect Customer</strong> が、フローアクション結果を検証するテスト／シミュレーションの拡張（2026-10-27 00:00 JST 公開）と、顧客生涯価値・リピート発信者ステータス別のメトリクス表示（2026-10-26 22:47 JST 公開）に対応しました。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソース: AWS What's New</a></p>
+
+<h3>☁️ Azure — Network Watcher の VNet フローログ フィルタリングが一般提供</h3>
+<p><strong>[Launched] Generally Available: Network Watcher VNet flow logs filtering</strong>（2026-10-27 01:02 JST 公開）。IP アドレス、ポート、プロトコル、暗号化状態、フロー状態、トラフィック方向などの条件で、ログに記録するネットワークフローを制御できるようになりました。</p>
+<p>🔗 <a href="https://azure.microsoft.com/updates?id=577782">ソース: Azure Updates</a></p>
+
+<h3>☁️ Google Cloud — 2026-10-26 付リリースノート</h3>
+<p>対象期間内に追加された 2026-10-26 付のリリースノートでは、以下の項目が確認されました。</p>
+<ul>
+  <li><strong>Apigee</strong>: MCP ツール引数が、OpenAPI パラメータの宣言どおりの場所（<code>in: header</code> / <code>in: cookie</code>）へ送信されるようになりました。既存の MCP プロキシは設定を再生成するまで従来のクエリストリング挙動を維持します。</li>
+  <li><strong>Compute Engine の脆弱性対応</strong>: 認可不備に関する脆弱性 <strong>CVE-2026-85299</strong> が発見され対応済みです（セキュリティ速報 GCP-2026-073）。</li>
+  <li><strong>Model Armor</strong>: データレジデンシ準拠を要求する組織ポリシー制約を既定で適用するようになりました（GA）。</li>
+  <li><strong>Oracle Database@Google Cloud リモート MCP サーバ</strong>が一般提供（GA）となり、データベース接続の作成・管理と <code>database_connection_executesql</code> による SQL 実行が可能になりました。</li>
+  <li><strong>また、</strong>Python UDF のボリュームマウント対応（Preview）、Database Migration Service の異種変換ワークスペース作成、セマンティックガバナンスポリシーのユーザー意図マッチング制御が追加されました。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソース: Google Cloud release notes</a></p>
+
+<h3>⚡ Next.js — v16.5.0-canary.28</h3>
+<p><strong>v16.5.0-canary.28</strong>（2026-10-27 08:51 JST 公開）が公開されました。canary チャンネルの定期ビルドです。安定版の最新は <strong>v16.4.3</strong>（2026-10-23 22:32 JST 公開）で、対象期間内に安定版のリリースはありません。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">ソース: Next.js Releases</a></p>
+
+<p class="empty-notice"><strong>Hono</strong>（最新は v4.13.14、2026-10-25 16:19 JST 公開で対象期間外）、<strong>React</strong>（最新の公開済み安定版は v19.3.1、2026-10-15 02:06 JST 公開で対象期間外）、<strong>Anthropic SDK</strong>（Python v2.3.0 は 2026-10-24 08:18 JST、TypeScript sdk-v1.3.0 は 2026-10-24 08:23 JST 公開でいずれも対象期間外）、<strong>Spring Boot</strong>（最新の安定版は v4.1.2、2026-10-23 02:04 JST 公開で対象期間外）、<strong>Node.js</strong>（最新は v26.12.1、2026-10-21 19:38 JST 公開で対象期間外）、<strong>Python / Django / Java</strong>（対象期間内の新着なし）、<strong>web 一般</strong>（対象期間内の主要ニュースなし）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
