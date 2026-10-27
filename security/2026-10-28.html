@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-28 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-28 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>「PHP2Shell」の悪用を確認 — 米当局が KEV 登録、対応期限を10月29日に指定（CVE-2026-109618 / CVE-2026-109619、CVSSv4.0 9.2） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-109618 / CVE-2026-109619</td></tr>
+<tr><th>CVSS</th><td>9.2（CVSSv4.0）</td></tr>
+<tr><th>影響</th><td>PHP 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35 未満（Web リクエストを処理する全インストール、サポート終了版を含む）</td></tr>
+<tr><th>公開</th><td>CISA KEV 追加 現地 2026-10-26、Security NEXT 2026-10-27 報道、IPA 注意喚起 2026-10-27 更新</td></tr>
+</table>
+<ul>
+<li>米サイバーセキュリティインフラストラクチャセキュリティ庁（CISA）は現地2026年10月26日、通称「PHP2Shell」と呼ばれる <strong>CVE-2026-109618</strong>・<strong>CVE-2026-109619</strong> を「悪用が確認された脆弱性カタログ（KEV）」へ登録した。<strong>実際に悪用されていることが確認されている</strong>。</li>
+<li>いずれも認証を必要とせず、リモートからコードを実行されるおそれがある。CVE-2026-109618 はメモリ不足時の処理、CVE-2026-109619 は解放済みメモリに関連する内部状態の管理に起因する。外部からのリクエストを処理する PHP 環境、とくにウェブサイトではリスクが高い。</li>
+<li>PHP 開発チームは 10月21日に 8.5.12 / 8.4.27 / 8.3.36 / 8.2.35 を公開して修正した。サポート終了済みの 7.4 / 8.0 / 8.1 向けにもソースコードへ適用する修正が提供され、一部 Linux ディストリビューションではバックポートも行われている。</li>
+<li>CISA は米行政機関の対応期限を現地時間10月29日と指定し、脆弱性の解消だけでなく侵害の有無の確認も求めている。国内では IPA が2026年10月27日に注意喚起を更新している。</li>
+<li>出典: <a href="https://www.security-next.com/191976" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27</a>、<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a>、<a href="https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html" target="_blank" rel="noopener noreferrer">IPA 注意喚起</a></li>
+</ul>
+
+<h3>「Brotli」脆弱性の影響が拡大 — Windows 版 PHP と PowerShell が相次いで更新（CVE-2026-111497、CVSSv4.0 9.2） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-111497</td></tr>
+<tr><th>CVSS</th><td>9.2（CVSSv4.0）</td></tr>
+<tr><th>影響</th><td>PHP（Windows 版、cURL 拡張で自動展開を有効化している場合）／PowerShell 7.6.9・7.5.13・7.4.22 未満</td></tr>
+<tr><th>公開</th><td>PHP 修正版 現地 2026-10-26、PowerShell アドバイザリ 現地 2026-10-25、いずれも 2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>Google 製の圧縮ライブラリ「Brotli」に判明したバッファオーバーフロー（前日報の .NET 定例外更新で対応済み）について、影響範囲が他製品へ広がっていることが明らかになった。細工した圧縮データをデコード処理させると域外メモリへの書き込みが生じ、任意コード実行・情報漏えい・サービス拒否などにつながるおそれがある。</li>
+<li><strong>Windows 版 PHP</strong>: cURL 拡張モジュールが HTTP レスポンスの自動展開を有効化している場合に Brotli デコーダを経由し得る。既定設定では自動展開は無効だが、アプリケーションや HTTP クライアントライブラリが有効化する場合もある。現地2026年10月26日公開の PHP 8.5.12-1 / 8.4.27-1 / 8.3.36-1 / 8.2.35-1 で Brotli 1.2.1 に更新され修正された。</li>
+<li><strong>PowerShell</strong>: マイクロソフトは現地2026年10月25日、CVE-2026-111497 に対応するセキュリティアドバイザリを公開。「Invoke-WebRequest」「Invoke-RestMethod」でウェブサイトへアクセスした場合に影響し、権限昇格などに悪用され得る。Windows に加えて macOS・Linux 環境も影響を受け、PowerShell 7.6.9 / 7.5.13 / 7.4.22 で修正されている。</li>
+<li>出典: <a href="https://www.security-next.com/191985" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27（Windows 版 PHP）</a>、<a href="https://www.security-next.com/192008" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27（PowerShell）</a></li>
+</ul>
+
+<h3>Apple「iOS 27.2」公開 — WebKit のサンドボックス回避を含む163件を修正、旧 OS では悪用済み脆弱性に対応 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-113897（WebKit サンドボックス回避）／CVE-2026-64759（ImageIO）／CVE-2026-86950（悪用済み）ほか</td></tr>
+<tr><th>影響</th><td>iOS / iPadOS 27.2 未満、26.7.2 未満、18.7.11 未満</td></tr>
+<tr><th>公開</th><td>現地 2026-10-26 公開、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>Apple は現地2026年10月26日、「iOS 27.2」「iPadOS 27.2」を公開し、CVE ベースで163件の脆弱性を解消した。WebKit・カーネル・画像処理機能など幅広い領域が対象で、WebKit では細工されたウェブコンテンツの処理により任意のコードを実行されるおそれがある脆弱性のほか、遠隔から WebContent のサンドボックスを回避され得る CVE-2026-113897 に対処している。</li>
+<li>「iOS 26.7.2」「iPadOS 26.7.2」では134件を修正。ImageIO で細工された画像の処理により任意コード実行につながる CVE-2026-64759 などを解消した。</li>
+<li>「iOS 18.7.11」「iPadOS 18.7.11」では3件に対応し、<strong>悪用が指摘されている CVE-2026-86950 の修正も含まれる</strong>。旧 OS を継続利用している端末は優先的な更新が望ましい。</li>
+<li>出典: <a href="https://www.security-next.com/191972" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27</a>、<a href="https://support.apple.com/en-us/149230" target="_blank" rel="noopener noreferrer">Apple セキュリティコンテンツ</a></li>
+</ul>
+
+<h3>Adobe Campaign Classic / Adobe Connect — CVSS 10.0 の SQLi を含む計10件超、10月定例で修正（APSB26-162 / APSB26-182） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-105781（10.0）／CVE-2026-105780・105489・104353・104351（9.9）／CVE-2026-48360（9.6、Connect）ほか</td></tr>
+<tr><th>CVSS</th><td>最大 10.0（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Adobe Campaign Classic 7.4.4 build 9402 以前、Adobe Connect 対象版</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-10-27（JST）</td></tr>
+</table>
+<ul>
+<li>Adobe は Adobe Campaign Classic（ACC）に対する一連の脆弱性を公表した。最大は <strong>CVE-2026-105781</strong>（CVSSv3.1 10.0）で、SQL コマンドに用いられる特殊要素の中和が不適切なため、任意のコード実行に至るおそれがある。</li>
+<li>低権限の攻撃者でも悪用可能な <strong>CVE-2026-105780</strong>（認可の不備、9.9）、<strong>CVE-2026-104353</strong>（OS コマンドインジェクション、9.9）、<strong>CVE-2026-104351</strong>（コードインジェクション、9.9）、<strong>CVE-2026-105489</strong>（SQLi、9.9）、<strong>CVE-2026-104354</strong>・<strong>CVE-2026-105779</strong>（SQLi、9.1）、<strong>CVE-2026-104350</strong>（反射型 XSS、9.3）などが同時に登録された。</li>
+<li>あわせて Adobe Connect の <strong>CVE-2026-48360</strong>（CVSSv3.1 9.6、コードインジェクション）も登録されている。修正版は ACC が 7.4.4 build 9403 以降。</li>
+<li>出典: <a href="https://www.adobe.com/trust/security/products/campaign/apsb26-162.html" target="_blank" rel="noopener noreferrer">Adobe APSB26-162</a>、<a href="https://www.adobe.com/trust/security/products/connect/apsb26-182.html" target="_blank" rel="noopener noreferrer">Adobe APSB26-182</a>、<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-105781" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>日立 JP1 / HiRDB — 認証バイパス・OS コマンドインジェクション・バッファオーバーフローで CVSS 9.8 が多数（2026年10月） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-86574（JP1/Base）／CVE-2026-76938 ほか JP1/AJMS3 多数／CVE-2026-82116〜82122（HiRDB）</td></tr>
+<tr><th>CVSS</th><td>9.8（複数）／9.4（複数）</td></tr>
+<tr><th>影響</th><td>JP1/Base 11-00〜12-50-54 未満、JP1/Automatic Job Management System 3、HiRDB Server Version 10/9 ほか</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-10-27（JST）</td></tr>
+</table>
+<ul>
+<li>国内企業の基幹運用管理製品に、ネットワーク経由・認証不要で悪用可能な脆弱性がまとめて登録された。国内システムでの利用範囲が広く、影響が大きい可能性がある。</li>
+<li><strong>JP1/Base</strong> では <strong>CVE-2026-86574</strong>（CVSSv3.1 9.8）のヒープベースのバッファオーバーフローが登録された。11-00 から 12-50-54 未満が影響。</li>
+<li><strong>JP1/Automatic Job Management System 3</strong> では、<strong>CVE-2026-76938</strong>（認証バイパス、9.8）、<strong>CVE-2026-76939</strong>（ヒープ BOF、9.8）、CVE-2026-76934〜76937・76932・76933（スタック／ヒープ BOF、9.4）、JP1/Integrated Management 3 を含む CVE-2026-86575〜86577（9.4）が登録された。</li>
+<li><strong>HiRDB</strong> では、認証欠如（<strong>CVE-2026-82116</strong>、9.8）、認証バイパス（<strong>CVE-2026-82117</strong>、9.8）、スタック BOF（<strong>CVE-2026-82118</strong>、9.8）、OS コマンドインジェクション（<strong>CVE-2026-82119</strong>、9.8）、ヒープ BOF（<strong>CVE-2026-82120</strong>、9.8）、オリジン検証不備（CVE-2026-82121、7.5）、スタック BOF（CVE-2026-82122、9.4）が登録された。</li>
+<li>出典: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-86574" target="_blank" rel="noopener noreferrer">NVD CVE-2026-86574</a>、<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-76938" target="_blank" rel="noopener noreferrer">NVD CVE-2026-76938</a>、<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-82116" target="_blank" rel="noopener noreferrer">NVD CVE-2026-82116</a></li>
+</ul>
+
+<h3>Google Compute Engine（GCP）— スナップショット API の認可欠如でクロスプロジェクトのディスクデータを窃取可能（CVE-2026-85299、CVSSv3.1 8.3） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-85299</td></tr>
+<tr><th>CVSS</th><td>8.3（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Google Cloud Platform の Google Compute Engine（2026-08-31 より前の版）</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-10-27（JST）</td></tr>
+</table>
+<ul>
+<li>Google Compute Engine の <code>disks.createSnapshot</code> および <code>regionDisks.createSnapshot</code> API に認可の欠如があり、認証済みの攻撃者が<strong>プロジェクト境界を越えてディスクデータを持ち出せる</strong>おそれがある。</li>
+<li>GCP 上でマルチプロジェクト構成を採る環境では、テナント分離の前提が崩れるため影響が広範に及ぶ可能性がある。NVD は 2026-08-31 以降の版で解消済みとしている。</li>
+<li>出典: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-85299" target="_blank" rel="noopener noreferrer">NVD CVE-2026-85299</a></li>
+</ul>
+
+<h3>ISC BIND — 資源枯渇の増幅・メモリ破損など4件（CVE-2026-19630 ほか）、JVN が公開 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-19630 / CVE-2026-94300 / CVE-2026-96888 / CVE-2026-97313</td></tr>
+<tr><th>影響</th><td>ISC BIND（対象版は ISC アドバイザリ参照）</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-22、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>受信メッセージ処理における資源枯渇の増幅（CVE-2026-19630）、並行する GSS-TSIG メッセージによるメモリ破損（CVE-2026-94300）、リダイレクトゾーンと厳格な QNAME 最小化の併用時に named が予期せず終了する問題（CVE-2026-96888）、特定の RPZ 構成と問い合わせパターンで予期しない終了が起きる問題（CVE-2026-97313）の4件。</li>
+<li>国内の権威 DNS・キャッシュ DNS で広く利用される製品であり、修正版の適用が望まれる。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56570.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://jvn.jp/vu/JVNVU91196958/index.html" target="_blank" rel="noopener noreferrer">JVN JVNVU#91196958</a></li>
+</ul>
+
+<h3>LIFF SDK 2.20.0〜2.31.0 — DOM ベース XSS（CVE-2026-112148）、2.31.1 で修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-112148</td></tr>
+<tr><th>CVSS</th><td>5.1（CVSSv4.0）／6.1（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>LINEヤフー製 LIFF SDK 2.20.0〜2.31.0</td></tr>
+<tr><th>公開</th><td>JVN 2026-10-22、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>LIFF SDK を利用するサイトにアクセスしたユーザーのブラウザ上で、任意のスクリプトを実行されるおそれがある。修正版は 2.31.1。開発者が JPCERT/CC へ報告し調整された国内案件。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56571.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://jvn.jp/vu/JVNVU91023667/index.html" target="_blank" rel="noopener noreferrer">JVN JVNVU#91023667</a></li>
+</ul>
+
+<h3>Oracle Java — IPA がセキュリティ更新プログラムの早急な適用を呼びかけ（2026年10月） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>影響</th><td>Oracle Java SE 27 / 26.0.2 / 25.0.4.1 / 21.0.12.1 / 17.0.20.1 / 11.0.32.1 / 8 Update 503 ほか</td></tr>
+<tr><th>公開</th><td>IPA 注意喚起 2026-10-21、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>IPA は 2026年10月21日、Oracle Java の脆弱性対策について発表した。悪用された場合、アプリケーションプログラムの異常終了や、攻撃者による端末の制御といった被害が生じるおそれがあるとして、早急な更新を呼びかけている。</li>
+<li>Java SE のネットワーク経由・認証不要で悪用可能な脆弱性には、既報の <strong>CVE-2026-114820</strong>（CVSSv3.1 9.1）がある。定例パッチ（2026年10月）の適用が対策となる。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56569.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://www.ipa.go.jp/security/security-alert/2026/1021-jre.html" target="_blank" rel="noopener noreferrer">IPA 注意喚起</a></li>
+</ul>
+
+<h3>Microsoft Defender — アップデート妨害による機能停止「Undefend」のエクスプロイトが公開（CVE-2026-45498、CVSSv3.1 7.5） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-45498</td></tr>
+<tr><th>CVSS</th><td>7.5（CVSSv3.1）</td></tr>
+<tr><th>影響</th><td>Microsoft Defender 4.18.26040.7 未満</td></tr>
+<tr><th>公開</th><td>2026年5月修正済み、エクスプロイト公開と悪用観測を 2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>Defender のアップデート処理に不備があり、一般権限でアップデート処理が作成するファイルにロックを掛けられると、Defender の動作が停止する。攻撃者はマルウェア検知を妨害できる。</li>
+<li>当該エクスプロイトコードは「Undefend」として公開され、現実の攻撃での悪用事例が観測されている。2026年5月分の Microsoft 公式セキュリティ更新プログラムで対策済み。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56589.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity Scan Tech Report 2026.10.27</a>、<a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45498" target="_blank" rel="noopener noreferrer">Microsoft MSRC</a></li>
+</ul>
+
+<h3>その他の登録 — 認証バイパス系が Critical で複数（REDAXO / nest-admin / Sunhillo / @fastify/express / NVIDIA NeMo） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-117532（REDAXO 9.8）／CVE-2026-117564（nest-admin 9.8）／CVE-2026-112352（Sunhillo SureLine 9.1）／CVE-2026-112362（@fastify/express 9.1）／CVE-2026-65145（NVIDIA NeMo Agent Toolkit 10.0）</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-10-27（JST）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-117532</strong>（9.8）: REDAXO core 5.3.0〜5.21.4 未満。structure/history プラグインでセッション紐付けの秘密値を予測可能な状態にでき、未認証で一時ログイントークンを偽造して admin 等になりすませる。</li>
+<li><strong>CVE-2026-117564</strong>（9.8）: nes-admin（buqiyuan/nest-admin）1.0.1 未満。<code>.env.production</code> にハードコードされた JWT_SECRET により、未認証で管理者トークンを偽造できる。Node.js 製管理基盤で広く使われる構成のため注意が必要。</li>
+<li><strong>CVE-2026-112352</strong>（9.1）: Sunhillo SureLine 9.1.5 未満。平文ユーザー名のみを含むセッションクッキーを偽造して任意ユーザーになりすまし、root コマンド実行に連鎖し得る。</li>
+<li><strong>CVE-2026-112362</strong>（9.1）: <code>@fastify/express</code> 4.0.5〜4.0.8。非既定の <code>ignoreDuplicateSlashes</code> 有効時に、パススコープの Express ミドルウェアが意図しない URL にマッチし、保護を迂回され得る。</li>
+<li><strong>CVE-2026-65145</strong>（10.0）: NVIDIA NeMo Agent Toolkit。認証欠如によりコード実行・権限昇格・データ改ざん等に至るおそれ。SQL インジェクション（CVE-2026-65151、8.4）も同時に登録されている。</li>
+<li>出典: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-117532" target="_blank" rel="noopener noreferrer">NVD CVE-2026-117532</a>、<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-117564" target="_blank" rel="noopener noreferrer">NVD CVE-2026-117564</a>、<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-65145" target="_blank" rel="noopener noreferrer">NVD CVE-2026-65145</a></li>
+</ul>
+<hr>
+<p class="empty-notice">なお、本対象期間の NVD 新規登録は 597 件（うち CVSSv3.1 で Critical 評価は 12 件）でした。Microsoft .NET 定例外、Arista VCO、Collabora Online ほか前日掲載分の続報は、それぞれの記事をご参照ください。</p>
+<hr>
+
+<h3>エージェント基盤の動向 — OpenClaw 2026.10.10-beta.4 で Gateway のシークレット取り扱いを修正／Hermes Agent・Claude Code は対象期間内に新規リリースなし</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>OpenClaw / Hermes Agent / Claude Code</td></tr>
+</table>
+<ul>
+<li><strong>OpenClaw 2026.10.10-beta.4</strong>（2026-10-27 14:39 JST 公開）: 「Gateway security」として、環境変数参照の <code>hooks.token</code> が起動時および設定リロードをまたいでエージェントの host-exec と CLI 子プロセスの環境に残らないよう修正された（明示的なコマンド単位の上書きは維持）。あわせて、Automations での同一会話スケジュール実行の権限境界の維持、バックアップ／リストア時の exec-approval 許可リストの保全（不正なポリシーは fail-closed）などが含まれる。</li>
+<li><strong>Hermes Agent</strong>: 対象期間内の新規リリースはなし。最新は v0.22.5（2026-10-23、依存関係のセキュリティ更新を含む）。</li>
+<li><strong>Claude Code</strong>: 対象期間内の新規リリースはなし。最新は 2.1.311。</li>
+<li>出典: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.10-beta.4" target="_blank" rel="noopener noreferrer">openclaw リリースノート</a>、<a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent Releases</a>、<a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">Claude Code Releases</a></li>
+</ul>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ユミルリンク（Cuenote FC）— 情報流出が49システムに拡大、のべ約900万件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ユミルリンク株式会社</td></tr>
+<tr><th>事象</th><td>メール配信サービスの侵害、顧客の49システムで情報流出を確認</td></tr>
+<tr><th>公開</th><td>2026-10-27 報道（初報 2026-10-20、侵害確認 2026-10-16）</td></tr>
+</table>
+<ul>
+<li>2026年10月16日、一部システムで侵害を確認。システムで利用するライブラリの脆弱性を悪用した攻撃により従業員の認証情報が窃取され、複数のシステムが侵害された。不正なプログラムが設置され、データベースから情報が抜き出されている。</li>
+<li>初報では5システムからメールアドレスなどのべ約900万件の情報が出力されたとしていたが、その後の調査で <strong>メール配信サービス「Cuenote FC」において当初の5システムに新たに44システムを加えた49システム</strong>で、メールアドレスなどが出力された痕跡が確認された。いずれも単一企業向けの環境で、単独企業向け78システムと複数企業で利用する3システムへの侵入も試みられていた。</li>
+<li>同社は引き続き影響の詳細を調査中。</li>
+<li>出典: <a href="https://www.security-next.com/192029" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27</a></li>
+</ul>
+
+<h3>タイムズカー（パーク24）— 第5報で流出規模を精査、本人確認書類画像146万件が外部送信 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>パーク24 株式会社／タイムズモビリティ株式会社</td></tr>
+<tr><th>事象</th><td>Web システムの脆弱性を悪用した不正アクセス、会員情報と本人確認書類画像の流出</td></tr>
+<tr><th>公開</th><td>第5報 2026-10-23、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>フォレンジック調査の結果、タイムズカー Web システムからは <strong>氏名・住所・生年月日・電話番号・メールアドレス・運転免許情報 6,628,007件</strong>が攻撃者によりアクセスされ外部送信された痕跡を確認。該当アカウントの本人確認書類画像は、暗号化されたデータにアクセスされ外部送信された痕跡が <strong>1,464,800件</strong>、外部送信の痕跡はないもののアクセスされたものが 891,602件 だった（従前の「約160万件」から精査）。</li>
+<li>タイムズクラブ Web システムへの不正アクセスも確認され、氏名・住所・生年月日・運転免許情報5件、タイムズクラブカード番号19,510件、タイムズビジネスカード番号12件、連携サービスID135,436件、クレジットカード番号下4桁28件が外部送信された。</li>
+<li>本事案は Web システムに存在した<strong>脆弱性が悪用された</strong>ものと判断されている。同社は本人確認書類画像を会員登録完了後は保有しない社内ルールへ変更し、現在保有分も2026年10月末までに削除する。暗号化された本人確認書類画像へのアクセスと外部送信の痕跡が確認された顧客には、3,000円相当の現金または金券を見舞いとして支払う。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56586.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://www.park24.co.jp/news/2026/10/20261023-1.html" target="_blank" rel="noopener noreferrer">パーク24 第5報</a></li>
+</ul>
+
+<h3>GMO「お名前.com デスクトップクラウド」— 第4報で見舞金5,000円・損失補償、能動的サイバー防御の「発動第1号」事案に <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>GMOインターネット株式会社</td></tr>
+<tr><th>事象</th><td>顧客サーバ環境への不正プログラム設置、取引口座ログイン情報等の取得・不正利用の可能性</td></tr>
+<tr><th>公開</th><td>第4報 2026-10-24、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>全利用者に対し、金銭的被害の有無にかかわらず見舞金として一律5,000円を支払う。契約中の顧客には独立したクラウド基盤上の代替サービスへの乗り換えを案内し、乗り換え後6ヶ月間を無償化。本件に起因して顧客の取引口座に発生した実現損失を補償する。</li>
+<li>攻撃者とみられる者から金銭の要求があり、応じない場合は同社および顧客に関する情報を公開するなどと脅迫されたとしている。同社は要求に応じず、通信記録等の全証拠を警察当局（サイバー犯罪対策部門）に提出し刑事事件として厳正な捜査を要請。本件を「国民の財産とサイバー空間の信頼を守るための能動的サイバー防御の『発動第1号』事案」と位置付け、国主導の攻撃基盤の追跡・遮断を政府関係機関へ緊急要請した。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56587.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://group.gmo/info/alert/20261024/" target="_blank" rel="noopener noreferrer">GMO 第4報</a></li>
+</ul>
+
+<h3>リゾートトラスト — ウェブサイトへの不正アクセスで会員約26,000件、ザ・カハラ横浜の予約者約36,000件が漏えい <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>リゾートトラスト株式会社（東証プライム）</td></tr>
+<tr><th>事象</th><td>ウェブサイトへの不正アクセスによる個人情報漏えい</td></tr>
+<tr><th>公開</th><td>2026-10-09 発表、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>2026年10月5日午後8時30分頃から11時30分頃まで当該ウェブサイトのシステムに異常な作動があり、翌10月6日に認知。調査の結果、10月7日に不正アクセスによる情報漏えいが判明した。</li>
+<li>漏えいが確認されたのは、一部のリゾートトラストグループ会員の情報 約26,000件と、「ザ・カハラホテル&amp;リゾート横浜」の予約者の情報 約36,000件。全国のホテル・各施設の運営には直接的な影響はなく、通常どおりサービスを提供している。</li>
+<li>外部のセキュリティ専門機関と連携して詳細を調査し、対象システムの脆弱性改修、監視体制の強化、ネットワークアクセス権限の厳格な見直しを実施する。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56582.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://www.resorttrust.co.jp/wp_api/wp-content/uploads/2026/10/20261009.pdf" target="_blank" rel="noopener noreferrer">リゾートトラスト リリース</a></li>
+</ul>
+
+<h3>ミスターマックス — アプリ・オンラインストア会員 最大1,735,154人の情報が流出 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ミスターマックス</td></tr>
+<tr><th>事象</th><td>MrMax アプリ・オンラインストアのサーバへの不正アクセス</td></tr>
+<tr><th>公開</th><td>2026-10-06 発表、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>10月3日夕方にサーバへの不審なアクセスを確認し、両サービスを一時停止して外部からのアクセスを遮断。第三者がサービスを構成するソフトウェアの機能を不正に利用してサーバへ侵入し、会員の個人情報の一部が流出したことが判明した。</li>
+<li>流出の可能性があるのは、MrMax アプリ会員およびオンラインストア会員 最大 <strong>1,735,154人</strong>の会員ID・氏名・メールアドレス・電話番号。対象顧客へメールで個別に連絡する。外部専門機関の協力で詳細を調査し、監視体制を強化している。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56580.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://www.mrmax.co.jp/info/incident_20261006/" target="_blank" rel="noopener noreferrer">ミスターマックス リリース</a></li>
+</ul>
+
+<h3>くふうカンパニー「くふう まちトークβ版」— 308名の生年月日・性別が外部から閲覧可能に <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社くふうカンパニー</td></tr>
+<tr><th>事象</th><td>不正アクセスによる個人情報の閲覧可能状態、1名はメールアドレスの取得</td></tr>
+<tr><th>公開</th><td>調査結果 2026-10-13、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>10月2日に不審なアクセスを確認し、不正アクセスが判明したため10月5日にサービスを停止。調査の結果、顧客 <strong>308名</strong>の生年月日・性別が外部から閲覧できる状態にあった。うち1名についてはシステムの一部の脆弱性を突いた不正アクセスによりメールアドレスが外部に取得され、生年月日・性別と紐づけられる状態にあった。</li>
+<li>残る307名はシステムの仕組み上、メールアドレスを特定できない状態だった。閲覧可能状態は解消し、脆弱性への対策を実施。サービスは再開に向けて対応中。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56583.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://kufu.co.jp/2026/10/13/kufu-announce-2/" target="_blank" rel="noopener noreferrer">くふうカンパニー 調査結果</a></li>
+</ul>
+
+<h3>VALX — 委託先「Commune」への不正アクセスで会員2,950名分の情報が取得された可能性 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>VALX株式会社（委託先: コミューン株式会社）</td></tr>
+<tr><th>事象</th><td>コミュニティプラットフォーム「Commune」への不正アクセス、管理者なりすまし</td></tr>
+<tr><th>公開</th><td>2026-10-08 発表、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>10月6日、委託先のコミューンが提供する「Commune」で第三者からの不正アクセスを確認。コミューンのシステム上の複数の不備が悪用され、<strong>攻撃者が管理者になりすまして</strong>不正アクセスが行われた。</li>
+<li>「VALX "FUN" コミュニティ」に対しては10月6日午後7時18分頃から8時17分頃まで不正アクセスがあり、会員3,813名のうち <strong>2,950名分</strong>の会員一覧情報（メールアドレス、ニックネーム・アカウント名、プロフィール情報、ポイント数・最終利用日時）が取得された可能性がある。</li>
+<li>コミューンでは利用経路の遮断、システム上の不備の修正、認証情報の更新等を実施。委託先の安全管理状況の確認を含む再発防止策を進める。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56581.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://corp.valx.jp/news/451vhhqdf29c" target="_blank" rel="noopener noreferrer">VALX リリース</a></li>
+</ul>
+
+<h3>楽天モバイル — 支払い証明書が第三者に閲覧される可能性、脆弱性診断で判明 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>楽天モバイル株式会社</td></tr>
+<tr><th>事象</th><td>「my 楽天モバイル」の支払い証明書が第三者に閲覧される可能性</td></tr>
+<tr><th>公開</th><td>2026-10-13 発表、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>同社が実施した脆弱性診断テストで、第三者が特定のプログラム等を用いて通常のサービス利用では行わない特殊な操作を意図的に行うことで、ダウンロードできる支払い証明書が第三者に閲覧される可能性があったことが判明した。</li>
+<li>確認できる範囲の記録を調査した結果、現時点で第三者による閲覧等は確認されていない。2026年6月20日にシステム改修等の対応を完了している。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56584.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://network.mobile.rakuten.co.jp/information/news/other/3888/" target="_blank" rel="noopener noreferrer">楽天モバイル リリース</a></li>
+</ul>
+
+<h3>カプコン「CAPCOM ID」— 全世界 11,774,247件のメールアドレス等が漏えい、19件でイーカプコンの購入履歴まで流出（続報） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社カプコン</td></tr>
+<tr><th>事象</th><td>オンライン会員サービス「CAPCOM ID」への不正アクセス</td></tr>
+<tr><th>公開</th><td>2026-10-22 発表、2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>10月19日に不正アクセスの疑いのある痕跡を発見して遮断し、不正アクセスが行われたことを確認した。漏えいは全世界合計 <strong>11,774,247件</strong>のメールアドレスとシステム固有の識別情報（アカウント作成日時、最終ログイン日時、ログイン回数、最終ログイン時のクライアントIP）で、うち43件は生年月日・性別・国または地域・ニックネームも対象。</li>
+<li>196件のログインパスワードの不正な変更を確認し、うち19件（日本国内）で第三者が通販サイト「イーカプコン」のマイページへ不正にアクセスし、氏名・電話番号・住所・性別・生年月日・購入履歴・問い合わせ履歴・会員アドレス帳が漏えいした。</li>
+<li>出典: <a href="https://scan.netsecurity.ne.jp/article/2026/10/27/56585.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026.10.27</a>、<a href="https://www.capcom.co.jp/ir/news/html/261023.html" target="_blank" rel="noopener noreferrer">カプコン 第二報</a></li>
+</ul>
+
+<h3>岡山県 — 婚活イベントの申込フォームでリンク指定を誤り、26人分の情報が閲覧可能に <span class="badge-low">Low</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>岡山県／おかやま結婚推進協会</td></tr>
+<tr><th>事象</th><td>事業者向け URL を誤って公開し、申込者情報が閲覧可能に</td></tr>
+<tr><th>公開</th><td>2026-10-27 報道</td></tr>
+</table>
+<ul>
+<li>共催する婚活イベントの申し込みフォームを告知する際、本来は応募者用 URL とすべきところ誤って編集者用 URL を設定し、2026年9月16日に公開。9月26日に申し込みをしようとした人からの問い合わせで、個人情報が閲覧できる状態にあることが判明した。</li>
+<li>9月16日から26日にかけて申し込みを行った <strong>26人</strong>の氏名・居住市町村・電話番号・性別・年齢・職業・メールアドレスが閲覧可能だった。同日中にリンクを修正し、対象者には経緯の説明と謝罪を行った。参加者の安全面を考慮してイベントは中止された。</li>
+<li>出典: <a href="https://www.security-next.com/191915" target="_blank" rel="noopener noreferrer">Security NEXT 2026/10/27</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">バンダイロジパルへの不正アクセス（「一番くじONLINE」配送先情報）については、前日17:47 JSTの時間帯通知で既報のため、本朝刊では割愛いたしました。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
