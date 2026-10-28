@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-28 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-28 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.312</h2>
+<p>2026-10-28 05:35 JST 公開。Claude apps ゲートウェイの識別方式の拡張、クラウドセッションの操作性向上、フック実行の並行数制限の明確化などが含まれます。なお 2.1.311 は 2026-10-27 07:02 JST 公開のため、対象期間の直前となります。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>OIDC のユーザー識別クレーム設定</strong>: Claude apps ゲートウェイに <code>oidc.user_id_claim</code> を追加。<code>sub</code> 以外の id_token クレーム（Microsoft Entra ID の <code>oid</code> など）で利用者を識別できるようになりました。</li>
+  <li><strong>クリックで送信</strong>: フルスクリーン表示中、キューに入ったメッセージ下の「to send now」ヒントをクリックすると、キー操作と同じく即時送信されます。</li>
+  <li><strong>クラウドセッションのルーティン設定</strong>: クラウド実行されるルーティンの作成・編集時のモデルピッカーに effort level が追加されました。</li>
+  <li><strong>クラウド環境のセットアップスクリプト編集</strong>: 色分け・行番号・コピーボタンを備えた Bash エディタを追加。</li>
+  <li><strong>WebFetch エラーの説明改善</strong>: クラウドセッションで名前解決できないホストについて、許可ドメイン外の可能性を明示し、許可すべきホスト名を提示します。</li>
+  <li><strong>プロンプトの effort 表示改善</strong>: タスク途中での変更が「次のメッセージまで待つ場合がある」旨を示し、該当しなくなれば注記が消えます。</li>
+</ul>
+
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li><strong>未認識モデル名のシステムプロンプト</strong>: Bedrock / Vertex / Foundry / Mantle で、カスタムデプロイ名や推論プロファイル ARN など Claude Code が認識しないモデル名に対して短いシステムプロンプトを使用。<code>CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=0</code> で従来動作を維持できます。</li>
+  <li><strong>フックの並行実行制限</strong>: プロンプト／エージェントフックはセッションあたり最大24件（サブエージェント含む）、イベントのタイムアウトを超えて待機中のものは最大12件に制限。1秒未満の <code>timeout</code> は1秒として扱われます。</li>
+  <li><strong>使用量上限の文言</strong>: 5時間ウィンドウを「session limit」ではなく「5-hour limit」と表記するよう変更。</li>
+  <li><strong>サブエージェントの autoCompactWindow</strong>: <code>CLAUDE_CODE_AUTO_COMPACT_WINDOW</code> で設定された値より下げる方向にのみ作用するよう修正（従来は効果がありませんでした）。</li>
+  <li><strong>OpenTelemetry の MCP サーバー名</strong>: 公式マーケットプレイスのプラグインが宣言する固定URLリモートMCPサーバーについて、<code>custom</code> ではなく実際の名前を報告。</li>
+  <li><strong>テレメトリ削減</strong>: <code>claude_code.safety_event</code> OpenTelemetry イベントの送信を停止。</li>
+  <li><strong>VS Code</strong>: 使用量上限のリセットを時刻表示（「Resets at 3:10 PM」）に変更し、「5-hour limit」表記に対応。</li>
+</ul>
+
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-312">Claude Code changelog — 2.1.312</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。v0.22.4 以降にマージされた約81件のPRをまとめたパッチリリースで、Nous サインインの刷新、委譲バックエンドの差し替え可能化、<code>hermes import-agent</code>、OpenClaw マイグレーション、Electron 44 への更新などを含みます。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.8</h2>
+<p>2026-10-27 20:56 JST 公開。更新処理の完遂と復旧、Gateway サービスのインストール堅牢化、会話の受信継続性、セキュリティ強化が中心のリリースです。同日 2026-10-27 11:20 JST には LTS 相当の extended-stable <strong>v2026.9.35</strong> も公開されています。</p>
+
+<h3>🔧 主な変更点（v2026.10.8）</h3>
+<ul>
+  <li><strong>更新の完遂と復旧</strong>: 更新後の Doctor が通常失敗した場合に Gateway を停止したままにせず再起動。孤児化したメンテナンスワーカーが全CLIコマンドと Gateway 起動をブロックする問題も解消。ACL ファイルシステム、Windows の pnpm オプショナル依存リンク、pnpm 10 のグローバルインストールなどでの更新中断も修正。</li>
+  <li><strong>Gateway サービスのインストール</strong>: macOS では plist が削除された launchd 登録を復旧、Linux では Ubuntu 既定 umask 環境でプライベートな状態ディレクトリを作成して拒否を回避、macOS アップデータは Doctor 実行前に Gateway がデータベースを解放するのを待機。</li>
+  <li><strong>会話の受信継続</strong>: 強制終了された実行の restart-recovery フェンスを解放、Gateway 再起動後の子セッション復旧、返信ランタイムが publish できない場合の無限リトライ停止。</li>
+  <li><strong>起動・DB の耐障害性</strong>: 起動処理が閉じた SQLite リーダースコープを継承しないよう修正し、モデル・チャットメタデータ・チャネル返信の可用性を維持。エージェントDB起動時の一時的ロック競合をリトライ。</li>
+  <li><strong>セキュリティ強化</strong>: exec 許可リストモードで <code>test -v</code> のオペランド展開に承認を要求、汎用 node invoke でブラウザプロキシコマンドを拒否、サンドボックス内の子プロセスがホストCLIバックエンドを実行できないよう制限、シークレット外向きプロキシが不信な eMudhra 証明書チェーンを拒否、Fish Audio / Gradium のエラーでAPIキーが露出しないよう修正。</li>
+  <li><strong>プロバイダ／モデル継続性</strong>: Codex ターンが古いランタイムプラグインでも予算を維持、Anthropic の PDF 解析が setup-token OAuth で動作、タイムアウトした MCP セッションクローズが次ターンを壊さないよう修正。</li>
+  <li><strong>extended-stable v2026.9.35</strong>: サービス管理下でのメモリ安定化（workerヒープ上限、アイドル Codex app-server の30秒退役）、更新完了率の向上、Gateway イベントループの停止防止、SQLite 3.54 のフルテキストインデックス修復などをバックポート。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.242</h2>
+<p>2026-10-27 09:09 JST 公開。メモリ使用量の削減、Claude サブエージェントへのサイドバーからのアクセス、リモートサーバーのタブ永続化が主な内容です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>サイドバーから Claude サブエージェントを開く</strong>: サイドバーまたはダッシュボードのサブエージェント行をクリックすると、同じターミナルでトランスクリプトを表示。親をクリックすれば戻れ、閲覧中のものは目印が付きます。</li>
+  <li><strong>編集前に確認するチャット</strong>: Codex の Ask モードがワークスペース編集前に確認するようになりました（Approve for me / Full access は従来どおり）。ペアサーバー上のリモート Claude ターミナルは Chat で継続可能に。</li>
+  <li><strong>エージェントの状態復元</strong>: 再開した Claude セッションが effort level と起動フラグを保持、Codex は最後に付与した権限を維持、Session History はより多くのフォルダとサーバーのチャットを検出。</li>
+  <li><strong>リモートサーバーの記憶</strong>: ペアサーバーが再起動をまたいでタブを保持、閉じたタブは閉じたまま、WSL ホストは再起動ごとに再ペアリングしないよう修正、SSH 失敗時は原因を明示。</li>
+  <li><strong>メモリ削減</strong>: ターミナルのアイドルCPU使用量を大幅削減、ターミナルホストのメモリ使用量と WSL 接続のメモリ消費を低減、リソースパネルが macOS の Activity Monitor と一致するよう修正。</li>
+  <li><strong>コミュニティ修正</strong>: スペースを含む Windows ランチャーパス、韓国語入力、オートメーションの DST、focus-follows-mouse、タブドラッグ、Linux パッケージの不具合を修正。</li>
+</ul>
+
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.242">Orca v1.4.242</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>Amazon Aurora serverless が最大384 ACU に拡大</strong>（2026-10-28 01:00 JST 公開）: Aurora PostgreSQL 互換で最大容量が256 ACU から50%増。1 ACU あたり約2 GiB のメモリを提供するため、単一クラスタで最大768 GiB までスケール可能。アイドル時はゼロまでスケールダウンします。</li>
+  <li><strong>ElastiCache for Valkey の既存クラスタで耐久性を変更可能に</strong>（2026-10-28 00:21 JST 公開）: 新規クラスタを作らずに同期／非同期書き込みを切り替え可能。エージェントの長期記憶や RAG のナレッジベースなど、キャッシュ以外の用途への適用を狙います。</li>
+  <li><strong>SageMaker MLflow Apps が MLflow 3.16 に対応</strong>（2026-10-28 05:40 JST 公開）: トレースエクスプローラの刷新、カスタム列、大規模メトリクス履歴でのグラフ描画高速化。新規アプリは 3.16 が既定、既存アプリはメンテナンスウィンドウで自動更新。</li>
+  <li><strong>Amazon Corretto 2026年10月パッチ</strong>（2026-10-27 23:00 JST 公開）: Corretto 27.0.1.0.11、25.0.5.0.10、21.0.13.0.11、17.0.21.0.11、11.0.33.0.10、8u512 を公開。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースは確認されませんでした。最新の安定版は <strong>v16.4.3</strong>（2026-10-23 22:32 JST 公開）です。canary チャネルでは <strong>v16.5.0-canary.29</strong> が 2026-10-28 08:46 JST に公開されています。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開）、<strong>GCP</strong>、<strong>Azure</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Java</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
