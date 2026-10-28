@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-29 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-29 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Google Chrome 156.0.8078.74／73 - 脆弱性52件を修正、うち4件が「クリティカル」 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-118306 / CVE-2026-118331 / CVE-2026-118348 / CVE-2026-118344</td></tr>
+<tr><th>深刻度</th><td>Critical（4件、Google評価）／全52件</td></tr>
+<tr><th>公開日</th><td>2026-10-27（現地時間、報道は10-28）</td></tr>
+<tr><th>影響</th><td>Chrome 156.0.8078.74（Windows／macOS）、156.0.8078.73（Windows／macOS／Linux）</td></tr>
+</table>
+<ul>
+<li>ファイルシステムのメモリ破損（CVE-2026-118306）、ファイルAPIの入力検証不備（CVE-2026-118331）、Skiaの入力検証不備（CVE-2026-118348）、LayoutのUse After Free（CVE-2026-118344）がいずれも「クリティカル」。</li>
+<li>Webフロントエンド開発・検証環境でChromeを用いている場合は速やかに更新を。レンダリングエンジン側の修正を含むため、埋め込みブラウザ（Electron等）も追随版の提供状況を確認されたい。</li>
+<li>出典: <a href="https://www.security-next.com/192058" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>Adobe Campaign Classic ほか4製品 - クリティカル脆弱性を含む定期更新（APSB26-162 ほか） <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-104351 / CVE-2026-104353 / CVE-2026-105489 / CVE-2026-105780 / CVE-2026-105781 ほか</td></tr>
+<tr><th>深刻度</th><td>Critical（CVSSv3.1 最大9.9）</td></tr>
+<tr><th>公開日</th><td>2026-10-27（現地時間、報道は10-28）</td></tr>
+<tr><th>影響</th><td>Adobe Campaign Classic、Adobe Connect、Creative Cloud Desktop Application、Substance 3D Painter</td></tr>
+</table>
+<ul>
+<li>Campaign Classicではコードインジェクション、OSコマンドインジェクション、認可処理不備、SQLインジェクションなど8件に対応。任意コード実行・セキュリティ機能回避・権限昇格に至るおそれ。</li>
+<li>CVSSv3.1はCVE-2026-104351／104353／105489／105780が9.9、CVE-2026-105781が9.8、残り3件も9.0以上。公開時点で悪用は未確認。</li>
+<li>マーケティング／Web連携基盤としてCampaign Classicを利用している環境は優先的に適用を。</li>
+<li>出典: <a href="https://www.security-next.com/192042" target="_blank" rel="noopener noreferrer">Security NEXT</a>／<a href="https://www.adobe.com/trust/security/products/campaign/apsb26-162.html" target="_blank" rel="noopener noreferrer">Adobe APSB26-162</a></li>
+</ul>
+
+<h3>Brotli（CVE-2026-111497）とAdobe Commerce／Magento（CVE-2026-48356）- 米CISAがKEVに追加、悪用を確認 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-111497 / CVE-2026-48356</td></tr>
+<tr><th>深刻度</th><td>KEV登録（悪用確認済み）</td></tr>
+<tr><th>公開日</th><td>2026-10-27（現地時間、CISA KEV追加。報道は10-28）</td></tr>
+<tr><th>影響</th><td>Brotliを組み込みデコード処理に利用する各種ソフトウェア、Adobe Commerce、Magento</td></tr>
+</table>
+<ul>
+<li>CVE-2026-111497は圧縮データのデコード処理の脆弱性。細工したデータの処理でコード実行・情報漏えい・DoSにつながる。Brotliを同梱するミドルウェアやWebサーバ、Node.js系ツールチェーンも影響し得るため、各製品の追随更新を確認されたい。</li>
+<li>CVE-2026-48356はAdobe Commerce／Magentoのファイルアップロード処理の脆弱性。ECサイト基盤では侵害前提のログ調査も併せて実施を。</li>
+<li>出典: <a href="https://www.security-next.com/192044" target="_blank" rel="noopener noreferrer">Security NEXT</a>／<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV</a></li>
+</ul>
+
+<h3>Mattermost 11.9.x／11.8.x／11.7.x - エージェントプラグイン経由のパストラバーサルとサーバ上コード実行（CVE-2026-93851） <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-93851（MMSA-2026-00742）</td></tr>
+<tr><th>深刻度</th><td>High（CVSSv3.1 8.0／AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:H）</td></tr>
+<tr><th>公開日</th><td>2026-10-28（NVD公開）</td></tr>
+<tr><th>影響</th><td>Mattermost 11.9.0〜11.9.1、11.8.0〜11.8.5、11.7.0〜11.7.10（修正版 11.10.0／11.9.2）</td></tr>
+</table>
+<ul>
+<li>エージェントプラグインのメンションリマインダー機能が対象投稿IDを検証していない（CWE-22）。管理者が閲覧できるチャネルに投稿できる認証済み利用者が、偽のリマインダーを含む投稿を管理者にクリックさせ、管理者ブラウザから意図しないAPIリクエストを送らせることが可能。</li>
+<li>結果として導入済みプラグインの差し替えとサーバ上でのコード実行に至る。修正版への更新と、管理者アカウントの操作ログ確認を推奨。</li>
+<li>出典: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-93851" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Mozilla Firefox 159 - 脆弱性167件を修正、Highが108件 <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-117861 / CVE-2026-117864 / CVE-2026-117868 ほか計167件</td></tr>
+<tr><th>深刻度</th><td>High 108件／Moderate 52件／Low 7件（Criticalなし）</td></tr>
+<tr><th>公開日</th><td>2026-10-27（現地時間、報道は10-28）</td></tr>
+<tr><th>影響</th><td>Firefox 159（Windows／macOS／Linux）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-117861はウェブページ遷移処理のサンドボックス脱出。CVE-2026-117864／117868はフォーム管理・ネットワーク処理でのサンドボックス制限回避のおそれ。</li>
+<li>出典: <a href="https://www.security-next.com/192099" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新2026.10.10-beta.4、10/27公開）／Hermes Agent（最新v0.22.5、10/23公開）／Claude Code（最新v2.1.312、10/28 05:24 JST公開・セキュリティ関連修正なし）については、対象期間内に新規のセキュリティ関連リリースは確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ソニーネットワークコミュニケーションズ「So-net」- 会員データベース侵害、最大214万件の個人情報流出 <span class="badge-critical">CRITICAL</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ソニーネットワークコミュニケーションズ（So-net）</td></tr>
+<tr><th>発生日</th><td>侵害2026-10-19／確認2026-10-23／公表2026-10-28</td></tr>
+<tr><th>規模</th><td>会員個人情報2,141,986件（うち退会者272,215件）＋メール関連4サービス54,401件</td></tr>
+<tr><th>情報</th><td>氏名、電話番号、生年月日、性別、メールアドレス、ユーザーID、ネット接続用ID、メールアドレス・パスワード</td></tr>
+</table>
+<ul>
+<li>10月19日に外部から会員データベースへの侵害があり、同月23日に確認。アクセス元からの通信を遮断して調査した結果、個人情報の流出が判明した。</li>
+<li>メール関連4サービスではメールアドレスとパスワードが流出。パスワードの使い回しがある利用者は他サービスを含めた変更を。</li>
+<li>ISP会員基盤の侵害であり、フィッシングやリスト型攻撃への二次被害が懸念される。</li>
+<li>出典: <a href="https://www.security-next.com/192075" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>楽天トラベル／Rakuten Travel Xchange - 海外ホテル予約サイト侵害、顧客情報が流出か <span class="badge-high">HIGH</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>楽天グループ（楽天トラベル、Rakuten Travel Xchange）</td></tr>
+<tr><th>発生日</th><td>検知2026-09-10／原因特定09-15／再検知2026-10-20／公表10-28</td></tr>
+<tr><th>規模</th><td>予約顧客情報 最大約4万件（うち最大約3.6万件はカード下4桁等を含む）／ログイン者情報 最大約260万件</td></tr>
+<tr><th>情報</th><td>氏名、居住国、電話番号、メールアドレス、社内識別番号、予約情報、同伴者氏名、カード下4桁・名義・有効期限</td></tr>
+</table>
+<ul>
+<li>子会社Rakuten Travel Xchangeの海外ホテル予約サイトが侵害されたもの。9月10日に一部ページで異常を検知し調査で判明。9月15日に原因を特定、翌16日に改修を完了。</li>
+<li>その後10月20日、楽天トラベルの多言語予約サイトでも侵害の疑いを検知。海外拠点を含む予約基盤の横展開が疑われる。</li>
+<li>出典: <a href="https://www.security-next.com/191989" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>愛知県「あいこんナビ」- イベント情報に無関係の個人情報599人分が公開状態 <span class="badge-medium">MEDIUM</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>愛知県（婚活情報ポータルサイト「あいこんナビ」）</td></tr>
+<tr><th>発生日</th><td>掲載は2018年／指摘2026-09-20／削除同日／公表10-28</td></tr>
+<tr><th>規模</th><td>599人分</td></tr>
+<tr><th>情報</th><td>氏名、年齢、最終学歴、職業、在勤市町村、身長、趣味、特技、続柄</td></tr>
+</table>
+<ul>
+<li>イベント主催団体が2018年に掲載申請した際、イベント情報とともに非公開情報を申込用ファイルへ誤って添付。県が承認し掲載され、第三者から閲覧可能な状態となっていた。</li>
+<li>9月20日に外部からの指摘で判明し、同日中に非公開情報を削除。対象関係者には書面で謝罪。</li>
+<li>出典: <a href="https://www.security-next.com/191655" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
