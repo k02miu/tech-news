@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-30 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-30 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+<p>対象期間（2026-10-29 08:00 〜 2026-10-30 08:00 JST）に公表された脆弱性・アドバイザリのうち、主要なものをまとめました。NVDには同期間で551件のCVEが新規登録され、CVSS基本値9.0以上のものが63件含まれています。</p>
+
+<h3>Sophos UTM に前認証RCE（CVE-2026-118633、CVSSv4.0 9.2）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-118633</td></tr>
+  <tr><th>CVSS</th><td>CVSSv4.0 9.2（Critical）</td></tr>
+  <tr><th>影響</th><td>Sophos UTM 全バージョン（メールプロキシ使用かつスキャン機能有効時）</td></tr>
+  <tr><th>公表</th><td>Sophos セキュリティアドバイザリ（現地2026-10-28）／Security NEXT 2026-10-29 09:29 JST</td></tr>
+</table>
+<ul>
+  <li>メールプロキシの処理競合状態を数分間にわたり反復して誘発することで、認証を経ずに <code>root</code> 権限で任意のコマンドを実行されます（パストラバーサル）。</li>
+  <li>Sophos UTM はすでにサポート終了（EOL）のため自動更新でパッチが配信されず、<strong>利用者が手動で適用</strong>する必要があります。同社は Sophos Firewall への移行も呼びかけています。</li>
+  <li>参照: <a href="https://www.sophos.com/en-us/security-advisories/sophos-sa-20261028-utm-rce" target="_blank" rel="noopener noreferrer">Sophos SA-20261028</a> / <a href="https://www.security-next.com/192142" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>Cisco Secure Firewall ASA / FTD の SSL VPN にDoS（CVE-2026-76418）— 悪用確認済み・KEV登録<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-76418</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 8.6（High）</td></tr>
+  <tr><th>影響</th><td>Cisco Secure Firewall ASA / FTD（SSLリモートアクセスVPNでトンネルグループに二次認証を設定している構成）</td></tr>
+  <tr><th>公表</th><td>Cisco アドバイザリ（現地2026-10-28）／CISA KEV 追加 2026-10-29（連邦機関の対応期限 11-01）</td></tr>
+</table>
+<ul>
+  <li>SSL VPN 接続時に細工したリクエストを送るだけで、認証不要で機器を再起動させサービス拒否状態にできます。</li>
+  <li>2026年10月中に実際の悪用が確認されており、CISAは10月29日にKEVカタログへ追加しました。</li>
+  <li>参照: <a href="https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-tunnel-dos-s6mgkb75" target="_blank" rel="noopener noreferrer">Cisco アドバイザリ</a> / <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV</a></li>
+</ul>
+
+<h3>Linux カーネル・VMware ESX・GitLab が CISA KEV に追加<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Linux カーネル / Broadcom VMware ESX / GitLab CE・EE</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-46300（Linux カーネル）／CVE-2026-41709（VMware ESX）／CVE-2026-97229（GitLab CE・EE）</td></tr>
+  <tr><th>公表</th><td>CISA KEV 追加 2026-10-28（2件）／2026-10-29（GitLab、連邦機関の対応期限 11-01）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-46300</strong>: ネットワークデータ集約処理で共有データを示す情報が正しく引き継がれず、ページキャッシュ上のデータが意図せず書き換えられるおそれがあります。IPsec の ESP 受信処理などにも影響するとされ、<strong>PHP2Shell（CVE-2026-109618/109619）と組み合わせた攻撃</strong>が懸念されています。連邦機関の対応期限は10月31日で、侵害調査も求められています。</li>
+  <li><strong>CVE-2026-41709</strong>: VMware ESX の不十分なログ記録に関する脆弱性。対応期限は11月11日。</li>
+  <li><strong>CVE-2026-97229</strong>: GitLab CE/EE の整数オーバーフロー（ラップアラウンド）。10月29日にKEVへ追加され、対応期限は11月1日。旧ブランチにも修正が提供されています。</li>
+  <li>参照: <a href="https://www.security-next.com/192136" target="_blank" rel="noopener noreferrer">Security NEXT（Linux/VMware）</a> / <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV カタログ</a></li>
+</ul>
+
+<h3>WatchGuard「Fireware OS」に17件の脆弱性 — Critical 7件（CVE-2026-103594 ほか）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>製品</th><td>WatchGuard Firebox 用 Fireware OS</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-103594（WireGuard 設定のバッファオーバーフロー、CVSSv4.0 <strong>9.5</strong>）／CVE-2026-93857（SIPプロキシ、前認証RCE）／CVE-2026-112709・112710（AD認証サービス、前認証RCE）／CVE-2026-93865（FireCluster 同期デーモン認証欠如、遠隔からの root 操作注入）ほか計17件</td></tr>
+  <tr><th>公表</th><td>WatchGuard PSIRT（現地2026-10-27）／Security NEXT 2026-10-29 11:16 JST</td></tr>
+</table>
+<ul>
+  <li>Critical 7件には CVSSv4.0 9.5 のほか 9.2／9.1 相当が複数含まれます。CVE-2026-93857 は SIP プロキシを利用するポリシーが設定されている場合、認証なしで遠隔から任意コード実行が可能です。</li>
+  <li>アドバイザリ公開時点で悪用は確認されていませんが、修正版への更新が強く推奨されます。</li>
+  <li>参照: <a href="https://psirt.watchguard.com/CVE-2026-103594/" target="_blank" rel="noopener noreferrer">WatchGuard PSIRT</a> / <a href="https://www.security-next.com/192102" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>VMware Cloud Foundation「SDDC Manager」が Brotli 脆弱性の影響（VMSA-2026-0008、CVSSv3.1 9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-111497（Google Brotli の境界外書き込み）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.8（SDDC Manager 9.1.1）／7.5（9.1.0 以下および他ブランチ）</td></tr>
+  <tr><th>公表</th><td>Broadcom VMSA-2026-0008（現地2026-10-28）／Security NEXT 2026-10-29 09:58 JST</td></tr>
+</table>
+<ul>
+  <li>SDDC Manager が利用する Node.js が Brotli ライブラリを組み込んでいるため影響を受け、ネットワーク経由で SDDC Manager に到達できる場合は任意コード実行のおそれがあります。</li>
+  <li>修正パッチを準備中で、当面は回避策が案内されています。Brotli は .NET／Node.js／PHP／PowerShell など多数の製品に波及しており、既に悪用も確認されています。</li>
+  <li>参照: <a href="https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/39445" target="_blank" rel="noopener noreferrer">Broadcom VMSA-2026-0008</a> / <a href="https://www.security-next.com/192095" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>Progress WS_FTP Server — 未認証で管理者資格情報に到達し得る脆弱性（CVE-2026-84295、CVSS 10.0）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-84295（10.0）／CVE-2026-90868（9.9）／CVE-2026-84294（7.7）</td></tr>
+  <tr><th>影響</th><td>Progress WS_FTP Server（Windows、2024.0.6／2025.0.3 より前）</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29 16:19 UTC（JST 10-30 01:19）</td></tr>
+</table>
+<ul>
+  <li>CVE-2026-84295 は認証の不備により、未認証の遠隔攻撃者が管理者資格情報を含む機微情報を取得できるおそれがあります（CVSS 10.0）。</li>
+  <li>CVE-2026-90868 はOSコマンドインジェクション、CVE-2026-84294 はパス名制限の不備によるディレクトリ外へのアクセスです。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-84295" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>IBM Langflow OSS に任意コード実行・認可不備が集中（CVSS 9.9／9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-107327・107328・107329（9.9）／CVE-2026-104339・110186（9.8）／CVE-2026-93680（9.8）ほか</td></tr>
+  <tr><th>影響</th><td>IBM Langflow OSS 1.0.0 〜 1.12.4／1.12.8</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29 16:17〜16:20 UTC</td></tr>
+</table>
+<ul>
+  <li>認可欠如、<code>eval</code>／<code>exec</code> に渡るコードの中和不備、コード生成の不適切な制御などが重なり、遠隔の攻撃者（一部は認証済み）が任意コードを実行できるおそれがあります。</li>
+  <li>Python 製の AI エージェント／フロー基盤であり、外部公開している場合は優先的な確認が必要です。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-107327" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>FUXA の Node-RED 機能に認可バイパス（CVE-2026-42922、CVSS 9.8）／Frappe にパストラバーサルRCE（CVE-2026-119145、CVSS 9.9）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-42922（FUXA 1.3.2-2809）／CVE-2026-119145（Frappe 15.121.0 未満・16.34.0 未満）</td></tr>
+  <tr><th>CVSS</th><td>9.8／9.9（いずれも Critical）</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29（Cisco Talos CNA／VulnCheck CNA）</td></tr>
+</table>
+<ul>
+  <li>FUXA は <code>/nodered</code> 機能の認可バイパスにより、未認証のHTTPリクエストで任意コード実行に至るおそれがあります（OT／HMI 向けのSCADA系ソフトウェア）。</li>
+  <li>Frappe はファイルアップロード時に保存先パスを検証しないため、認証済み攻撃者が意図した領域外へファイルを書き込み、任意コード実行に至るおそれがあります。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-42922" target="_blank" rel="noopener noreferrer">NVD（FUXA）</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119145" target="_blank" rel="noopener noreferrer">NVD（Frappe）</a></li>
+</ul>
+
+<h3>AWS Private CA Connector for Kubernetes に認可の不備（CVE-2026-119115、CVSS 8.5）<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-119115</td></tr>
+  <tr><th>影響</th><td>aws-privateca-issuer v1.10.1 より前</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29（JST 10-30 未明）</td></tr>
+</table>
+<ul>
+  <li>発行者（issuer）解決ロジックの認可が不適切なため、認証済みの遠隔ユーザーが下位CA証明書を含む証明書を取得できる可能性があります。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119115" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Apache Struts 2 RESTプラグイン — @StrutsParameter の制限が @JsonAnySetter に適用されない問題（JVN#82782759）<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>JVN#82782759（Apache WW-5712）</td></tr>
+  <tr><th>影響</th><td>Apache Struts 2 バージョン 7.2.1 〜 7.3.0</td></tr>
+  <tr><th>公表</th><td>JVN 2026-10-29 12:00 JST</td></tr>
+</table>
+<ul>
+  <li>REST プラグイン同梱の Jackson 連携（ParameterAuthorizingModule）で、<code>@JsonAnySetter</code> が指定されたフィールド／メソッドに対して認可チェックが行われず、データ改ざんにつながる可能性があります。</li>
+  <li>発生条件は <code>struts.parameters.requireAnnotations=true</code> かつ REST リクエストボディからバインドされる Action／Model で <code>@JsonAnySetter</code> を宣言している場合です。</li>
+  <li>対策は <strong>7.4.0 以降</strong>への更新のうえ <code>struts.rest.anySetter.requireAnnotations=true</code> を設定し、any-setter 利用メソッドへ <code>@StrutsParameter(allowDynamicKeys = true)</code> を付与します。Java／SpringBoot 系アプリでは該当有無の確認をお勧めします。</li>
+  <li>参照: <a href="https://jvn.jp/jp/JVN82782759/" target="_blank" rel="noopener noreferrer">JVN#82782759</a></li>
+</ul>
+
+<h3>Yamaha NWR100 の OS コマンドインジェクションが NVD に登録（CVE-2026-97854、CVSS 9.8）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-97854（JPCERT/CC 採番）</td></tr>
+  <tr><th>CVSS</th><td>CVSSv3.1 9.8／CVSSv4.0 9.3（Critical）</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29 12:17 UTC（JVN 公表は 2026-10-28 14:15 JST）</td></tr>
+</table>
+<ul>
+  <li>ヤマハ製無線LANルーター NWR100（ファームウェア Rev.26.00.07 以前）に、ネットワーク経由・認証不要で任意のOSコマンドを実行される脆弱性です。対策は Rev.26.00.08 への更新です。</li>
+  <li>参照: <a href="https://jvn.jp/vu/JVNVU91027179/" target="_blank" rel="noopener noreferrer">JVNVU#91027179</a></li>
+</ul>
+
+<h3>WordPress プラグインの脆弱性が大量登録（PHP Object Injection が20件超、CVSS 9.8〜10.0）<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-61991（AjaxLoadMore Cache、未認証RCE、<strong>10.0</strong>）／CVE-2026-54856〜62131 ほか（RexCoin・Quirky・Printy 等の PHP Object Injection、9.8）／CVE-2026-113616（LogixFast Auth、パスワードリセットコードの送信先誤りによる認証バイパス、9.8）／CVE-2026-115245（Chat AI with Dispatcher、未認証の任意ファイルアップロード、9.8）／CVE-2026-109516（Bot for Telegram on WooCommerce、認証バイパス、9.8）</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-29 04:18〜16:20 UTC（Patchstack／WPScan 採番）</td></tr>
+</table>
+<ul>
+  <li>同日登録分はWordPressプラグイン関連が多数を占め、未認証で成立する認証バイパス・任意ファイルアップロード・PHP Object Injection が目立ちます。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-61991" target="_blank" rel="noopener noreferrer">NVD</a>（各CVEの詳細はNVDでご確認ください）</li>
+</ul>
+
+<h3>Claude Code / Hermes Agent / OpenClaw — 対象期間内の新規リリースなし</h3>
+<table class="cve-table">
+  <tr><th>Claude Code</th><td>最新 2.1.312（npm 公開 2026-10-27 18:36 UTC＝2026-10-28 03:36 JST、対象期間外）</td></tr>
+  <tr><th>Hermes Agent</th><td>最新 v0.22.5（2026-10-22 リリース）、対象期間内の新規リリースなし</td></tr>
+  <tr><th>OpenClaw</th><td>最新 2026.10.10-beta.4（2026-10-27）、対象期間内の新規リリースなし</td></tr>
+</table>
+<ul>
+  <li>いずれも本対象期間におけるセキュリティ関連の修正を含む新規リリースは確認されませんでした。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ANA、予約情報への不正アクセスを公表 — Amadeus 経由でJALに続き影響拡大</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>全日本空輸（ANA）／委託先: Amadeus IT Group（スペイン）</td></tr>
+  <tr><th>内容</th><td>旅客サービスシステムへの不正アクセスにより、一部顧客の個人情報が第三者に参照された形跡</td></tr>
+  <tr><th>公表</th><td>2026-10-29（ITmedia NEWS 2026-10-29 16:37 JST）</td></tr>
+</table>
+<ul>
+  <li>ANA は2015年4月から国際線で、2026年5月からは国内線でも Amadeus の旅客サービスシステムを利用しており、同システム経由で予約情報が参照された形跡があるとの報告を受けました。対象人数・項目・時期は調査中です。</li>
+  <li>同一案件で、日本航空（JAL）と日本トランスオーシャン航空は10月28日に<strong>約9万2,000人分</strong>（うち約2,000人はメールアドレス、電話番号、パスポート番号等も含む）、大韓航空・アシアナ航空は10月23日に予約番号の流出を公表しています。JALは10月29日10時から17時（土日祝除く）の専用窓口を開設しました。</li>
+  <li>参照: <a href="https://www.anahd.co.jp/group/pr/202610/notification.html" target="_blank" rel="noopener noreferrer">ANA お知らせ</a> / <a href="https://www.jal.co.jp/ja-jp/news/general/2026/other/261028.html" target="_blank" rel="noopener noreferrer">JAL お知らせ</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002722/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>ソニー生命、契約者専用サイトへの不正アクセスで約38.5万件漏えい</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ソニー生命保険</td></tr>
+  <tr><th>規模</th><td>約385,000件（メディケア生命の契約者・被保険者）</td></tr>
+  <tr><th>公表</th><td>2026-10-28（ITmedia NEWS 2026-10-29 15:21 JST）</td></tr>
+</table>
+<ul>
+  <li>「お客さまWEBサービス」などのシステムが不正アクセスを受け、氏名、生年月日、性別、住所、電話番号、証券番号、契約内容が流出しました。マイナンバー、クレジットカード情報、保険料振替口座情報は含まれていません。</li>
+  <li>不正アクセスは10月27日に判明し、対象システムへの外部アクセスを遮断して関連サービスを停止。金融庁への報告を済ませ、原因と影響範囲を調査中です。</li>
+  <li>参照: <a href="https://www.sonylife.co.jp/info/popup/261028_oshirase2.pdf" target="_blank" rel="noopener noreferrer">ソニー生命 ニュースリリース</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002717/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>花キューピット、会員情報最大423万8,242件が漏えい</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>花キューピット（生花通信配達サービス）</td></tr>
+  <tr><th>規模</th><td>最大4,238,242件</td></tr>
+  <tr><th>公表</th><td>2026-10-28（ITmedia NEWS 2026-10-29 13:41 JST）</td></tr>
+</table>
+<ul>
+  <li>「インターネット花キューピット」および法人向け「ビジネス花キューピット」の会員情報（ログイン用ユーザーID、ハッシュ化パスワード、メールアドレス）が漏えいしました。氏名・住所・届け先情報などは漏えいしていないとしています。</li>
+  <li>不正アクセスは10月14日〜15日に発生し、10月19日に漏えいを確認。攻撃経路は遮断済みで、個人情報保護委員会・警察への報告とパスワード変更の推奨を行っています。</li>
+  <li>参照: <a href="https://www.hana-cupid.co.jp/news/news/20261028/" target="_blank" rel="noopener noreferrer">花キューピット プレスリリース</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002711/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>グッドスマイルカンパニー、決済ページに不正プログラム設置 — カード番号全桁2800人・下4桁40万枚分</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>グッドスマイルカンパニー（グッスマ）</td></tr>
+  <tr><th>規模</th><td>カード番号全16桁＋セキュリティコード: 約2,800人／カード番号下4桁＋有効期限: 402,466枚</td></tr>
+  <tr><th>公表</th><td>2026-10-29（ITmedia NEWS 2026-10-29 14:56 JST）</td></tr>
+</table>
+<ul>
+  <li>10月23日午前7時に直販サイトを閉鎖。顧客情報が複数回閲覧されたほか、<strong>10月21日13:55〜10月23日7:00の間、カード決済ページに不正なプログラムが設置</strong>されていたことが判明しました。</li>
+  <li>原因はシステムの一部に存在した脆弱性を悪用され管理者権限を取得されたこととみられています（最近報告されたPHPの脆弱性ではないとのこと）。原因箇所は改修済みで、サイト再開時期は未定です。</li>
+  <li>参照: <a href="https://support.goodsmile.com/hc/ja/articles/63718007508761" target="_blank" rel="noopener noreferrer">グッドスマイルカンパニー 第3報</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002716/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>松屋、公式アプリとWebサイトを停止 — 不正アクセスを検知</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>松屋フーズ／松屋フーズホールディングス</td></tr>
+  <tr><th>影響</th><td>公式アプリ、Webサイト、松弁ネット、モバイルオーダー、松弁デリバリーが利用不可</td></tr>
+  <tr><th>公表</th><td>2026-10-29（ITmedia NEWS 2026-10-29 13:44 JST、15:08 更新）</td></tr>
+</table>
+<ul>
+  <li>外部からの不正アクセスを検知したとして、飲食チェーン「松屋」の公式アプリ・Webサイト等を停止しています。10月28日19時頃からアプリ注文不可の報告が相次ぎ、22時過ぎにはWebサイトにも接続できない状態となりました。</li>
+  <li>原因と影響範囲の特定、被害拡大防止と安全性の確認を進めています。復旧見通しは未公表です。</li>
+  <li>参照: <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002714/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>ライブ配信「ツイキャス」が全面停止 — 復旧までに「相応の時間」</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>モイ（東証グロース）</td></tr>
+  <tr><th>影響</th><td>ツイキャス（累計登録ユーザー4,000万人超）のサービス停止、コーポレートサイトも停止</td></tr>
+  <tr><th>公表</th><td>2026-10-28（ITmedia NEWS 2026-10-29 08:56 JST）</td></tr>
+</table>
+<ul>
+  <li>10月28日10時30分頃にシステム異常を検知し、外部からの不正アクセスの痕跡を発見。直ちにネットワークを遮断し、10時40分頃からサービスを停止しました。</li>
+  <li>影響範囲は社内の専門チームが調査中で、復旧には相応の時間を要する見込みです。業績への影響は精査中としています。</li>
+  <li>参照: <a href="https://ssl4.eir-parts.net/doc/5031/tdnet/2899779/00.pdf" target="_blank" rel="noopener noreferrer">適時開示（PDF）</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002692/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>経済産業省「デントリネット」が不正アクセスで停止 — 電力・ガス事業者の定期報告サイト</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>経済産業省 電力・ガス取引監視等委員会</td></tr>
+  <tr><th>影響</th><td>小売電気事業者・ガス小売事業者等の定期報告サイトが停止（情報流出の有無は確認中）</td></tr>
+  <tr><th>公表</th><td>2026-10-28（ITmedia NEWS 2026-10-29 10:31 JST）</td></tr>
+</table>
+<ul>
+  <li>10月27日未明に不正アクセスがあり、28日に同委員会が確認。復旧までの間、報告は電子メールで受け付けています。</li>
+  <li>参照: <a href="https://www.meti.go.jp/press/2026/10/20261028003.html" target="_blank" rel="noopener noreferrer">経産省 ニュースリリース</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002696/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>バンダイナムコ、メールアドレス34万6,247件漏えい — ユミルリンクへの不正アクセスが原因</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>バンダイナムコエンターテインメント／BANDAI SPIRITS（委託先: ユミルリンク）</td></tr>
+  <tr><th>規模</th><td>346,247件（メールアドレス、バンダイナムコID内部識別子）</td></tr>
+  <tr><th>公表</th><td>2026-10-27（ITmedia NEWS 2026-10-29 09:57 JST）</td></tr>
+</table>
+<ul>
+  <li>「THE GUNDAM BASE MEMBERS」登録者のメールアドレス等が漏えい。ログインパスワード、クレジットカード情報、氏名、住所、購入履歴は含まれていません。</li>
+  <li>ユミルリンクへの不正アクセスをめぐっては、メール配信サービス「Cuenote FC」で漏えいが<strong>延べ5,162万8,280件</strong>に拡大。JR東海、りそな銀行、野村證券、サイボウズなど各社がメールアドレス流出の可能性を発表しています。</li>
+  <li>参照: <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002694/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>ベネフィット・ワンの委託先に不正アクセス — セゾン会員向け優待サービスで約2.9万人分漏えい</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ベネフィット・ワン（委託先: フォレステック）</td></tr>
+  <tr><th>規模</th><td>29,465人（「トク買」会員）</td></tr>
+  <tr><th>公表</th><td>2026-10-28（ITmedia NEWS 2026-10-29 12:40 JST）</td></tr>
+</table>
+<ul>
+  <li>10月14日〜20日に断続的な不正アクセスがあり、21日に一部を検知してサービスを一時停止。24〜25日にも追加の不正アクセスを検知しています。</li>
+  <li>決済システム連携に用いるベネフィット・ワンの認証関連情報も一部流出したおそれがあります。クレディセゾンの管理システムからの漏えいではないとしています。</li>
+  <li>参照: <a href="https://corp.benefit-one.co.jp/company/news/news/2026/20261028/20261028.pdf" target="_blank" rel="noopener noreferrer">ベネフィット・ワン お知らせ（PDF）</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002707/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>医療機器商社・丸木医科器械で基幹システムがダウン（FAXで注文受付）／石油資源開発が利用する「blastmail」に不正アクセス</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>丸木医科器械／石油資源開発（利用先: ラクスライトクラウド「blastmail」）</td></tr>
+  <tr><th>影響</th><td>医療機器商社の基幹システム停止により注文受付をFAXで代替／メール配信ASPへの不正アクセス</td></tr>
+  <tr><th>公表</th><td>ScanNetSecurity 2026-10-29（各記事 08:05 頃）</td></tr>
+</table>
+<ul>
+  <li>丸木医科器械はサイバー攻撃により基幹システムがダウンし、FAXによる注文受付を余儀なくされています。</li>
+  <li>石油資源開発が利用するラクスライトクラウドのASPサービス「blastmail」にも不正アクセスが発生。メール配信系委託先への攻撃が引き続き連鎖しています。</li>
+  <li>参照: <a href="https://scan.netsecurity.ne.jp/article/2026/10/29/56614.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（丸木医科器械）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/29/56615.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（blastmail）</a></li>
+</ul>
+
+<h3>Eストアー「ショップサーブ」最終報 — 漏えい対象者数は約2,335万6,000人</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社Eストアー（ECサイト構築・運営支援サービス「ショップサーブ」）</td></tr>
+  <tr><th>規模</th><td>約23,356,000人（うちクレジットカード情報の一部を含むのは約2,096,900人、対象店舗7,858店）</td></tr>
+  <tr><th>公表</th><td>Eストアー最終報 2026-10-16／ScanNetSecurity が 2026-10-29 に報道</td></tr>
+</table>
+<ul>
+  <li>2026年5月21日〜8月1日に第三者がアプリケーションの脆弱性を悪用し、データベース内の購入者情報を外部送信していたことが判明しました。8月1日の認知後は攻撃が成立せず、バックドア等の設置も認められていません。</li>
+  <li>漏えい項目は購入者情報（氏名、住所、電話番号、メールアドレス等）、会員IDと暗号化パスワード、クレジットカード情報の一部（名義、番号の先頭6桁と下4桁、有効期限）など。個別連絡は完了し、二要素認証の導入などの再発防止策を実施しています。</li>
+  <li>参照: <a href="https://estore.jp/press/20261016/" target="_blank" rel="noopener noreferrer">Eストアー 最終報</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/29/56620.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>国内小規模案件 — ドトールコーヒー、ギフティ、富士急ハイランド</h3>
+<table class="cve-table">
+  <tr><th>ドトールコーヒー</th><td>システム侵害を10月20日に検知。都内4店舗の退職者を含む従業員951人の氏名・住所・電話番号・生年月日・銀行口座番号等が流出した可能性。個人情報保護委員会へ報告済み（Security NEXT 2026-10-29 23:01 JST）</td></tr>
+  <tr><th>ギフティ</th><td>10月25日にシステムの脆弱性を突いた不正アクセスを受け、電子ギフト「eギフト」が第三者により不正発行。10月26日時点の損失見込みは約5億5,000万円。利用者の金銭的損失・個人情報流出は確認されていない（Security NEXT 2026-10-29 22:00 JST）</td></tr>
+  <tr><th>富士急ハイランド</th><td>9月4日〜7日に公式アプリと会員サイト「CLUB フジQ」がパスワードリスト攻撃を受け、会員アカウント159件が不正ログイン。氏名・居住都道府県・電話番号・生年月日・性別・メールアドレス等がアクセスされた可能性。一部はクレジットカード番号の一部・有効期限・名義も含む。当該アカウントのパスワード初期化と個人情報保護委員会への報告を実施（Security NEXT 2026-10-29 21:43 JST）</td></tr>
+</table>
+<ul>
+  <li>参照: <a href="https://www.security-next.com/192077" target="_blank" rel="noopener noreferrer">Security NEXT（ドトールコーヒー）</a> / <a href="https://www.security-next.com/191987" target="_blank" rel="noopener noreferrer">Security NEXT（ギフティ）</a> / <a href="https://www.security-next.com/192167" target="_blank" rel="noopener noreferrer">Security NEXT（富士急ハイランド）</a></li>
+</ul>
+
+<h3>個人情報保護委員会 — 不正アクセスによる漏えい等、半年余りでのべ約2億6,000万人</h3>
+<table class="cve-table">
+  <tr><th>公表</th><td>個人情報保護委員会 第374回委員会（2026-10-28）／ITmedia NEWS 2026-10-29 19:18 JST</td></tr>
+  <tr><th>内容</th><td>2026年4月1日〜10月16日の報告2094件、対象者数は延べ約2億6,000万人（日本の総人口の2倍超）</td></tr>
+</table>
+<ul>
+  <li>月別報告件数は4月166件から9月303件へ増加し、<strong>10月は16日時点で830件</strong>と半月で9月の約2.7倍に達しました。10月分が期間全体の約4割を占め、1日当たりでは約52件（9月は約10件）と5倍以上に増えています。</li>
+  <li>数値は重複を含む延べ人数であり、実際に漏えいした事案だけでなく漏えいのおそれがある事案も含みます。民間事業者から委員会へ直接報告された事案に限った集計です。</li>
+  <li>参照: <a href="https://www.ppc.go.jp/files/pdf/261028_sankoushiryou-2.pdf" target="_blank" rel="noopener noreferrer">個人情報保護委員会 参考資料（PDF）</a> / <a href="https://www.itmedia.co.jp/news/article/2610/29/2000002730/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
