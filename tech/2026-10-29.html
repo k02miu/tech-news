@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-29 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-29 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.312</strong>（2026-10-28 05:35 JST 公開）です。RSSフィードの最新項目は 2.1.312 で、公開時刻は対象期間開始（2026-10-28 09:00 JST）の直前でした。2.1.311 は 2026-10-27 07:02 JST 公開です。</p>
+
+<h3>🔧 参考: 最新版 v2.1.312 の主な内容</h3>
+<ul>
+  <li><strong>OIDC のユーザー識別クレーム</strong>: Claude apps ゲートウェイに <code>oidc.user_id_claim</code> を追加し、<code>sub</code> 以外の id_token クレーム（Microsoft Entra ID の <code>oid</code> など）で利用者を識別可能に。</li>
+  <li><strong>クリックで送信</strong>: フルスクリーン表示中、キューに入ったメッセージ下の「to send now」ヒントをクリックすると即時送信されます。</li>
+  <li><strong>フックの並行実行制限</strong>: プロンプト／エージェントフックはセッションあたり最大24件（サブエージェント含む）、タイムアウト超過で待機中のものは最大12件に制限。</li>
+  <li><strong>未認識モデル名の扱い</strong>: Bedrock / Vertex / Foundry / Mantle で、カスタムデプロイ名などに対し短いシステムプロンプトを使用。<code>CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=0</code> で従来動作を維持できます。</li>
+  <li><strong>テレメトリ削減</strong>: <code>claude_code.safety_event</code> OpenTelemetry イベントの送信を停止。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-312">Claude Code changelog — 2.1.312</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.10.8</strong>（2026-10-27 20:56 JST 公開）です。beta チャネルでは <strong>v2026.10.10-beta.4</strong>（2026-10-27 14:39 JST 公開）が最新です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.243</h2>
+<p>2026-10-28 13:08 JST 公開。Orca のブラウザで Chrome 拡張機能（実験的）が使えるようになり、ターミナルのエージェントを終了した会話をそのまま Chat で継続できるようになりました。再起動後のワークツリー復元の高速化、ターミナル安定性の改善も含みます。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Chrome 拡張機能（実験的）</strong>: Chrome ウェブストアの「Add to Orca」から拡張機能を追加でき、Bitwarden や 1Password などのパスワードマネージャーが Orca のブラウザ内でログイン入力に使えます。既定はオフで、ローカルのブラウザプロファイルにのみ適用。広告ブロッカーはインストールできるもののブロックは未対応、Tampermonkey など一部拡張は動作しません。</li>
+  <li><strong>ターミナルのエージェントセッションを Chat へ継続</strong>: ターミナルで Claude や Codex を終了しても、同じ会話を Chat で継続可能。ターミナルタブは開いたまま残ります。Claude のチャットはモデル変更をまたいでも承認設定を保持し、動作中のチャットを閉じる際は確認が出ます。</li>
+  <li><strong>ワークツリーの復元高速化</strong>: ローカルワークツリーをターミナル復元より先に読み込み、検出中は空リストではなくサイドバーに進行中の表示を出します。</li>
+  <li><strong>ターミナルの安定化</strong>: Windows ターミナルは幅変更をまたいで履歴を保持、スリープしたターミナルは離脱時のフォルダで復帰、macOS 標準 bash は DEBUG トラップ変更後もコマンド追跡を維持、リモートホスト上の pi からのコピーがクリップボードに届くよう修正。</li>
+  <li><strong>オーケストレーション</strong>: ワーカーのハートビート間隔を選択、またはオフに設定可能。待機済みワーカーのコマンドポーリングを止めて CPU 使用量を削減。既存ワーカーは従来の間隔を維持します。</li>
+  <li><strong>UI・その他</strong>: ネイティブ風のコンパクトメニュー、VS Code 風の Markdown ハイライト（見出しのスティッキー表示）、Settings のプロキシ経由でのアップデート確認。Quit / Stop All Sessions、チャット内の数式、行範囲指定の Copy Remote URL、ターミナルの IME ハイライト、Windows の fnm、日本語・中国語翻訳の修正も含まれます。</li>
+  <li><strong>モバイル／Web</strong>: スマートフォンにライト／ダークテーマ、折りたたみ iPhone Duo 対応、Quick Look での PDF 表示、チャットのコピーボタンを追加。多くの画面がデスクトップと同じルールに従うようになり、長いチャットの入力・スクロールも高速化しました。</li>
+</ul>
+
+<h3>⚠️ アップグレード時の注意</h3>
+<ul>
+  <li>新しいターミナルは新しいターミナルホストで起動します（今回のターミナル修正を反映するため）。更新前に開いていたターミナルは、閉じるまで旧ホスト上で動作を継続します。</li>
+  <li>ブラウザ拡張機能を使うには <strong>Settings → Experimental → Browser extensions</strong> を有効化して再起動が必要です。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.243">Orca v1.4.243</a></p>
+
+<h2>⚡ Next.js</h2>
+<p>対象期間内に安定版リリースは確認されませんでした。最新の安定版は <strong>v16.4.3</strong>（2026-10-23 22:40 JST 公開）です。canary チャネルでは <strong>v16.5.0-canary.30</strong> が 2026-10-29 08:43 JST に公開されました。</p>
+<h3>🔧 v16.5.0-canary.30 の主な変更</h3>
+<ul>
+  <li><strong>Agent Feedback</strong>: 想定済みのアップグレード通知を無視するよう修正し、モデルのメタデータを追加。フィードバックを確認する CLI も追加されました。</li>
+  <li><strong>Turbopack</strong>: フォーマットエラー後にトレースファイルの変更を待機するよう修正。</li>
+  <li><strong>その他</strong>: <code>jsonwebtoken</code> を <code>fast-jwt</code> に置き換え、フォントデータを更新。<code>experimental.hydrationChangeEvent</code> フラグを追加。サーバー参照トランスフォームで <code>export const foo = function bar(){}</code> 形式を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>Amazon Bedrock AgentCore CLI v1.0 が一般提供開始</strong>（2026-10-29 05:00 JST 公開）: <code>@aws/agentcore</code> 1.0.0 として再構築され、起動の高速化、一貫したコマンド体系、対応リソースの拡充を実現。ターミナルから AI エージェントの作成・開発・デプロイ・運用が可能です。</li>
+  <li><strong>Lambda Managed Instances が SOCI 遅延読み込みに対応</strong>（2026-10-29 03:44 JST 公開）: OCI イメージでパッケージした Event Functions について、Seekable OCI（SOCI）による遅延読み込みをサポート。必要な部分だけを取得するため起動が高速化します。</li>
+  <li><strong>OpenSearch Serverless 次世代版に時系列コレクション</strong>（2026-10-29 03:35 JST 公開）: ログ・メトリクス・トレース・イベントデータをクラスタ管理なしで取り込み・保存・分析可能。取り込みスパイクを自動吸収し、直近データは高速、長期履歴も低コストで検索できます。</li>
+  <li><strong>Amazon Quick のスマート承認</strong>（2026-10-29 03:28 JST 公開）: エージェントの代理操作（メール送信、レコード更新、チケット作成など）について、重要度の低い承認プロンプトを削減しつつ人による監督を維持する承認レイヤー。</li>
+  <li><strong>EKS Auto Mode が Kubernetes Gateway API に対応</strong>（2026-10-29 02:33 JST 公開）: Gateway / HTTPRoute リソースでアプリケーションのロードバランシングを定義でき、基盤となる AWS リソースは EKS Auto Mode が自動でプロビジョニング・管理します。</li>
+  <li><strong>Lambda durable functions のテレメトリエクスポート</strong>（2026-10-29 03:00 JST 公開）: Durable Execution Telemetry Exporter プラグインにより、durable 実行のステップ履歴を任意の出力先へエクスポート可能。標準の保持期間を超えた履歴の保全にも利用できます。</li>
+  <li><strong>ECS Managed Instances の統合最適化</strong>（2026-10-29 03:00 JST 公開）: 複数の低稼働インスタンスに散ったタスクをまとめて配置する cross-instance consolidation と、Spot 統合を追加。稼働率向上とコスト削減を狙います。</li>
+  <li><strong>EKS Dashboard で CA ローテーションを可視化</strong>（2026-10-29 03:07 JST 公開）: リージョン・アカウント横断でクラスタの証明書認証局ローテーション状況を一覧表示し、対応が必要な箇所を把握できます。</li>
+  <li><strong>AWS Backup のリストアテストが Redshift に対応</strong>（2026-10-28 17:00 JST 公開）: バックアップのリストアテストを自動・定期的に実行し、成功可否と所要時間を測定できます。</li>
+  <li><strong>IAM Identity Center の Identity Store が EventBridge 通知に対応</strong>（2026-10-28 17:00 JST 公開）: ユーザー・グループ・メンバーシップ・Identity Store 自体の作成／更新／削除をリアルタイムに EventBridge へ配信します。</li>
+  <li><strong>RDS for Oracle が 2026年9月 MRP に対応</strong>（2026-10-29 06:00 JST 公開）: Oracle Database 19c と 26ai 向けの Monthly Recommended Patch を適用可能に。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<p>2026-10-28 のリリースノート（2026-10-28 16:00 JST 公開）で、AlloyDB for PostgreSQL の AI・ベクトル検索機能が複数 GA となりました。</p>
+<h3>🔧 主な変更</h3>
+<ul>
+  <li><strong>4階層ツリー（4LT）ScaNN ベクトルインデックス</strong>: PostgreSQL 17 以降で、最大100億行のベクトルを扱える 4LT ScaNN インデックスをサポート。自動インデックスメンテナンスにも対応します。</li>
+  <li><strong>ストリーミング動作</strong>: <code>scann.satisfy_limit</code> を <code>relaxed_order</code> に設定すると、LIMIT 句を満たすまで追加のリーフパーティションを検索し、フィルタ付き検索の再現率が向上。並列スキャン向けに <code>scann.enable_parallel_satisfy_limit</code> も用意されています。</li>
+  <li><strong>Vector assist</strong>: 埋め込み生成、クエリ最適化、HNSW などのベクトル型インデックス作成を含め、本番向けベクトル検索の構築・管理を簡素化。</li>
+  <li><strong>インデックス規模の拡大</strong>: PostgreSQL 17 以降で <code>num_leaves</code> の上限が 30,000,000 から 104,857,600 に拡大。</li>
+  <li><strong>外部検索連携</strong>: <code>external_search_fdw</code> 拡張で Elasticsearch / Solr / OpenSearch に接続し、データベースから直接クエリ可能に。</li>
+  <li><strong>全文検索</strong>: PostgreSQL 17 以前向けに <code>rum</code> 拡張をサポート。位置情報をインデックスに保持し、フレーズ検索と関連度ランキングを高速化します。</li>
+  <li><strong>修正</strong>: ScaNN 4階層インデックス構築時のメモリ使用量推定を精度向上し、OOM を防止。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開）、<strong>Azure</strong>（対象期間内の公式アップデート情報を取得できませんでした）、<strong>Python</strong>（最新は 3.14.10、2026-10-25 公開）、<strong>Django</strong>（最新は 6.1.2、2026-10-06 公開）、<strong>Java / Spring Boot</strong>（最新の公開版は 4.1.2、4.2.0 系は RC1 まで）、<strong>Hono</strong>（最新は 4.13.14、2026-10-25 公開）、<strong>Claude API/SDK</strong>（最新は @anthropic-ai/sdk 1.3.0、2026-10-24 08:31 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
