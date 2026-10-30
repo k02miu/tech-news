@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-31 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-10-31 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+<p>対象期間（2026-10-30 08:00 〜 2026-10-31 08:00 JST）に公表された脆弱性・アドバイザリのうち、主要なものをまとめました。NVDには2026-10-30付で658件のCVEが新規登録され、このうちCVSSv3.1が「Critical」のものは3件でした。</p>
+
+<h3>「GitLab」の悪用脆弱性、根本原因は Ruby の正規表現エンジン「Onigmo」 — 関連CVE 4件と修正版<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-97229（CVSSv3.1 10.0）／CVE-2026-89078／CVE-2026-93577／CVE-2026-110264</td></tr>
+  <tr><th>影響</th><td>GitLab CE・EE（修正版 19.4.2／19.3.5／19.2.8）／Ruby（正規表現エンジン Onigmo を利用する環境）</td></tr>
+  <tr><th>公表</th><td>Ruby開発チームのアドバイザリ 現地2026-10-23／GitLab 修正版公開／Security NEXT 2026-10-30 11:01 JST</td></tr>
+</table>
+<ul>
+  <li>すでに悪用が確認され、米CISAの「悪用が確認された脆弱性カタログ（KEV）」に登録されている CVE-2026-97229 について、根本原因は GitLab が依存する Ruby の正規表現エンジン「Onigmo」の不具合であることが判明しました。</li>
+  <li>同一原因のCVEは4件で、<strong>CVE-2026-97229</strong>（CI/CD設定中の正規表現処理に起因する整数オーバーフロー、未認証で任意コード実行）のほか、<strong>CVE-2026-89078</strong>（正規表現解析処理でのメモリ二重解放）、<strong>CVE-2026-93577</strong>・<strong>CVE-2026-110264</strong>（コンパイル時の整数オーバーフロー）です。</li>
+  <li>GitLab だけでなく Ruby を利用する他製品にも波及し得るため、依存関係の洗い出しと修正版への更新が必要です。GitLab の修正版は 19.4.2／19.3.5／19.2.8 が公開されています。</li>
+  <li>参照: <a href="https://www.ruby-lang.org/en/news/2026/10/23/regexp-fixes-for-gitlab-cves/" target="_blank" rel="noopener noreferrer">Ruby アドバイザリ</a> / <a href="https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-4-2-released/" target="_blank" rel="noopener noreferrer">GitLab パッチリリース</a> / <a href="https://www.security-next.com/192222" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>Ivanti Connect Secure に追加脆弱性2件 — 3件を組み合わせた連鎖攻撃を確認<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-111357（CVSSv3.1 8.8）／CVE-2026-118527（CVSSv3.0 4.3）／既報 CVE-2026-104935（認証回避）</td></tr>
+  <tr><th>影響</th><td>Ivanti Connect Secure（ICS）</td></tr>
+  <tr><th>公表</th><td>Ivanti セキュリティアドバイザリ更新 現地2026-10-29／Security NEXT 2026-10-30 10:09 JST</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-111357</strong> は重要な機能における認証の欠如で、ローカル環境で認証済みの場合に権限を昇格できます（CVSSv3.1 8.8、High）。<strong>CVE-2026-118527</strong> は予測可能なファイル名が使われる問題で、リモートの認証済み攻撃者がディスク上の既知の場所へ任意の内容のファイルをアップロードできます。</li>
+  <li>同社は、既報の認証回避脆弱性 <strong>CVE-2026-104935</strong> と今回公表の2件を<strong>連鎖的に悪用する攻撃</strong>が確認され、一部顧客が影響を受けたことを把握したとしています。侵害が疑われる場合は指定の復旧手順に従うことが求められます。</li>
+  <li>参照: <a href="https://hub.ivanti.com/s/article/Security-Advisory-Ivanti-Connect-Secure-CVE-2026-104935" target="_blank" rel="noopener noreferrer">Ivanti アドバイザリ</a> / <a href="https://www.security-next.com/192205" target="_blank" rel="noopener noreferrer">Security NEXT</a></li>
+</ul>
+
+<h3>NVD 新規登録の Critical 3件 — ハードコード秘密値による管理者権限奪取と pickle デシリアライズRCE<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-119597（9.8）／CVE-2026-119660（9.8）／CVE-2026-119706（9.8）</td></tr>
+  <tr><th>影響</th><td>OpenDeepWiki 2.0.6以下／MuseBot 2.0.0未満／InternLM lmdeploy 0.9.0〜0.18.0</td></tr>
+  <tr><th>公表</th><td>NVD 新規登録 2026-10-30 14:16〜16:17 UTC（JST 23:16〜2026-10-31 01:17、VulnCheck採番）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-119597</strong>: OpenDeepWiki 2.0.6以下は <code>appsettings.json</code> に JWT 署名鍵がハードコードされており、未認証の攻撃者が既知の鍵で Admin ロールを持つトークンを偽造し、<code>/api/admin</code> 配下（ユーザー・ロール・リポジトリ・設定・APIキー）を操作できます。</li>
+  <li><strong>CVE-2026-119660</strong>: MuseBot 2.0.0未満は既定のセッション鍵 <code>muse_bot_session_key</code> がハードコードされており、未認証で管理者セッションを偽造し、パスワードハッシュ・チャット記録・ボット設定の読み出しやボット停止が可能です。</li>
+  <li><strong>CVE-2026-119706</strong>: InternLM lmdeploy 0.9.0〜0.18.0 の <code>/update_weights</code> エンドポイントは <code>serialized_named_tensors</code> に渡された pickle を検証せずデシリアライズするため、未認証で api_server プロセス権限のOSコマンド実行に至ります。PoC が公開済みで自動化可能と評価されています。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119597" target="_blank" rel="noopener noreferrer">NVD（119597）</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119660" target="_blank" rel="noopener noreferrer">NVD（119660）</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119706" target="_blank" rel="noopener noreferrer">NVD（119706）</a></li>
+</ul>
+
+<h3>openclaw 2026.10.10-beta.5 — サンドボックス境界と資格情報保護の修正群<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>版</th><td>openclaw 2026.10.10-beta.5（プレリリース）</td></tr>
+  <tr><th>公表</th><td>GitHub Releases 2026-10-30 03:57 UTC（JST 12:57）</td></tr>
+</table>
+<ul>
+  <li><strong>セキュリティ境界</strong>: exec の allowlist モードで <code>test</code>／<code>[ -v</code> のオペランドに承認を必須化、汎用 node invoke 経由のブラウザプロキシコマンドを拒否、サンドボックス内の子プロセスが CLI ベースのモデルを解決する場合は fail closed、<code>workspaceOnly</code> を Gateway 構築の delegate・メディアツールへ伝播、未解決の Microsoft Teams 許可リストを制限的に維持、細工した Teams HTML が送信者チェック前に Gateway を停止させる問題の解消、固定された Android Gateway 接続での Control UI 埋め込み認証の拒否、シンボリックリンクされたワークスペース skill ルートの監査を実施。</li>
+  <li><strong>資格情報の露出防止</strong>: ブラウザのペアリング資格情報を opener プロセスの引数から除外、Google OAuth クライアントシークレットをログでマスク、MCP の CLI 検査から資格情報をレダクト、拒否された検索エンドポイントのエラーから資格情報を除去、不正なパイプ入力によるモデル資格情報の破損を防止。</li>
+  <li><strong>依存関係</strong>: fast-uri の更新、A2UI／Discord 入力向けの同梱 Zod 走査の制限、Microsoft Teams 向けにパッチ済み MSAL を限定適用、IMAP 向けに nodemailer の送信者解析修正を取り込み。</li>
+  <li>なお Node 互換性の修正により、Node 24.22.1 または 26.12.1 は<strong>セキュリティ上の推奨</strong>として案内されています（必須要件から変更）。</li>
+  <li>参照: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.10-beta.5" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<h3>Claude Code 2.1.314 — 作業ディレクトリ外への書き込みを拒否する権限設定を追加<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>版</th><td>Claude Code 2.1.314</td></tr>
+  <tr><th>公表</th><td>npm 公開 2026-10-30 01:06 UTC（JST 10:06）</td></tr>
+</table>
+<ul>
+  <li><code>permissions.blockWritesOutsideWorkingDirectories</code> が追加されました。有効にすると、Write／Edit／NotebookEdit は<strong>すべての権限モードで</strong>作業ディレクトリ外のパスを拒否します。</li>
+  <li>サンドボックス保護が <code>claude -p --resume</code>／<code>--continue</code> で入ったワークツリーにも適用されない問題、サンドボックス除外コマンドの設定説明の誤り、管理設定の TLS 信頼設定が Desktop セッションへ適用されない問題など、権限・サンドボックス周辺の修正が継続しています。</li>
+  <li>参照: <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.314" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<h3>その他のアドバイザリ・登録（主要なもの）</h3>
+<ul>
+  <li><strong>Hermes Agent</strong>: 対象期間内に新規リリースはありません（最新は v0.22.5、2026-10-22公開）。</li>
+  <li><strong>Keycloak</strong>（Red Hat Build of Keycloak）: 認可要求に必須アクション（プロフィール確認、規約同意等）を指定する <code>kc_action</code> パラメータの取り扱い不備により、必須チャレンジが省略されて認可コードが発行され得る問題（CVE-2026-118959）。あわせて、リモートリソース管理が有効な場合に他者の UMA リソースを更新できてしまう認可不備（CVE-2026-118947、CVSSv3.1 4.3）も登録。</li>
+  <li><strong>Apple Xcode 27.2</strong>: 状態管理の改善により機微なユーザーデータへアクセスされ得る認可の問題（CVE-2026-112602）と、シンボリックリンクの取り扱い改善により任意ファイルを読み取られ得る問題（CVE-2026-112605）を修正。</li>
+  <li><strong>Ghostscript</strong>: 細工した TrueType フォントのレンダリング時にバッファサイズ検査が迂回され、ヒープベースのバッファオーバーフローが生じる問題（CVE-2026-110133、CVSSv3.1 5.8）。</li>
+  <li><strong>Drupal</strong>: Sector Distribution（10.3.3／10.4.2 より前）の XSS、Authenticator Login Plus (2FA)（1.0.1 未満）の認証バイパスなど、貢献モジュールのアドバイザリが複数公開。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>So-net 会員データベースへの不正アクセス — 会員情報 214万1,986件が漏えい<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ソニーネットワークコミュニケーションズ（インターネット接続サービス「So-net」）</td></tr>
+  <tr><th>時期</th><td>不正アクセス 2026-10-19／確認 2026-10-23／公表 2026-10-27（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+  <tr><th>規模</th><td>2,141,986件（現会員 1,869,771件、2026年3月以降の退会者 272,215件）＋ plala（Sコース）443,495件</td></tr>
+</table>
+<ul>
+  <li>漏えいしたのは氏名、電話番号、メールアドレス、ユーザーID、生年月日、性別、インターネット接続用ID。このほか、メールサービスのメールアドレスとパスワード（メールサービス（G）24,655件、A-Box 17,672件、ソネットVAIOメール 7,005件、PostPet メールアカウント 5,069件）、<strong>銀行口座情報16件</strong>、パスワード再設定用の会員通知書情報7件も対象です。</li>
+  <li>同社は不正アクセス確認後に対象サーバを停止し、侵入元からの通信を遮断。対象顧客へ個別に連絡しています。</li>
+  <li>参照: <a href="https://www.sonynetwork.co.jp/corporation/release/2026/v5e5u00000000zwj-att/20261027.pdf" target="_blank" rel="noopener noreferrer">So-net 公式リリース（PDF）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56633.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>阪急百貨店・阪神百貨店の予約サイトに不正アクセス — 「H2O ID」約126万件の個人情報が漏えい<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>エイチ・ツー・オー リテイリング／阪急阪神百貨店</td></tr>
+  <tr><th>時期</th><td>不正アクセス確認 2026-10-16〜17／漏えい判明 2026-10-19（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+  <tr><th>規模</th><td>H2O ID 会員 約126万件（ほぼ全会員）</td></tr>
+</table>
+<ul>
+  <li>「阪急百貨店・阪神百貨店予約サイト」を経由した顧客管理システムへの不正アクセスにより、H2O ID、氏名、性別、メールアドレス、郵便番号、住所、電話番号、年齢、生年月日などが漏えいしました。</li>
+  <li>翌日に「HANKYU HANSHIN E-STORES」と「Remo Order」でも不正アクセスを確認し、両サイトのシステム全体を停止。同サービスでは商品注文履歴、クレジットカード情報の一部（カード種別・下4桁・名義・有効期限）、ポイントカード情報の一部、アドレス帳の情報を保持しています。</li>
+  <li>参照: <a href="https://data.swcms.net/file/h2o-retailing/ja/news/auto_20261019552921/pdfFile.pdf" target="_blank" rel="noopener noreferrer">H2O リテイリング公式リリース（PDF）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56625.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>ニフティの回線申込・受付管理システムに不正アクセス — 最大54万2,513件に影響<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>ニフティ（＠nifty光、＠nifty MAX光、＠nifty auひかりプラス）</td></tr>
+  <tr><th>時期</th><td>検知 2026-10-19 10:20頃／公表 2026-10-19（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+</table>
+<ul>
+  <li>顧客が直接利用する申込フォームとは別の、同社側で情報登録を行う管理用ツールに対する外部からの不正アクセスです。2019年以降に同社Webサイト以外から回線を申し込んだ顧客の会員ID、氏名、性別、生年月日、住所、電話番号、メールアドレス、最大542,513件が影響を受けた可能性があります。</li>
+  <li>同社は当該通信元からのアクセスを遮断し、外部専門機関と連携して調査を進めています。</li>
+  <li>参照: <a href="https://www.nifty.co.jp/newsrelease/nifty202610195434.htm" target="_blank" rel="noopener noreferrer">ニフティ公式リリース</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56629.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>エンタッチにランサムウェア攻撃 — 製薬企業向けデータベースから情報流出<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>エンタッチ（東邦ホールディングス傘下、リモートディテーリング事業等）</td></tr>
+  <tr><th>時期</th><td>攻撃 2026-10-09／発覚 2026-10-13／公表 2026-10-19（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+</table>
+<ul>
+  <li>ランサムウェア攻撃グループを名乗る第三者による不正アクセスで、同社データベース内の情報が流出しました。医療従事者の氏名・所属医療機関・所在都道府県、プラットフォームの管理者やディテーリング担当者の氏名・メールアドレス、予約時の連絡先電話番号・メールアドレス、予約対象の製品名・コンテンツ名、予約作成日時、面談日時、面談ステータスが対象です。</li>
+  <li>同社はデータベースアクセス用ソフトウェアへのセキュリティパッチ適用、アクセスログの保全、パスワードの強制変更を実施し、外部専門機関へ調査を依頼しています。</li>
+  <li>参照: <a href="https://entouch.jp/news/" target="_blank" rel="noopener noreferrer">エンタッチ公式リリース</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56627.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>Gunosy で社内業務用アカウントが不正ログイン — 取引先・役職員等の情報流出<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>Gunosy</td></tr>
+  <tr><th>時期</th><td>検知・遮断 2026-10-21／公表 2026-10-26（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+</table>
+<ul>
+  <li>第三者が不正に入手した社内業務用アカウントの認証情報（ID・パスワード）でログインし、クラウド環境や業務ツールへアクセスしたことを監視システムで検知しました。認証情報の入手経路は調査中です。</li>
+  <li>当該アカウントのメールボックスのメールの一部が閲覧され、取引先担当者25名分（氏名、メールアドレス、署名欄の会社名・所属・役職・連絡先）と、役員・従業員・退職者等107名分（氏名、メールアドレス）の情報が流出しました。添付ファイルが開かれた記録はありません。</li>
+  <li>共有アカウントの廃止、多要素認証の徹底、アカウント権限の見直しなどの再発防止策を実施しています。</li>
+  <li>参照: <a href="https://gunosy.co.jp/news/464" target="_blank" rel="noopener noreferrer">Gunosy 公式リリース</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56634.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>チケット購入サービス「GETTIIS」で会員情報が流出 — カード関連情報 29,515件<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>リンクステーション（GETTIIS）</td></tr>
+  <tr><th>時期</th><td>不審アクセス確認 2026-10-18 0時〜7時頃／第2報 2026-10-20（ScanNetSecurity 2026-10-30 08:05 JST）</td></tr>
+</table>
+<ul>
+  <li>主催者向け公演登録サービス「Gettii-Lite」のサーバへの不正アクセスにより、同プログラムの脆弱性を悪用して「GETTIIS」の会員情報が取得されました。会員ID 317,971件、ハッシュ化されたパスワード 311,451件、氏名 309,759件、電話番号 309,668件、メールアドレス 311,426件、クレジットカード関連情報（先頭4桁・末尾4桁・名義・有効期限を暗号化した情報）29,515件などが対象です。</li>
+  <li>同社は対象サーバの切替と脆弱性への対策を完了し、対象顧客へ個別に連絡しています。</li>
+  <li>参照: <a href="https://www.gettiis.jp/notice/detail/42" target="_blank" rel="noopener noreferrer">GETTIIS 公式リリース（第二報）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56631.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>セガ「チェインクロニクル」— セキュリティ上の問題で1〜2カ月の長期メンテナンス<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>セガ（スマートフォン向けゲーム「チェインクロニクル」）</td></tr>
+  <tr><th>時期</th><td>緊急メンテナンス開始 2026-10-23／続報 2026-10-30 18:00 JST（ITmedia NEWS）</td></tr>
+</table>
+<ul>
+  <li>一部システムでセキュリティ上の問題を確認したため、少なくとも1〜2カ月はメンテナンスが続く見通しと発表しました。現時点で不正アクセスや情報流出は確認していないとしています。</li>
+  <li>長期にわたりサービス全体が停止する見込みで、リリースから13年続くタイトルとしては異例の長期停止です。</li>
+  <li>参照: <a href="https://www.itmedia.co.jp/news/article/2610/30/2000002768/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>GMO「お名前.com デスクトップクラウド」続報 — 情報公開された顧客へ上限300万円の特別見舞金、総務省はブロッキングを要請<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>GMOインターネット（お名前.com デスクトップクラウド）</td></tr>
+  <tr><th>時期</th><td>特別見舞金の公表 2026-10-27頃（ScanNetSecurity 2026-10-30 08:05 JST）／総務省の要請報道 2026-10-30 17:13 JST</td></tr>
+</table>
+<ul>
+  <li>攻撃者により情報が公開された顧客に対し、上限300万円の特別見舞金を支払う方針が示されました。すでに案内されていた一律5,000円の見舞金、不正取引損失の全額補償、代替サービスの提供と6カ月の無償化に加える形の対応です。</li>
+  <li>総務省は、GMOの顧客のものとされる個人情報を掲載した攻撃者側サイトについて、接続を強制的に遮断する「ブロッキング」を通信事業者へ要請したと報じられました（10月27日付文書を4業界団体経由で通達）。通信各社は実施の有無を明らかにしておらず、GMOは10月28日にミラーサイトを含む攻撃者サイトのドメイン停止を確認したと発表しています。</li>
+  <li>参照: <a href="https://scan.netsecurity.ne.jp/article/2026/10/30/56632.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a> / <a href="https://www.itmedia.co.jp/news/article/2610/30/2000002765/" target="_blank" rel="noopener noreferrer">ITmedia NEWS</a></li>
+</ul>
+
+<h3>その他の国内インシデント</h3>
+<ul>
+  <li><strong>セカンドリテイリング</strong>: 不正アクセスを公表（2026-10-19発表）。ScanNetSecurity 2026-10-30 08:05 JST。</li>
+  <li><strong>アルカディア「SpeeCAN RAIDEN」</strong>: メディアサーバにディレクトリパストラバーサルの脆弱性が存在し不正アクセスを受けたと公表（2026-10-19発表）。自治体向け一斉同報サービスへの影響が継続しています。</li>
+  <li><strong>PHP脆弱性（PHP2Shell）の自治体影響</strong>: システム改修の人材不足により、31市町村でWebサイトの一時停止が続いているとの報道（ITmedia NEWS 2026-10-30 17:38 JST）。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
