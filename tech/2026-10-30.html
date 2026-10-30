@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-30 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-30 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.312</strong>（2026-10-28 05:35 JST 公開）です。RSSフィードの最新項目も 2.1.312 で、公開時刻は対象期間開始（2026-10-29 09:00 JST）より前でした。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.9 / v2026.9.36</h2>
+<p>対象期間内に2件のリリースが公開されました。<strong>v2026.10.9</strong> は 2026-10-30 00:54 JST 公開のメンテナンスリリースで、セキュリティ依存関係の更新と復旧・データ保全の修正が中心です。<strong>v2026.9.36</strong> は 2026-10-30 05:19 JST 公開の extended-stable（LTS相当）ラインのリリースで、同じ修正群を安定版系列へバックポートしています。published_at が最も新しいのは v2026.9.36 です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>ワークスペース制限の徹底</strong>: <code>tools.fs.workspaceOnly</code> を Gateway 経由で構築されるツールにも適用。委譲（delegate）による変更は引き続き承認が必要で、メディア系ツールもワークスペース内に留まります。</li>
+  <li><strong>資格情報の保護強化</strong>: MCP の CLI 検査出力からライブ資格情報を排除し、ログ内の Google OAuth クライアントシークレットをマスク。</li>
+  <li><strong>失敗した更新のロールバック安全性</strong>: Git ソースからのロールバックで運用者の編集内容を保持し、npm ロールバックでは Windows の一時的な拒否を再試行して、起動可能なインストールを復元する具体的な移動手順を報告。</li>
+  <li><strong>ディスク枯渇からの復帰</strong>: 空き容量が回復した後、再起動なしでエージェントが処理を再開できるように。</li>
+  <li><strong>Large transcript の移行</strong>: Node.js の文字列長上限を超えずに大規模なトランスクリプトアーカイブを移行。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>脆弱な依存関係の更新</strong>: fast-uri 4.2.3（MCP スキーマ検証での不正な URI スキーム／ホストを拒否）、Zod の過大なコレクションを A2UI と Discord 埋め込みアプリ SDK で早期拒否、IMAP 送信者解析を nodemailer 10.1.4 に更新して送信者トークンゲートのなりすましを防止、Microsoft Teams は MSAL Node 7.1.1 に更新。</li>
+  <li><strong>Microsoft Teams の許可リスト</strong>（v2026.9.36）: 解決できない名前キーの <code>teams</code> / <code>groupAllowFrom</code> エントリが、全チーム・全グループを開放するのではなく何も許可しないように修正。</li>
+  <li><strong>返信テキストの欠落</strong>（v2026.9.36）: 絵文字などの astral 文字の後にある比較用の文章が送信時に削除されないよう修正。</li>
+  <li><strong>SQLite 全文検索インデックス</strong>: トークナイザ変更後に残った壊れた FTS インデックスを、エージェントDBを隔離するのではなく Doctor と更新スナップショットで修復。</li>
+  <li><strong>その他</strong>: Codex のステアリングメッセージでローカルメディアをセッション自身のワークスペースから解決、停止した Gateway の復旧、ファイルシステムルートから起動した CLI の Node ランタイム復旧、<code>openclaw gateway probe --ssh</code> での明示的な SSH ポート22の尊重など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.9">openclaw 2026.10.9</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.9.36">openclaw 2026.9.36</a></p>
+
+<h2>🐋 Orca — v1.4.244</h2>
+<p>2026-10-29 12:55 JST 公開。UI の4言語追加、ワークスペース切り替えの高速化、SSH ホストやペアリング済みサーバー上のリモートファイルをローカル同様に扱えるようにする変更が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>4言語を追加</strong>: ドイツ語・ロシア語・トルコ語・繁体字中国語が言語ピッカーに加わり、多数のダイアログ・メニュー・ショートカットが翻訳されました。ドイツ語は機械翻訳のため、ネイティブ話者によるレビューを歓迎するとしています。</li>
+  <li><strong>ワークスペース切り替えの高速化</strong>: サイドバーでワークスペースにホバーすると事前準備を開始し、現在のワークスペースに隣接するものはウォーム状態を維持。切り替え処理自体の負荷も削減され、行のドラッグでは切り替わらなくなりました。</li>
+  <li><strong>リモートファイルをローカル同様に</strong>: SSH ホストやペアリング済みサーバー上の音声・動画を再生でき、最大50MBのリモートテキストファイルを保存可能。1回の応答に収まらない巨大フォルダはスクロールしながら開け、リモートのバイナリをテキストとして開かないようにしました。</li>
+  <li><strong>チャットの円滑化</strong>: 長い返信のストリーミングの引っかかりを低減し、大規模リポジトリでも <code>@file</code> 候補が追従。マルチエージェントの Codex チャットがローカル履歴をギガバイト級に膨らませる問題を修正し、Claude チャットは最初のメッセージより前まで巻き戻せるようになりました。</li>
+  <li><strong>ターミナルの安定化</strong>: 新しい Windows ターミナルでプロンプトが約3秒待たずに即表示され、macOS / Linux でターミナルのクローズやリサイズが他のターミナルをフリーズさせなくなり、WSL ターミナルはディストロ停止時もセッションとフォルダを保持します。</li>
+  <li><strong>ブラウザ</strong>: Google サインインが古いアカウントで固まった際にプロファイルから Google Cookie を消去でき、Vivaldi からの Cookie インポートに対応。Windows / Linux で拡張機能のヘルパーウィンドウが閉じた際に起動時に終了してしまう問題も修正。</li>
+  <li><strong>コミュニティ由来の修正</strong>: コミットメッセージ用の Kimi K3、Open In の Devin Desktop、Glimmer・CUDA・Groovy・shebang スクリプトのハイライト、<code>orca worktree create --branch</code>、ワークツリー場所の <code>~</code> 展開、macOS の MacPorts ツール対応など。</li>
+</ul>
+
+<h3>⚠️ アップグレード時の注意</h3>
+<ul>
+  <li>ターミナルホストは v1.4.243 のものを維持するため、更新時に開いていたターミナルはそのまま動作を継続します。一部のターミナル修正はターミナルホストの再起動（例: PC の再起動）後に有効になります。</li>
+  <li>リモート側の一部修正（大容量ファイル保存、巨大フォルダの閲覧など）は、SSH ホスト側の Orca サーバーもこのバージョンである必要があります。</li>
+  <li>SSH プロジェクトでワークスペースを削除すると「Remove from Orca」が提示され、ホスト上のファイルは残ります。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.244">stablyai/orca v1.4.244</a></p>
+
+<h2>☁️ AWS — エージェント連携とデータベース系の発表</h2>
+<ul>
+  <li><strong>Step Functions を AI エージェントのツールに</strong>（2026-10-29 17:00 JST 公開）: Amazon Bedrock AgentCore Gateway 経由で、既存の Standard / Express ワークフローを MCP ツールとしてエージェントから実行可能に。エージェントが実行タイミングと入力を決め、各ステップは定義どおりに実行されます。</li>
+  <li><strong>Amazon Aurora のポスト量子 TLS 鍵交換</strong>（2026-10-29 17:00 JST 公開）: Aurora PostgreSQL-Compatible で PQ-TLS 鍵交換をサポート。バージョン18以降で <code>ssl_groups</code> パラメータを変更し、許可リストから暗号グループを選択できます。</li>
+  <li><strong>RDS の追加ストレージボリュームで自動スケーリング</strong>（2026-10-30 03:06 JST 公開）: RDS for Oracle / SQL Server の追加ボリューム（最大3本、合計256TiBまで）でストレージ自動スケーリングが利用可能になり、手動の容量見積もりが不要に。</li>
+  <li><strong>SageMaker AI の SOCI インデックス対応</strong>（2026-10-29 17:00 JST 公開）: SOCI インデックス付きコンテナイメージを学習・処理ジョブで使うと、イメージ取得の GPU アイドル時間を最大90%削減。AWS の Deep Learning Container は <code>-soci</code> タグに変更するだけで利用できます。</li>
+  <li><strong>EKS Dashboard の CA ローテーション可視化</strong>（2026-10-29 17:00 JST 公開）: 複数アカウント・リージョンのクラスタについて、認証局のローテーション状況と期限が迫ったクラスタを一元的に確認可能に。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud — Dataflow のオートスケーリング調整</h2>
+<p>2026-10-29（現地時間）のリリースノートで、Streaming Engine ジョブの水平オートスケーリングを調整する2つの機能が追加されました。バックログ閾値をレイテンシ階層（<code>low_latency</code> / <code>medium_latency</code> / <code>high_latency</code>）で指定できるようになり、レイテンシ要件とリソースコストのバランスを選べます。また、定期的なオートスケーリングスケジュールを設定できます。</p>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#October_29_2026">Google Cloud リリースノート</a></p>
+
+<h2>⚡ Next.js — canary のみ</h2>
+<p>安定版のリリースはありませんでした。canary チャネルでは <strong>v16.5.0-canary.31</strong>（2026-10-29 18:12 JST 公開）と <strong>v16.5.0-canary.32</strong>（2026-10-30 08:44 JST 公開）が確認されています。ブログ記事「Ship less JavaScript in Next.js with your AI agent」は 2026-10-29 05:00 JST 公開で、対象期間の開始前でした。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js Releases</a></p>
+
+<h2>🟢 Node.js — v27.0.0-alpha</h2>
+<p><strong>v27.0.0-alpha.0.0.0</strong> が 2026-10-30 03:36 JST に公開されました（alpha チャネル）。LTS 系では v26.13.0「Lithium」と v24.22.2「Krypton」が 2026-10-29 01:57 / 03:39 JST に公開されていますが、いずれも対象期間開始前の公開です。</p>
+<p>🔗 <a href="https://github.com/nodejs/node/releases">nodejs/node Releases</a></p>
+
+<h2>📦 その他のスタック</h2>
+<p class="empty-notice"><strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開）、<strong>Python / Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.1.2、2026-10-23 02:04 JST 公開）、<strong>Hono</strong>（最新は v4.13.14、2026-10-25 16:19 JST 公開）、<strong>Claude API / SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。Azure については公式アップデートフィードを取得できず、対象期間内の更新を確認できませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
