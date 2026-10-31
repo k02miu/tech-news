@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-01 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-01 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+<p>対象期間（2026-10-31 08:00 〜 2026-11-01 08:00 JST）に公表された脆弱性・アドバイザリのうち、主要なものをまとめました。NVDにはこの期間に130件のCVEが新規登録され、このうちCVSSv3.1が9.0以上の「Critical」は12件でした。Java系の認可・デシリアライズ起因のCriticalが目立ちます。</p>
+
+<h3>Apache MINA 3.0 codec — クラスフィルタなしのJavaデシリアライズにより未認証RCE<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-118636（CVSSv3.1 9.8 / CVSSv4.0 9.3）</td></tr>
+  <tr><th>影響</th><td>Apache MINA 3.0 系（codecモジュールの JavaNativeMessageDecoder）</td></tr>
+  <tr><th>公表</th><td>NVD登録 2026-10-31 21:16 UTC（JST 2026-11-01 06:16、Apache Software Foundation採番）</td></tr>
+</table>
+<ul>
+  <li>MINA 3.0の <code>JavaNativeMessageDecoder</code> は、受信フレームのバイト列をクラスフィルタなしで <code>ObjectInputStream.readObject()</code> に渡します。信頼できない相手の前にこのデコーダを置いたアプリケーションは、ガジェットチェーンによるリモートコード実行の影響を受けます。</li>
+  <li>3.0.0系は非活性（inactive）のため<strong>修正版は提供されない予定</strong>とされています。Apache Software Foundationは最新の <strong>Apache MINA 2.2.X 系</strong>の利用を推奨しています。</li>
+  <li>同製品系列では同日、Apache Thrift の Java バインディングに制御されない再帰（Uncontrolled Recursion）の脆弱性 <strong>CVE-2026-120135</strong>（CVSSv3.1 8.2、0.24.0より前）も登録されています。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-118636" target="_blank" rel="noopener noreferrer">NVD CVE-2026-118636</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120135" target="_blank" rel="noopener noreferrer">NVD CVE-2026-120135</a></li>
+</ul>
+
+<h3>Java系ツールのCritical — Jpomの認証バイパスとAJ-ReportのハードコードJWT鍵<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-120201（9.8）／CVE-2026-120209（9.8）</td></tr>
+  <tr><th>影響</th><td>Jpom 2.10.0〜2.11.12／AJ-Report 1.7.1以下</td></tr>
+  <tr><th>公表</th><td>NVD登録 2026-10-31 18:17 UTC（JST 2026-11-01 03:17）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-120201</strong>は、Jpom 2.10.0〜2.11.12の認証バイパスです。<code>JPOM-USER-TOKEN</code>ヘッダに <code>is not null</code> のような値を注入すると、依存ライブラリ Hutool の Condition パーサがこれを演算子として解釈し、未認証の攻撃者がスーパー管理者権限を得ます。その後は Jpom のスクリプト機能を通じてコマンドを実行できます。</li>
+  <li><strong>CVE-2026-120209</strong>は、AJ-Report 1.7.1以下が共有トークンをハードコードされたJWT秘密鍵で署名している問題です。攻撃者はオフラインで正規の Share-Token を偽造でき、<code>reportCode</code> に <code>dataSet</code> を指定して <code>testTransform</code> エンドポイントへ到達すると、スクリプトが <code>GroovyClassLoader</code> に渡され未認証のリモートコード実行に至ります。</li>
+  <li>いずれもビルド・運用管理系のJavaアプリケーションで、管理画面をインターネットへ公開している環境は優先的な確認が必要です。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120201" target="_blank" rel="noopener noreferrer">NVD CVE-2026-120201</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120209" target="_blank" rel="noopener noreferrer">NVD CVE-2026-120209</a></li>
+</ul>
+
+<h3>WordPress Core と主要プラグインに Critical — コア更新処理の「予測可能なステージングパス」を突く未認証RCE<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-119977（CVSSv3.1 8.1）／CVE-2026-109220・116512・119096・118235（各9.8）／CVE-2026-116557・89270・103882（各9.1）／CVE-2026-76010（8.8）</td></tr>
+  <tr><th>影響</th><td>WordPress Core 4.7〜7.1.3／WooCommerce・LMS・フォーム系プラグイン各版</td></tr>
+  <tr><th>公表</th><td>NVD登録 2026-10-31 06:16〜10:16 UTC（JST 2026-10-31 15:16〜19:16）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-119977</strong>は <strong>WordPress Core 4.7〜7.1.3</strong> の脆弱性で、フルパッケージのコア更新時に用いられるステージング用パスが予測可能かつWebから到達可能なため、<strong>更新ウィンドウの間だけ未認証の攻撃者がサーバ上のコードを実行できる</strong>というものです。自動更新を有効にしているサイトは更新タイミングの把握と監視が重要です。</li>
+  <li>プラグイン側では、<strong>CVE-2026-109220</strong>（PDF Invoice for WooCommerce、<code>customer_note</code> 経由のPHP Object Injection、7.1.1以下）、<strong>CVE-2026-116512</strong>（Project Manager、<code>id</code> パラメータ経由のRCE、4.1.1以下）、<strong>CVE-2026-119096</strong>（Uncanny Toolkit for LearnDash、<code>email</code> パラメータのパーサ差異による認証バイパス、3.8.2以下）、<strong>CVE-2026-118235</strong>（SimpleForm、<code>handle_upload</code> 経由の任意ファイルアップロード、3.10.2以下）がそれぞれCriticalです。</li>
+  <li><strong>CVE-2026-116557</strong>（WP Booking System）、<strong>CVE-2026-89270</strong>（Popup Builder）、<strong>CVE-2026-103882</strong>（Acadlix LMS）も9.1で、ケイパビリティ検査欠如やファイルパス検証不備によりデータ改変・任意ファイル削除に至ります。<strong>CVE-2026-76010</strong>（NextGEN Gallery 4.4.1以下）は <code>render_image</code> 経由でRCE、カスタム権限以上を要しますが、権限を剥奪された後もギャラリー所有権判定が残るため影響が長期化し得ます。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119977" target="_blank" rel="noopener noreferrer">NVD CVE-2026-119977</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-109220" target="_blank" rel="noopener noreferrer">NVD CVE-2026-109220</a></li>
+</ul>
+
+<h3>Red Hat「konflux-ci」のCI/CD脆弱性4件 — 平文トークン保管とパイプライン経由のコード実行<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-116086（CVSSv3.1 8.8）／CVE-2026-114217（8.6）／CVE-2026-116964（8.4）／CVE-2026-117681（8.0）</td></tr>
+  <tr><th>影響</th><td>Red Hat konflux-ci（CI/CDの自動化スクリプト群・UIプロキシ）</td></tr>
+  <tr><th>公表</th><td>NVD登録 2026-10-31 09:16 UTC（JST 2026-10-31 18:16、Red Hat採番）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-114217</strong>は、CIの自動化スクリプトが GitHub のアクセストークンをランナー上へ平文で保存し、実行後も消去しない問題です。CI環境へ到達できるローカルの攻撃者が認証情報を読み出し、ソースコードやリリース成果物を改変し得ます。</li>
+  <li><strong>CVE-2026-116086</strong>は、攻撃者が issue タイトルに細工した値を与えることで、ワークフロースクリプトがそれをサニタイズせずクエリへ組み込み、API資格情報・デプロイ鍵・内部ノートがワークフローログに露出する問題です。</li>
+  <li><strong>CVE-2026-116964</strong>は、環境エクスポート用スクリプトへシェルコマンドを注入し、マニフェスト同期スクリプトが未検証の出力を動的に評価することでパイプライン内の任意コード実行に至るもの。<strong>CVE-2026-117681</strong>は、UIプロキシが内部バックエンド向けのTLS証明書検証を自動的に無効化しつつ、なりすまし権限付きのクラスタスコープトークンを付与するため、隣接ネットワークの攻撃者がこれを奪取してクラスタの管理者権限を得られる問題です。</li>
+  <li>サプライチェーン防衛の観点から、CI/CD基盤自体の資格情報管理とTLS検証設定の見直しが求められます。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-116964" target="_blank" rel="noopener noreferrer">NVD CVE-2026-116964</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-117681" target="_blank" rel="noopener noreferrer">NVD CVE-2026-117681</a></li>
+</ul>
+
+<h3>その他の注目脆弱性 — Ruby製認証ライブラリのなりすまし、OpenSearch SQLのRCE、ShowDoc・libheif<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>CVE-2026-117656（9.3）／CVE-2026-63377（9.8）／CVE-2026-63393（8.7）／CVE-2026-120203（8.8）／CVE-2026-120208（7.5）</td></tr>
+  <tr><th>影響</th><td>pow-auth Assent（Ruby）／TAKO AI Agent for Okta／OpenSearch SQL／ShowDoc／libheif</td></tr>
+  <tr><th>公表</th><td>NVD登録 2026-10-30 23:17〜2026-10-31 21:16 UTC（JST 2026-10-31 08:17〜2026-11-01 06:16）</td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-117656</strong>（9.3）は、Ruby製の認証ライブラリ pow-auth Assent の「Sign in with Apple」ストラテジに存在する問題です。Appleがコールバックへ送る <code>user</code> フォームパラメータはブラウザ側で制御できるにもかかわらず、<code>fetch_user/2</code> が検証済みIDトークンのクレームへ上書きマージするため、攻撃者が自分のApple IDでログインしつつ <code>sub</code> や <code>email</code> を差し替えられます。返却された subject や email でアカウントを検索・紐付け・認可するアプリはなりすましの影響を受けます（0.1.25以上0.3.2未満）。</li>
+  <li><strong>CVE-2026-63393</strong>（8.7）は OpenSearch SQL の脆弱性で、基本的な読み取り権限を持つ認証済みユーザーが <code>plugins/sql</code> エンドポイントへ細工した <code>cursor</code> パラメータを渡すと、安全でないデシリアライズによりサーバ上で任意コードが実行されます（2.19.6.0および3.7.0.0で修正）。</li>
+  <li><strong>CVE-2026-63377</strong>（9.8）は TAKO AI Agent for Okta で、未認証の攻撃者が初期セットアップを先に完了させて唯一の管理者になりすませる問題です（3.0.1-betaで修正）。<strong>CVE-2026-120203</strong>（8.8）は ShowDoc 2.8.14〜3.9.6未満のMock機能で、正規Dockerイメージではrootとしてシェルコマンドが実行されます。<strong>CVE-2026-120208</strong>（7.5）は libheif のヒープバッファオーバーフローで、画像処理パイプラインでのコード実行に至り得ます。</li>
+  <li>参照: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-117656" target="_blank" rel="noopener noreferrer">NVD CVE-2026-117656</a> / <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-63393" target="_blank" rel="noopener noreferrer">NVD CVE-2026-63393</a></li>
+</ul>
+
+<h3>Claude Code 2.1.316 — 権限・サンドボックス境界の修正が継続<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>ID</th><td>Claude Code v2.1.316</td></tr>
+  <tr><th>影響</th><td>Claude Code（`--restricted` セッション、PowerShellフック、プラグインMCP）</td></tr>
+  <tr><th>公表</th><td>npm公開 2026-10-31 01:01 UTC（JST 10:01）</td></tr>
+</table>
+<ul>
+  <li><code>--restricted</code> セッションで、Readの許可ルールが対象パスを覆っていた場合に<strong>作業ディレクトリ外のファイルがアップロードされていた問題</strong>を修正しました。制限セッションの意図に反する持ち出しにつながる修正です。</li>
+  <li><strong>PowerShellフックが、コマンドが型キャスト・<code>param</code>・<code>using</code>・属性で始まる場合に終了コード2でブロックしなかった問題</strong>を修正しました。フックによる拒否がすり抜け得る挙動です。</li>
+  <li>あわせて、資格情報名の環境変数が <code>1</code> などの真偽値の場合にプラグインMCPの <code>headersHelper</code> が破損した <code>CLAUDE_PLUGIN_ROOT</code> とサーバURLを受け取る問題、Bashツールで改行を含むエイリアスが壊れる問題なども解消されています。</li>
+  <li>参照: <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.316" target="_blank" rel="noopener noreferrer">Claude Code v2.1.316 リリースノート</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 2026.10.10-beta.5、10-30公開）および Hermes Agent（最新 v0.22.5、10-23公開）は、対象期間内に新規リリースが確認されませんでした。また、JVN・Security NEXT・ScanNetSecurity の各フィードにも対象期間内の新規アドバイザリ公表は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインジケント</h2>
+
+<h3>クラブツーリズム（KNT-CTホールディングス）— 不正アクセスで会員情報 約432万件が漏えいか、インターネット予約システムを停止<span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>クラブツーリズム株式会社（KNT-CTホールディングスグループ）</td></tr>
+  <tr><th>判明</th><td>2026-10-30（不正アクセスを確認）／2026-10-31 発表</td></tr>
+  <tr><th>一次</th><td><a href="https://www.club-t.com/news/20261031.html" target="_blank" rel="noopener noreferrer">クラブツーリズム「不正アクセスによる個人情報漏えいに関するお詫びとお知らせについて」</a>／NHK 2026-10-31 22:55 JST</td></tr>
+</table>
+<ul>
+  <li>クラブツーリズムは2026-10-31、自社サーバの一部に対する外部からの不正アクセスにより、保有する顧客情報の一部が外部へ流出した可能性があると発表しました。漏えいが疑われるのは<strong>インターネット予約システムに登録されたインターネット会員の個人情報 約432万件</strong>で、氏名・国籍・住所・緊急連絡先などが含まれると報じられています。パスポート情報やクレジットカード情報は含まれていないとしています。</li>
+  <li>同社は不正アクセス確認後、システムをメンテナンス状態としており、マイページのほかクレジットカード決済、Webからの申し込みによる各種書類の確認などが利用できない状態が続いています。2026-11-01が年額プランの更新日にあたる顧客については、引き落とし後に返金対応を行うと告知しています。</li>
+  <li>KNT-CTホールディングスのグループ会社であり、2026年4月に近畿日本ツーリストの旅行販売を承継した旅行大手の事案です。旅行・宿泊予約系サービスへの攻撃が国内で連続している状況の延長線上にあります。</li>
+</ul>
+
+<h3>NTTデータ委託先の不正アクセスが金融・鉄道各社へ波及 — 社債購入者情報が漏えいか、特典付与サービスを停止<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社NTTデータ／楽天証券／近鉄グループホールディングス／野村証券ほか</td></tr>
+  <tr><th>判明</th><td>2026-10-30（不正アクセス発生）／2026-10-31 各社発表</td></tr>
+  <tr><th>一次</th><td><a href="https://www.nttdata.com/global/ja/news/release/2026/103101" target="_blank" rel="noopener noreferrer">NTTデータ「STdirectServicesのサービス停止についてのお知らせ」</a>／<a href="https://www.rakuten-sec.co.jp/web/info/info20261031-01.html" target="_blank" rel="noopener noreferrer">楽天証券「外部サービス提供元への不正アクセスによるお客様情報漏えいの可能性について」</a></li>
+</table>
+<ul>
+  <li>NTTデータは2026-10-31、社債購入者への特典付与を支援する「STdirectServices」で利用している<strong>委託先のSaaSサービスに第三者による不正アクセス</strong>が発生したとして、サービスを停止したと発表しました。委託先のサービスで取り扱う個人情報が漏えいした可能性があり、同社で調査が進められています。現時点では特典付与の対象となる社債がないため、実務への影響はないとしています。</li>
+  <li>楽天証券は同日、委託先が提供する<strong>「デジタル証券プラットフォーム」への不正アクセス</strong>の報告を受けたとして、デジタル特典付き社債3銘柄（カゴメ第1回無担保社債、西日本旅客鉄道第80回無担保社債、近鉄グループホールディングス第135回無担保社債〈100万円以上購入者〉）を購入した一部顧客の<strong>延べ362件</strong>の情報が外部に持ち出された可能性があると公表しました。楽天証券自身のシステムが不正アクセスを受けたものではなく、ログインID・パスワード・取引に必要な各種情報は含まれていないとしています。</li>
+  <li>近鉄グループホールディングスは自社の社債を購入した人の氏名や購入金額の情報が対象になったとし、野村証券など他の販売会社にも波及していることが報じられています。証券・鉄道という重要インフラに近い分野へ、委託先経由で影響が広がった形です。</li>
+</ul>
+
+<h3>GMOインターネットグループ — 続報: 子会社が2年前に脆弱性を指摘、被害者情報を募る不審サイトは攻撃側と関連か<span class="badge-high">High</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>GMOインターネットグループ</td></tr>
+  <tr><th>判明</th><td>2026-10-31〜2026-11-01 報道</td></tr>
+  <tr><th>一次</th><td>NHK「GMO 子会社がシステムぜい弱性を2年前に指摘 来週2日に会見へ」2026-10-31 20:55 JST／NHK「GMOの被害者情報集める不審サイト ハッカー側と関連か」2026-11-01 00:08 JST</td></tr>
+</table>
+<ul>
+  <li>一連の不正アクセス問題で、<strong>2年前にグループのセキュリティ企業が当該システムの脆弱性を指摘していた</strong>ことが関係者への取材で判明しました。指摘が是正に結びついていなかった可能性があり、ガバナンス面の検証が焦点となります。</li>
+  <li>さらに、<strong>被害者に情報共有を呼びかける不審なサイトが、被害の公表より前に開設されていた</strong>ことがセキュリティ会社の調査で判明し、攻撃者側と関連している可能性が指摘されています。攻撃者が被害者への接触や情報集約を狙う手口は、二次被害・恐喝のリスクを高めます。</li>
+  <li>GMOインターネットグループは、週明けの<strong>2026年11月2日</strong>に熊谷会長（社長）が出席して記者会見を行うと発表しています。</li>
+</ul>
+
+<h3>トラストバンク「ふるさとチョイス」— 不正アクセスによる寄附者向けサービス停止が長期化、ふるさと納税の集中期を前に懸念<span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>株式会社トラストバンク（ふるさと納税総合サイト「ふるさとチョイス」）</td></tr>
+  <tr><th>判明</th><td>2026-10-19 検知／2026-10-20 公表／2026-10-28 第4報／2026-10-31 報道</td></tr>
+  <tr><th>一次</th><td><a href="https://www.trustbank.co.jp/newsroom/newsrelease/news20261028/" target="_blank" rel="noopener noreferrer">トラストバンク「不正アクセスによる寄附者様情報の外部流出に関するお詫びとお知らせ（第4報）」</a></li>
+</table>
+<ul>
+  <li>「ふるさとチョイス」では第三者による不正アクセスが検知され、会員登録する寄附者の個人情報が外部へ流出したことが判明しています。同社は不正アクセス検知以降、関連サービスを一時停止し、外部の専門家・専門機関の協力のもとで影響範囲の確認と再発防止策を進めています。</li>
+  <li>2026-10-28付の第4報では、提携先サイト内で寄附申込から決済までが完結するサービスに係る連携システムについて、必要な安全対策とその検証が完了したとして運用を再開。<strong>10-26に運用を再開した寄附管理システムとあわせ、提携先サイトの連携以外の寄附者向けサイトを含むサービスは引き続き一時停止中</strong>です。</li>
+  <li>2026-10-31、ふるさと納税の寄附が集中する11月・12月を控え、サイト停止が長期化すれば地域・事業者にとって死活問題になり得るとの懸念が地元紙で報じられました。再開時期は「決まり次第改めて知らせる」とされています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
