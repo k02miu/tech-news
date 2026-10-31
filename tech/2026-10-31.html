@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-10-31 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-10-31 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.314</h2>
+<p>2026-10-30 10:16 JST 公開。<code>permissions.blockWritesOutsideWorkingDirectories</code> の追加により、作業ディレクトリ外への書き込みを作業モードに関わらず拒否できるようになりました。あわせて VS Code / Claude Desktop の Code タブにアイドル時コンパクションが入り、長時間放置した大規模会話を要約して再利用できるようになっています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>作業ディレクトリ外への書き込み禁止</strong>: <code>permissions.blockWritesOutsideWorkingDirectories</code> を追加。Write / Edit / NotebookEdit が、すべてのパーミッションモードで作業ディレクトリ外のパスを拒否します。</li>
+  <li><strong>Claude apps gateway の IdP グループ制御</strong>: upstream に任意の <code>groups</code> リストを指定でき、指定グループ所属の開発者だけがその upstream に振り分けられます（フェイルオーバー時も同様）。</li>
+  <li><strong>Bedrock guardrail のトレース</strong>: <code>guardrail_trace</code> を追加し、どの Amazon Bedrock ガードレールフィルタが発火したかを、一致したテキストを含めずにログ出力。</li>
+  <li><strong>アイドル時コンパクション</strong>: VS Code と Claude Desktop の Code タブで、20万トークン超の会話を放置すると要約され、プロンプトキャッシュ失効後の次のメッセージでその要約が使われます。</li>
+  <li><strong>クラウドセッションの細かな改善</strong>: 完了済みの単発タスクだけが隠れている場合に表示できる「Include completed」ボタン、およびセットアップスクリプトがエラー終了してもセッション自体は起動する挙動に変更。</li>
+</ul>
+
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li><strong>サーバー管理設定の保護</strong>: 組織のサーバー管理設定のローカルコピーを編集する前に確認を求めるように変更。</li>
+  <li><strong><code>/permissions</code> の承認制限</strong>: Recently blocked から、全体を読めない呼び出し（ターミナルが短すぎて表示しきれないものを含む）の承認を拒否。</li>
+  <li><strong>Bash ツールの <code>which</code> 汚染対策</strong>: 継承した <code>which</code> のエイリアス／関数をクリアし、エクスポートされた <code>which</code> / <code>unsetenv</code> 関数をコマンドへ渡さないよう変更。</li>
+  <li><strong>モデルフォールバック</strong>: <code>ANTHROPIC_DEFAULT_OPUS_MODEL</code> などの設定で古い Opus しか残らない場合に、拒否ではなく別モデルで再試行するよう変更。</li>
+  <li><strong>macOS のメモリリーク回避</strong>: 多くのコマンドで <code>git grep</code> を C ロケールで実行し、非 UTF-8 ファイルに対する正規表現ライブラリのリーク報告を回避。</li>
+  <li><strong>その他</strong>: <code>FORCE_HYPERLINK=false</code>（<code>no</code> / <code>off</code>）が逆にリンクを有効化していた挙動を修正、<code>/ultrareview</code> のワークスペース信頼チェック、監査系スキル（<code>claude-api</code> / dataviz）の記述更新など。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-314">Claude Code changelog 2.1.314</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.10-beta.5</h2>
+<p>2026-10-30 12:57 JST 公開（プレリリース）。Node 互換性の復旧、Gateway ストリーミングの停止解消、更新・ロールバックの安全性、cron の取りこぼし修正が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Node 互換性</strong>: Node <code>&gt;=24.16.0 &lt;25 || &gt;=26.1.0</code> でインストールと更新が再び動作。Node 24.22.1 / 26.12.1 は「ハード要件」から「セキュリティ推奨」に格下げされ、Node 26 のワーカーが stdin をファイルにした場合でも中断しなくなりました。</li>
+  <li><strong>Gateway ストリーミング</strong>: ツール呼び出し風の XML を含む返信や、不完全なタグで終わる長い HTML によって Gateway が停止しなくなりました。</li>
+  <li><strong>更新とロールバック</strong>: npm ロールバック失敗時にインストール済みパッケージが孤立しない、Git ロールバックで運用者の編集が保持される、更新実行プロセスが落ちてもオフライン状態から復旧する、といった改善。</li>
+  <li><strong>Cron</strong>: 保存された次回実行時刻が古いためにミススロットが捨てられる問題を修正し、再起動後の起動時キャッチアップ実行が受理されるように。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ境界</strong>: exec 許可リストモードで <code>test</code> / <code>[ -v</code> のオペランドに承認を要求、汎用 node invoke 経由のブラウザプロキシコマンドを拒否、サンドボックス内の子プロセスが CLI ベースのモデルを解決する場合は fail closed に。</li>
+  <li><strong>ワークスペース制限の伝播</strong>: <code>workspaceOnly</code> を Gateway 経由で構築される delegate にも引き継ぎ。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.10-beta.5">openclaw 2026.10.10-beta.5</a></p>
+
+<h2>🐋 Orca — v1.4.245 / mobile-android-v0.0.61</h2>
+<p>対象期間内に2件が公開されました。<strong>v1.4.245</strong> は 2026-10-30 14:34 JST 公開で、高速化・プラグイン・バックグラウンドでの computer use が柱です。<strong>mobile-android-v0.0.61</strong> は 2026-10-31 02:05 JST 公開のモバイル向けプレリリースで、エディタと GitHub クエリ周りの修正・性能改善が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>高速化</strong>: 数百チャットを抱えた状態でも起動が滑らかになり、入力やタブ切り替えのラグを低減。非表示チャットの処理も軽量化。</li>
+  <li><strong>プラグイン</strong>: 設定 → Plugins からアイコンテーマ、シンタックスハイライト、カスタムエディタを追加可能に。コミュニティ公開は今後対応予定。プラグインは既定で有効で、コード実行を伴うものはインストール前に同意を要求します。</li>
+  <li><strong>Mac のバックグラウンド computer use</strong>: エージェントが Chrome や Blender などを操作している間も、マウスとキーボードをそのまま使えます（一部操作は前面化が必要）。</li>
+  <li><strong>Chat UI</strong>: 設定で「Chat UI」を検索して有効化でき、タブ右クリックで Chat UI と TUI をライブに切り替え可能。Stop 後の再送信やチャット内リンクプレビューにも対応。</li>
+  <li><strong>ターミナル / WSL</strong>: コンピュータごとの同時実行ターミナル数上限（Settings → Terminal → Advanced）、WSL の停止中ディストロは明示的に Start するまで停止を維持、ターミナルがフォルダを記憶。</li>
+  <li><strong>モバイル（0.0.61）</strong>: ノートブックのスクロール追従、ペースト対象変更時のキャンセル、Markdown 構造スキャンの省略、GitHub の PR 関連クエリの重複排除など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.245">orca v1.4.245</a> · <a href="https://github.com/stablyai/orca/releases/tag/mobile-android-v0.0.61">mobile-android-v0.0.61</a></p>
+
+<h2>⚡ Next.js — 安定版リリースなし（11/3 にセキュリティリリース予告）</h2>
+<p>対象期間内に安定版のリリースは確認されませんでした。最新安定版は <strong>16.4.3</strong> です。canary は <strong>v16.5.0-canary.34</strong>（2026-10-30 20:04 JST 公開）まで進んでいます。</p>
+<p>公式ブログは <strong>2026年11月3日（火）</strong>に予定されるセキュリティリリースの事前通告を掲載しました。Next.js の 7 件の Medium 脆弱性に対応する予定で、影響範囲やアップグレード手順を含むアドバイザリはリリース時に公開されます。該当バージョンをご利用の場合は、公開後に速やかな更新をご検討くださいませ。</p>
+<p>🔗 <a href="https://nextjs.org/blog/upcoming-nextjs-security-release-november-2026">Upcoming Next.js security release (November 2026)</a></p>
+
+<h2>☁️ AWS — 2026-10-30 の主なアップデート</h2>
+<ul>
+  <li><strong>Amazon SageMaker AI</strong>: リアルタイムエンドポイントで GPU パーティショニングをサポート。</li>
+  <li><strong>Amazon CloudFront</strong>: ビューアの ISP 情報とポスト量子 TLS の詳細を提供開始。</li>
+  <li><strong>Amazon MSK</strong>: 転送中のデータで TLS 1.3 をサポート。</li>
+  <li><strong>AWS WAF</strong>: CloudFront ディストリビューション向けの SDK 自動統合を発表。</li>
+  <li><strong>Amazon Aurora</strong>: ポスト量子 TLS 鍵交換に対応（2026-10-29 公開）。</li>
+  <li><strong>Amazon Bedrock（GovCloud）</strong>: OpenAI モデル向けの API サポート拡張とクロスリージョン推論を提供開始。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Google Cloud — 2026-10-30 のリリースノート</h2>
+<ul>
+  <li><strong>Bigtable</strong>: Knowledge Catalog で承認済みビュー・論理ビュー・継続的マテリアライズドビューを検索可能に（GA）。</li>
+  <li><strong>Datastream</strong>: Knowledge Catalog との統合が GA。</li>
+  <li><strong>SAP on Google Cloud</strong>: Google SecOps for SAP が GA。SAP RISE およびセルフマネージド環境のログ取り込み、SAP 向け YARA-L 検知ルール、SOAR プレイブックによる自動対応を提供。</li>
+  <li><strong>Backup and DR</strong>: Cloud SQL インスタンスの既存バックアッププランを編集可能に（バックアップ規則、オンデマンド保持期間の上限など）。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートページがスクリプト描画のため本文を取得できず、対象期間内の新着は確認できませんでした）、<strong>React</strong>（最新は v19.3.1、2026-10-14 17:06 JST 公開）、<strong>Python</strong>（最新は 3.15.2、2026-10-25 公開）、<strong>Django</strong>（最新は 6.1.2、2026-10-06 公開）、<strong>Spring Boot</strong>（最新は v4.1.2、2026-10-22 公開）、<strong>Hono</strong>（最新は v4.13.14、2026-10-25 公開）、<strong>Claude API/SDK</strong>（最新は anthropic-sdk-python v2.3.0、2026-10-24 08:18 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
