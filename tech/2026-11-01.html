@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-01 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-01 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.316</h2>
+<p>2026-10-31 10:06 JST 公開。Claude apps gateway の統制機能（共有予算・ポリシーのレイヤリング・Bedrock ガードレール連携）が厚くなり、あわせて <code>ultrathink</code> やサブエージェントの effort を制御する環境変数が追加されました。Opus 4.8 の fast mode は非推奨化が告知されています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong><code>ultrathink</code> の無効化</strong>: <code>CLAUDE_CODE_DISABLE_ULTRATHINK</code> を追加。キーワードによる effort 引き上げを止められます。</li>
+  <li><strong>group 共有予算（Claude apps gateway）</strong>: グループのメンバーで分け合う月次予算を、各メンバー固有の上限に上乗せして設定可能に。spend limits 管理 API の <code>pooled_budget</code> で指定します。</li>
+  <li><strong>サブエージェントの effort 既定値</strong>: <code>CLAUDE_CODE_SUBAGENT_EFFORT</code> を追加。他に指定がない場合にサブエージェントが動く effort を、セッションからの継承ではなく明示的に設定できます。</li>
+  <li><strong>ポリシーのレイヤリング</strong>: <code>managed.policy_mode: layered</code> を追加。開発者に一致するポリシーが（最初の1件だけではなく）すべて適用され、下位のポリシーに順にマージされます。</li>
+  <li><strong>Bedrock ガードレール連携</strong>: Claude apps gateway の Bedrock upstream に <code>guardrail.input_tagging</code> を追加。Amazon Bedrock ガードレールのプロンプト攻撃フィルタが必要とする入力タグでプロンプトを包みます（<code>all_messages_and_system</code> ではシステムプロンプトも対象）。</li>
+  <li><strong>ループした相互証明書の保持</strong>: <code>CLAUDE_CODE_DISABLE_LOOPED_CROSS_CERT_DROP</code> を追加。プライベート CA が相互に証明し合う証明書を必要とするサーバー向けに、その破棄を抑止します。</li>
+  <li><strong>[VSCode]</strong>: チャットパネルから Claude apps gateway へサインイン可能に（ターミナル不要）。</li>
+  <li><strong>[Cloud sessions]</strong>: MCP サーバーが求めるフォームを、気づかないうちにキャンセルされるのではなく入力／辞退できるフォームカードを追加。「Catching up…」表示により、切り戻したクラウド／Remote Control セッションのメッセージ同期中であることが分かります。</li>
+  <li><strong>[Code Review]</strong>: アナリティクスページに severity 別の findings カード（期間合計、severity 積み上げの日次チャート、severity 別件数）を追加。</li>
+</ul>
+
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li><strong>Opus 4.8 の fast mode を非推奨化</strong>: 2026年10月30日付で非推奨、2026年11月30日に削除予定。削除後は Opus 4.8 の fast mode リクエストがエラーとなり、標準 Opus 4.8 へのフォールバックも行いません。速度優位を維持するには Opus 5.5 への移行が必要です。</li>
+  <li><strong>auto mode のルール解釈</strong>: <code>"$defaults"</code> を含まない <code>autoMode.allow</code> リストが、スケジュールタスク向けプロンプトの組み込みルールを削除しなくなります。</li>
+  <li><strong>サーバー管理設定（Team / Enterprise）</strong>: Anthropic API から取得した設定が承認プロンプトなしで適用され、検証に通らない保存済みコピーは拒否されるようになりました。</li>
+  <li><strong>[VSCode]</strong>: <code>ultrathink</code> がターミナルと同様に <code>xhigh</code> effort でターンを実行し、チャットボックスでレインボー表示されるようになりました。</li>
+  <li><strong>[Cloud sessions]</strong>: ネットワークシークレットを Enterprise メンバーが自分のクラウド環境で追加・削除可能に（従来は閲覧のみ）。</li>
+  <li><strong>[Claude Tag]</strong>: Slack チャンネルの「Respond automatically」スイッチが、チャンネル設定ページおよび Claude Tag 管理設定で「How Claude participates」の選択肢に変更。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-316">Claude Code changelog 2.1.316</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.5</strong>（2026-10-23 14:28 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">NousResearch/hermes-agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.10.10-beta.5</strong>（2026-10-30 12:57 JST 公開、プレリリース）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.245</strong>（2026-10-30 14:34 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">stablyai/orca Releases</a></p>
+
+<h2>⚡ Next.js — 安定版リリースなし</h2>
+<p>対象期間内に安定版のリリースは確認されませんでした。最新安定版は <strong>v16.4.3</strong>（2026-10-23 22:32 JST 公開）です。canary は <strong>v16.5.0-canary.35</strong>（2026-10-31 17:01 JST 公開）と <strong>v16.5.0-canary.36</strong>（2026-11-01 08:42 JST 公開）が対象期間内に公開されています。</p>
+<p>なお、2026年11月3日（火）に予定されているセキュリティリリースの事前通告が公式ブログに掲載されています。Next.js の 7 件の Medium 脆弱性に対応予定で、該当バージョンをご利用の場合は公開後の速やかな更新をご検討くださいませ。</p>
+<p>🔗 <a href="https://nextjs.org/blog/upcoming-nextjs-security-release-november-2026">Upcoming Next.js security release (November 2026)</a></p>
+
+<p class="empty-notice"><strong>AWS</strong>（最新の「What's New」は 2026-10-31 05:43 JST 公開分までで、対象期間内の新着は確認されませんでした）、<strong>Google Cloud</strong>（最新のリリースノートは 2026年10月30日付で、対象期間内の新着は確認されませんでした）、<strong>Azure</strong>（最新のアップデートは 2026-10-31 02:16 JST 公開分で、対象期間内の新着は確認されませんでした）、<strong>React</strong>（最新は v19.3.1、2026-10-14 17:06 JST 公開）、<strong>Python</strong>（最新は 3.15.2、2026-10-25 公開）、<strong>Django</strong>（最新は 6.1.2）、<strong>Spring Boot</strong>（最新は v4.1.2、2026-10-22 公開）、<strong>Hono</strong>（最新は v4.13.14、2026-10-25 公開）、<strong>Claude API/SDK</strong>（最新は anthropic-sdk-python v2.3.0、2026-10-24 08:18 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
