@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-02 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-02 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-01 08:00 〜 2026-11-02 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Apache Wicket（Java） - 認可検査の迂回とセッション固定 計8件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-82840 / CVE-2026-82557 / CVE-2026-82704 / CVE-2026-82115 / CVE-2026-82705 / CVE-2026-82558 / CVE-2026-82559 / CVE-2026-82898</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 7.2（High）〜 2.1（Low）、Apache Software Foundation採番</td></tr>
+<tr><th>影響</th><td>Apache Wicket（Java製Webフレームワーク）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-01 22:17 UTC（JST 2026-11-02 07:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-82840（CVSSv4.0 7.2）は認証基底クラス <code>AuthenticatedWebSession#signIn(String, String)</code> が、すでにサインイン済みのセッションが再認証する際に <code>Session#changeSessionId()</code> を呼ばないため、セッションIDを事前に固定された攻撃者がセッション固定攻撃を成立させられます。</li>
+<li>CVE-2026-82557（6.9）は <code>Form#onRequest()</code> がrequestパラメータから送信元コンポーネントを解決し、可視性・有効性の検査が「submitterが渡されない場合」にしか走らないため、アプリが提示していない送信ボタンを名指しするリクエストがそのボタンの <code>onSubmit()</code> / <code>onError()</code> へ到達します。</li>
+<li>CVE-2026-82704（6.9）は <code>ListenerRequestHandler</code> が参照する認可フラグが描画フェーズのみで書き込まれるため、空のpage識別子を含むlistener URLから新しいページインスタンス経由でコンポーネントのlistenerが直接呼び出されます。</li>
+<li>CVE-2026-82115（6.3）は <code>WebSocketMessageBroadcastHandler</code> が <code>WebSocketResource#onPayload()</code> を認可戦略 <code>IAuthorizationStrategy#isResourceAuthorized()</code> を経由せずに直接呼び出す問題で、<code>@AuthorizeResource</code> 注釈が無効化されます。CVE-2026-82705（6.3）も同メソッドの強制点が <code>ResourceRequestHandler</code> 一箇所しか存在しない問題です。</li>
+<li>CVE-2026-82558 / CVE-2026-82559（各2.3）は <code>WebSocketBehavior</code> の認可欠如と <code>WebSocketSettings#newWebSocketRequest()</code> のセッション有効期限不備、CVE-2026-82898（2.1）は <code>ResourceIsolationRequestCycleListener</code> のセキュリティ検査順序の誤りです。JavaのWebアプリでWicketをご利用の場合は修正版への更新が必要ですわ。</li>
+</ul>
+
+<h3>Gitea 28.3.0 - アクセストークンのスコープ強制漏れなど20件超のCVEを修正 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-112887 / 116474 / 118396 / 116289 / 119625 / 120263 / 117635 / 119441 / 118395 / 117646 / 119533 / 119627 / 118394 / 113429 / 114199 / 116296 / 118504 / 117649 / 117677 / 117685 ほか</td></tr>
+<tr><th>深刻度</th><td>個別採点は未公表。認可・スコープ強制に関する一括修正</td></tr>
+<tr><th>影響</th><td>Gitea 28.3.0 未満（28.2.0以前）</td></tr>
+<tr><th>公表</th><td>GitHub Releases 2026-11-01 09:55 UTC（JST 18:55）／NVD登録 2026-11-01 10:18 UTC</td></tr>
+</table>
+<ul>
+<li>目立つのは、公開リソース限定（<code>public-only</code>）のパーソナルアクセストークンに対するスコープ強制が複数ルートで漏れていた問題群です。CVE-2026-117635 は <code>/api/v1/admin</code> 配下、CVE-2026-119441 は組織の全リポジトリを削除する <code>DELETE /api/v1/orgs/{org}/repos</code>、CVE-2026-116289 は組織のActionsランナー登録トークン発行、CVE-2026-118395 はリポジトリ作成 API で、いずれも制限が効かず権限外の操作が可能でした。</li>
+<li>CVE-2026-112887 は Actions のジョブトークンが負のIDを持つ共有システムユーザーとしてREST APIへ認証され、リポジトリ・組織・プロジェクト・キーの各フィルタが「所有者制限なし」と解釈したため、ワークフローを実行できる利用者が <code>GET /api/v1/user/repos</code> でインスタンス上の全リポジトリ（他ユーザー・他組織の非公開リポジトリを含む）のメタデータを列挙できました。CVE-2026-116474 は同じ <code>gitea-actions</code> ユーザーが <code>/api/v1/user</code> のメール・GPG鍵エンドポイントに受理された問題です。</li>
+<li>情報露出系では、CVE-2026-117646（サインイン済みリクエストでユーザープロフィールや組織一覧に非公開リポジトリが混入）、CVE-2026-119533（プロジェクトボードが参照元の非公開PRを露出）、CVE-2026-119627 / 118394（プロフィール・RSS/AtomフィードとOAuth2 userinfoの <code>groups</code> 判定不備）、CVE-2026-114199（ユーザーのヒートマップAPIがトークン所有者のリポジトリアクセス権で計算）、CVE-2026-117649 が挙げられます。</li>
+<li>整合性・可用性系では、CVE-2026-118386（PRレビュー起点のワークフローが <code>commit_id</code> のコミットから読まれる一方フォーク制限はレビュー対象PRで判定される不整合）、CVE-2026-113429（v1系Artifactsアップロードが <code>Content-Encoding</code> を未検査のままダウンロード時の <code>Content-Type</code> として保存）、CVE-2026-117677（Helmチャート展開時に非圧縮サイズを無制限に読むためCPU枯渇によるDoS）、CVE-2026-117685（OCIレジストリのcross-repository blob mountの判定不備）、CVE-2026-116296 / 118504（アーカイブ済みリポジトリへのAPI経由の変更を許容）が含まれます。</li>
+</ul>
+
+<h3>WordPressプラグイン - BookIt の SQLインジェクション（9.3）ほか計7件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-62048 / CVE-2026-66570 / CVE-2026-119480 / CVE-2026-113481 / CVE-2026-113482 / CVE-2026-107342 / CVE-2026-107343 / CVE-2026-118168</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.3（Critical）〜 4.3（Medium）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-01 05:18〜16:18 UTC（Patchstack / Wordfence 採番）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-62048（CVSSv3.1 9.3）は Liquid Web / StellarWP の WordPressプラグイン「BookIt」2.6.0.6以下に存在するSQLインジェクションです。予約・スケジュール機能を持つプラグインで、稼働中の予約サイトは優先的な確認が必要ですわ。</li>
+<li>CVE-2026-66570（7.1）は Nickboss「WordPress File Upload」の格納型クロスサイトスクリプティング、CVE-2026-119480（6.5）は Crocoblock「JetFormBuilder」3.6.7.1以下でパストラバーサルによる任意ファイル削除が可能です。</li>
+<li>CVE-2026-113482（6.8）と CVE-2026-113481（4.3）は「Media Library Assistant」3.44未満でショートコード属性のエスケープ漏れとケイパビリティ検査欠如、CVE-2026-107342 / 107343（各4.3）は「Kali Forms」2.4.30未満のテストメール送信ハンドラでケイパビリティ検査が欠如しています。CVE-2026-118168（5.3）は「MapPress」2.97.15未満で、フロントエンドのマップ埋め込みが他ユーザーのデータを未認証で描画してしまう問題です。</li>
+</ul>
+
+<h3>AIエージェント実行基盤 - Beta9 のワーカー脱出（9.9×3）と Prefab UI サンドボックス脱出（10.0） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-120338 / CVE-2026-120306 / CVE-2026-120307 / CVE-2026-120308</td></tr>
+<tr><th>深刻度</th><td>CVE-2026-120338: CVSSv3.1 10.0（Critical）／Beta9 3件: 各 9.9（Critical）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-01 13:18 / 16:18 UTC（JFrog採番）／PoC・修正版あり</td></tr>
+</table>
+<ul>
+<li>CVE-2026-120338 は PrefectHQ「prefab」（Prefab UI）0.14.0〜0.20.2 の Generative UI サンドボックスが、Deno を <code>--allow-read</code> / <code>--allow-write</code> / <code>--allow-net</code> 無制限で起動し、Python 側から <code>Deno.readTextFileSync</code> / <code>writeTextFileSync</code> を呼べる状態にある問題です。FastMCP の GenerativeUI プロバイダ（<code>generate_prefab_ui</code> ツール）がコード引数をこのサンドボックスへ転送するため、認証なしのMCPサーバでは任意コード供給者がサーバのOSユーザー権限でファイルを読み書きでき、仮想環境の <code>site-packages</code> に <code>.pth</code> を書き込めばコード実行を永続化できます。</li>
+<li>Beta9（beam-cloud）の3件は、テナントがワークスペーストークンとサンドボックス1つでワーカーノードのファイルシステムへ到達できる問題です。CVE-2026-120306 は <code>BUILDAH_ISOLATION=chroot</code> のままビルド手順がワーカーPodの名前空間を保持してuid 0で実行されるため <code>/proc/1/root</code> 経由でワーカーのファイルシステム（runc / buildah / runsc のバイナリ、Kubernetesサービスアカウントトークン、マウントされたホストディレクトリ）へ到達する経路です。</li>
+<li>CVE-2026-120307 は <code>getHostPathFromContainerPath</code> がマウント接頭辞の検査後に <code>filepath.Join</code> で親ディレクトリ要素を畳み込むため、パス操作でワーカー上の任意の絶対パスへ到達する問題（アップロード・ダウンロード・stat・一覧・検索置換・削除の全APIが同ヘルパを呼びます）。CVE-2026-120308 はボリューム識別子の所有者検証が欠如し、親ディレクトリ要素で結合結果がワーカーのルートへ縮退して他テナントのボリュームまで読み書きできる問題です。修正は gateway 0.1.776 / worker 0.1.756。</li>
+</ul>
+
+<h3>Perl関連ライブラリ - Brotli同梱のXS::libbrotli、memcachedコマンド注入、Google::AuthのSSRFとOAuth state未検証 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-115946 / CVE-2026-13575 / CVE-2026-74759 / CVE-2026-74760</td></tr>
+<tr><th>深刻度</th><td>CVSS採点未公表（いずれも修正版あり）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-01 00:16〜17:16 UTC</td></tr>
+</table>
+<ul>
+<li>CVE-2026-115946 は XS::libbrotli 1.2.1.0 未満が、既知の脆弱性 CVE-2026-111497（Google Brotli デコーダの境界外書き込み、CISA KEV 登録済み）を含む brotli 1.0.7 / 1.1.0 を静的アーカイブへ同梱している問題です。依存する XS モジュールが信頼できない brotli ストリームを展開するとデコーダ状態の破壊・メモリ開示・クラッシュ・任意コード実行に至り得ます。システム側の brotli を更新しても本問題は解消されません。</li>
+<li>CVE-2026-13575 は HTTP::Session 0.54 未満の <code>HTTP::Session::Store::CHI</code> が、クッキー由来のセッションIDを無検査で CHI キャッシュへ渡す問題です。memcachedドライバを使用している場合、セッションIDにCR/LFを混入させるとキャッシュコマンドを途中で終端し、後続バイトが追加コマンドとして解釈されるため memcached コマンドインジェクションが成立します。</li>
+<li>CVE-2026-74759 は Google::Auth 0.12（Perl）の AWS 外部アカウント資格情報が <code>credential_source</code> の <code>imdsv2_session_token_url</code> / <code>url</code> / <code>region_url</code> をホスト検査なしで用いるため、設定を完全には制御できない呼び出し元が内部サービスやリンクローカル・メタデータエンドポイントへ GET/PUT を発行させられます（SSRF）。CVE-2026-74760 は 0.11〜0.12 の <code>gcloud-auth</code> ログインコールバックが OAuth の <code>state</code> を検証しないため、ローカルの攻撃者が自分のアカウントの認可コードを送り込み、CLIがそれを利用者のリフレッシュトークンとして保存してしまいます。</li>
+</ul>
+
+<h3>その他のスタック関連（React / Next.js / Hono / Django / Spring Boot / GCP / AWS / Azure / Claude Code / OpenClaw / Hermes Agent）</h3>
+<hr>
+<p class="empty-notice">React・Next.js・Hono・Django・Spring Boot・GCP・AWS・Azure の各製品そのものに直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。Claude Code（最新 v2.1.316 / 10-31 10:01 JST）、OpenClaw（最新 2026.10.10-beta.5 / 10-30）、Hermes Agent（最新 v0.22.5 / 10-23）はいずれも対象期間内の新規リリースはなく、セキュリティ関連の変更も含まれていません。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>GMOトラスト・ログイン（GMOグローバルサイン） - 対象が2,492社・45,030人へ拡大、公開ストレージの設定不備で9年近く外部から取得可能 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>GMOグローバルサイン株式会社（GMOインターネットグループ）</td></tr>
+<tr><th>サービス</th><td>GMOトラスト・ログイン（ID管理・シングルサインオン）</td></tr>
+<tr><th>対象</th><td>2,492社・45,030人（メールアドレス重複除外）</td></tr>
+<tr><th>公表</th><td>第三報 2026-10-30 15:00 JST／2026-11-01にNHK・日経が報道</td></tr>
+</table>
+<ul>
+<li>ロゴ画像配信用に公開設定としていたクラウドストレージへ、顧客情報を含む一時ファイルや契約情報ファイルを保存していた設計・設定上の不備が原因です。2017年11月14日頃から外部取得が可能な状態で、アクセス記録から実際の取得を確認できたのは2021年6月8日以降、遮断完了は2026年9月15日16時でした。NHKは「9年近く外部から取得可能な状態だった」と報じています。</li>
+<li>対象は前回公表の2,007社・37,747人から485社・7,283人増加しました。取得されたファイルには氏名・メールアドレス、社員番号や所属部署などのカスタム属性、SSO連携アプリ名、企業ID・ライセンス数・利用状況・解約日といった契約情報、請求先担当者の氏名・住所・電話番号・メールアドレスが含まれます。SSOのログインパスワード、連携先サービスのパスワード、秘密の質問、多要素認証情報、決済情報は対象外とされています。</li>
+<li>11月1日には日経が「GMO熊谷正寿社長、2日に記者会見」と報じ、11月2日にも続報が見込まれます。GMOインターネットグループは同月、別サービス「お名前.com デスクトップクラウド」でも不正アクセスを受け本人確認と見舞金（情報が公開された顧客に上限300万円）、総額1.5億円の懸賞金制度を打ち出しており、同一グループで事案が併走しています。</li>
+</ul>
+
+<h3>NTTデータ委託先「デジタル証券プラットフォーム」への不正アクセス - 近鉄GHD 2,678件・SBI証券1,169人・楽天証券延べ362件、フィリップ・キャピタル証券162名へ波及 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>NTTデータ／委託先SaaS、近鉄グループホールディングス、SBI証券、楽天証券、フィリップ・キャピタル証券 ほか</td></tr>
+<tr><th>発生日</th><td>2026-10-30</td></tr>
+<tr><th>公表</th><td>各社 2026-10-31〜2026-11-01（11-01 21:00 UTC以降に続報）</td></tr>
+</table>
+<ul>
+<li>社債購入者への特典付与を支援する「STdirectServices」が利用する委託先のSaaSサービスへの第三者による不正アクセスで、社債購入者の情報が漏えいした可能性があります。11月1日の続報では、近鉄グループホールディングスが2,678件（氏名・購入金額）、SBI証券が1,169人、楽天証券がデジタル特典付き社債3銘柄の購入者 延べ362件が対象とされました。</li>
+<li>同日、フィリップ・キャピタル証券も顧客162名の情報漏えいを確認したと公表しています（うち100名は生年月日も対象）。販売会社側のシステムが不正アクセスを受けたものではなく、ログインID・パスワード・取引に必要な各種情報は含まれていないとの報告です。</li>
+</ul>
+
+<h3>Japanticketの外部分析ツールへの不正アクセス - 富士登山「吉田ルート」2024年度の約7万件が影響調査中、最大約26.4万件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社Japanticket／山梨県／株式会社CS-C（Japan Food Guide）／ちいかわベーカリー</td></tr>
+<tr><th>検知</th><td>2026-10-28（同日中に侵入経路を遮断）</td></tr>
+<tr><th>公表</th><td>2026-10-30（第1報）、読売新聞が 2026-11-01 に吉田ルートの影響を報道</td></tr>
+</table>
+<ul>
+<li>予約・販売サービス「JapanTicket」が利用する外部分析ツールへの不正アクセスで、氏名・メールアドレス・電話番号・国や地域・予約／注文内容・備考欄などが最大約26.4万件漏えいした可能性があります。クレジットカード番号（下4桁を含む）は対象外で、ログインパスワードの漏えいも現時点で確認されていません。</li>
+<li>山梨県は富士山吉田ルートの2024年度通行予約者 約7万件が最大約26.4万件に含まれるかを調査中としています。対象となり得る項目は氏名・フリガナ・メールアドレス・電話番号・国や地域に加え、登山の利用日、人数、日帰り／宿泊の区分、備考欄です。2025・2026年度分は対象外です。</li>
+<li>連携先では、CS-Cが「Japan Food Guide」で2026年9月15日以前の予約・注文顧客情報の流出を公表、ちいかわベーカリーは優先入場券の新規販売を一時停止しました（購入済みQRコードは有効）。予約内容の一致を悪用した偽の「再発行」「補償」連絡への警戒が必要です。</li>
+</ul>
+
+<h3>全日空商事「選べるe-GIFT」に再び不正アクセス - 8月とは異なる手口で全サービス停止が長期化 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>全日空商事株式会社</td></tr>
+<tr><th>サービス</th><td>デジタルギフト「選べるe-GIFT」</td></tr>
+<tr><th>状況</th><td>2026-10-23 08:00 から全サービス停止／不正アクセス確認の公表 2026-10-30</td></tr>
+</table>
+<ul>
+<li>10月23日8時から緊急システムメンテナンスとして全面停止していたサービスについて、セキュリティ調査の結果、外部からの不正アクセスが確認されました。2026年8月に公表した事案とは侵入経路と手口が異なると説明しています。</li>
+<li>10月30日時点で顧客の個人情報漏えい、発行済みギフトの不正交換・利用はいずれも確認されていません。受け取り済みギフトの交換、新規発行・購入、サービスサイト、法人契約企業向け管理画面が利用できない状態が続き、再開時期は未定で長期停止を見込んでいます。警察への通報・相談と外部専門機関によるフォレンジック調査を継続中です。</li>
+</ul>
+
+<h3>ライフカード「Vプリカ」 - 委託先への不正アクセスで個人情報漏えいの可能性、サービス一部停止 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ライフカード株式会社（Vプリカ）</td></tr>
+<tr><th>内容</th><td>委託先への不正アクセス、個人情報漏えいの可能性</td></tr>
+<tr><th>公表</th><td>2026-11-01〜2026-11-02（各社報道）</td></tr>
+</table>
+<ul>
+<li>プリペイドカード「Vプリカ」の委託先に対する不正アクセスが判明し、個人情報が漏えいした可能性があるとしてサービスの一部を停止しています。後払いチャージ（後払い決済）の返済についても案内が出ていると報じられています。カード情報の扱いと対象範囲の詳細は公表内容の確認が必要です。</li>
+</ul>
+
+<h3>SmartNews - ポイント・特典システムで再び不正操作を確認、交換を停止 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>スマートニュース株式会社</td></tr>
+<tr><th>内容</th><td>ポイント・特典システムへの不正アクセスによる不正操作、交換停止</td></tr>
+<tr><th>公表</th><td>2026-11-01〜2026-11-02（各社報道）</td></tr>
+</table>
+<ul>
+<li>ポイント・特典システムで不正操作が確認され、交換を停止しています。2026年10月22日に公表された事案とは別事案とされています。同一サービスで短期間に複数回の事案が発生している点は注意が必要ですわ。</li>
+</ul>
+
+<h3>モイ「ツイキャス」続報 - 個人情報7件に第三者アクセスの痕跡、サービス再開は未定 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>モイ株式会社（ライブ配信「ツイキャス」）</td></tr>
+<tr><th>検知</th><td>2026-10-28（同日午前10時40分頃からサービス停止）</td></tr>
+<tr><th>公表</th><td>続報 2026-11-01（各社報道）</td></tr>
+</table>
+<ul>
+<li>不正アクセスの影響調査で、個人情報7件に第三者によるアクセスの痕跡が確認されたとの続報です。累計登録ユーザー4,000万人超の国内最大級のライブ配信サービスで、コーポレートサイトも停止しているため公式XアカウントとTDnetで情報を公表しています。サービス再開時期は依然として未定です。</li>
+</ul>
+
+<h3>米FBI - Binanceからの60億ドル超の暗号資産窃盗は北朝鮮「TraderTraitor」の犯行と断定 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>主体</th><td>米連邦捜査局（FBI）／Binance</td></tr>
+<tr><th>被害</th><td>約63億ドル（約9,940億円）と推定、うち約30億ドルを凍結</td></tr>
+<tr><th>公表</th><td>FBI発表 2026-11-02 07:28 JST（ITmedia NEWS）</td></tr>
+</table>
+<ul>
+<li>FBIは、暗号資産取引所Binanceから流出した60億ドル超の暗号資産窃盗について、北朝鮮のハッカー集団「TraderTraitor」の犯行と発表しました。日本国内でも総務省が攻撃者サイトへの通信ブロッキングを通信各社へ要請するなど、GMOへのサイバー攻撃と並んで国家背景の攻撃が相次いで表面化しています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
