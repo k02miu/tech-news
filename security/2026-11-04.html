@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-04 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-04 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-03 08:00 〜 2026-11-04 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Google Chrome 157（157.0.8103.38／.39）- 脆弱性213件を修正、Critical 7件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-121035 / 121126 / 121156 / 121203 / 121229 / 121246 / 121247（Critical 7件）ほか計213件</td></tr>
+<tr><th>深刻度</th><td>Critical 7件、High 77件、Medium 75件、Low 54件</td></tr>
+<tr><th>影響</th><td>Chrome 157.0.8103.38 未満（Windows／macOS／Linux／Android／iOS）</td></tr>
+<tr><th>公表</th><td>Google 現地 2026-11-03 リリース、Security NEXT 2026-11-04 07:51 JST</td></tr>
+</table>
+<ul>
+<li>Googleは現地2026-11-03、Windows／macOS向けに「157.0.8103.39」「157.0.8103.38」、Linux向けに「157.0.8103.38」をリリースし、CVEベースで213件の脆弱性に対処した。数日〜数週間で順次展開される。</li>
+<li>Critical 7件は、Dawnのバッファオーバーフロー（CVE-2026-121156、CVE-2026-121247）、ANGLEのメモリ破損（CVE-2026-121229）、WebGL（CVE-2026-121246）、Prerender（CVE-2026-121035）、Geometry（CVE-2026-121203）、Core（CVE-2026-121126）のUse After Free。</li>
+<li>High 77件にはV8の型取り違え（CVE-2026-121082）、PDFiumのバッファオーバーフロー（CVE-2026-121113）、WebRTCのUse After Freeなどが含まれる。NVD上のスコアではサンドボックス外への任意コード実行に至るものがCVSS 9.6前後で多数計上されている。</li>
+<li>一次情報: <a href="https://www.security-next.com/192316" target="_blank" rel="noopener noreferrer">Security NEXT</a> ／ NVD</li>
+</ul>
+
+<h3>WordPress Core 4.7〜7.1.3 - 更新時RCE（CVE-2026-119977）がCISA KEVに追加、悪用を確認 <span class="badge-high">重要な進展</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-119977</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.1（High、Wordfence採番）</td></tr>
+<tr><th>影響</th><td>WordPress Core（7.1.4 で修正済み。4.7以降の各ブランチへバックポートを順次実施）</td></tr>
+<tr><th>公表</th><td>CISA 現地 2026-11-03 付でKEV追加、Security NEXT 2026-11-04 07:26 JST</td></tr>
+</table>
+<ul>
+<li>フルパッケージによるコア更新時に一時展開されるファイルの保存先が予測可能かつWebから到達可能なため、更新ウィンドウの間だけ未認証の攻撃者がサーバ上のコードを実行できる。</li>
+<li>CISAは悪用が確認されたとしてKEVに追加し、米行政機関の対応期限を2026-11-06に指定、侵害調査も求めた。</li>
+<li>Wordfenceは「過去24時間に同社製品で本脆弱性の悪用を試みる1万3000件超の攻撃をブロックした」としている。未更新のWordPressサイトは至急7.1.4以降へ更新されたい。</li>
+<li>一次情報: <a href="https://www.security-next.com/192310" target="_blank" rel="noopener noreferrer">Security NEXT</a> ／ <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV</a></li>
+</ul>
+
+<h3>Claude Code 2.1.251未満 ／ Claude Desktop 1.8089.0未満 - Editツールのシンボリックリンク経由ワークスペース外書き込みと、Windows版のgit.exe探索パス問題 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-88968（Claude Code） / CVE-2026-88066（Claude Desktop）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 7.7（Claude Code） / 7.5（Claude Desktop）</td></tr>
+<tr><th>影響</th><td>Claude Code 2.1.251 未満 ／ Claude Desktop 1.8089.0 未満（Windows）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 20:18 UTC（JST 2026-11-04 05:18）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-88968: Edit ツールのパス検証がディレクトリのinodeやファイルディスクリプタに紐付いていない。macOSでは、Bashサンドボックス内で動く攻撃者コードが検証後にワークスペース内の親ディレクトリをシンボリックリンクへ原子的に置換でき、サンドボックス外で動作するEdit実装がワークスペース外のユーザー書き込み可能ファイルを上書きする。悪意あるリポジトリや依存パッケージのスクリプトが起点となる。2.1.251 で修正。</li>
+<li>CVE-2026-88066: Windows版Claude Desktopがgit.exeを絶対パス指定なしで uv_spawn するため、Windowsの探索パス解決が、本来のシステム実行ファイルより先に「開いたプロジェクトのカレントディレクトリ」にある悪意あるgit.exeを選び得る。攻撃者が用意した共有リポジトリを開くだけでユーザー権限で任意プログラムが実行される。1.8089.0 で修正。</li>
+<li>本エージェント環境（Claude Code）は 2.1.317 のため上記はいずれも既に対策済みのバージョンだが、社内の他端末・他プロジェクトのバージョンを点検されたい。</li>
+</ul>
+
+<h3>Claude Code v2.1.317 - メールアドレス送信前の確認とAgent SDKフックのブロック指定を追加 <span class="badge-low">情報</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>anthropics/claude-code v2.1.317</td></tr>
+<tr><th>内容</th><td>web／shellツール呼び出しでアカウントのメールアドレスをネットワークへ送信する前に確認するチェックを追加。Agent SDKのフックコールバックに <code>onFailure: "block"</code> を追加し、コールバックが失敗した場合はアクションを実行させずブロック。ほか権限表示・MCP接続・認証まわりの修正多数</td></tr>
+<tr><th>公表</th><td>npm公開 2026-11-03 01:25 UTC（JST 10:25）</td></tr>
+</table>
+<ul>
+<li>セキュリティ関連として、外部へ個人識別情報（メールアドレス）を送出する操作の前に確認を挟む挙動が追加された。フックが失敗した際に「実行させない」側へ倒す選択肢も用意された。</li>
+<li>参照: <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.317" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<h3>Hermes Agent v0.22.7 - パッチリリース（セキュリティ特化の記載なし） <span class="badge-low">情報</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>NousResearch/hermes-agent v0.22.7</td></tr>
+<tr><th>内容</th><td>v0.22.6 以降の約174 PRを集約したパッチリリース（開発元コミット b200f5bc60e）</td></tr>
+<tr><th>公表</th><td>2026-11-04 06:53 JST（GitHub Releases）</td></tr>
+</table>
+<ul>
+<li>本対象期間に公開されたリリースだが、リリースノートにセキュリティに特化した修正項目・CVEの記載はない（詳細なcuratedノートは v0.23.0 で公開予定）。</li>
+<li>参照: <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<h3>OpenClaw 2026.10.10（安定版）- 資格情報保護と権限保持まわりのセキュリティ修正を含む <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>openclaw/openclaw v2026.10.10（4,825 commits / 3,028 PR）</td></tr>
+<tr><th>内容</th><td>不正なUTF-8をトークン／APIキーコマンドへ流し込んで保存済み資格情報を上書きされる問題を拒否。config・root-level private書き込みが共有state-rootの権限を保持しつつ機微ファイルと私的子ディレクトリを非公開に保つよう修正</td></tr>
+<tr><th>公表</th><td>2026-11-03 12:22 JST（GitHub Releases）</td></tr>
+</table>
+<ul>
+<li>モデルトークンやAPIキーのコマンドへ不正なUTF-8がパイプされた場合に、保存済み資格情報が壊される前に拒否するようになった（#167251）。</li>
+<li>設定ファイルおよびroot-levelのprivate書き込みが、既存の共有state-rootパーミッションを保持しつつ、機微ファイルとその配下のディレクトリを非公開に保つよう修正（#171869、報告 #169011）。</li>
+<li>あわせて、対応する設定・プロバイダ変更をGateway停止なしで行えるようになった（一部の初回セットアップとCLIの資格情報コマンドは停止が必要）。Cloud setupのシークレットはバインド先のみへ送出可能に制限されている。</li>
+<li>参照: <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a> ／ <a href="https://docs.openclaw.ai/releases/2026.10.10" target="_blank" rel="noopener noreferrer">Release notes</a></li>
+</ul>
+
+<h3>Docker Desktop for Windows（WSL2バックエンド）- 非特権コンテナがseccomp制限を回避しホスト側へ到達（CVE-2026-112917） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-112917</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.2（Critical）</td></tr>
+<tr><th>影響</th><td>Docker Desktop for Windows（WSL2バックエンド、x86-64）。LinuxKitバックエンドは影響なし</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 19:17 UTC（JST 2026-11-04 04:17）</td></tr>
+</table>
+<ul>
+<li>WSL2バックエンドの非特権Linuxコンテナが、32ビットの socketcall を用いて AF_VSOCK に対する既定のseccomp制限を回避できる。これによりホスト側のサービスや、ログイン中ユーザーが参照できるWindowsファイルへ到達し得る。</li>
+<li>完全な修正には Docker Desktop 4.98.0 以降と WSL 3.0.3 以降の両方が必要。Docker Desktop 4.98.0 以降でも古いWSL上では影響が残る。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-112917" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Angular @angular/router（Node.js SSR）- 補助アウトレット未検証でSSRワーカーを停止させるDoS（CVE-2026-111752 / CVE-2026-111751） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-111752（20.3.33／21.2.25／22.2.1 未満） / CVE-2026-111751（21.2.0〜21.2.25 未満、22.2.1 未満）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.2（High）</td></tr>
+<tr><th>影響</th><td>Angular のSSR（Node.jsサーバサイドレンダリング）を有効にしたアプリ</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 21:16 UTC（JST 2026-11-04 06:16）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-111752: Node.js SSRで、補助アウトレット（auxiliary outlet）のURLセグメントが各アウトレット名に設定されたルートと照合されない。未設定の空パスoutlet groupを多数含む細工したリクエストにより、ルート設定の評価、ActivatedRouteSnapshotツリーの重複生成、canMatchガードとresolverの実行が繰り返され、Node.jsのヒープやCPUを枯渇させてSSRワーカーが終了する。未認証の遠隔攻撃者が誘発可能（SSR有効、空パスのルートまたは名前付きアウトレットを含むルート、上流基盤がリクエストターゲットをそのまま転送、ワーカーのヒープが制約されている、が条件）。クライアントサイドSPAとビルド時のプリレンダリングは影響を受けない。</li>
+<li>CVE-2026-111751: SSR中にレンダリングされる RouterLink が、リクエストの生存期間中 UrlTree を保持し続ける。<code>queryParamsHandling</code> が merge／preserve の場合、攻撃者制御のクエリパラメータが各リンクに複製され、ヒープ使用量が増幅されてold-spaceヒープ枯渇に至る。</li>
+<li>修正版はいずれも 20.3.33 / 21.2.25 / 22.2.1。SSRを公開しているAngularアプリは上流プロキシでのクエリ長制限とあわせて速やかな更新が必要。</li>
+</ul>
+
+<h3>Argo CD Image Updater - SSHリポジトリのproxy URL経由のコマンドインジェクション（CVE-2026-121621） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-121621</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.8（High）</td></tr>
+<tr><th>影響</th><td>Argo CD Image Updater</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 21:17 UTC（JST 2026-11-04 06:17）</td></tr>
+</table>
+<ul>
+<li>SSHのGitリポジトリに設定されたproxy URLが、サニタイズされないままシェル解釈されるSSHコマンドへ渡される。悪意あるproxy値を設定できる攻撃者は、シェルメタ文字を注入して任意のコマンドを実行し、Image Updater プロセスの権限で資格情報へアクセスできる。</li>
+<li>CI/CDパイプライン上のコンポーネントであり、リポジトリ設定を変更できる権限の棚卸しとあわせて確認されたい。</li>
+</ul>
+
+<h3>Elasticsearch - 入れ子ペイロードによる制御されない再帰で未認証DoS（CVE-2026-115290） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-115290</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 7.5（High）</td></tr>
+<tr><th>影響</th><td>Elasticsearch のノード（クラスタサーバインタフェースへネットワーク到達可能な場合）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 17:17 UTC（JST 2026-11-04 02:17）</td></tr>
+</table>
+<ul>
+<li>制御されない再帰（CWE-674）により、細工した入れ子ペイロードを送るとノードが終了する。資格情報は不要で、攻撃者は到達可能な各ノードに対して繰り返し送信できる。</li>
+<li>クラスタのHTTPポートが外部公開されている環境は、到達制限の確認とパッチ適用状況の点検が必要。</li>
+</ul>
+
+<h3>WordPress「SureCart」4.9.5以下 - 未認証で管理者アカウント乗っ取り（CVE-2026-120574） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-120574</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.1（High）</td></tr>
+<tr><th>影響</th><td>SureCart 4.9.5 以下</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 05:18 UTC（JST 14:18）</td></tr>
+</table>
+<ul>
+<li>パスワードレスのワンタイムコードログイン用RESTルート（<code>VerificationCodeController::verify()</code>、permission callbackが <code>true</code> を返す）が、攻撃者指定のログイン名を任意のWordPressユーザーへ解決し、6桁コードの検証に成功すると <code>$user->login()</code> → <code>wp_set_auth_cookie()</code> を呼ぶ。</li>
+<li>影響バージョンでは、アカウント単位の試行回数制限、メール／IP単位の永続ロックアウトやレート制限（上流CDNのスロットリングはIPローテーションで回避可能）、高権限アカウントのログイン抑止のいずれも存在しない。未認証の攻撃者が管理者を含む任意ユーザーのコードを発行させ、6桁を総当たりして管理者セッションを得る。</li>
+</ul>
+
+<h3>fastapi-code-generator 0.8.1未満 - OpenAPIパス経由で生成コードにPython式を注入（CVE-2026-63469 / 63470 / 63471） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-63471 / CVE-2026-63470 / CVE-2026-63469</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.3（Critical）</td></tr>
+<tr><th>影響</th><td>fastapi-code-generator 0.8.1 未満（Python）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 20:18 UTC（JST 2026-11-04 05:18）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-63471: OpenAPIのパスを生成コードの <code>@app.get(...)</code> ルート文字列へシングルクォートで埋め込む際にエスケープしない。攻撃者が用意・影響を与えたOpenAPIパスで文字列を閉じ、デコレータ引数へ有効なPython式を注入できる。生成モジュールがimportされてデコレータが評価される時点で、アプリまたはCIプロセスの権限で実行される。</li>
+<li>CVE-2026-63470 は operation-summary をルートハンドラのdocstringへ、CVE-2026-63469 は追加レスポンスキーを生成コードへ、それぞれ未エスケープで埋め込む別のsink。修正は 0.8.1。</li>
+</ul>
+
+<h3>Babelfish for PostgreSQL - 認証済みユーザーの権限昇格（CVE-2026-119922） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-119922</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.8（High）</td></tr>
+<tr><th>影響</th><td>Babelfish for PostgreSQL 拡張 1.2〜1.5、2.1〜2.15、3.1〜3.12、4.0〜4.8、5.1〜5.4</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 19:17 UTC（JST 2026-11-04 04:17）</td></tr>
+</table>
+<ul>
+<li>アクセス制御の不備により、遠隔の認証済みユーザーが自身の権限を昇格させられる。修正は 4.10 / 5.6 / 6.1 以降（AWS Babelfish の各バージョン）。</li>
+</ul>
+
+<h3>Puppet / Puppet Server - CA署名済みエージェント証明書を持つクライアントがサーバ上で任意コード実行（CVE-2026-115731 / CVE-2026-115732） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-115731（CVSSv3.1 9.4） / CVE-2026-115732（CVSSv3.1 9.0）</td></tr>
+<tr><th>影響</th><td>Puppet Agent / Puppet Server（該当リリース）、trapperkeeper-authorization を用いる Puppet Server</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 21:17 UTC（JST 2026-11-04 06:17）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-115731: Puppetのレポート処理コードが信頼できないデータをデシリアライズする。任意のCA署名済みエージェント証明書を持つクライアントが、細工したrich-data型を含むレポートをPUTで送信し、Puppet Serverのサービスユーザー権限で任意コードを実行できる。</li>
+<li>CVE-2026-115732: trapperkeeper-authorization の証明書名照合における認可の不備。同じくCA署名済み証明書を持つクライアントが制限を越えられる。</li>
+<li>認証局が強い検証なしに自動署名する運用の場合、未認証のネットワーク攻撃者が有効な証明書を取得して到達できる。autosign設定の点検が急がれる。</li>
+</ul>
+
+<h3>SonicWall GMS 9.5.2以下 - 未認証で内部ファイルを読み出せる可能性（CVE-2026-109593） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-109593</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.1（Critical）</td></tr>
+<tr><th>影響</th><td>SonicWall GMS（Global Management System）9.5.2 以下</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03 17:17 UTC（JST 2026-11-04 02:17）</td></tr>
+</table>
+<ul>
+<li>ネットワーク到達可能な未認証の攻撃者が、GMS内部のファイルを読み出し、機微な情報を取得できる可能性がある。管理系アプライアンスは外部公開を避け、修正版の適用状況を確認されたい。</li>
+</ul>
+
+<h3>isomorphic-git 1.38.6未満 - シンボリックリンク経由で作業ツリー外へ任意ファイル書き込み（CVE-2026-63395） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-63395</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.8（High）</td></tr>
+<tr><th>影響</th><td>isomorphic-git 1.38.6 未満（Node.js／ブラウザ向け純JavaScriptのGit実装）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-03（JST 2026-11-04 未明）</td></tr>
+</table>
+<ul>
+<li><code>git.checkout</code> が、先頭ディレクトリがシンボリックリンクであるパスを検査せずに子パスを書き込む。悪意あるリポジトリが先にディレクトリシンボリックリンクを置き、その後ツリー状態をその配下の子ファイルへ差し替える（典型的にはクローン後の pull、シンボリックリンクが既存の場合は単一クローンでも成立）。</li>
+<li>Linux／macOSのNode fsではOSが書き込みを作業ツリー外へ解決し、ホスト上の任意ファイル書き込み、ひいてはコード実行に至り得る。WindowsのNode fsは通常追加権限なしではシンボリックリンク設置を拒否し、ブラウザ／インメモリ実装は仮想FS内に影響が限定される。修正は 1.38.6。</li>
+</ul>
+
+<h3>日立 HA8000V 対応 HAモニタオプション（管理サーバーレス）- ローカルアクセスによるOSコマンドインジェクション（CVE-2026-84726） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-84726</td></tr>
+<tr><th>影響</th><td>HAモニタオプション（管理サーバーレス）TX-LNY-VSS7BH40／TX-LNZ-VSS7BH40：RHEL 7・8（3.2.6 未満）、RHEL 9（4.2.6 未満）</td></tr>
+<tr><th>公表</th><td>日立製作所 2026-10-30 発表、ScanNetSecurity 2026-11-04 08:00 JST</td></tr>
+</table>
+<ul>
+<li>ローカルアクセスによりOSコマンドインジェクションの攻撃を受けるおそれがある。日立は対策版以降へのアップデートを呼びかけている。</li>
+<li>一次情報: <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56651.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js、React、Hono、Django、Spring Boot、GCP、Azure に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>アソビュー「アソビュー！」- 委託先アララのメール配信サービス侵害で会員情報 1,582万1,184件が流出 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アソビュー株式会社（体験予約サービス「アソビュー！」）／ アララ株式会社「アララメッセージ」</td></tr>
+<tr><th>発覚</th><td>2026-11-02 アララから預託情報の持ち出しを把握、11-03 に件数・項目の報告を受領</td></tr>
+<tr><th>公表</th><td>2026-11-03（アソビュー公式サイト）</td></tr>
+</table>
+<ul>
+<li>アソビューがメール配信に利用していたアララ社の「アララメッセージ」が第三者による不正アクセスを受け、預託していた会員情報が外部に流出した。アソビュー自身のシステムへの侵入は確認されていないとしている。</li>
+<li>流出は 15,821,184件（データ件数であり、同数の会員を意味するものではない）。</li>
+<li>項目は、メールアドレス、会員ID・会員番号、氏名、性別、生年月日、会員登録日、最終ログイン日、電話番号、郵便番号、居住地域に加え、チケットの購入日時、チケット種類、購入枚数、利用施設名、利用日時、参加人数、キャンセルの有無といった予約・利用履歴。パスワードとクレジットカード情報は同サービスに預託しておらず流出対象外。</li>
+<li>11-02 に本サービスを利用した全メール配信を停止し、管理画面パスワード・APIキー等の認証情報を無効化。11-03 に個人情報保護委員会およびJIPDECへ速報（予定）。対象会員の特定後に個別連絡する方針。</li>
+<li>福井県は、福井県立恐竜博物館のチケット購入者も対象となった可能性があるとして二次被害への注意を呼びかけている（報道）。</li>
+<li>一次情報: <a href="https://www.asoview.co.jp/news/articles/AyTdT_tX" target="_blank" rel="noopener noreferrer">アソビュー お知らせ</a></li>
+</ul>
+
+<h3>アララ「アララメッセージ」- 影響が最大約380社・メールアドレス約7,700万件へ拡大、サービス全面停止が継続 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アララ株式会社（メール配信サービス「アララメッセージ」）</td></tr>
+<tr><th>発覚</th><td>2026-10-28 共用環境で不正利用を確認、10-31 に本サービス経由の持ち出しを把握</td></tr>
+<tr><th>公表</th><td>2026-10-29 第1報、2026-11-02 第2報、11-03 に各社が続報</td></tr>
+</table>
+<ul>
+<li>第2報で、既報の共用環境に加えて契約企業の環境サーバー97台への不正アクセスが判明。影響する契約企業は最大約380社と推計され、持ち出されたメールアドレスは約7,700万件（精査中）。</li>
+<li>流出情報にはメールアドレスに加え、契約企業が登録した氏名・性別・生年月日・電話番号・会員番号・住所等の会員情報を含む顧客データも含まれる。クレジットカード番号は一切保有していない。</li>
+<li>既報の共用環境分は、メールアドレス 3,386,187件（重複除去後）と、契約企業5社が登録した顧客データ 最大411,827件に更新された。原因はWebサーバーの脆弱性に加え、システム環境における問題も関係していた。</li>
+<li>本サービスの一部環境が不正利用され、10-28〜30にクレジットカード会社を装う不審メールが最大約713万通送信された（送信元 news@arara.com、送信先は攻撃者が外部から持ち込んだメールアドレス）。</li>
+<li>10-31 19:53 にサービス提供を全面停止、再開時期は未定。再開時には契約企業へ管理画面パスワード・APIキー等の再設定を求める予定。</li>
+<li>影響先として、大阪市の「行政オンラインシステム」、横浜市のオンライン申請システム、栃木銀行（顧客のメールアドレス約1,000件）などが報道されている。自治体・金融機関を含む広範なサプライチェーン事案として推移を見る必要がある。</li>
+<li>一次情報: <a href="https://www.arara.com/dcms_media/other/arara_20261102__.pdf" target="_blank" rel="noopener noreferrer">アララ 第2報（PDF）</a></li>
+</ul>
+
+<h3>プレステージ・コアソリューション（プレステージ・インターナショナル） - ロードサービス受付システムへの不正アクセスで最大約550万件が漏えい <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社プレステージ・コアソリューション（親会社：株式会社プレステージ・インターナショナル、東証プライム 4290）</td></tr>
+<tr><th>発覚</th><td>2026-10-29 不正アクセスを検知、10-30 に業務システムを停止</td></tr>
+<tr><th>公表</th><td>2026-11-02（ニュースリリース）、11-03 に各社が報道</td></tr>
+</table>
+<ul>
+<li>グループの業務システムが第三者による不正アクセスを受け、PCSが取引先企業から受託しているロードサービス等の受付・手配業務システムから顧客情報が外部へ持ち出された。</li>
+<li>漏えいは最大約550万件（重複を含む最大値、重複を除いた人数は精査中）。項目は、氏名、住所、電話番号、メールアドレス、車両に関する情報（登録番号、車台番号等）、事故・故障の受付に関する情報、金融機関の口座に関する情報（一部）。クレジットカード情報の漏えいは現時点で確認されていない。</li>
+<li>同社は不正に利用された認証情報の無効化などを実施したが不正アクセスの継続を確認したため10-30にシステムを停止。外部の専門機関と連携して原因・影響範囲を調査し、個人情報保護委員会への報告と警察への相談を進めている。代替運用により業務は継続。</li>
+<li>委託元のソニー損保は、ロードサービスデスクへの電話がつながりにくくなっていると告知し、契約者向けの問い合わせ窓口を設置した。</li>
+<li>一次情報: <a href="https://www.prestigein.com/Portals/0/pdf/NEWS/news_20261102_01.pdf" target="_blank" rel="noopener noreferrer">プレステージ・インターナショナル ニュースリリース（PDF）</a> ／ <a href="https://from.sonysonpo.co.jp/topics/information/02112026_288508.html" target="_blank" rel="noopener noreferrer">ソニー損保 お知らせ</a></li>
+</ul>
+
+<h3>ノジマ「ノジマオンライン」- 会員管理システムへの不正アクセスで約700万件が漏えい、対象サイトを一時休止 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ノジマ（家電量販大手）</td></tr>
+<tr><th>発覚</th><td>2026-11-01（日）に不正アクセスを検知・確認、同日中に漏えいを確認</td></tr>
+<tr><th>公表</th><td>2026-11-02（公式サイト・PDF）、11-03 に各社が報道</td></tr>
+</table>
+<ul>
+<li>ECサイト「ノジマオンライン」と「中古スマホ買取サイト」の会員管理システムに対する第三者からの不正アクセスにより、登録会員情報が外部に漏えいした。</li>
+<li>対象は約700万件（退会者は含まない）。項目は、氏名（漢字・カナ）、生年月日、性別、郵便番号、住所、電話番号、ログインID・暗号化されたパスワード、メールアドレス。決済情報の非保持化に対応しており、両サイトでクレジットカード情報は保持していない。</li>
+<li>外部アクセスの遮断を含むセキュリティ対策と監視体制の強化、所轄警察署への相談、個人情報保護委員会等への報告準備を実施。対象2サイトはサービスを一時休止し、再開時期は安全性の確認後に告知する。</li>
+<li>一次情報: <a href="https://www.nojima.co.jp/wp-content/uploads/2026/11/fa47750556e505f2ddb83dc080a6420f.pdf" target="_blank" rel="noopener noreferrer">ノジマ お知らせ（PDF）</a></li>
+</ul>
+
+<h3>首相官邸 - 個人情報流出の被害者向け相談窓口を案内 <span class="badge-medium">参考</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>内閣官房（首相官邸）</td></tr>
+<tr><th>公表</th><td>2026-10-30 発表、ScanNetSecurity 2026-11-04 08:00 JST</td></tr>
+</table>
+<ul>
+<li>企業などへのサイバー攻撃が相次ぎ大規模な個人情報流出が多数生じていることを受け、漏えい情報を悪用した二次被害への不安に対応するため、被害者・心配のある人向けに相談窓口を案内した。</li>
+<li>案内先は、消費生活センター（188）、警察相談専用電話（#9110）、金融庁「金融サービス利用者相談室」、日本クレジット協会のクレジットに関する消費者相談窓口、IPA「情報セキュリティ安心相談窓口」、違法・有害情報相談センター、総務省「電気通信消費者相談センター」、個人情報保護委員会の相談ダイヤル。</li>
+<li>国内では個人情報保護委員会が、2026-04-01〜10-16 に報告された不正アクセスによる漏えい等の対象者数が延べ約2億6,000万人に達したと公表しており、官民での相談体制整備が続いている。</li>
+<li>一次情報: <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56652.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
