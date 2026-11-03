@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-03 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-03 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.316</strong>（2026-10-31 10:06 JST 公開）です。次点は v2.1.314（2026-10-30 10:16 JST 公開）です。</p>
+<p>v2.1.316 では <code>CLAUDE_CODE_DISABLE_ULTRATHINK</code>、サブエージェントの effort 指定（<code>CLAUDE_CODE_SUBAGENT_EFFORT</code>）、Claude apps gateway のグループ共有予算（<code>pooled_budget</code>）などが追加され、Opus 4.8 の fast mode が 2026年11月30日付で廃止予定であることが告知されています。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.22.6</h2>
+<p>2026-11-03 02:18 JST 公開。v0.22.5 以来の <strong>776 件のマージ済み PR</strong> を安定版として取りまとめたパッチリリースです。CLI・インストーラー・Microsoft Store アプリ・Docker・Hermes Cloud 向けに配布されます。なお、この期間の詳細なキュレーション済みリリースノートは v0.23.0 で提供予定とのことです。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>規模</strong>: コミット <code>f0d94882e89</code> 基準で、非マージコミット 3,448 件、変更ファイル 4,316 件（+248,579 / −94,077）、マージ済み PR 776 件、クローズ Issue 385 件。</li>
+  <li><strong>Webapp</strong>: gateway 自身のリスナーから配信される <code>hermes webapp</code>、ネットワーク越し／独自 URL で開く Desktop Web Access ペイン、Desktop プラグインのブラウザタブ読み込み。</li>
+  <li><strong>セッション管理</strong>: 履歴を失わずにモデルのピン留めを解除する <code>/model reset</code>、<code>hermes cron cancel</code> とジョブ単位の未実行ポリシー、Desktop cron エディタの停止ボタン。</li>
+  <li><strong>安全性・運用</strong>: 自律書き込みに対するスキル単位ロック（Desktop の Capabilities ペインから設定）、vault 鍵の OS キーチェーン保存（オプトイン）、推論前にターンを遮断できる <code>pre_llm_call</code> フック。</li>
+  <li><strong>連携</strong>: Slack スレッド文脈での絵文字リアクション、Telegram のビデオノート、Desktop のグループチャット（改名・解散・メンション・添付貼り付け）、全プロファイルのサイドバー表示。</li>
+</ul>
+
+<h3>⬆️ 更新方法</h3>
+<ul>
+  <li>CLI: <code>hermes update</code> またはインストーラーの再実行</li>
+  <li>Docker / Hermes Cloud: <code>nousresearch/hermes-agent:stable</code>（または <code>:latest</code>）</li>
+  <li>Microsoft Store アプリ: Store 経由で更新</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.22.6">Hermes Agent v0.22.6 リリースノート</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.10.10-beta.5</strong>（2026-10-30 12:57 JST 公開、プレリリース）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">openclaw/openclaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.246</h2>
+<p>2026-11-02 12:19 JST 公開。Orchestrator V3、Chat UI の正式機能化、モバイルアプリの刷新、ターミナル改善が中心の大型アップデートです。同日 10:21 JST には Android アプリ <strong>mobile-android-v0.0.62</strong> も公開されています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Orchestrator V3</strong>: トークン効率と信頼性を改善。CLI エージェントと Chat UI の双方で動作し、Chat UI にはワーカーの進捗を示すビジュアルインジケーターを追加。オーケストレーション中はワーカーエージェントの通知を抑制します。</li>
+  <li><strong>Chat UI が実験的機能を卒業</strong>: エージェントごとに Chat / CLI を選択でき、作業中もフォローアップをキューに積めるほか、利用上限に達した際は別アカウントや別ハーネスで継続できます。</li>
+  <li><strong>モバイル刷新</strong>: Light / Dark / System のテーマ選択と表示言語の設定、ホーム画面の再設計、検索・フィルタチップの改善。iOS ではインライン HTML カードとプレビューに対応。</li>
+  <li><strong>ターミナル改善</strong>: 入力速度の向上、セッション復元の信頼性向上、テキスト描画・リンク・余白の修正。</li>
+  <li><strong>カスタマイズ</strong>: アプリとは独立したエディタテーマ、背景画像、ウィンドウ全体をターミナルテーマに合わせる設定。コミュニティプラグインのカタログ閲覧と TypeScript / TSX によるパネル自作に対応。</li>
+  <li><strong>computer use / browser use</strong>: バックグラウンドブラウジング、サインインポップアップ、アップロード／ダウンロードの信頼性を改善し、Windows・Linux の不具合を修正。</li>
+</ul>
+
+<h3>🐛 主な修正（mobile-android-v0.0.62）</h3>
+<ul>
+  <li>ブラウザの新規タブ・ポップアップからのダウンロードが <code>--path</code> に保存されない問題、および再起動後に復元されたタブが一覧に表示されず切り替え時に読み込まれない問題を修正。</li>
+  <li>ネイティブチャットの右クリックコピーが、クリック位置を外した選択範囲を提示してしまう問題を修正。</li>
+  <li>サイドバーで子要素を展開済みの親を表示する際、最下層の子へスクロールしてしまう問題を修正。</li>
+  <li><code>tab create --split</code> によるスプリットペインでのブラウザタブ表示に対応。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.246">Orca v1.4.246 リリースノート</a> · <a href="https://github.com/stablyai/orca/releases/tag/mobile-android-v0.0.62">mobile-android-v0.0.62</a></p>
+
+<h2>⚡ Next.js — v16.4.4（バックポート修正）</h2>
+<p>2026-11-03 01:41 JST 公開。canary の全機能を含まない、バグ修正のバックポートリリースです。同日 08:49 JST には canary の <strong>v16.5.0-canary.37</strong> も公開されています。</p>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>Turbopack の起動時 CSS 更新を取りこぼした際にリロードするよう修正（#100619）。</li>
+  <li>PPR のレジューム時に Turbopack の共有ランタイムブートストラップを出力し、CSP nonce が付与されるよう修正（#100907）。</li>
+  <li>「Optimize strict module factory chunks」(#98421) を revert（#100866）。</li>
+  <li>analyze コマンドでルートサマリーをアナライザーのルートインデックスとして使うよう修正（#100974）。</li>
+  <li><code>jsonwebtoken</code> を <code>fast-jwt</code> に置き換え（#100885）。</li>
+  <li>deploy テストのデプロイ先を Node.js 22.x に固定、クライアントナビゲーション後に fallback params を読むテストを無効化。</li>
+</ul>
+
+<h3>🔒 セキュリティリリースの予告</h3>
+<p>公式ブログにて、<strong>2026年11月3日（火）</strong>に予定されているセキュリティリリースの事前通告が掲載されています。Next.js の <strong>Medium 脆弱性 7 件</strong>に対応する予定で、影響範囲・該当バージョン・アップグレード手順を含むアドバイザリはリリースと同時に公開されます。該当バージョンをご利用の場合は、公開後の速やかな更新をご検討くださいませ。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.4">Next.js v16.4.4</a> · <a href="https://nextjs.org/blog/upcoming-nextjs-security-release-november-2026">Upcoming Next.js security release (November 2026)</a></p>
+
+<h2>☁️ AWS — 2026-11-02 分のアップデート</h2>
+<p>対象期間内（2026-11-02 09:00 〜 2026-11-03 09:00 JST）に公開された「What's New」のうち、主なものをご紹介します。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Haiku 5.5 が Kiro で AWS GovCloud (US) に登場</strong>（2026-11-03 05:45 JST 公開）: Kiro の IDE と CLI で Anthropic の新モデルが利用可能になり、Claude 5.5 ファミリー（Opus / Sonnet / Haiku）が GovCloud (US) で揃いました。Haiku 5.5 は 1M コンテキスト、クレジット乗率 0.06x、100K トークン超のリクエストは 0.3x。</li>
+  <li><strong>Amazon RDS がスナップショット単位の課金に対応</strong>（2026-11-03 03:43 JST 公開）: これまで DB インスタンス単位で集計されていたスナップショット課金を、スナップショット個別に把握できるようになりました。コスト配分タグも利用可能で、全 RDS エンジン・全リージョン（GovCloud 含む）で追加料金なしに既定で有効です。</li>
+  <li><strong>Amazon Aurora MySQL 3.14（MySQL 8.0.46 互換）が GA</strong>（2026-11-03 02:00 JST 公開）: 耐量子 TLS（PQ-TLS）鍵交換に対応し、転送中データの暗号化に耐量子暗号の選択肢が加わりました。</li>
+  <li><strong>Amazon Aurora MySQL 8.4.10 が GA</strong>（2026-11-03 02:00 JST 公開）: GTID タグ付けに対応し、バイナリログレプリケーションで関連トランザクションの識別・グループ化が可能に。DB インスタンスあたり最大 5 万同時接続をサポートし、接続プール層なしでも接続集約型アプリをスケールできます。</li>
+  <li><strong>AWS Lambda がセルフマネージド Kafka イベントソースで Apache Kafka Queues に対応</strong>（2026-11-03 02:00 JST 公開）: Kafka シェアグループ（Apache Kafka 4.2 で GA）を基盤とし、同一パーティションから複数のイベントポーラーが並行消費可能に。並列度をパーティション数から切り離せるため、トラフィック急増時のスループットと処理耐性が向上します（順序保証はなし）。</li>
+  <li><strong>Amazon Connect Customer がフローで MCP ツールを呼び出し可能に</strong>（2026-11-03 01:00 JST 公開）: 新しい「External Tool」ブロックから Amazon Bedrock AgentCore Gateway 経由でサードパーティ製アプリのツールを再利用でき、カスタム Lambda の実装が不要になります。東京リージョンを含む 9 リージョンで提供。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New (Recent Announcements)</a></p>
+
+<h2>☁️ Google Cloud — 2026-11-02 分のリリースノート</h2>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>App Engine: Python 3.15 ランタイムが Preview</strong>: standard / flexible の両環境で Python 3.15 が利用可能になりました。</li>
+  <li><strong>BigQuery: データエージェントの可観測性が GA</strong>: Google Cloud Observability を使い、データエージェントおよびその会話のパフォーマンス・利用状況・レイテンシ・コストを監視できます。Data Engineering Agent も、生成する Dataform SQLX パイプラインと指示ファイルで BigQuery AI / ML / オブジェクト関数を扱えるようになりました。</li>
+  <li><strong>Backup and DR: 大規模な自動リソース保護が GA</strong>: 自動保護ポリシーとリソースラベルにより、ユーザー定義ラベルに基づいてプロジェクト横断で対象リソースへバックアッププランを自動割当できます。</li>
+  <li><strong>Cloud Load Balancing: Cloud Trace による分散トレーシングが Preview</strong>: グローバル／リージョナルの外部・内部アプリケーションロードバランサーに対応。フォワーディングルールにテレメトリポリシーを付与してスパンを生成します。</li>
+  <li><strong>Apigee X: EKM ヘルスモニタリング</strong>: Cloud Logging を用いて EKM の健全性を監視し、EKM 関連のアラートを設定できます。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#November_02_2026">Google Cloud リリースノート（2026年11月2日）</a></p>
+
+<h2>🤖 Claude API / SDK — anthropic-sdk-python v2.4.0</h2>
+<p>2026-11-03 04:07 JST 公開。Analytics・spend limits・RBAC に関する GA メソッドの追加が中心です。</p>
+<h3>🔧 新機能</h3>
+<ul>
+  <li><strong>API</strong>: analytics / spend limits / RBAC の GA メソッドを追加。統合メトリクスと RBAC 削除レスポンス向けの名前付きベータ型、analytics の group_by と spend limit 期間フィルタ用の型、External Keys と Workspaces の <code>user_profile_id</code> を追加。</li>
+  <li><strong>エラー型</strong>: <code>tool_use_limit_reached_error</code> と <code>compaction_limit_reached_error</code> のセッションエラー型を追加。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>spend limit 引き上げ承認レスポンスで <code>spend_limit</code> を nullable に修正。</li>
+  <li>analytics の常時送信フィールドを必須化し、未使用の project product フィールドを削除。</li>
+  <li><code>omit</code> を受け付けるパラメータ型を pydantic に検証させるよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-python/releases/tag/v2.4.0">anthropic-sdk-python v2.4.0</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>（公式アップデートフィードが 502 Bad Gateway を返し取得できなかったため、対象期間内の新着は未確認です）、<strong>React</strong>（最新は v19.3.1、2026-10-15 02:06 JST 公開）、<strong>Python</strong>（最新は 3.15.2 / 3.14.10、いずれも 2026-10-25 公開）、<strong>Django</strong>（最新は 6.1.2）、<strong>Java / Spring Boot</strong>（最新は v4.2.0-RC1 および v4.1.2、2026-10-23 02:04 JST 公開）、<strong>Hono</strong>（最新は v4.13.16、2026-11-01 12:10 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
