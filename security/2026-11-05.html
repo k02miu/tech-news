@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-05 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-05 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-04 08:00 〜 2026-11-05 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Ruby on Rails Active Storage（activestorage gem）- ImageMagick解析で server の読み書きが可能（CVE-2026-122006、CVSSv3.1 9.8 Critical） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-122006</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H、Critical）</td></tr>
+<tr><th>影響</th><td>activestorage gem 8.1.4.1 未満（Ruby on Rails）。ImageMagick による添付ファイル処理を行う構成</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 15:17 UTC（JST 2026-11-05 00:17）</td></tr>
+</table>
+<ul>
+<li>ファイルを添付した時点で ImageMagick のアナライザが動作するが、意図しない機能を遮断する ImageMagick セキュリティポリシーが設定されていない場合、サーバ上の読み取り・書き込みが可能となる。<code>secret_key_base</code> の読み出しに至る例が示されており、影響は重大。</li>
+<li>Rails／Active Storage を利用し、添付の検証や解析を行うアプリでは 8.1.4.1 以降への更新、あわせて ImageMagick のポリシー設定（<code>policy.xml</code> の制限）を確認されたい。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-122006" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Symfony 5.4.56／6.4.50／7.4.23／8.1.11 未満 - X509認証バイパス・ルーティング混同・HTMLサニタイザ迂回の3件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-118513（7.7） / CVE-2026-118516（6.3） / CVE-2026-121373（5.3）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 7.7（High、X509）／6.3（Medium、Routing）／5.3（Medium、HtmlSanitizer）</td></tr>
+<tr><th>影響</th><td>Symfony 5.4.56 未満、6.x 6.4.50 未満、7.x 7.4.23 未満、8.x 8.1.11 未満</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 13:17 UTC（JST 22:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-118513（X509Authenticator）</strong>: アプリの信頼済みCAが発行した証明書を持つ攻撃者が CN を操作できる場合、任意のユーザー（特権ユーザーを含む）として認証できる。CVE-2026-45063 の修正が RDN 境界の正規表現に止まり、不完全に終わったことが原因。</li>
+<li><strong>CVE-2026-118516（Routing）</strong>: <code>CompiledUrlMatcher</code> と <code>UrlMatcher</code> で host と path の解釈が異なるため、host プレースホルダが <code>/</code> に一致してパスの先頭を消費し、パス基準の認可ルールを回避してコントローラへ到達し得る。</li>
+<li><strong>CVE-2026-121373（HtmlSanitizer）</strong>: <code>MetaRefreshAttributeSanitizer</code> の正規表現が狭すぎ、<code>meta</code> タグの refresh URL を無害化し損ねて任意サイトへのリダイレクトが可能。CVE-2026-48761 の修正に対する不備。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-118513" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-118513）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-118516" target="_blank" rel="noopener noreferrer">CVE-2026-118516</a></li>
+</ul>
+
+<h3>Apache ZooKeeper 3.9.6以下 - 認可不備・永続DoSなど4件（CVE-2026-100252 ほか） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-100252（8.6） / CVE-2026-100300（8.7） / CVE-2026-115448（8.7） / CVE-2026-100302（7.1）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 7.1〜8.7（High）。いずれも Apache ZooKeeper 3.9.6 以下</td></tr>
+<tr><th>影響</th><td>Apache ZooKeeper（3.8.8／3.9.7 で修正）。Java製アプリの調整基盤として広く利用される</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 11:17 UTC（JST 20:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-100252</strong>: クライアントポートで SASL 認証を有効にしている場合、SASLコールバックハンドラがクライアントの要求した authzid を検証せずに受理し、正規化に失敗するとその値をセッションの SASL ID として ACL 判定に用いる。認証済みクライアントが本来得られない権限で操作できる。</li>
+<li><strong>CVE-2026-100300</strong>: 既定で world-writable な <code>/zookeeper/quota</code> 配下に書き込める攻撃者（既定構成では未認証）が、要求処理の中核スレッドをクラッシュさせ、オンディスクのデータディレクトリを起動不能にできる。</li>
+<li><strong>CVE-2026-115448</strong>: znode の入れ子による再帰でスナップショット取得時に JVM スタックを枯渇させ、再起動後も起動時スナップショットで同じ失敗を繰り返す永続DoS。</li>
+<li><strong>CVE-2026-100302</strong>: <code>multiRead</code> ハンドラが同梱する読み取り数と応答サイズを制限しないため、小さなリクエスト1つで JVM ヒープを使い切れる。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-100300" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-100300）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-115448" target="_blank" rel="noopener noreferrer">CVE-2026-115448</a></li>
+</ul>
+
+<h3>Apache ActiveMQ 6.3.3／5.19.12 未満 - KahaDBの恒久停止・認可キャッシュ不整合など5件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-108949（6.5） / CVE-2026-111821（未採点） / CVE-2026-111822（未採点） / CVE-2026-108500（未採点） / CVE-2026-108946（未採点）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 6.5（Medium、DoS）ほか。修正版は 6.4.0／6.3.3／5.19.12</td></tr>
+<tr><th>影響</th><td>Apache ActiveMQ 6.0.0〜6.3.3未満、5.19.12未満（KahaDB・LDAPAuthorizationMapPlugin を含む）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 10:17〜11:17 UTC（JST 19:17〜20:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-111821</strong>: clientId とサブスクリプション名の合計長が 65,535 を超える耐久サブスクリプションを作成すると、KahaDB 利用時にブローカが停止し復旧不能となり得る。</li>
+<li><strong>CVE-2026-108949 / CVE-2026-108946</strong>: 他コネクション所有の一時キューに対する ConsumerInfo を拒否しても購読オブジェクトが subscriptions マップに残留し、繰り返し送信でヒープが枯渇する。また接続・セッション・コンシューマのIDが利用者提供値のため、他ユーザーのIDを騙って購読の窃取や他者のライブ購読の破壊が可能。</li>
+<li><strong>CVE-2026-111822 / CVE-2026-108500</strong>: ランタイム設定で write 権限を剥奪しても既存コネクションは送信を継続でき、LDAP 認可マップ利用時は細工したデスティネーション名で ACL 検索ベースを操作できる。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-111821" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-111821）</a></li>
+</ul>
+
+<h3>Eclipse Mojarra（Jakarta Faces）- URLクライアントウィンドウモードで反射型XSS、CSP nonce も迂回（CVE-2026-120421） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-120421</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 6.1（AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N）</td></tr>
+<tr><th>影響</th><td>Mojarra 2.2.0〜4.0.28、4.1.0〜4.1.19、5.0.0-M1〜M11。<code>jakarta.faces.CLIENT_WINDOW_MODE=url</code> を有効化している場合</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 15:17 UTC（JST 2026-11-05 00:17）</td></tr>
+</table>
+<ul>
+<li><code>jfwid</code>／<code>jakarta.faces.ClientWindow</code> 要求パラメータのクライアントウィンドウIDが URL エンコードされずに生成 URL へ連結され、<code>h:button</code> が JavaScript 文字列リテラルとして描画するため反射型XSS が成立する。</li>
+<li><code>com.sun.faces.enableCspNonce=true</code> の場合、注入したスクリプトが nonce 付き script 要素内で実行され CSP を迂回する。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120421" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>jackson-dataformats-binary（CBOR）- 無制限のタグ連鎖で二次時間のCPU／GC枯渇DoS（CVE-2026-106554、PoC公開） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-106554</td></tr>
+<tr><th>深刻度</th><td>本登録時点で未採点（DoS、CWE-400系。PoC実証済み）</td></tr>
+<tr><th>影響</th><td><code>jackson-dataformat-cbor</code> 2.x 系（2.18.2 で実証）および 3.x 系（<code>tools.jackson.dataformat.cbor</code>）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 16:17 UTC（JST 2026-11-05 01:17）</td></tr>
+</table>
+<ul>
+<li>CBOR はデータ項目の前に任意個のセマンティックタグを置けるが、パーサがタグを <code>TagList</code> に蓄積する際、要素数の上限がないため二次時間の処理時間・GC 負荷により CPU を枯渇させられる。</li>
+<li>Java アプリで信頼できない CBOR を解釈する箇所（メッセージ基盤、外部連携）では入力サイズ・タグ数の上限を設け、修正版の情報を追跡されたい。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-106554" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>MLflow - 安全でないデシリアライズRCEと未認証SSRFなど7件（Python） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-118628（8.2、SSRF） / CVE-2026-118623・118627（各7.8、デシリアライズRCE） / CVE-2026-118624〜118626（5.4〜6.3）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.x 5.4〜8.2（High 3件、Medium 4件）。ZDI（Trend Micro）採番</td></tr>
+<tr><th>影響</th><td>MLflow（Tracking Server／モデル読み込み機能）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 00:17 UTC（JST 09:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-118628</strong>: <code>get-artifacts</code> が URI を検証せずに資源へアクセスするため、未認証の攻撃者がサーバ権限で機微情報を取得できる。</li>
+<li><strong>CVE-2026-118623 / CVE-2026-118627</strong>: pickle 形式の評価アーティファクトおよび SHAP explainer の読み込みで信頼できないデータをデシリアライズし、任意コード実行に至る（ユーザー操作を要する）。</li>
+<li><strong>CVE-2026-118624〜118626</strong>: Tracking Server のジョブ関連エンドポイントで認可検査が欠け、権限昇格や情報漏えいが成立する。</li>
+<li>MLflow は認証を有効化しつつ外部公開を避け、<code>artifacts</code> の取得経路を制限されたい。一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-118628" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Perl CGI／CGI::Cookie 5.00未満 - クッキー属性注入・XSS・DoS・オープンリダイレクトなど約20件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-120631〜120651（約20件。120644 クッキー属性注入、120643 XSS、120638／120636 オープンリダイレクト、120639 ヘッダ注入、120635 multipart すり抜け ほか）</td></tr>
+<tr><th>深刻度</th><td>本登録時点で多くが未採点（CWE-79／113／601／400 系）</td></tr>
+<tr><th>影響</th><td>Perl の CGI.pm および CGI::Cookie 5.00 未満（Perl 5.43 系の標準モジュール更新にあたる）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 18:17 UTC（JST 2026-11-05 03:17）</td></tr>
+</table>
+<ul>
+<li>X-Forwarded-Host を無検証で信頼して URL・self_url・virtual_host を生成する問題（120633）、REQUEST_URI から組み立てた URL でのオープンリダイレクトとスクリプト注入（120636）など、Web アプリ側の防御を崩すものが多い。</li>
+<li>クッキーの path／domain／expires を検証せず属性注入が可能（120644）、アップロードファイル名を任意パス付きで返す（120641）ため、ヘッダ分割やパストラバーサルの足掛かりになり得る。</li>
+<li>Perl 製 Web アプリ（CGI／移行済みフレームワークの内部利用を含む）は CGI 5.00 以降へ更新されたい。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120643" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-120643）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-120644" target="_blank" rel="noopener noreferrer">CVE-2026-120644</a></li>
+</ul>
+
+<h3>elixir-ecto - 補間されたJSONキーでクエリキャッシュが肥大しメモリ枯渇（CVE-2026-118391、CVSSv4.0 8.9） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-118391</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.9（High）</td></tr>
+<tr><th>影響</th><td>Elixir の Ecto（ecto_sql を含む）。未認証の遠隔攻撃者が誘発可能</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 14:17 UTC（JST 23:17）</td></tr>
+</table>
+<ul>
+<li><code>json_extract_path/2</code>、<code>field[^key]</code>、<code>splice/1</code> へリクエスト由来のJSONキーやリスト長を補間していると、キー／長さごとに Ecto の準備済みクエリキャッシュ（ETS、サイズ上限・退避なし）が増え、アプリとDBサーバ双方のメモリを枯渇させられる。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-118391" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>Traefik 2.11.60／3.7.16 未満 - ForwardAuth の接続プール共有で他利用者の認証を再利用（CVE-2026-121966、8.7） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-121966</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.7（AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N）</td></tr>
+<tr><th>影響</th><td>Traefik 2.x 2.11.60 未満、3.x 3.7.16 未満（ForwardAuth、3.7系は Ingress NGINX の auth-url も対象）</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 16:17 UTC（JST 2026-11-05 01:17）</td></tr>
+</table>
+<ul>
+<li>ForwardAuth サブリクエストが全クライアント共有の auth サーバ接続プールを通るため、接続に紐づく NTLM／Negotiate 認証が露出する。未認証の攻撃者が他人の認証済み接続を再利用し、<code>authResponseHeaders</code> 経由で被害者のIDでバックエンドへ到達できる。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-121966" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>JVN - Airbyteの任意コード実行（緊急・悪用確認）、Hinemosの権限割り当て、Akeeba製品のCSRF ほか <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Airbyte 1.7.0〜2.1.0（JVN#12040144、緊急） / Hinemos（JVN#46901199、CVE-2026-109849） / Akeeba Backup・Admin Tools ほか（JVN#44272550、CVE-2026-105296） / INFINITT PACS System Manager（JVNVU#99859918）</td></tr>
+<tr><th>深刻度</th><td>Airbyte CVSSv4.0 8.7／CVSSv3.0 8.8（悪用確認済み）／Hinemos 7.1／Akeeba CSRF 5.1</td></tr>
+<tr><th>公表</th><td>JVN 2026-11-04（12:00／16:00／10:15 公開）</td></tr>
+</table>
+<ul>
+<li><strong>Airbyte（緊急）</strong>: 不適切なクラスロード（CWE-470）により、Connector Builder／ManifestServer コンテナ内で Airbyte ユーザーとして任意コードが実行される。JVNは既に悪用が確認されたとしている。2.2 以降へ更新されたい。</li>
+<li><strong>Hinemos</strong>: パスワード変更APIの権限割り当てが不適切（CWE-266）で、一般ユーザーに割り当て可能な特定権限を持つ攻撃者が管理者ユーザーのパスワードを変更できる。ver.7.2.0、7.1.0〜7.1.2、7.0.0〜7.0.4 などが影響。</li>
+<li><strong>Akeeba製品群</strong>: 一部操作でCSRF対策が不十分（CWE-352）。ログイン状態の利用者が細工ページへアクセスすると意図しない操作をさせられ得る。</li>
+<li><strong>INFINITT PACS System Manager</strong>: CERT/CC の VU#203719 として複数の任意コード実行が公表された（医療画像システム）。</li>
+<li>一次情報: <a href="https://jvn.jp/jp/JVN12040144/index.html" target="_blank" rel="noopener noreferrer">JVN#12040144</a> ／ <a href="https://jvn.jp/jp/JVN46901199/index.html" target="_blank" rel="noopener noreferrer">JVN#46901199</a> ／ <a href="https://jvn.jp/jp/JVN44272550/index.html" target="_blank" rel="noopener noreferrer">JVN#44272550</a> ／ <a href="https://jvn.jp/vu/JVNVU99859918/index.html" target="_blank" rel="noopener noreferrer">JVNVU#99859918</a></li>
+</ul>
+
+<h3>WordPress関連 - JetFormBuilderとUncanny Toolkitの権限昇格がいずれも9.8 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-119481（JetFormBuilder 3.6.7.1以下、9.8） / CVE-2026-65555（Uncanny Toolkit for LearnDash 3.8.2以下、9.8） / ほかWordPressプラグイン多数</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（Critical）×2。ほか Medium〜High が数十件</td></tr>
+<tr><th>影響</th><td>Crocoblock JetFormBuilder、Uncanny Owl Uncanny Toolkit for LearnDash、Mollie Payments for WooCommerce 8.2.0未満、Duplicator 5.1.0未満 など</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04（JST 2026-11-04〜11-05）</td></tr>
+</table>
+<ul>
+<li>JetFormBuilder と Uncanny Toolkit for LearnDash はいずれも「権限の誤った割り当て（Incorrect Privilege Assignment）」により、未認証で任意の権限へ昇格し得る。<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119481" target="_blank" rel="noopener noreferrer">NVD（119481）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-65555" target="_blank" rel="noopener noreferrer">NVD（65555）</a></li>
+<li>ほかにも Duplicator 5.1.0未満の情報露出・XSS、WPvividのパス検証不備、GetPaid 2.8.63未満の認可バイパスなど、WordPress エコシステムの修正が同日にまとまって公開されている。サイト運用者は更新可否を点検されたい。</li>
+</ul>
+
+<h3>ManageEngine Key Manager Plus 7151未満 - コマンド注入と認可範囲外の鍵エクスポート <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-77690（8.8） / CVE-2026-77779（7.7）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 8.8（High、コマンド注入）／7.7（High、不適切なアクセス制御）</td></tr>
+<tr><th>影響</th><td>ManageEngine Key Manager Plus 7151 未満</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 06:17 UTC（JST 15:17、Zohocorp採番）</td></tr>
+</table>
+<ul>
+<li>証明書配備の権限を持つ認証済みユーザーが、配備ターゲットの設定で細工した入力により任意コマンドを実行できる。あわせて低権限ユーザーが権限外の鍵をエクスポートできた。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-77690" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
+<h3>ネットワーク機器 - ASUSルーター、TOTOLINK、Qihoo 360 に Critical の修正 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-84730（ASUS、8.7） / CVE-2026-84729（ASUS、7.2） / CVE-2026-121597（TOTOLINK、9.9） / CVE-2026-121607・121609（Qihoo 360、各10.0）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.9／10.0（Critical）、CVSSv4.0 7.2〜8.7（High）</td></tr>
+<tr><th>影響</th><td>ASUSルーターの一部ファームウェア（AiCloud機能含む） / TOTOLINK A950RG 4.1.2cu.5268_B20221104 / Qihoo 360 のD系ルーターおよび Whole Home Router M5</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04（JST 11:17〜15:17）</td></tr>
+</table>
+<ul>
+<li>ASUSルーターは AiCloud 機能のデバイス名処理にスタックバッファオーバーフローがあり、近接の未認証攻撃者が root 権限で任意コマンドを実行できる。ASUSのセキュリティアップデートを適用されたい。</li>
+<li>Qihoo 360 は <code>testspeed_command</code> の host 引数によるOSコマンド注入（10.0）と、M5 の <code>/etc/init.d/mpt</code> 起動スクリプトのハードコード資格情報（10.0）で、いずれもPoCが公開されている。</li>
+<li>TOTOLINK A950RG は Easy Setup Wizard ハンドラの <code>functionType</code> 操作でスタックバッファオーバーフロー（9.9、PoC公開）。前日報告の <code>cstecgi.cgi</code> の問題に続く同一製品の脆弱性。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-84730" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-84730）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-121607" target="_blank" rel="noopener noreferrer">CVE-2026-121607</a></li>
+</ul>
+
+<h3>その他の注目CVE - NoMachine、Quest Foglight、Git for Windows ほか <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-114549（NoMachine、9.8） / CVE-2026-92188・92189・92190（Quest Foglight、各9.8） / CVE-2026-100407・100408（Git for Windows、各4.4） / FreeRDP 3.32.2未満の一括修正（CVE-2026-121950〜121964）</td></tr>
+<tr><th>深刻度</th><td>Critical（9.8）×4、Medium（4.4）ほか</td></tr>
+<tr><th>影響</th><td>NoMachine の nxwebrunner（TCP 4443） / Quest Foglight for Databases / Git for Windows 2.55.0.windows.3 未満 / FreeRDP 3.32.2 未満</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04（JST 2026-11-04〜11-05）</td></tr>
+</table>
+<ul>
+<li>NoMachine は Web サービス（既定 TCP 4443）のヒープバッファオーバーフローで、未認証の遠隔コード実行に至る。外部公開しているインスタンスは至急更新・到達制限を検討されたい。</li>
+<li>Quest Foglight for Databases は ForgeMBeanServerSupport の認証欠如や <code>baseRmiServiceExporter</code> の安全でないデシリアライズなど、SYSTEM 権限の RCE が複数（ZDI採番、計20件超）。</li>
+<li>Git for Windows は <code>git-credential-wincred</code> のバッファ長誤りで資格情報ストア時に2バイトのヌルをヒープ外へ書き込む問題。2.55.0.windows.3 以降へ更新されたい。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-114549" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-114549）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-92188" target="_blank" rel="noopener noreferrer">CVE-2026-92188</a></li>
+</ul>
+
+<h3>米CISA KEV - Apple 複数製品の認証不備（CVE-2024-27834）を追加 <span class="badge-high">参考</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2024-27834</td></tr>
+<tr><th>深刻度</th><td>KEV追加日 2026-11-04、米行政機関の対応期限 2026-11-18（フォレンジック調査要件は「不要」）</td></tr>
+<tr><th>影響</th><td>iOS・iPadOS・macOS・Safari・tvOS・watchOS 10.5</td></tr>
+<tr><th>公表</th><td>CISA KEV Catalog 2026-11-04</td></tr>
+</table>
+<ul>
+<li>任意の読み書き能力を持つ攻撃者がポインタ認証を迂回できる認証不備。悪用が確認されたとして KEV に追加された。Apple の各アップデート（120896／120898／120901／120902／120903／120905）で修正済み。</li>
+<li>一次情報: <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV Catalog</a></li>
+</ul>
+
+<h3>Claude Code v2.1.318 - 権限プロンプトの取りこぼしとログアウト処理の不具合を修正 <span class="badge-low">情報</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>anthropics/claude-code v2.1.318（npm 2.1.318、2026-11-04 00:01 UTC＝JST 09:01 公開）</tr>
+<tr><th>内容</th><td>権限プロンプトが「送信直後に打ったキー」「表示が遅れたプロンプト」で回答されてしまう問題、<code>claude mcp add/remove</code> がロックなしで設定を書く問題、プラグインのトークン更新前に終了して次回サインアウトされる問題などを修正</td></tr>
+<tr><th>公表</th><td>npm公開 2026-11-04 00:01 UTC（JST 09:01）</td></tr>
+</table>
+<ul>
+<li>セキュリティに直結する修正として、承認を意図しないキー入力で通過させてしまう権限プロンプトの挙動が解消された。MCP 設定の同時書き込み、認証トークン更新の取りこぼし、共有ネットワークホームでの設定更新失敗の無言化（ログアウト失敗を成功と報告）なども修正されている。</li>
+<li>参照: <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.318" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<h3>OpenClaw 2026.11.5-beta.1 - バックアップ・復元と更新経路の安全性を強化（セキュリティ特化の記載はなし） <span class="badge-low">情報</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>openclaw/openclaw v2026.11.5-beta.1（プレリリース、release SHA bc061f935bfd）</tr>
+<tr><th>内容</th><td>バックアップ・復元・アップグレード経路の強化（状態保持とロールバック挙動の明確化）、資格情報の移行互換、Gateway起動・復旧の修正、Knowledge Scribes／PostgreSQLデータプレーンなど</td></tr>
+<tr><th>公表</th><td>GitHub Releases 2026-11-04 04:51 UTC（JST 13:51）</td></tr>
+</table>
+<ul>
+<li>本バージョンはプレリリースで、リリースノートの Highlights／Fixes に「Security」を掲げた項目は含まれていない。前日報告の安定版 2026.10.10（資格情報上書き拒否 #167251、state-root 権限保持 #171869）が直近のセキュリティ修正となる。</li>
+<li>参照: <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a> ／ release notes（v2026.11.5-beta.1）</li>
+</ul>
+
+<h3>Hermes Agent - 本対象期間内の新規リリースなし <span class="badge-low">情報</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>NousResearch/hermes-agent</td></tr>
+<tr><th>状況</th><td>最新は v0.22.7（2026-11-04 06:53 JST 公開、セキュリティ特化の記載なし）。本対象期間内に新規リリース・セキュリティアドバイザリは確認されなかった</td></tr>
+<tr><th>公表</th><td>GitHub Releases を確認（2026-11-05 08:00 JST 時点）</td></tr>
+</table>
+<ul>
+<li>GitHub Releases およびセキュリティ関連の追記は本期間では確認されず、追加対応は不要ですわ。</li>
+<li>参照: <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js、React、Hono、Django、Spring Boot、GCP、AWS、Azure に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>松屋フーズ公式アプリ - 流出件数が確定、会員登録2,000件（最大3,000件）と注文・配送情報237万7,127件 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社松屋フーズ ／ 株式会社松屋フーズホールディングス</td></tr>
+<tr><th>発覚</th><td>2026-10-28 夜に不正アクセスを検知（10-30 に件数を公表）</td></tr>
+<tr><th>公表</th><td>2026-10-30 公表、ScanNetSecurity 2026-11-04</td></tr>
+</table>
+<ul>
+<li>松屋公式アプリ（松弁ネット・モバイルオーダー・松弁デリバリー）の管理システムに第三者から不正アクセスがあった。</li>
+<li>流出項目と件数は、公式アプリ登録会員の会員ID・都道府県・氏名・電話番号・生年月日・メールアドレス・暗号化されたパスワード・松屋ポイントが 2,000件（最大3,000件となる可能性）、松弁ネット等の利用者の会員ID・届け先住所・氏名・電話番号・松屋ポイントが 2,377,127件。クレジットカード情報は保持していない。</li>
+<li>公式アプリのサービスは停止が続いており、注文・ポイント・各種特典が利用できない。同社は早期復旧に向けて関係各社と対応中で、アプリ会員には利用停止期間中の補償を予定している。</li>
+<li>一次情報: <a href="https://www.matsuyafoods-holdings.co.jp/261030_info.pdf" target="_blank" rel="noopener noreferrer">松屋フーズホールディングス お知らせ（PDF）</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56661.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>チャリ・ロト「チャリロト」 - 脆弱性を悪用した不正アクセスで373名の会員情報・銀行口座・カード情報が流出 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社チャリ・ロト（競輪・オートレース投票サービス「チャリロト」）</td></tr>
+<tr><th>発覚</th><td>2026-10-22 点検で不審なログを発見。不正アクセスは 10-21 09:30〜13:00 頃</td></tr>
+<tr><th>公表</th><td>2026-10-24 公表、ScanNetSecurity 2026-11-04 08:05 JST</td></tr>
+</table>
+<ul>
+<li>「チャリロト」システムに対する脆弱性を悪用した第三者からの不正アクセスにより、チャリカ会員373名の個人情報が外部へ漏えいした。</li>
+<li>項目は、会員ID・氏名・生年月日・性別・郵便番号・住所・メール／サブメールアドレス・電話番号・ニックネーム・会員ランク等の会員情報、銀行名・支店名・口座種別・口座番号・口座名義（カナ）の銀行口座情報、カード名義・カード番号（下4桁のみ）・有効期限・ブランドのクレジットカード情報、チャリカ残高・入出金／精算履歴、投票履歴（場・レース・券種・買い目・購入金額・的中・払戻金額）。</li>
+<li>10-22 にチャリロトアプリサービスを停止して緊急メンテナンスを開始し、10-23 に脆弱性修正を反映したうえで再開。対象顧客へ個別連絡を進めている。</li>
+<li>一次情報: <a href="https://chariloto.jp/news/20261024/index.html" target="_blank" rel="noopener noreferrer">チャリ・ロト お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56658.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>ELESTYLE - 管理システムのアクセス制御不備を悪用され、加盟店7,162件の登録情報が外部取得された可能性 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ELESTYLE株式会社（モバイル決済・EC支援）</td></tr>
+<tr><th>発覚</th><td>2026-10-25 09:30〜16:00 頃に不正アクセスを確認、10-27 に原因の不備を修正</td></tr>
+<tr><th>公表</th><td>2026-10-29 公表、ScanNetSecurity 2026-11-04 08:05 JST</td></tr>
+</table>
+<ul>
+<li>管理システムの一部機能におけるアクセス制御の不備を悪用した不正アクセスにより、加盟店の登録情報の一部（7,162件）——ユーザー名、メールアドレス、システム内部識別子など——が外部に取得された可能性がある。</li>
+<li>対象の加盟店には同社または提携先から個別に連絡を行うとしている。</li>
+<li>一次情報: <a href="https://elestyle.jp/20261029-report" target="_blank" rel="noopener noreferrer">ELESTYLE ご報告</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56659.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>NEXCO東日本「ドラとら」- 不正アクセスで登録情報が閲覧された可能性（再掲・続報） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東日本高速道路株式会社（NEXCO東日本）</td></tr>
+<tr><th>発覚</th><td>2026-10-23 公表</td></tr>
+<tr><th>公表</th><td>2026-10-23 公表、ScanNetSecurity 2026-11-04 08:05 JST に掲載</td></tr>
+</table>
+<ul>
+<li>高速道路情報サイト「ドラとら」（ドライブトラフィック）への第三者による不正アクセスにより、一部顧客のメールアドレス・パスワード・性別・都道府県・生年月日が閲覧された可能性がある。</li>
+<li>対象顧客にはメールで個別連絡される。同一メールアドレス・パスワードを他サービスで使い回している場合は変更されたい。</li>
+<li>一次情報: <a href="https://www.e-nexco.co.jp/news/important_info/2026/1023/00016745.html" target="_blank" rel="noopener noreferrer">NEXCO東日本 お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56657.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>アイリスオーヤマ「アイリスプラザ」- 不正アクセスで公式通販サイトの一時停止が継続 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アイリスオーヤマ株式会社（株式会社アイリスプラザ）</td></tr>
+<tr><th>発覚</th><td>2026-10-29 発表</td></tr>
+<tr><th>公表</th><td>2026-10-29 発表、ScanNetSecurity 2026-11-04 08:05 JST に掲載</td></tr>
+</table>
+<ul>
+<li>公式通販サイト「アイリスプラザ」で不正アクセスを確認したため、情報漏えい等の可能性を含めて調査を進めるとともに、顧客の安全確保のため当該サイトを一時停止している。</li>
+<li>現時点の調査ではクレジットカード情報の漏えいは確認されていない。漏えいの有無と影響範囲は調査中。</li>
+<li>一次情報: <a href="https://www.irisohyama.co.jp/news/2026/?date=1029" target="_blank" rel="noopener noreferrer">アイリスオーヤマ お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56660.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>外務省 - 外部接続ネットワークへの不正アクセスで約3,600件の個人情報が流出した可能性 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>外務省</td></tr>
+<tr><th>発覚</th><td>2026-07-27 に不正アクセスを検知</td></tr>
+<tr><th>公表</th><td>2026-10-30 公表、Security NEXT 2026-11-02 ／ ScanNetSecurity 2026-11-04 08:05 JST</td></tr>
+</table>
+<ul>
+<li>外部とのやり取りが可能なネットワークへの不正アクセスを検知し、当該ネットワーク上で扱っていた個人情報を含むメール等の一部が漏えいした可能性が判明した。機密性の高い情報を扱う閉域ネットワークは影響を受けていない。</li>
+<li>漏えいの可能性があるのはメールアドレスや氏名など約3,600件で、うち外務省員以外の情報が約900件。対象者を特定のうえ個別に連絡する。</li>
+<li>検知後に不正アクセスの遮断・認証情報の無効化を実施し、アクセス制御と認証方法の見直し、監視強化、情報セキュリティ教育の再徹底に取り組むとしている。</li>
+<li>一次情報: <a href="https://www.mofa.go.jp/mofaj/press/release/pressit_000001_04395.html" target="_blank" rel="noopener noreferrer">外務省 報道発表</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56663.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>東京都水道局 - 個人情報を含む外付けHDD4台が施錠キャビネットから紛失（1,932名分） <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東京都水道局</td></tr>
+<tr><th>発覚</th><td>2026-10-02 にHDD本体の消失を確認</td></tr>
+<tr><th>公表</th><td>2026-10-23 公表、ScanNetSecurity 2026-11-04 08:05 JST</td></tr>
+</table>
+<ul>
+<li>執務室内でHDDの空き容量を確認するため施錠管理されたキャビネットを解錠したところ、HDD4台の収納箱のみが残り、本体がいずれも入っていないことが判明した。執務室内の捜索を続けているが発見に至っていない。</li>
+<li>保存されていたのは、用地の管理・活用に関する資料等と個人情報1,932名分（大部分は氏名のみ、一部に住所・電話番号等）。内訳は企業・国・自治体関係者1,037名、地域住民等895名。</li>
+<li>対象者へ連絡し謝罪と説明を行い、記録媒体の管理を厳正に行うよう職員へ周知徹底した。サイバー攻撃ではないが、物理媒体の管理不備として留意されたい。</li>
+<li>一次情報: <a href="https://www.waterworks.metro.tokyo.lg.jp/information/press/r8/10/2026102301" target="_blank" rel="noopener noreferrer">東京都水道局 報道発表</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56656.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+<h3>静岡県 - 県立学校6校で生徒指導要録 621人分が所在不明 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>静岡県教育委員会（県立高校6校）</td></tr>
+<tr><th>発覚</th><td>2026-06-30 に卒業生からの証明書発行申請を契機に判明</td></tr>
+<tr><th>公表</th><td>Security NEXT 2026-11-04</td></tr>
+</table>
+<ul>
+<li>卒業生からの単位修得証明書発行申請を契機に、1校で卒業生55人分の生徒指導要録（学籍に関する記録）の紛失が判明した。職員への聞き取りと校内捜索を行ったが発見できなかった。</li>
+<li>全県立学校を対象に保存状況を調査したところ、さらに5校で卒業生566人分が所在不明であることが分かった（合計621人分）。</li>
+<li>紛失が判明した学校ではウェブサイトに謝罪文を掲載するなど、卒業生への情報提供を行っている。</li>
+<li>一次情報: <a href="https://www.security-next.com/192171" target="_blank" rel="noopener noreferrer">Security NEXT</a> ／ <a href="https://www.pref.shizuoka.jp/" target="_blank" rel="noopener noreferrer">静岡県</a></li>
+</ul>
+
+<h3>j.union「くみあいアプリ」- PHPの重大脆弱性を受けサービス再開を断念し終了 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>j.union株式会社</td></tr>
+<tr><th>背景</th><td>2026-10-21 公表の PHP「PHP2Shell」（CVE-2026-109618／109619）への対応として 10-21 にサービス停止</td></tr>
+<tr><th>公表</th><td>2026-10-30 公表、ScanNetSecurity 2026-11-04 08:00 JST</td></tr>
+</table>
+<ul>
+<li>PHPの重大な脆弱性への対応としてサービスを停止し再開に向けて検討したが、中断期間が2カ月以上となることが判明したため「くみあいアプリ」の提供を断念し、サービス終了とした。</li>
+<li>代替サービスとして「組合活動プラス UNION TALK」「ユニオンキャンパス」を案内し、利用を希望しない場合は解約を受け付ける。</li>
+<li>脆弱性対応が長期のサービス停止・終了に発展した事例として記録されたい。</li>
+<li>一次情報: <a href="https://www.j-union.net/notice/20261030-info.php" target="_blank" rel="noopener noreferrer">j.union お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/04/56664.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
