@@ -216,6 +216,20 @@
 <li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-84730" target="_blank" rel="noopener noreferrer">NVD（CVE-2026-84730）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-121607" target="_blank" rel="noopener noreferrer">CVE-2026-121607</a></li>
 </ul>
 
+<h3>SEPPmail Secure Email Gateway 15.1.1未満 - 未認証の遠隔送信者がメール処理ワーカー（root）でOSコマンド実行（CVE-2026-114424、9.2 Critical）ほか計5件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-114424（9.2） / CVE-2026-114425（9.2） / CVE-2026-114426（8.7） / CVE-2026-114421（8.3） / CVE-2026-114420（6.9）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 6.9〜9.2（Critical 2件）</td></tr>
+<tr><th>影響</th><td>SEPPmail Secure Email Gateway 15.1.1 未満</td></tr>
+<tr><th>公表</th><td>NVD登録 2026-11-04 09:17 UTC（JST 18:17）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-114424</strong>: 送信者／受信者の置換ルールで攻撃者に影響された置換文字列が Perl コードとして評価される。未認証の遠隔送信者が、メール処理ワーカーの権限（検証済みのワーカー権限は root）でOSコマンドを実行できる。</li>
+<li><strong>CVE-2026-114425</strong>: 大容量ファイル転送（LFT）の添付メタデータが外部供給のファイルパスを信頼するため、未認証の送信者が任意の通常ファイルを開示・移動・削除できる。<strong>CVE-2026-114426</strong> は v1 ファイルインタフェースを認証前に処理するDoS。</li>
+<li>あわせて GINA アカウントのパスワード回復の所有確認不備（CVE-2026-114421）と LDAP メタ文字未中和によるメールアドレス列挙（CVE-2026-114420）。修正版は 15.1.1。</li>
+<li>一次情報: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-114424" target="_blank" rel="noopener noreferrer">NVD</a></li>
+</ul>
+
 <h3>その他の注目CVE - NoMachine、Quest Foglight、Git for Windows ほか <span class="badge-high">High</span></h3>
 <table class="cve-table">
 <tr><th>CVE</th><td>CVE-2026-114549（NoMachine、9.8） / CVE-2026-92188・92189・92190（Quest Foglight、各9.8） / CVE-2026-100407・100408（Git for Windows、各4.4） / FreeRDP 3.32.2未満の一括修正（CVE-2026-121950〜121964）</td></tr>
