@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-04 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-04 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.317</h2>
+<p>2026-11-03 10:30 JST 公開。ネットワーク送出前の確認、Agent SDK フックの <code>onFailure</code>、Claude apps gateway のコスト分析 API など、統制と可観測性まわりの追加が中心のリリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>メールアドレス送出前の確認</strong>: Web ツールやシェルツールの呼び出しがアカウントのメールアドレスをネットワークへ送信しようとする前に、確認を求めるチェックを追加しました。</li>
+  <li><strong>Agent SDK フックの <code>onFailure: "block"</code></strong>: コールバックが失敗した場合に、そのまま実行させるのではなくアクション自体をブロックできるようになりました。</li>
+  <li><strong><code>/schedule</code> の警告</strong>: 新しいクラウド定期タスクに、意図していないコネクタが付与された場合に警告と解除方法を表示します。</li>
+  <li><strong>OTel 属性の拡張</strong>: メトリクス・イベント・スパンに <code>anthropic.plan</code>、<code>anthropic.seat_type</code>、<code>anthropic.provider</code>、<code>anthropic.custom_base_url</code> を追加しました。</li>
+  <li><strong>コストレポート API</strong>: Claude apps gateway の管理 API に <code>GET /v1/organizations/analytics/cost</code> を追加。期間指定で、全体・開発者別・日別・IdP グループ別の支出を取得できます。</li>
+  <li><strong><code>CLAUDE_CODE_DISABLE_NESTED_SESSION_ID</code></strong>: セルフホストランナー上で、セッション内の <code>claude -p</code> が従来どおりそのセッションの ID とトランスクリプトを使うよう固定できます。</li>
+  <li><strong>auto mode の通知</strong>: サブエージェントのツール呼び出しに対して auto mode の判定が答えを持たない場合、これまでメインビューに何も残らなかったところに通知を表示します。</li>
+</ul>
+
+<h3>🔄 主な変更</h3>
+<ul>
+  <li><strong>SendMessage の到達が早く</strong>: 実行中のバックグラウンドエージェント宛メッセージがより早く届きます。実行中のコマンドは停止されず、バックグラウンドへ移されます。</li>
+  <li><strong>サブエージェントの effort</strong>: メイン会話と異なるモデルを使うサブエージェント／チームメイトは、セッションの effort ではなく、そのモデルに保存された effort もしくは既定値を使うようになりました。</li>
+  <li><strong>Read ツールのスタブ廃止</strong>: 「前回の Read 以降ファイルは未変更」というスタブを廃止し、未変更ファイルの再読み取りでも内容を返すようになりました。</li>
+  <li><strong><code>plugin-authoring</code> スキル</strong>: 自作した mod が動作した後に一度だけ、共有を促す提案を行うようになりました。</li>
+  <li><strong>Cloud sessions / Claude Tag</strong>: MCP サーバーが提示するリンクを承諾・辞退できるリンクカードを追加。Slack に貼られた artifact リンクは、サイドパネルではなく Claude で開く「Open」ボタン付きの簡易カードで表示されます。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.22.7</h2>
+<p>2026-11-04 06:53 JST 公開。v0.22.6 以降にマージされた約 <strong>174 件の PR</strong> を、CLI・インストーラー・Microsoft Store アプリ・Docker・Hermes Cloud 向けの安定版として取りまとめたパッチリリースです。キュレーション済みの詳細ノートは v0.23.0 で提供予定で、本リリースノートでは意図的に割愛されています。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>規模</strong>: コミット <code>b200f5bc60e</code> 基準で、非マージコミット 581 件、変更ファイル 554 件（+24,012 / −3,144）、マージ済み PR 174 件、クローズ Issue 29 件。</li>
+  <li><strong>グループチャット</strong>: Desktop のグループチャット向けオプトインのリードルーティング（ルームヘッダーに Lead バッジ）、グループチャットへ投稿する cron ジョブ、ルームの目的と共有ノート、各メンバーのライブ状態を並べた 1 カラム表示。</li>
+  <li><strong>Kanban / 描画</strong>: ピン留めした Kanban ボードをクイック切り替えタブに。<code>$$TeX$$</code> 形式の図ラベルと mermaid 図を Pele 経由で描画。</li>
+  <li><strong>連携</strong>: Team Gateway 上の Telegram を共有ボットにアカウント連携して設定、未宛先のスレッド返信を抑えるオプトイン Slack <code>thread_followup_silence</code>、カタログ掲載の ChatGPT サブスクリプションモデル向け Daybreak スイッチ。</li>
+  <li><strong>運用品質</strong>: Desktop の更新失敗時に、失敗した更新の出力とレポートリンクを表示するエラーボックス。Web Access では実行中のステップ名と経過時計を表示。</li>
+</ul>
+
+<h3>⬆️ 更新方法</h3>
+<ul>
+  <li>CLI: <code>hermes update</code> またはインストーラーの再実行</li>
+  <li>Docker / Hermes Cloud: <code>nousresearch/hermes-agent:stable</code>（または <code>:latest</code>）</li>
+  <li>Microsoft Store アプリ: Store 経由で更新</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.22.7">Hermes Agent v0.22.7 リリースノート</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.10</h2>
+<p>2026-11-03 12:22 JST 公開。3,028 件の PR・454 名のコントリビューターを擁する大型リリースです。チャット詳細パネル、タスク中の軌道修正を促す Advisor、ブラウザ Talk の分離音声モードが柱となります。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Chat Details パネル</strong>: セッション情報とタスク進捗を会話の横に集約。広いチャットペインでは会話を覆わずに横へ開き、自動で開いた場合はペインが狭まると隠れます。Details ボタンで手動切り替えも可能です。</li>
+  <li><strong>Advisor（実験的）</strong>: エージェントの作業中内容を点検し、失敗したアプローチの繰り返しや要求からの逸脱など明確な誤りを検出した際に短い修正提案を出します。ツール実行や承認は行いません。<strong>Settings → System → Labs</strong> から有効化でき、確認間隔は Configure で調整できます。</li>
+  <li><strong>分離音声モード</strong>: ブラウザ Talk で、応答生成は通常のチャットと同じモデルを使いつつ、文字起こしと音声合成に別サービスを設定できる音声オプションが追加されました。</li>
+  <li><strong>サブエージェント表示</strong>: 実行中・完了済みの swarm ワーカーを Subagents パネルに表示し、編集せずにトランスクリプトを閲覧できます。</li>
+  <li><strong>進捗の可視化</strong>: リトライやフォールバックの進捗、失敗時の通知と復旧アクションを表示。リロードや再接続を挟んでも失敗通知と復旧アクションが復元されます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.10">openclaw/openclaw v2026.10.10</a> · <a href="https://docs.openclaw.ai/releases/2026.10.10">リリースノート（docs）</a></p>
+
+<h2>🐋 Orca — v1.4.247</h2>
+<p>2026-11-03 12:36 JST 公開。Chat UI の正式化、モバイルでのレビュー強化、テーマ／フォントの拡充、プラグイン API の拡張が中心です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Chat UI が実験的機能を卒業</strong>: Chat UI 設定でエージェントごとに Chat / CLI を選択可能に。権限モードを常時表示し、オプション再取得中もモデル・effort 操作が使えます。共有ローンチコントロールは Settings → Chat UI にも追加されました。</li>
+  <li><strong>利用上限リセット後の自動継続</strong>: オプション設定で、チャットの利用上限がリセットされた際に自動で会話を再開できます。</li>
+  <li><strong>モバイルのレビュー強化</strong>: ブランチの各コミットを個別ページで確認し、ファイル間を移動、差分コンテキストを折りたたみ、コード横で PR レビューコメントを閲覧・追加できます。PR タブはマージを妨げる要素に焦点を当てます。</li>
+  <li><strong>テーマ／フォント</strong>: GitHub・VS Code・カタログのテーマを外観設定から選択可能に。フォントは各書体でプレビューし、Ghostty の light/dark ペアや Kitty 設定ファイルも取り込めます。</li>
+  <li><strong>プラグイン</strong>: 保存・リロードを跨いで保留編集を保持するカスタムエディタ、ライブのステータスバー項目、Box レイアウトのコンポーネントパネルを作成可能に。フックはエージェント起動・プロンプト・ツール呼び出し・ターミナル送信・ワークスペース作成に接続できます。</li>
+  <li><strong>エージェント／オーケストレーション</strong>: コーディネータ終了後も実行中ワーカーを Agents リストに残し、ハンドオフカードで委譲作業を追跡しやすくしました。Codex / Claude のアカウント切り替えも簡素化されています。</li>
+</ul>
+
+<h3>⚠️ 既知の問題・注意点</h3>
+<ul>
+  <li><strong>実験的オーケストレーションパネルは無効化</strong>: アプリ全体のラグ対応のため一時停止中。オーケストレーションコマンド自体は動作します。</li>
+  <li><strong>チャット保存の容量</strong>: 会話の増加に伴い履歴がディスクを圧迫し続ける可能性があり、自動コンパクションは本リリースには含まれていません。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.247">stablyai/orca v1.4.247</a></p>
+
+<h2>⚡ Next.js — v16.4.5 / v15.5.29（セキュリティリリース）</h2>
+<p>いずれも 2026-11-04 03:38 JST 公開。<code>use cache</code> 系のキャッシュ分離不備と、自己ホスト構成でのレスポンス注入に関する <strong>Moderate</strong> 相当のアドバイザリ計 7 件（v16.4.5）／3 件（v15.5.29）に対応するセキュリティ修正です。速やかな更新が推奨されます。</p>
+
+<h3>🛡️ 対象アドバイザリ（v16.4.5）</h3>
+<ul>
+  <li><strong>GHSA-mfr8-8qww-v76h</strong>: <code>unstable_cache</code> 経由で呼ばれた際の <code>use cache</code> におけるテナント間の機密情報開示。</li>
+  <li><strong>GHSA-vc7v-qv4w-wrv8</strong>: ネストした <code>use cache</code> 関数におけるルートパラメータ値間のキャッシュ漏えい（追加対応）。</li>
+  <li><strong>GHSA-vvgp-ww4w-46vf</strong>: リクエスト由来のプレースホルダールートパラメータによる、Cache Components の共有フォールバックシェルのキャッシュポイズニング。</li>
+  <li><strong>GHSA-rhh4-g77r-r9qj</strong>: バイナリ引数を用いた <code>use cache</code> におけるユーザー間のキャッシュ開示・ポイズニング。</li>
+  <li><strong>GHSA-pc58-hwjq-p385</strong>: 取得したレスポンスを転送する自己ホスト Next.js アプリでのクライアント間レスポンス注入・開示（v15.5.29 も対象）。</li>
+  <li><strong>GHSA-7qx7-33qx-rqx2</strong>: 画像最適化における SVG 拒否のバイパス（v15.5.29 も対象）。</li>
+  <li><strong>GHSA-f3mh-rxg3-f5g2</strong>: Edge ランタイムルートの内部レスポンスヘッダー経由での HttpOnly クッキー露出（v15.5.29 も対象）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.5">Next.js v16.4.5</a> · <a href="https://github.com/vercel/next.js/releases/tag/v15.5.29">v15.5.29</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>Amazon EKS — Argo CD Notifications 対応</strong>（2026-11-03 15:00 JST）: EKS Capability for Argo CD が Argo CD Notifications をサポート。Slack・PagerDuty・Opsgenie・SQS・EventBridge など 16 サービスへ同期・失敗・ヘルス変化を通知でき、追加料金はありません。Slack トークン等は Secrets Manager ARN を指定できます。</li>
+  <li><strong>AWS Config — 対応リソースタイプ 10 件追加</strong>（2026-11-04 01:00 JST）: <code>AWS::ElastiCache::CacheCluster</code>、<code>AWS::ElastiCache::ReplicationGroup</code>、<code>AWS::QuickSight::Agent</code>、<code>AWS::Billing::BillingView</code> など 10 種を追加。全リソースタイプ記録を有効にしていれば自動追跡されます。</li>
+  <li><strong>Amazon Connect Customer</strong>（2026-11-04 05:15 JST）: エージェントがメールを一時停止・再開できるようになり、保留時間を稼働時間と分けて計測。フローで閾値超過時に自動再開・転送も設定できます。</li>
+  <li><strong>AWS Transform for mainframe</strong>（2026-11-03 17:00 JST）: フィールドレベルでのビジネス機能検出と、要件カバレッジレポートの生成に対応。ソースコード各行の処理区分とビジネスルールの追跡が可能になりました。</li>
+  <li><strong>Amazon RDS for SQL Server</strong>（2026-11-03 17:30 JST）: SQL Server 2017 CU31+GDR、2019 CU32+GDR、2022 CU27+GDR、2025 CU10 に対応。</li>
+  <li><strong>Amazon RDS for Oracle</strong>（2026-11-03 09:00 JST）: M8i / R8i インスタンスを Asia Pacific (New Zealand)、Canada West (Calgary) などへ追加展開。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure</h2>
+<ul>
+  <li><strong>Application Gateway for Containers — MCP ゲートウェイ（パブリックプレビュー）</strong>（2026-11-04 06:16 JST）: 新しい <code>MCPRoute</code> カスタムリソースにより Model Context Protocol のルーティングに対応。MCP サーバーを安定したホスト名・パスで公開しつつ、TLS・JWT 検証・WAF を集約できます。</li>
+  <li><strong>Application Gateway for Containers — JWT 検証（パブリックプレビュー）</strong>（2026-11-04 06:17 JST）: <code>AuthPolicy</code> カスタムリソースによる集中型の JWT 検証。署名・発行者・有効期限・audience を、信頼済みホストから取得した署名鍵で検証します。</li>
+  <li><strong>Application Gateway for Containers — プライベートイングレス（パブリックプレビュー）</strong>（2026-11-04 06:15 JST）。</li>
+  <li><strong>Azure SQL Database / SQL Managed Instance</strong>（2026-11-04 03:36 JST）: PITR バックアップの不変性（immutability）を拡張するパブリックプレビュー。</li>
+  <li><strong>Azure Site Recovery — VMSS Flex 対応の拡張（GA）</strong>（2026-11-04 03:32 JST）。</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/updates">Azure updates</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>Application Design Center</strong>（2026-11-03 17:00 JST）: Osaka（<code>asia-northeast2</code>）を含む 7 リージョンで利用可能になりました。</li>
+  <li><strong>Oracle Database@Google Cloud</strong>（2026-11-03 17:00 JST）: Database Connections が GA。Oracle データベースへ接続して SQL 文を実行できます。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>React</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Java</strong>、<strong>Claude API/SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
