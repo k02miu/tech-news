@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-06 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-06 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Apache Juneau（Java）9.2.0以下 — パストラバーサル・任意クラス初期化など10件、うち9件がCVSSv4.0 10.0</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-121489／73095／73098／73099／73100／73101／73116／73117／96677</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 9件（CVSSv4.0 10.0）</span> <span class="badge-high">High 1件（8.7）</span></td></tr>
+<tr><th>影響</th><td>Java製 REST／マイクロサービスフレームワーク Apache Juneau。ディレクトリ配信のルート外読み書き削除、java.lang.Class への変換時の静的初期化子実行、contentパラメータによるCSRF、ログへのAuthorization／Cookie平文記録、エラー応答からの内部情報漏えい、リダイレクト跨ぎの資格情報送信、CRLFヘッダインジェクション、chrome内変数の未エスケープによるXSS、MessagePack解析の無制限確保によるDoS</td></tr>
+<tr><th>修正</th><td>9.2.1（Apache 2026-11-05 21:17 JST 登録）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-121489（10.0）は microservice DirectoryResource が要求パスを設定ルート内に留めず、view／upload／delete を有効化したアプリ（いずれも既定は無効）でサーバプロセスの権限が届く範囲の任意ファイルを読み書き削除できる。</li>
+<li>CVE-2026-73098（10.0）は既定のクラススワップが初期化有効でクラスをロードするため、クラスパス上のクラス名を指定されると静的初期化子が実行される。</li>
+<li>CVE-2026-73099（10.0）は REST サーバが既定で全HTTPメソッド（GETを含む）の content クエリパラメータによるボディ差し替えを受け付けるため、CORSプリフライトなしのクロスサイトリンクで任意ボディを送り込める（disableContentParam で回避可）。</li>
+<li>CVE-2026-73100（10.0）はサーバエラー時に要求ヘッダをマスクせずログへ記録し、CVE-2026-73116（10.0）は RestClient がリダイレクト後も資格情報ヘッダを保持する。</li>
+<li>CVE-2026-73095（8.7）は MessagePack パーサが入力長からバッファを確保するため、未認証の数バイトで数ギガバイトの確保と OutOfMemoryError を誘発できる。</li>
+</ul>
+
+<h3>Apache OFBiz（Java）24.09〜24.09.07 — 未認証RCE・セッション奪取など10件</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-82907／83542／82910／82912／82960／84183／82902／82904／82916／73577／73578／73580</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 2件（9.8）</span> <span class="badge-high">High 5件以上（7.1〜8.8）</span></td></tr>
+<tr><th>影響</th><td>Java製ERP Apache OFBiz 24.09〜24.09.07。未認証の遠隔コード実行、認可回避による内部業務データの露出、SSRF／ローカルファイル読み出しなど</td></tr>
+<tr><th>修正</th><td>24.09.08（Apache 2026-11-05 23:17 JST〜2026-11-06 00:17 JST 登録）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-82907（9.8）は ExternalLoginKeysManager の externalLoginKey が利用者にもひも付かず失効もしない bearer 相当の資格情報として、CSRF・認証チェックの前に評価されるため、生きたキーを1つ捕捉した未認証の攻撃者が、その発行者の権限で全webappに到達できるクッキーレスな再利用可能セッションを得る。</li>
+<li>CVE-2026-83542（9.8）はマルチパートアップロードで仕込んだ widget XML と匿名JSON要求による mainDecoratorLocation の上書きを組み合わせ、認証失敗画面の描画時にサンドボックス外の Groovy 式が評価される未認証RCE。</li>
+<li>CVE-2026-82910（8.8）は MacroScreenRenderer のリンクパラメータ値をアポストロフィで囲まずテンプレートソースへ連結するため、閲覧権限2つだけの認証済み利用者がGET1回でOSコマンドを実行できる（SSTI）。CVE-2026-84183（8.8）は updateLayout の認可検査が固定操作のみを検証するため、CONTENTMGR_VIEW 保持者が任意コマンドを実行できる。</li>
+<li>CVE-2026-73577／73578 は保護ビューを公開パスへ連結するか _LAST_VIEW_NAME_ を細工することで認証を回避でき、CVE-2026-73580 は getHRChild が未認証で人事組織・従業員情報を再帰的に列挙できる。CVE-2026-82916（7.1）は XmlDsDump が ENTITY_MAINT 検査前に任意エンティティ（UserLogin のパスワードハッシュを含む）を任意パスへ書き出す。</li>
+</ul>
+
+<h3>Kyverno（Kubernetesポリシーエンジン）1.19.2未満 — 名前空間境界の回避と権限昇格 21件</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-122302／122303／122304／122305／122306／122307／122308／122309／122310／122311／122312／122313／122314／122315／122316／122318／122319／122320／122321／122322／122323</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 6件（9.3〜9.4）</span> <span class="badge-high">High 15件（7.2〜8.7）</span></td></tr>
+<tr><th>影響</th><td>Kyverno 1.19.2未満。名前空間スコープの利用者が他名前空間の Secret・Deployment・RoleBinding などを上書き／改変し、クラスタ権限を取得できるほか、ポリシーエンジンを停止させるDoSも多数</td></tr>
+<tr><th>修正</th><td>1.19.2（VulnCheck 2026-11-05 12:17 JST 登録）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-122311（9.4）は resource.get()／resource.post() の resource 引数のパス区切りを検証しないため、NamespacedValidatingPolicy 作者が「..」を挿入して admission controller の ServiceAccount で任意のクラスタオブジェクトを読み書きできる。CVE-2026-122310（9.4）は urlPath を clean 後に生パスを実行するため「#」「?」の後ろに「..」を隠してクラスタ管理者権限に到達できる。</li>
+<li>CVE-2026-122303／122313（9.4）は NamespacedMutatingPolicy の targetMatchConstraints.expression が返す CEL マップで他名前空間を指定でき、背景コントローラがクラスタ全体のリソースを改変する。CVE-2026-122302（9.3）は generate ルールの admission 検査が作成者ではなくコントローラの権限を見るため、名前空間管理者が RBAC を越えてリソースを作成できる。</li>
+<li>DoS系（CVE-2026-122305〜122309、122314、122315、122319、122322、122323 ほか）は、自己参照テンプレート・ワイルドカード・型アサーション不備・圧縮アテステーション層などでポリシーエンジンを停止させる。CVE-2026-122318（7.2）は署名証明書に SAN が無い場合に verifyImages の subject 検査を飛ばす認証バイパス、CVE-2026-122321（8.5）は検証結果のキャッシュ鍵がイメージ参照文字列のみでダイジェストに束縛されない署名検証バイパス。</li>
+</ul>
+
+<h3>Keycloak（Java）— SAML HTTP-Redirect バインディングの署名検証回避でフェデレーション利用者が乗っ取られる（CVE-2026-117691、CVSSv3.1 9.1 Critical）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-117691</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 9.1</span></td></tr>
+<tr><th>影響</th><td>サーバ側がパーセントエンコードされたパラメータ名（例: %53AMLResponse）を処理する一方、署名検証ロジックはリテラルの名称のみを検査するため、攻撃者は未署名の細工した SAML メッセージを正規の署名済みメッセージの代わりに処理させられ、フェデレーション利用者アカウントを完全に乗っ取れる</td></tr>
+<tr><th>修正</th><td>Red Hat セキュリティアドバイザリ参照（2026-11-05 23:17 JST 登録）</td></tr>
+</table>
+
+<h3>WordPress／WooCommerce 関連プラグイン</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-118193／100109／93389／120533</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 9.8</span> <span class="badge-high">High 8.8／8.2</span> <span class="badge-medium">Medium 6.4</span></td></tr>
+<tr><th>影響</th><td>GiveWP（寄付プラグイン）の権限昇格、Security For WooCommerce の未認証管理者作成、LiteSpeed Cache のWooCommerce 顧客情報露出、Redux Framework の格納型XSS</td></tr>
+<tr><th>修正</th><td>各プラグインの修正版への更新（NVD 2026-11-05 登録）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-100109（9.8）は Security For WooCommerce 1.0.10〜1.0.16 で、未認証の訪問者が到達できるアクションにケイパビリティ検査がなく、作成するアカウントのロールも指定できるため、管理者アカウントを作成してサイトを乗っ取れる。</li>
+<li>CVE-2026-118193（8.8）は GiveWP 4.19.1以下で、donor_default_user_role の検証が文字列「administrator」のみとの照合に留まり、設定インポートのAJAXハンドラがサニタイズフィルタを通さないため、GiveWP Manager 権限以上が寄付者登録のロールを Administrator まで引き上げられる。</li>
+<li>CVE-2026-93389（8.2）は LiteSpeed Cache 7.9.1以下で、WooCommerce Store API のカート／チェックアウト応答を Cart-Token やセッションで分けずに PUBLIC キャッシュするため、クッキーもトークンも持たない後続の訪問者へ他人の氏名・住所・連絡先・カート内容・有効な Cart-Token JWT が返る。</li>
+<li>CVE-2026-120533（6.4）は Redux Framework 4.5.16以下で、theme_opts 経由の格納型XSS（subscriber 以上）。</li>
+</ul>
+
+<h3>HPE Networking Fabric Composer — 脆弱性46件、うち3件がクリティカル（HPESBNW05172 rev.1）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-95732／95733 ほか計46件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 3件（9.6〜9.8）</span></td></tr>
+<tr><th>影響</th><td>固定された認証情報により遠隔から管理者権限でアクセス可能（CVSSv3.1 9.8）。CVE-2026-95733 は同じく認証情報のハードコード、CVE-2026-95732 はOSの認証回避で、いずれも隣接ネットワークから認証なしに任意コードを実行できる（9.6）</td></tr>
+<tr><th>修正</th><td>HPE アドバイザリ HPESBNW05172 rev.1 の修正版（2026-11-03 公開）</td></tr>
+</table>
+
+<h3>SolarWinds Dameware 2026.3.1未満 — コマンドインジェクションで遠隔操作先ホストが侵害される（CVE-2026-28336、CVSSv3 9.9 Critical）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-28336／28335／28327</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 9.9</span></td></tr>
+<tr><th>影響</th><td>CVE-2026-28336 は悪用に認証を要するが、遠隔操作先ホストが侵害され得るコマンドインジェクション。CVE-2026-28335 は遠隔コード実行に至るバッファオーバーフロー、CVE-2026-28327 はインストール時のDLLハイジャック</td></tr>
+<tr><th>修正</th><td>SolarWinds Dameware 2026.3.1（同梱の Brotli CVE-2026-111497、Apache log4net CVE-2026-40021 も同時に対処）</td></tr>
+</table>
+
+<h3>Ruby on Rails 8.1.4.1／8.0.5.2 — セキュリティ修正21件、Critical 1件（CVE-2026-122006）</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-122006 ほか計21件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical 1件（9.8）</span> <span class="badge-high">High 4件</span> <span class="badge-medium">Medium 13件</span> <span class="badge-low">Low 3件</span></td></tr>
+<tr><th>影響</th><td>Active Storage の画像解析で ImageMagick を用い、信頼できないファイルアップロードを受け付けるアプリが対象。細工したファイルのアップロードでサーバ上の任意ファイルを書き込まれ、環境によっては窃取にも至る。ほか任意ファイル読み取り、リモートコード実行、パラメータ検証回避、IPアドレス偽装、XSS、DoS</td></tr>
+<tr><th>修正</th><td>8.1.4.1／8.0.5.2（8.0系は2026-11-07にセキュリティサポート終了）</td></tr>
+</table>
+
+<h3>JVN — SHIRASAGI の複数脆弱性と Siemens 製品の11月アップデート</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-117679（XSS）／CVE-2026-118869</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium 5.1（CVSSv4.0）／5.4（CVSSv3.0）</span></td></tr>
+<tr><th>影響</th><td>SHIRASAGI v1.12.0〜v1.21.0（CVE-2026-117679）および v1.19.0〜v1.21.0（CVE-2026-118869）のクロスサイトスクリプティング。あわせて JVNVU#98354779 として Siemens 製品に対する2026年11月のアップデートが周知された</td></tr>
+<tr><th>修正</th><td>SHIRASAGI の修正版、Siemens 各アドバイザリの修正版（JVN 2026-11-05 公開）</td></tr>
+</table>
+
+<h3>その他のスタック関連</h3>
+<ul>
+<li><strong>Claude Code</strong>: 対象期間内の新規リリースはなし（最新は v2.1.318、2026-11-04公開）。</li>
+<li><strong>OpenClaw v2026.11.1（安定版、2026-11-05 18:48 JST）</strong>: 設定保存に失敗した際に既存のシークレットを上書きしないよう修正し、Tailscale 公開を停止しても Gateway の認証が維持されるようにした（#187734、#187664）。ClickClack／ClawHub が無関係なプライベートサービスへのリダイレクトを拒否、Discord CDN のダウンロードがブラウザのプライベートネットワーク権限を継承しないよう修正、FIFO の native-hook 資格情報をハングせず拒否（#190944、#190939、#191458、#191423）。ログ秘匿化は不正なカスタム項目があっても有効なルールと組み込みのシークレット保護が無効化されないよう修正し、管理下プロキシと子プロセスのCAバンドルで信頼されない emSign ECC G3 ルートに依存する連鎖を拒否する（#173471、#179249）。</li>
+<li><strong>Hermes Agent v0.23.0（2026-11-06 06:32 JST）</strong>: 「Security &amp; Reliability」として、引用符付きシークレット・接続文字列・Azureキー・非PEM秘密鍵・SMBパスワードなどのマスク対象を拡張。承認ゲートが「curl … | sudo bash」パイプ、省略形の PowerShell 削除、承認済みルールの陰に隠れた資格情報アップロードを検知し、古い承認カードで次の要求を承認できないよう修正。MCP のインストール／有効化／認可カードが実行コマンドや接続先URL（シークレットはマスク）を表示し、Unicodeや制御バイトの隠蔽も可視化。Webapp は起動リンクを署名済みユーザー限りとし CSP を送出、サインアウト時の /api/status がプロファイル名を漏らさず、CORS／WebSocket は自身が bind した loopback のみを信頼。Docker サンドボックスが root で書いたファイルをユーザーへ返しつつ setuid ビットとファイルケイパビリティを除去し、bubblewrap サンドボックスのプラグインが追加された。</li>
+<li><strong>Cendio ThinLinc 4.1.0〜4.20.0（CVE-2026-119744、7.7）</strong>: Web クライアント tlwebaccess の多段認証（ワンタイムパスワード、ログインバナー、期限切れパスワードのプロンプト）の不備により、認証済みの攻撃者が root を含む任意の利用者になりすませる。</li>
+<li><strong>Eclipse BaSyx Helm Charts（CVE-2026-123047／123059、各7.5）</strong>: 同梱の Keycloak を有効にした配備で、ブートストラップ管理者のパスワードや技術ユーザーのクライアントシークレットが ConfigMap に平文で保存される。Secret ではなく ConfigMap を読める（Kubernetes 組み込みの view ロール相当）主体が admin 権限のトークンを得られる。</li>
+<li><strong>vault-java-driver 5.2.0〜6.2.3（CVE-2026-109408、7.4）</strong>: 呼び出し元が検証を要求した3つの状態（build() 未呼び出しの SslConfig、デシリアライズで復元された SslConfig、VAULT_SSL_VERIFY に「true」以外の真値相当を設定）で TLS 証明書・ホスト名検証を黙って無効化し、trust-all の SSLContext を導入する。修正は 7.0.0。</li>
+<li><strong>OPNsense os-acme-client 4.17以下（CVE-2026-123025、9.4）</strong>: Google Cloud DNS 検証モジュールで、証明書の発行・更新権限を持つ認証済み利用者が root 権限の任意コード実行に至る OS コマンドインジェクション。</li>
+<li><strong>CISA KEV</strong>: Apple の iOS／iPadOS／macOS／Safari／tvOS／watchOS に存在する認証不備（CVE-2024-27834）が2026-11-04に悪用確認済みカタログへ追加され、米行政機関の対応期限は2026-11-18。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js／Django／Hono／GCP／AWS／Azure／React／SpringBoot）に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>デニーズジャパン「デニーズアプリ」— 旧アプリ移行処理の不備で第三者が認証情報を不正作成、一部顧客の個人情報流出の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>デニーズジャパン（2026-10-30 判明、2026-10-31 個人情報保護委員会へ報告）</td></tr>
+<tr><th>影響</th><td>旧デニーズアプリを利用していた一部顧客のメールアドレス、生年月日、性別、居住都道府県、アプリ会員コード</td></tr>
+<tr><th>手口</th><td>旧アプリから新アプリへの移行に関するシステム処理の不備を突かれ、第三者が認証情報を不正に作成して一部顧客のアカウントへアクセスできる状態となっていた</td></tr>
+</table>
+<ul>
+<li>個人情報を取得するためのシステム処理が実行された履歴を確認しているが、顧客自身の操作か第三者による操作かの区別はできないとしている。</li>
+<li>不正な認証情報の新規作成を防ぐためのシステム改修を実施。対象顧客の特定を進め、特定でき次第個別に連絡する。</li>
+</ul>
+
+<h3>資さんうどん（資さん）— 委託先サーバの設定不備で従業員・退職者の個人情報が閲覧可能に</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>資さん（うどん店チェーン「資さんうどん」）／サーバ管理運用の委託先: カホエンタープライズ</td></tr>
+<tr><th>影響</th><td>2021年10月〜2026年10月に在籍した従業員・退職者の氏名、電話番号、生年月日、性別、賃金履歴、勤怠実績。一部は退職理由、入社日、退社日、社会保険加入履歴も含む</td></tr>
+<tr><th>手口</th><td>サイバー攻撃ではなく、委託先におけるサーバの一部設定の問題により、外部から個人情報が閲覧可能となっていた可能性</td></tr>
+</table>
+<ul>
+<li>問題の発覚を受けて設定を修正し、個人情報保護委員会へ報告。対象者には順次連絡するとしている。</li>
+</ul>
+
+<h3>福岡県 — 認証制度の申請用ファイル設定不備で法人役員183人分の個人情報がウェブ上に残存</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>福岡県（「福岡県働きやすい介護職場認証制度」）</td></tr>
+<tr><th>影響</th><td>認証を申請・申請予定だった24法人の役員183人分の氏名、生年月日、性別、役職</td></tr>
+<tr><th>手口</th><td>2026年8月21日〜9月17日に委託事業者が掲載した申請用ファイルを、閲覧のみとすべきところオンライン上で編集・保存可能な設定で公開。申請予定者が入力した個人情報が残存し第三者から閲覧可能だった</td></tr>
+</table>
+<ul>
+<li>申請予定者からの様式ダウンロード方法に関する問い合わせで発覚。委託事業者へ指示してファイルを削除し、対象24法人へ電話で説明と謝罪を行った。</li>
+</ul>
+
+<h3>奈良県 — 個人情報を含む業務用USBメモリが所在不明（363人分）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>奈良県</td></tr>
+<tr><th>影響</th><td>医薬品医療機器製造業の許可取得法人の管理者の氏名・住所・生年月日、代表者・役員・担当者の氏名など363人分、および法人15社の製造品目情報などの内部情報</td></tr>
+<tr><th>手口</th><td>医薬品医療機器申請・審査システムと県端末間のデータ受け渡しに使うUSBメモリの所在が不明に。2026年9月9日の保管状況調査で判明し、最終接続は8月25日。データ自体は暗号化されている</td></tr>
+</table>
+<ul>
+<li>使用後は所定の保管場所へ返却する規定だったが徹底されておらず、対象関係者へ経緯を説明し謝罪した。</li>
+</ul>
+
+<h3>（続報）東京都水道局 — 個人情報を含む外付けHDD4台の紛失（1,932名分）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東京都水道局</td></tr>
+<tr><th>影響</th><td>用地の管理・活用に関する資料等と個人情報1,932名分（大部分は氏名のみ、一部は住所・電話番号等）</td></tr>
+<tr><th>手口</th><td>2026年10月2日、施錠管理されたキャビネットを解錠したところ収納箱のみが残りHDD4台が入っていないことが判明。執務室内の捜索を継続しているが発見に至っていない。物理媒体の管理不備でありサイバー攻撃ではない</td></tr>
+</table>
+<ul>
+<li>対象者への連絡と謝罪・説明を行うとともに、記録媒体の管理を厳正に行うよう職員へ周知徹底した。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
