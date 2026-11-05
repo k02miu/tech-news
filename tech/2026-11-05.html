@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-05 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-05 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.318</h2>
+<p>2026-11-04 09:08 JST 公開。mod（拡張）まわりの権限記録、Claude apps gateway の AWS ロール引き受け、認証情報の有効期限表示など、企業運用と統制のための追加が中心となったリリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>mod の回答記録</strong>: セッション中に Claude Code が書き込む mod の有効化を求めた際、利用者の回答内容を記録するようになりました。</li>
+  <li><strong>gateway の <code>assume_role</code></strong>: Claude apps gateway の <code>mantle</code> アップストリームで、別の AWS アカウントのロールを引き受けられるようになりました。開発者ごとの AWS コスト按分に利用できます。</li>
+  <li><strong>mod の <code>$.model.fork</code> に <code>effort</code></strong>: 短い副次作業を、セッションの effort に関係なく <code>low</code> で実行できます。結果には送信した effort が表示されます。</li>
+  <li><strong>サインイン有効期限の可視化</strong>: <code>claude auth status</code> に保存済み claude.ai サインインの終了日（<code>loginExpiresAt</code>）を、<code>claude -p</code> の JSON 結果に <code>credential_expires_at</code> を追加しました。終了10日前から <code>claude -p</code> のテキスト出力に stderr の1行警告が出ます。</li>
+  <li><strong>セルフホストランナー</strong>: 起動フック環境に <code>CLAUDE_RUNNER_SPAWN_REASON</code> を追加（<code>runner_lost</code>、<code>resumed</code> など Anthropic が要求した理由）。<code>--release-idle-session-min</code> の引数不備も起動時に警告します。</li>
+  <li><strong>Cloud sessions</strong>: リポジトリを選ばずにクラウドセッションを開始できる「No repository」オプション、<code>google-chrome</code> と <code>CHROME_PATH</code> 経由で組み込み Chromium を参照できるようにする対応、環境削除時のカードへの「New session」ボタンを追加しました。</li>
+</ul>
+
+<h3>🔄 主な変更</h3>
+<ul>
+  <li><strong>IDE 拡張の扱い</strong>: IDE のターミナル内から起動した場合、IDE 拡張のインストール・更新を行わなくなりました。外部ターミナルから <code>/ide</code> を使うか、エディタの拡張機能ビューから導入します。</li>
+  <li><strong>サブエージェントのモデル切替</strong>: 「メッセージにフラグが立ったらモデルを切り替える」が「毎回確認」の場合、モデルを切り替えるのではなく停止するようになりました。</li>
+  <li><strong>バックグラウンドのシェルコマンド</strong>: 全プロバイダーで、3分経過したシェルコマンドをバックグラウンドへ移すようになり、実行中のプロンプトキャッシュ失効を防ぎます。</li>
+  <li><strong><code>deniedMcpServers</code></strong>: URL 指定の拒否エントリが、上流 URL が一致する Anthropic 提供サーバーや、クラウドセッション・セルフホストランナー上のコネクタにも適用されるようになりました。</li>
+  <li><strong><code>/permissions</code> のダイアログ統一</strong>: ルール詳細・組み込みルール・削除確認が標準ダイアログを使うようになり、Ctrl+C 2回は終了ではなく戻る／キャンセルとして動作します。</li>
+  <li><strong>managed-agents-onboard</strong>: 新規エージェントの組み込みツールと、クイックスタートテンプレートの MCP ツールに、既定で <code>auto</code> 権限ポリシー（「危険な操作を判定」）が付与されます。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>2.1.288 で入れた「2.1.286 以前に開始した会話を再開した際に以前の thinking を保持する」修正を削除しました。</li>
+  <li>セルフホストランナーのログ行を変更（<code>ok session=…</code> は全ログレベルで stdout に出力し <code>reason=…</code> を付与、<code>nack</code> の末尾フィールドも <code>reason=…</code> に変更）。<code>retryable=true:</code> 等でマッチしているスクリプトは更新が必要です。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.22.7</strong>（2026-11-04 06:53 JST 公開）です。v0.22.6 以降にマージされた約174件の PR を、CLI・インストーラー・Microsoft Store アプリ・Docker・Hermes Cloud 向けの安定版として取りまとめたパッチリリースで、詳細なキュレーション済みノートは v0.23.0 で提供予定です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.5-beta.1</h2>
+<p>2026-11-04 13:51 JST 公開のプレリリースです。安定版の最新は v2026.10.10（2026-11-03 12:22 JST 公開）で、こちらは対象期間外となります。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>Knowledge Scribes</strong>: エージェント・セッション・Control UI を横断する、知識キャプチャと再利用可能な scribe ワークフローを追加しました。</li>
+  <li><strong>PostgreSQL データプレーン</strong>: PostgreSQL ベースの状態管理、マイグレーションツール、既存環境向けの互換性カバレッジを追加しました。</li>
+  <li><strong>Control UI 刷新</strong>: モバイル・デスクトップ双方のナビゲーション、レイアウト、操作感を全面的に見直しました。</li>
+  <li><strong>会話からの PR 作成</strong>: チャットから PR の準備・公開・レビュー・ステータス確認までを一気通貫で行えるようにしました。</li>
+  <li><strong>クロスデバイス／クラウド実行</strong>: 接続デバイス、クラウド配置、サイバーアクセスのワークフローを拡張し、能力の受け渡しをより安全にしました。</li>
+  <li><strong>判断・メディアモデル</strong>: 特化型の判断ルーティングとメディア対応モデル（ClawRouter 連携を含む）を追加しました。</li>
+  <li><strong>バックアップ／アップグレード安全性</strong>: 状態保持とロールバック挙動を明確化し、バックアップ・復旧・アップグレード経路を堅牢化しました。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>Gateway 起動時のリカバリ、依存順序、サービス状態処理をアップグレード全体で修正しました。</li>
+  <li>Codex バックエンドのセッションライフサイクル・結果配信・ツール状態のエッジケースを修正しました。</li>
+  <li>返信のスレッド化・引用・重複排除・宛先選択を各チャネルで修正しました。</li>
+  <li>Control UI のアクセシビリティ（キーボード、フォーカス、ラベル、レスポンシブ）のリグレッションを修正しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.248 / v1.4.249</h2>
+<p>対象期間内に2件のリリースが確認されました。v1.4.248 は 2026-11-04 11:36 JST、v1.4.249 は 2026-11-05 08:53 JST 公開です。</p>
+
+<h3>🔧 v1.4.249 — セットアップ容易化とチャット／ワークスペースの整備</h3>
+<ul>
+  <li><strong>Chat / Terminal の選択</strong>: オンボーディングで Chat UI か Terminal を選び、その構成に応じたエージェント選択とスキル導入まで行えるようになりました。</li>
+  <li><strong>会話の制御</strong>: 配信が不確実な場合や Stop 時でもチャット入力を保持し、送信時のスクロール位置、アイドル状態のチャットエージェントを停止するタイミングを設定できるようになりました。</li>
+  <li><strong>プロジェクトの整理</strong>: プロジェクト追加時に検出済み worktree を非表示のまま維持し、作成・クローン時にシンボリックリンクの親フォルダを一貫して扱います。</li>
+  <li><strong>編集環境</strong>: 既定の Markdown 表示、保存時の最終改行挿入、ペインヘッダーからのチャット幅調整に対応しました。</li>
+  <li><strong>モバイル</strong>: スマートフォンアプリの Home を Feed / Usage / Automations / Settings に分離し、対応エージェントの使用量と直近の会話名を表示します。</li>
+</ul>
+
+<h3>🔧 v1.4.248 — ターミナルとチャットの信頼性向上</h3>
+<ul>
+  <li><strong>ターミナル</strong>: 出力中もリモートストリームを維持し、デーモン再起動をまたいでエージェント識別を保持。モバイル入力の順序制御、Windows Codex への長文送信、Nerd Font の描画を改善しました。</li>
+  <li><strong>チャット継続性</strong>: プロンプトの後にストリーミング返信を保持し、ターン失敗時も追加入力をキューに残します。</li>
+  <li><strong>AI 生成文の設定</strong>: コミットメッセージ、PR 説明、ブランチ名、チャット名について、Source Control 設定から Model と Effort を選べるようになりました。</li>
+  <li><strong>更新タイミング</strong>: 設定から更新の遅延（なし／1／3／7／14／30日）を指定でき、1回だけ遅延をスキップするオプションも追加されました。</li>
+  <li><strong>不具合修正</strong>: 保存済みチャットのライブ履歴圧縮を巻き戻し、大規模チャットで停止し得た問題を解消しました。実験的なオプトインだった Orchestration パネルも復活しています。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">Orca Releases</a></p>
+
+<h2>☁️ AWS — 2026-11-04〜05 の主なアップデート</h2>
+<ul>
+  <li><strong>Amazon ECS Managed Daemons の json-file ログ収集</strong>（2026-11-05 06:29 JST）: ECS Managed Instances 上のアプリケーションコンテナが Docker 標準の json-file 形式でログを書き出し、Managed Daemon がボリュームマウント経由で読み取れるようになりました。ホストのバインドマウントや root 権限は不要で、追加料金なしで全商用リージョンで利用できます。</li>
+  <li><strong>Amazon DocumentDB の提供リージョン拡大</strong>（2026-11-05 04:00 JST）: アジアパシフィック（台北）およびアジアパシフィック（ニュージーランド）で利用可能になりました。</li>
+  <li><strong>RDS for Oracle のスナップショット跨リージョンコピーでオプショングループをコピー</strong>（2026-11-05 03:40 JST）: <code>CopyDBSnapshot</code> の <code>CopyOptionGroup</code> パラメータが跨リージョンコピーにも対応し、コピー先リージョンでオプショングループを作り直す手間が不要になりました。</li>
+  <li><strong>AWS Interconnect - last mile プレビュー（Equinix 連携）</strong>（2026-11-05 02:00 JST）: Equinix の282データセンター網から AWS へ、数クリックでマネージドかつプライベートな接続を確立できます。4重冗長構成、MACsec による暗号化、99.99% SLA 付き。プレビュー中は米国西海岸〜サンノゼ、バージニア北部〜ノーザンバージニアの metro で 1 Gbps 接続が無償です。</li>
+  <li><strong>Amazon Connect Customer のコンタクトレコードにケース表示</strong>（2026-11-05 02:00 JST）: コンタクト詳細ページで関連するケース ID と参照番号を確認でき、<code>DescribeContact</code> API とコンタクトイベントストリームからも取得できます。</li>
+  <li><strong>EC2 / VPC コンソールの Related Resources を全リソースタイプへ拡張</strong>（2026-11-04 17:00 JST）: インスタンス、EBS ボリューム、起動テンプレート、Auto Scaling グループ、サブネット、ルートテーブルなどの関連を一画面で追跡できます。</li>
+  <li><strong>AWS DataSync Enhanced mode が OIDC に対応</strong>（2026-11-04 17:00 JST）: Google Cloud Storage と Azure Blob Storage のロケーションで OpenID Connect 認証を利用でき、長期的な HMAC キーや SAS トークンが不要になりました。</li>
+  <li><strong>WorkSpaces に RHEL 10 / Rocky 10 / Ubuntu 26.04 バンドル登場</strong>（2026-11-04 17:00 JST）: Wayland 採用の新バンドルで、最新の Linux デスクトップ機能と長いサポート期間を利用できます。</li>
+  <li><strong>Amazon EC2 Capacity Manager の新機能</strong>（2026-11-04 16:00 JST）: 起動・予約なしでインスタンスタイプと AZ ごとの供給可能性を High／Medium／Low で採点するリアルタイムチェックと、要求量に対する供給実績メトリクスを追加しました。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure — 2026-11-04〜05 の主なアップデート</h2>
+<ul>
+  <li><strong>Azure Database for PostgreSQL の安定版 REST API 2026-10-01 が GA</strong>（2026-11-05 03:42 JST）: メンテナンス管理、不変バックアップ、マルチテナント暗号化（クロステナント顧客管理キー）などの機能が安定版 API に含まれました。</li>
+  <li><strong>Azure Route Server の Route maps が GA</strong>（2026-11-05 03:39 JST）: ハイブリッド接続におけるインバウンド／アウトバウンドのルーティングを細かく制御できます。</li>
+  <li><strong>Azure Firewall の IPv6 でアプリケーションルールがパブリックプレビュー</strong>（2026-11-05 03:09 JST）: IPv6 の HTTP/HTTPS に対してレイヤー7フィルタリングが可能になり、デュアルスタック環境でも一貫した制御ができます。</li>
+  <li><strong>Premium SSD v2 / Ultra Disk のマルチディスク整合性リストアポイントがパブリックプレビュー</strong>（2026-11-05 02:13 JST）: SCSI ディスクコントローラ構成の VM で、エージェントレスのクラッシュコンシステントなリストアポイントを取得できます。</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h2>☁️ Google Cloud — 2026-11-04 の主なアップデート</h2>
+<ul>
+  <li><strong>AlloyDB for PostgreSQL の Iceberg 直接アクセス</strong>（プレビュー）: PostgreSQL 18 以降で、Cloud Storage や Lakehouse ランタイムカタログ上の Apache Iceberg テーブルを直接クエリでき、列指向エンジンで分析クエリを高速化できます。</li>
+  <li><strong>BigQuery から AlloyDB へのデータ同期が GA</strong>: <code>alloydb_sync</code> 拡張により、分析用テーブルを AlloyDB へコピー／ミラーリングし、低レイテンシの運用アクセスを実現できます。</li>
+  <li><strong>AlloyDB Express が PostgreSQL 18 向けにプレビュー</strong>: 迅速なプロビジョニング、アイドル時のスケール・トゥ・ゼロ、最初の12か月の月次無料枠、AlloyDB for PostgreSQL へのワンクリック移行を備え、プロトタイピングや AI コーディングエージェントのワークフロー向けに最適化されています。</li>
+  <li><strong>Cloud SQL for SQL Server のリードプール自動スケーリングが GA</strong>: リードプールの CPU 使用率またはクライアント接続数のいずれか（両方）を条件に、スケールイン／アウトを自動化できます。</li>
+  <li><strong>Apigee Operator for Kubernetes 1.1.2</strong>: 更新版 Apigee とあわせて提供されました。</li>
+  <li><strong>Google Distributed Cloud 1.35.700-gke.124</strong>: VMware / bare metal 双方で提供。Kubernetes v1.35.8-gke.100 上で動作し、信頼されなくなった eMudhra（emSign）および AAA Certificate Services ルート CA の除去、COS milestone 121 への更新などを含みます。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（安定版の最新は v16.4.5／2026-11-04 03:38 JST 公開で対象期間外、期間内は canary のみ）、<strong>React</strong>、<strong>Python</strong>（最新は 3.15.2／2026-10-25）、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新は v4.1.2／2026-10-23）、<strong>Hono</strong>（最新は v4.13.16／2026-11-01）、<strong>Claude API / SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
