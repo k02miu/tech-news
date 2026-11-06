@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-06 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-06 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.318</strong>（2026-11-04 09:08 JST 公開）です。RSS フィードと公式 changelog の双方を確認しましたが、2026-11-04 以降のエントリは追加されていません。</p>
+<p>参考として、v2.1.318 では mod（拡張）の権限記録、Claude apps gateway の AWS ロール引き受け（<code>assume_role</code>）、claude.ai サインイン有効期限の可視化（<code>loginExpiresAt</code> / <code>credential_expires_at</code>）など、企業運用と統制に関する追加が中心となっています。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.0「The Hearth Release」</h2>
+<p>2026-11-06 06:32 JST 公開。v0.22.0 以来およそ10,080コミット・約1,950 PR・666名のコントリビューターをまとめたメジャーリリースで、v0.22.1〜v0.22.7 のパッチ群も完全に取り込んでいます。テーマは「ひとつの炉端（hearth）に全サーフェスが集う」こと。Desktop ワークスペースのブラウザ提供、単一ゲートウェイによるセッション所有、ターミナル内の画像描画と会話の巻き戻しが目玉です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Webapp（Desktop をブラウザで）</strong>: 自前ゲートウェイから Desktop ワークスペース全体を配信します。チャット、Group Chats、プラグイン、設定がブラウザから同一に扱え、公開 URL + サインインにも対応します。既定は無効で、<code>webapp.enabled</code> または Settings の Web Access で有効化します。</li>
+  <li><strong>単一ゲートウェイが全セッションを所有</strong>: CLI・TUI・Desktop・エディタ（ACP）・各種ボット・cron が同じ会話に対して別々のエージェントを走らせる構造を廃止。各マシンで1つのゲートウェイが全セッションを持ち、各サーフェスはクライアントとして接続します。メッセージの二重書き込みや取りこぼしが解消され、Desktop からキュー済みプロンプトの編集・ステアも可能になりました。</li>
+  <li><strong>ターミナル内の画像描画</strong>: 画像貼り付けやスクリーンショット取得時に、ファイルパスではなく実画像をチャット内に描画します。kitty・Ghostty（CLI/TUI）、iTerm2・WezTerm・Konsole（CLI）は実ピクセル、その他はカラーブロック、VS Code ターミナルは画像サポート有効時にフル解像度です。</li>
+  <li><strong>会話の巻き戻し（<code>/rewind</code>）</strong>: TUI・クラシック CLI で Esc 2回または <code>/rewind</code> により過去メッセージを選び、編集して再送信、あるいはその地点から新セッションを分岐できます。元セッションは変更されません。</li>
+  <li><strong>全マシンを1つの Desktop ウィンドウに</strong>: 複数ゲートウェイへの同時接続に対応し、ローカルと SSH／リモートの切替が即時になりました。Group Chat では異なるマシンのボットを混在させられます。</li>
+  <li><strong>Group Chats の自律運用</strong>: Bot Mode のルームで、指名のないメッセージにリードボットや自動ルーターが回答者を決められます。スケジュールジョブからの投稿、ルームの目的・共有ノート、ボット同士の無限ループ抑止にも対応しました。</li>
+  <li><strong>プラグインの自動更新</strong>: <code>hermes plugins update</code> で一括更新、CLI・チャット・Desktop・ダッシュボードに opt-in の Auto-update を追加。構成を壊す更新は適用せず保留します。カタログは約600件から1,050件超に拡大し、ベンダー製を示す Verified 層も新設されました。</li>
+  <li><strong>有料 MCP ツールの価格と上限</strong>: 3D・メディア生成などの有料 MCP ツールが呼び出し単価を宣言でき、承認プロンプトに価格と累計利用額が表示されます。上限超過時は YOLO モードでも確認を求めます。</li>
+  <li><strong>委譲の差し替え（pluggable delegation）</strong>: 既定の委譲に加え、公式 <code>advanced-delegation</code> プラグインでサブエージェントのタスクを特定モデルや別プロファイルへ振り分けられます。<code>/delegation</code> で切り替えます。</li>
+  <li><strong>省メモリ・低レイテンシ化</strong>: 定期 cron がプロンプトキャッシュを共有し、単発実行は呼び出しあたり約1,570トークン削減、LSP 有効時の <code>patch</code>/<code>write_file</code> がミリ秒応答になりました。長期稼働ゲートウェイは終了済みセッションのメモリを解放します。</li>
+  <li><strong>スキル構成の整理</strong>: 組み込みスキルを58件から44件へ削減し、Word・PowerPoint・Excel を <code>microsoft-office</code> に統合。<code>hermes curator lock</code> で手調整したスキルの自動書き換えを禁止できます。</li>
+  <li><strong>実行中 cron の停止</strong>: CLI・Desktop・API・エージェント自身から実行中ジョブをキャンセルでき、停止中に取りこぼした実行の扱いをジョブ単位で設定できます。</li>
+</ul>
+
+<h3>⚠️ アップグレード注意</h3>
+<ul>
+  <li><strong>旧ブラウザツールの削除</strong>: ブラウザ自動化は <code>browser_exec</code> のみになり、agent-browser と <code>browser_*</code> 系10ツール（<code>browser_navigate</code>、<code>browser_click</code> 等）が削除されました。プロンプトやスキル、toolset 定義で旧ツール名を使っている場合は <code>browser_exec</code> へ移行が必要です。</li>
+  <li><strong>Desktop の要件引き上げ</strong>: Electron 44 への移行に伴い、macOS 13 以上・64bit Windows が必要になりました（macOS 11/12、32bit Windows は非対応）。</li>
+  <li><strong>コマンド名変更</strong>: <code>hermes mcp serve</code> は <code>hermes mcp-serve</code> に変わりました（プラグインへ移動）。MCP クライアント側の起動コマンド更新は自動では行われません。</li>
+  <li><strong>既定モデルの変更</strong>: 未指定時のサイレント既定が GLM-5.2 から <strong>GLM-5.3</strong> に変わりました（同価格帯・1M コンテキスト）。新モデルとして GPT-6.1 Terra、DeepSeek V4.1 Flash 1017、Gemini 4 Argon なども追加されています。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.0">Hermes Agent v0.23.0</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.1</h2>
+<p>2026-11-05 18:48 JST 公開の安定版です。macOS 設定保存の安全性、チャネル返信の信頼性、中断耐性、アップデート復旧の粘り強さが中心のリリースです。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>macOS 設定の安全性</strong>: 設定保存に失敗してもシークレットを上書きしなくなり、Tailscale 公開を無効化しても Gateway の認証が維持されるようになりました。</li>
+  <li><strong>チャネル返信の信頼性</strong>: Telegram・Discord・Webhook の会話が、リクエストハンドラや直前ターンの終了後もエージェントへ到達し続けます。</li>
+  <li><strong>会話の中断耐性</strong>: 巨大なターンでも有用な履歴が保持され、最初の Claude CLI ターンを停止しても次のメッセージがゼロから始まらなくなりました。</li>
+  <li><strong>アップデート復旧</strong>: クラッシュ／キャンセルされたアップデーターの停滞を解消し、検証失敗時の Windows Gateway 復旧、大規模ステート検査での全 DB コピー繰り返しを回避します。</li>
+  <li><strong>サブエージェント</strong>: モデル・セッション変更をまたいでもフォローアップが保持され、カスタムセッションストア利用時も親セッションが子の承認を受け取れます。</li>
+  <li><strong>プロバイダー</strong>: レート制限の待機時間をプロバイダー指定値に従うよう改善。Gemini Flash のテキストモデルは公式 API キー endpoint で既定で Interactions を使用し、カスタムプロキシは従来の既定を維持します。</li>
+  <li><strong>Claude CLI 連携</strong>: 保存済みサブスクリプションアカウントで、別途ネイティブログインなしに設定済みモデルを利用可能に。ネイティブの Agent/Workflow オーケストレーションは <code>plugins.entries.anthropic.config.managedNativeTools</code> で opt-in（既定は無効）です。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>ネットワーク／ツール安全性: ClickClack と ClawHub が無関係なプライベートサービスへのリダイレクトを拒否し、Discord CDN ダウンロードがブラウザのプライベートネットワーク権限を継承しなくなりました。</li>
+  <li>Android の End Talk は、互換 Gateway では受理済みのエージェント処理をキャンセルせず待受のみ停止し、回答はチャットに届きます（明示的キャンセルは引き続き可能）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.1">OpenClaw v2026.11.1</a></p>
+
+<h2>🐋 Orca — v1.4.250</h2>
+<p>2026-11-05 19:40 JST 公開。同日 08:53 JST 公開の v1.4.249（チャット／ターミナル設定の簡易化、会話の制御性向上、スマホ版ホームの刷新）に続く2本目のリリースで、ターミナルのメモリ使用量とチャット変更点の可視化が主眼です。</p>
+
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>ターミナルのメモリ削減</strong>: 合字（リガチャ）のためにターミナルごとにフォントファイル全体を繰り返し読み込み・解析していた処理を廃止。ターミナルを多数開いたセッションで発生していた高メモリ消費と起動クラッシュを解消します。</li>
+  <li><strong>worktree 切替の高速化</strong>: worktree 間の切り替えが速くなりました。</li>
+  <li><strong>エージェントの変更点を可視化</strong>: チャットのターンに変更ファイルと行数が表示され、パッチはデスクトップ・スマホ双方でインライン表示できます。</li>
+  <li><strong>Chrome 互換パスワードマネージャー</strong>: Settings → Browser で有効化。保存・自動入力・Chrome からのインポート・ログイン管理に対応し、OS のセキュアストレージでローカル暗号化されます。</li>
+  <li><strong>長いツール多用ターンの安定化</strong>: Chat UI が 128 件のライブテキスト／ツールエントリを超えても正常なターンを中断しなくなりました。モデル未指定の新規チャットはエージェント側の設定に従います。</li>
+  <li><strong>ターミナル／リモートホスト</strong>: 出力断絶後に Escape シーケンスの断片が文字化け表示される問題を修正し、ヘッドレスホストでもペアサーバーワーカーと使用量ポーリングが起動するようになりました。</li>
+  <li><strong>スマホ継続性</strong>: Cmd/Ctrl+Enter 送信、ペア端末が開いたタブへの追従に対応しました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.250">Orca v1.4.250</a></p>
+
+<h2>⚡ Next.js — 対象期間内の安定版リリースなし</h2>
+<p>対象期間内に安定版リリースは確認されませんでした。最新安定版は <strong>v16.4.5</strong>（2026-11-04 03:01 JST 公開）です。npm の canary チャネルでは <code>16.5.0-canary.42</code> が 2026-11-06 08:54 JST に公開されており、16.5 系の開発が継続しています。ブログ側の最新記事は「November 2026 Security Release」（2026-11-04 03:00 JST 公開）で、いずれも対象期間外です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h2>☁️ クラウド — AWS / GCP の更新、Azure は未取得</h2>
+
+<h3>🟠 AWS</h3>
+<ul>
+  <li><strong>Amazon Bedrock AgentCore の Web Answer</strong>（2026-11-06 05:56 JST）: エージェントに Web 検索ベースの回答生成を組み込める新機能が発表されました。</li>
+  <li><strong>Amazon Cognito Plus の 99.99% SLA</strong>（2026-11-06 03:00 JST）: Plus 機能プランに対して 99.99% のサービスレベル契約を公表しました。</li>
+  <li><strong>DynamoDB の一括 put</strong>（2026-11-06 03:00 JST）: 複数アイテムの bulk put に対応しました。</li>
+  <li><strong>IAM Roles Anywhere の証明書失効確認</strong>（2026-11-06 02:38 JST）: 証明書の失効チェックを自動化する機能を追加しました。</li>
+  <li><strong>RDS for Oracle の Kerberos 認証</strong>（2026-11-05 19:30 JST）: 自己管理 Active Directory との Kerberos 認証に対応しました。</li>
+  <li><strong>SageMaker AI Studio</strong>（2026-11-05 17:00 JST）: IAM Identity Center のマルチリージョンレプリケーションに対応。</li>
+  <li><strong>AWS WAF の AI トラフィック収益化</strong>（2026-11-05 17:00 JST）: Stripe 経由の法定通貨での支払いに対応しました。</li>
+  <li><strong>SSM Parameter Store</strong>（2026-11-05 14:00 JST）: 組み込みデータ型による整理とバリデーションが可能になりました。</li>
+</ul>
+
+<h3>🔵 GCP</h3>
+<ul>
+  <li><strong>Gemini Omni 1.2 Flash が GA</strong>（2026-11-05）: テキスト・画像・動画を入力に、テキストと音声同期付き HD 動画を生成する omni-modal モデル（<code>gemini-omni-1.2-flash</code>）。最大15秒の生成・編集、既存動画の 4K までのアップスケール、参照画像2枚を用いた編集・延長、<code>seed</code> による再現性と課金ラベル指定に対応します。</li>
+  <li><strong>BigQuery の会話型分析が asia-northeast1（東京）で利用可能に</strong>（2026-11-05）。</li>
+  <li><strong>CodeMender v0.18.0</strong>（2026-11-05）: <code>cm verify</code> にツールターン上限のガードレールを追加し、IAM 診断のガイダンスやセッション信頼性を改善しました。</li>
+  <li><strong>BigQuery の Metadata curation コンソールを廃止</strong>（2026-11-05）: Cloud Storage のディスカバリスキャンやデータ品質管理は Knowledge Catalog へ移行します。</li>
+</ul>
+
+<h3>🔷 Azure</h3>
+<p>Azure Updates の公式フィードおよび一覧ページが本日時点で取得できず（403／JavaScript 依存）、対象期間内の更新を確認できませんでした。後日の確認が必要ですわ。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a> · <a href="https://cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>⚛️ React — 対象期間内の安定版リリースなし</h2>
+<p>最新安定版は <strong>19.3.1</strong> で、対象期間内の安定版リリースは確認されませんでした。npm の <code>canary</code>／<code>experimental</code> チャネルには 2026-11-06 01:21 JST 付のビルド（<code>2363bc2b</code>）が公開されています。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">React Releases</a></p>
+
+<h2>🐍 Python / ☕ Spring Boot / 🟨 Hono / 🤖 Claude API SDK</h2>
+<ul>
+  <li><strong>Spring Boot v4.2.0-RC2</strong>（2026-11-05 22:41 JST）: Reactor Netty での <code>X-Forwarded-Prefix</code> 対応と LDAP SSL リロードサポートの削除が新機能。ほかに <code>management.observations.conventions</code> の OpenTelemetry 指定が反映されない問題、PushGatewayTaskScheduler の終了処理、Mongo トランザクションマネージャーのカスタマイズ、構成プロセッサの完全修飾型の扱いなど多数の修正が入っています。</li>
+  <li><strong>Anthropic Python SDK v2.6.0</strong>（2026-11-06 03:58 JST）: レート制限（ramp limit）用エラーコード、External Key 検証失敗のエラーコード、組織メンバーの全端末サインアウトを API 側で追加。Bedrock／Vertex のプラットフォームクライアントでエラーコード・ステータス別の例外クラスを送出するよう修正し、<code>copy</code>／<code>with_options</code> 時にカスタム <code>http_client</code> と <code>aws_profile</code> を保持します。なお OpenTelemetry スパンへのサンプリングパラメータ記録は廃止されました。</li>
+  <li><strong>Hono</strong>: 最新安定版は v4.13.16（2026-11-01 12:10 JST 公開）で、対象期間内の新規リリースは確認されませんでした。v5.0.0 系は rc.1 のままです。</li>
+  <li><strong>Django</strong>: 最新は 6.1.3（2026-11-04 00:21 JST 公開）で、対象期間内の新規リリースは確認されませんでした。</li>
+  <li><strong>Python</strong>: 最新は 3.15.2 / 3.14.10 / 3.13.18（いずれも 2026-10-25 公開）で、対象期間内の新規リリースは確認されませんでした。</li>
+</ul>
+<p>🔗 <a href="https://github.com/spring-projects/spring-boot/releases">Spring Boot Releases</a> · <a href="https://github.com/anthropics/anthropic-sdk-python/releases">anthropic-sdk-python</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
