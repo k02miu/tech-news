@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-08 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-08 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-06 08:00 〜 2026-11-08 08:00 JST 公開分（前号 11-06 以降の未掲載分を含む）</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Armeria（Java）1.43.0未満 - SAMLメッセージの解凍・パス正規化など6件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-121820 / CVE-2026-121823 / CVE-2026-121824（いずれも CVSSv4.0 8.7）ほか計6件</td></tr>
+<tr><th>影響</th><td>armeria-saml 1.43.0未満、armeria 0.80.0〜1.42.0、armeria-xds 1.40.0〜1.42.0</td></tr>
+<tr><th>修正</th><td>1.43.0</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-121820</strong>（8.7）: armeria-saml の HTTP-Redirect バインディングのデコーダが、攻撃者の用意した SAML メッセージを<strong>署名検証の前に</strong>出力サイズ制限なしで解凍するため、解凍爆弾によりメモリを枯渇させられる。</li>
+<li><strong>CVE-2026-121823</strong>（8.7）: リクエストパスの正規化が一貫しないため、未認証の攻撃者がパス基準のアクセス制御を迂回して保護対象のリソースへ到達できる。</li>
+<li><strong>CVE-2026-121824</strong>（8.7）: 不正な構造の Thrift メッセージを処理する際に過大なメモリを割り当て、サービス拒否に至る。</li>
+<li><strong>CVE-2026-121821</strong>（5.3）: any-origin の CORS ポリシーが設定されたパス制限を強制せず、攻撃者のサイトから認証済み利用者の資格情報を用いたリクエストが通る。</li>
+<li><strong>CVE-2026-121819</strong>（5.9）: armeria-xds の DataSourcePolicy がファイル名の包含検査でシンボリックリンクを解決しないため、侵害された／半信頼の xDS 制御プレーンから想定外のファイルへ到達し得る。</li>
+<li><strong>CVE-2026-121822</strong>（2.4）: ディレクトリリスティング有効時、攻撃者が制御するファイル名により格納型XSS が成立する。</li>
+</ul>
+
+<h3>undici（Node.js HTTPクライアント）- リダイレクト時のキャッシュ汚染と機密ヘッダ漏えいなど8件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-116592（CVSSv3.1 7.4）ほか、CVE-2026-120415 / 120423 / 120474 / 116630 / 120222 など計8件</td></tr>
+<tr><th>影響</th><td>undici 7.0.0〜7.30.1、8.0.0〜8.12.3（CVE-2026-116592 は 7.30.1 および 8.12.2〜8.12.3）</td></tr>
+<tr><th>修正</th><td>各系列の修正版へ更新（GitHub Security Advisory を参照）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-116592</strong>（7.4）: origin を持たない Agent で redirect と shared cache のインターセプタを併用すると、最終ホップのみを見て保存可否を判断するため、信頼できない origin を経由して信頼済み origin に戻るリダイレクトが信頼済みキーでキャッシュされる。中間ホップの <code>Vary</code> は失われ、<code>Authorization</code> や <code>Cookie</code> で変化する応答が別利用者に返り得る。CVE-2026-109829 の修正を迂回する。</li>
+<li><strong>CVE-2026-120415</strong>（5.9）: リダイレクト時に <code>Authorization</code>・<code>Cookie</code>・<code>Proxy-Authorization</code>・<code>Host</code> を削除する処理が、リクエストヘッダを「名前と値のタプル配列」（<code>Object.entries</code> など正当な入力形式）で渡すとヘッダ名が一致せず削除されない。cache や deduplicate のインターセプタを外側に重ねていると、保持された機密ヘッダがクロスオリジンのリクエストへ直列化され、資格情報が漏えいする（CVE-2024-30260 の修正に対する表現依存の迂回）。</li>
+<li><strong>CVE-2026-120423</strong>（5.9）: fetch が Subresource Integrity のメタデータを空白1つで分割して検証するため、SRI 文法の複数ハッシュ記載を正しく扱えない。</li>
+<li><strong>CVE-2026-120474</strong>（6.5）／<strong>CVE-2026-116630</strong>（5.9）／<strong>CVE-2026-120222</strong>（5.9）: redirect と shared cache の併用時のキャッシュ取り扱い、条件付き再検証、応答処理中の例外などに起因する不適切なキャッシュ保存。</li>
+</ul>
+
+<h3>Microsoft Entra Device Registration - 利用者制御キーによる認可バイパスで権限昇格（CVE-2026-109469、CVSSv3.1 10.0） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-109469</td></tr>
+<tr><th>影響</th><td>Microsoft Entra ID のデバイス登録（NVD登録 2026-11-06 23:17 UTC / JST 2026-11-07 08:17）</td></tr>
+<tr><th>修正</th><td>Microsoft のセキュリティ更新（MSRC アドバイザリ）を適用</td></tr>
+</table>
+<ul>
+<li>利用者が制御できるキーを介した認可バイパスで、未認証の攻撃者がネットワーク越しに権限昇格できる。CVSSv3.1 は最高値 10.0（Critical）。</li>
+</ul>
+
+<h3>Amazon Aurora PostgreSQL（Babelfish）- TDS prelogin解析のヒープバッファオーバーフローで任意コマンド実行（CVE-2026-119923、CVSSv4.0 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-119923（9.3）／CVE-2026-119924（7.2）</td></tr>
+<tr><th>影響</th><td>Babelfish for PostgreSQL 拡張 1.0-1.5 / 2.1-2.15 / 3.1-3.12 / 4.0-4.8 / 5.1-5.4、および Babelfish 付き Amazon Aurora PostgreSQL</td></tr>
+<tr><th>修正</th><td>Babelfish 4.10 / 5.6 / 6.1 以降、Aurora は該当するマイナーバージョン以降へ更新。回避策は TDS ポート（既定 1433）へのネットワーク到達制限</td></tr>
+</table>
+<ul>
+<li>細工した不正な TDS prelogin パケットを TDS ポートへ送ることでヒープバッファオーバーフローが発生し、遠隔の攻撃者がデータベースプロセスのユーザー権限で任意のOSコマンドを実行できるおそれがある。同一パーサの NULL ポインタ参照も本レコードに統合されている。CVE-2026-119924（7.2）は TDS RPC のプロシージャ名パーサの境界外読み取り。</li>
+</ul>
+
+<h3>Python 3.14.10 - FIPSモード時のhashlibアルゴリズム強制の回帰（CVE-2026-119170、CVSSv4.0 8.2） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-119170</td></tr>
+<tr><th>影響</th><td>Python 3.14.10 のみ（OpenSSL を FIPS モードで使用している場合に限る）</td></tr>
+<tr><th>修正</th><td>修正版の Python 3.14 系へ更新</td></tr>
+</table>
+<ul>
+<li>hashlib モジュールにおいて FIPS アルゴリズムの強制方法に回帰があり、FIPS 要件を満たさないアルゴリズムが選択され得る。他の Python バージョンは影響を受けない。</li>
+<li>関連（Python）: Snowflake Connector for Python の <code>write_pandas()</code> が識別子のエスケープを無効化した非既定構成で識別子をエスケープせず SQL 注入に至る（CVE-2026-123859、CVSSv3.1 8.1）。Urwid 4.0.7 未満の Web ディスプレイでのエンコード／デコード不備（CVE-2026-103022、5.3）。</li>
+</ul>
+
+<h3>GeoNode（Django）- レイヤー名のシェル構文注入で任意OSコマンド実行など3件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-33050（CVSSv3.1 8.8）／CVE-2026-46429（5.5）／CVE-2026-55649（6.3）</td></tr>
+<tr><th>影響</th><td>GeoNode 5.1.0 未満（46429／55649 は 5.0.3 未満）</td></tr>
+<tr><th>修正</th><td>5.1.0（一部は 5.0.3）以降</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-33050</strong>（8.8）: アップロード時に渡すベクタファイルのレイヤー名を細工することで低権限の遠隔利用者がシェル構文を注入でき、GeoNode サーバー上で任意のOSコマンドを実行できる。修正は 5.1.0。</li>
+<li><strong>CVE-2026-46429</strong>（5.5）: 細工したリクエストでアップロードサービスの検証を迂回できる。</li>
+<li><strong>CVE-2026-55649</strong>（6.3）: ドキュメントの abstract メタデータがサニタイズされず保存されるため、低権限の遠隔利用者による格納型XSS が成立する。</li>
+</ul>
+
+<h3>JavaScript／npm 関連 - plist解析のDoS、KendoReact のプロトタイプ汚染とXSS、esm.sh のパストラバーサル <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124078（CVSSv4.0 8.7）／CVE-2026-106127・106134・106136・106142／CVE-2026-102657（7.5）</td></tr>
+<tr><th>影響</th><td>npm <code>plist</code> 5.0.1 未満、Progress KendoReact 各コンポーネント、esm.sh サーバー版 137_7 未満</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-124078</strong>（8.7）: npm パッケージ <code>plist</code> 5.0.1 未満のバイナリ plist パーサ（<code>parseBinary</code>）に制御されないリソース消費があり、未認証の攻撃者が細工した plist で Node.js プロセスをクラッシュさせられる。</li>
+<li><strong>CVE-2026-106127</strong>（4.1）: KendoReact の <code>@progress/kendo-react-common</code> の setter ユーティリティにプロトタイプ汚染。あわせて Menu（<code>kendo-react-layout</code>）・Chat（<code>kendo-react-conversational-ui</code>）・Editor（<code>kendo-react-editor</code>）に格納型XSS（各 5.4）。</li>
+<li><strong>CVE-2026-102657</strong>（7.5）: Web 向け CDN「esm.sh」の静的ファイルサーバーが URL デコード済みパスを結合する際の検証が不十分で、パストラバーサルにより配信ディレクトリ外のファイルへ到達し得る。</li>
+</ul>
+
+<h3>その他のスタック関連（Java／開発ツール）</h3>
+<ul>
+<li><strong>Keycloak</strong>: Admin REST API がベアラトークンの想定オーディエンスを検証しない問題（CVE-2026-19688、CVSSv3.1 6.8）、OIDC ログアウトエンドポイントの未検証値に基づくセッションCookie設定（CVE-2026-107124、6.4）、動的クライアント登録の認可検証不備（CVE-2026-109081、6.8）、SAML ブローカリング（CVE-2026-92856、4.9）、トークン交換の有効期限（CVE-2026-96460、5.4）など複数が登録された。</li>
+<li><strong>Quarkus</strong> REST Data Panache: <code>@SecureField</code> をフィールドではなく getter に付与した場合にセキュリティ制約が生成 REST リソースへ反映されない（CVE-2026-121837、CVSSv3.1 4.3）。</li>
+<li><strong>JSON-java</strong>: 数値トークンを無制限に蓄積し BigInteger 変換で資源を消費する問題（CVE-2026-59171、5.9）。</li>
+<li><strong>Gradle Shadow プラグイン</strong> 9.6.0 未満: ZIP エントリ名を独立に検証せず fat JAR を生成し、細工したアーカイブで出力先外に書き込み得る（CVE-2026-75598、6.3）。</li>
+<li><strong>JetBrains IDE</strong>: IntelliJ IDEA 2026.3 未満で WSL 上の Tomcat 実行構成を介したコマンド注入（CVE-2026-123837、7.8）、設定アーカイブのシンボリックリンクを介したコード実行（CVE-2026-123841、7.8）、CLion の Safe Mode でのコード実行（CVE-2026-123831／123832、各 9.6）など多数。Datalore 2026.4 未満ではワークスペース協力者が所有者の SSH 秘密鍵を取得し得る（CVE-2026-123836、8.8）。</li>
+</ul>
+
+<h3>Claude Code v2.1.319 - auto mode の安全チェック欠如時に拒否へ、権限プロンプトの扱いを追加 <span class="badge-medium">情報</span></h3>
+<table class="cve-table">
+<tr><th>版</th><td>v2.1.319（npm 公開 2026-11-06 17:04 UTC / JST 2026-11-07 02:04）</td></tr>
+<tr><th>種別</th><td>セキュリティ関連の挙動変更を含むアップデート（CVE の記載なし）</td></tr>
+</table>
+<ul>
+<li>テレメトリーやフィーチャーフラグが無効な環境（LLMゲートウェイ配下を含む）では、<strong>サーバー側で確認できない呼び出しをビルトイン分類器へフォールバックさせず、確認するか拒否する</strong>挙動に変更（<code>CLAUDE_CODE_AUTO_MODE_SERVER=0</code> で従来動作を維持）。ゲートウェイ配下では <code>CLAUDE_CODE_AUTO_MODE_SERVER=1</code> でサーバー側チェックを有効化できる。</li>
+<li><code>permissions.denyInsteadOfPrompting</code> 設定を追加。権限プロンプトを待つツール呼び出しを拒否したうえでターンを継続できる。</li>
+<li>auto mode で安全性チェックが利用できず操作が拒否された場合、<code>claude -p</code> が終了コード 0 を返していた問題を修正し、1 を返すようにした。</li>
+<li>Bash の deny／ask ルールが引用符付きの語を含むコマンドを取りこぼす問題、権限ルールや <code>autoMode</code> 設定が非常に大きい場合に理由を示さず拒否する問題、設定ファイルや <code>~/.claude.json</code> がディスク満杯時に空・途中で切れる問題なども修正。</li>
+</ul>
+
+<h3>米CISA KEV - SonicWall SonicOS SSLVPN の認証バイパス（CVE-2026-19868）を追加 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>SonicWall SonicOS SSLVPN</td></tr>
+<tr><th>期限</th><td>米連邦機関の対応期限 2026-11-20（KEV 追加 2026-11-06）</td></tr>
+</table>
+<ul>
+<li>単一要素認証の使用（use of single-factor authentication）に起因する脆弱性で、別の認証方式の有効な資格情報を持つ利用者が認証を回避できる。既に悪用が確認されたものとして KEV に登録された。ランサムウェアキャンペーンでの利用は「Unknown」。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">OpenClaw（最新 2026.11.1）および Hermes Agent（最新 v0.23.0）は、いずれも 2026-11-05 公開分で既報のため、本対象期間内に新たなセキュリティ関連リリースは確認されませんでした。Next.js／Hono／Django／Spring Boot／GCP については、本対象期間に該当する新規のベンダーアドバイザリは確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>NTTドコモ「ドコモオンラインショップ」「My docomo」- 不正アクセスで最大約30万件が流出、緊急メンテナンス継続 <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>発公表</th><td>2026-11-06 18:00 JST（第三報）／一次情報: NTTドコモ公式</td></tr>
+<tr><th>規模</th><td>最大 約30万件</td></tr>
+</table>
+<ul>
+<li>2026-11-04、ドコモオンラインショップおよび My docomo に対する外部からの不正アクセスを確認。11-05 午前1時5分頃から両サービスの各種手続きを停止（緊急メンテナンス）し、一切のアクセスを遮断。復旧見込みは未定。</li>
+<li>流出を確認した情報は、すべての対象者について氏名・生年月日・年齢等、住所・連絡先電話番号・メールアドレス等、本人確認書類の番号、携帯電話番号・契約開始年月日等の契約情報、料金プラン・オプション・割引等の契約内容。一部の対象者については法定代理人・手続代理人の氏名と連絡先、勤務先・法人の名称と所在地等、金融機関名・支店名・口座番号・口座名義等、子育て応援プログラムに関する情報。</li>
+<li>原因は外部からの不正アクセス。流出情報を悪用した不審なメール・SMS・電話への注意喚起と特設ダイヤル（0120-451-360）を案内。新たな情報流出は確認されていない。</li>
+</ul>
+
+<h3>良品計画「MUJIアプリ」- 第二報でカード情報へのアクセス可能性が判明、最大約2,726万件 <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>発公表</th><td>2026-11-04（第二報）／ScanNetSecurity 2026-11-06 掲載</td></tr>
+<tr><th>規模</th><td>会員情報 最大 約2,726万件、うち約52万件に氏名・住所・電話番号／「MUJI Card」約109万件</td></tr>
+</table>
+<ul>
+<li>第一報では MUJIアプリ利用者が対象とされていたが、第二報で無印良品ネットストア利用者も対象に含まれること、一部に氏名・住所・電話番号が含まれることが判明した。</li>
+<li>クレディセゾン発行の「MUJI Card」会員（2021年7月までに入会）のクレジットカード番号（全桁）・MUJI Card ID・生年月日 約109万件（うち現時点で有効なのは約34.5万件）、および MUJIアプリ・ネットストアでカード情報を登録した顧客のカード番号の先頭6桁＋下2桁・カード名義 約120件についても外部からアクセスされた可能性がある。</li>
+<li>同社は不正アクセスを遮断し、対象顧客へメールまたは郵送で個別連絡。現時点で MUJIアプリおよびネットストアは正常に利用可能。</li>
+</ul>
+
+<h3>クラブツーリズム - サーバへの不正アクセスで約432万件の会員情報が流出した可能性 <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>発公表</th><td>2026-10-31（第1信）／ScanNetSecurity 2026-11-06 掲載</td></tr>
+<tr><th>規模</th><td>インターネット会員 約432万件</td></tr>
+</table>
+<ul>
+<li>10月30日 午前5時45分に外部からの不正アクセスを検知し、通信遮断と対策を実施。その後の調査で顧客情報の一部が外部へ漏えいした可能性を確認した。</li>
+<li>対象はインターネット予約システムのインターネット会員で、氏名（漢字・カナ）、国籍、性別、生年月日・年齢、住所、電話番号、メールアドレス、会員ID、緊急連絡先。</li>
+<li>攻撃元からの通信を遮断しサーバを隔離。侵入経路と手段の特定、修正、影響範囲の点検を進めている。被害拡大防止と調査のためホームページを停止中。</li>
+</ul>
+
+<h3>サントリーグループ - 外部クラウドサービスへの不正アクセスで約9万人分超が漏えい <span class="badge-high">高</span></h3>
+<table class="cve-table">
+<tr><th>発公表</th><td>2026-11-02／ScanNetSecurity 2026-11-06 掲載</td></tr>
+<tr><th>規模</th><td>従業員・パートナー企業等 約90,000名 ほか計7区分</td></tr>
+</table>
+<ul>
+<li>10月28日に外部クラウドサービスで異常を検知し不正アクセスを遮断。10月29日、漏えいしたファイルの一部に個人情報が含まれることを確認。11月1日までに第三者への漏えいを確認した区分は、従業員・パートナー企業等の氏名・メールアドレス（約90,000名）、企業活動体験プログラム登録者 7,323名、2026年新卒採用オープン選考の応募者 7,173名、社用携帯電話に登録されていたグループ・取引先従業員 1,097名、モンテ物産の従業員等 324名、井筒まい泉の宅配顧客・従業員 96名（届け先の位置情報を含む）、サントリーの取引先従業員 25名。</li>
+</ul>
+
+<h3>ヤクルト - ウェブサイト侵害で問い合わせフォーム利用者等の個人情報 3万9,505件が流出 <span class="badge-high">高</span></h3>
+<table class="cve-table">
+<tr><th>発公表</th><td>Security NEXT 2026-11-06（把握は2026-10-26、件数は11-04時点）</td></tr>
+<tr><th>規模</th><td>3万9,505件</td></tr>
+</table>
+<ul>
+<li>問い合わせフォーム利用者 3万1,781件（氏名・住所・電話番号・性別・メールアドレス・問い合わせ内容等）、給食サイト「たのしい給食」登録会員 5,698件（氏名・勤務先・勤務先住所と電話番号・メールアドレス・暗号化されたパスワード・任意回答）、報道関係者向け問い合わせフォーム 1,613件のほか、化粧品キャンペーン応募者や対応した従業員の情報も含まれる。</li>
+<li>個人情報保護委員会へ報告し警察へ相談。外部協力のもと調査を継続し、関係者へ順次連絡する。</li>
+</ul>
+
+<h3>その他の国内インシデント（2026-11-06 掲載分）</h3>
+<ul>
+<li><strong>ブシロード「バンドリ！アワーノーツ」</strong>: 開発業務委託先の管理上の不備により、クローズドβテスト応募者 10,194名（メールアドレス・IPアドレス・応募日時・端末情報）と関係者 71名、アンケート回答 5件、カスタマーサポート問い合わせ 3,034名分の個人情報が取得された。委託先では不備の是正を完了。</li>
+<li><strong>日本郵便</strong>: メールマガジン配信を委託している事業者の一部サーバシステムへの不正アクセスにより、国際郵便マイページサービス会員のうち案内メール配信希望者のメールアドレスが漏えいした可能性。委託先のメール配信サービスは停止中。</li>
+<li><strong>JETRO「e-Venue」</strong>: 委託先が構築・運用していた国際ビジネスマッチングシステムへの不正アクセスにより、最大133件の氏名・メールアドレス・電話番号・携帯番号・FAX番号が漏えいした可能性。サービスを停止し調査中。</li>
+<li><strong>ベーシック「ferret One」</strong>: 内部管理機能の不備により10月14日に第三者へ不正にアカウントを作成され、導入顧客のログイン用メールアドレスが閲覧・取得された可能性。同社と顧客のアカウント計6件で不正ログインを確認し、パスワードを初期化。</li>
+<li><strong>スマートシェア「OWNLY」</strong>: ファイルアップロード機能の不備を侵入経路とする不正アクセスで、モスバーガー関連キャンペーン参加者情報を含む計 14,034件（XまたはLINEのユーザー名・ユーザーID、エントリー日時、抽選・クーポン取得状況）が閲覧・ダウンロードされた形跡。</li>
+<li><strong>MICIN「クロンオンライン診療」</strong>: リスト型攻撃による不正ログインで、医療機関 5機関6アカウント・患者 14アカウントが被害。患者73名分の氏名・連絡先・生年月日・住所・性別・カルテ番号・診察券番号・受診状況・医師によるメモ等が閲覧された可能性。サーバ・データベースへの侵入の形跡は確認されていない。</li>
+<li><strong>MM総研の調査</strong>: 2026年に国内で漏えいしたクレジットカード情報は438万件に達するとの推計が示された（11月4日公表）。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
