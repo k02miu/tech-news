@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-09 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-09 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-08 08:00 〜 2026-11-09 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>OpenAM（Java／SSO・OpenIdentityPlatform）16.1.4未満 - 未認証でのセッショントークン読み出し（CVSSv3.1 10.0）など18件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-123551（10.0）／CVE-2026-123550（9.3）／CVE-2026-123549（9.3）／CVE-2026-123543（8.7）／CVE-2026-123538（7.5）／CVE-2026-123542（7.6）ほか計18件（CVE-2026-123536〜123553）</td></tr>
+<tr><th>影響</th><td>OpenIdentityPlatform OpenAM 16.1.4 未満（CVE-2026-123551 は 14.0.0 以降）</td></tr>
+<tr><th>修正</th><td>16.1.4</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-123551</strong>（10.0）: 通知用 WebSocket から<strong>未認証</strong>でライブのセッショントークンを読み出せる。レガシーな Liberty ID-FF エンドポイントの<em>未検証の内部フォワード</em>により「agent 専用」チェックを回避でき、iPlanetDirectoryPro などのトークンを窃取される。CVSSv3.1 は最高値 10.0。</li>
+<li><strong>CVE-2026-123550</strong>（9.3）: SAML v2.0 サービスプロバイダ側で <code>WantAssertionsSigned=false</code> のとき、ECP（PAOS）および HTTP-Artifact バインディングで<strong>未署名のアサーションを受理</strong>する。未認証の遠隔攻撃者が偽造アサーションを送り、任意のマップ済みユーザーとしてセッションを取得できる認証バイパス。</li>
+<li><strong>CVE-2026-123549</strong>（9.3）: 自己登録時に Valid Creation Attributes リストを強制しないため、匿名の攻撃者がグループメンバーシップなどの制限属性を設定でき、管理者グループに参加して権限を得られる。従来のセルフサービス REST エンドポイント／User Self-Service フローから到達する。</li>
+<li><strong>CVE-2026-123543</strong>（8.7）: シリアライズされた Java データをサイズ・構造の制限なく受理するため、小さな細工リクエストでサーバ資源を枯渇させられる DoS。SDK の遠隔エンドポイント、クラシックなログインページ、管理コンソールが対象。</li>
+<li><strong>CVE-2026-123538</strong>（7.5）: SAML 1.x の署名済みアサーション／レスポンスが発行者として名乗るパートナーの署名かを検証せず、キーストア内のどの証明書の署名でも受理するため、信頼済みパートナーが他パートナーを騙るアサーションを偽造できる。</li>
+<li><strong>CVE-2026-123542</strong>（7.6）: OAuth 2.0 デバイス認可フローで PKCE を強制せず code verifier を検証しない。ほか、保存型XSS（CVE-2026-123539、4.8）、オープンリダイレクト／XSS（CVE-2026-123546、5.3）、SSRF（CVE-2026-123536・123537・123552）、既定の組み込みID残留（CVE-2026-123553、6.9）など。</li>
+</ul>
+
+<h3>Tornado 6.6未満（Python）- static_url() のパストラバーサル（CVSSv3.1 8.3） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-123534（8.3）／CVE-2026-123535（2.3）</td></tr>
+<tr><th>影響</th><td>Tornado 6.6 未満</td></tr>
+<tr><th>修正</th><td>6.6 以降</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-123534</strong>（8.3）: <code>RequestHandler.static_url()</code> および <code>get_version()</code> が <code>../</code> シーケンスを除去しないため、<code>static_path</code> の外にあるファイルについても SHA-512 ハッシュを取得できる。攻撃者が <code>static_url()</code> に渡す入力を制御できる場合、読み取り可能ファイルのハッシュから存在確認を行え、あるいは他リソースへの参照を作成される。</li>
+<li><strong>CVE-2026-123535</strong>(2.3): <code>RequestHandler.set_cookie</code>（<code>set_signed_cookie</code>／<code>set_secure_cookie</code> からも呼ばれる）が <code>max_age</code> 引数を検証しない。</li>
+</ul>
+
+<h3>Frappe Framework／ERPNext（Python）- 認可欠如による情報漏えいなど5件 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124314（7.1）／CVE-2026-124313（5.3）／CVE-2026-124315・124316・124443（5.3）</td></tr>
+<tr><th>影響</th><td>ERPNext 15.121.4 未満、16.x は 16.36.0 未満。Frappe Framework 15.121.1 未満、16.x は 16.35.0 未満</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-124314</strong>（7.1）: <code>erpnext.crm.utils.get_open_activities</code> が認可を検査せず、ToDo／Event レコードを露出する。ポータルユーザーやロールなしの利用者を含む任意の認証済みユーザーが、任意の <code>ref_doctype</code>／<code>ref_docname</code> を渡して他社の活動を列挙できる。</li>
+<li><strong>CVE-2026-124313</strong>（5.3）: whitelisted な <code>get_linked_payments_for_doc</code> が認可を検査せず、任意の company／doctype／docname を指定して他社の Payment Ledger Entry の引当データを読める。</li>
+<li><strong>CVE-2026-124443</strong>（5.3）: Frappe Framework の File 一覧・レポートクエリが private ファイルレコードを権限ある利用者に限定しないため、認証済みユーザーが権限のない private ファイルのメタデータを取得できる。</li>
+</ul>
+
+<h3>Hibernate Validator（Java）- EL式のエスケープ不備による資源枯渇DoS（CVE-2026-93879、CVSSv3.1 7.5） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-93879</td></tr>
+<tr><th>影響</th><td>Hibernate Validator（Expression Language（EL）式を使うバリデーション）</td></tr>
+<tr><th>修正</th><td>ベンダの修正版へ更新（IBM セキュリティ情報経由で登録）</td></tr>
+</table>
+<ul>
+<li>EL 式に埋め込むユーザー制御データのエスケープが不適切なため、遠隔の攻撃者が制御されないリソース消費を引き起こしサービス拒否に至る。</li>
+</ul>
+
+<h3>IBM Qiskit SDK（Python）- 信頼できないデータのデシリアライズ等による任意コード実行（CVE-2026-116499／116501、各 8.4） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-116499（8.4）／CVE-2026-116501（8.4）／CVE-2026-116500（6.2）</td></tr>
+<tr><th>影響</th><td>Qiskit SDK 1.4.2〜2.6.2（116499）、2.4.0〜2.6.1（116500・116501）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-116499</strong>（8.4）: 信頼できないデータをデシリアライズするため、ローカルの攻撃者が任意コードを実行できる。<strong>CVE-2026-116501</strong>（8.4）は破損したユニタリ行列を読み込む際の入力検証不備による境界外書き込みで任意コード実行。<strong>CVE-2026-116500</strong>（6.2）はデシリアライズ時の再帰が無制限で DoS。</li>
+<li>関連（Java／IBM 一括登録）: 同日、IBM 製品の脆弱性が大量に登録された。特に IBM Concert 1.0〜3.0.1.1 の安全でないコマンド実行（CVE-2026-15266・6715、各 9.8）、IBM DataStage on Cloud Pak for Data 5.4.0.0 の情報漏えい（CVE-2026-107331、9.9）、IBM WebSphere Extreme Scale 8.6.1.0〜8.6.2.2 のセキュリティ制限バイパス（CVE-2026-101117、9.1）、IBM WebSphere Application Server Liberty の認可不備・SSRF（CVE-2026-103320／108284／11547 ほか）などが含まれる。</li>
+</ul>
+
+<h3>JavaScript／npm - SunEditor の格納型XSS（9.3）と devalue のDoS（8.7） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124493・124494（各 9.3）／CVE-2026-124492（8.3）／CVE-2026-124491（5.3）／CVE-2026-123569（8.7）ほか devalue 8件</td></tr>
+<tr><th>影響</th><td>SunEditor 3.4.0 未満、npm <code>devalue</code> 5.9.3 未満（一部は 5.6.3 未満）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-124494</strong>（9.3）: <code>html.clean()</code> サニタイザの <code>_normalizeURL()</code> が <code>&amp;colon;</code> のような名前付きエンティティを空文字へデコードするため、<code>javascript&amp;colon;</code> が <code>_isSafeURL()</code> を通過しブラウザ側でURLとして解釈され実行される格納型XSS。</li>
+<li><strong>CVE-2026-124493</strong>（9.3）: <code>DocumentType</code> コンストラクタがヘッダテキストを注入する格納型XSS。<strong>CVE-2026-124492</strong>（8.3）は ModalAnchorEditor の <code>#createBookmarkList</code>、<strong>CVE-2026-124491</strong>（5.3）は FileUpload プラグインの <code>create()</code> 経由。</li>
+<li><strong>devalue</strong>（npm／Svelte 系）: 未修正版では疎な配列を <code>uneval</code>／<code>stringify</code> で直列化する際に CPU・メモリを過剰消費し DoS に至る（CVE-2026-123569、8.7）。ほか <code>stringifyAsync</code> の未処理の Promise 拒否、<code>__proto__</code> 拒否の回避、ArrayBuffer リバイバの検証バイパス、メモリ枯渇など計8件（多くが 8.7）。修正は 5.9.3。</li>
+</ul>
+
+<h3>WordPress プラグイン一括 - 未認証での管理者アカウント作成やファイル設置（各 9.8） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-114432（9.8）／CVE-2026-110963（9.8）／CVE-2026-109900（9.6）／CVE-2026-109899（7.1）／CVE-2026-114189（8.5）ほか</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-114432</strong>（9.8、Contact Form 7 6.2.4 未満）: フォームのファイルフィールドでアップロードの型・拡張子を検証せず、さらに一時ファイルの後始末の不備でアップロードしたファイルがディスク上に残る。未認証の攻撃者が任意ファイルを設置でき、標準的な Debian／Ubuntu の Apache 構成ではコード実行に至る。</li>
+<li><strong>CVE-2026-110963</strong>（9.8、Userplace 1.2.0 以下）: 未認証ユーザーに開放された AJAX アクションで認可検査がなく、保護用 nonce も公開されているため、未認証の攻撃者が管理者アカウントを作成でき、任意のサイトオプションを書き換えて<strong>サイト全体を掌握</strong>できる。</li>
+<li><strong>CVE-2026-109900</strong>（9.6、Melapress Role Editor 1.3.0 以下）: 権限の誤った割り当てにより権限昇格が成立（CVE-2026-109899、認可欠如、7.1）。<strong>CVE-2026-114189</strong>（8.5、WPVibes AnyWhere Elementor 1.3.0 以下）は Blind SQL インジェクション。あわせて FluentForm・WCFM・WC Lovers 系などの XSS／認可欠如も登録された。</li>
+</ul>
+
+<h3>Craft CMS 5.11.2未満 - 匿名GraphQLでの認可バイパス（9.3）とRCE（8.7）など6件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124427（9.3）／CVE-2026-124429・124430（各 8.7）／CVE-2026-124428（7.1）／CVE-2026-124426（6.9）／CVE-2026-124431（5.3）</td></tr>
+<tr><th>影響</th><td>Craft CMS 5.0.0〜5.11.2（124430・124431 は 5.10.0 以降）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-124427</strong>（9.3）: 匿名の GraphQL クライアントが <code>prev</code>／<code>next</code> フィールドを辿ってスコープ外のセクションエントリを読み出せる認可バイパス。</li>
+<li><strong>CVE-2026-124430</strong>（8.7）: 非管理者のコントロールパネル利用者が <code>app/render-elements</code> 経由で HMAC 署名済み Twig テンプレートを取得し、ログインリダイレクトの <code>returnUrl</code> として送信させることでサンドボックス外のレンダリングを誘発し、リモートコード実行に至る。<strong>CVE-2026-124429</strong>（8.7）は公開登録者による権限昇格、<strong>CVE-2026-124428</strong>（7.1）は認証済みの任意ファイル読み出し。</li>
+</ul>
+
+<h3>Kyverno 1.19.2未満 - apiCall の namespace clamp 迂回でクラスタ権限の認可バイパス（CVE-2026-124440、9.4） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124440（9.4）／CVE-2026-124441（8.7）</td></tr>
+<tr><th>影響</th><td>Kyverno 1.19.1 以降 1.19.2 未満（124441 は 1.19.2 未満全般）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-124440</strong>（9.4）: <code>apiCall</code> の namespace clamp を、<code>urlPath</code> に不正なパーセントエスケープを付加することで回避でき、namespace テナントがクロスネームスペース／クラスタスコープの API リクエストを管理者権限で発行できる。<strong>CVE-2026-124441</strong>（8.7）は namespace テナントが任意のリソース種別を生成できる認可バイパス。</li>
+</ul>
+
+<h3>OpenEMR 8.3.0／8.4.0未満（医療系）- SQLインジェクションやパストラバーサルなど44件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124469（9.4）／CVE-2026-124490（9.4）／CVE-2026-124463・124445・124450（各 9.3）ほか計44件（CVE-2026-124444〜124490）</td></tr>
+<tr><th>影響</th><td>OpenEMR 8.3.0 未満（一部は 8.4.0 未満）</td></tr>
+</table>
+<ul>
+<li>電子カルテ（医療機関向け）の広範囲なコンポーネントに、認可欠如・IDOR（Insecure Direct Object Reference）・SQL インジェクション・パストラバーサル・格納型XSS が一括して登録された。<strong>CVE-2026-124469</strong>（9.4）は Fee Sheet の医薬品在庫検索の <code>ORDER BY</code> へ POST 値を補間する SQL インジェクション（時間ベースのブラインド手法が可能）。<strong>CVE-2026-124490</strong>（9.4）は RingCentral 連携モジュールのパストラバーサル。<strong>CVE-2026-124445</strong>（9.3）はワンタイム認証トークンの再利用制限（<code>enforce_onetime_use</code>／<code>max_access</code>）を無視する問題で、患者ポータルの入り口を乗っ取られる。</li>
+</ul>
+
+<h3>OpenClaw 2026.11.2 リリース - 診断ログからの機微情報除外とトラスト境界の強制 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-08 19:31 UTC（JST 2026-11-09 04:31）、commit b556fdf</td></tr>
+<tr><th>区分</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.2">openclaw 2026.11.2</a>（安定版・署名検証済み）</td></tr>
+</table>
+<ul>
+<li>Highlights の先頭に「Privacy and trust boundaries」を掲げ、<strong>設定シークレット・会話内容・ツールのエラー・チャネルのペイロードを診断ログから除外</strong>、選択されたプロバイダとナビゲーションのトラスト境界を強制、CLI のウォームターン後に MCP グラントを解放する修正をまとめて取り込んだ（PR #191318／#174998／#174544／#172963／#174526／#173422／#191748 ほか）。</li>
+<li>診断コンテンツの取得は属性・候補ペイロードのサイズを制限し、過大な画像データを省略する（プロンプトや会話履歴は制限しない）。更新経路では設定済みプラグインの実行ファイルと環境参照を保持し、自己フェンシングや中断時のハングを回避する。</li>
+</ul>
+
+<h3>その他（スタック関連の動向と補足）</h3>
+<ul>
+<li><strong>Claude Code</strong>: 対象期間内の新規リリースはなし。最新は v2.1.319（2026-11-06 17:04 UTC 公開、auto mode のサーバー側チェック不能時の拒否挙動・<code>permissions.denyInsteadOfPrompting</code> 追加）で、前号までに掲載済み。</li>
+<li><strong>Hermes Agent</strong>: 対象期間内の新規リリースはなし。最新は v0.23.0「The Hearth Release」（2026-11-05 21:32 UTC 公開）。</li>
+<li><strong>米CISA KEV</strong>: カタログは 2026.11.06 版（件数 1,769）。対象期間内の新規追加はなく、最新追加は SonicWall SonicOS SSLVPN の CVE-2026-19868（追加 2026-11-06、対応期限 2026-11-20、既報）。</li>
+<li><strong>JVN／JPCERT/CC</strong>: 新着は JVNVU#90841469（CISA ICS Advisory／ICS Medical Advisory 2026年11月05日、公開 2026-11-06 09:30 JST）と JVNVU#98354779（Siemens 製品アップデート 2026年11月、公開 2026-11-06 09:00 JST）。JPCERT/CC の注意喚起は 2026-10-29 が最新で、対象期間内の新規公開なし。</li>
+<li><strong>スタック外だが件数の多い一括登録</strong>: Vikunja 2.7.1 未満（39件、最大 8.7。資源枯渇・認可バイパス・トークン露出など）、Hickory DNS 0.26.2 未満（35件、DNSSEC 検証不備・DoS など、多くが 8.7）、ZcashFoundation Zebra 7.0.0 未満（7件）、rustls 0.23.46 未満（4件）、imgproxy（3件、ICO ローダの整数オーバーフロー 9.3）、Scriban 7.5.3 未満（3件、8.7〜9.1）。</li>
+<li><strong>【補足・対象期間外／未掲載】OpenSSH（musl libc・PAMなし構成）のパスワード認証バイパス</strong>: CVE-2026-123158（CVSSv3.1 8.1、MITRE 採番）。Linux 上で musl libc を使い PAM なしで動く sshd において、パスワード欄が「*」のアカウントに 257〜1024 バイトの長いパスワードでログインできてしまう。musl の <code>crypt()</code> が長大な鍵で失敗時に「*」を返し、それがパスワードなしアカウントの保存値と一致するために成立する。修正は OpenSSH 10.6p2、および Alpine の修正パッケージ（3.21.10／3.22.8／3.23.8／3.24.4 の各ポイントリリースおよび各ブランチ）。確認と対応は <code>sshd -T</code> による設定確認、<code>PasswordAuthentication no</code>、<code>Accepted password for</code> の痕跡確認（piyolog 2026-11-06 まとめ）。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本国内 - 対象期間内の新規公表は確認されず（補足として既報外の11月上旬案件を掲載）</h3>
+<table class="cve-table">
+<tr><th>調査範囲</th><td>Security NEXT（11月アーカイブ・新着／インシデント一覧）、ScanNetSecurity（インシデント・事故一覧）、JVN、JPCERT/CC、読売新聞のサイバー被害一覧（2026-11-07 01:42 更新）</td></tr>
+<tr><th>結論</th><td>2026-11-08 08:00 〜 2026-11-09 08:00 JST に公表された国内の新規インシデント・続報は確認されなかった（11-07・11-08 は土日で主要メディアの新規記事なし）</td></tr>
+</table>
+<p class="empty-notice">対象期間内の国内主要インシデントの新規公表はありませんでした。以下は 2026-11-04〜11-06 に判明した案件のうち、これまでの朝刊で未掲載のものを補足として整理したものです。</p>
+<ul>
+<li><strong>アイリスオーヤマ「アイリスプラザ」</strong>: 公式通販サイトで侵害を確認しサイトを一時停止（2026-10-29 時点でクレジットカード情報の流出は未確認）。読売新聞の集計では、電話番号などの情報が<strong>最大約770万人分</strong>漏えいした可能性があるとされる。</li>
+<li><strong>外務省</strong>: 2026-07-27、外部とやり取りが可能なネットワークで侵害を検知。アクセス遮断と認証情報の無効化を実施し、氏名・メールアドレスなど<strong>約3,600件</strong>（うち約900件は同省以外の関係者）の個人情報が流出した可能性。機密性の高い情報や二次被害は確認されていない。</li>
+<li><strong>松屋フーズ</strong>: 公式アプリの管理システムが第三者に侵害され、2026-10-28 に流出が判明。「松弁ネット」「モバイルオーダー」「松弁デリバリー」利用者の会員ID・お届け先住所・氏名・電話番号・ポイントの<strong>237万7,127件</strong>、およびアプリ登録の会員情報2,000件（最大3,000件）が流出。関連サービスを停止し調査中。</li>
+<li><strong>ギフティ</strong>: 2026-10-25、システムの脆弱性を突く不正アクセスにより「eギフト」が第三者に不正発行され、金銭損失は約<strong>5億5,000万円</strong>と見込み。利用者の eギフト不正使用や個人情報流出は確認されていない。原因システムは特定して停止し、再開予定はなし。</li>
+<li><strong>日本郵政グループ労働組合（JP労組）</strong>: 不正アクセスにより組合員情報<strong>4万件以上</strong>が漏えい。</li>
+<li><strong>KDDI（ライフネット生命のシステム経由）</strong>: 提携先のシステムの脆弱性が悪用され、KDDI が保有する顧客情報<strong>2万2,541件</strong>が流出した可能性。</li>
+<li><strong>ドトールコーヒー</strong>: システムへの不正アクセスにより、従業員および退職者 計<strong>951名</strong>の個人情報が流出した可能性。</li>
+<li><strong>GMOペイメントゲートウェイ</strong>: ライフカード向けサービスで顧客情報の一部が流出した可能性。</li>
+<li>そのほか、近鉄不動産（メールアドレス約4万9,000件）、損害保険ジャパン（委託先侵害、約6万5,000件）、東京海上ダイレクト（74件、新規加入停止）、北洋銀行、SMBCコンシューマーファイナンス（約32万人分）、山梨県（富士山吉田ルート通行予約システム、延べ19万7,556人分、アソビュー経由）が 11月4日〜6日 に判明している。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
