@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-09 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-09 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p class="empty-notice"><strong>Claude Code</strong>については、対象期間内の新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.319</strong>（<strong>2026-11-07 03:06 JST</strong> 公開）です。公式 changelog の RSS は 2026-11-09 04:51 JST に再生成されていますが、v2.1.319 より新しいエントリは含まれていません。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v0.23.0</strong>（<strong>2026-11-06 06:32 JST</strong> 公開、「The Hearth Release」）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.2</h2>
+<p><strong>v2026.11.2</strong>（<strong>2026-11-09 04:31 JST</strong> 公開）は、プライバシーと信頼境界の強化を最上位の柱に据えたリリースです。診断ログへの機密情報・会話内容の混入防止、アカウント識別の維持、Gateway の可用性改善が中心で、機能追加よりも堅牢性の底上げに振り切った内容となっています。</p>
+
+<h3>🔧 主な変更</h3>
+<ul>
+  <li><strong>プライバシーと信頼境界</strong>: 設定シークレット、会話内容、ツールのエラー、チャネルのペイロードを診断ログに出さないようにしました。選択されたプロバイダとナビゲーションの信頼境界を強制し、ウォームな CLI ターン終了後には MCP の付与を解放します。</li>
+  <li><strong>アカウント安全性の担保</strong>: 永続リトライとスケジュール配信をまたいで送信者・アカウントの識別を保持。WhatsApp の識別子解決を復旧し、Teams のルーティングと許可リスト設定を再読み込み後も維持します。</li>
+  <li><strong>Gateway の可用性</strong>: 診断キャプチャの処理量を削減し、プラグインのクリーンアップや異常に肥大した Telegram テーブルで Gateway がブロックされないようにしました。シャットダウン時にはチャネル起動をキャンセルし、一時的なスキーマリース競合から復帰します。</li>
+  <li><strong>復旧とアップデートの安全性</strong>: アップデート時に設定済みのプラグイン実行ファイルと環境参照を保持。macOS で Trash へのアクセスが拒否された場合のサービス復旧を修復し、アップデートの自己フェンシングと中断時のハングを回避します。</li>
+  <li><strong>ネイティブクライアントの復旧</strong>: iOS の再接続ナビゲーションの応答性、Android のチャット起動状態、Apple モデルと computer-use リソースの一時的な初期化失敗からの復帰を改善しました。</li>
+  <li><strong>インストールと状態の正確性</strong>: Ubuntu の既定パーミッション環境でもブラウザ拡張のインストールが通るよう修正。Windows の状態ディレクトリの大文字小文字、worktree 容量確保時や認証失敗記録時のデータベース所有権も正しく扱います。</li>
+  <li><strong>診断キャプチャの上限</strong>: 任意の診断コンテンツキャプチャは属性・候補ペイロードのサイズに上限を設け、巨大な画像データは省略するようになりました（プロンプトや会話履歴には影響しません）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.2">OpenClaw v2026.11.2</a></p>
+
+<h2>🐋 Orca — v1.4.254</h2>
+<p><strong>v1.4.254</strong>（<strong>2026-11-09 08:25 JST</strong> 公開）は「Git Graph」「スマホでのオンデバイス音声入力」「チャットを脱線させないサイド質問」を三本柱とする機能リリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Git Graph タブ</strong>: ローカル・リモートのブランチとタグを一覧でき、各コミットの詳細と変更ファイルまで確認できます。フォルダ型ワークスペースでも Source Control が使えるようになり、ヘッダーのブランチ名からその場でブランチの切り替え・作成が可能になりました。</li>
+  <li><strong><code>/btw</code> と <code>/fork</code></strong>: Chat UI で <code>/btw</code> を入力すると、元のチャットを走らせたまま隣のフォークでサイド質問ができます。<code>/fork</code> は最新の応答から分岐します。チャットが開いた・push した PR の CI 結果も短い行で表示されます。</li>
+  <li><strong>オンデバイス音声入力</strong>: iPhone（iOS 26 以降）と Android で端末内文字起こしが可能になり、失敗時はコンピュータ側をフォールバックに使えます。コンピュータ・スマホ・Web クライアントが同時に音声入力でき、音声エンジンは別プロセスで動くためクラッシュやハングが Orca 本体を巻き込みません。</li>
+  <li><strong>スマホの耐障害性</strong>: デスクトップに到達できない間はチャット送信をキューに積み、復帰後に順序どおり送信します。チャットの下書き、添付、未保存のファイル編集、自動化の下書きがアプリ強制終了後も保持されます。</li>
+  <li><strong>Codex アカウント履歴による入力遅延の解消</strong>: アカウント間で Codex 履歴を紐付ける処理がアプリ全体のタイピングをブロックしなくなりました。リモートターミナルも単独キーストロークを即送信し、圧縮された出力を読み取ります。</li>
+  <li><strong>ペアリングと信頼の強化</strong>: ペアリングコードは、それを使った端末が自身のサインインを保存した時点で無効になります。デスクトップと CLI のリモート接続は新しい暗号化方式を使用し、<code>orca serve</code> は明示的な許可がない限りパブリックなインターネットアドレスからの接続を拒否します。新しいリポジトリはエージェントに渡す前に一度だけ信頼確認を求めます。</li>
+  <li><strong>見た目のカスタマイズ</strong>: 独自のアプリアイコンを取り込み、テーマプラグインがループ背景動画や独自フォントを配布できるようになりました。Claude Code のターミナルテーマを Orca に合わせることもできます。</li>
+  <li><strong>エージェント対応</strong>: Antigravity のチャットがホスト側の <code>agy</code> で動作（Full access チャットを含む）。Muse はサブスクリプションのクォータをステータスバーに表示します。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.254">Orca v1.4.254</a></p>
+
+<h2>⚡ Next.js — 対象期間内の安定版リリースなし</h2>
+<p class="empty-notice"><strong>Next.js</strong>については、対象期間内の安定版リリースは確認されませんでした。最新安定版は <strong>v16.4.5</strong>（<strong>2026-11-04 03:38 JST</strong> 公開）です。canary チャネルでは <code>16.5.0-canary.45</code> が <strong>2026-11-09 08:47 JST</strong> に公開され、Turbopack の <code>new URL()</code> における <code>turbopackIgnore</code> 対応や <code>turbo-tasks-backend</code> の容量解放、AstPathTrie のメモリ表現の見直しが入りました。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h2>☁️ クラウド — AWS / Azure / GCP</h2>
+<p><strong>Google Cloud</strong> は 2026-11-08 付のリリースノートで Google SecOps SOAR 6.3.106 の段階的ロールアウトを告知しました。Case Wall のアクティビティ・コメント・タスク・アクションに個別のカスタムタグを付け、タグでタイムラインを絞り込めるようになっています。</p>
+<p><strong>AWS</strong> の What's New は対象期間内の新着が確認されず、直近の告知は 2026-11-07 07:47 JST 公開の「Kimi K3.1 Pro (Highspeed) の Amazon Bedrock 提供開始」です。<strong>Azure</strong> の公式アップデートフィードは機械取得が 403 で拒否されたため、対象期間内の更新は確認できませんでした。</p>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a> · <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a> · <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a></p>
+
+<h2>⚛️ React / 🐍 Python・Django / ☕ Spring Boot / 🟨 Hono / 🤖 Claude API SDK</h2>
+<p class="empty-notice"><strong>React</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API SDK</strong>については、対象期間内のリリース・セキュリティアドバイザリは確認されませんでした。直近の版は Hono v4.13.17（2026-11-07 13:58 JST 公開）、React 19.3.1（2026-10-15 02:06 JST 公開）、Spring Boot 4.2.0-RC2（2026-11-05 22:41 JST 公開、プレリリース）、Anthropic Python SDK v2.6.0（2026-11-06 03:58 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">React</a> · <a href="https://github.com/honojs/hono/releases">Hono</a> · <a href="https://github.com/spring-projects/spring-boot/releases">Spring Boot</a> · <a href="https://github.com/anthropics/anthropic-sdk-python/releases">anthropic-sdk-python</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
