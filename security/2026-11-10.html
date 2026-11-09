@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-10 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-10 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-09 08:00 〜 2026-11-10 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Claude Code - Edit ツールの TOCTOU 競合によりワークスペース外へファイル書き込み（CVE-2026-88968、High） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-88968（GHSA-5xjx-9qx6-jcrv、GitHub 評価 High）</td></tr>
+<tr><th>影響</th><td>npm <code>@anthropic-ai/claude-code</code> 2.1.251 未満</td></tr>
+<tr><th>修正</th><td>2.1.251（通常の自動更新を利用している場合は適用済み）</td></tr>
+<tr><th>公開</th><td>2026-11-09 22:42 UTC（JST 2026-11-10 07:42）</td></tr>
+</table>
+<ul>
+<li>Edit ツールの対象検証が「その時点の」パス名とシンボリックリンクの解決に依存しており、検証結果が実際のディレクトリ inode やファイルディスクリプタに束縛されていなかった。macOS 上では、Claude Code の Bash サンドボックス内で動くプロセスが、検証完了後にワークスペース内の親ディレクトリを<strong>シンボリックリンクへ原子的に差し替える</strong>ことで TOCTOU の窓を突き、サンドボックス外で動作する Edit 実装に、攻撃者が選んだユーザー書き込み可能ファイル（ワークスペース外）を上書きさせられた。</li>
+<li>成立には、悪意あるリポジトリや依存スクリプトなどを通じて<strong>サンドボックス内で攻撃者のコードを実行できること</strong>が必要。修正は 2.1.251 で、報告者への謝辞（Sunder Singh 氏）が付されている。</li>
+</ul>
+
+<h3>Claude Code v2.1.321 リリース - MCP OAuth のシークレット送信先混同と権限チェックの抜けを修正 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-09 19:22 UTC（JST 2026-11-10 04:22）</td></tr>
+<tr><th>区分</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.321">Claude Code v2.1.321</a></td></tr>
+</table>
+<ul>
+<li><strong>MCP OAuth のシークレット漏えいを修正</strong>: サーバーがリダイレクトを行った際、リフレッシュトークンなどのシークレットを<strong>別ホストへ送信してしまう</strong>問題を修正した。</li>
+<li><strong>サンドボックスと権限チェックの抜けを修正</strong>: 読み取り専用の Bash コマンドが<strong>権限プロンプトなしにサンドボックス外で実行</strong>されるケース、および Bash の権限チェックが書き込み先フォルダを取り違えてプロンプトを出さないケースを修正。</li>
+<li>拒否ルール（deny ルール）と保護ファイルのプロンプトが、<code>cp</code>／<code>mv</code> でディレクトリへ書き込まれるファイルに適用されていなかった問題を修正。ほか、ネットワークパス（UNC 共有・WSL フォルダ・<code>/net</code> マウント）上の <code>NotebookEdit</code>／Edit が意図しないセル・ファイルを破壊する問題も修正。</li>
+</ul>
+
+<h3>SuperTokens Core（認証基盤）- マルチテナント認可不備（9.9）と SAML／WebAuthn 検証不備 計4件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-123800（9.9）／CVE-2026-123798（8.1）／CVE-2026-123802（8.1）／CVE-2026-123803（8.1）</td></tr>
+<tr><th>影響</th><td>SuperTokens Core 6.0.0〜12.3.1 の各未修正版（CVE ごとに修正版が異なる）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-123800</strong>（9.9、Critical）: <code>Multitenancy.checkPermissionsForCreateOrUpdate</code> が<strong>親コネクション URI ドメインの更新を適切に認可しない</strong>ため、マルチテナント構成で権限のない変更が可能になる。</li>
+<li><strong>CVE-2026-123798</strong>（8.1）: SAML の署名検証で <code>SAMLSignatureProfileValidator</code> を先に適用していないため、Response／Assertion とは<strong>別の XML 要素を参照する署名</strong>を受理し得る（XML 署名ラッピング）。<strong>CVE-2026-123798／123802</strong> 系では、IdP がアサーションレベル署名を用いる場合、被害者名義の有効な IdP 署名済みアサーションを持つ攻撃者が<strong>被害者として認証</strong>できる。</li>
+<li><strong>CVE-2026-123803</strong>（8.1）: WebAuthn の検索がテナントに制約されず、<code>signIn</code> がテナント所属を検証しないため、マルチテナント配備で他テナントの資格情報に到達し得る。</li>
+</ul>
+
+<h3>Apache Axis2/Java - WSDL 取り込み経由の XXE／SSRF と無制限リソース消費など7件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-120367（7.5）／CVE-2026-120761／CVE-2026-120832／CVE-2026-123753／CVE-2026-123766／CVE-2026-123770／CVE-2026-123779</td></tr>
+<tr><th>影響</th><td>Apache Axis2/Java 2.0.1 まで（CVE-2026-123766 は 2.0.1）</td></tr>
+<tr><th>修正</th><td>2.0.2（JSON 本文は <code>jsonMaxRequestSize</code> で制限）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-120832／123753</strong>: WSDL からサービス記述を組み立てる際（<code>ServiceClient</code> など）、<code>wsdl:import</code> や <code>xsd:import</code>／<code>xsd:include</code> の絶対 URL をスキーム・ホスト制限なしに取得し SSRF が成立。加えて <strong>未認証の呼び出し元が非匿名の <code>wsa:ReplyTo</code>／<code>wsa:FaultTo</code> を指定</strong>すると、応答／フォールトの配送先として内部ホストへ接続させられる。</li>
+<li><strong>CVE-2026-120761</strong>: WSDL 取り込み解決が wsdl4j の XML パーサに委ねられ、DOCTYPE 宣言と外部エンティティが処理されるため XXE が成立。</li>
+<li><strong>CVE-2026-120367／123770</strong>: JSON メッセージビルダ（Gson／Moshi／HTTP/2）および multipart・urlencoded ビルダが<strong>本文サイズを制限せず</strong>、未認証の呼び出し元がメモリを枯渇させられる（multipart の一時ファイルも削除されない）。</li>
+<li><strong>CVE-2026-123766</strong>: OpenAPI モジュールの Swagger UI ページがリクエストの <code>Host</code> ヘッダ由来の値をエンコードせず書き出すため XSS。<strong>CVE-2026-123779</strong> は <code>exposeServiceMetadata</code> の抑止が <code>?wsdl</code> 系クエリにしか効かず、パッケージ内 <code>.wsdl</code>／<code>.xsd</code> ルートや OpenAPI／Swagger UI／MCP カタログ等からメタデータを取得できてしまう（Forced Browsing）。</li>
+</ul>
+
+<h3>Apache Airflow（Python）- XCom のデシリアライズ（8.8）ほか秘密情報マスクの不備など20件超 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-111421（8.8）／CVE-2026-111453（4.3）ほか計20件超（CVE-2026-101031／107474／111395／111452／111454／111455／113504／113508／40913／50204／68982／76185／82337／86468／86829／96285 など）</td></tr>
+<tr><th>影響</th><td>Apache Airflow 各未修正版</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-111421</strong>（8.8）: Task Execution API がタスクの書いた XCom 値を、他所で適用している予約キー検査なしに保存するため、Dag 作成者が細工した XCom を仕込むと、後で API 経由かつデシリアライズ有効で閲覧した利用者の<strong>API サーバー上で <code>airflow.*</code> 名前空間のクラスを任意引数でインスタンス化</strong>させられる（CVE-2026-59242 の修正が不完全）。</li>
+<li><strong>秘密情報マスクの回避が多数</strong>: マスク対象キー名が snake_case のみに一致するため camelCase の <code>privateKey</code> 等が漏れる（CVE-2026-111452）、入れ子構造を5階層で打ち切る（CVE-2026-113504）、監査ログ <code>Log.extra</code> に Connection／Variable のシークレットが平文で残る（CVE-2026-50204）、CLI が引数を位置でマスクするため一部のコマンド形で漏れる（CVE-2026-86468）。</li>
+<li>ほか、Import Errors API が生のスタックトレースを返す問題（CVE-2026-40913）、asset API が権限確認なしに Dag ID を返す問題（CVE-2026-111454）、非同期コネクションテストの権限判定漏れ（CVE-2026-111455）、ログアウト時のトークン失効失敗を無視する問題（CVE-2026-113508）、CeleryExecutor がコールバックの認可を検証しない問題（CVE-2026-68982）、スケジューラが XCom を完全デシリアライズする問題（CVE-2026-86829）、シークレットキャッシュのキー衝突（CVE-2026-76185）など。</li>
+</ul>
+
+<h3>Kubeflow Pipelines（Python／機械学習基盤）- 共有パイプラインの認可欠如（Critical）と SSRF など4件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-77596（Critical）／GHSA-ghgh-57qv-h687（High）／GHSA-f7vj-6669-qvv4（Medium）／GHSA-2xwh-426q-42c5（Medium）</td></tr>
+<tr><th>修正</th><td>API サーバーの修正コミット 62516d8c（2026-09-09）以降</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-77596</strong>（Critical）: マルチユーザーモードで、HTTP の multipart アップロード（<code>/apis/v2beta1/pipelines/upload</code> および <code>upload_version</code>）が<strong>名前空間が空の場合に認可を一切行わない</strong>。共有（クラスタ全体）パイプラインを任意の低権限テナントが作成でき、既存の共有パイプラインへ新バージョンを注入して<strong>他テナントが実行するコンテナイメージ・コマンド・引数を差し替え</strong>られる。</li>
+<li>あわせて、共有パイプラインに対する RBAC バイパス（任意の認証済みユーザーが削除・変更可能）、呼び出し元指定の <code>pipelineURL</code> をホスト検証なしに取得する SSRF、名前空間非依存のキャッシュキーによる<strong>テナント間の実行キャッシュ汚染</strong>が登録された。</li>
+</ul>
+
+<h3>JavaScript／Node.js - Moleculer の未認証 DoS（CVE-2026-97705）と Redpanda Connect の未認証 RCE（9.8） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-97705（High、npm <code>moleculer</code>）／CVE-2026-123270（9.8、Redpanda Connect）</td></tr>
+<tr><th>影響</th><td>moleculer 0.15.0-beta1〜0.15.2 未満および 0.14.36 未満／Redpanda Connect 4.39〜4.110</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-97705</strong>: TCP トランスポータのパケットパーサが長さフィールドを<strong>符号付き</strong><code>readInt32BE</code> で読むため、符号ビットを立てた細工パケットで負の長さとなり、<code>packet.slice()</code> が範囲外の負値開始位置を 0 に丸めてバッファがそのまま返る。<code>while (packet.length &gt; 0)</code> が終了せず<strong>Node.js のイベントループが無限にブロック</strong>される。ハンドシェイク前に到達可能で、約10バイトのパケット1つでノードが応答不能になる。修正は 0.15.2／0.14.36。</li>
+<li><strong>CVE-2026-123270</strong>（9.8、Critical）: streams モードで管理 HTTP API が <code>0.0.0.0:4195</code> に公開される一方、<strong>認証が既定で無効</strong>でストリーム CRUD ルートを保護する認証ゲートがない。TCP/4195 に到達できる未認証の攻撃者がストリームを POST でき、遠隔コード実行に至る。</li>
+</ul>
+
+<h3>NEC WebSAM WinShare（Windows・JVN#89009783）- 未認証で SYSTEM 権限の任意コマンド実行（各 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-113363（9.3）／CVE-2026-113364（9.3）／CVE-2026-113362（8.5）</td></tr>
+<tr><th>影響</th><td>Windows 版 Ver 7.5.0 以前（Ver 7.3.3 を除く）、Ver 7.6.0、Ver 7.7.0〜7.7.2</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-113363</strong>（9.3）: ネットワーク通信処理の入力検証不備により、WinShare が動作するコンピュータへ細工したネットワークパケットを送るだけで、<strong>遠隔の未認証攻撃者が SYSTEM 権限で任意のコマンドを実行</strong>できる。<strong>CVE-2026-113364</strong>（9.3）はデータ受信処理のバッファオーバーフローで、プロトコルヘッダのデータサイズ値が不正なパケットにより同様に SYSTEM 権限で任意コードを実行される。</li>
+<li><strong>CVE-2026-113362</strong>（8.5）はインストールフォルダのアクセス制御不備で、ローカルの低権限攻撃者が SYSTEM 権限プロセスに読み込まれる細工した DLL を設置し SYSTEM 権限で任意コードを実行できる（JVN 公開 2026-11-09）。</li>
+</ul>
+
+<h3>WordPress プラグイン一括 - 未認証での任意 PHP 実行（10.0）や管理者資格情報の露出（9.8） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-115252（10.0）／CVE-2026-115213（9.8）／CVE-2026-115237（9.8）／CVE-2026-123751（9.8）ほか</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-115252</strong>（10.0、Confection WordPress Cable 0.4.0〜0.4.7）: 設定保存時に権限・nonce 検査がなく、保存値の一つを<strong>無加工で単独の PHP ファイルへ書き出して配信</strong>するため、未認証のユーザーがサーバー上で任意の PHP コードを実行できる。</li>
+<li><strong>CVE-2026-115213</strong>（9.8、EASY-JS-WPAPI Client HANDLE for the WordPress REST-API 2.0 以下）: 保存した管理者資格情報を未認証ユーザーへ開示し、認証検証も正しく行わないため、<strong>管理者権限を丸ごと取得</strong>される。</li>
+<li><strong>CVE-2026-115237</strong>（9.8、Grand Job 1.2.1 以下）: パスワード更新前にリセット用コードを正しく検証せず、未認証で管理者を含む任意アカウントのパスワードを再設定されサイトを掌握される。<strong>CVE-2026-123751</strong>（9.8、WP Duplicate 1.1.11 以下）は認証値検証とアップロードファイル検証の不備で未認証の任意ファイル書き込み・コード実行。</li>
+<li>ほか、二要素認証の回避（CVE-2026-118201／118202、7.5、Limit Login Attempts Security 3.4.1 未満／CVE-2026-123091、7.5、Vigilant 2.11.0 未満）、マルチサイトでの任意オプション上書きと任意権限付与（CVE-2026-121874／121875、各 7.2、Post Duplicator 3.0.18 未満）、無効化したリフレッシュトークンの不失効（CVE-2026-106466、7.5、JWT Auth 3.0.2 以下）、WordPress 用 MCP サーバーの権限昇格（CVE-2026-121576、8.8）、wp-w3all-phpBB 連携の SQL インジェクション（CVE-2026-121769、8.5）。</li>
+</ul>
+
+<h3>rConfig（Laravel 製ネットワーク構成管理）- 未認証のデシリアライズによる任意コード実行（CVE-2026-124079、9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-124079</td></tr>
+<tr><th>影響</th><td>rConfig Core 8.0.0〜8.2.19 未満、rConfig Pro 8.4.1 未満</td></tr>
+</table>
+<ul>
+<li>認証なしで動作する Redis バックエンドの Laravel Horizon キューへ細工したシリアライズ済みジョブを投入でき、Laravel の <code>CallQueuedHandler</code> がクラス制限なしにアンシリアライズするため、<strong>ネットワーク越しの未認証攻撃者が任意コードを実行</strong>できる。</li>
+</ul>
+
+<h3>米 CISA KEV - 2026-11-09 に4件を追加（対応期限 2026-11-12） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>KEV</th><td>CVE-2026-102895（GPUStack）／CVE-2026-116779（FreeSWITCH）／CVE-2026-123218（IBM Aspera Faspex）／CVE-2026-123158（OpenSSH）</td></tr>
+<tr><th>カタログ</th><td>2026.11.09 版（件数 1,773、2026-11-09 19:54 UTC 公開）</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-102895</strong>（9.8、GPUStack 2.2.0 未満）: <code>get_current_user</code> がループバック発の要求を組み込み管理者とみなす挙動（既定）を悪用し、同一ホストのリバースプロキシ経由や <code>X-GPUStack-Real-IP</code> の細工で<strong>未認証の管理者アクセス</strong>を得られる。管理者 API キーの作成、ワーカーやクラウドプロバイダのシークレット漏えい、推論バックエンド経由のコード実行に至る。</li>
+<li><strong>CVE-2026-116779</strong>（9.8、FreeSWITCH 1.11.3 未満）: 受信 SIP MESSAGE の To ユーザー部を「+」で分割しチャットプロトコルセレクタとして扱うため、<code>api</code> を選ぶと <code>switch_api_execute()</code> に到達し、<strong>OS コマンド実行を含む FreeSWITCH API コマンド</strong>をデーモン権限で実行される。既定の internal／external プロファイルで受信チャットが有効。</li>
+<li><strong>CVE-2026-123218</strong>（9.8、IBM Aspera Faspex 5.0.0〜5.0.19）: 認可済みユーザーが特定のメッセージを作成してユーザー認可を迂回し、<strong>完全な管理者権限を取得</strong>できる。CVE-2026-123158（OpenSSH、musl libc・PAM なし構成）は既報。</li>
+</ul>
+
+<h3>その他（スタック関連の動向と補足）</h3>
+<ul>
+<li><strong>OpenClaw</strong>: 対象期間内の新規リリースはなし。最新は 2026.11.2（2026-11-08 19:31 UTC＝JST 11-09 04:31 公開、診断ログからの機微情報除外とトラスト境界の強制）で、前号に掲載済み。</li>
+<li><strong>Hermes Agent</strong>: 対象期間内に新規の安定版リリースおよびセキュリティ修正の告知はなし。最新安定版は v0.23.0（2026-11-05 21:32 UTC）。canary ビルド <code>v0.23.0+canary.20261109T065146Z</code>（2026-11-09 06:51 UTC）と v0.23.1 系のリリース候補が公開されているが、リリースノートにセキュリティ関連の記載はない。</li>
+<li><strong>FFmpeg</strong>: 9.0.2 まで（一部は 8.1.3 未満）に<strong>ヒープバッファオーバーフロー・整数オーバーフロー・解放後使用・メモリ漏えいなど約100件</strong>が一括登録された（CVE-2026-125203／125209／125229／125233／125244／125250／125259／125262／125267 ほか、多くが 8.5）。修正は 8.1.3／9.0.2 以降。</li>
+<li><strong>Apache Commons Codec</strong>: <code>Blake3</code> の <code>doFinalize</code> 出力が以前に確定したバイト列に依存する（逐次 finalize で結果が変わる）問題と、<code>GitIdentifiers</code> がツリーエントリ名の NUL バイトを拒否しないため<strong>エントリ名の後ろにデータを隠せる</strong>問題が公開された（GHSA-rv28-228v-c565／GHSA-26mf-gqw6-894w）。</li>
+<li><strong>OmniAuth</strong>（Ruby）2.2.0 未満に Host ヘッダインジェクション（CVE-2026-63183）。受信 Host ヘッダを検証しない Web フレームワークと組み合わせると任意ホストへのリダイレクトに悪用され得る。</li>
+<li><strong>Firefox for iOS</strong>: Reader View コンポーネントの特権昇格2件（CVE-2026-121842／121843、各 8.8、160.0 で修正）。<strong>WildFly Core</strong> は deployment-operation 系ハンドラ（<code>upload-deployment-url</code> 等）の機密性分類漏れで情報が露出し得る（CVE-2026-12977、8.8）。<strong>Tasmota</strong> 16.0.0 までは <code>SendReceiveDeviceGroupMessage()</code> のヒープ境界外書き込みで未認証の遠隔攻撃が成立（CVE-2026-119756、9.3）。</li>
+<li><strong>JVN の新規公開（2026-11-09）</strong>: JVN#89009783（WebSAM WinShare、上記）、JVN#76179675（SS1／SS1 クラウドおよび ODM 製品 rocoeyes）、JVN#56286875（Effekseer 1.80.7 以下の入力データ検証不備）。うち SS1／rocoeyes と Effekseer は既報。<strong>SHIRASAGI</strong>（Ruby on Rails 製 CMS、JVN#55454512）の複数の脆弱性も 11-09 に国内で報じられた。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js／React／Hono／Django／SpringBoot および AWS／Azure／GCP の各マネージドサービスについては、本対象期間に直接関連する新規セキュリティ情報は確認されませんでした（CVE-2026-120367 など Java 系フレームワーク周辺の情報を除く）。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本国内 - 大手・生活インフラ・金融の被害公表が相次ぐ（2026-11-09 に一斉報道）</h3>
+<table class="cve-table">
+<tr><th>調査範囲</th><td>Security NEXT（2026-11-09 公開分）、ScanNetSecurity（インシデント・事故 2026.11.9 分）、JVN／JPCERT/CC</td></tr>
+<tr><th>結論</th><td>対象期間内に国内の新規公表・続報が多数確認された（うち製薬・生命保険・金融・電力・行政は優先度高）</td></tr>
+</table>
+<ul>
+<li><strong>ロート製薬</strong>: 通信販売の顧客対応に用いる<strong>電話システムのアカウント情報を第三者に使用され</strong>、顧客管理システムから<strong>279万7,545人分</strong>の個人情報（氏名・住所・電話番号など）が流出。一部の顧客については<strong>通話音声データにクレジットカード情報が含まれていた</strong>。2026年9月に検知し、9月14日に警察へ被害申告、9月15日に個人情報保護委員会へ報告、詳細調査の結果を 2026-11-09 に公表。</li>
+<li><strong>ソニー生命保険</strong>: 契約者専用サイト「お客さま WEB サービス」などのシステムへの不正アクセスにより、保険代理店として取り扱った<strong>メディケア生命保険の契約者・被保険者 約38.5万件</strong>（氏名・生年月日・性別・住所・電話番号・証券番号・契約内容）が漏えい。10月28日から「お客さま WEB サービス」「ソニー生命アプリ」「ダイレクト請求サービス」等を緊急メンテナンスで停止している。</li>
+<li><strong>ネットマイル（ウィルズ）</strong>: ポイント交換サービス「ネットマイル」のシステム環境が第三者にアクセスされ、退会者を含む<strong>最大約549万人分</strong>の会員情報（氏名・メールアドレス・特典交換情報など）が流出した可能性。<strong>「ネットマイル」「すぐたま」を停止</strong>し調査中。</li>
+<li><strong>花キューピット</strong>: 「インターネット花キューピット」「ビジネス花キューピット」への不正アクセスで、会員<strong>423万8,242件</strong>のユーザー ID・パスワード（ハッシュ値のもの）・メールアドレス等が漏えい。10月14〜15日に管理システムへ不正アクセス、10月19日に漏えいを確認し、10月28日から順次連絡中。攻撃経路はすべて遮断し、アクセス制御と監視を強化した。</li>
+<li><strong>ソニー銀行／Securitize Japan</strong>: デジタル証券関連の外部委託先 Securitize Japan のシステムへの不正アクセスにより、ソニー銀行の顧客情報（<strong>氏名 617名</strong>、氏名・住所・生年月日・口座番号 <strong>4名</strong>）が漏えい。10月29日に異常を検知し同日中に外部からの不正アクセスと特定した。</li>
+<li><strong>JNSA（日本ネットワークセキュリティ協会）</strong>: 情報セキュリティ理解度チェックサービスが<strong>2026年11月4日に侵害</strong>されたことを確認（10月30日夜ごろからアクセスされた可能性）。利用者の<strong>最大1万5,128件</strong>の個人情報（管理者氏名・メールアドレス・組織名・所在地・従業員数・業種・ID・ハッシュ化パスワード）が流出した可能性。11月6日に個人情報保護委員会へ報告。</li>
+<li><strong>消防庁「安否情報システム」</strong>: 武力攻撃事態等における安否情報収集・提供システムへの不正アクセスを確認し、<strong>影響範囲調査のためサービスを停止</strong>（発表 11月5日）。</li>
+<li><strong>デニーズジャパン</strong>: デニーズアプリへの不正アクセス。旧アプリから新アプリへの<strong>移行処理で第三者が認証情報を不正に作成</strong>し、一部顧客のアカウントへアクセス可能な状態となっていた。会員コード・メールアドレス・生年月日・性別・住所（都道府県のみ）等の取得処理履歴を確認しているが、第三者取得の有無と対象人数は調査中。</li>
+<li><strong>クラブネッツ「CNポイント」</strong>: サテライトシステムへの不正アクセスにより、<strong>CN 会員 ID・氏名 16,936件</strong>、および<strong>会員 ID・氏名・メール・電話・住所 2,857件</strong>が流出した可能性。CN エクスチェンジ／CN コンテンツ／CN モニターを10月29日から順次停止。</li>
+<li><strong>セレス「ポイントインカム」／マーキュリー「CoinTrade」</strong>: 開発環境への不正アクセスにより、テスト用に一時保管していた<strong>約11,100名分</strong>の会員情報（2025年11月15日時点のバックアップ。ニックネーム・メール・暗号化済みパスワード・秘密の質問・生年月日・保有ポイント。一部に電話番号16名・口座名義1名）と端末 ID 4件が閲覧された可能性。委託先の一部サービス停止に伴い案内メール配信を一時停止している。</li>
+<li><strong>経済産業省 電力・ガス取引監視等委員会ウェブサイト</strong>: 10月27日未明に不正アクセスが行われたことを10月28日に確認し、当該サイトの運用を<strong>停止</strong>。復旧までの間、小売電気事業者等からの電力取引報等は「デントリネット」ではなくメールで受け付ける。情報流出の有無は確認中。</li>
+<li><strong>伊万里市</strong>: 中学校で生徒の個人情報を含む学習記録ファイルを紛失（Security NEXT 2026-11-09）。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
