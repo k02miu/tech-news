@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-10 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-10 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.321</h2>
+<p><strong>v2.1.321</strong>（<strong>2026-11-10 05:24 JST</strong> 公開）は、新しい既定モデル <strong>Claude Fable 5.2</strong> の投入が最大の話題です。あわせて <code>remote-control</code> の設定ファイル適用、パーミッション／サンドボックス周りの細かな挙動調整、Gateway とマーケットプレイスの管理強化が含まれています。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Claude Fable 5.2 が既定の Fable モデルに</strong>: モデル ID は <code>claude-fable-5-2</code>。コンテキストは 100 万トークン、料金は入力 $8／出力 $40 per Mtok、キャッシュ読み取りは $0.20 per Mtok です。</li>
+  <li><strong><code>claude remote-control</code> の <code>--settings &lt;file&gt;</code></strong>: 起動するすべてのセッションに設定ファイルを適用できます。ファイルが変更された場合は、<code>claude remote-control</code> を再起動するまで新しいセッションは開始されません。</li>
+  <li><strong>[VSCode] 認証情報の二重設定を警告</strong>: 認証トークンと API キーが同時に設定されているとき、プロンプトボックスの上に警告を表示します（ターミナル側の起動時警告と同内容）。</li>
+</ul>
+
+<h3>♻️ 主な変更</h3>
+<ul>
+  <li><strong>Fable 5.1 の選択が <code>fable</code> へ移行</strong>: 保存済みのモデル選択が新しい既定へ移ります（Pro／Max は即時、Team／Enterprise は組織が許可した時点）。<code>/model claude-fable-5-1</code> で戻せます。</li>
+  <li><strong>パーミッションとモッド</strong>: Claude が書き込むモッドは auto／bypass モードで確認なしに有効化され、<code>dontAsk</code> モードでは読み込まれません。モッド自身のツール呼び出し（<code>$.tool.call</code> / <code>$.mcp.call</code>）は許可プロンプトを出さず、deny ルールと組織ポリシーは引き続き適用されます。</li>
+  <li><strong>スキル読み込みの範囲</strong>: <code>~/.claude/plugins</code> 配下の <code>.claude/skills</code> は、そこで作業しているときには読み込まれなくなりました。</li>
+  <li><strong>Remote Control のフォルダ固定</strong>: セッションは開始時のフォルダを保持し、接続クライアントから別フォルダへ移動できなくなりました。</li>
+  <li><strong>Gateway の上流設定</strong>: Bedrock／Vertex／Foundry の上流は Gateway 環境の <code>ANTHROPIC_*_BASE_URL</code> を無視するようになり、別エンドポイントを使う場合は上流の <code>base_url</code> を設定します。<code>policy_mode: layered</code> では管理対象 MCP サーバーが該当ポリシーすべてで加算されます。</li>
+  <li><strong>マーケットプレイス管理</strong>: <code>extraKnownMarketplaces</code> で宣言した名前は別ソースから追加できず、他所からのエントリは非表示になります。宣言元のマーケットプレイスが列挙するプラグインはそこから再インストールされます。</li>
+  <li><strong>コンテキスト節約</strong>: 1,000 文字を超えるバックグラウンドコマンド通知と TaskStop の結果は、開始部と終了部のみが Claude に渡されます。</li>
+  <li><strong>その他</strong>: <code>/fast</code>・<code>/config</code>・<code>/model</code> の表示が現在のモデル名を使う形に統一、<code>cp</code>／<code>mv</code> をパス付き（<code>/bin/cp</code> 等）で書いた場合も同じパス検査を適用、Windows の実行ファイル探索で相対パス・UNC パスを除外、ヘッドレスセッションは <code>.claude/skills</code> のモッド変更を再読み込み（<code>CLAUDE_CODE_PLUGIN_DIR_WATCH=0</code> で無効化）など。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-321">Claude Code changelog — 2.1.321</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p class="empty-notice"><strong>Hermes Agent</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v0.23.0</strong>（<strong>2026-11-06 06:32 JST</strong> 公開、「The Hearth Release」）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">Hermes Agent Releases</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし</h2>
+<p class="empty-notice"><strong>OpenClaw</strong>については、対象期間内の新規リリースは確認されませんでした。最新版は <strong>v2026.11.2</strong>（<strong>2026-11-09 04:31 JST</strong> 公開）です。プレリリースでは <strong>v2026.11.5-beta.1</strong>（2026-11-04 13:51 JST 公開）が最新です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.255</h2>
+<p><strong>v1.4.255</strong>（<strong>2026-11-09 21:24 JST</strong> 公開）は、セッション履歴の検索をワーカースレッドへ移して大規模履歴でも UI を止めないようにした性能改善と、スマホ側で全デスクトップのエージェントを一覧できる「Agents タブ」が中心です。前日公開の v1.4.254（Git Graph、チャットのフォーク、オンデバイス音声入力）に続く短い間隔でのリリースとなります。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>セッション履歴の検索が高速化</strong>: 検索処理がアプリのメインスレッドから外れ、入力中も結果が消えません。再起動直後は最後の一覧を即座に表示したまま再スキャンし、SSH・リモートサーバー上のホストでも検索できます。</li>
+  <li><strong>Agents タブ（スマホ）</strong>: 接続中の各デスクトップのエージェントを 1 か所に一覧表示し、既読・クリアが可能。アクティビティ状態はデスクトップ側から供給されます。</li>
+  <li><strong>チャット切り替えの改善</strong>: Codex アカウントを切り替えると開いている Codex チャットも選択先へ移動。フォークは履歴を保持し、リッチテキスト貼り付けでリンクが残り、再起動後もキュー済みメッセージが再開します。</li>
+  <li><strong>設定 UI の整理</strong>: エージェント速度は 1 ボタンに統一、モデル設定は現在の選択がハイライトされた状態で開き、「codex」検索時は他エージェントの Codex 名モデルより Codex エージェント自体が優先されます（Enter 押下時も同様）。</li>
+  <li><strong>Git Graph の操作拡張</strong>: チェックアウト・チェリーピック・リバートを Git Graph から実行可能。チャット入力欄下のブランチ名からブランチピッカーを直接開けます。</li>
+  <li><strong>その他の改善</strong>: 親ワークスペース削除時に子ワークスペースを保持するオプション、空フォルダのワークスペースからリポジトリごとに worktree を作成、リポジトリ名が既存と衝突する場合は別フォルダへ clone、リモートブラウザタブの favicon 表示、PDF プレビューの幅フィット、ターミナルペインのサイズを他ウィンドウが保持している場合の説明と取り消し操作など。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>日本語 IME を半角／全角キーでオフにした直後、最初の Enter が飲み込まれる問題を修正。</li>
+  <li>GitHub のレート制限キャッシュ失効後、PR ページと GitHub リクエストが無期限にハングする問題を修正。</li>
+  <li>チャット再マウント後にキュー済み送信が二重送信されるモバイルの問題、<code>/clear</code> 送信直後に旧トランスクリプトが残る問題を修正。</li>
+  <li>サイドバーの区切り線がワークスペース一覧をスクロールさせてしまう問題、長い設定一覧で検索可能なピッカーを使うよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.255">Orca v1.4.255</a></p>
+
+<h2>⚡ Next.js — v16.4.6</h2>
+<p><strong>v16.4.6</strong>（<strong>2026-11-10 05:27 JST</strong> 公開）は LTS 系へのバックポートのみのパッチリリースで、canary の全変更は含みません。</p>
+<ul>
+  <li><strong>Tailwind の固定</strong>: <code>create-next-app</code> とテストで Tailwind を 4.3.3 にピン留め。</li>
+  <li><strong>Route Handler の圧縮</strong>: 未圧縮の場合、Route Handler のレスポンスを自動圧縮。</li>
+  <li><strong>Turbopack GC</strong>: 開発時の Turbopack ガベージコレクションに関する修正。</li>
+</ul>
+<p>canary では <code>v16.5.0-canary.46</code> が <strong>2026-11-10 08:50 JST</strong> に公開されています。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.4.6">Next.js v16.4.6</a></p>
+
+<h2>☁️ クラウド — AWS / Azure / GCP</h2>
+<p class="empty-notice"><strong>AWS</strong>、<strong>Azure</strong>、<strong>Google Cloud</strong>については、対象期間内の新着アップデートを一次ソースから確認できませんでした。各社の What's New／リリースノートは後刻に一括反映されることが多く、本日 09:00 JST 時点では該当エントリを取得できていません。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a> · <a href="https://azure.microsoft.com/en-us/updates/">Azure Updates</a> · <a href="https://docs.cloud.google.com/release-notes">Google Cloud リリースノート</a></p>
+
+<h2>🤖 Claude API SDK — TypeScript v1.7.0</h2>
+<p><strong>sdk-v1.7.0</strong>（<strong>2026-11-10 03:52 JST</strong> 公開）で、新モデル <code>claude-fable-5-2</code> と <code>claude-mythos-5-2</code> が API 定義に追加されました。</p>
+<ul>
+  <li><strong>API 追加</strong>: 組織 webhook で <code>user_profile.program_status_updated</code> を受信可能に。使用量・コストレポートに親組織でのフィルタリングとグルーピングを追加。Admin API の書き込み系に <code>sandbox_egress_restricted</code> エラーを追加。</li>
+  <li><strong>バグ修正</strong>: 失敗レスポンスの本文をデバッグログに含めるよう修正、構造化出力スキーマで <code>const</code> と <code>enum</code> を保持するよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v1.7.0">anthropic-sdk-typescript sdk-v1.7.0</a></p>
+
+<h2>⚛️ React / 🐍 Python・Django / ☕ Spring Boot / 🟨 Hono</h2>
+<p class="empty-notice"><strong>React</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>については、対象期間内のリリース・セキュリティアドバイザリは確認されませんでした。直近の版は React 19.3.1（2026-10-15 02:06 JST 公開）、Hono v4.13.17（2026-11-07 13:58 JST 公開）、Spring Boot 4.2.0-RC2（2026-11-05 22:41 JST 公開、プレリリース）です。</p>
+<p>🔗 <a href="https://github.com/facebook/react/releases">React</a> · <a href="https://github.com/honojs/hono/releases">Hono</a> · <a href="https://github.com/spring-projects/spring-boot/releases">Spring Boot</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
