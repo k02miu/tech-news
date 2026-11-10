@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-11 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-11 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-10 08:00 〜 2026-11-11 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>OpenClaw 2026.11.3 — 認証情報の分離・秘匿化とトラスト境界の強化</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>OpenClaw 2026.11.3</td></tr>
+<tr><th>種別</th><td>セキュリティ強化リリース（安定版）</td></tr>
+<tr><th>公開</th><td>2026-11-10 18:53 JST（commit <code>847611d</code>、コミッター署名検証済み）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.3" target="_blank" rel="noopener noreferrer">openclaw/openclaw v2026.11.3</a></td></tr>
+</table>
+<ul>
+  <li>再利用・キャッシュされたプラグイン結果を接続ごとの認証情報にスコープし、他プラグインの転送フックをプロバイダのオリジンへ固定（#178444、#177974、#189423）。</li>
+  <li>検索・メモリの認証情報（Firecrawl の検索／スクレイプキー、埋め込み資格情報）をスコープ済みエンドポイントと送信先に紐付け（#190706、#184966）。</li>
+  <li>設定読み取り時のインライン環境資格情報、および Exa エラーに反射される検索資格情報の伏せ字化（#190618、#178745）。</li>
+  <li>管理対象の Signal デーモンや同梱ランゲージサーバが無関係な Gateway シークレットを継承しないよう修正（#179198、#179415）。</li>
+  <li>受信した Twitch IRC の内容をパーサエラーログに残さない、複数の Tlon 承認が保留中の場合は明示的なリクエストIDを要求（#174552、#186243）。</li>
+  <li>プライベートなサブエージェントの完了結果をストリーム配信の返信から除外（#188490）。</li>
+  <li>ワークスペース転送証明書の検証を送信前に実施し、空のフィンガープリント指定時も保存済みノード証明書ピンを保持（#125646、#190002）。</li>
+</ul>
+
+<h3>Hermes Agent v0.23.1 — 安定版パッチ（プラグインカタログ上限を16MiBへ）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Hermes Agent v0.23.1</td></tr>
+<tr><th>種別</th><td>パッチリリース（セキュリティ告知ではない）</td></tr>
+<tr><th>公開</th><td>2026-11-10 10:42 JST（commit <code>3b42157</code>、署名検証済み）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.1" target="_blank" rel="noopener noreferrer">NousResearch/hermes-agent v0.23.1</a></td></tr>
+</table>
+<ul>
+  <li>v0.23.0 以降の約618 PR（非マージコミット2,578件、変更ファイル2,781件）を安定版へ集約したパッチリリース。</li>
+  <li>プラグインカタログの公開 <code>plugin-catalog.json</code> がクライアントの受け入れ上限2MiBを超えていたため、インストールが同梱カタログへ黙ってフォールバックし、新規追加プラグインの検出・最新ピンの適用・<code>removed</code> エントリの反映に失敗していた問題を修正し、上限を16MiBへ引き上げ（#151860）。</li>
+  <li>v0.23.0 以前は更新するまでフォールバックが継続。CLI は <code>hermes update</code>、Docker は <code>nousresearch/hermes-agent:stable</code>。</li>
+</ul>
+
+<h3>Claude Code v2.1.322 — 本期間の新規リリースは機能追加のみ（直近のセキュリティ修正は v2.1.321）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Claude Code v2.1.322／v2.1.321</td></tr>
+<tr><th>公開</th><td>v2.1.322: 2026-11-10 11:29 JST ／ v2.1.321: 2026-11-10 04:22 JST</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">anthropics/claude-code releases</a></td></tr>
+</table>
+<ul>
+  <li>本対象期間（11-10 08:00以降）に公開された v2.1.322 は、Vertex の global/us/eu リージョンでの高速モード追加のみで、セキュリティ修正は含みません。</li>
+  <li>直近のセキュリティ修正は v2.1.321（前号掲載）: MCP OAuth のリフレッシュトークン等他ホスト送信、読取専用 Bash のサンドボックス外実行、Bash 権限判定のフォルダ取違え、<code>cp</code>／<code>mv</code> の書込先への deny ルール未適用を修正。未更新環境は適用を推奨します。</li>
+</ul>
+
+<h3>Roundcube Webmail 1.7.6／1.6.21 — 17件の脆弱性を修正、更新を強く推奨</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Roundcube Webmail 1.7系 / 1.6系（LTS）</td></tr>
+<tr><th>深刻度</th><td>複数（オープンリダイレクト、コマンドインジェクション、SSRF、CSRF、DoS 等）</td></tr>
+<tr><th>公開</th><td>2026-11-09（修正版 1.7.6／1.6.21）</td></tr>
+<tr><th>出典</th><td><a href="https://roundcube.net/news/2026/11/09/security-updates-1.6.21-and-1.7.6" target="_blank" rel="noopener noreferrer">Roundcube Security updates 1.6.21 and 1.7.6</a></td></tr>
+</table>
+<ul>
+  <li>添付ファイル取得時の IMAP エラー回復処理を経由したオープンリダイレクト。</li>
+  <li>メッセージキャッシュ有効時に <code>_uid</code> パラメータへ改行（CRLF）を混入させる IMAP コマンドインジェクション。</li>
+  <li>CSS プロキシ／SSRF 対策のバイパス（<code>nip.io</code>／<code>sslip.io</code> の不完全な判定、6to4 <code>2002::/16</code>）。</li>
+  <li>Sieve のスクリプトインジェクション（ルール演算子、<code>set</code>／<code>include</code> 修飾子）、ManageSieve で GET を経由した破壊的操作。</li>
+  <li>file-only POST および mail purge/expunge コマンドに対する CSRF 検証バイパス。</li>
+  <li>画像種別変換時に安全でない添付内容を ImageMagick へ渡す問題、<code>rcube_session::unserialize()</code> の負の長さトークンによる CPU 無限ループ／DoS。</li>
+  <li>Received ヘッダへ信頼できるホスト名と転送元IPのみを含めるよう修正。1.6系は4年前のブランチで、1.7系への移行が推奨されています。</li>
+</ul>
+
+<h3>Airbyte 2.2.0未満 — Connector Builder／ManifestServer 内で任意コード実行（JVN#12040144・緊急、悪用確認済み）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Airbyte 2.2.0 より前のバージョン</td></tr>
+<tr><th>CVE</th><td>なし（CWE-470 安全でないリフレクション／GHSA-g35w-6r6v-h4r7）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> CVSS4.0 8.7 ／ CVSS3.0 8.8</td></tr>
+<tr><th>公開</th><td>2026-11-10（JVN 最終更新）／初期公開 2026-11-04</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/jp/JVN12040144/index.html" target="_blank" rel="noopener noreferrer">JVN#12040144</a></td></tr>
+</table>
+<ul>
+  <li>不適切なクラスロードにより想定外のコンポーネントを読み込めるため、Connector Builder または ManifestServer コンテナ内で Airbyte ユーザとして任意のコードが実行される可能性があります。</li>
+  <li>本脆弱性の悪用が既に確認されています。対策は Airbyte 2.2.0 以降へのアップデート。</li>
+  <li>報告者: 株式会社ZOZO 兵藤壮泰氏（情報セキュリティ早期警戒パートナーシップ、JPCERT/CC が調整）。</li>
+</ul>
+
+<h3>Plex Media Server「Plex2Shell」— 未更新サーバへの認証なしRCE攻撃が拡大</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Plex Media Server（NASアドオンとしても広く利用）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-96652／CVE-2026-96654／CVE-2026-96655／CVE-2026-96656</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CISA KEV 登録（2026-10-20）・実攻撃を観測</td></tr>
+<tr><th>公開</th><td>Security NEXT 2026/11/10 掲載</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192536" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/10）</a></td></tr>
+</table>
+<ul>
+  <li>2026年7月のアップデートで上記4件を修正。9月にセキュリティ上の重要な修正を行ったことを明らかにしていました。</li>
+  <li>サーバサイドリクエストフォージェリ（SSRF）やトークンを取得できるURLの処理不備を連鎖させ、不正なファイルを書き込む「Plex2Shell」として知られています。</li>
+  <li>10月16日に実証コードが公開されて以降、攻撃が観測。Plex は10月19日に未更新サーバへの攻撃拡大を注意喚起、CISA は10月20日に4件を KEV へ登録しました。</li>
+  <li>侵害されたサーバでは暗号資産マイニングソフトや中継プロキシなど、意図しないソフトウェアの導入被害を確認。QNAP は対処FAQを公開しています。</li>
+</ul>
+
+<h3>PrestaShop — Performance Debug モードの認証済み PHP コードインジェクション</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>PrestaShop</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124916</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span> CVSSv3.1 5.4（認証済み）</td></tr>
+<tr><th>公開</th><td>2026-11-10（JVNVU#98836795 / CERT/CC VU#385711）</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU98836795/index.html" target="_blank" rel="noopener noreferrer">JVNVU#98836795</a></td></tr>
+</table>
+<ul>
+  <li>バックオフィスの Performance debug 設定において PHP コードインジェクションが成立します。対象はバックオフィス権限を有するユーザーです。</li>
+  <li>対策は CERT/CC アドバイザリ（VU#385711）を参照し、該当モジュールを無効化／更新すること。</li>
+</ul>
+
+<h3>FrodoBots EarthRover Mini+ — ハードコード認証情報と MQTT 未認証 RCE</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>FrodoBots EarthRover Mini+ ファームウェア 6.2.4_6.2.5_0.614.0</td></tr>
+<tr><th>CVE</th><td>CVE-2026-121685／121686／121687／121688／121689／121690</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 未認証RCE・フリート全体のハードコード認証情報</td></tr>
+<tr><th>公開</th><td>2026-11-10（JVNVU#96830794 / CERT/CC VU#188754）</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU96830794/index.html" target="_blank" rel="noopener noreferrer">JVNVU#96830794</a></td></tr>
+</table>
+<ul>
+  <li>MQTT を経由した未認証のリモートコード実行、認証なしで露出する複数のローカルインターフェース、フリート全体に共通のハードコード認証情報。</li>
+  <li>STM32 モーターコントローラーへの安全でないファームウェア更新機構、Wi-Fi PSK など資格情報の露出、全プロセスの不要な root 権限実行。</li>
+</ul>
+
+<h3>Mongoose（Node.js / MongoDB ODM）— countDocuments() の汚染ほか3件</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Mongoose（npm）6.13.11以前／7.8.12以前／8.24.3以前／9.9.2以前 ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-125120 ／ 125117 ／ 125119</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.8 ／ <span class="badge-high">High</span> 8.2 ／ <span class="badge-high">High</span> 7.5</td></tr>
+<tr><th>公開</th><td>2026-11-10 08:17 JST</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-125120" target="_blank" rel="noopener noreferrer">NVD CVE-2026-125120</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-125120（9.8）: <code>countDocuments()</code> が入力検証を欠き、攻撃者が制御したクエリで想定外の操作に至る恐れ。6.13.11／7.8.12／8.24.3／9.9.2 で修正。</li>
+  <li>CVE-2026-125117（8.2）: 継承プロパティへ降下するため NoSQL インジェクションが成立。6.13.12／7.8.13／8.24.7／9.11.4 で修正。</li>
+  <li>CVE-2026-125119（7.5）: 接続設定が混入する問題。同一バージョンで修正。</li>
+</ul>
+
+<h3>Google Chrome 157.0.8103.50／.51 — XML 処理の Use After Free が実悪用（ゼロデイ）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Google Chrome（Windows／macOS／Linux）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-125350（ほか8件）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 実悪用確認済みゼロデイ</td></tr>
+<tr><th>公開</th><td>2026-11-10 掲載（Chrome 157.0.8103.50／.51）</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192553" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/10）</a></td></tr>
+</table>
+<ul>
+  <li>9件の脆弱性を修正。CVE-2026-125350（High）は XML の処理における Use After Free で、既に悪用が確認されているゼロデイです。</li>
+  <li>ほか High 7件（V8 の型の取り違え、XML 処理の Use After Free、GPU の域外メモリ書き込み）、Medium 2件。順次展開のため更新を確認してください。</li>
+</ul>
+
+<h3>日立製作所 — HiRDB／HA Monitor／Hitachi Dynamic Link Manager</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>HiRDB ／ HA Monitor 01-83-01未満 ／ HDLM</td></tr>
+<tr><th>CVE</th><td>CVE-2026-115646（9.8）／112125（7.3）／86578・86579・91754〜91764・92863・92864 ほか14件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.8（HiRDB） ／ <span class="badge-high">High</span> 7.0〜8.2（HDLM）</td></tr>
+<tr><th>公開</th><td>2026-11-10 14:17〜14:18 JST（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://www.hitachi.com/products/it/software/security/info/vuls/hitachi-sec-2026-164/index.html" target="_blank" rel="noopener noreferrer">日立 セキュリティ情報 hitachi-sec-2026-164</a></td></tr>
+</table>
+<ul>
+  <li>HiRDB（CVE-2026-115646、CVSSv3.1 9.8）: 部分文字列比較の不備。Version 10（10-00〜10-12-01未満）、Version 9 系が対象。</li>
+  <li>HA Monitor（CVE-2026-112125、7.3、CWE-732）: 重要資源への不適切な権限割り当て。</li>
+  <li>HDLM 14件（7.0〜8.2）: リンク追従・バイナリプランティング（Windows）、スタックBOF・整数オーバーフロー・OS コマンドインジェクション（VMware）、境界外読み書き・シンボリックリンク追従（Linux）、整数オーバーフロー・安全でない一時ファイル（AIX）。修正版は for Windows／for VMware 9.0.4-01、for Linux 9.0.5-00、for AIX 9.0.4-01。</li>
+</ul>
+
+<h3>SAP — NetWeaver／Web Dispatcher／Gateway に CVSS 10.0 が複数</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>SAP NetWeaver AS ABAP／Web Dispatcher／Gateway／BusinessObjects ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-89103／89126／76964／120017（各10.0）ほか多数</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 10.0 ×4、9.9〜9.1 複数</td></tr>
+<tr><th>公開</th><td>2026-11-10 10:17 JST（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-89103" target="_blank" rel="noopener noreferrer">NVD CVE-2026-89103</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-89103（10.0）: SAP Gateway が既定のアクセス制御リストを高権限で有効化し、外部攻撃者が内部アプリケーションサーバとして扱われる。</li>
+  <li>CVE-2026-89126／76964（各10.0）: Web Dispatcher／NetWeaver AS ABAP が内部コンポーネントで処理するネットワーク入力の検証不備により、未認証攻撃者が影響を及ぼせる。</li>
+  <li>CVE-2026-120017（10.0）: NetWeaver AS ABAP／ABAP Platform が特定構成下で受信する認証アサーションの検証不備。</li>
+  <li>ほか CVE-2026-76965（9.9）、109803（9.9）、109795（9.9）、89119（9.6）、109798（9.1）、76966（8.9）や、10.0のGV-Face（CVE-2026-124600）なども同日登録。</li>
+</ul>
+
+<h3>Ivanti 製品 — 未認証 RCE・認証欠如・OS コマンドインジェクション</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Ivanti Endpoint Manager ／ Cloud Services Application ／ Sentry・EPMM</td></tr>
+<tr><th>CVE</th><td>CVE-2026-121653（9.8）／121683（9.4）／105425（7.2）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.8</td></tr>
+<tr><th>公開</th><td>2026-11-11 01:17 JST（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-121653" target="_blank" rel="noopener noreferrer">NVD CVE-2026-121653</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-121653（9.8）: Ivanti Endpoint Manager の Core に SQL インジェクションがあり、遠隔の未認証攻撃者が RCE に至る。2024 SU8 で修正。</li>
+  <li>CVE-2026-121683（9.4）: Cloud Services Application 5.0.8 の認証欠如で、未認証攻撃者が任意の信頼済み EPM Core 証明書を追加・削除できる。</li>
+  <li>CVE-2026-105425（7.2）: Sentry（11.0.0／10.8.3／10.7.4 未満）と EPMM における OS コマンドインジェクション。</li>
+</ul>
+
+<h3>Mozilla Firefox 160／ESR — サンドボックスエスケープの Use After Free など多数</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Firefox 160 ／ ESR 115.45・153.7 ／ Thunderbird 160・153.7</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124917／124903／124900／124864／124861／124859／124853（各9.6）、1248xx 系多数（各8.8）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.6 ×7 ／ <span class="badge-high">High</span> 8.8 ×多数</td></tr>
+<tr><th>公開</th><td>2026-11-10 23:17 JST（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-124917" target="_blank" rel="noopener noreferrer">NVD CVE-2026-124917</a></td></tr>
+</table>
+<ul>
+  <li>9.6 の一群は Widget: Gtk、IPC、DOM: Service Workers、Audio/Video: cubeb、Storage: Cache API、Graphics: Text における Use After Free／境界条件不備によるサンドボックスエスケープ。</li>
+  <li>8.8 の一群は JavaScript: GC、Graphics: WebRender／CanvasWebGL、WebRTC、Layout、SVG、DOM 系の Use After Free や特権昇格。</li>
+  <li>あわせて Window 向け Zoom Workplace の特権昇格（CVE-2026-108186、9.6）も同日登録されました。</li>
+</ul>
+
+<h3>Java関連 — Apache Commons Codec の入力検証不備</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Apache Commons Codec</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124077 ／ CVE-2026-119078</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span></td></tr>
+<tr><th>公開</th><td>2026-11-10（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-124077" target="_blank" rel="noopener noreferrer">NVD CVE-2026-124077</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-124077: <code>GitIdentifiers</code> が tree entry 名の NUL バイトを拒否しておらず、Git のエントリ区切りと衝突する恐れ。</li>
+  <li>CVE-2026-119078: <code>Blake3</code> の <code>doFinalize</code> の出力が既に確定したバイトに依存するとの文書化の不整合。</li>
+</ul>
+
+<h3>Python関連 — http.cookiejar と ssl の不備</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>CPython 標準ライブラリ（http.cookiejar／ssl）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124249 ／ CVE-2026-19552</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span> 6.3 ／ 低（0.0）</td></tr>
+<tr><th>公開</th><td>2026-11-10（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-124249" target="_blank" rel="noopener noreferrer">NVD CVE-2026-124249</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-124249（6.3）: <code>http.cookiejar.CookieJar</code> が、保存済み Cookie に対する期限切れの <code>Set-Cookie</code> 応答を受け取ると Domain／Path 属性を使って当該 Cookie を削除してしまう問題。</li>
+  <li>CVE-2026-19552（低）: <code>ssl.get_server_certificate()</code> に <code>ca_certs</code> を指定しても証明書の同一性を検証しない問題。</li>
+</ul>
+
+<h3>MIT Kerberos 5 — RPC／GSS-RPC 周辺で10件</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>MIT Kerberos 5（krb5）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-112314 〜 112323、119079（計11件）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 7.5 ×6、6.5〜5.3 ×5</td></tr>
+<tr><th>公開</th><td>2026-11-10（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-112314" target="_blank" rel="noopener noreferrer">NVD CVE-2026-112314</a></td></tr>
+</table>
+<ul>
+  <li>RPC 応答ベリファイアの解放漏れ、GSS-RPC のサイズ制限欠如によるサービス拒否、認証コンテキスト切替時の前コンテキスト解放漏れ、XDR デコードの配列拡張による資源消費など。</li>
+  <li>遠隔の認証済み／未認証ユーザーがサービス拒否や情報漏えいに至り得ます。</li>
+</ul>
+
+<h3>WordPress一括 — MCP連携プラグインの権限昇格、認証バイパスなど</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>WordPress 各種プラグイン</td></tr>
+<tr><th>CVE</th><td>CVE-2026-121576（8.8）／76877（8.1）／120513（8.2）／100386（7.5）ほか</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 8.8〜7.5</td></tr>
+<tr><th>公開</th><td>2026-11-10（NVD 登録）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-121576" target="_blank" rel="noopener noreferrer">NVD CVE-2026-121576</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-121576（8.8）: AtlasAiDev「MCP Server for WordPress（ai-workflow-automation-ai-agent-hub）」の権限の誤った割り当てによる権限昇格。</li>
+  <li>CVE-2026-76877（8.1）: WPML Multilingual CMS 4.9.7以下で、プロセス競合を突いた認証バイパス。</li>
+  <li>CVE-2026-120513（8.2）: Everest Forms のファイルパス検証不備による任意ファイル削除。CVE-2026-100386（7.5）: Ultra Addons for Contact Form 7 のディレクトリトラバーサル。</li>
+  <li>ほか ARMember Premium・Avada（Fusion）Builder の格納型XSS（各7.2）、WPBruiser の弱い認証など。</li>
+</ul>
+
+<h3>その他の注目（国内ベンダ・KEV 追加を含む）</h3>
+<ul>
+  <li><strong>Zabbix agent の DLL 読み込み</strong>（JVN#42011956、2026-11-09公開）: Windows 環境で DLL 探索パスの問題。</li>
+  <li><strong>Delta Electronics DIAEnergie</strong>（CVE-2026-125612、8.8）: 1.11.01.032未満に SQL インジェクション。認証済み遠隔攻撃者がDBを読み書きし得ます。</li>
+  <li><strong>ASUSルーター ファームウェア4件</strong>: CVE-2026-88710（8.7、近接の未認証攻撃者が root 権限で任意コマンド実行に至る連鎖）ほか、境界外書き込み・off-by-one・USB経由の root コマンド実行。</li>
+  <li><strong>MB connect line mbCONNECT24／Helmholz myREX24V2</strong>（CVE-2026-60035〜60046、12件、8.6〜8.7）: コードインジェクションによる任意コード実行、未認証のバックアップDoS、弱い静的パスワードのバックアップ、レート制限なしのパスワードリセットなど。</li>
+  <li><strong>SAP Cloud SDK for AI</strong>: Node.js 版のエラーメッセージへの認証情報混入（CVE-2026-120012）、Python 版 agent_memory のテナント分離バイパス（CVE-2026-120013、いずれも7.5）。</li>
+  <li><strong>CISA KEV 4件追加（2026-11-09）</strong>: IBM Aspera Faspex（CVE-2026-123218、認可回避で管理者権限）、FreeSWITCH（CVE-2026-116779、SIP MESSAGE 経由の管理APIコマンド実行）、GPUStack（CVE-2026-102895、認証回避）、OpenSSH（CVE-2026-123158）。米連邦機関の対応期限は 2026-11-12。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ニトリグループ — システム侵害で最大3,762万件の個人情報が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ニトリホールディングス（ニトリグループ）</td></tr>
+<tr><th>事象</th><td>システムへの第三者不正アクセス／個人情報漏えいの可能性</td></tr>
+<tr><th>規模</th><td>最大 3,762万件</td></tr>
+<tr><th>判明</th><td>2026-11-06 ／ 公表 2026-11-09</td></tr>
+<tr><th>出典</th><td><a href="https://www.nitorihd.co.jp/news/items/2b702dbe4d438f7fef74945d68e5bd27_3.pdf" target="_blank" rel="noopener noreferrer">ニトリHD「不正アクセスによる個人情報漏えいの可能性に関するお詫びとお知らせ」</a></td></tr>
+</table>
+<ul>
+  <li>2026年11月6日、当社が管理するシステムへの第三者による不正アクセスを確認。直ちに遮断し、外部専門機関と連携して調査を開始しました。</li>
+  <li>ログ解析により、10月中旬から下旬にかけても第三者によるアクセスが行われた可能性があることを確認しています（詳細は調査中）。</li>
+  <li>流出した可能性のある情報は、個人会員・購入者の会員番号・氏名（フリガナ）・メールアドレス・住所・電話番号・生年月日・性別、法人会員の会社名・部署名・代表者氏名・会社住所・電話番号・担当者氏名／メール／電話、ニトリネットおよびECモールのニトリ公式ショップ経由の注文情報です。</li>
+  <li>クレジットカード情報およびログインパスワードは対象に含まれていません。攻撃者からのアクセス遮断を継続し、脆弱箇所への対応と監視体制の強化を完了、個人情報保護委員会および警察等へ報告・相談中です。</li>
+</ul>
+
+<h3>阪急阪神百貨店（エイチ・ツー・オー リテイリング）— 関連サイト侵害で H2O ID 会員 約126万件</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>エイチ・ツー・オー リテイリング（阪急百貨店・阪神百貨店）</td></tr>
+<tr><th>事象</th><td>関連サイト侵害による個人情報流出</td></tr>
+<tr><th>規模</th><td>約126万件 ＋ 申し込み情報6,243件</td></tr>
+<tr><th>判明</th><td>2026-10-16 ／ 公表 2026-11-10 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/191650" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/10）</a></td></tr>
+</table>
+<ul>
+  <li>2026年10月16日、「阪急百貨店・阪神百貨店予約サイト」を経由して顧客管理システムが第三者にアクセスされました。翌17日には「HANKYU HANSHIN E-STORES」および「Remo Order」でも侵害を確認。</li>
+  <li>顧客管理システムで管理していた「H2O ID」会員に関する個人情報 約126万件が流出。氏名・住所・電話番号・性別・生年月日・メールアドレスなどが含まれます。</li>
+  <li>イベント参加などに利用した予約サイトのフォームから入力された申し込み情報 6,243件も流出。外部からの通信を遮断し、サイトのシステムを停止して被害拡大を防いでいます。</li>
+</ul>
+
+<h3>ドトールコーヒー — 通販サイト「ドトールオンラインショップ」でも侵害、会員情報2万4,762件</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ドトールコーヒー</td></tr>
+<tr><th>事象</th><td>通販サイトの管理画面への第三者アクセス</td></tr>
+<tr><th>規模</th><td>会員情報 2万4,762件 ＋ 届け先情報 9件</td></tr>
+<tr><th>判明</th><td>2026-10-28 ／ 公表 2026-11-10 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192495" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/10）</a></td></tr>
+</table>
+<ul>
+  <li>2026年10月28日、不審な動きがあるとして決済代行会社から連絡を受け、調査の結果、侵害を確認。10月24日から翌25日にかけ、同サイトの管理画面に第三者がアクセスしていました。</li>
+  <li>10月25日までに会員登録を行った顧客の個人情報が参照され、会員情報2万4,762件と届け先情報9件（氏名・住所・電話番号・メールアドレス・会員ID・購買情報など、一部は生年月日・性別・職業・会社名）が流出した可能性があります。</li>
+  <li>同サイトを一時停止しアクセスの制限を強化、警察へ相談するとともに個人情報保護委員会へ報告しました。10月26日に公表した「従業員・退職者 計951名」の件とは別の事案です。</li>
+</ul>
+
+<h3>teket — 電子チケットサービスの全サービス停止、全会員の氏名・メールアドレスが流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社teket（電子チケットサービス「teket」）</td></tr>
+<tr><th>事象</th><td>サーバーおよび会員情報システムへの不正アクセス</td></tr>
+<tr><th>規模</th><td>対象件数は精査中（累計1万6,000団体・利用者300万人超）</td></tr>
+<tr><th>判明</th><td>2026-11-05（サービス停止）／11-06（流出確認）／11-08（第一報）</td></tr>
+<tr><th>出典</th><td><a href="https://piyolog.hatenadiary.jp/entry/2026/11/11/075305" target="_blank" rel="noopener noreferrer">piyolog（2026-11-11）</a></td></tr>
+</table>
+<ul>
+  <li>2026年11月5日、サーバーへの不正アクセスの可能性が高いと判断し、同日20時30分にサービスを停止して遮断対応を実施。11月6日には会員情報等を管理するシステムへの不正アクセスと、顧客情報の一部の第三者流出を確認しました。</li>
+  <li>流出を確認した情報は、全会員の氏名・メールアドレス。登録・購入済み会員については生年月日・年齢・性別・住所・電話番号・チケット情報（発券用コード、主催者のシリアルコード）も含まれます。パスワードとクレジットカード情報は列挙に含まれていません。</li>
+  <li>ゲスト購入者も対象となる場合があり、対象件数は精査中。サービス停止中の入場は購入完了メールの提示で対応し、再開時期は未定です。</li>
+  <li>京都府（約160名）、横浜市神奈川区（約120件）、尾花沢市（最大44件）、新潟県教職員互助会（最大3,058件）などの主催者・自治体・楽団・スポーツチームが影響を公表しました。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
