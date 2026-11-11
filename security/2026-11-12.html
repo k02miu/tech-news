@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-12 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-12 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-11 08:00 〜 2026-11-12 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>React Server Components — 未認証のリモートコード実行（CVE-2026-126187、CVSS 9.5 Critical）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>react-server-dom-webpack ／ react-server-dom-parcel ／ react-server-dom-turbopack（React 19系）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-126187（GHSA-xqc2-xf4c-x3h3）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv4.0 9.5（CWE-502 安全でないデシリアライゼーション）</td></tr>
+<tr><th>公開</th><td>NVD／GHSA 登録 2026-11-11 08:17 JST（勧告の初回公開は 2026-10-14）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/react/react/security/advisories/GHSA-xqc2-xf4c-x3h3" target="_blank" rel="noopener noreferrer">GHSA-xqc2-xf4c-x3h3</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-126187" target="_blank" rel="noopener noreferrer">NVD CVE-2026-126187</a></td></tr>
+</table>
+<ul>
+  <li>React Server Components（RSC）に対応するフレームワークへ細工したペイロードを送ることで、認証なしにリモートコード実行が成立します。Next.js など RSC を利用する構成は影響確認の対象です。</li>
+  <li>影響を受けるのは 19.0.0〜19.0.8、19.1.0〜19.1.9、19.2.0〜19.2.8、19.3.0 の上記3パッケージ。1つの応答が複数の型付き配列と攻撃者制御値を同時に運ぶ極めて稀なケースでのみ成立しますが、React チームは直ちの更新を推奨しています。</li>
+  <li>修正版は 19.0.9 ／ 19.1.10 ／ 19.2.9 ／ 19.3.1。サーバ側で React を使わないアプリ、RSC 対応のフレームワーク・バンドラ・バンドラプラグインを使わないアプリは影響を受けません。</li>
+</ul>
+
+<h3>Microsoft 月例セキュリティ更新（2026年11月）— 1,093件に対応、緊急63件・一部で悪用確認</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Windows ／ Office ／ Azure ／ SQL Server ／ Exchange Server ／ SharePoint Server ほか</td></tr>
+<tr><th>CVE</th><td>多数（うち Tencent RapidJSON の CVE-2026-124586 を同梱）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 63件 ／ <span class="badge-high">Important</span> 1,029件</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間、パッチチューズデー）／2026-11-11 報道</td></tr>
+<tr><th>出典</th><td><a href="https://msrc.microsoft.com/update-guide/ja-jp" target="_blank" rel="noopener noreferrer">MSRC セキュリティ更新プログラムガイド</a></td></tr>
+</table>
+<ul>
+  <li>定例の月例更新で計1,093件の脆弱性に対応。製品別では Windows が726件、Office が174件、SQL Server が59件、開発ツールが53件、SharePoint Server が27件、Azure が20件、Exchange Server が9件です。</li>
+  <li>影響別では権限昇格が535件、リモートコード実行が296件、情報漏えいが156件、サービス拒否が46件、セキュリティ機能のバイパスが27件、なりすましが22件。一部の脆弱性では既に悪用が確認されています。</li>
+  <li>サードパーティ製ライブラリ「Tencent RapidJSON」の境界外読み取り（CVE-2026-124586、CVSSv3.1 7.3）にも対応しています。Azure をはじめ自環境の該当製品は速やかな適用を検討してください。</li>
+</ul>
+
+<h3>FortiOS — 8件の脆弱性、うち3件が「クリティカル」（未認証で最上位管理者権限の実行に至る）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Fortinet FortiOS（UTM 機器）／ FortiSASE</td></tr>
+<tr><th>CVE</th><td>CVE-2026-126259（9.8）／ CVE-2026-126254 ／ CVE-2026-126253</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 3件</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間、アドバイザリ公開）／2026-11-11 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.fortiguard.com/psirt/FG-IR-26-268" target="_blank" rel="noopener noreferrer">FortiGuard FG-IR-26-268</a> ／ <a href="https://www.security-next.com/192635" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/11）</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-126259（CVSSv3.1 9.8、CWE-306 重要機能の認証欠如）: 「FGSP」＋設定同期、またはオートスケール構成において、細工した HA パケットを送信することで認証なしに最上位管理者（super admin）権限でコマンドを実行できます。FortiOS 8.0.0／7.6.0〜7.6.7／7.4.0〜7.4.12／7.2.0〜7.2.13／7.0.0〜7.0.19 が影響。</li>
+  <li>CVE-2026-126254: BGP デーモンの数値切り詰め（CWE-197）に起因し、設定済みの iBGP ピアから細工した属性を接続先ルータへ伝播させ得ます。</li>
+  <li>CVE-2026-126253: OSPF デーモンの認証バイパス。細工したリクエストにより認証なしで LSA（リンク状態広告）を送信できます。</li>
+  <li>修正版は FortiOS 8.0.2／7.6.8／7.4.13／7.2.14 以降。FortiSASE は 26.3.2 で修正済みです。</li>
+</ul>
+
+<h3>Zoom Workplace（Windows版）— 未認証の権限昇格を含む2件</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Zoom Workplace for Windows</td></tr>
+<tr><th>CVE</th><td>CVE-2026-108186（9.6）／ CVE-2026-108187（8.1）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.6 ／ <span class="badge-high">High</span> 8.1</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間、アドバイザリ公開）／2026-11-11 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.zoom.com/en/trust/security-bulletin/zsb-26023/" target="_blank" rel="noopener noreferrer">Zoom ZSB-26023</a> ／ <a href="https://www.security-next.com/192629" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/11）</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-108186（CVSSv3.1 9.6）: 入力値の検証不備により、認証を必要とせずネットワーク経由で権限昇格が可能です。</li>
+  <li>CVE-2026-108187（同 8.1）: オリジン検証の問題で、こちらも認証なしに悪用される恐れがあります。修正済みのため最新版への更新が求められます。</li>
+</ul>
+
+<h3>OpenSSL — 低深刻度5件の脆弱性（修正版は 12月1日公開予定）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>OpenSSL 4.1 ／ 4.0 ／ 3.5（および一部 3.0・1.1.1・1.0.2）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-88822 ／ 88823 ／ 95691 ／ 95692 ／ 107496</td></tr>
+<tr><th>深刻度</th><td><span class="badge-low">Low</span> 5件</td></tr>
+<tr><th>公開</th><td>2026-11-10（アドバイザリ公開）／ JVN 更新 2026-11-11 10:15 JST</td></tr>
+<tr><th>出典</th><td><a href="https://openssl-library.org/news/secadv/20261110.txt" target="_blank" rel="noopener noreferrer">OpenSSL Security Advisory [10th November 2026]</a> ／ <a href="https://jvn.jp/vu/JVNVU92618679/index.html" target="_blank" rel="noopener noreferrer">JVNVU#92618679</a></td></tr>
+</table>
+<ul>
+  <li>CVE-2026-88822: QUIC のピア自動検出時に初期化されていないスタック領域が宛先アドレスへ混入し、送信パケットへ漏えい（CWE-457）。</li>
+  <li>CVE-2026-88823: AES-GCM-SIV で長さ0の AAD 断片が既存 AAD をリセット扱いし、認証対象から外れる（CWE-325）。</li>
+  <li>CVE-2026-95691: QUIC の CRYPTO フレーム再送で TLS レコード層のポインタが解放済み領域を参照し、ヒープ use-after-free と1バイトの情報漏えい（DoS も可）。</li>
+  <li>CVE-2026-95692: AES-GCM-SIV で規定長（12バイト）以外の IV を渡すと境界外読み取り、および IV と認証タグの結び付きが崩れます。</li>
+  <li>CVE-2026-107496: 群位数1の EC 証明書へ CMS 暗号化すると鍵生成が終わらず CPU を消費（DoS）。修正版は 4.1.1／4.0.4／3.5.10 として 2026-12-01 公開予定です。</li>
+</ul>
+
+<h3>Movable Type — ダイナミックパブリッシングのコードインジェクション（JVN#11786640）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Movable Type 8.8.6以下 ／ 8.0.13以下 ／ MT Premium 2.18以下（いずれも Advanced 含む）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-117687</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> CVSSv3.0 7.3 ／ CVSSv4.0 6.9（CWE-94）</td></tr>
+<tr><th>公開</th><td>2026-11-11 12:00 JST</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/jp/JVN11786640/index.html" target="_blank" rel="noopener noreferrer">JVN#11786640</a></td></tr>
+</table>
+<ul>
+  <li>ダイナミックパブリッシング機能で細工したリクエストが送信されると、サーバ上で任意の PHP コードが実行される恐れがあります。未認証で攻撃可能です。</li>
+  <li>修正版は 8.8.7 ／ 8.0.14 ／ MT Premium 2.19。サポート終了の 8.4.x 系と Movable Type 7 も影響を受け、Movable Type 9 は影響を受けません。</li>
+  <li>開発者はあわせて、環境変数 <code>DynamicTemplateAllowPHP</code> に <code>0</code> を設定し、デザインテンプレート内 PHP コードの実行を抑制することを推奨しています。</li>
+</ul>
+
+<h3>Sleipnir Mobile for iPhone / iPad — 不適切な証明書検証（JVNVU#93068550）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Sleipnir Mobile for iPhone / iPad v4.15.1以下 ／ Black Edition v4.15.1以下</td></tr>
+<tr><th>CVE</th><td>CVE-2026-116081</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span> CVSSv3.1 4.2 ／ CVSSv4.0 2.3（CWE-295）</td></tr>
+<tr><th>公開</th><td>2026-11-11 13:30 JST</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU93068550/index.html" target="_blank" rel="noopener noreferrer">JVNVU#93068550</a></td></tr>
+</table>
+<ul>
+  <li>証明書検証の不備により、中間者攻撃（MITM）で暗号通信の盗聴が行われる可能性があります。</li>
+  <li>v5.0（Black Edition は v4.16）で修正済み。開発者は引き続きセキュリティ強化を予定しているとしており、最新版への継続更新が推奨されます。</li>
+</ul>
+
+<h3>Intel製品 — 2026年11月のアドバイザリ24件（JVNVU#93337738）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Intel Graphics ／ VTune Profiler ／ QAT Drivers ／ NPU Driver ／ Wireless WiFi・Bluetooth ／ Slim Bootloader ほか</td></tr>
+<tr><th>種別</th><td>ベンダアドバイザリ（INTEL-SA-01440 〜 01580 の計24件）</td></tr>
+<tr><th>公開</th><td>2026-11-11 14:15 JST（JVN 最終更新）</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU93337738/index.html" target="_blank" rel="noopener noreferrer">JVNVU#93337738</a></td></tr>
+</table>
+<ul>
+  <li>Graphics（SA-01440／01513）、VTune Profiler（SA-01477）、Neural Compressor（SA-01490）、QAT Windows ドライバ（SA-01491）、oneAPI DNN Library（SA-01494）、Hyperscan（SA-01511）、IPSec Multi-Buffer Crypto（SA-01512）、ISA-L（SA-01514）、NPU ドライバ（SA-01521）、PROSet/Wireless WiFi・Bluetooth（SA-01530）、Server Board UEFI ファームウェア（SA-01554）などが対象です。</li>
+  <li>加えて Slim Bootloader（SA-01526）、TDX Migration Trust Domain（SA-01580）、Intel PCM（SA-01528）など、AI・仮想化周辺のソフトウェア／ファームウェアも含まれます。各アドバイザリの影響製品と修正版をご確認ください。</li>
+</ul>
+
+<h3>Siemens製品 — 2026年11月アップデート（新規9件・更新17件、Node2Shell／PHP2Shell を含む）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>SIMATIC SCADA／PCS 7／WinCC ／ Mendix Studio Pro MCP Server ／ ROS# ／ meta-iot2050 ／ Industrial Edge ほか</td></tr>
+<tr><th>種別</th><td>ベンダアドバイザリ（SSA-105852 ほか新規9件、更新17件）</td></tr>
+<tr><th>公開</th><td>2026-11-11 10:00 JST（JVN 最終更新。初回公開 2026-11-05）</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU98354779/index.html" target="_blank" rel="noopener noreferrer">JVNVU#98354779</a></td></tr>
+</table>
+<ul>
+  <li>新規では Simcenter Femap の境界外読み取り（SSA-105852）、産業製品の Node2Shell／Broccoli2Shell（SSA-242944／678870）、ROS# 2.3.1 未満のコードインジェクション（SSA-435267）、SIMATIC SCADA・PCS 7 の認証不備（SSA-970803）など。</li>
+  <li>更新分には RUGGEDCOM APE1808 上の Fortigate NGFW・PAN-OS、Siemens 製品の PHP2Shell／Node2Shell、SIMATIC WinCC Graphics Designer のアクティブコンテンツ暗黙実行（SSA-979641）などが含まれます。</li>
+</ul>
+
+<h3>PHP — 任意コード実行2件（CVE-2026-109618／109619）のベンダステータス更新</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>PHP 8.5.12／8.4.27／8.3.36／8.2.35 より前の各バージョン</td></tr>
+<tr><th>CVE</th><td>CVE-2026-109618 ／ CVE-2026-109619</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（RCE via OOM corruption ／ RCE via stale global state）</td></tr>
+<tr><th>公開</th><td>JVN 最終更新 2026-11-11 12:10 JST（初回公開 2026-10-22）</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU99905564/index.html" target="_blank" rel="noopener noreferrer">JVNVU#99905564</a></td></tr>
+</table>
+<ul>
+  <li>2件はいずれもメモリ破壊に起因し、サーバ上で任意コード実行に至る可能性があります（GHSA-w8hw-w9fx-j79w、GHSA-6wmf-4rv5-p3rp）。</li>
+  <li>本対象期間ではトレンドマイクロ株式会社のベンダステータスが「該当製品あり」として更新されました（2026-11-11）。対策は開発者提供パッチの適用です。</li>
+</ul>
+
+<h3>Python／Django 関連 — Pulpcore の式言語インジェクション（CVE-2026-123084）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Pulpcore（Red Hat Ansible Automation Platform 2 に同梱）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-123084</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span> CVSSv3.1 6.5（CWE-917 式言語インジェクション）</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-11 08:17 JST</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-123084" target="_blank" rel="noopener noreferrer">NVD CVE-2026-123084</a></td></tr>
+</table>
+<ul>
+  <li><code>HeaderContentGuard.permit</code> が保存する jq フィルタがヘッダに限定されず、jq の <code>env</code> 組み込み経由でコンテンツプロセスの環境変数を読み出せます。</li>
+  <li>低権限のネットワーク攻撃者、またはコンテンツガードを作成できるユーザーが、Django のシークレットキーやデータベースパスワードなど Pulp 設定値の取得に至る恐れがあります。</li>
+</ul>
+
+<h3>Claude Code ／ Hermes Agent ／ OpenClaw — 本対象期間のセキュリティ関連リリースはなし</h3>
+<ul>
+  <li><strong>Claude Code</strong>: 直近のリリースは v2.1.322（2026-11-10、Vertex の global/us/eu リージョンでの高速モード追加のみ）。本対象期間に新規リリースはありません。直近のセキュリティ修正は v2.1.321（MCP OAuth のリフレッシュトークン他ホスト送信、読取専用 Bash のサンドボックス外実行などを修正）で、前号で既報です。</li>
+  <li><strong>Hermes Agent</strong>: 最新は v0.23.1（2026-11-10 公開、プラグインカタログ上限を16MiBへ引き上げる安定版パッチ）。本対象期間に新規リリース・脆弱性修正はありません。CLI は <code>hermes update</code>。</li>
+  <li><strong>OpenClaw</strong>: 最新は 2026.11.3（2026-11-10 公開、認証情報の分離・秘匿化とトラスト境界の強化を含む）。本対象期間に新規リリースはありません。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>Notion AI — 委託先 Fireworks AI の侵害で一部チャット記録が流出した可能性（AI サプライチェーン）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>Notion ／ 委託先 Fireworks AI（推論基盤）</td></tr>
+<tr><th>事象</th><td>第三者クラウド事業者経由の侵入→開発マシン侵害→サービスアカウントの引き受けによる顧客データ影響</td></tr>
+<tr><th>規模</th><td>Notion のワークスペース全体の1%未満（対象期間・件数は詳細非開示）</td></tr>
+<tr><th>判明</th><td>第1報 2026-10-06 ／ 2経路目の検知 2026-10-24 ／ Notion 公表 2026-11-09 ／ piyolog 整理 2026-11-11</td></tr>
+<tr><th>出典</th><td><a href="https://piyolog.hatenadiary.jp/?page=2" target="_blank" rel="noopener noreferrer">piyolog（2026-11-11 新規作成）</a></td></tr>
+</table>
+<ul>
+  <li>Fireworks AI では2経路の侵入が判明しました。1つ目は内部認証情報の不正使用で、10月6日に特定し同日封じ込めを開始。第三者により一部顧客アカウントの評価ジョブ用環境変数（シークレットとして保存された API キーやトークン）が取得されています。</li>
+  <li>2つ目は、Fireworks の研究開発マシンをホストしていた第三者クラウド事業者の侵害です。10月23日に同事業者でインシデントが発生し、翌24日に不正な第三者が開発マシンへ到達。複数ホップで権限昇格してクラウドのサービスアカウントを引き受け、ストレージの一部へアクセスしました。</li>
+  <li>Fireworks は金銭目的で LLM トークンを不正転売する「LLMJacking」グループとの関連を示す証拠があるとし、Palo Alto Networks Unit 42 の支援で認証情報・サービスアカウントの入れ替え、不要な昇格権限の削除、ネットワーク隔離、監視強化を実施しています。</li>
+  <li>Notion は Insights 機能のデータ分類処理と、製品内オープンウェイトモデルの推論サービスに Fireworks を利用していました。11月8日に最終的な影響データセットの提供を受け、Insights 機能で使われた Notion AI のチャット記録が含まれると確認。11月3日までに Fireworks との接続を遮断し、同社上のデータを削除しています。</li>
+  <li>影響を受けたワークスペースのオーナーにはメールで連絡済みで、サイドバーの「セキュリティインシデントのレビュー」から影響データを確認できます。Notion はインシデント期間中に Notion AI へ貼り付けたパスワード・API キー等の変更または再発行を求めています。Notion をご利用の場合はご確認くださいませ。</li>
+</ul>
+
+<h3>コンビニ交付 — 408自治体で戸籍系証明書の交付が停止、原因は LGWAN 接続ルータの故障</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>地方公共団体情報システム機構（J-LIS）／ 富士フイルムシステムサービス ／ 全国408自治体</td></tr>
+<tr><th>事象</th><td>証明発行システムのネットワーク通信障害によりコンビニ交付が利用不可（サイバー攻撃ではない）</td></tr>
+<tr><th>規模</th><td>408自治体（戸籍謄抄本・戸籍の附票の写し等）。piyokango 氏が公表を確認した自治体は69</td></tr>
+<tr><th>判明</th><td>発生 2026-11-10 06:30頃 ／ 復旧 同日16:20頃 ／ 原因公表 2026-11-11</td></tr>
+<tr><th>出典</th><td><a href="https://piyolog.hatenadiary.jp/" target="_blank" rel="noopener noreferrer">piyolog（2026-11-11 新規作成）</a> ／ <a href="https://www.city.uruma.lg.jp/1006005000/contents/p000114.html" target="_blank" rel="noopener noreferrer">うるま市（2026-11-11 復旧報告）</a></td></tr>
+</table>
+<ul>
+  <li>2026年11月10日6時30分頃から、全国のコンビニ端末で408自治体の戸籍などの証明書が一時交付できなくなり、同日16時20分頃に復旧が確認されました。J-LIS は当初から不正アクセスの可能性は低く、個人情報の漏えいは確認されていないと説明していました。</li>
+  <li>うるま市は11月11日、システム提供元のネットワーク機器上位に接続された「LGWAN 接続ルータの故障」が原因で、戸籍関連証明書の交付に必要な通信ができない状態だったと公表。サイバー攻撃によるものではないとの報告を受けています。</li>
+  <li>被疑機器の LGWAN 接続ルータは11月10日23時30分以降に交換され、通常構成へ復帰しました。住民票の写しや印鑑登録証明書など他の証明書を併せて停止した自治体、庁舎の専用端末も停止した自治体など、告知の範囲は自治体ごとに分かれています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
