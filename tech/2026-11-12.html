@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-12 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-12 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし（最新 v2.1.322）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.322</strong>（<strong>2026-11-10 12:18 JST</strong> 公開）です。RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）の <code>pubDate</code> を全件確認いたしましたが、期間内に該当する項目はありませんでした。</p>
+<p>なお、最新系列ではグローバル・us・eu の各リージョンで Vertex 上の fast mode が利用可能になっております。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-322">Claude Code changelog — 2.1.322</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし（最新 v0.23.1）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.23.1</strong>（<strong>2026-11-10 10:42 JST</strong> 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.1">Hermes Agent v0.23.1</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし（最新 v2026.9.37）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.9.37</strong>（<strong>2026-11-11 05:42 JST</strong> 公開、<code>extended-stable</code> 向け）です。通常系列の最新は <strong>v2026.11.3</strong>（<strong>2026-11-11 03:53 JST</strong> 公開）となります。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — 対象期間内の新規リリースなし（最新 v1.4.256）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.256</strong>（<strong>2026-11-11 06:31 JST</strong> 公開）です。</p>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.256">Orca v1.4.256</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>☁️ AWS — 夜間から早朝にかけて 6 件のアップデート</h3>
+<ul>
+  <li><strong>Amazon Cognito のユーザープールセッション管理</strong>（<strong>2026-11-12 04:00 JST</strong> 公開）: サインイン時に確立される SSO セッションとトークンセッションを一覧・失効できるようになり、不審なセッションの遮断が可能になりました。</li>
+  <li><strong>AWS Emulator</strong>（<strong>2026-11-12 02:00 JST</strong> 公開）: ローカルや CI 環境で AWS アプリケーションを構築・テストできるエミュレータが登場。既存の AWS SDK／CLI 呼び出しがミリ秒で返り、AWS アカウントなしでコーディングエージェントがローカルにエラーを発見・修正できます。</li>
+  <li><strong>AWS Cloud WAN の Flow Logs 対応</strong>（<strong>2026-11-12 05:05 JST</strong> 公開）: VPC Flow Logs を Cloud WAN 側で集約し、VPC・リージョン・オンプレミスをまたぐトラフィックを単一アカウントで可視化できます。</li>
+  <li><strong>Amazon EKS Provisioned Control Plane の etcd 24 GB 化</strong>（<strong>2026-11-12 04:45 JST</strong> 公開）: 4XL／8XL ティアで etcd データベースが 16 GB から 24 GB に拡張され、より大規模なクラスタを扱えます。</li>
+  <li><strong>Amazon EKS Auto Mode の Pod 向けセキュリティグループ</strong>（<strong>2026-11-12 02:26 JST</strong> 公開）: 同一ノード上のワークロードごとに異なるセキュリティグループを適用でき、ノードプールを分けずにネットワーク分離が可能です。</li>
+  <li><strong>AWS Lambda MicroVMs の x86 対応</strong>（<strong>2026-11-12 03:00 JST</strong> 公開）: MicroVM イメージ作成時に x86 と Arm（Graviton）を選択でき、既存の x86 資産を再コンパイルせずに移行できます。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ GCP — 2026-11-11 のリリースノート</h3>
+<ul>
+  <li><strong>BigQuery</strong>: 予約内でプロジェクトごとの最大スロット数と同時実行数を制限する「プロジェクトキャップ（スケジューリングポリシー）」が GA。予約割り当てに任意の <code>principal</code> を指定し、実行者に応じてクエリを振り分けられるようになりました。非配列値も取り出せる <code>JSON_FLATTEN</code> 関数も GA です（Enterprise／Enterprise Plus エディション対象）。</li>
+  <li><strong>Cloud Build</strong>: ビルドログを Cloud Storage に保存する際、既定でユーザー所有のリージョナルバケットが使われるようになりました。</li>
+  <li><strong>Gemini Enterprise Agent Platform</strong>: CodeMender v0.21.0 を公開。サンドボックス内でのビルドコマンド実行、ホストツールチェーンの読み取り専用マウント、Git フックの無効化など分離を強化し、無応答ターンには 30 分のタイムアウトを追加しました。</li>
+  <li><strong>GKE（既知の問題）</strong>: Linux の syscall 監査を有効にしたノードで Cloud Storage FUSE CSI ドライバのボリュームをマウントすると、処理が無期限にハングする事象が報告されています。該当 Pod は <code>Init:0/1</code> 等で停止し、ノードドレインも完了しない場合があります。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#November_11_2026">Google Cloud リリースノート</a></p>
+
+<h3>⚡ Next.js — v16.5.0-canary.48</h3>
+<p><strong>v16.5.0-canary.48</strong>（<strong>2026-11-12 08:45 JST</strong> 公開）が canary 系列で公開されました。immediates を await する Route Handler のプリレンダー対応、テレメトリ送信プロセスの孤児化修正、React の内部バージョン更新（<code>1620f7b9-20261111</code>）、Turbopack の各種改善が含まれます。安定版の最新は <strong>v16.4.6</strong>（2026-11-10 05:27 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.48">Next.js v16.5.0-canary.48</a></p>
+
+<h3>🔥 Hono — v4.13.18（セキュリティ修正）</h3>
+<p><strong>v4.13.18</strong>（<strong>2026-11-11 18:01 JST</strong> 公開）は 3 件のセキュリティ問題を修正するリリースです。アップデートをお勧めいたします。</p>
+<ul>
+  <li><strong>validator の Content-Type 判定</strong>（GHSA-92p4-j3wq-jmqx）: <code>Content-Type</code> のパラメータ書式が異なる場合に <code>validator('json')</code>／<code>validator('form')</code> が検証をスキップし、ハンドラ側では全フィールドが読めてしまう問題を修正。メディアタイプのみで判定するようになりました。</li>
+  <li><strong>bodyLimit のメモリ保持</strong>（GHSA-39q9-qp46-w8xg）: 細かい転送チャンクで送られたボディがチャンクごとに保持され、上限内のリクエストでもメモリを枯渇させられる問題を修正。</li>
+  <li><strong>mount のパス転送</strong>（GHSA-h25j-…）: 接頭辞を付与する <code>getPath</code> 利用時に転送パスが 1 セグメント多く削られ、ミドルウェアがスキップされる問題を修正（4.13.16／4.13.17 が対象）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.18">Hono v4.13.18</a></p>
+
+<p class="empty-notice"><strong>React</strong>（最新 v19.3.1、2026-10-15 02:06 JST 公開）、<strong>Spring Boot</strong>（安定版 v4.1.2、2026-10-22 22:04 JST 公開）、<strong>Python</strong>（最新 3.15.2、2026-10-25 公開）、<strong>Django</strong>（最新 6.1.3、2026-11-03 公開）、<strong>Java</strong>、<strong>Claude API／SDK</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。なお <strong>Azure</strong> は公式アップデートフィードの取得ができず、対象期間内の内容を確認できませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
