@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-13 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-13 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>11月のパッチチューズデー（米国時間11月10日）に公開された各社アドバイザリの報道・NVD登録が本対象期間に集中しています。ブラウザ・DB・Webサーバー・Java/.NET系フレームワークを中心に多数の更新が出ています。</p>
+
+<h3>Google Chrome 157.0.8103.78／同.79 — 83件を修正、クリティカルに Use After Free が集中</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Google Chrome（Windows／macOS／Linux）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-126885／126842／126846／126859／126872／126909／126912 ほか計83件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.6（NVD採番）／ <span class="badge-high">High</span> 8.8 多数</td></tr>
+<tr><th>公開</th><td>2026-11-11（米国時間）／ アドバイザリ・NVD登録 2026-11-12 08:17 JST</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192735" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-126885" target="_blank" rel="noopener noreferrer">NVD</a></td></tr>
+</table>
+<ul>
+  <li>今週2度目のセキュリティ更新で、計83件の脆弱性に対処しました。悪用の言及はありませんが、重要度4段階中もっとも高い「クリティカル」が5件（いずれも解放済みメモリ使用＝Use&nbsp;After&nbsp;Free）含まれます。</li>
+  <li>Security NEXT が挙げる代表的CVEは <strong>CVE-2026-126885</strong>（ServiceWorker）、<strong>CVE-2026-126895</strong>（CSS）、<strong>CVE-2026-126879</strong>（Layout）、<strong>CVE-2026-126846</strong>（Skia）、<strong>CVE-2026-126911</strong>（Accessibility）。NVD はさらに ANGLE（126842）・ファイルシステムのリンク追従（126859／126872）・パスワード（126909）・Skia のバッファオーバーフロー（126912）をいずれも CVSSv4.0 9.6 のクリティカルとして登録しています。</li>
+  <li>修正版は Windows／macOS 向け「157.0.8103.79」「同.78」、Linux 向け「同.78」。Chromium 系を利用する構成（Electron 等）も追従更新を検討してください。</li>
+</ul>
+
+<h3>Mozilla Firefox 160 — 99件を修正、High 57件</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Mozilla Firefox 160（ESR 版も同時更新）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124907 ／ 124903 ／ 124874 ／ 124902 ほか計99件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 57件（Critical はなし）</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間）／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192688" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-124907</strong>（CanvasWebGL の Use&nbsp;After&nbsp;Free）は権限昇格やサンドボックス回避につながるおそれがあります。</li>
+  <li><strong>CVE-2026-124903</strong>（プロセス間通信の Use&nbsp;After&nbsp;Free）などもサンドボックス脱出の可能性。同一オリジンポリシーを回避できる <strong>CVE-2026-124874</strong>／<strong>CVE-2026-124902</strong> も修正対象です。</li>
+</ul>
+
+<h3>Adobe 9製品 — 計110件を修正、うち21件がクリティカル（Connect に CVSS 10.0 が5件）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Adobe Connect／Experience Manager／After Effects／Photoshop／Premiere／Audition／Media Encoder／Dimension／Content Credentials SDK</td></tr>
+<tr><th>CVE</th><td>複数（製品別のアドバイザリ参照）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 21件（うち5件は CVSSv3.1 10.0）</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間、パッチチューズデー）／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192730" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a> ／ <a href="https://helpx.adobe.com/security.html" target="_blank" rel="noopener noreferrer">Adobe セキュリティアドバイザリ</a></td></tr>
+</table>
+<ul>
+  <li>最も多いのは Adobe Connect の24件で、SSRF・パストラバーサル・SQLインジェクション・アクセス制御不備などに対処。クリティカルは17件で、うち5件が CVSSv3.1 で最高値の 10.0 です。</li>
+  <li>Adobe After Effects が17件、Adobe Experience Manager が14件。Photoshop・Premiere・Audition なども10件以上を修正。アドバイザリ公開時点で悪用は確認されていません。</li>
+</ul>
+
+<h3>Ivanti 5製品 — 計13件を修正、EPM・CSA にクリティカル</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Ivanti EPM／CSA／Sentry／EPMM／UWM</td></tr>
+<tr><th>CVE</th><td>CVE-2026-121653（9.8）／ CVE-2026-121683（9.4）／ CVE-2026-105425 ほか計13件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 2件 ／ <span class="badge-high">High</span> 複数</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間）／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192727" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-121653</strong>（CVSSv3.0 9.8）は Ivanti EPM の Core コンポーネントの SQL インジェクションで、認証なしにコード実行のおそれがあります（2026-11-11 08:00 JST の朝刊で既報）。</li>
+  <li><strong>CVE-2026-121683</strong>（9.4）は Ivanti CSA の認証不備で、EPM Core の証明書登録情報を任意に追加・削除できます。影響は同 5.0.8 のみ。</li>
+</ul>
+
+<h3>PostgreSQL 18.7／17.12／16.16／15.20／14.25 — 52件のセキュリティ脆弱性を修正、PG14 は EOL</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>PostgreSQL（サーバー本体、contrib、plperl／pltcl、クライアントツール）</td></tr>
+<tr><th>CVE</th><td>計52件（CVE-2026-116304／116307／116315／116318／120145 ほか）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 相当なし ／ <span class="badge-high">High</span> 8.8 が多数</td></tr>
+<tr><th>公開</th><td>2026-11-12（PDGD 四半期更新）／ NVD登録 2026-11-13 00:17 JST</td></tr>
+<tr><th>出典</th><td><a href="https://www.postgresql.org/about/news/postgresql-187-1712-1616-1520-1425-and-19-rc-2-released-3442/" target="_blank" rel="noopener noreferrer">PostgreSQL Global Development Group</a></td></tr>
+</table>
+<ul>
+  <li>定例の四半期セキュリティ更新で、52件のセキュリティ脆弱性と140件超のバグを修正。プラン作成・権限チェック・型キャッシュ・plperl／pltcl・pg_dump／pg_restore／reindexdb などに関わる多数の不具合が、データベース利用者やオブジェクト作成者の権限で任意コード実行（多くが CVSSv3.1 8.8）に至り得ます。</li>
+  <li>特に <strong>CVE-2026-116318</strong>（pg_dump の SQL インジェクション）、<strong>CVE-2026-116315</strong>（tsvector_delete() のヒープバッファオーバーフロー）、<strong>CVE-2026-120145</strong>（論理レプリケーションの認可欠如）、<strong>CVE-2026-116307</strong>（plperl の Use&nbsp;After&nbsp;Free）が深刻です。</li>
+  <li>本リリースをもって <strong>PostgreSQL 14 はサポート終了（EOL）</strong>。14.25 が最後のリリースとなるため、本番運用では上位版への移行計画を進めてください。更新後は再インデックスなど追加手順が必要な場合があります。</li>
+</ul>
+
+<h3>MongoDB Server — レプリケーションの Use After Free で未認証 RCE（CVE-2026-118383）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>MongoDB Server 9.0.7／8.3.16／8.0.37／7.0.48／6.0.30／5.0.35／4.4.32 未満</td></tr>
+<tr><th>CVE</th><td>CVE-2026-118383</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> CVSSv4.0 9.5 ／ CVSSv3.1 9.0</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間）／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192699" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li>レプリカセットで新たに選出されたプライマリが最新状態へ追いつくキャッチアップ処理の完了時に不具合が生じ、認証なしで悪用され得ます。細工したリクエストでサーバが予期せず終了し、条件次第でサーバプロセスの権限で任意コード実行に至ります。</li>
+  <li>加えて <strong>MongoDB Node.js ドライバ</strong>に、DNS&nbsp;SRV ホスト探索の検証不備で想定外ドメインのホストへ接続させられる <strong>CVE-2026-126837</strong>（CVSSv4.0 9.1、NVD登録 2026-11-13 02:17 JST）と、OIDC 認証時に許可ホスト制限を一貫して強制しない <strong>CVE-2026-126835</strong>（5.9）が確認されています。</li>
+</ul>
+
+<h3>Apache HTTP Server 2.4.71 — 複数脆弱性に対応（JVN 2026-11-12）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Apache HTTP Server 2.4 系</td></tr>
+<tr><th>CVE</th><td>CVE-2026-106023（mod_md NULLポインタ参照）／ 109163（mod_vhost_alias スタックバッファオーバーフロー）／ 119618 ほか</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 〜 <span class="badge-medium">Medium</span></td></tr>
+<tr><th>公開</th><td>2026-11-11（ASF アドバイザリ）／ JVN 2026-11-12 09:00 JST</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU90805396/" target="_blank" rel="noopener noreferrer">JVNVU#90805396</a></td></tr>
+</table>
+<ul>
+  <li>mod_md の NULL ポインタ参照（DoS）、mod_vhost_alias のスタックベースバッファオーバーフロー（CVE-2026-63292 の派生）、共有リソースの不適切な同期（CVE-2026-119618）などが含まれます。2.4.71 以降へ更新してください。</li>
+</ul>
+
+<h3>国内ベンダー・アドバイザリ（JVN 2026-11-12 公開・更新分）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>KUSANAGI ／ SoftBank「Airターミナル6」／ Brotli C実装 ／ 三菱電機 CNC</td></tr>
+<tr><th>CVE</th><td>CVE-2026-117477 ／ CVE-2026-101107 ／ CVE-2026-111497 ／ CVE-2025-2399</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 8.6（Airターミナル6）／ <span class="badge-medium">Medium</span> 6.1（KUSANAGI）</td></tr>
+<tr><th>公開</th><td>2026-11-12 09:00〜16:10 JST</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/" target="_blank" rel="noopener noreferrer">JVN</a> ／ <a href="https://www.jpcert.or.jp/m/jvn/" target="_blank" rel="noopener noreferrer">JPCERT/CC</a></td></tr>
+</table>
+<ul>
+  <li><strong>SoftBank「Airターミナル6」（CVE-2026-101107、CVSSv4.0 8.6）</strong>: Web管理画面にログインできる利用者が root 権限で任意コマンドを実行できる OS コマンドインジェクション。v1.01.80 およびそれ以前が影響。修正済みファームウェアが展開済みで、利用者の対応は不要とのこと（JVN#64740097）。</li>
+  <li><strong>KUSANAGI（CVE-2026-117477、CVSSv3.1 6.1）</strong>: WordPress 向け Nginx のリダイレクトルールに HTTP ヘッダーインジェクション（CWE-113）。KUSANAGI 7／8／9 の各エディションが影響。細工した URL へのアクセスで任意ヘッダーを挿入され得ます（JVNVU#92635551）。</li>
+  <li><strong>Brotli C 実装（CVE-2026-111497、「HTTP2Shell／Node2Shell」）</strong>: 細工した圧縮データの処理で任意コード実行・情報窃取・DoS のおそれ。1.2.1／1.1.1／1.0.10 未満が影響。トレンドマイクロのベンダーステータスが本期間に更新されました（JVNVU#97400824）。</li>
+  <li><strong>三菱電機 数値制御装置 CNC（CVE-2025-2399）</strong>: TCP 683番ポートへ送られた不正パケットで領域外メモリ読み出しが発生し、システムが非常停止（CWE-1285）。M800V／M80V／M800／M80／E80／C80／M700V・M70V／E70 シリーズの各版が影響（JVNVU#95523788）。</li>
+</ul>
+
+<h3>Claude Code v2.1.323（2026-11-13 07:12 JST 公開）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Claude Code（CLI／SDK）</td></tr>
+<tr><th>CVE</th><td>なし（機能追加および堅牢化が中心）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-low">Informational</span></td></tr>
+<tr><th>公開</th><td>2026-11-13 07:12 JST</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+  <li>実験的オプトインの「Code Mode」、「<code>engines["claude-code"]</code>」によるプラグインのバージョン範囲強制、プラグインの TypeScript フック型検査（<code>claude plugin validate</code>）、Bash 許可ルール（<code>Bash(PORT=* npm run dev)</code> のような変数値内の <code>*</code>）への起動時警告などが追加されました。</li>
+  <li>本リリースにセキュリティ特化の修正記載はありません。直近のセキュリティ修正は v2.1.321（MCP OAuth のリフレッシュトークン他ホスト送信、サンドボックス外 Bash 実行など）。</li>
+</ul>
+
+<h3>OpenClaw v2026.11.5-beta.2 — fast-uri 更新による不正 URI 拒否など（2026-11-12 09:43 JST 公開）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>OpenClaw（プレリリース）</td></tr>
+<tr><th>CVE</th><td>なし（セキュリティ関連の修正を含む）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">Medium</span>（堅牢化）</td></tr>
+<tr><th>公開</th><td>2026-11-12 09:43 JST</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+  <li>Security: fast-uri 4.2.3 を採用し、不正な URI 識別子を拒否しつつ有効な相対参照は維持（#187284）。Discord SDK と推移的依存の Zod 3 パーサーで、過大な有界コレクションを早期に拒否（#187296／#187303）。</li>
+  <li>macOS アプリで設定保存失敗時や Tailscale 公開停止時にも保存済みシークレットと Gateway 認証を保持する修正も含まれます。</li>
+</ul>
+
+<h3>その他の動向 — CISA KEV 6件追加、Hermes Agent は新規リリースなし</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Barracuda ESG／Cisco BroadWorks ほか ／ Hermes Agent</td></tr>
+<tr><th>CVE</th><td>CVE-2026-116606 ／ 111560 ／ CVE-2026-20320 ほか計6件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span>（悪用確認済み・KEV登録）</td></tr>
+<tr><th>公開</th><td>2026-11-10（CISA）／ 2026-11-11 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener noreferrer">CISA KEV</a> ／ <a href="https://www.security-next.com/192653" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+  <li>CISA は 2026-11-10、悪用が確認された脆弱性6件を KEV に追加しました。Barracuda ESG の認証回避 <strong>CVE-2026-116606</strong> と OS コマンドインジェクション <strong>CVE-2026-111560</strong>（組み合わせで root 権限実行）、Cisco BroadWorks の XXE <strong>CVE-2026-20320</strong>（未認証で設定情報の読み取り）が含まれます。</li>
+  <li><strong>Hermes Agent</strong> は最新安定版 v0.23.1（2026-11-10）から本対象期間内に新規リリース・セキュリティ告知はありません。なお v0.23.0 でシークレットのマスク拡張、承認ゲート強化、Webapp の CSP と loopback 限定 CORS などが行われています。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js／React／Hono／GCP／AWS／Azure／SpringBoot に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本商工会議所「商工会議所ネット試験管理システム」が不正アクセス — 最大約98万人分の受験者情報が流出の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>日本商工会議所（日商）</td></tr>
+<tr><th>事象</th><td>不正アクセス・不正ファイル設置、個人情報流出の可能性（最大約98万人分）</td></tr>
+<tr><th>確認</th><td>侵害確認 2026-11-04 ／ 約98万人分の可能性判明 2026-11-09 ／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192652" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li>商工会議所ネット試験管理システムは、ネット試験の施行機関が試験予約や受験結果管理に使用するシステム。2026-11-04 にシステム管理会社から侵害の報告を受け、不正ファイルを削除して脆弱性を修正しました。その後の調査で、不正利用は確認されていないものの、最大約98万人分の受験者情報が流出した可能性が 11-09 に判明しています。</li>
+  <li>対象は 2022-04-01〜2026-11-04 に「簿記」「リテールマーケティング」「日商PC」「電子会計実務」「キータッチ2000」「ビジネスキーボード」「日商プログラミング」「日商ビジネス英語」のネット試験を受験した人。氏名・生年月日・性別・合否結果・試験得点のほか、任意入力の住所・電話番号・メールアドレスも含まれます。個人情報保護委員会へ報告済みで、ネット試験は平常どおり実施されています。</li>
+</ul>
+
+<h3>資生堂 オンライン肌測定システム「Facial Condition Analyzer」が侵害 — 顧客2,515件の情報流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社資生堂</td></tr>
+<tr><th>事象</th><td>外部の第三者による侵害、情報の改ざん・外部持ち出し、サービス停止</td></tr>
+<tr><th>確認</th><td>侵害確認 2026-10-27 ／ 2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192582" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li>グループが提供する肌測定サービスで使用されるオンライン肌測定システム「Facial Condition Analyzer（FCA）」が外部の第三者により侵害されました。2026-10-27 に侵害を確認し、調査の結果、システム内の一部情報が改ざんされ、データが外部に持ち出されたことが判明しました。</li>
+  <li>流出したのは顧客の個人情報 2,515 件で、氏名・メールアドレス・年齢・性別・会員ID のほか、問診データや肌測定結果が含まれます。肌測定時に撮影された顔画像は対象外。被害拡大を防ぐため、オンラインストアと店頭の「Beauty Alive Circulation Check」を停止しています。</li>
+</ul>
+
+<h3>田村市 保育施設職員が偽警告でサポート詐欺被害</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>福島県田村市（保育施設）</td></tr>
+<tr><th>事象</th><td>PC に偽の警告を表示させられ、遠隔操作サポート詐欺で被害</td></tr>
+<tr><th>確認</th><td>2026-11-12 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192344" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/12）</a></td></tr>
+</table>
+<ul>
+  <li>保育施設の職員が PC 上で偽の警告表示から遠隔サポートへ誘導される詐欺被害に遭いました。公共・教育機関を狙ったサポート詐欺が継続しているため、注意喚起と職員教育が求められます。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
