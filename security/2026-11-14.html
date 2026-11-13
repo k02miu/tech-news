@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-14 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-14 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<p>11月13日は、Citrix NetScaler の大規模アドバイザリ（28件）と JVN の CERT/CC 由来レポート5件がまとまって公開されました。Python・Node.js・Java のライブラリ更新も同日に NVD へ登録されており、開発環境で利用頻度の高いパッケージが中心です。</p>
+
+<h3>Citrix NetScaler ADC／NetScaler Gateway — 28件を修正、CVSSv4.0 9.5 を含む「クリティカル」多数</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Citrix NetScaler ADC（旧 ADC）／NetScaler Gateway（旧 Gateway）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-107412（9.5）／120868（9.3）／107407・107408・107409・107410・107415・111334（各9.3）ほか計28件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 9.5 ／ <span class="badge-high">High</span> 8.7〜8.3 多数</td></tr>
+<tr><th>公開</th><td>アドバイザリ初版 2026-11-12（米国時間）／ 更新 2026-11-13 ／ 報道 2026-11-13</td></tr>
+<tr><th>出典</th><td><a href="https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX697305" target="_blank" rel="noopener noreferrer">Citrix CTX697305</a> ／ <a href="https://www.security-next.com/192789" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>もっとも高い <strong>CVE-2026-107412</strong>（CVSSv4.0 9.5）は、Gateway（SSL VPN／ICA Proxy／CVPN／RDP Proxy）または AAA 仮想サーバー構成における複数のメモリオーバーフローです。未認証で到達でき、機密性・完全性・可用性すべてに高い影響が見込まれます。</li>
+  <li><strong>CVE-2026-120868</strong>（9.3）は既定構成のパケット処理で成立し、追加機能の有効化を前提としません。このほか ICA プロキシ（120864）、Endpoint Analysis（111334）、メール OTP（107415）、NetScaler Push（107410）、DNS/DoH（107408・107409）、SMPP（107407）が 9.3 と評価されています。</li>
+  <li>影響するのは 14.1 系（14.1-73.57 未満）、13.1 系（13.1-64.39 未満）、FIPS（14.1-73.58 FIPS 未満）、FIPS/NDcPP（13.1-37.293 未満）。Secure Private Access Hybrid で NetScaler を用いる構成も対象です。</li>
+  <li>NetScaler Console（旧 ADM）にも別途クリティカルな <strong>CVE-2026-120869</strong> が公表されています（CTX697320）。</li>
+  <li>謝辞には JPMorgan Chase の XOR チーム、CapitalOne Offensive Security、watchTowr が名を連ね、Cloud Software Group 製品セキュリティチームが AI 支援のコード解析で複数を発見したとしています。</li>
+</ul>
+
+<h3>Fortinet FortiMail — 27件を修正、8件がクリティカル（9.8 が3件）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>FortiMail（メールセキュリティ製品）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-126147（パストラバーサル）／126148（コマンドインジェクション）／126263（SQLi）— 各9.8 ／ 126164（9.4）／126150・126155・126156・126157（各9.1）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 8件 ／ <span class="badge-high">High</span> 複数</td></tr>
+<tr><th>公開</th><td>2026-11-10（米国時間、アドバイザリ24件）／ 報道 2026-11-13</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192797" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/13）</a> ／ <a href="https://www.fortiguard.com/psirt" target="_blank" rel="noopener noreferrer">FortiGuard PSIRT</a></td></tr>
+</table>
+<ul>
+  <li>9.8 の3件はいずれも任意のコード実行・コマンド実行に至るおそれがあります。CVE-2026-126164 は認証を必要とせず SQL インジェクションでコード実行が可能とされ、9.4 評価です。</li>
+  <li>10月にリリース済みのアップデートで大半に対応済みとされますが、適用漏れがないかの確認が望まれます。公開時点で悪用は確認されていません。</li>
+</ul>
+
+<h3>Synology DSM — 27件を修正、認証APIのSQLi が CVSSv3.1 9.8</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Synology DiskStation Manager（DSM）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-76954（9.8）／ CVE-2026-85101（8.6、rsync の認証回避）ほか計27件</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 1件 ／ <span class="badge-high">Important</span> 9件 ／ <span class="badge-medium">Moderate</span> 17件</td></tr>
+<tr><th>公開</th><td>2026-11-10（アドバイザリ Synology_SA_26_18／26_19）／ 報道 2026-11-13</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192808" target="_blank" rel="noopener noreferrer">Security NEXT（2026/11/13）</a> ／ <a href="https://www.synology.com/en-us/security/advisory" target="_blank" rel="noopener noreferrer">Synology セキュリティアドバイザリ</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-76954</strong> は認証 API の SQL インジェクションで、リモートから任意ファイルの読み書きと DoS が可能です。</li>
+  <li><strong>CVE-2026-85101</strong> は rsync（ファイル同期）の認証回避で、特定ファイルの遠隔読み取りや任意ファイル書き込み、限定的な DoS につながります。NAS は外部公開している構成も多く、優先的な更新が望まれます。</li>
+</ul>
+
+<h3>Python — aiohttp 3.14.4 未満に8件（最大8.7）、Pillow・dnspython も更新</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>aiohttp 3.14.4 未満 ／ Pillow 12.3.0 以下 ／ dnspython 2.9.2 未満</td></tr>
+<tr><th>CVE</th><td>CVE-2026-128132・128131・128127・128126（各8.7）、128130（8.3）、128129・128124（各8.2）、128128（7.5）／ Pillow: CVE-2026-128066（8.7）・128067（8.4）／ dnspython: CVE-2026-128089（7.5）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 8.7〜7.5</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-13（JST）</td></tr>
+<tr><th>出典</td><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-128132" target="_blank" rel="noopener noreferrer">NVD CVE-2026-128132</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-128126" target="_blank" rel="noopener noreferrer">NVD CVE-2026-128126</a></td></tr>
+</table>
+<ul>
+  <li>aiohttp の8件は、WebSocket の受信キュー停止後もフレームを解析し続ける問題（128132）、連結された gzip／deflate／zstd ストリームを一括展開する問題（128131）、multipart の base64 処理での読み取り継続（128127）、URL エンコード形式の項目数無制限による二次時間の消費（128126）など、いずれも非同期サーバー・クライアントの資源枯渇系です。</li>
+  <li><strong>CVE-2026-128124</strong> は <code>Application.add_domain()</code> のワイルドカードが貪欲な正規表現に変換され、2個以上のワイルドカードを含むマスクで想定外のホストに一致し得る問題です。</li>
+  <li>Pillow の <strong>CVE-2026-128066</strong> は TIFF の IFD 読み込みでタグごとの bytes を保持し総量を制限しないため、細工した TIFF でメモリを枯渇させられます。</li>
+</ul>
+
+<h3>Node.js／Web — ExcelJS の任意ファイル読み取り（8.7）、SvelteKit のサーバー専用モジュール保護不備、n8n のサンドボックス脱出</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>ExcelJS 4.4.0 以下 ／ SvelteKit 3.0.0〜3.1.0 ／ n8n（1.123.89・2.45.5・2.46.1・3.0.1 未満）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-128347（8.7）／ CVE-2026-128118（7.5）／ CVE-2026-126391・126384（各7.7）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 8.7〜7.5</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-13（JST）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-128347" target="_blank" rel="noopener noreferrer">NVD CVE-2026-128347</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-126391" target="_blank" rel="noopener noreferrer">NVD CVE-2026-126391</a></td></tr>
+</table>
+<ul>
+  <li>ExcelJS はストリーミングの <code>WorkbookWriter</code> で <code>addImage</code> に渡す画像ファイル名を検証せず、<code>../</code> を注入してローカルファイルを読み取れます。帳票生成をサーバー側で行う構成では影響が大きい項目です。</li>
+  <li>SvelteKit はビルド時のサーバー専用モジュール保護が <code>src/params.js</code> をクライアントエントリとして扱わず、パラメータマッチャ経由でサーバー専用コードがクライアントへ混入し得ました。</li>
+  <li>n8n はワークフロー式評価の分離不備でサンドボックスを脱出可能（126391）。公式 Docker イメージが既知脆弱性を含む GraphicsMagick を同梱していた問題（126384）も修正対象です。</li>
+</ul>
+
+<h3>Java — OpenKM の認可欠如（8.7）、Eclipse AAS4J の XXE、IBM webMethods の情報露出</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>OpenKM Community Edition ／ Eclipse AAS4J 3.0.1 未満 ／ IBM webMethods Integration Server 10.15・11.1</td></tr>
+<tr><th>CVE</th><td>CVE-2026-112182（8.7）／ CVE-2026-127031（7.7）／ CVE-2026-123628（7.5）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span> 8.7〜7.5</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-13（JST）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-112182" target="_blank" rel="noopener noreferrer">NVD CVE-2026-112182</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-127031" target="_blank" rel="noopener noreferrer">NVD CVE-2026-127031</a></td></tr>
+</table>
+<ul>
+  <li>OpenKM は REST の <code>registerProcessDefinition</code>／<code>runProcessDefinition</code> が認証のみ要求しロール検証を行わないため、権限のない利用者がワークフロー定義を登録・実行できます。</li>
+  <li>AAS4J は <code>XmlSchemaValidator.validateSchema()</code> が外部 DTD・外部エンティティを解決する既定の Validator を使うため、信頼できない AASX/XML の検証で XXE が成立します。</li>
+  <li>IBM webMethods はサーバー側環境変数と Java ランタイム情報が露出し、遠隔の攻撃者が機微情報を取得し得ます。</li>
+</ul>
+
+<h3>Apache APISIX — jwe-decrypt の strict:false 構成で認証バイパス（7.8）</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Apache APISIX（jwe-decrypt 利用ルート）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124679（7.8）／ CVE-2026-124680（7.0）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span></td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-13（JST）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-124679" target="_blank" rel="noopener noreferrer">NVD CVE-2026-124679</a></td></tr>
+</table>
+<ul>
+  <li><code>jwe-decrypt</code> を <code>strict: false</code> で使い、トークンのヘッダーと異なる <code>forward_header</code> を指定したルートでは、未認証のクライアントがゲートウェイ復号済みとして上流に渡る値を供給できます。</li>
+  <li><strong>CVE-2026-124680</strong> は同一上流に認証なしのルートが併存する場合に、ルート単位の認証プラグインを回避して上流パスへ到達できる解釈の衝突です。</li>
+</ul>
+
+<h3>JVN 2026/11/13 公開分 — PromZard RCE、ComfyUI-Easy-Use のパストラバーサル、ImageMagick、TightVNC/UltraVNC、YouTrack XSS</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>PromZard ／ ComfyUI-Easy-Use ／ ImageMagick 利用アプリ ／ TightVNC・UltraVNC の Windows Viewer ／ JetBrains YouTrack</td></tr>
+<tr><th>CVE</th><td>YouTrack: CVE-2026-75048（CVSSv4.0 4.8／v3.0 5.4）／ 他4件は CERT/CC の VU ノート参照</td></tr>
+<tr><th>深刻度</th><td><span class="badge-high">High</span>（PromZard RCE・ImageMagick 任意ファイル読み書き）／ <span class="badge-medium">Medium</span>（YouTrack XSS・VNC BOF）</td></tr>
+<tr><th>公開</th><td>2026-11-13 11:00〜12:00 JST</td></tr>
+<tr><th>出典</th><td><a href="https://jvn.jp/vu/JVNVU98641453/index.html" target="_blank" rel="noopener noreferrer">JVNVU#98641453（PromZard）</a> ／ <a href="https://jvn.jp/vu/JVNVU99429639/index.html" target="_blank" rel="noopener noreferrer">JVNVU#99429639（ComfyUI-Easy-Use）</a> ／ <a href="https://jvn.jp/jp/JVN76799957/index.html" target="_blank" rel="noopener noreferrer">JVN#76799957（YouTrack）</a></td></tr>
+</table>
+<ul>
+  <li><strong>PromZard</strong> はコンテキストキーのコードインジェクションによりリモートコード実行に至ります（CERT/CC VU#685399）。</li>
+  <li><strong>ComfyUI-Easy-Use</strong> は認証不要でパストラバーサルが成立します（VU#944667）。ComfyUI を外部公開している環境では特に注意が必要です。</li>
+  <li><strong>ImageMagick</strong> は既定構成のまま利用するアプリケーションで任意ファイルの読み書きが可能とされます（VU#580079）。画像変換をサーバー側で行う構成は変換ポリシーの確認が望まれます。</li>
+  <li><strong>TightVNC／UltraVNC</strong> の Windows Viewer にはヒープベースのバッファオーバーフローがあります（VU#644655）。Viewer 側の更新が必要です。</li>
+  <li><strong>YouTrack</strong> はフェンス付きコードブロックの言語ラベルを介した格納型 XSS（CVE-2026-75048）。2026.2.18068 より前が影響を受けます。報告は三井物産セキュアディレクションの赤木悠祐氏。</li>
+</ul>
+
+<h3>WordPress プラグイン — 未認証の任意ファイル削除が CVSS 10.0、9.8 が複数</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Easy DragDrop File Uploader 1.1.10 未満 ／ Streamit 1.3.10 未満 ／ ELEX HelpDesk ／ Chatterbug Forms 1.0.2 以下 ／ Ahime Image Printer 1.0.0 ／ Advance Guest Post 1.9 以下 ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124822（10.0）／126119・125855・125055・124833・119077・118064・118063（各9.8）</td></tr>
+<tr><th>深刻度</th><td><span class="badge-critical">Critical</span> 8件以上</td></tr>
+<tr><th>公開</th><td>NVD 登録 2026-11-13（JST）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-124822" target="_blank" rel="noopener noreferrer">NVD CVE-2026-124822</a> ／ <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-126119" target="_blank" rel="noopener noreferrer">NVD CVE-2026-126119</a></td></tr>
+</table>
+<ul>
+  <li><strong>CVE-2026-124822</strong> は削除対象パスの検証欠如により、未認証の利用者が <code>wp-config.php</code> を含む任意のファイル・ディレクトリを削除できます。</li>
+  <li><strong>CVE-2026-126119</strong> は未認証の AJAX ルートで攻撃者指定の PHP 関数を攻撃者指定の引数配列で呼び出します。Streamit テーマ系を利用している場合は優先的に更新してください。</li>
+  <li>ELEX HelpDesk は PHP オブジェクトインジェクション（119077・125855）、Advance Guest Post は拡張子検査の不備による任意ファイルアップロード（118063・118064）です。</li>
+</ul>
+
+<h3>Claude Code v2.1.325 — zstd 圧縮レスポンスのデコード処理にセキュリティ修正</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Claude Code（npm／CLI）</td></tr>
+<tr><th>バージョン</th><td>v2.1.325</td></tr>
+<tr><th>深刻度</th><td><span class="badge-medium">情報</span>（CVE の付番なし）</td></tr>
+<tr><th>公開</th><td>2026-11-14 05:40 JST（2026-11-13 20:40 UTC）</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.325" target="_blank" rel="noopener noreferrer">GitHub Releases v2.1.325</a></td></tr>
+</table>
+<ul>
+  <li>リリースノートの先頭に「zstd 圧縮されたレスポンスのデコード方法におけるセキュリティ問題を修正」と明記されています。詳細な技術説明は公開されていません。</li>
+  <li>併せて、bare リポジトリの worktree や <code>--separate-git-dir</code> 構成で <code>/security-review</code> とスキルのインライン git コマンドが失敗する問題などが修正されています。</li>
+</ul>
+
+<h3>OpenClaw／Hermes Agent — 対象期間内にセキュリティ関連の新規リリースなし</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>OpenClaw ／ Hermes Agent</td></tr>
+<tr><th>状況</th><td>OpenClaw: 最新は v2026.11.5-beta.2（2026-11-12 09:43 JST、対象期間外）／ Hermes Agent: 安定版は v0.23.1（2026-11-10）、canary は 2026-11-13 17:06 JST だがセキュリティ項目の記載なし</td></tr>
+<tr><th>深刻度</th><td><span class="badge-low">該当なし</span></td></tr>
+<tr><th>公開</th><td>—</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">openclaw releases</a> ／ <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">hermes-agent releases</a></td></tr>
+</table>
+<ul>
+  <li>OpenClaw の直近のセキュリティ修正は v2026.11.5-beta.2（不正な URI 識別子の拒否、境界付きコレクションの早期拒否）で、本対象期間より前に公開済みです。</li>
+  <li>Hermes Agent の canary ビルドはビルド検証用で、セキュリティに関わる変更は記載されていません。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外のスタック（Next.js／React／Django／Hono／GCP／AWS／Azure／SpringBoot）に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<p>11月13日は国内の大規模会員情報漏えいの続報・初回公表がまとまって報道されました。いずれも一次公表は11月上旬で、報道日が対象期間内です。</p>
+
+<h3>ブックオフコーポレーション — 会員管理システムのアクセス制御不備を突かれ 638万3,279人分が漏えい（第3報）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ブックオフグループホールディングス／ブックオフコーポレーション</td></tr>
+<tr><th>判明</th><td>2026-10-06 検知（取得は 10-04〜10-06）／ 第3報 2026-11-06 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>6,427,735件（対象者 6,383,279人：有効会員 6,170,908人、退会 212,371人）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56778.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>漏えい項目は氏名、生年月日、性別、職業、ニックネーム、メールアドレス、電話番号、郵便番号・住所、パスワードのハッシュ値、ポイントカード番号、会員番号。</li>
+  <li>原因は会員情報を取り扱うシステムの一部機能におけるアクセス制御上の問題を悪用されたこと。10月15日から対象会員への個別メール送信を開始し、10月22日で送信可能分は完了、10月26〜29日にはアプリ通知で案内しています。</li>
+  <li>再発防止として常時監視・検知体制の強化、開発・運用各段階でのセキュリティ基準見直し、外部接続機能の認証・認可・アクセス制御の確認、脆弱性診断・第三者評価の継続実施を挙げています。</li>
+</ul>
+
+<h3>ノジマ — 「ノジマオンライン」会員管理システムに不正アクセス、約700万件が漏えい</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ノジマ</td></tr>
+<tr><th>判明</th><td>2026-11-01 検知・確認 ／ 公表 2026-11-02 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>約700万件（退会者を除く）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56774.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>漏えい項目は氏名（漢字・カナ）、生年月日、性別、郵便番号、住所、電話番号、ログインID・暗号化されたパスワード、メールアドレス。「中古スマホ買取サイト」の情報も含まれます。</li>
+  <li>外部アクセスの遮断と監視体制の強化、所轄警察署への相談、個人情報保護委員会等への報告準備を実施。「ノジマオンライン」と「中古スマホ買取サイト」はサービスを一時休止し、安全性の確認後に再開するとしています。</li>
+</ul>
+
+<h3>ネットマイル（ウィルズ） — 最大約549万人分の会員情報が漏えいした可能性、サイト停止中</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ウィルズ（広告事業「ネットマイル」）</td></tr>
+<tr><th>判明</th><td>公表 2026-11-02 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>退会者を含む最大約549万人</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56773.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>会員情報に加え、ポイント交換に関連して登録された氏名・メールアドレス・特典交換に関する情報が対象です。</li>
+  <li>二次被害防止とセキュリティ対策のため「ネットマイル」「すぐたま」を停止し、原因と影響範囲を調査中です。</li>
+</ul>
+
+<h3>シグナルトーク「Maru-Jan」 — 管理システム機能を悪用され 185万5,578人分のメールアドレス・パスワードが流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社シグナルトーク（オンライン麻雀「Maru-Jan」）</td></tr>
+<tr><th>判明</th><td>2026-11-04 15時頃までに外部ダウンロード ／ 公表 2026-11-07 ／ 報道 2026-11-13 08:10 JST</td></tr>
+<tr><th>規模</th><td>会員 1,855,578人</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56779.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>管理システムの機能を悪用した不正アクセスで、全会員のメールアドレス（登録者のみ）とパスワードが対象。クレジットカード番号は保有していないため含まれません。</li>
+  <li>侵入経路は特定済みで対策を実施し、11月7日16時にサービスを再開。会員には他サービスと異なるパスワードへの変更を求め、お詫びとして1人3,000ポイントを用意しています。</li>
+</ul>
+
+<h3>丸井グループ — 委託先 Securitize Japan への不正アクセスでデジタル社債申込者 最大9,086人分が漏えい</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社丸井グループ／Securitize Japan 株式会社</td></tr>
+<tr><th>判明</th><td>2026-10-29 不正アクセス ／ 公表 2026-11-02 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>最大 9,086人（銀行口座番号まで漏えいした可能性は 54人）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56775.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>対象はデジタル社債申込のためにアカウントを作成した顧客の氏名、住所、電話番号、メールアドレス、生年月日、性別、銀行口座番号、投資口数。</li>
+  <li>丸井グループは Securitize Japan に原因究明と再発防止策の徹底を求めるとともに、委託先の管理・監督を強化するとしています。</li>
+</ul>
+
+<h3>良品計画 — オーダーカーテン業務の再委託先サーバに不正アクセス、19,933件の顧客情報が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社良品計画／MNインターファッション／ナノテック</td></tr>
+<tr><th>判明</th><td>2026-10-19 侵害痕跡（10-28 に報告受領）／ 公表 2026-11-02 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>19,933件（2018-04-10〜2022-01-25 の注文分）</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56777.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>対象は氏名、住所、電話番号、注文情報、配送先住所。ナノテックが管理するサーバが10月19日に外部から不正アクセスを受けた痕跡を10月28日に確認しています。</li>
+  <li>良品計画は対象顧客へ順次郵送で連絡。ナノテックは外部専門機関による詳細調査を進めています。同社は「MUJIアプリ」の件とは別のインシデントです。</li>
+</ul>
+
+<h3>東急不動産 — AWS 共同サーバ環境の WordPress 等の脆弱性と権限設定不備を突かれ、ウェブサイト2件で情報流出の可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>東急不動産株式会社</td></tr>
+<tr><th>判明</th><td>2026-10-19 検知 ／ 公表 2026-10-30 ／ 報道 2026-11-13 08:05 JST</td></tr>
+<tr><th>規模</th><td>GREEN CROSS PARK 公式サイト 4,079件 ／ GREENUP Cooldown Project 公式サイト 3件</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/13/56771.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity（2026/11/13）</a></td></tr>
+</table>
+<ul>
+  <li>原因はコンテンツ管理システム（WordPress 等）のソフトウェア脆弱性およびサーバ内のアクセス権限設定の不備を突いた第三者からの攻撃と確認されています。</li>
+  <li>対象は会員登録情報（会社名、部署名、氏名、メールアドレス、電話番号等）と問い合わせフォーム入力情報。ログ調査では流出の有無を特定できず、流出の可能性を否定できないとして対応を進めています。</li>
+  <li>ウェブサイト構築・管理ガイドラインの全面見直し、ソフトウェアの定期点検とセキュリティ監査の徹底を再発防止策として挙げています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
