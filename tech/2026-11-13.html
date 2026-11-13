@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-13 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-13 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし（最新 v2.1.322）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.322</strong>（<strong>2026-11-10 12:18 JST</strong> 公開）です。RSS フィード（<code>code.claude.com/docs/en/changelog/rss.xml</code>）の <code>pubDate</code> を全件確認いたしましたが、対象期間に該当する項目はございませんでした。</p>
+<p>最新版の内容は、グローバル・us・eu の各リージョンにおける Vertex 上の fast mode 追加となります。Vertex 側が受け付けない場合は標準速度へ自動的にフォールバックいたします。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-322">Claude Code changelog — 2.1.322</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし（最新 v0.23.1）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.23.1</strong>（<strong>2026-11-10 10:42 JST</strong> 公開）です。GitHub Releases API の <code>published_at</code> に基づき確認いたしました。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.1">Hermes Agent v0.23.1</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.5-beta.2</h2>
+<p>ベータ版 <strong>v2026.11.5-beta.2</strong> が <strong>2026-11-12 09:43 JST</strong> に公開されました。長大な会話の閲覧性向上と、セキュリティ修正が中心のリリースです。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>双方向のページング履歴</strong>: 大規模な会話でも履歴の境界が可視化され、アーカイブ読み込みも上限付きで行えるようになりました。</li>
+  <li><strong>macOS アプリの認証情報保持</strong>: 設定保存に失敗した場合や Tailscale 公開を無効化した際にも、保存済みシークレットと Gateway 認証が失われなくなりました。</li>
+  <li><strong>Android の Talk 終了時</strong>: Talk を終了しても、Gateway が既に受理した処理が取り消されなくなりました。</li>
+  <li><strong>Google 連携</strong>: 公式エンドポイントの Gemini Flash 系モデルで Interactions API を使用するよう変更（カスタムエンドポイントの上書きは維持）。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li><strong>セキュリティ</strong>: <code>fast-uri</code> 4.2.3 へ更新し、不正な URI 識別子を拒否しつつ有効な相対参照は維持。Discord SDK とその依存の Zod 3 パーサーでは、上限超過のコレクションを早期に拒否します。</li>
+  <li><strong>メッセージ配信</strong>: 再試行されたコミット済み入力の二重ターン起動を防止し、インライン編集中もキュー済みメッセージを保持します。</li>
+  <li><strong>チャット復元</strong>: 完了済みの推論内容とスナップショットを保持し、コンパクション後も進行中リクエストの来歴を維持します。</li>
+  <li><strong>セッション</strong>: 一覧・履歴インポート・集計の読み取りを上限付きとし、書き込み側をブロックしないよう改善しました。</li>
+  <li><strong>PostgreSQL</strong>: 繰り返し検索時もセッション検索がテキストインデックスを使い続けるよう修正。</li>
+  <li><strong>ファイル</strong>: ワークスペースパスの読み書きで Unicode キーの同一性を保持します。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.5-beta.2">OpenClaw v2026.11.5-beta.2</a></p>
+
+<h2>🐋 Orca — v1.4.257</h2>
+<p><strong>v1.4.257</strong> が <strong>2026-11-12 10:20 JST</strong> に公開されました。長時間チャットの安定性と、音声入力・ターミナル操作の使い勝手が改善されております。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>長い会話の高速化</strong>: 複数の長い Chat UI 会話が同時にストリーミングされる際のフリーズを軽減し、返信到着時の処理量を削減しました。</li>
+  <li><strong>ブラウザのフィードバック保持</strong>: 未送信のテキストメモがリロード・再起動後も復元されます。未送信メモのあるタブを閉じる際は確認が入り、デスクトップ上のエージェントは送信前に <code>orca tab annotations</code> で内容を読めます。</li>
+  <li><strong>音声入力の無音待機時間</strong>: <strong>設定 → Voice → Input → Stop After Silence</strong> で 30 秒・1 分・2 分・オフを選択可能に。同じ画面に録音と再生を試せる <strong>Test</strong> ボタンも追加されました。</li>
+  <li><strong>ターミナル接続中のペースト</strong>: 起動中・再接続中のターミナルに貼り付けたコマンドが破棄されず、シェルの準備を待つようになりました（最大 64 KB、ローカル・SSH・リモートに対応）。</li>
+  <li><strong>フォルダワークスペースの自動化</strong>: フォルダワークスペース作成時にセットアップスクリプト、削除前にアーカイブスクリプトが実行されます（CLI 経由の作成も対象）。</li>
+  <li><strong>分割ペインの検索</strong>: 空の分割ペインで <code>/</code> を押すとエージェントやファイルを検索でき、キーボードのみで開けます。</li>
+  <li><strong>モデル選択の保持</strong>: Chat UI のモデルピッカーが、前ターンの返信到着時に選択を巻き戻さなくなりました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.257">Orca v1.4.257</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>☁️ AWS — データベース基盤の Graviton5 対応と各種マネージドサービスの拡充</h3>
+<ul>
+  <li><strong>Aurora / RDS の Graviton5 ベース R9g インスタンス</strong>（<strong>2026-11-13 04:02 JST</strong> 公開）: Aurora（PostgreSQL / MySQL 互換）と RDS（PostgreSQL / MySQL / MariaDB）で GA。同等サイズの Graviton4 比で最大 30% の性能向上、オンデマンド価格で最大 22% の price-performance 改善。large から 48xlarge まで 9 サイズ、最大 192 vCPU・100 Gbps ネットワーク。</li>
+  <li><strong>Amazon MWAA の細粒度アクセス制御</strong>（<strong>2026-11-13 03:00 JST</strong> 公開）: IAM Identity Center 連携とマルチチーム環境に対応。DAG・接続・変数・プールなどをリソース単位で認可でき、複数チームが 1 つの Airflow 環境を共有できます。</li>
+  <li><strong>Route 53 Domains のセルフサービス復元</strong>（<strong>2026-11-12 17:00 JST</strong> 公開）: 期限切れ・削除済みドメインをコンソール・CLI・SDK から自力で復元可能に。従来必要だった Support への依頼が不要となりました。</li>
+  <li><strong>FSx for Lustre Intelligent-Tiering の入口コスト 75% 削減</strong>（<strong>2026-11-12 17:00 JST</strong> 公開）: 最小スループットを 4,000 から 1,000 MBps、最小メタデータ IOPS を 6,000 から 1,500 へ引き下げ。</li>
+  <li><strong>次世代 AgentCore ランタイムが既定に</strong>（<strong>2026-11-12 14:00 JST</strong> 公開）: 初期化済みエージェントのスナップショットからセッションを復元し、アイドル時はゼロにスケール。2 GB イメージでセッション起動が P75 で 29.7 秒から 2 秒未満へ短縮、マルチターンでは課金メモリが最大 68% 削減されます。</li>
+  <li><strong>Amazon Connect Customer のケース統合・リンク</strong>（<strong>2026-11-13 02:00 JST</strong> 公開）: 同一顧客の重複ケースを統合して履歴を一本化でき、関連ケースのリンクも可能に。東京リージョンを含みます。</li>
+  <li><strong>Amazon SNS のプッシュ通知対応リージョン拡大</strong>（<strong>2026-11-13 01:00 JST</strong> 公開）: アジアパシフィック（ハイデラバード／メルボルン）、欧州（チューリッヒ）、GovCloud（US-East）を追加。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ GCP — 2026-11-12 のリリースノート</h3>
+<ul>
+  <li><strong>API Keys API</strong>: リモート MCP サーバーが GA。AI アプリケーションから API キーの作成・検査・制限・ライフサイクル管理を直接行えます。</li>
+  <li><strong>App Engine standard</strong>: Direct VPC egress が GA。あわせて Migration hub から、ソースコードなし・再ビルドなしで有効バージョンを Cloud Run へデプロイできるプレビュー機能が追加されました（稼働中の App Engine トラフィックには影響なし）。</li>
+  <li><strong>BigQuery</strong>: 生成 AI 関数が <code>gemini-4-hydrogen</code> モデルをサポート。Knowledge Catalog では BigQuery パイプラインのテーブルレベル Data Lineage 追跡が GA となりました。</li>
+  <li><strong>Cloud Service Mesh（セキュリティ）</strong>: 1.31.3-asm.9 / 1.30.7-asm.9 / 1.29.10-asm.4 を公開。Security Bulletin GCP-2026-080（ISTIO-SECURITY-2026-009）の脆弱性を修正しております。</li>
+  <li><strong>Compute Engine</strong>: インスタンスフレキシビリティを使う MIG で、インスタンス選択ごとにディスク種別・最小 CPU プラットフォームを上書き可能に（GA）。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#November_12_2026">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（対象期間内は canary のみ、安定版の新規リリースなし。最新安定版 v16.4.6／2026-11-10 05:27 JST 公開）、<strong>React</strong>（最新 v19.3.1／2026-10-14 公開以降、新規リリースなし）、<strong>Python</strong>（3.16.0a2 系プレビューのみ）、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（4.2.0-RC2 が 2026-11-05 公開、以降の更新なし）、<strong>Hono</strong>（最新 v4.13.18／2026-11-11 18:01 JST 公開）、<strong>Claude API / SDK</strong>（最新 v2.8.0／2026-11-11 01:32 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
