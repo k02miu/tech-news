@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-14 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-14 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.325 / v2.1.323</h2>
+<p>対象期間内に <strong>v2.1.323</strong>（<strong>2026-11-13 09:24 JST</strong> 公開）と <strong>v2.1.325</strong>（<strong>2026-11-14 06:02 JST</strong> 公開）の 2 件が公開されました。いずれも新機能の追加と、サンドボックス権限まわりの挙動変更が中心ですわ。</p>
+
+<h3>🔧 新機能・改善（v2.1.325）</h3>
+<ul>
+  <li><strong>VS Code のプロンプト候補</strong>: ターミナルで候補が表示される場面すべてで VS Code でも提示され、<kbd>Tab</kbd> で次のプロンプトを承認できます。<code>promptSuggestionEnabled: false</code> で無効化可能です。</li>
+  <li><strong>API キーを作らないコンソールサインイン</strong>: VS Code 拡張に追加されました。</li>
+  <li><strong>MCP サーバーのサインイン（SSH / WSL / コンテナ）</strong>: パネルからリダイレクト URL を貼り付けられる欄が追加されました。</li>
+  <li><strong>Jupyter ノートブックのヒント</strong>: ノートブックを読む・編集した後に、セル再実行に関するスピナーのヒントが一度だけ表示されます。</li>
+  <li><strong>組織ポリシーでブロックされた際の案内</strong>: エラー行に <code>/rewind</code> でメッセージを変更するか <code>/clear</code> するかの継続方法が示されます。</li>
+</ul>
+
+<h3>⚙️ 挙動の変更（v2.1.325）</h3>
+<ul>
+  <li><strong>サンドボックス化された Bash が既定で通常の権限フローに従う</strong>: プロンプトなしで実行し続けるには <code>sandbox.autoAllowBashIfSandboxed: true</code> を設定します。マネージド設定でサンドボックスを有効化している場合も同様です。</li>
+  <li><strong>信頼していないリポジトリでの読み取り専用 git コマンド</strong>: 実行前に確認を求めるようになりました。プロンプトなしで許可するには <code>additionalDirectories</code> ではなく <code>--add-dir</code> で指定します。</li>
+  <li><strong>スケジュールタスクと <code>/loop</code></strong>: <code>allowed-tools</code> やフックを宣言したスキルの実行前に確認が入ります。無人実行するには <code>permissions.allow</code> に <code>Skill(name)</code> を追加してください。</li>
+  <li><strong>サンドボックスの書き込み制限を拡大</strong>: 追加ディレクトリ内の <code>.claude</code>（settings・skills・agents・commands・hooks）への書き込みが拒否されます。</li>
+  <li><strong><code>CLAUDE_CODE_MAX_CONTEXT_TOKENS</code></strong>: <code>claude-</code> で始まる未認識モデル ID（ゲートウェイの <code>claude-sonnet-latest</code> など）のコンテキストウィンドウにも適用されるようになりました。</li>
+  <li><strong>認証情報の分離</strong>: サンドボックスが自前で起動するプログラム（ネットワークブリッジ等）や、ripgrep・ローカル git コマンド・サンドボックスランタイムの補助プログラムが、サインイン用トークンや API キー、mTLS クライアント鍵のパスフレーズを環境に持たずに実行されるようになりました。</li>
+</ul>
+
+<h3>⚙️ 主な変更（v2.1.323）</h3>
+<ul>
+  <li><strong>Code Mode（実験的・オプトイン）</strong>: Claude がツール呼び出しのために JavaScript を書く方式が追加されました。組織単位での無効化も可能です。</li>
+  <li><strong>未認識モデル ID の既定コンテキストを 200K → 1M に変更</strong>: 200K のままにしたい場合は <code>CLAUDE_CODE_DISABLE_1M_CONTEXT=1</code> を設定します。ウィンドウの小さい他社モデルでは、満杯後に毎ターン失敗し続けることがあるため事前設定が推奨されます。</li>
+  <li><strong>同一マシン上のセッション間メッセージ上限</strong>: 約 20 通から 100,000 通へ引き上げられました（Claude Desktop の Code タブも同様）。</li>
+  <li><strong><code>/security-review</code></strong>: 実行前に確認を求めるようになりました。</li>
+  <li><strong>MCP クライアント v1 の削除</strong>: <code>MCP_SDK_GENERATION=v1</code> は v2 クライアントの互換モード（早いハンドシェイク、緩和された OAuth サインイン検査）として動作します。</li>
+  <li><strong>長時間フックのハートビート</strong>: <code>claude -p</code> と SDK セッションで 30 秒ごとに進捗を通知し、ホスト側がハングと誤認してターンを打ち切るのを防ぎます。</li>
+  <li><strong>サンドボックスのシンボリックリンク検査</strong>: macOS・Linux・WSL で、書き込み可能フォルダ内のシンボリックリンク経由で付与された書き込み権限を無視するようになりました。</li>
+  <li><strong>シークレットらしき許可ルール</strong>: 「今後確認しない」で保存されたルールが秘密情報を含むと見なされる場合、または git 管理下の <code>settings.local.json</code> に保存される場合は、そのセッション限りとなり永続化されません。</li>
+  <li><strong>プラグイン</strong>: <code>plugin.json</code> の <code>engines["claude-code"]</code> によりバージョン範囲外のプラグインは導入・更新・読み込みされず、範囲内で最新のものが選択されます。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-325">Claude Code changelog — 2.1.325</a> · <a href="https://code.claude.com/docs/en/changelog#2-1-323">2.1.323</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.1+canary.20261113T064447Z</h2>
+<p>canary ビルド <strong>v0.23.1+canary.20261113T064447Z</strong> が <strong>2026-11-13 17:06 JST</strong> に公開されました。ビルド・配布物の更新が主で、キュレーションされた変更点の記載はございません。macOS（Apple Silicon）DMG、Windows x64 / arm64 MSIX のスモークテストはいずれも通過しております。</p>
+<p>安定版の最新は <strong>v0.23.1</strong>（<strong>2026-11-10 10:42 JST</strong> 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.1%2Bcanary.20261113T064447Z">Hermes Agent canary 20261113</a></p>
+
+<h2>🐙 OpenClaw — 対象期間内の新規リリースなし（最新 v2026.11.5-beta.2）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.11.5-beta.2</strong>（<strong>2026-11-12 09:43 JST</strong> 公開）です。GitHub Releases API の <code>published_at</code> に基づき確認いたしました。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">OpenClaw Releases</a></p>
+
+<h2>🐋 Orca — v1.4.258</h2>
+<p><strong>v1.4.258</strong> が <strong>2026-11-13 10:35 JST</strong> に公開されました。大規模ワークスペースの操作感とモバイル側の閲覧性、Copilot Chat 連携が中心ですわ。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>大規模ワークスペースの高速化</strong>: 大きなワークスペースコレクションを開く際、ウィンドウ移動やレイアウト変更時の停止が削減されました。ローカル使用量の更新もキー入力処理プロセスへの負荷を下げています。</li>
+  <li><strong>GitHub Copilot を Chat で利用</strong>: <strong>Launch chat</strong> から返信のストリーミング、ツール出力の確認、ファイル差分のレビューができ、Orca 再起動後も会話を再開できます（Copilot CLI 1.0.88 以上とサインインが必要）。</li>
+  <li><strong>スマートフォンでのチャットスクロール復活</strong>: デスクトップが配信するチャットページでメッセージをスワイプでき、コードブロックは横スクロール、2 本指ピンチでチャット本文のみ拡大縮小できます。</li>
+  <li><strong>Pi を任意のモデル・思考レベルで起動</strong>: ターミナルランチャーがモデル選択を適用し、最初のプロンプト送信前に推論強度を提示します。</li>
+  <li><strong>プロジェクト追加の簡略化</strong>: <strong>Add project</strong> からフォルダ参照・URL クローン・新規作成を直接行え、メニュー内でマシンを切り替えられます。</li>
+  <li><strong>会話の継続性</strong>: 使用量上限時の <strong>Hand Off to Another Agent</strong> が保存済み会話全体を引き継ぎます。生成画像は最終回答の隣に残り、返信中にウィンドウを閉じると実行中確認が入ります。</li>
+  <li><strong>Claude アカウントの遠隔切り替え</strong>: <strong>Ask</strong> 配下から、スマートフォンや CLI で選択したアカウントへターミナルセッションを再開できます。実行中セッションはターンを終えてから切り替わり、<strong>Never restart</strong> では現状維持となります。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.258">Orca v1.4.258</a></p>
+
+<h2>🔧 その他のトピック</h2>
+
+<h3>☁️ AWS — Secrets Manager のクロスアカウント複製と運用系の拡充</h3>
+<ul>
+  <li><strong>AWS Secrets Manager のクロスアカウント複製</strong>（<strong>2026-11-13 17:00 JST</strong> 公開）: シークレットを別アカウントへ複製できるようになり、マルチアカウント構成での共有が容易になりました。</li>
+  <li><strong>AWS Systems Manager が Google Cloud VM の一元管理に対応</strong>（<strong>2026-11-13 17:00 JST</strong> 公開）: GCP 上の VM をオンボーディングし、AWS 側と同じ運用基盤で管理できます。</li>
+  <li><strong>RDS for Oracle の自動マイナーバージョンアップ時ダウンタイム短縮</strong>（<strong>2026-11-13 17:00 JST</strong> 公開）: 計画メンテナンスの停止時間が短縮されます。</li>
+  <li><strong>AWS Security Hub CSPM の Organizations 宣言型ポリシーによる集中構成</strong>（<strong>2026-11-13 17:00 JST</strong> 公開）。</li>
+  <li><strong>Amazon Bedrock AgentCore Identity の OAuth 2.0 ディスカバリー URL 対応</strong>（<strong>2026-11-13 17:00 JST</strong> 公開）。</li>
+  <li><strong>AWS Batch on Amazon EKS</strong>: Linux ケーパビリティ、seccomp、Pod レベルの設定に対応（<strong>2026-11-13 17:00 JST</strong> 公開）。</li>
+  <li><strong>Aurora PostgreSQL の Express configuration を CloudFormation でサポート</strong>（<strong>2026-11-14 01:00 JST</strong> 公開）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h3>☁️ GCP — 2026-11-13 のリリースノート</h3>
+<ul>
+  <li><strong>Cloud Run のアンビエントネットワーキング</strong>（Preview）: インスタンス単位のフルマネージド Envoy サイドカー経由でトラフィックをルーティングし、ワークロードの通信管理・セキュリティ・可観測性を簡素化します。あわせて、認証コードやサービスメッシュ設定なしで Cloud Run サービス間を接続する Express リンクも Preview で提供されます。</li>
+  <li><strong>BigQuery のフェデレーテッドクエリ</strong>: MySQL・Oracle・PostgreSQL への接続が利用可能になり、各データソースへのフェデレーテッドクエリを実行できます（Preview）。</li>
+  <li><strong>Bigtable のアクセスパターン分析</strong>: コンソールでインスタンス・クラスタごとの読み書きアクセスパターン（リクエスト量、レイテンシ、帯域、クエリ種別ごとの行スキャン指標）を表示・分析できます（GA）。</li>
+  <li><strong>Cloud Quotas</strong>: Access Approval と Access Transparency で GA となりました。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#November_13_2026">Google Cloud リリースノート</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（対象期間内は canary のみ＝v16.5.0-canary.49 が 2026-11-13 08:46 JST 公開と対象期間開始の直前、安定版の新規リリースなし）、<strong>React</strong>（最新 v19.3.1／2026-10-15 02:06 JST 公開以降、新規リリースなし）、<strong>Python</strong>、<strong>Django</strong>、<strong>Java / Spring Boot</strong>（最新 4.2.0-RC2／2026-11-05 22:41 JST 公開、以降の更新なし）、<strong>Hono</strong>（最新 v4.13.18／2026-11-11 18:01 JST 公開）、<strong>Claude API / SDK</strong>（対象期間内の新規パッケージ公開なし）、<strong>Azure</strong>（公式更新フィードの取得が叶わず確認できませんでした）については、対象期間内のアップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
