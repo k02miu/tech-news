@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-16 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-16 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3><span class="badge-critical">Critical</span> Apache Shiro 3.0.0以下（Java） — 認証キャッシュ有効な LDAP レルムで任意パスワードによりログイン可（CVE-2026-129349、CVSSv3.1 9.1）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 9.1（Critical）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-129349</td></tr>
+<tr><th>影響</th><td>Apache Shiro 3.0.0 以下（DefaultLdapRealm／JndiLdapRealm を authenticationCachingEnabled=true で使用時のみ）</td></tr>
+<tr><th>公開</th><td>2026-11-15（oss-security 2026/11/14、NVD登録 11-15 10:16 UTC）</td></tr>
+<tr><th>出典</th><td><a href="http://www.openwall.com/lists/oss-security/2026/11/14/8" target="_blank" rel="noopener noreferrer">oss-security</a></td></tr>
+</table>
+<ul>
+<li>Java の認証・認可フレームワーク Apache Shiro の DefaultLdapRealm で、認証キャッシュを有効にしていると、一度でもログインに成功したユーザーは以後 <b>任意のパスワード</b>でログインできてしまいます。キャッシュ済み認証は LDAP バインドを省略する一方、DefaultLdapRealm が既定で導入する AllowAllCredentialsMatcher が資格情報を無条件に受理するためです。</li>
+<li>有効なユーザー名を知る未認証の攻撃者が、そのユーザーとして認証を通過できてしまいます。対策は <b>3.0.1 以降への更新</b>（AllowAllCredentialsMatcher を既定で導入しないよう修正）、または LDAP レルムの認証キャッシュを無効化（既定）するか、資格情報を検証する資格情報マッチャ（SimpleCredentialsMatcher 等）を構成することです。</li>
+<li>Spring 系アプリで Shiro を LDAP 認証に用いている構成は、authenticationCachingEnabled の設定を今一度ご確認くださいませ。</li>
+</ul>
+
+<h3><span class="badge-critical">Critical</span> Cyrus SASL 2.1.28以下 — SRP サーバ機構の認証バイパス（CVE-2026-129483、CVSSv3.1 9.1）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 9.1（Critical）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-129483</td></tr>
+<tr><th>影響</th><td>Cyrus SASL 2.1.28 以下（SRP サーバ機構 plugins/srp.c）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-15 14:17 UTC</td></tr>
+</table>
+<ul>
+<li>srp_server_mech_step2() が、クライアント公開値 A が N の倍数である場合を拒否していないため、未認証のネットワーククライアントが A=N を送って共有秘密をゼロに強制できます。</li>
+<li>これにより <b>既存の任意ユーザーとしてパスワードなしで認証</b>を通過でき、セッション鍵も知られてしまいます。修正コミット fb3724f が公開済みです。SRP を有効にしているメール／認証基盤は更新くださいませ。</li>
+</ul>
+
+<h3><span class="badge-critical">Critical</span> WordPress プラグイン一括 — PHP オブジェクトインジェクション・権限昇格・LFI が 9.8</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（Critical）〜 7.1（High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-122662 / 125769 / 125795 / 125449 / 125832 / 82568 / 82663 / 125771 / 123707 ほか</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-15 07:17〜19:17 UTC（Wordfence／Patchstack 採番）</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-122662（9.8）</b>：Document Library Pro 4.2.2 未満。信頼できないデータのデシリアライズによる PHP オブジェクトインジェクション。同梱ライブラリの POP チェーン次第で任意コード実行やファイル操作に至ります。</li>
+<li><b>CVE-2026-125769（9.8）</b>：Advanced Form Integration。ロールを誤って割り当てる問題により権限昇格。<b>CVE-2026-125795（9.8）</b>：Estatik。include／require のファイル名制御不備による PHP ローカルファイルインクルージョン。</li>
+<li><b>CVE-2026-125449（8.8）</b>：Testimonial Slider。デシリアライズによるオブジェクトインジェクション。<b>CVE-2026-125832（8.5）</b>：WP Data Access。SQL インジェクション。</li>
+<li><b>CVE-2026-82568（7.5）</b>／<b>CVE-2026-82663（7.5）</b>：Give – Peer-to-Peer（2.9.3／2.9.5 以下）。sort パラメータの時間ベース SQL インジェクションと認可バイパス。</li>
+<li><b>CVE-2026-125771（7.2）</b>：MCP Server for WordPress（AI エージェント連携）。権限の誤割り当てによる権限昇格。<b>CVE-2026-123707</b>：WPGraphQL 2.27.1 未満。非公開ステータスの投稿へ Contributor 以上がアクセス可能。</li>
+<li>このほか RegistrationMagic（6.1.0.4 未満、SQLi・格納型 XSS・アカウント乗っ取り）、Membership Plugin（4.0.6 未満、認可・CSRF 欠如）、A2Reviews、Burst Statistics（3.7.5 未満）、WPJAM Basic、Gutenverse（DoS）等が同日一括登録されました。適用中プラグインの更新をご確認くださいませ。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> Gitea 28.4.0 — Git 権限チェック・TOTP 試行制限・OAuth2 トークン不備など 22 件を一括修正</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSS 4.3〜8.1（High 中心）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-123002 / 129337 / 125423 / 128359 / 129525 ほか計22件</td></tr>
+<tr><th>影響</th><td>Gitea 28.4.0 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-15 21:16〜22:17 UTC（Gitea v28.4.0 リリース）</td></tr>
+<tr><th>出典</th><td><a href="https://blog.gitea.com/release-of-28.4.0/" target="_blank" rel="noopener noreferrer">Gitea Blog</a></td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-129337</b>：Git over HTTP は AGit フローのため push 権限を read まで下げ、書き込みはサーバ側フックに依存しています。初期化が未完了のリポジトリなどで権限昇格の余地がありました。</li>
+<li><b>CVE-2026-123002</b>：サインイン・パスワードリセット・Basic 認証（X-Gitea-OTP ヘッダ）で誤った TOTP を無制限に試行でき、アカウントを既知とする攻撃者が総当たり可能でした。</li>
+<li><b>CVE-2026-128359</b>：OAuth2／OpenID Connect プロバイダとして動作時、トークンエンドポイントがユーザー状態を確認せず、無効化・サインイン禁止後もリフレッシュトークンが有効でした。<b>CVE-2026-125423</b>：auto-init したリポジトリが初期化完了前に push を受理。ほか、team の review request 削除の負 ID 参照、AGit の PR アクセス再確認漏れ、添付削除の権限チェック欠如、issue/PR の種別未確認などが含まれます。</li>
+<li>セルフホストの Gitea は <b>28.4.0 以降</b>へ更新くださいませ。</li>
+</ul>
+
+<h3><span class="badge-critical">Critical</span> ルーター／ネットワーク機器 — DrayTek Vigor2960・D-Link・TRENDnet に多数の深刻な脆弱性</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv4.0 9.3（Critical）〜 8.5（High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-129449〜129453 / 129353・129354 / 129444 / 129351・129352</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-14 23:16〜11-15 14:17 UTC</td></tr>
+</table>
+<ul>
+<li><b>DrayTek Vigor2960 1.5.1.6 以下</b>：/cgi-bin/mainfunction.cgi の複数機能に OS コマンドインジェクション（CVE-2026-129449・129450・129452、各 8.5〜8.6）とパストラバーサル（CVE-2026-129451、8.6）、ファイル存在確認の不備（CVE-2026-129453、8.6）。</li>
+<li><b>D-Link DIR-600L 2.17b02</b>：authentication.cgi のスタックバッファオーバーフロー（CVE-2026-129353、9.3）と HNAP ハンドラのスタックバッファオーバーフロー（CVE-2026-129354、9.3）。<b>D-Link DSL-6740C</b>：FTP デーモン設定ファイルにハードコードされた資格情報（CVE-2026-129444、9.3）。</li>
+<li><b>TRENDnet TEW-657BRM 1.00.1</b>：/setup.cgi の sprintf によるバッファオーバーフロー（CVE-2026-129351、9.3）と upgrade_flash.cgi の boundary 引数（CVE-2026-129352、8.5）。いずれも保守終了に近い機種で、公開 PoC が存在します。外部公開している管理画面は遮断をご検討くださいませ。</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> その他の注目 — OkHttp の証明書ピン検証回避、Kroki、Assimp／GPAC ほか</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSS 4.3〜6.9（Medium／High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-129482 / 129484・129485 / 129477〜129480 / 2025-71466〜71470 / 129356</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-15 02:17〜16:16 UTC</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-129482（Medium、OkHttp 5.5.1 以下）</b>：CertificatePinner の Pin.matchesHostname() が末尾ドット付きホスト名を正規化しないため、ピン留めしたホストを末尾ドット形式で要求した場合にピン検証がスキップされます。ピンに一致しない CA 信頼済み証明書で TLS を中間者攻撃され得ます（Java／Kotlin／Android 系）。</li>
+<li><b>CVE-2026-129484（5.3）／129485（6.9、Kroki 0.36.0 未満）</b>：svg-color-* オプション経由の反射型 XSS と、BlockDiag 系エンジンのノードアイコン／背景属性による SSRF。前日の朝刊で扱った Kroki の別 CVE に続く追加分です。</li>
+<li><b>Assimp 6.0.6 以下</b>：glTF／glTF2 インポータのパストラバーサル（CVE-2026-129477、6.8）と data URI の signed char 起因のヒープ境界外読み取り（129478、6.9）、Ogre バイナリ（129479）、MD2（129480）。3D モデルをサーバ側で処理する構成は注意が必要です。</li>
+<li><b>GPAC 26.02.0 未満</b>：m2ts／DASH／scenegraph 系で NULL ポインタ参照と型混同が4件（CVE-2025-71466〜71469）。<b>littlefs 2.11.3 以下</b>：LFS_MIGRATE 有効時に型混同（CVE-2026-129490）。<b>MicroQuickJS</b>：JS_Call() のフレーム設定不備による境界外読み取り（CVE-2025-71470）。</li>
+<li><b>CVE-2026-129356（Low、1.3）</b>：vLLM 0.30.0／0.31.0 の single_type_kv_cache_manager.py（Common Prefix Handler）に軽微な不備。LLM 推論基盤を運用している場合は更新をご検討くださいませ。</li>
+</ul>
+
+<h3><span class="badge-medium">Info</span> Claude Code／OpenClaw／Hermes Agent の状況</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Claude Code・OpenClaw・Hermes Agent</td></tr>
+<tr><th>公開</th><td>対象期間 2026-11-15 08:00〜11-16 08:00 JST</td></tr>
+</table>
+<ul>
+<li><b>Claude Code</b>：対象期間内の新規リリースはありませんでした（最新は v2.1.325、2026-11-13 20:40 UTC 公開で、zstd 圧縮レスポンスのデコードに関するセキュリティ修正を収録済み）。</li>
+<li><b>OpenClaw 2026.11.5-beta.3</b>（2026-11-15 公開のプレリリース）：大規模セッションの信頼性向上、再起動時のキュー済み権限上限の保持、圧縮時の引用要約内容からの資格情報の伏字化などが含まれます。</li>
+<li><b>Hermes Agent canary v0.23.1+canary.20261115T064406Z</b>（2026-11-15 16:52 JST 公開）：プラグインカタログの追加が中心で、セキュリティ関連の変更は含まれておりません。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">上記以外の対象スタック（Next.js・Hono・Django・Spring Boot・React・GCP／AWS／Azure）に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+<p class="empty-notice">対象期間内（2026-11-15 08:00 〜 2026-11-16 08:00 JST）に、日本国内の企業・官公庁・大学・医療機関等による新規の被害公表は確認されませんでした。Security NEXT・ScanNetSecurity・JVN いずれも 2026-11-13 付が最新で、11-14・11-15 は新規公表がありませんでした。</p>
+<ul>
+<li>進展のあった既報案件：無印良品（MUJI アプリ／ネットストア）は 2026-11-13 時点で、退会者を含む最大約2726万件の個人情報流出の可能性と、MUJI Card 会員情報 約109万件（うち約34万5000件はカード有効）の流出のおそれを公表しております。11-15 の朝刊でお伝えした良品計画の一連の事案の続報です。</li>
+<li>参考：サイバーセキュリティクラウド（CSC）は 2026-11-13、従業員の GitHub 認証情報1件の流出に伴い 2026-11-05 に第三者による不正アクセスの履歴を確認したと公表しております。一部顧客の組織名・氏名・メールアドレス等が流出した可能性があります。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
