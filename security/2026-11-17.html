@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-17 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-17 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3><span class="badge-medium">Medium</span> Next.js 15.5.29／16.4.5 未満 — 7件の脆弱性（Cookie ヘッダ露出・SVG 処理・レスポンスデシンク・キャッシュ汚染）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 6.0 〜 6.9（Medium）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-119346 / 119347 / 119348 / 119349 / 119350 / 119351 / 119790</td></tr>
+<tr><th>影響</th><td>Next.js 15.0.0〜15.5.29 未満、16.0.0〜16.4.5 未満（セルフホスト構成を含む）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 19:17 UTC（JST 2026-11-17 04:17）</td></tr>
+<tr><th>出典</th><td><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-119346" target="_blank" rel="noopener noreferrer">NVD</a></td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-119346（6.0）</b>：Edge runtime で NextResponse により Cookie を設定すると、内部ヘッダ <code>x-middleware-set-cookie</code> が公開レスポンスに含まれてしまいます。Cookie 値と属性が重複して出力されるため、同一オリジンで動く JavaScript が <b>HttpOnly 指定のセッショントークン</b>を読み取れてしまいます。App Router の route handler と Pages Router の Edge API routes が対象です。</li>
+<li><b>CVE-2026-119347（6.9）</b>：セルフホストの <code>/_next/image</code> オプティマイザが、既定（<code>dangerouslyAllowSVG=false</code>）でも攻撃者の SVG を処理してしまいます。意図的に無効化していたパーサに到達し、DoS や SVG デコード側の脆弱性への露出が増大します。</li>
+<li><b>CVE-2026-119348（6.3）</b>：上流レスポンスをそのまま返す構成で、宣言したフレーミングと実際のボディが食い違うレスポンスを生成します。HTTP/1.1 のリバースプロキシでパイプライン応答キューイングを許可している場合、<b>レスポンスデシンク</b>により他クライアントの応答が混入・漏えいするおそれがあります。</li>
+<li><b>CVE-2026-119349（6.3）</b>：App Router で <code>use cache</code> を使う関数に Uint8Array／Blob などのバイナリ引数を渡すと、異なる引数で<b>同一のキャッシュキー</b>が生成されます。クロスユーザーでキャッシュ結果が共有され、情報漏えいやキャッシュポイズニングが成立します（16.0.0〜16.4.5）。</li>
+<li><b>CVE-2026-119350（6.3）</b>：<code>cacheComponents</code> 有効かつ <code>partialPrefetching</code> 未設定／false のセルフホスト構成で、未認証リクエストが共有フォールバックシェルを汚染できます（16.4.0〜16.4.5、<code>next start</code>）。</li>
+<li><b>CVE-2026-119351（6.3）</b>／<b>CVE-2026-119790（6.3）</b>：ネストした <code>use cache</code> や <code>unstable_cache()</code> と <code>next/root-params</code> の組合せで、root param を欠いたキーに結果が永続化され、<b>root param をまたいでキャッシュが漏えい</b>します（それぞれ 16.2.0〜16.4.5、16.3.0〜16.4.5）。</li>
+<li>対策は <b>15.5.29 または 16.4.5 以降への更新</b>ですわ。Next.js をご利用の構成は早めの更新をお願いいたします。</li>
+</ul>
+
+<h3><span class="badge-critical">Critical</span> Apache Shiro 一連 — 認証回避（CVE-2026-129349、9.1）に加え、11-16 に低〜中深刻度 7件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv4.0 9.1（Critical）／ 5.9 〜 2.1（Medium 〜 Low）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-129349 / 74762 / 74763 / 88019 / 114737 / 129320 / 129347 / 129348</td></tr>
+<tr><th>影響</th><td>Apache Shiro 3.0.0 以下を中心に、Shiro 3.0.2 未満の各系統</td></tr>
+<tr><th>公開</th><td>3.0.1 は 2026-08、3.0.2 は 2026-11-08。CVE-2026-129349 は 11-14 公開・11-16 報道</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192887" target="_blank" rel="noopener noreferrer">Security NEXT</a> ／ <a href="https://shiro.apache.org/security-reports.html" target="_blank" rel="noopener noreferrer">Apache Shiro Security Reports</a></td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-129349（9.1）</b>：LDAP 認証結果のキャッシュを有効にした DefaultLdapRealm で、キャッシュ以降は任意のパスワードが受理されます。有効なユーザー名を知る未認証の攻撃者が、<b>その利用者としてログイン</b>できてしまいます。3.0.1 で修正済み、11-08 に 3.0.2 が公開されています。</li>
+<li><b>CVE-2026-74762（5.9）</b>：Remember me 機能で認証した場合の<b>セッション固定</b>。<b>CVE-2026-74763（6.3）</b>：<code>@RequiresRoles</code>／<code>@RequiresPermissions</code> がクラス・インタフェース階層によっては<b>適用されない</b>ことがある認可アノテーションの問題。</li>
+<li><b>CVE-2026-88019（6.0）</b>：Jakarta EE 連携モジュールのフォーム自動保存機能が、再送フォームの安全性を弱めます。<b>CVE-2026-114737（2.3）</b>：CVE-2026-23903 の修正が、手動作成した ShiroFilterFactoryBean に対して不完全でした。</li>
+<li><b>CVE-2026-129320（2.1）</b>：shiro-web／shiro-jakarta-ee の <code>shiro:principal</code> タグが出力をエスケープせず XSS。<b>CVE-2026-129347（2.3）</b>：空の保存資格情報が空のパスワードに一致してしまう問題。<b>CVE-2026-129348（2.3）</b>：PropertiesRealm の再読込時に、削除済みユーザーや狭められた権限が残存。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> @fastify 群（Node.js／Web）— multipart・busboy・proxy-addr の 7件</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 7.5（High）〜 3.7（Low）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-110710 / 124289 / 124724 / 128835 / 128842 / 128846 / 121192</td></tr>
+<tr><th>影響</th><td>@fastify/multipart、@fastify/busboy、@fastify/proxy-addr の各旧版</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 13:17／14:17 UTC</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-110710（7.5）</b>／<b>CVE-2026-124289（7.5）</b>：@fastify/multipart。3.0.0〜10.1.3 および 7.4.0〜10.1.8 で、アップロード時に書き出される一時ファイルの扱いに不備があります。</li>
+<li><b>CVE-2026-124724（7.5）</b>／<b>CVE-2026-128835（7.5）</b>：@fastify/busboy 1.0.0〜3.2.5。設定したサイズ上限に達した場合の処理、およびヘッダブロックが細工された multipart パートで問題が生じます。<b>CVE-2026-128842（5.3）</b>（url-encoded パーサ）、<b>CVE-2026-128846（3.7）</b>（同一 multipart の再解釈）も同梱です。</li>
+<li><b>CVE-2026-121192（6.8）</b>：@fastify/proxy-addr が信頼するプロキシホップの判定に関わる問題で、Fastify の <code>trustProxy</code> 設定の前提が崩れます。Hono など他フレームワークでも同種の信頼プロキシ設定をご確認くださいませ。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> MCP Python SDK 1.30.0／2.2.0 未満 — OAuth 資格情報を不正な認可サーバへ送信（CVE-2026-115563、7.5）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 7.5（High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-115563</td></tr>
+<tr><th>影響</th><td>Model Context Protocol Python SDK 1.9.1〜1.30.0 未満、2.2.0 未満</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 21:17 UTC</td></tr>
+</table>
+<ul>
+<li><code>mcp.client.auth</code> の OAuth クライアント支援機能が、<b>信頼できない MCP サーバが指定した認可サーバ</b>へ資格情報を送ってしまいます。ClientCredentialsOAuthProvider と PrivateKeyJWTOAuthProvider は、自らの資格情報を所有する認可サーバを特定できません。</li>
+<li>影響を受ける HTTP クライアントでは、<b>client_secret、認可コード、PKCE の code_verifier、署名済みアサーション</b>が漏えいするおそれがあります。AI エージェントに MCP サーバを接続している構成は、SDK の更新をご検討くださいませ。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> Git（CVE-2026-111760、8.0）／ Django・Frappe 系 — django-tenants の SQL インジェクション（8.7）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 8.7（High）〜 5.3（Medium）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-130082 / 130069 / 129864 / 111760</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 21:17／22:18 UTC</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-130082（8.7）</b>：django-tenants 3.4.8〜4.0.1 未満。PostgreSQL バックエンドにおける <b>SQL インジェクション</b>。マルチテナント構成の Django アプリは要更新ですわ。</li>
+<li><b>CVE-2026-130069（5.3）</b>：Frappe Framework 15.123.0 未満／16.50.0 未満の SSRF。<b>CVE-2026-129864（7.1）</b>：Frappe CRM 1.84.0 未満の <code>get_deal_contacts</code> における認可欠如。</li>
+<li><b>CVE-2026-111760（8.0）</b>：分散リビジョン管理システム Git の脆弱性。Git をご利用の開発環境は、ベンダの更新情報をご確認くださいませ。</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> WordPress プラグイン一括 — 認可欠如・XSS・DoS（11-16 登録分）</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 7.3（High）〜 3.7（Low）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124672 / 127219 / 121786 / 121787 / 125681 / 125739 / 125770 / 125442 / 125773 / 125797 / 129018 / 129026 / 129035 / 129038 / 129046 / 128995 / 128998 / 114453</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 06:16〜19:17 UTC（Wordfence／Patchstack 採番）</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-124672（7.3）</b>：Burst Statistics 3.7.5 未満。リクエストが自身の REST API 宛かを検証せずに全てをアンロードする問題。<b>CVE-2026-127219（6.9）</b>：WPChat 1.4.6 未満のアクセス制御不備。</li>
+<li><b>CVE-2026-121786／121787（各 5.3）</b>：Social Viral Downloader 2.0.3 以下。ログのエクスポート／削除アクションに認可・ノンス検証がありません（未認証で実行可能）。</li>
+<li><b>LearnPress</b>（125681／125739／125770、各 5.3）、<b>JetFormBuilder</b>（129046）、<b>WP User Frontend</b>（129035）、<b>WP ERP</b>（129038）、<b>YITH WooCommerce Product Add-Ons</b>（129026）、<b>Cooked</b>（129018）、<b>WP Fusion Lite</b>（128995）、<b>WP Job Manager</b>（128998）、<b>HUGE</b>（125442）、<b>Luck</b>（125773）、<b>Timetics</b>（125797）に、認可欠如・基本 XSS が各 4.3〜5.3 で報告されています。</li>
+<li><b>CVE-2026-114453（3.7）</b>：Kadence Memberships 4.0.6 未満。会員資格更新時に送信されたレベルが既存レベルと一致するか検証していません。</li>
+</ul>
+
+<h3><span class="badge-critical">Critical</span> その他 OSS／SaaS 一括 — Phoenix の GraphQL テンプレート注入が 10.0、AI エージェント基盤にも 9 台の Critical</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1／v4.0 10.0（Critical）〜 7.1（High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-53998 / 93664 / 19732 / 77033 / 120699 / 129550 / 129552 / 129952 / 129955 / 129941 / 129943 / 111559 / 104840 / 76823 / 63477 ほか</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 13:17〜22:18 UTC</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-53998（10.0）</b>：AI 可観測性・評価基盤 Phoenix 13.0.0〜15.7.0 未満。GraphQL の <code>applyChatTemplate</code> にテンプレート注入があり、LLM 基盤自体が危険に晒されます。</li>
+<li><b>CVE-2026-93664（10.0）</b>／<b>CVE-2026-19732・77033（各 9.9）</b>：3DEXPERIENCE の Station Launcher App における安全でないデシリアライズと OS コマンドインジェクション。<b>CVE-2026-120699（9.4）</b>：AI エージェント用サンドボックス CubeSandbox 0.5.1 未満の認証バイパス。</li>
+<li><b>CVE-2026-129550（9.3）</b>／<b>CVE-2026-129552（9.3）</b>：Tensei 0.11.5 以下。@tensei/auth の権限昇格と、<b>ハードコードされた JWT 署名鍵</b>（'auth-secret-key'）へのフォールバックによる認証バイパス。<b>CVE-2026-129952・129955（各 9.3）</b>：NodePress 8.5.1 以下の管理者権限奪取。</li>
+<li><b>CVE-2026-129941（9.3）</b>／<b>CVE-2026-129943（8.6）</b>：Prime CMS（@primecms/core）の認証バイパスと <code>updateSystem</code> GraphQL ミューテーション経由の OS コマンドインジェクション。<b>CVE-2026-111559（9.3）</b>：Batflat CMS の <code>/contact</code> 未サニタイズ。</li>
+<li><b>CVE-2026-104840（9.2）</b>／<b>CVE-2026-76823（8.7）</b>／<b>CVE-2026-63477（8.8）</b>：脅威インテリジェンス基盤 OpenCTI の一連の脆弱性。TI 基盤は外部連携も多く、優先的な更新をおすすめします。</li>
+<li>ほか、Microsoft SharePoint のデシリアライズ（124223、8.8）と権限昇格（124222、6.5）、containerd 2.2.0〜2.4.2 のイメージマニフェスト処理（95839、7.1）、Wiki.js（120697／120698、8.7・8.8）、Cloud Commander（130072、8.8）、7-Zip File Manager 26.03 未満（130067、8.5）、Libreswan pluto（110339、7.5）、Qt QXmlSimpleReader（105925、8.2）、Umbraco（130068）、BookStack（130083）、Directus（129239）、LimeSurvey（129853、8.2）、SeaweedFS（129851／129852）、Axigen Mail Server（127218、8.7）、GLPI（57150、8.7）、Kiwi TCMS のハードコード鍵（129882）、PrestaShop のパストラバーサル（129957、8.6）、Amazon DJL（129266、8.7）、Netskope Client（15707、8.5）、Dell PowerStore（82156、8.8）も報告されています。</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> Linux カーネル一括 — ksmbd／SMB クライアント・ceph・nfsd など 20件超</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>順次評価中（UAF・境界外書込みが中心）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-99289 〜 99311（ksmbd、smb client、ceph、fuse、netfilter、xhci、nfsd、udf ほか）</td></tr>
+<tr><th>公開</th><td>NVD登録 2026-11-16 10:17 UTC</td></tr>
+</table>
+<ul>
+<li>ksmbd の app-instance supersede における UAF、durable reconnect 失敗後の UAF、SMB2 CREATE 応答バッファオーバーフロー、SMB クライアントの slab-out-of-bounds、ceph の snap trace 境界検査における整数オーバーフロー、nfsd の cl_lock 保持漏れ、xhci の bounce buffer オーバーフローなどが修正されています。NAS・ファイルサーバを含むカーネル更新をご検討くださいませ。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> CISA KEV／Apache Airflow — 悪用確認済みの脆弱性と分散処理機能の認証不備</h3>
+<table class="cve-table">
+<tr><th>深刻度</th><td>CVSSv3.1 7.8（High）／ 7.3（High）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-123039 / CVE-2026-114713 / CVE-2026-68982</td></tr>
+<tr><th>公開</th><td>KEV 追加 2026-11-13（米機関の対応期限 11-16）／ Airflow アドバイザリ 2026-11-09</td></tr>
+<tr><th>出典</th><td><a href="https://www.security-next.com/192892" target="_blank" rel="noopener noreferrer">Security NEXT（KEV）</a> ／ <a href="https://www.security-next.com/192896" target="_blank" rel="noopener noreferrer">Security NEXT（Airflow）</a></li>
+</table>
+<ul>
+<li><b>CVE-2026-123039（7.8）</b>：Check Point 製品の Gaia OS「DynamicCLI」における権限昇格。パッチ未適用かつ脆弱性「PHP2Shell」が存在したセキュリティゲートウェイのモバイルアクセスポータルを標的とした攻撃で、侵入後に本脆弱性を悪用され root 権限を奪われる事例が確認されています。同社は「Jumbo Hotfix」を提供しています。</li>
+<li><b>CVE-2026-114713</b>：オープンソース IRC サーバ UnrealIRCd のコマンドインジェクション。メッセージに付与する「label」タグの処理に起因し、相互接続された IRC ネットワークで一般ユーザーがサーバ権限でコマンドを実行できます。UnrealIRCd 6.2.7.1 で修正、再起動不要のホットパッチも提供されています。</li>
+<li><b>CVE-2026-68982（7.3）</b>：Apache Airflow 3.4.0 未満の CeleryExecutor。コールバック処理「ExecuteCallback」の実行時に認証用トークンを検証しておらず、ブローカーへ書き込める攻撃者がワーカー上で任意のコードを実行できるおそれがあります。3.4.0 以降へ更新くださいませ（新しいトークン検証には API サーバが必要です）。</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> 開発ツールの更新 — Claude Code v2.1.326、Hermes Agent v0.23.2、OpenClaw v2026.11.4</h3>
+<table class="cve-table">
+<tr><th>公開</th><td>Claude Code 2026-11-17 07:11 JST ／ Hermes Agent 2026-11-17 05:59 JST ／ OpenClaw 2026-11-16</td></tr>
+<tr><th>出典</th><td><a href="https://github.com/anthropics/claude-code/releases" target="_blank" rel="noopener noreferrer">Claude Code</a> ／ <a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">Hermes Agent</a> ／ <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer">OpenClaw</a></td></tr>
+</table>
+<ul>
+<li><b>Claude Code v2.1.326</b>：<code>Edit</code> の deny ルールがソース側にしか適用されていない場合に <code>cp</code> が拒否される問題、ファイルを削除・上書きする Bash コマンド（<code>find -delete</code>、<code>cat a &gt; b</code>、<code>sort -o</code>）がトランスクリプト上で検索・読取として集計される問題、設定ファイルへ保存できなかったのに保存済みに見える問題、ネストが数千階層に及ぶ設定値のクラッシュ、サンドボックス起動時の問題などを修正しています。</li>
+<li><b>Hermes Agent v0.23.2</b>（v0.23.1 以降の約1,989 PR をまとめたパッチリリース）：<b>DB URL のクエリ文字列に含まれるパスワードのマスク</b>、<code>${VAR}</code> 参照で始まる <code>.npmrc</code> 認証値のマスク、git のオプション置換を4階層まで1語として評価する承認処理、プラグインカタログのサーバが書込み前に確認する変更などが含まれます（前日公開の canary 20261116T070005Z にも同種のマスク修正）。</li>
+<li><b>OpenClaw v2026.11.4</b>（2026-11-16 公開、125 PR／90 コントリビュータ）：Security and Privacy 節で、Gateway／Doctor の診断出力やクライアントログ、OpenTelemetry 属性、圧縮時の引用要約への<b>認識済みシークレットの露出</b>を修正。ホストコマンドとサンドボックスプロセスへ PostgreSQL 接続変数を継承させない、再帰評価される standalone 代入や <code>NAME+=value</code> の承認処理を強化、委譲された永続変更に承認を要求する設定を追加、管理スキルの読み取り専用保護と入れ子マウント保護、サンドボックス由来の Git メタデータのミラー同期防止、空の IRC 送信者リストが広い権限で受理される問題の修正などが含まれます。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">本対象期間において、上記以外のスタック（Hono、GCP、AWS、Azure、React 本体、SpringBoot）に直接関連する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3><span class="badge-high">High</span> アクサ損害保険「MyAXA」への不正アクセス — 約59万7千件の顧客情報が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>アクサ損害保険株式会社</td></tr>
+<tr><th>判明日</th><td>2026-11-09 08:30 頃に検知、11-12・11-13 に公表（11-16 報道）</td></tr>
+<tr><th>規模</th><td>約 597,000 件（氏名、住所、生年月日、メールアドレス、電話番号）</td></tr>
+<tr><th>出典</th><td><a href="https://www.axa-direct.co.jp/company/official_info/announce/2026/261112.html" target="_blank" rel="noopener noreferrer">アクサ損害保険 お知らせ（第1報）</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56793.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>11月9日午前8時30分頃に「MyAXA」で不審なアクセスを確認し、調査の結果、第三者が本来アクセス権限のない顧客情報にアクセスしたことを確認。同日午前10時53分にアクセス遮断等の対策を講じ、関連ウェブサービスを一時停止しています。</li>
+<li>対象となり得るのは約59万7千件の顧客情報です。対象顧客の特定と詳細確認を進めており、確認でき次第順次個別に連絡するとしています。「MyAXA」は必要なセキュリティ対策と安全性の確認のうえ、再開済みです。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> 三井住友海上火災保険 — 「ご契約者さま専用ページ」約3万7,000件と「MSコンパス」約23,000件で情報漏えい</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>三井住友海上火災保険株式会社</td></tr>
+<tr><th>判明日</th><td>2026-11-02 夜間に検知、11-06・11-09 に公表（11-16 報道）</td></tr>
+<tr><th>規模</th><td>ご契約者さま専用ページ 約 37,000 件／MSコンパス 約 23,000 件</td></tr>
+<tr><th>出典</th><td><a href="https://www.ms-ins.com/news/fy2026/pdf/1106_1.pdf" target="_blank" rel="noopener noreferrer">三井住友海上 リリース</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56791.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>「ご契約者さま専用ページ」では、11月2日夜間に不正アクセスを検知し、翌3日深夜にサービスを能動的に停止。その後の調査で、保険証券番号・氏名・住所・電話番号・メールアドレスなどを含む約37,000件の顧客情報の漏えいを確認しています。</li>
+<li>中堅・中小企業向け情報提供サイト「MSコンパス」でも、11月2日から3日にかけて不正アクセスを検知。会員登録者・セミナー申込者（2023年11月〜2026年11月）・問い合わせフォーム利用者約23,000件について、法人名・法人番号・役職・氏名・連絡先・業種・住所・売上高・従業員数などが漏えいしました。11月3日に一部システムを制御し、11月6日にサイト全体を一時閉鎖しています。</li>
+<li>いずれも外部専門機関によるフォレンジック調査を実施中ですわ。保険業界では同種の被害が続いており、委託先を含めた認証基盤の点検が急がれます。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> 株式会社ウチコミ「ウチコミ！」へのランサムウェア攻撃 — 142,591 アカウントに影響</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ウチコミ</td></tr>
+<tr><th>判明日</th><td>2026-07-06 にサーバ障害を確認、11-04 に公表（11-16 報道）</td></tr>
+<tr><th>規模</th><td>142,591 アカウント（会員情報・契約情報）</td></tr>
+<tr><th>出典</th><td><a href="https://uchicomi.co.jp/news/647" target="_blank" rel="noopener noreferrer">ウチコミ お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56788.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>同社が管理するサーバで障害が発生したため調査とシステム切り離しを実施した結果、第三者からの不正アクセスにより、サーバ内に保存されていた一部ファイルが<b>暗号化および窃取</b>されるランサムウェア被害が判明しています。</li>
+<li>影響を受け得るのは会員情報 142,591 アカウント分で、氏名、メールアドレス、生年月日、性別、住所、電話番号を含む会員情報および契約情報が閲覧・取得された可能性があります。同社はアクセス制御の見直しとネットワーク監視体制の強化を進めています。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> 株式会社Shippio「Shippio Platform」への不正アクセス — 社内ツールの認証情報を悪用、書類約1,300件をダウンロード</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社Shippio</td></tr>
+<tr><th>判明日</th><td>2026-10-30 から社内ツールへの不正アクセス、11-01〜11-02 にプラットフォームへ侵害（11-04・11-05 公表）</td></tr>
+<tr><th>規模</th><td>全顧客の会社名・チーム名・住所・電話番号等を閲覧、書類ファイル約 1,300 件をダウンロード、約 1,100 チームに不正アカウント作成</td></tr>
+<tr><th>出典</th><td><a href="https://www.shippio.io/news/20261104/" target="_blank" rel="noopener noreferrer">Shippio ご報告（第一報）</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56787.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>10月30日から社内業務ツールへの不正なアクセスが確認され、同ツールに保存されていた<b>認証情報を使って</b>プラットフォームへアクセスされていました。11月2日に検知し、同日午前10時40分からサービスをメンテナンスモードに切り替えています。</li>
+<li>漏えいを確認した情報は、シップメント情報（輸送内容・日程・関係者・請求関連）、書類のファイル名と種類、会社名・チーム名・電話番号・住所、ユーザーの氏名・メールアドレスです。データの損傷として、不正なユーザーアカウントと API 認証情報の作成（約1,100チーム）、一部設定データの書込み、シップメントへの悪意あるファイルのアップロードが確認されています。</li>
+<li>同社は再開にあたり<b>全ユーザーのパスワードリセット</b>と<b>過去に発行した全シップメント共有リンクの無効化</b>を実施しています。業務ツールの資格情報が侵害起点となった点は、同種の SaaS 連携を抱える企業にとって示唆に富みます。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> プレステージ・インターナショナルグループ — 業務システム侵害、最大約550万件の個人情報持ち出しを確認</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社プレステージ・インターナショナル（グループ会社：プレステージ・コアソリューション）</td></tr>
+<tr><th>判明日</th><td>2026-10-29 に検知、11-02 に公表（11-16 報道）</td></tr>
+<tr><th>規模</th><td>最大約 5,500,000 件</td></tr>
+<tr><th>出典</th><td><a href="https://www.prestigein.com/Portals/0/pdf/NEWS/news_20261102_01.pdf" target="_blank" rel="noopener noreferrer">プレステージ・インターナショナル お知らせ</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56786.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>10月29日にグループの業務システムで不正アクセスを検知し、不正利用された認証情報の無効化などの措置を実施しましたが、その後も不正アクセスの継続を確認したため、10月30日に当該システムを停止しています。</li>
+<li>対象は PCS が取引先企業から受託しているロードサービス等の受付・手配業務システムで、ロードサービス利用顧客の氏名、住所、電話番号、メールアドレス、車両情報（登録番号・車台番号等）、事故・故障の受付情報、金融機関の口座情報（一部）を含む最大約550万件が持ち出されました。</li>
+<li>システム停止中も代替運用で業務を継続しているとのことです。自動車関連の個人情報は車両と個人が結び付くため、二次被害への警戒が必要ですわ。</li>
+</ul>
+
+<h3><span class="badge-medium">Medium</span> 靖国神社 通信販売サイトの侵害 — 約1万4,500件の個人情報が流出、パスワードのハッシュ値も</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>靖国神社（オンライン授与品・頒布品サイト）</td></tr>
+<tr><th>判明日</th><td>2026-10-28 に侵害を確認・同日公開停止、11-16 に公表</td></tr>
+<tr><th>規模</th><td>約 14,500 件</td></tr>
+<tr><th>出典</th><td><a href="https://www.yasukuni.or.jp/" target="_blank" rel="noopener noreferrer">靖国神社</a> ／ <a href="https://www.security-next.com/192746" target="_blank" rel="noopener noreferrer">Security NEXT</a></td></tr>
+</table>
+<ul>
+<li>2026年10月28日、外部からサイトが侵害されたことが判明し、同日サイトの公開を停止しました。調査の結果、利用者の個人情報の一部が流出したことを確認しています。</li>
+<li>氏名やメールアドレスのほか、<b>パスワードのハッシュ値および生成に用いる補助情報（ソルト）</b>が含まれ、流出情報から元のパスワードを特定されるおそれがあります。他サービスでパスワードを使い回している場合は変更するよう呼びかけています。</li>
+</ul>
+
+<h3><span class="badge-high">High</span> アイリスオーヤマ公式通販サイト「アイリスプラザ」 — 外部クラウドサービス侵害で約770万人分の個人情報が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社アイリスプラザ（アイリスオーヤマグループ）</td></tr>
+<tr><th>判明日</th><td>2026-10-28 に不審なファイルを発見、11-05 に第2報を公表（11-16 報道）</td></tr>
+<tr><th>規模</th><td>会員データ 約 5,800,000 人＋非会員データ 約 1,900,000 人（合計 約 770 万人）</td></tr>
+<tr><th>出典</th><td><a href="https://www.irisohyama.co.jp/news/2026/amp/?date=1105" target="_blank" rel="noopener noreferrer">アイリスオーヤマ お知らせ（第2報）</a> ／ <a href="https://scan.netsecurity.ne.jp/article/2026/11/16/56789.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity</a></td></tr>
+</table>
+<ul>
+<li>10月28日、アイリスプラザが利用する外部クラウドサービスで不審なファイルを発見したため、サイトおよび関連システムを停止して調査したところ、第三者からの不正アクセスが判明しました。保管データが閲覧・取得された可能性を確認しています。</li>
+<li>漏えいの可能性があるのは、会員データ（退会済み含む）約580万人分（氏名、住所、電話番号、メールアドレス、性別、暗号化されたパスワード、生年月日等）と、非会員データ（登録なしで購入・キャンペーン応募）約190万人分（氏名、住所、電話番号、メールアドレス）です。</li>
+<li>影響を鑑み、ホームファッション専門店「SIMPLE STYLE」や家電サブスクリプション・家具家電の配送設置サービス等も10月28日から停止しています。<b>外部クラウドサービス経由</b>の侵害という点で、委託先管理を含むクラウド設定の点検をおすすめします。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
