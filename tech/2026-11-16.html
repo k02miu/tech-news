@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-16 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-16 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし（最新 v2.1.325）</h2>
+<p>公式changelogのRSSフィードを確認いたしましたところ、対象期間（2026-11-15 09:00 〜 2026-11-16 09:00 JST）に公開された新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.325</strong>（2026-11-14 06:02 JST 公開）です。</p>
+<p>v2.1.325 の内容は前日分までにてお伝えした通りで、VS Code 統合ターミナルでのプロンプト候補表示、MCPサーバーへのSSH/WSL/コンテナ環境からのサインイン改善、サンドボックス化されたBashコマンドの権限フロー既定化、プラグインMCPバンドルの展開先変更などが含まれます。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.1+canary.20261115T064406Z</h2>
+<p>2026-11-15 16:52 JST に canary ビルド <strong>v0.23.1+canary.20261115T064406Z</strong> が公開されました。今回の canary はプラグインカタログの拡充が中心で、多数のサードパーティ製プラグインの追加・再ピンがまとめて取り込まれております。安定版の最新は <strong>v0.23.1</strong>（2026-11-10 10:42 JST 公開）のままです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プラグインカタログの拡充</strong>: <code>video-xray</code>（動画解析ワークベンチ）、<code>PrintWatch</code>（Bambu Lab アダプタ追加）、<code>QMD Workspaces</code>、<code>hermes-eye-memory</code>、<code>dosbox-mcp</code>、<code>AutoRAG</code>（ローカル文書・アーカイブ検索）などが追加されました。</li>
+  <li><strong>カタログの権限ティア</strong>: プラグインカタログに permission-tiers を導入し、プラグインの権限要求を段階付けして提示する仕組みが入りました。</li>
+  <li><strong>プラグイン設定ファイル</strong>: <code>hermes-hostd</code> および <code>hive.yaml</code> によるプラグイン構成に対応。</li>
+  <li><strong>Gateway</strong>: <code>gateway tickets</code> にプロファイル単位およびプロファイル管理用のチケットを追加。</li>
+  <li><strong>秘匿情報の扱い</strong>: 設定値のマスキング処理を <code>config_secret_display</code> へ集約し、表示経路ごとのばらつきを解消。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>OpenRouter のプロンプトインジェクション用ガードレールが返す 403 を、ファイアウォールやAPIキーの障害と誤認しないよう修正。</li>
+  <li>ピア（peer）から渡される制御テキストをターミナル出力前にサニタイズ。</li>
+  <li>コンパクション要約器への指示をシステムメッセージ、会話をユーザーメッセージとして送る構成に変更（OpenHands/software-agent-sdk からの移植）。</li>
+  <li>カタログ側では、作者撤回プラグイン（follow-through、eyes、card-grader）の削除や、レビュー指摘に伴う多数の SHA 再ピンを実施。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.1%2Bcanary.20261115T064406Z">リリースページ</a> · <a href="https://github.com/NousResearch/hermes-agent/compare/v0.23.1+canary.20261114T064334Z...v0.23.1+canary.20261115T064406Z">前日 canary との差分</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.5-beta.3</h2>
+<p>2026-11-15 09:31 JST に <strong>v2026.11.5-beta.3</strong> が公開されました。大型セッションのメモリ負荷、再起動時のメッセージ配送、コールドスタートの復旧性に焦点を当てたベータです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>大型セッションの信頼性</strong>: トランスクリプトのインデックス作成・トリミング・コンパクション時のメモリ負荷を低減。ハイドレーション用ペイロードを選択的にストリームし、要約文字数の上限を設定可能にしました。</li>
+  <li><strong>再起動・配送の安全性</strong>: 再起動をまたいでキュー済みメッセージの権限上限と受理済みイングレスを保持し、ハンドオフ前に最終チャット書き込みをドレイン。最終配送の所有権を RPC 完了まで維持します。</li>
+  <li><strong>復旧とセットアップ</strong>: コールドスタート初期化、中断されたワークスペースの復旧、インストーラの権限、iMessage Automation のステータス表示を改善。</li>
+  <li><strong>モデル・ツール</strong>: コンテキストサイズに応じた既定出力バジェットを復元。遅延ロードされる MCP ツールを実効ベースで公開し、入力ヒントに上限を設定。ラップされた構造化 MCP 結果の重複を排除。</li>
+  <li><strong>コンパクション</strong>: 要約文字数上限を設定可能にしつつ、フォアグラウンドのリクエストバジェット制約は維持。引用された要約内容からは認証情報を伏字化。</li>
+  <li><strong>ブラウザ・ワークスペース</strong>: Lightpanda のナビゲーションをサポートされる接続経路へルーティングし、サンドボックスファイルの準備完了を待機。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>起動・更新系として、共有状態スキーマの一時的な競合に対するリトライ、コールドスタート時ランタイム初期化の遅延、更新リハーサル時の外部プラグインデータ保持、アイドル状態の cron ワーカーの無効化、SQLite ヘッダプローブのタイムアウト分離を実施。旧形式の exec-approval ファイルが競合しても起動を妨げないよう修正。</li>
+  <li>セッション・ストレージ系として、大型トランスクリプトのインデックス／トリミングの上限設定、セッションローテーションをまたぐ実行中ターンの保持、中断された子孫セッションの決着、永続化された内部 wake タイトルの修復。</li>
+  <li>権限・配送系として、委譲された変更に実効権限を要求し、準備済み画像にも入力ポリシーのフックを適用。タイムアウト後も受理済みの ClawHub 試行を保持。</li>
+  <li>チャネル系として、iMessage の Automation 警告を送信受理まで保持、Slack の reasoning ストリームのフリーズ回避、送信者リストが空の IRC チャネル処理、履歴へのローカル最終応答の保持。cron およびシステム応答が閉じたプラグインスコープを使わないよう修正。</li>
+  <li>プロバイダ設定系として、Z.ai Coding Plan のカタログモデル保持、同時実行されるプロバイダカタログ取り込みの重複排除、設定書き込み時のモデルAPI課金設定の保持、キャンセルされた Claude CLI ログイン更新の復旧。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.5-beta.3">リリースページ</a></p>
+
+<h2>🐋 Orca — 対象期間内のデスクトップ版リリースなし／Android 版 v0.0.65</h2>
+<p>デスクトップ版は対象期間内に新規リリースは確認されませんでした。最新版は <strong>v1.4.259</strong>（2026-11-15 06:20 JST 公開）です。</p>
+<p>一方、Android 版は対象期間内に <strong>0.0.65</strong> が2件公開されました。<strong>android-v0.0.65</strong>（2026-11-15 10:09 JST 公開）は新しいアプリ <code>dev.orca.app</code> の初回リリース、<strong>mobile-android-v0.0.65</strong>（2026-11-15 11:45 JST 公開）は旧アプリ <code>com.stably.orca.mobile</code> の最終アップデートです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>新しい Agents タブ</strong>: 接続しているすべてのコンピュータのエージェントを一覧表示。</li>
+  <li><strong>タブ表示の整理</strong>: セッションは一度に1タブを表示し、開いている全タブの一覧を併記。</li>
+  <li><strong>音声入力の継続</strong>: セッションを離れてもディクテーションが継続。アプリ終了時には下書きとチャットを保持。</li>
+  <li><strong>差分表示</strong>: GitHub 風のレイアウトと配色に変更。写真はアップロード前にリサイズし、HEIC は JPEG に変換。</li>
+</ul>
+<h3>⚠️ 互換性・移行上の注意</h3>
+<ul>
+  <li>旧アプリ（<code>com.stably.orca.mobile</code>）は本バージョン以降、セキュリティ修正を含め更新されません。新アプリは別アプリとして並存インストールされるため、ホーム画面では旧アプリが「Orca (old)」と表示されます。</li>
+  <li>移行手順は、新アプリをインストール → コンピュータ側の Orca で「設定 → Mobile」のコードを読み取りペアリング → エージェントが表示されたら旧アプリを削除、となります。エージェント・チャット・ワークスペースはコンピュータ側に保存されているため引き継がれます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/android-v0.0.65">android-v0.0.65</a> · <a href="https://github.com/stablyai/orca/releases/tag/mobile-android-v0.0.65">mobile-android-v0.0.65</a></p>
+
+<h2>⚡ Next.js — v16.5.0-canary.52</h2>
+<p>canary チャネルで <strong>v16.5.0-canary.52</strong>（2026-11-16 08:49 JST 公開）が出ております。安定版の最新は <strong>16.4.6</strong>（2026-11-10 05:27 JST 公開）です。</p>
+<ul>
+  <li><strong>typegen / build</strong>: <code>next typegen</code> と <code>next build</code> 実行時に古い <code>.next/dev/types</code> を削除するよう変更。</li>
+  <li><strong>コード生成</strong>: デプロイIDを条件付きで付与するコード生成を簡素化。</li>
+  <li><strong>Turbopack 基盤</strong>: turbo-tasks-backend で collectibles の依存を EdgeSet に格納、turbo-persistence でブロック長を CRC に含める対応、中間マージをまたいだ使用済みキーの保持。</li>
+</ul>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">vercel/next.js releases</a></p>
+
+<h2>☁️ AWS / Azure / GCP</h2>
+<p><strong>GCP</strong>: リリースノートに 2026-11-15（太平洋時間）付のエントリが追加されました。Google SecOps の Publisher Agent <strong>2.7.2</strong>（リモートアクションのアラート遅延読み込み、相互依存する依存ファイルのインストール失敗修正、リモートエージェント削除時のディレクトリ権限修正、Publisher の安定性・セキュリティ更新）と、Google SecOps SOAR <strong>6.3.107</strong>（最初のリージョン群への段階展開、内部・顧客向けバグ修正）が含まれます。</p>
+<p><strong>AWS</strong>: What's New フィード上では、対象期間に公開された項目は確認されませんでした（直近の項目は 2026-11-13 公開の Aurora PostgreSQL express configuration の CloudFormation 対応、AWS Secrets Manager のクロスアカウントレプリケーション対応など）。</p>
+<p><strong>Azure</strong>: 公式アップデートフィードから対象期間内の新着を確認できませんでした。取得でき次第お知らせいたします。</p>
+<p>🔗 <a href="https://cloud.google.com/release-notes">Google Cloud release notes</a> · <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>⚛️ React / その他スタック</h2>
+<p><strong>React</strong> は対象期間内の新規リリースは確認されませんでした。最新版は <strong>v19.3.1</strong>（2026-10-15 02:06 JST 公開）です。<strong>Django</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>（最新 v4.13.18／2026-11-11 18:01 JST 公開）、<strong>Python</strong>、<strong>Claude API/SDK</strong>（最新 v2.8.0／2026-11-11 01:32 JST 公開）についても、対象期間内の新規リリースは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
