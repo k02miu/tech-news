@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-17 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-17 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.326</h2>
+<p>2026-11-17 07:18 JST に <strong>v2.1.326</strong> が公開されました。エージェントチーム有効時の Code Mode 対応、権限まわりの確認動作の厳格化、サンドボックスの書き込み範囲の見直しが中心です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Code Mode とエージェントチームの併用</strong>: エージェントチームを有効にした状態で Code Mode をオンにできるようになり、すでにオンにしていた場合はチーム有効のセッションが Code Mode で開始されます。</li>
+  <li><strong>CLI の取り違え防止</strong>: <code>--allowedTools</code>／<code>--disallowedTools</code>／<code>--tools</code> の値に完全なルールに見えない項目が含まれる場合、起動時に警告を表示。</li>
+  <li><strong><code>/status</code> の可視性向上</strong>: プロバイダや <code>DISABLE_TELEMETRY</code> などの環境変数によって機能が無効化されている場合、その旨を <code>/status</code> の行として表示。</li>
+  <li><strong>MCP の管理設定</strong>: セッション中に管理者が <code>managed-mcp.json</code> を追加した際、MCP サーバーの読み込みが停止する理由をメッセージで説明。</li>
+  <li><strong>プラグイン表示の改善</strong>: <code>plugin.json</code> の <code>author</code> や <code>homepage</code> など不正なフィールドが無視された場合に、<code>/plugin</code> と <code>claude plugin list</code> で注記。</li>
+  <li><strong>操作性</strong>: 起動時の非表示通知を Ctrl+O で表示、サブエージェント表示に <code>esc to stop</code> のヒントを追加、初回セットアップのテーマ既定を「Auto（ターミナルに合わせる）」に変更。</li>
+  <li><strong>テレメトリ</strong>: <code>OTEL_RESOURCE_INCLUDE_HOST</code> により <code>host.name</code>／<code>host.id</code> を OpenTelemetry のリソース属性に含められるようになりました（既定はオフ）。</li>
+  <li><strong>[VSCode]</strong>: プロンプト候補を無効化する <code>claudeCode.promptSuggestions</code> 設定を追加。</li>
+</ul>
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li>サンドボックス化された Bash コマンドの書き込み先を縮小し、macOS・Linux・WSL で既定では一部の機密ホームフォルダへ書き込まないよう変更（<code>sandbox.filesystem.allowWrite</code> で許可可能）。</li>
+  <li>署名関連ファイル（<code>.credentials.json</code> など）への書き込みをファイルツールが拒否するよう変更し、Bash 権限チェックでも同ファイルに到達するコマンドを確認するようになりました。</li>
+  <li>権限フックや SDK ホストが承認時に書き換えたコマンドは、元がサンドボックス検査済みであればサンドボックス内に留まるよう変更。</li>
+  <li>プラグインのアンインストール時に、MCP バンドル（<code>.mcpb</code>／<code>.dxt</code>）から展開されたファイルも削除。</li>
+  <li>プランモードの自動コンパクションが、応答中のモデル（<code>opusplan</code> なら Opus）を使うよう変更。コストが増える場合があります。</li>
+  <li>Remote Control のプロキシ接続を CONNECT トンネル方式に変更し、<code>--verbose</code> 時のセッションログ出力先を <code>~/.claude/child-logs/</code> へ移動。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-326">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.2</h2>
+<p>2026-11-17 05:59 JST に安定版 <strong>v0.23.2</strong> が公開されました。v0.23.1 以降に取り込まれた約1,989件のPRをまとめたパッチリリースで、CLI・インストーラ・Microsoft Store 版・Docker・Hermes Cloud 向けに配布されています。詳細なキュレーション済みノートは v0.24.0 で提供予定です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>耐久サブエージェント</strong>: Gateway の再起動やクラッシュを越えて存続し、独自の会話で継続できるサブエージェント。</li>
+  <li><strong>セッション単位のプロンプトキャッシュクロック</strong>、フォールバックチェーンの健全性を確認する <code>hermes fallback check</code>、Gateway を即時停止する <code>hermes update --force</code>。</li>
+  <li><strong>cron のジョブ単位オプション</strong>: <code>wrap_response</code> と実行ごとの新規スレッド作成。</li>
+  <li><strong>プラグインAPI拡張</strong>: <code>ctx.fork_session</code>、<code>ctx.redact_text()</code>、<code>ctx.register_idle_task</code>。</li>
+  <li><strong>モデル対応</strong>: Gemini 3 以降および Gemini 4 Carbon で Gemini Interactions API を既定化、Claude Mythos 5.2 の fast モードに対応。</li>
+  <li><strong>配布</strong>: 初回起動時に Chromium を導入する軽量な macOS バンドル。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>8月ビルドの Desktop チャットで <code>custom</code> プロバイダのみを使用している場合に送信できなくなる問題を修正。</li>
+  <li>ストリーミング中のクラッシュ時に Telegram などで「Recovered reply」が重複表示される問題、およびキー接頭辞を含む単語（<code>program_id</code> など）の表示遅延を修正。</li>
+  <li>Desktop 起動・復帰時にチャット入力が失われる／文字化けする問題、再接続後に返信が重複・欠落する問題を修正。</li>
+  <li>CLI 終了時に起動時の更新チェックが GitHub 待ちのまま <code>git</code> プロセスが残る問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.2">リリースページ</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.4（安定版）／ v2026.11.5-beta.4</h2>
+<p>2026-11-16 13:17 JST に安定版 <strong>v2026.11.4</strong> が公開されました（125件のPR、90名のコントリビュータ）。同日 12:12 JST にはベータ版 <strong>v2026.11.5-beta.4</strong> も公開されています。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>委譲変更の承認設定</strong>: 委譲された変更に対する承認設定を追加し、実行権限の扱いを明示できるようになりました。</li>
+  <li><strong>ポリシープラグインによる画像検査</strong>: 画像がモデルへ届く前にポリシープラグインが検査できる仕組みを追加。</li>
+  <li>設定の再読み込み後や再接続後にメッセージが失われる経路の修正を含む、保守性重視のパッチ。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>再接続後にバッファ済みの Signal メッセージがスキップされる問題、設定リロード後に返信が失われる問題を修正。</li>
+  <li>メモリおよび設定のリカバリ用コピーが破損する問題を修正。</li>
+  <li>npm のインストールプレフィックスや Git チェックアウトパスに空白・シェル特殊文字が含まれる場合に、専用 CLI ランチャーが失敗する問題を修正。</li>
+  <li>Windows の PowerShell インストーラがバッチシムをシステムコマンドインタプリタなしでオンボーディングへ渡す問題、macOS で Homebrew のブートストラップ失敗後もプロビジョニングを続行してしまう問題を修正。</li>
+  <li>Web UI（Control UI）が Safari でレイアウト変化時にフリーズする問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.4">v2026.11.4</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.5-beta.4">v2026.11.5-beta.4</a></p>
+
+<h2>🐋 Orca — v1.4.261</h2>
+<p>2026-11-16 19:30 JST に <strong>v1.4.261</strong> が公開されました。多忙なチャットワークフローの応答性改善、ブラウザタブのメモリ解放、Cursor のチャット対応、<code>+</code> メニューのカスタマイズが柱です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>チャット履歴のページ読み込み</strong>: 長い会話の履歴をページ単位で読み込み、会話切り替え時のサイドバー・非表示チャットの処理を軽量化。</li>
+  <li><strong>Memory Saver</strong>: 既定で4時間表示されていないブラウザタブのページを解放し、戻った際に再読み込み。セッションCookieを使うサイトは再起動後もサインインを維持。設定 → Browser で待機時間の変更や無効化が可能。</li>
+  <li><strong>Cursor をチャットで利用</strong>: 端末側で Cursor にサインインし、モデル・effort・Fast を選択、コマンド承認、会話の再開までを Orca 内で完結。</li>
+  <li><strong>カスタマイズ可能な <code>+</code> メニュー</strong>: 新規アイコン行の歯車から並べ替え・非表示・ショートカット設定が可能。非表示にした項目も検索とショートカットから利用できます。</li>
+  <li><strong>ターミナル作業の引き継ぎ精度</strong>: Copy Context／Fork／Continue がターミナルプログラムの描画する空白を保持。<code>Edit → Paste</code> は実際にフォーカスのある分割ペインへ貼り付け。</li>
+  <li><strong>ワークスペースカード（実験的）</strong>: アクティビティ・未読・失敗・オフラインホストを一覧表示。Workspace オプションで Classic／Experimental を選択。</li>
+  <li><strong>モバイル</strong>: ペアリング済みスマホ側にデスクトップのプロジェクトグループを表示。チャット／ターミナルリンクの共通設定（Ask each time を含む）、<code>Take back all</code> によるブラウザタブの制御返却に対応。</li>
+</ul>
+<h3>🐛 主な修正・注意点</h3>
+<ul>
+  <li>ネイティブチャットの保存先を SQLite へ移行。既存チャットはバックグラウンドまたは初回オープン時に変換され、旧形式のチャットファイルは今回のリリースではそのまま残ります。</li>
+  <li>解放されたページはその場で再読み込みされるため、スクロール位置やページ内メモリがリセットされる場合があります。未保存の編集が検出された場合は解放されません。</li>
+  <li>Android は新しい <code>dev.orca.app</code> への別途インストールへ誘導。旧アプリからの自動更新はできません。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.261">リリースページ</a></p>
+
+<h2>⚡ Next.js — 安定版リリースなし（16.5 canary 継続）</h2>
+<p>対象期間内に安定版リリースは確認されませんでした。プレリリースとしては <strong>v16.5.0-canary.53</strong>（2026-11-17 08:44 JST 公開）まで canary が進行中です。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">Next.js Releases</a></p>
+
+<h2>☁️ AWS / Azure / GCP</h2>
+<h3>AWS — 2026-11-16 の主な発表</h3>
+<ul>
+  <li><strong>Amazon S3 Vectors</strong>: ベクトル検索と全文検索を組み合わせたハイブリッド検索に対応（2026-11-17 06:00 JST）。</li>
+  <li><strong>Amazon Redshift</strong>: Apache Iceberg に対する複数文トランザクション、競合解決、タイムトラベルをサポート（2026-11-17 05:30 JST）。</li>
+  <li><strong>AWS KMS</strong>: AWS Resource Access Manager によるキー共有に対応（2026-11-17 03:00 JST）。</li>
+  <li><strong>AWS Secrets Manager</strong>: Auth0・Okta・Palo Alto Networks 向けマネージド外部シークレットをサポート（2026-11-16 17:00 JST）。</li>
+  <li><strong>IAM Identity Center</strong>: VPC エンドポイントとネットワークアクセス制御に対応。</li>
+  <li><strong>AWS Backup</strong>: Amazon RDS 向けに論理的にエアギャップされた Vault をサポート。</li>
+  <li><strong>Amazon Bedrock AgentCore</strong>: AgentCore ランタイムインスタンスが6リージョン追加、AgentCore Identity が OAuth 2.0 ディスカバリURLに対応。</li>
+</ul>
+<h3>Azure</h3>
+<p>対象期間内に新規のサービスアップデート告知は確認されませんでした。直近の告知は 2026-11-14 04:54 JST の「Azure Data Share の 2029年11月12日 廃止予定」です。</p>
+<h3>Google Cloud — 2026-11-16 のリリースノート</h3>
+<ul>
+  <li><strong>App Hub</strong>: <code>us</code>／<code>eu</code> マルチリージョンアプリケーションに対応し、地理的境界内でマルチリージョン・リージョナルリソースを1つのアプリとしてまとめられます。</li>
+  <li><strong>Batch</strong>: インスタンスフレキシビリティが GA。複数のマシンタイプを指定・優先順位付けでき、Spot VM の取得確率を改善。</li>
+  <li><strong>Bigtable</strong>: インメモリティアのパフォーマンス・容量・リクエスト適格性をコンソールで監視可能（Enterprise Plus 向け Preview）。またコーディングエージェントと連携する Bigtable マイグレーションエージェントスキルを Preview 提供。</li>
+  <li><strong>Cloud Asset Inventory</strong>: Application Design Center 関連のリソースタイプを各種 API で公開。</li>
+</ul>
+
+<h2>⚛️ React — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v19.3.1</strong>（2026-10-15 02:06 JST 公開）です。</p>
+
+<h2>🐍 Python / Django / Java / Spring Boot / Hono / Claude API・SDK</h2>
+<h3>Hono — v4.13.19</h3>
+<p>2026-11-16 21:58 JST 公開。JSX/dom の <code>useActionState</code> を React 19 に整合、ErrorBoundary の親再レンダリング時の同期、Suspense 子要素の再サスペンド時の属性・effect 復元など。Bun の WebSocket ハンドラで投げられた例外を <code>onError</code> へ伝播、<code>method-override</code> で GET/HEAD へ上書きする際にボディを破棄する修正も含まれます。</p>
+<h3>Claude API / SDK</h3>
+<p>2026-11-17 01:47 JST に TypeScript SDK <strong>sdk-v1.9.0</strong> と Python SDK <strong>v2.9.0</strong> が公開されました。API 側では RBAC Role 読み取りエンドポイントに source／error code を追加、Claude Tag Bundle の instructions を設定する Update Bundle を追加。ストリーミングのツール入力パーサが、JSON でない文字（コメントや <code>12 3</code> のような数値の連結）を許容していた問題を修正し、不正な入力はエラーとなるよう厳格化されました。</p>
+<h3>その他</h3>
+<p>Python・Django・Java・Spring Boot については、対象期間内の安定版リリースは確認されませんでした（Spring Boot の最新は v4.2.0-RC2、2026-11-05 公開）。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
