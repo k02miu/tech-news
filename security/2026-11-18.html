@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-18 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-18 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Oracle Critical Patch Update 2026年11月 - WebLogic／Access Managerなどに CVSS 10.0 を含む大量の Critical <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-91500 / 91510 / 91569 / 114784 / 114824 / 114835ほか（多数）</td></tr>
+<tr><th>CVSS</th><td>CVSSv3.1 最大 10.0（Critical）。9.x が多数</td></tr>
+<tr><th>影響</th><td>Oracle Fusion Middleware（WebLogic Server、Oracle Access Manager、Service Bus）、Oracle Database Server（Oracle Text、RDBMS）、Oracle APEX、Oracle Analytics（BI EE 10.0）、Oracle Hyperion、Oracle E-Business Suite、Oracle MySQL ほか</td></tr>
+</table>
+<ul>
+<li>Oracle は 2026年11月の Critical Patch Update を公開（NVD 登録 2026-11-17 22:18〜22:19 UTC＝JST 2026-11-18 07:18〜07:19）。</li>
+<li>WebLogic Server（Core／TopLink Integration）に 10.0 と 9.8 が複数、Oracle Access Manager（Authentication Engine／Admin Console）に 10.0 が複数、Oracle Business Intelligence Enterprise Edition に 10.0（CVE-2026-114784）。</li>
+<li>Oracle Database Server の Oracle Text に 9.9（CVE-2026-114819／114848）、RDBMS に 9.9（CVE-2026-114822）、APEX に 9.8、MySQL Server／Cluster に 9.1、Oracle Hyperion と AutoVue に 9.x が多数。</li>
+<li>いずれもネットワーク経由・認証不要で到達し得るものが多く、該当製品は 11月 CPU の適用を優先してください。</li>
+</ul>
+
+<h3>Rootways Authorize.net CIM Pro（Magento 2）- Apple Pay 検証コントローラの未認証SSRF（CVE-2026-130583、CVSSv3.1 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-130583</td></tr>
+<tr><th>CVSS</th><td>CVSSv3.1 9.3（CVSSv4.0 9.2）</td></tr>
+<tr><th>影響</th><td>Rootways Authorize.net CIM Pro extension for Magento 2（4.1.5 未満）</td></tr>
+</table>
+<ul>
+<li>Apple Pay マーチャント検証コントローラに未認証の SSRF（CWE-918）。<code>validationUrl</code> に <code>file://</code>／<code>gopher://</code>／<code>dict://</code> を指定すると <code>app/etc/env.php</code> の資格情報と暗号鍵を読み出したり、内部サービスやクラウドメタデータに到達できる。修正は 4.1.5 以降。</li>
+</ul>
+
+<h3>BISHENG 3.0.0 未満 - ハードコードされた jwt_secret による管理者なりすまし（CVE-2026-130840、CVSSv4.0 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-130840</td></tr>
+<tr><th>CVSS</th><td>CVSSv4.0 9.3（Critical）</td></tr>
+<tr><th>影響</th><td>dataelement BISHENG 3.0.0 未満</td></tr>
+</table>
+<ul>
+<li>AuthJwt が使用する既定の <code>jwt_secret</code> がハードコードされているため、未認証の遠隔攻撃者が user_id 1・admin ロールの HS256 トークンをオフラインで偽造し、<code>access_token_cookie</code> として送信するだけで管理者権限（ユーザー、ワークスペース、ナレッジベース、ワークフロー）を掌握できる。</li>
+</ul>
+
+<h3>BZFlag bzfs 2.4.32 未満 - NetHandler::tcpReceive() のヒープ境界外書き込み（CVE-2026-130849、CVSSv4.0 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-130849</td></tr>
+<tr><th>CVSS</th><td>CVSSv4.0 9.3（Critical）</td></tr>
+<tr><th>影響</th><td>BZFlag bzfs 2.4.32 未満</td></tr>
+</table>
+<ul>
+<li>ゲームサーバで細工したパケットによりヒープメモリを破壊される。未認証の遠隔攻撃者が到達可能。</li>
+</ul>
+
+<h3>53AIHub 0.5.5 未満 - 認証欠如により公開エンドポイントからインスタンスを再初期化（CVE-2026-130856、CVSSv4.0 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-130856</td></tr>
+<tr><th>CVSS</th><td>CVSSv4.0 9.3（Critical）</td></tr>
+<tr><th>影響</th><td>53AIHub 0.5.5 未満</td></tr>
+</table>
+<ul>
+<li>公開された POST エンドポイントに認証がなく、未認証の遠隔攻撃者が導入済みインスタンスを再初期化できる。</li>
+</ul>
+
+<h3>Flowise 3.1.4 以下 - DNSリバインディングによる SSRF（CVE-2026-130615、CVSSv3.1 7.1） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-130615</td></tr>
+<tr><th>CVSS</th><td>CVSSv3.1 7.1（CVSSv4.0 7.6、CWE-367）</td></tr>
+<tr><th>影響</th><td>Flowise 3.1.4 以下（flowise-components）</td></tr>
+</table>
+<ul>
+<li>checkDenyList() の DNS 検証がピン留めされておらず、認証済みユーザーが Playwright／Puppeteer ローダーに DNS リバインディング用ドメインを設定すると、ヘッドレス Chromium が内部サービスやクラウドメタデータへ到達し、応答をドキュメント内容として取得できる。</li>
+</ul>
+
+<h3>WP File Manager 8.0.7 未満 - elFinder 設定不備による任意PHPアップロード→RCE（CVE-2026-82025、CVSSv4.0 8.6） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-82025</td></tr>
+<tr><th>CVSS</th><td>CVSSv4.0 8.6（CVSSv3.1 7.2、CWE-434）</td></tr>
+<tr><th>影響</th><td>WordPress プラグイン WP File Manager 8.0.7 未満</td></tr>
+</table>
+<ul>
+<li>file_folder_manager.php の elFinder コネクタで <code>uploadDeny</code> が空のため allowPutMime() が常に true を返し、管理者権限の攻撃者が .php を直接アップロード、または許可拡張子でアップ後にリネームして Web サーバ権限で任意コードを実行できる。</li>
+</ul>
+
+<h3>CloudPaste 1.1.0〜1.9.1 - 未認証で WebDAV 資格情報が露出（CVE-2026-129494） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-129494</td></tr>
+<tr><th>CVSS</th><td>High（推定）</td></tr>
+<tr><th>影響</th><td>CloudPaste 1.1.0〜1.9.1</td></tr>
+</table>
+<ul>
+<li>認証なしの <code>/api/proxy/link</code> から共有 slug を用いて WebDAV の資格情報を取得され、WebDAV 上のファイルを読み取り・改ざん・削除されるおそれ。</li>
+</ul>
+
+<h3>国産製品の脆弱性（JVN）- プリザンターとエレコム製無線LANルータ</h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-117634 / 121811 / 125276 / 125411、CVE-2026-101113、CVE-2025-46267 / 53472</td></tr>
+<tr><th>CVSS</th><td>プリザンター 最大 CVSSv4.0 7.1／エレコム 最大 CVSSv4.0 8.6</td></tr>
+<tr><th>影響</th><td>プリザンター 1.5.9.1 以下、エレコム製 WRC-BE36QS-B／WRC-BE36QSD-B／WRC-W701-B など</td></tr>
+</table>
+<ul>
+<li><strong>プリザンター</strong>（JVN#02242982、株式会社インプリム）: 情報公開機能の権限チェック不備（CVE-2026-117634、6.9）、API のパストラバーサル（CVE-2026-121811、5.3）、API 送信データへの機微情報挿入により他ユーザーの API キー等を取得される問題（CVE-2026-125276、7.1）、項目アクセス制御の権限チェック不備（CVE-2026-125411、5.3）。修正版は 1.5.10.0。</li>
+<li><strong>エレコム製無線LANルータ</strong>（JVNVU#92504317／#91615135、最終更新 2026/11/17）: Web 管理画面の OS コマンドインジェクション（CVE-2026-101113、CVSSv4.0 8.6）と、デバッグ機能の有効化（CVE-2025-46267、6.9）・OS コマンド実行（CVE-2025-53472、8.6）。ファームウェアの最新版適用が必要です。</li>
+</ul>
+
+<h3>開発ツールの更新 - Claude Code／Hermes Agent／OpenClaw</h3>
+<table class="cve-table">
+<tr><th>製品</th><td>Claude Code v2.1.326／Hermes Agent v0.23.2+canary.20261117T064624Z／OpenClaw v2026.11.5</td></tr>
+<tr><th>種別</th><td>リリース情報（セキュリティ関連の記載有無）</td></tr>
+</table>
+<ul>
+<li><strong>Claude Code</strong>: 対象期間内の新規リリースなし（最新は v2.1.326、2026-11-16 22:11 UTC 公開）。</li>
+<li><strong>Hermes Agent</strong>: canary v0.23.2+canary.20261117T064624Z を GitHub Releases に公開（2026-11-17 07:54 UTC＝JST 16:54）。プラグインカタログ追加と Teams 認証のプラグイン化などが中心で、セキュリティ関連の変更・CVE 修正は含まれていません。</li>
+<li><strong>OpenClaw v2026.11.5</strong>（2026-11-17 10:47、署名検証済み）: 内容境界の修正として、認証済みブラウザの CDP URL がツール結果に残らないよう変更、バイナリ添付がプロンプト本文に混入しないよう変更。Authorization 面では、キュー済み自動実行が開始前に owner のプライベートメモリへのアクセス権を再確認するよう修正。個人／法人向けのセキュリティプリセットも追加（明示設定とアクセス・承認上限は引き続き適用）。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">web / Next.js / Java / Python / Django / Hono / GCP / AWS / Azure / React / SpringBoot の各スタックに直接関連する新規のベンダアドバイザリは、本対象期間では上記以外に確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>スーパーコンピューター「富岳」（理化学研究所）に不正アクセス - 運用停止、SSH秘密鍵・認証情報が持ち出し</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>理化学研究所（神戸市・計算科学研究センター）</td></tr>
+<tr><th>初回発生</th><td>2026-11-12（不審な通信）／11-14 運用停止</td></tr>
+<tr><th>影響</th><td>全利用者に影響の可能性、SSH秘密鍵・認証情報の持ち出し</td></tr>
+</table>
+<ul>
+<li>理研は 11-13 に不正アクセスの形跡を検出して文部科学省へ報告し、11-14 午前4時半から外部からのアクセスを遮断して富岳の運用を停止。11-16 に不正アクセスを認めました。</li>
+<li>通知メールによれば、運用系システム（ユーザー認証に関わるシステム）が外部の第三者から不正アクセスを受け、ホームディレクトリなどのファイルが読み出され、一部利用者の SSH 秘密鍵や認証情報が外部へ持ち出されました。すべての利用者の情報に影響が及んだ可能性を否定できない状況です。</li>
+<li>トヨタ自動車や住友ゴム工業などの利用企業、大学の研究室も影響を受け、復旧時期は未定。文科省は事実関係の究明と被害範囲の確認、早期復旧を求めています。</li>
+</ul>
+
+<h3>プレイド「KARTE」に不正アクセス - サーバ脆弱性を悪用され認証情報を窃取、34組織以上に波及</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社プレイド（CXプラットフォーム「KARTE」）</td></tr>
+<tr><th>初回発生</th><td>2026-11-13 未明（同日 8:59 検知）</td></tr>
+<tr><th>影響</th><td>KARTE アカウントのメールアドレス 79,249件、連携用認証情報、利用企業の顧客データ（件数調査中）</td></tr>
+</table>
+<ul>
+<li>攻撃者はサーバの脆弱性を悪用してシステム・データベースの接続用認証情報を窃取し、データベース等からデータを外部へ読み出したうえ、窃取した認証情報でプレイドのアカウントを乗っ取り管理画面へ不正アクセスしました。</li>
+<li>KARTE は全サービスの停止が続いており、再開の目処は未定。プレイドは連携用認証情報の無効化を利用企業へ依頼しています。</li>
+<li>影響公表は 34 組織以上。四国電力「よんでんコンシェルジュ」約60万件、アインホールディングス（アインズ&トルペ・AYURA 最大約260万件／Francfranc 最大約598万件・購入履歴約400万件）、ゴルフダイジェスト・オンライン最大6,974,506件、阪急阪神ホテルズ最大331,586件、モリサワ 23,957件、オーケー 23,332件、日本経済新聞社、テレビ東京、WOWOW、radiko、CAMPFIRE、ワールド、TSIホールディングス、カウネット（コクヨ）など。</li>
+</ul>
+
+<h3>電子マネー基盤「Pokepay」に不正アクセス - 大学生協電子マネー・地域通貨が全面停止</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社ポケットチェンジ（Pokepay Enterprise）</td></tr>
+<tr><th>初回発生</th><td>2026-11-14 確認（同日 20:00 全サービス停止）</td></tr>
+<tr><th>影響</th><td>大学生協電子マネー、ふくアプリ（はぴコイン）、ほくペイ、ハチペイ、めぶくPay など</td></tr>
+</table>
+<ul>
+<li>第三者からの不正アクセスを確認したため予防的に全サービスを停止。11-15 16:40 に再開しましたが、外部連携機能の一部は停止が続いています。</li>
+<li>東京都北区（ほくペイ）は利用者の個人情報漏えいは確認されていない一方、加盟店の申込情報（代表者の生年月日、住所、電話番号、メールアドレス、振込先銀行口座情報）が第三者に取得された可能性があるとしています。</li>
+</ul>
+
+<h3>エディオン ECサイトに不正アクセス - 決済ページが改ざんされカード情報が流出した可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社エディオン</td></tr>
+<tr><th>初回発生</th><td>2026-11-04 19時過ぎ（改ざんプログラム稼働）／11-05 18:30 頃に不正アクセス確認</td></tr>
+<tr><th>影響</th><td>クレジットカード情報 最大556回の決済入力、ギフトカード5,360枚、ログインID・パスワード最大1,141名分ほか</td></tr>
+</table>
+<ul>
+<li>第2報（11-09）で、EC サイトの決済関連処理に第三者による不正なプログラムが組み込まれる改ざんが新たに判明。PC から決済画面に入力したクレジットカード情報等が直接第三者へ漏えいした可能性を否定できない状況です。</li>
+<li>第1報の調査進展で、注文時エラーログにクレジットカード番号・セキュリティコード等（最大5件）、エディオンギフトカード情報 5,360枚、ログインID・パスワード最大1,141名分も新たに対象に判明。</li>
+<li>同社は 11-07 22:00 から EC サイトと公式アプリを緊急停止し、個人情報保護委員会と所轄警察署へ追加報告を準備しています。</li>
+</ul>
+
+<h3>旭化成セラピューティクス「Pharma DIGITAL」にサイバー攻撃 - 医療従事者55万8,000名の個人情報が漏えいした可能性</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>旭化成セラピューティクス株式会社（運営委託: 株式会社医薬情報ネット）</td></tr>
+<tr><th>初回発生</th><td>2026-10-02 委託先から報告</td></tr>
+<tr><th>影響</th><td>医療従事者 約51万4,000名＋約4万4,000名、同社従業員 約700名</td></tr>
+</table>
+<ul>
+<li>会員データベースへの不正アクセスにより、氏名、所属施設名、施設住所、職種、診療科、メールアドレスなどの閲覧・取得の可能性。委託先に対する管理・監督体制の強化と再発防止を進めています。</li>
+</ul>
+
+<h3>国内の不正アクセス・情報漏えい（その他）</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>複数（ScanNetSecurity 2026-11-17 掲載分）</td></tr>
+<tr><th>初回発生</th><td>2026-10-06 〜 2026-11-09（各社公表）</td></tr>
+<tr><th>影響</th><td>顧客・会員の個人情報が漏えいした可能性</td></tr>
+</table>
+<ul>
+<li><strong>よーじや</strong>: 会員情報管理システムへの不正アクセスにより、店舗・オンラインショップ・アプリに登録のあった顧客情報が漏えい。</li>
+<li><strong>野村インベスター・リレーションズ「機関Navi」</strong>: 機関投資家向け IR 情報提供サービスへの不正アクセス。</li>
+<li><strong>ユーザベース「NewsPicks」</strong>: 管理ツールの脆弱性を突いた不正アクセス。</li>
+<li><strong>株式会社アクティブ</strong>の通販サイト、<strong>GoWebクラウド「GoWeb」</strong>（入居申込サービス）、<strong>モニタス「Qzoo」</strong>（アンケートサイト）: いずれも SQL インジェクション攻撃。アクティブは最大 54,916件の顧客情報が流出した可能性。</li>
+<li><strong>インプレス</strong>: 「Cuenote」への不正アクセスに起因し、メールマガジン「DIGITAL X News」の会員情報 約5万8,000件が漏えい。</li>
+<li>このほか、愛知県稲沢市で住民記録システムの移行作業中にテストデータを誤送信しマイナンバーカードが失効、株式会社teket の電子チケットサービスへの不正アクセスなどが公表されています。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
