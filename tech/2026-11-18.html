@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-18 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-18 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.327</h2>
+<p>2026-11-18 08:22 JST に <strong>v2.1.327</strong> が公開されました。MCP のトークン取り扱い改善、<code>/status</code> による設定破損の可視化、権限・サンドボックス判定の厳格化が中心のリリースです。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>トークンをコマンドラインに残さない MCP 登録</strong>: <code>claude mcp add-json &lt;name&gt; -</code> でサーバーの JSON を標準入力から読み取れるようになりました（Claude Code セッション内では利用不可）。</li>
+  <li><strong>設定破損の一覧表示</strong>: <code>/status</code> に、壊れた agent・skill・command・output style ファイル、キーバインドのエラー、利用できないサンドボックス、無視された権限設定、決して一致しないフックマッチャーが表示されるようになりました。</li>
+  <li><strong>設定の上書きを明示</strong>: <code>/config</code> で他の設定がその行を上書きしている場合に注記。</li>
+  <li><strong>セッション復元時の案内</strong>: 再開したセッションで以前のメッセージを読み込めない場合に、その旨を1行表示。</li>
+  <li><strong><code>/install-github-app</code></strong>: リポジトリを変更する前に確認を求めるようになりました。</li>
+  <li><strong>課金グループ名の指定</strong>: <code>attributionProject</code> 設定でセッションの課金グループを命名可能（<code>admin.billing_group_tag</code> を設定する Claude apps ゲートウェイ向け）。</li>
+  <li><strong>ゲートウェイ連携</strong>: <code>x-claude-code-managed-settings-checksum</code> をヒントヘッダーに追加。<code>CLAUDE_CODE_GATEWAY_HINT_HEADERS=1</code> の管理設定で送信されます。</li>
+  <li><strong>表示名</strong>: 非フルスクリーンのレンダラー名として <code>/tui classic</code> を追加（<code>/tui default</code> も引き続き有効）。</li>
+  <li><strong>[VSCode]</strong>: エクスプローラーの右クリックメニューに「Claude Code: Add to Chat」を追加し、選択したファイル・フォルダをチャットで @ メンションできます。</li>
+</ul>
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li><strong>権限・パスの厳格化</strong>: 一部のシンボリックリンクを拒否し、「作業ディレクトリ内」と見なす範囲も変更。これにより一部のパスで権限確認が発生します。</li>
+  <li><strong><code>blockReadsOutsideWorkingDirectories</code></strong>: bypass／auto モードでより多くの Bash コマンドについて確認するよう変更し、auto モードでは一部を拒否。</li>
+  <li><strong>auto モードの許可ルール</strong>: <code>Bash(pnpm dlx *)</code> のように任意のパッケージを実行する許可ルールをより多く無視するよう変更。判定は安全性チェックが担当します。</li>
+  <li><strong>長すぎる変数展開</strong>: 変数が非常に長いテキストに展開される Bash コマンドを拒否し、短い値かファイルの使用を促すメッセージを表示。</li>
+  <li><strong><code>ExitWorktree</code></strong>: 未保存の作業を含む可能性がある worktree を削除する前に確認するよう変更（don't-ask モードや応答者がいない場合は拒否）。</li>
+  <li><strong><code>claude mcp add --scope project</code></strong>: <code>.mcp.json</code> が <code>mcpServers</code> キーなしでトップレベルにサーバーを列挙している場合、上書きせず停止するよう変更。</li>
+  <li><strong>権限プロンプトのカーソル</strong>: 矢印キーは「No」で折り返さず停止するようになり、最後の選択肢を超える番号は「No」に移動。</li>
+  <li><strong>PowerShell ツール</strong>: 対象を名指しするルールがあっても、一部コマンドで事前確認を求めるよう変更。</li>
+  <li><strong>サブエージェント</strong>: モデル未指定で起動したサブエージェントは、<code>/model</code> 後も再開時に開始時のモデルを維持。再開されたサブエージェントはセッションの権限設定に従います。</li>
+  <li><strong>トークン削減</strong>: Amazon Bedrock・Google Vertex AI・Microsoft Foundry のターミナルセッションで、サブエージェントの進捗要約を会話全体ではなく短いメモから生成するよう変更。</li>
+  <li><strong>Artifact ツール</strong>: 設定で Artifacts をオフにした場合、実行中のセッションでも呼び出しを拒否するよう変更。</li>
+  <li><strong><code>-p</code>（非対話）モード</strong>: 最初のリクエスト前に実行する git コマンドを削減。</li>
+  <li><strong>その他</strong>: アカウント変更後に一部の事前起動バックグラウンドセッションを破棄、<code>/sandbox</code> と <code>/config</code> の値リストをスクリーンリーダーモード以外では番号なし表示に変更。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-327">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.2+canary.20261117T064624Z</h2>
+<p>2026-11-17 16:54 JST に canary リリース <strong>v0.23.2+canary.20261117T064624Z</strong> が公開されました。プラグインカタログへの追加と、Teams 連携・更新チェックまわりの整理が中心です。安定版の最新は v0.23.2（2026-11-17 05:59 JST 公開）で、本対象期間内の新規安定版リリースはありません。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プラグインカタログ</strong>: <code>opendockit</code> プラグインを追加。</li>
+  <li><strong>Teams 連携の整理</strong>: Microsoft Graph の認証とクライアントを <code>teams_pipeline</code> プラグイン側へ移動。</li>
+  <li><strong>内部構造</strong>: 6つのチェックポイントファイルを <code>tools/</code> から <code>agent/checkpoints/</code> へ移動。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>パッシブな更新チェックの <code>git ls-remote</code> が CLI とともに終了してしまう問題を修正。</li>
+  <li>Desktop で採用された返信が、ストリームオフセットによって末尾を取りこぼす問題を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.2%2Bcanary.20261117T064624Z">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.5</h2>
+<p>2026-11-17 19:47 JST に <strong>v2026.11.5</strong> が公開されました。Gateway 再起動をまたぐ会話の保全、更新失敗時のロールバック、Telegram のインタラクティブウィジェットが主な柱です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>再起動に強い会話</strong>: キュー済みメッセージ、送信権限、最終的なチャット書き込みが Gateway の再起動をまたいで保持されます。</li>
+  <li><strong>安全なアップデート</strong>: Doctor または Gateway の起動に失敗した場合、有効化済みのアップデートをロールバック。復元された npm パッケージは非 root サービスからも読める状態を維持します。</li>
+  <li><strong>Telegram ウィジェット</strong>: Telegram のメッセージ内でインタラクティブウィジェットを描画可能に（プライベートチャットのトピックを含む）。</li>
+  <li><strong>メモリ索引の復旧</strong>: 大規模なメモリ索引の再構築が確実に完了し、Gateway がバッチ上限エラーを切り詰めた場合も埋め込み索引が復旧します。</li>
+  <li><strong>モデルフォールバック</strong>: プライマリとして設定されたアカウントが Claude CLI へのフォールバックを妨げなくなり、OpenAI セッションはコンパクション項目の競合から復旧します。</li>
+  <li><strong>デバイスフォルダ</strong>: 既定ランタイムでも既存のデバイスフォルダを選択可能に。</li>
+  <li><strong>コンテンツ境界</strong>: バイナリ添付が文字化けしたプロンプト本文にならず、認証済みブラウザの CDP URL がツール結果に残らなくなりました。</li>
+  <li><strong>業務セッションとセキュリティプリセット</strong>: personal モードのメッセージは対応可能な作業を誘導するか静かにキューイング。personal／corporate のセキュリティプリセットが一貫した既定値を提供します（明示設定と必須のアクセス・承認制限は引き続き優先）。</li>
+  <li><strong>コンパクション</strong>: <code>maxSummaryChars</code> で要約の文字数上限を制御できます。</li>
+</ul>
+<h3>🐛 主な修正・互換性注意</h3>
+<ul>
+  <li><strong>破壊的変更</strong>: サードパーティ製ハーネスは、セッションキー付きのアクティブランをホストの <code>runAttempt</code> コールバック内で登録し、返されたクリーンアップ関数を保持する必要があります。プラグインの RPC ハンドラーは <code>chatAbortControllers</code>／<code>chatQueuedTurns</code> を、認可済みの Gateway メソッドディスパッチに置き換える必要があります。start-owner の観測は <code>expiresAtMs</code> ではなく <code>startDeadlineAtMs</code> を使用します。</li>
+  <li><strong>認可</strong>: キュー済みの自動化実行は開始前に owner 専用メモリへのアクセスを再確認し、子の失敗結果も親ターン終了後に配信可能なまま保持されます。</li>
+  <li><strong>Gateway 復旧・リロード</strong>: ワークスペース準備後に中断されたターンを再開し、設定更新がファイルウォッチャーの競合でハングしなくなりました。</li>
+  <li><strong>cron</strong>: スケジュール済みアカウント選択やリトライ期限を保持し、遅いスケジューラ起床でもジョブを黙って落とさないよう修正。設定のホットリロードが実行中のジョブを中断しなくなりました。</li>
+  <li><strong>Telegram</strong>: 進行状況ストリームモードでの ACP 返信を復旧し、承認がプライベート／フォーラムトピック内に留まるよう修正。</li>
+  <li><strong>チャネル</strong>: キャプション付き Feishu メディアの配信、Matrix・Mattermost での Unicode ディレクトリ照合の正規化を修正。</li>
+  <li><strong>iOS 音声</strong>: 画面ロック中も Talk が動作し続け、音声権限の「許可」操作でアプリがクラッシュしないよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.5">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.262</h2>
+<p>2026-11-18 08:20 JST に <strong>v1.4.262</strong> が公開されました。多数のチャットを開いたままのメモリ使用量と切り替えコストの削減、Git blame の常設表示、エージェント設定の一本化が中心です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>多数のチャットでの作業</strong>: macOS と Linux で Chat UI がより軽量なヘルパーを使用。非表示のチャットビューは更新を止めつつ、下書き・閲覧位置・エディタ状態を保持し、エージェントは作業を継続します。</li>
+  <li><strong>ディスク容量の回収</strong>: 設定 → Workspace Cleanup で、削除済みワークスペースの Orca・Claude Code・Codex のチャットを削除可能。既定はオフで、有効化時には確認を求めます（削除したチャットは復元不可）。</li>
+  <li><strong>ターミナルのカレントディレクトリ保持</strong>: ペインが再起動をまたいで最後に移動したディレクトリを記憶（フォルダワークスペースを含む）。Windows ではビジー状態のペインに戻った際の余計な文字混入も修正。</li>
+  <li><strong>Git blame</strong>: Git blame ステータス項目にカーソル行の作者と日付を表示。リポジトリワークスペースではクリックでコミットを開け、設定 → Editor の「Inline git blame」でコード横に注釈を表示できます。</li>
+  <li><strong>アカウント切り替えの明確化</strong>: 保存済みの Claude／Codex アカウントに名前を付け、最後に観測したプランを確認可能。Restart または Always restart を選ぶと、ビジーな Claude ターミナルセッションは現在の作業完了を待たずに選択アカウントで再開します。</li>
+  <li><strong>エージェント設定を1枚のカードに</strong>: エージェント・モデル・対応する effort／Fast オプションをまとめて選択し、「Open as chat」「Open as terminal」で起動。Default effort ではエージェント自身にレベルを選ばせられます。</li>
+  <li><strong>通知の制御</strong>: ワークスペースを右クリックして通知をミュートしつつ未読ドットは維持。スリープ状態のワークスペースは再起動後もスリープを保ちます。</li>
+  <li><strong>言語とプラグイン</strong>: 設定またはオンボーディングでコミュニティ翻訳を発見可能。プラグイン更新のレビューでは追加されるアクセス権が明示され、承認をまとめられます。</li>
+  <li><strong>リモートファイルの保存</strong>: リモートファイルのリンクで「Download…」を選び、別アプリを開かずに保存できます。Windows は WSL ディストリビューションにマップされたドライブレター上のプロジェクトフォルダも認識します。</li>
+  <li><strong>Codex のブロック解除</strong>: 自動レビューで拒否されたアクションについてチャットが理由を説明し、そのアクションに対する「Approve once」を提示します。</li>
+</ul>
+<h3>⚠️ 互換性・アップグレード注意</h3>
+<ul>
+  <li><strong>Codex 履歴の共有</strong>: 共有を有効にすると、次回起動前にアカウントが単一の会話ストアへ移行します。初回起動が遅くなる場合があり、ビジーなアカウントは後で移行されます。</li>
+  <li><strong>Windows ターミナル</strong>: 余計な文字混入の修正を反映するため、既存のターミナルを閉じて開き直してください。</li>
+  <li><strong>リポジトリのセットアップ手順</strong>: 以前の <code>orca.yaml</code> 承認は、そのリポジトリのセットアップコマンドの将来バージョンに対する信頼として扱われます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.262">GitHub Releases</a></p>
+
+<h2>☁️ AWS — 2026-11-18 未明のアップデート</h2>
+<p>対象期間内に複数のアップデートが公開されました。実務影響が大きいものを抜粋します。</p>
+<h3>🔧 主な発表</h3>
+<ul>
+  <li><strong>Amazon API Gateway REST APIs の JWT オーソライザー</strong>: Cognito 以外の OIDC／OAuth 2.0 プロバイダのトークン検証を、Lambda オーソライザーなしでゲートウェイ側で実行可能に。発行者・オーディエンス・署名アルゴリズム・追加クレームを設定でき、メソッドごとに異なるスコープも要求できます。</li>
+  <li><strong>Amazon ECR のグローバル認証トークン</strong>: <code>CreateBearerToken</code> API で取得した単一トークンを、同一パーティション内の全リージョンのプライベートレジストリで利用可能に。既定の有効期限は12時間（最短5分）。リージョン毎のトークン管理が不要になります。</li>
+  <li><strong>DynamoDB キャッシング（ElastiCache Serverless for Valkey）が一般提供</strong>: 書き込み透過型キャッシュでサブミリ秒の読み取りを実現。アプリケーションロジックの変更は不要で、既存の IAM 認証情報とアクセス制御がそのまま適用されます。追加料金はかかりません。</li>
+  <li><strong>Amazon Bedrock AgentCore</strong>: フルセッションサマリーを全セッションで保持。さらに Web Search Tool／Web Search API の無料枠として月5,000クエリを提供（東京リージョンを含む）。</li>
+  <li><strong>Amazon EMR 8.2</strong>: Apache Spark 4.1.3、Iceberg 1.11.0、Delta Lake 4.2.0 へ更新した LTS リリース。S3 条件付き書き込みによる Delta Lake の同時書き込み、Iceberg マテリアライズドビューの増分更新、Lake Formation の権限伝播などを追加。</li>
+  <li><strong>Amazon Bedrock で OpenAI GPT-6.2 Astra / GPT-6.2 Sol が一般提供</strong>: Astra は高度な推論・判断と Ultrafast モード、Sol は定型的なコーディングやエージェント作業の速度とコスト効率を重視した構成です。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>⚡ Next.js / ⚛️ React / その他</h2>
+<p><strong>Next.js</strong> は canary チャネルのみ更新され、<strong>v16.5.0-canary.54</strong> が 2026-11-18 08:46 JST に公開されました（安定版の新規リリースはありません）。<strong>React</strong> の最新リリースは v19.3.1（2026-10-15 02:06 JST 公開）で、対象期間内の新規リリースは確認されませんでした。</p>
+<p class="empty-notice"><strong>Azure</strong>、<strong>GCP</strong>、<strong>Python</strong>、<strong>Django</strong>、<strong>Java</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API/SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
