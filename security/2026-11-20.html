@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-20 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-20 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 2026-11-19 08:00 〜 2026-11-20 08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>nginx 1.31.9／1.30.7 - 10件の脆弱性、HTTP/2のメモリ破壊で未認証RCE、PoC公開 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-123007／123633／123634／113425／121810／118899／120967／120993／123640／125283（計10件）</td></tr>
+<tr><th>CVSS</th><td>CVSSv4.0 9.2相当（Critical相当）が5件。CVE-2026-123007・113425は重要度「major」かつ 9.2</td></tr>
+<tr><th>影響</th><td>nginx 1.31.9 未満／1.30.7 未満（NGINX Plus 37.3.0.1・37.0.8.1 未満）。影響はブランチ・バージョンで異なる</td></tr>
+<tr><th>公開</th><td>開発チーム／F5 が現地2026-11-18 公開（Security NEXT 2026/11/19 掲載）</td></tr>
+</table>
+<ul>
+<li>CVE-2026-123007 は HTTP/2 のフロー制御における整数アンダーフローに起因するメモリ破壊。特定条件下では認証なしにリモートからコード実行が可能とされ、Rapid7 が概念実証（PoC）コードを公開している。</li>
+<li>CVE-2026-113425（メールプロキシ）も CVSSv4.0 9.2。このほか HTTP/2 転送時の解放済みメモリ使用（CVE-2026-123633）、名前解決処理（CVE-2026-123634）、HTTP/3 処理（CVE-2026-121810）の Use After Free が各 9.2 と評価されている。</li>
+<li>TLS 1.3 通信でHTTPリクエスト本文読み取り時の無限ループによるサービス拒否（CVE-2026-118899）、特定構成でのクライアント証明書検証回避（CVE-2026-120967）も含まれる。</li>
+<li>Web サーバとして広範に利用されるため、リバースプロキシ／ロードバランサを含む公開構成は優先的に最新版へ更新すること。</li>
+</ul>
+
+<h3>WordPress 7.1.5 - 未認証の権限昇格からRCEに至る問題を含む20件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>バージョン</th><td>WordPress 7.1.5（7.2 RC 2 にも全て反映。4.7 以降のブランチへ順次バックポート）</td></tr>
+<tr><th>影響</th><td>WordPress 7.1.5 未満（マルチサイト構成・REST API・XML-RPC を含む）</td></tr>
+<tr><th>公開</th><td>開発チームが現地2026-11-18 公開（Security NEXT 2026/11/19 掲載／WordPress.org 2026年11月）</td></tr>
+</table>
+<ul>
+<li>最重要は Template Part ブロックの属性を介した未認証の権限昇格で、悪用されるとリモートコード実行につながるおそれがある（報告: Logan Homolka 氏）。</li>
+<li>マルチサイト環境では、サイト管理者がカスタマイザーのメニュープレビュー機能を悪用し、上位権限を持つスーパー管理者アカウントを乗っ取れる権限昇格（報告: Yuval Miller 氏）。</li>
+<li>SQLインジェクション2件（WP_Meta_Query のネスト relation 値、Customizer チェンジセットプレビューのフロントページ設定）、XSS 多数（レガシーメディアライブラリの反射型、Comment Date ブロック、コメントのショートコード属性による未認証格納型、oEmbed 応答スクリプトほか）、未認証の情報漏えい、XML-RPC pingback の一括処理による未認証DoS など。</li>
+<li>自動バックグラウンド更新が有効なサイトは更新が始まるが、手動での即時更新を推奨。REST API・XML-RPC・マルチサイトを有効にしているサイトは優先度が高い。</li>
+</ul>
+
+<h3>CISA KEV に4件追加 - Apache Axis／REDCap／Synology DSM／LiteLLM の悪用確認 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-90436（Apache Axis）／CVE-2026-90817（REDCap）／CVE-2024-10441（Synology DSM）／CVE-2026-40217（LiteLLM）</td></tr>
+<tr><th>公開</th><td>CISA KEV 登録 2026-11-18（米国時間）、Security NEXT 2026/11/19 掲載</td></tr>
+</table>
+<ul>
+<li>CVE-2026-90436（Apache Axis）は、細工した SOAP フォールトメッセージを送ることで認証なしに任意のクラスを読み込ませられ、特定条件下でリモートコード実行に至る。</li>
+<li>CVE-2026-90817（REDCap）は公開アンケートの有効なハッシュ値を把握したうえで細工した HTTP リクエストを送ると、認証なしでサーバ上のコードを実行できる。</li>
+<li>CVE-2024-10441 は Synology の DiskStation Manager（DSM）／BeeStation OS に存在し、リモートコード実行のおそれ（2024年11月にアドバイザリ公開済み）。CVE-2026-40217 は AI モデルアクセス管理の LiteLLM で、カスタムコードのテスト機能のバイトコード書き換えによりサンドボックス制限を回避して任意コード実行が可能。</li>
+<li>CISA は LiteLLM 以外の3件について対応期限を 2026年11月21日、LiteLLM を 2026年12月2日としている。Ollama／LLM ゲートウェイとして LiteLLM を運用している構成は特に注意。</li>
+</ul>
+
+<h3>JVN 国内アドバイザリ - Ruijie Networks製品のOSコマンドインジェクション（CVSSv4.0 8.6）ほか <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>CVE</th><td>CVE-2026-113347（Ruijie Networks）／CVE-2026-129517（Win Bird 授業支援）</td></tr>
+<tr><th>影響</th><td>Ruijie Networks の複数製品（詳細はベンダ情報参照）／Win Bird 授業支援 for Chrome・for Edge 3.3.0.2002 およびそれ以前</td></tr>
+<tr><th>公開</th><td>JVN#28897261・JVN#29068051 いずれも 2026/11/19 公開（JVNVU#98354779 Siemens 2026年11月は 2026/11/19 更新）</td></tr>
+</table>
+<ul>
+<li>JVN#28897261: Ruijie Networks の複数製品に OSコマンドインジェクション（CWE-78、CVSSv4.0 8.6／CVSSv3.0 7.2）。管理者権限を有する攻撃者により任意の OS コマンドを実行される可能性がある。報告者は FFRI セキュリティ 黒田浩平氏。ファームウェアの最新版適用が必要。</li>
+<li>JVN#29068051: ウィンバード株式会社のブラウザ拡張機能「Win Bird 授業支援」に XSS（CWE-79、CVSSv4.0 5.1／CVSSv3.0 5.4）。拡張機能を導入したブラウザ上で任意スクリプトを実行されるおそれ。教育機関での利用が想定されるため、配布端末の更新状況を確認のこと。</li>
+<li>JVNVU#98354779: Siemens の 2026年11月アドバイザリが更新され、新規10件・更新17件が追加。Node2Shell（SSA-242944・678870・045512・443410）、PHP2Shell（SSA-566435・166980）、Java4Shell（SSA-272816）、Mendix Studio Pro MCP サーバ（SSA-710379）などが含まれる。産業制御システムの運用者は各 SSA に従い更新を検討すること。</li>
+</ul>
+
+<h3>Claude Code v2.1.329 - フック宣言の信頼境界まわりを改善 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>バージョン</th><td>v2.1.329（公開 2026-11-19 22:14 UTC ＝ JST 2026-11-20 07:14）</td></tr>
+<tr><th>公開元</th><td><a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.329" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>フォルダのフックがどこで宣言されているかを示す信頼（trust）ダイアログの警告を追加。managed settings のフックが読み込めなかった場合に、非対話ホスト（Claude Desktop 等）でも会話内に警告を表示するようになった。</li>
+<li>auto mode が、作業ディレクトリ外や自分自身を指すシンボリックリンクの <code>rm</code> に対して手動承認を求めない問題を修正。シンボリックリンク経由の意図しない削除を防ぐ。</li>
+<li>そのほか <code>~/.claude.json</code> がネットワーク停滞やファイルロック時に既定値へ戻る問題、macOS での繰り返しサインアウト等、堅牢性に関わる修正が多数。CVE付番・明示的な「security issue」表記はなし。</li>
+</ul>
+
+<h3>OpenClaw 2026.11.10-beta.1 - アクセス境界の権限適用を修正 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>バージョン</th><td>openclaw 2026.11.10-beta.1（プレリリース、公開 2026-11-19 15:45 JST、署名検証済み）</td></tr>
+<tr><th>公開元</th><td><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.10-beta.1" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>Access boundaries: OpenClaw ID のメンバー権限を HTTP 履歴および接続アプリのパネルにも一貫して適用するよう修正（PR #199946・#200070）。</li>
+<li>キュー済み入力について、権限が取り消された際に黙って取り消すのではなく可視の失敗として表示するよう修正（#200213）。サブエージェント結果の再起動跨ぎ保持、ゲストメンバーロールのサンドボックス化なども含む。</li>
+<li>セキュリティ特化の CVE 修正ではないが、権限・信頼境界に関わる修正を含む。</li>
+</ul>
+
+<h3>Hermes Agent canary v0.23.2+canary.20261119T064637Z - セキュリティ特化の記載なし</h3>
+<table class="cve-table">
+<tr><th>バージョン</th><td>v0.23.2+canary.20261119T064637Z（公開 2026-11-19 07:54 UTC ＝ JST 16:54、commit fe8b920）</td></tr>
+<tr><th>公開元</th><td><a href="https://github.com/NousResearch/hermes-agent/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></td></tr>
+</table>
+<ul>
+<li>プラグインカタログへの追加（Remedigenius）、圧縮（compaction）のキャッシュ期限切れサマリ、プロンプトキャッシュのライフサイクル管理の改良が中心。</li>
+<li>Gateway の accept フレーム再試行、圧縮の失敗アーカイブ掃除など堅牢性の修正を含むが、セキュリティ関連の CVE 修正・脆弱性記載は含まれていない。</li>
+</ul>
+
+<hr>
+<p class="empty-notice">Next.js／React／Django／Hono／GCP／AWS／Azure／Python については、本対象期間に該当する新規セキュリティ情報は確認されませんでした。</p>
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>日本商工会議所 - ネット試験管理システムに不正アクセス、最大約98万人分の受験者情報が漏えいか</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>日本商工会議所（システム管理会社が運用）</td></tr>
+<tr><th>判明日</th><td>2026-11-04（不正アクセス確認）／漏えい可能性 2026-11-09 判明／公表 2026-11-10</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56837.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19</a> / <a href="https://www.jcci.or.jp/news/news/2026/1110170000.html" target="_blank" rel="noopener noreferrer">日本商工会議所</a></td></tr>
+</table>
+<ul>
+<li>商工会議所ネット試験管理システムへの不正アクセスを、システム管理会社からの報告で11月4日に確認。11月1日には不正なプログラム（不正ファイル）が設置されており、同ファイルの即時削除と11月4日深夜の脆弱性対策（パッチ適用）を実施した。</li>
+<li>漏えいした可能性があるのは、2022年4月1日〜2026年11月4日に簿記・リテールマーケティング（販売士）・日商PCなどのネット試験を受験した最大約98万人分（約197万件）の受験者情報（氏名、フリガナ、性別、生年月日、合否結果、試験得点、任意入力のメールアドレス・電話番号・住所）。</li>
+<li>脆弱性対策は完了しており、ネット試験は通常通り受験可能。国家資格に準じる試験の受験者情報を含む大規模事案で、対象者への周知とフィッシング等の二次被害への注意が必要。</li>
+</ul>
+
+<h3>サイバーセキュリティクラウド - 流出したGitHub認証情報を悪用され開発環境に不正アクセス</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社サイバーセキュリティクラウド</td></tr>
+<tr><th>判明日</th><td>2026-11-05（不審なアクセス確認）／公表 2026-11-12</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56842.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19</a> / <a href="https://www.cscloud.co.jp/news/info/20261112-2/" target="_blank" rel="noopener noreferrer">同社リリース</a></td></tr>
+</table>
+<ul>
+<li>外部機関からの情報提供により、同社従業員が業務で使用していた GitHub の認証情報1件が外部流出していたことが発覚。アクセスログ調査の結果、当該認証情報を用いた第三者による不審なアクセスが過去に行われていたことを11月5日に確認した。</li>
+<li>同社 GitHub 上に保存されていた「一部顧客に関する情報（企業名・氏名・メールアドレス等）」「サービス利用に伴う通信関連情報」が第三者に閲覧・取得された可能性を否定できないとしている。</li>
+<li>流出した認証情報の無効化、GitHub 上に保存されていた他サービス認証情報の確認・変更、関連開発端末の隔離・アカウント停止を実施。開発環境のシークレット管理と最小権限の再点検が求められる。</li>
+</ul>
+
+<h3>Notion AI の委託先 Fireworks AI への不正アクセス - 複数社のワークスペースのやり取りが流出か</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>Notion Labs（委託先: Fireworks AI）／影響を受けた利用組織: LRM、SecureNavi、スリーシェイク ほか</td></tr>
+<tr><th>判明日</th><td>2026-11-03（Notion社が接続遮断）／11-08 追加データ確認／11-10 各社へ通知・11-11 公表</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56840.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19（LRM）</a> / <a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56841.html" target="_blank" rel="noopener noreferrer">同（SecureNavi）</a></td></tr>
+</table>
+<ul>
+<li>Notion が Notion AI の処理の一部を委託していた Fireworks AI の環境に第三者から不正アクセスがあり、Notion AI に入力した内容と AI の応答（やり取りの記録）の一部が外部に流出した可能性がある。Notion社は11月3日までに Fireworks AI との接続を遮断し、同社環境上のデータを削除したとしている。</li>
+<li>LRM では、Notion AI 利用時のやり取りのうち AI 利用分析機能（Insights）の処理に使われていた記録（2026年10月5日〜10月24日作成分の一部）が対象。SecureNavi では、顧客の会社名・担当者氏名、問い合わせや打ち合わせの内容、サービス利用状況に関する内容が含まれているおそれがあるとしている。</li>
+<li>スリーシェイクも同委託先への不正アクセスに伴う事案を公表。AI 機能の外部委託先を経由した情報流出であり、業務で外部 AI に機微情報を入力する運用のリスク管理（入力情報の選別・委託先のデータ保持方針の確認）が改めて問われる。</li>
+</ul>
+
+<h3>Joshin - ネットワークへの不正アクセス、会員情報 最大約600万件とマイナンバー・免許証画像が対象</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社Joshin（ジョーシン）</td></tr>
+<tr><th>判明日</th><td>2026-10-16（異常検知）／第2報 2026-10-26</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56835.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19</a> / <a href="https://www.joshin.co.jp/ja/ir/news/auto_20261026556267/pdfFile.pdf" target="_blank" rel="noopener noreferrer">同社第2報</a></td></tr>
+</table>
+<ul>
+<li>10月16日に同社ネットワークで異常を検知し調査したところ、一部で不正アクセスを受けた形跡を確認。対象サーバをネットワークから遮断した結果、一部サービスが利用できない状態となっている。</li>
+<li>漏えいした可能性があるのは、会員情報データベースサーバ 最大約600万件（氏名・住所・電話番号・会員番号）、サブスク「ジョーシンのサブスク」最大約23万件（会員番号・電話番号＋手書きサイン、ログインID・初期パスワード、請求履歴等）、リフォーム写真アップロードシステム 最大約800件（免許証画像2件・マイナンバーカード1件・口座番号5件・工事写真データ）。</li>
+<li>免許証画像・マイナンバーカード・口座番号が対象者には個別連絡を実施。特定個人情報（マイナンバー）を含む可能性があり、影響範囲の全容解明と二次被害防止が急務。</li>
+</ul>
+
+<h3>イオングループ - 一部Webサイトへの不正アクセス、414件の顧客情報が流出</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>イオンスマートテクノロジー株式会社（イオングループ）</td></tr>
+<tr><th>判明日</th><td>2026-10-20（検知）／公表 2026-11-10</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56836.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19</a> / <a href="https://www.aeon-st.co.jp/news/20261110_security-notice/AST261110.pdf" target="_blank" rel="noopener noreferrer">同社リリース</a></td></tr>
+</table>
+<ul>
+<li>10月20日に一部 Web サイトで第三者からの不正アクセスを検知し、10月21日にシステムメンテナンスを公表。調査の結果、不正アクセスを受けたシステム内に保存されていたファイルのうち、一部顧客の個人情報を含むファイルが流出したことが判明した。</li>
+<li>流出したのは、イオンスタイル津田沼 North・イオン東札幌店・マックスバリュ篠原橋東店・ダイエー浦安駅前店の各店舗で2024年度に「イオンの夏ギフト」を注文した414件の顧客情報（氏名・住所・電話番号）。</li>
+<li>対象顧客へ順次案内するとともに、外部のセキュリティ専門機関の助言を受けながら対策強化と再発防止に取り組むとしている。</li>
+</ul>
+
+<h3>GMOリサーチ&AI「infoQ」- 最終報、ポイント不正交換は643件・約295万5,000円</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>GMOリサーチ&AI株式会社（アンケートサイト「infoQ」）</td></tr>
+<tr><th>判明日</th><td>2026-10-02以降（不正アクセス）／10-03 調査開始／最終報 2026-11-11</td></tr>
+<tr><th>出典</th><td><a href="https://scan.netsecurity.ne.jp/article/2026/11/19/56838.html" target="_blank" rel="noopener noreferrer">ScanNetSecurity 2026/11/19</a> / <a href="https://gmo-research.ai/pressroom/notice/notice-20261111" target="_blank" rel="noopener noreferrer">同社最終報</a></td></tr>
+</table>
+<ul>
+<li>10月2日以降に「infoQ」のサーバへ第三者が不正アクセスし、会員の個人情報が外部に持ち出されたこと、一部会員のポイントが本人の意思によらず交換されたことを確認。10月3日午前に会員からの問い合わせを受けて調査し、不正アクセスが発覚した。</li>
+<li>セキュリティ専門会社の調査により、ポイントの不正交換は計643件・計2,955,000円（対象会員453名）。内訳は Amazon ギフトコード 639件・計2,953,000円（450名）、GMOポイント 2件・計1,000円、ドットマネーと選べるe-GIFT 各1件・各500円（いずれも申請のみ）。</li>
+<li>不正交換分は全額補填し、11月18日のサービス再開時に対象会員へ付与。再発防止として悪用されたシステムの廃止と新システムへの作り替え、検知・遮断の強化、ログイン方式を「1アカウント」へ変更するなどを再開までに実施した。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
