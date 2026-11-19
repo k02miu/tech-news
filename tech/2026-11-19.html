@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-19 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-19 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 対象期間内の新規リリースなし</h2>
+<p>公式 changelog の RSS フィードを確認いたしましたが、対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.327</strong>（2026-11-18 08:22 JST 公開）です。</p>
+<p>なお v2.1.327 では、<code>claude mcp add-json &lt;name&gt; -</code> による標準入力からの MCP サーバー登録、<code>/status</code> での破損した設定ファイル一覧の表示、権限・サンドボックス判定の厳格化といった変更が含まれています。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.2+canary.20261118T064620Z</h2>
+<p>2026-11-18 16:55 JST に canary リリース <strong>v0.23.2+canary.20261118T064620Z</strong> が公開されました。GPT-6.2 系モデルのサポート追加、プラグインカタログの拡充、永続化レイヤーの操作整理が中心です。安定版の最新は v0.23.2（2026-11-17 05:59 JST 公開）で、対象期間内の新規安定版リリースはありません。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>モデル対応</strong>: GPT-6.2 Astra と GPT-6.2 Sol をサポート。</li>
+  <li><strong>画像生成</strong>: FAL カタログに GPT Image 2.6 Flare と Sunburst を追加。</li>
+  <li><strong>セッションルール</strong>: 呼び出し側とバックエンドで共有する純粋な session rules を導入し、権限・モード判定の一貫性を確保。</li>
+  <li><strong>永続化レイヤー</strong>: ハウスキーピング／メンテナンス操作、ワーカー実行と委譲の台帳操作、ゲートウェイのルーティングと配信、セッション権限とバインディングの各操作を整理。</li>
+  <li><strong>プラグインカタログ</strong>: barrier-shield、chaos-takens、eigen、axiom、scansift、covsift、relatedb-memory、safari、2pr、token-stats など多数を追加。ウクライナ語パック、<code>hermes-safeguard</code> 設定、<code>eventmem</code> メモリプロバイダも加わりました。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>プラグインのピン留め更新と説明文の整備（<code>glide</code>、<code>rh-preflight</code>、<code>listeningkit-log</code> など）。</li>
+  <li>カタログ項目のメタデータ不備（タイトル・画像・バージョン）を修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.2%2Bcanary.20261118T064620Z">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.33</h2>
+<p>2026-11-18 13:15 JST に <strong>v2026.10.33</strong> が公開されました。LTS 相当の <code>extended-stable</code> チャネル（Gateway 専用）で、2026年10月末時点の OpenClaw に重要セキュリティ更新・信頼性修正・性能改善・新モデル対応を積んだリリースです。配布対象は core npm パッケージ、対応する公式 npm プラグイン、Gateway の Docker イメージで、ネイティブアプリは含まれません。</p>
+<h3>🔧 主な改善</h3>
+<ul>
+  <li><strong>大規模セッションの安定化</strong>: 長い会話や巨大なセッションストアで、エクスポート・復旧処理を上限付きに変更。チャット、メモリのエクスポート、Doctor による修復、Gateway 起動時のメモリ枯渇（OOM）を削減。</li>
+  <li><strong>更新失敗からの復旧</strong>: 更新を実行したプロセスが落ちても Gateway がオフラインのまま固まらず復旧。バージョン不整合のチェックで、稼働中サービスが使用中の状態を保護。</li>
+  <li><strong>返信の取りこぼし防止</strong>: 再起動・再接続の経路をまたいで元のプロンプトを保持し、Telegram の応答復旧、WhatsApp の返信欠落や Signal のメッセージ飛ばしを回避。</li>
+  <li><strong>共有セッションのプライバシー強化</strong>: Side chat を閲覧者本人のみに限定し、内部モデルプロンプトを表示出力から除外。コンパクション時は引用サマリー内の認証情報を伏字化。</li>
+  <li><strong>自動化の拡張</strong>: ポーリング条件や MCP イベントへの反応、繰り返し実行できるスクリプト、明示的に許可した MCP サーバーの利用が可能に。</li>
+  <li><strong>スキルのオンデマンド参照</strong>: インストール済みスキルを検索・読み出しできるようになり、全スキルをプロンプトに載せずに済むようになりました。</li>
+  <li><strong>セッションの移行</strong>: 既存の Claude Code / Codex のトランスクリプトを取り込み、ローカルとクラウドの環境間を移動可能に。</li>
+</ul>
+<h3>🐛 その他の保守修正</h3>
+<ul>
+  <li>同一プロバイダの認証情報・モデル変更時にサーバー側コンパクションのチェックポイントを保持し、不要な履歴再生を回避。</li>
+  <li>macOS のシェルインストール時に制御端末を保持し、オンボーディングのプラグイン導入が切り離された Node サブプロセスで中断しないよう修正。</li>
+  <li>Doctor 実行時に、起動前の変更を受け入れずに Gateway 起動成功の記録のみを残すよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.33">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.263</h2>
+<p>2026-11-18 20:02 JST に <strong>v1.4.263</strong> が公開されました。チャット起動の軽量化、Chat からの Hermes 会話再開、ブラウザ拡張のサイドパネル対応が主な柱です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>チャット起動の軽量化</strong>: 大量のチャットを含むワークスペースでもメモリ使用量と起動時の処理を削減。復元したチャット UI は初回表示時に読み込み、起動時にすべての保存済み会話を書き換えないようになりました。開いていたチャットは下書きとスクロール位置を保持します。</li>
+  <li><strong>Chat で Hermes 会話を継続</strong>: New Tab メニューから Hermes を起動できるほか、Session History の「Resume in New Chat」で、ターミナルの会話を元のワークスペースとプロファイルで継続できます。</li>
+  <li><strong>拡張機能のサイドパネル</strong>: サイドパネルを使う Chrome 拡張を Orca のブラウザ内でリサイズ可能なパネルとして表示。拡張のポップアップでも貼り付け・コピー・すべて選択が可能になりました。</li>
+  <li><strong>リモート作業の強化</strong>: 管理対象 SSH ポートに <strong>Forward</strong> ボタンを追加。Windows では WSL のドライブレター経由で開いたプロジェクトを、そのディストリビューションの WSL ホストへ移動できます。</li>
+  <li><strong>ターミナル出力の復元</strong>: macOS と Linux で、シェルが停止したターミナルの保存出力を新しいプロンプトの上に復元可能に（Windows は従来の挙動を維持）。</li>
+  <li><strong>Linear を CLI から接続</strong>: <code>orca linear connect</code> が標準入力経由の API キーを受け取り、指定ホスト（ヘッドレスサーバーを含む）に接続。ホストごとに個別の接続を保持し、<code>--limit</code> 省略時は Issue・プロジェクト一覧が全件返るようになりました。</li>
+  <li><strong>Windows でのエージェント導入</strong>: Claude / Codex のチャットで、エージェント未導入時に <strong>Install</strong>、導入後に <strong>Check again</strong> を提示。<code>orca agent installed</code> でホスト上の有効なエージェント CLI を一覧できます。</li>
+</ul>
+<h3>⚠️ 互換性・アップグレード注意</h3>
+<ul>
+  <li><strong>Hermes 要件</strong>: Chat 機能はワークスペースを実行するマシン上で Hermes 0.23.0 以降が必要です。非常に長いインポートでは直近のメッセージのみ表示されます（Hermes 側は会話全体を保持）。SSH ワークスペースでは Chat は利用できず、ペアリング済みの Orca サーバーが必要です。また Hermes のゲートウェイ停止後の最初のチャットは起動に1分ほどかかる場合があります。</li>
+  <li><strong>ブラウザの識別</strong>: <strong>Native</strong> が既定になり、従来の既定で発生していた Cloudflare の検証ループに対処。明示的な設定は保持されます（設定 → Browser → Browser identity）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases/tag/v1.4.263">GitHub Releases</a></p>
+
+<h2>☁️ AWS — AI エージェント向けメモリ機能が一般提供</h2>
+<p>対象期間内に多数のアップデートが公開されました。実務影響の大きいものを抜粋いたします。</p>
+<h3>🔧 主な発表</h3>
+<ul>
+  <li><strong>Amazon OpenSearch Memory が一般提供</strong>: Amazon OpenSearch Service の新しいサーバーレス機能で、AI エージェントに永続メモリを付与します。エージェントのやり取りを検索可能なイベントとして保存し、有用な記憶を非同期的に抽出、キーワード・セマンティック・ハイブリッド検索で横断的に文脈を取得。会話履歴全体をモデルに再投入せずに、過去の判断やユーザー設定を思い出せます。メモリストア単位の IAM 制御、actor／session スコープ、イベントと記憶の有効期限設定に対応。東京リージョンを含む5リージョンで提供。</li>
+  <li><strong>AWS Lambda が GPU インスタンスに対応</strong>: Lambda Managed Instances 上で、EC2 G 系インスタンスを用いた GPU アクセラレーション付き Event Functions を実行可能に。AI 推論、メディア処理、3D レンダリング、科学技術計算、金融シミュレーションなどをサーバー管理なしで動かせます。</li>
+  <li><strong>Amazon RDS for MySQL が MySQL 9.7（メジャー）に対応</strong>: MySQL コミュニティの最新 LTS リリースで、コミュニティ版 9.7.4 を搭載。Replication Applier Metrics、JSON Duality Views、Hypergraph Optimizer のサポートが追加されました。併せてマイナーバージョン 8.4.13 にも対応。</li>
+  <li><strong>Amazon Cognito のポイントインタイムリカバリ</strong>: ユーザープールのユーザーデータを任意の時点へ復元可能に。従来必要だった独自のエクスポート／リストア運用が不要になり、復元後もユーザー識別子が維持されます。</li>
+  <li><strong>Apache Spark Optimization Agent for AWS Glue ETL</strong>: 完了した Spark ジョブを分析し、コストまたは性能の目標を選ぶと、テレメトリの根拠とともに具体的な設定変更を数分で提示するエージェント。Glue コンソールのほか、SageMaker Unified Studio の MCP サーバー経由でも利用できます。</li>
+  <li><strong>Amazon SageMaker AI のクロスリージョン推論ルーティング</strong>: リージョンのキャパシティ不足時に、他リージョン・他アカウントのエンドポイントへリクエストを振り分け。ルーティング、ヘルスチェック、リトライを自前で実装する必要がなくなります。</li>
+  <li><strong>その他</strong>: CloudFront オリジン mTLS の WebSocket／gRPC 対応、CloudFront 標準ログの CMCD 対応、Lambda のカスタマー管理ランタイム、Aurora DSQL の監査ログ、S3 Replication の除外設定とマルチリージョンキー解決、EKS Hybrid Nodes の大型ホスト価格改定など。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>⚡ Next.js / ⚛️ React</h2>
+<p><strong>Next.js</strong> は canary チャネルのみ更新され、<strong>v16.5.0-canary.55</strong> が 2026-11-19 08:45 JST に公開されました（安定版の新規リリースはありません）。Turbopack の本番チャンキングに <code>max_chunk_size</code> を追加、Navigation Inspector のダークモードのコントラスト修正、React を <code>a8342585-20261117</code> へ更新、<code>didStripLocale</code> リクエストメタの削除、ts-plugin が引用符付きの prefetch セグメント設定値を受け入れるよう修正などが含まれます。</p>
+<p><strong>React</strong> の最新リリースは v19.3.1（2026-10-15 02:06 JST 公開）で、対象期間内の新規リリースは確認されませんでした。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases/tag/v16.5.0-canary.55">Next.js Releases</a> · <a href="https://github.com/facebook/react/releases">React Releases</a></p>
+
+<h2>☁️ GCP — Apigee と Application Integration のセキュリティ修正</h2>
+<p>2026-11-18 付の Google Cloud リリースノートでは、次の2点が公表されました。</p>
+<ul>
+  <li><strong>Apigee Edge for Private Cloud 4.53.01.03</strong>: OASValidation ポリシーを用いた API プロキシのデプロイが、4.53.01 への更新後に OpenAPI のパスパラメータ検証エラーで失敗する問題を修正。<code>setup.sh -p uapim</code> が <code>edge-uapim-connector</code> のセットアップ中に失敗する問題、および Message Processor の一部エラーメッセージのサニタイズも対応。</li>
+  <li><strong>Application Integration の脆弱性（GCP-2026-083）</strong>: 2026-09-22 より前のバージョンにおける統合実行パラメータの取り扱いに、信頼できないデータのデシリアライズ（Deserialization of Untrusted Data）脆弱性が発見されました。該当環境は早急なアップデートをご検討くださいませ。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<h2>その他のスタック</h2>
+<p class="empty-notice"><strong>Azure</strong>（公式アップデート一覧の取得ができず、対象期間内の個別発表を確認できませんでした）、<strong>Python</strong>（最新は 3.15.2／2026-10-25 公開）、<strong>Django</strong>、<strong>Java</strong>、<strong>Spring Boot</strong>（最新 RC は v4.2.0-RC2／2026-11-05 公開）、<strong>Hono</strong>（最新は v4.13.19／2026-11-16 21:58 JST 公開）、<strong>Claude API/SDK</strong>（最新の告知は 2026-11-17 付の Linked billing ベータ）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
