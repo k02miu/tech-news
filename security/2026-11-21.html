@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-21 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-21 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>CISA KEV - 悪用確認済み脆弱性に4件を追加（SAP NetWeaver、Cisco Expressway、VMware vCenter、Apache Roller） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-20（米国時間、CISA）</td></tr>
+<tr><th>CVE</th><td>CVE-2025-42884 / CVE-2026-76466 / CVE-2026-123890 / CVE-2026-129448</td></tr>
+<tr><th>影響</th><td>SAP NetWeaver／Cisco Expressway Series／VMware vCenter／Apache Roller</td></tr>
+<tr><th>出典</th><td>https://www.cisa.gov/news-events/alerts/2026/11/20/cisa-adds-four-known-exploited-vulnerabilities-catalog</td></tr>
+</table>
+<ul>
+<li>CISAは11月20日、実際の悪用が確認されたとして4件をKEVカタログへ追加した。<b>CVE-2025-42884</b>（SAP NetWeaver、データクエリロジックにおける特殊要素の中和不備）、<b>CVE-2026-76466</b>（Cisco Expressway Series、ハードコードされた資格情報の使用）、<b>CVE-2026-123890</b>（VMware vCenter、代替パス・チャネルを用いた認証バイパス）、<b>CVE-2026-129448</b>（Apache Roller、信頼できないデータのデシリアライズ）。</li>
+<li>vCenter と Apache Roller は仮想基盤・Webアプリ基盤としても広く利用されるため、外部公開状況を確認のうえ優先的な適用検討が望ましい。</li>
+<li>Federal Civilian Executive Branch 向けには BOD 26-04 に基づく迅速な是正が求められる。</li>
+</ul>
+
+<h3>SoftBank「Airターミナル6」- OSコマンドインジェクション（CVE-2026-101107、CVSSv4.0 8.7 / CVSSv3.0 8.8） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>JVN公開 2026/11/12、最終更新 2026/11/20（国内）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101107（CWE-78）</td></tr>
+<tr><th>影響</th><td>Airターミナル6 v1.01.80 およびそれ以前</td></tr>
+<tr><th>出典</th><td>https://jvn.jp/jp/JVN64740097/index.html</td></tr>
+</table>
+<ul>
+<li>当該機器に有線またはWi-Fi接続可能なユーザにより、<b>root権限で任意のコマンドを実行される可能性</b>がある。CVSS:4.0 基本値 8.7（AV:A/AC:L/PR:N/UI:N）、CVSS:3.0 8.8。</li>
+<li>開発者によれば修正済みファームウェアは展開済みで、未接続の機器もインターネット接続時に自動適用されるためユーザー対応は不要とのこと。11月20日付で影響・詳細情報が更新された。</li>
+<li>報告者は大平 剛 氏、socho 氏、京都工芸繊維大学 栗山 樹 氏、豊中市立第十一中学校 小川 智也 氏。JPCERT/CC が調整。</li>
+</ul>
+
+<h3>Siemens 製品に対するアップデート（2026年11月）- 新規11件・更新17件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>JVN公開 2026/11/05、最終更新 2026/11/20（国内）</td></tr>
+<tr><th>影響</th><td>Siemens の各製品（アドバイザリ参照）</td></tr>
+<tr><th>出典</th><td>https://jvn.jp/vu/JVNVU98354779/index.html</td></tr>
+</table>
+<ul>
+<li>Siemens が公表した製品向けアドバイザリを JVN がまとめたもの。11月20日付の更新で<b>新規11件・更新17件</b>となった。</li>
+<li>新規分には、産業製品の <b>Node2Shell</b>（SSA-242944、SSA-678870）、<b>PHP2Shell</b>（更新分 SSA-566435 ほか）、<b>Java4Shell</b>（SSA-272816 Industrial Edge、SSA-810379）、Mendix Studio Pro の MCP Server における複数の脆弱性（SSA-710379）、SIMATIC SCADA／PCS 7 の安全でないユーザー認証（SSA-970803）、SIMATIC WinCC Graphics Designer のファイルオープン時のアクティブコンテンツ暗黙実行（SSA-979641）などが含まれる。</li>
+<li>製造・プラント・産業用エッジ環境で Siemens 製品を運用している場合は、該当アドバイザリの確認と更新を検討されたい。</li>
+</ul>
+
+<h3>エレコム製無線LANルータ - OSコマンドインジェクション（CVE-2026-101113） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>JVN 2026/11/17（報道 2026/11/20）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-101113</td></tr>
+<tr><th>影響</th><td>WRC-BE36QS-B / WRC-BE36QSD-B / WRC-W701-B（いずれも v2.1.3 およびそれ以前）</td></tr>
+<tr><th>出典</th><td>https://jvn.jp/vu/JVNVU92504317/index.html</td></tr>
+</table>
+<ul>
+<li>管理画面へアクセス可能な攻撃者によって、任意のOSコマンドを実行される可能性がある。開発者が提供する情報に基づきファームウェアを最新版へ更新することが推奨される。</li>
+<li>報告者は TeamT5 の Charlie Chang 氏。家庭・小規模オフィスで広く利用される機種であり、更新状況の確認が望ましい。</li>
+</ul>
+
+<h3>開発ツールの動向 - Hermes Agent v0.23.3／Claude Code v2.1.330／OpenClaw <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-20（JST 09:34 / 16:49 / 11-21 07:32）</td></tr>
+<tr><th>影響</th><td>Hermes Agent（CLI/デスクトップ）、Claude Code、OpenClaw</td></tr>
+<tr><th>出典</th><td>https://github.com/NousResearch/hermes-agent/releases ・ https://github.com/anthropics/claude-code/releases</td></tr>
+</table>
+<ul>
+<li><b>Hermes Agent</b>: 安定版 <b>v0.23.3</b>（2026-11-19 米国時間＝JST 11/20 09:34、commit caafe53）と canary <b>v0.23.3+canary.20261120T064609Z</b>（JST 11/20 16:49）が公開。v0.23.3 は v0.23.2 以降の約370 PRをまとめたパッチリリースで、依存関係のセキュリティ更新（oauthlib、opentelemetry、tornado）が含まれる。CVE 付番やセキュリティ特化の記載はない。canary はプラグインカタログ追加が中心。<b>CLI は <code>hermes update</code> で更新可能</b>。</li>
+<li><b>Claude Code</b>: <b>v2.1.330</b>（JST 2026-11-21 07:32）が公開されたが、リリースノートにセキュリティ特化の記載はない。設定保存の競合による消失、<code>~/.claude.json</code> の不完全バックアップ、MCP サーバのシャットダウン等の不具合修正が中心。</li>
+<li><b>OpenClaw</b>: 対象期間内に新規リリースは確認されなかった（最新の 2026.11.10-beta.1 は JST 11/20 00:45 公開で対象期間前）。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>楽天証券 - 不正アクセスで最大約1,125万口座の情報が漏えいした可能性 <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-17（同社）／報道 2026-11-20</td></tr>
+<tr><th>被害</th><td>最大約1,125万口座（ログインID等）／最大約447万口座（詳細項目）</td></tr>
+<tr><th>出典</th><td>https://www.rakuten-sec.co.jp/web/info/info20261117-02.html ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56863.html</td></tr>
+</table>
+<ul>
+<li>11月16日に一部システムへの第三者からの不正アクセスの可能性を検知し、当該箇所の遮断・修正を実施。調査の結果、<b>11月11日にテスト環境のシステム内で管理していた一部情報が外部に漏えいした可能性</b>が判明した。</li>
+<li>持ち出された可能性があるのは、(1) 部店・お客様コード、ログインID、氏名、カナ氏名、生年月日、住所、電話番号、メールアドレス、勤務先、出金先口座（金融機関・口座番号・名義人）、年収・金融資産（申告情報）、商品別資産情報、最終ログイン日 - 最大約447万口座、(2) 部店・お客様コードとログインID - 最大約1,125万口座。</li>
+<li>同社は影響が確認された顧客の特定を完了しており、該当顧客へ個別に報告するとしている。金融機関の大規模漏えいであり、波及が大きい。</li>
+</ul>
+
+<h3>理化学研究所 - スーパーコンピュータ「富岳」「理究」の運用系システムに不正アクセス <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-16（理研）／報道 2026-11-20</td></tr>
+<tr><th>被害</th><td>認証システム情報 最大4,597名、ホームディレクトリ内のファイル（SSH秘密鍵・研究データ等）</td></tr>
+<tr><th>出典</th><td>https://www.riken.jp/pr/news/2026/20261116_2/index.html ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56862.html</td></tr>
+</table>
+<ul>
+<li>11月12日に「富岳」運用系システムへの不正アクセスを検知。13日午後4時33分に不正アクセスの事実を確認し、14日午前4時30分に「富岳」の運用を停止した。</li>
+<li>11月10日から13日にかけて、インターネット公開の「富岳」稼働状況ダッシュボードを足がかりに運用系内部ネットワークへ侵入し、複数サーバを不正操作。利用者ホームディレクトリの一部ファイルと認証システム登録情報が外部に持ち出された（可能性を含む）。サーバの一部で不正プログラムの設置など改ざんも確認。</li>
+<li>漏えい等の対象は、認証システム登録情報が最大4,597名（「富岳」利用者 最大4,222名：氏名・メールアドレス・ID、「理究」利用者 最大375名：氏名・メールアドレス）、および利用者ホームディレクトリ保存ファイル（理研外システム接続用のSSH秘密鍵・アクセスキー等、研究データ）。侵入者は取得した認証情報の一部で他システムへの接続を試みていたことも確認されている。</li>
+<li>全利用者のログイン用公開鍵を無効化し、脆弱性対処・サーバ再構築・ネットワーク構成見直し等の再発防止策を講じたうえで運用を再開する方針。</li>
+</ul>
+
+<h3>大崎電気工業 - ランサムウェア攻撃で生産関連システムが停止、出荷に影響 <span class="badge-high">重大</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-17 確認／報道 2026-11-19</td></tr>
+<tr><th>被害</th><td>埼玉事業所・子会社の生産関連システム停止、スマートメーター等の出荷停止</td></tr>
+<tr><th>出典</th><td>https://www.security-next.com/193088</td></tr>
+</table>
+<ul>
+<li>計測制御機器メーカーの大崎電気工業は、2026年11月17日にサーバ内データがランサムウェアにより暗号化されていることを確認。同日、外部ネットワークとの接続を遮断した。</li>
+<li>被害拡大防止のため埼玉事業所および子会社の生産関連システムを停止し、スマートメーターなどの生産・出荷ができない状態。再開時期は未定で、顧客に個別説明を実施。データ外部流出の可能性も含めて外部協力のもと調査中。</li>
+<li>生活インフラ関連製品の供給に影響が出る事案であり、続報が待たれる。</li>
+</ul>
+
+<h3>SMBC日興証券 - 持株会事務受託システムに不正アクセス、最大56,487名分が漏えい <span class="badge-high">重大</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-11（同社）／報道 2026-11-20</td></tr>
+<tr><th>被害</th><td>最大56,487名（持株会名、投資銘柄情報、会員識別番号、氏名、住所、配当金・諸税、持分残高、振替先口座情報）</td></tr>
+<tr><th>出典</th><td>https://www.smbcnikko.co.jp/news/release/2026/pdf/261111_01.pdf ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56861.html</td></tr>
+</table>
+<ul>
+<li>11月9日に持株会事務受託業務で使用しているシステムへの不正アクセスを確認。同日中にアクセスを遮断しサービスを一時停止したが、調査過程で情報漏えいが判明した。</li>
+<li>対象持株会には個別に連絡する。関係各所と連携し、原因・影響範囲の詳細調査を進めている。</li>
+</ul>
+
+<h3>ユミルリンク - メール配信サービス不正アクセス、第3報で延べ4,786万4,147件と確定 <span class="badge-high">重大</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-11（同社・第3報）／報道 2026-11-20</td></tr>
+<tr><th>被害</th><td>Cuenote FC: 延べ47,864,147件（配信先情報）／Cuenote BASE: 190件</td></tr>
+<tr><th>出典</th><td>https://www.ymir.co.jp/info/ymir-information20261111.html ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56860.html</td></tr>
+</table>
+<ul>
+<li>10月16日未明に一部システムへの不正アクセスを確認。ログ解析の結果、①不正プログラム設置と内部侵入（直接侵入・横展開型）、②正規利用者のセッション窃取とCSV出力機能悪用（なりすまし型）の2系統の攻撃手法が確認された。</li>
+<li>フォレンジック調査・データ突合の結果、Cuenote FC の漏えいは<b>延べ約4,786万件（47,864,147件）</b>（第二報の最大試算 延べ約5,162万件から重複計上を除外して確定）。Cuenote BASE では190件の契約者情報が閲覧可能な状態だった。</li>
+<li>同社は侵入経路遮断、不正プログラム排除、権限見直し等を実施し、セキュアコーディング強化、特権アクセスのゼロトラスト化、24時間365日監視体制の構築などの再発防止策を進める。</li>
+</ul>
+
+<h3>コーセー - 店頭体験・レッスン予約システムで個人情報2万8,098件が流出 <span class="badge-medium">重要</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-10 確認／報道 2026-11-19</td></tr>
+<tr><th>被害</th><td>2万8,098件（氏名、住所、電話番号、生年月日、性別、メールアドレス等）</td></tr>
+<tr><th>出典</th><td>https://www.security-next.com/193020</td></tr>
+</table>
+<ul>
+<li>2026年11月10日、会員の個人情報を読み込むリクエストが短時間に繰り返し行われていることを確認。アクセス制御の不備が悪用され、第三者が個人情報にアクセスしていたことが判明した。</li>
+<li>対象は「Maison KOSE銀座」および閉店した「Maison KOSE表参道」の予約利用顧客。同システムを停止し個人情報保護委員会へ報告、対象顧客へメールで連絡。アクセス制御の見直し・プログラム改修・脆弱性診断を実施する。</li>
+</ul>
+
+<h3>チームスピリット - ソフトウェア開発用サーバ不正アクセス、28,824件（要配慮個人情報35件を含む） <span class="badge-medium">重要</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-06（同社）／報道 2026-11-20</td></tr>
+<tr><th>被害</th><td>28,824件（重複除く、要配慮個人情報35件を含む）</td></tr>
+<tr><th>出典</th><td>https://corp.teamspirit.com/news/information/2026/11/2026_1106_01/ ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56857.html</td></tr>
+</table>
+<ul>
+<li>10月27日、第三者が開発用サーバへ不正ログインし、保管されていた認証情報を用いてクラウド環境からデータを取得したことを確認。同日中にサーバを停止し接続経路を遮断した。</li>
+<li>流出情報は TeamSpirit 契約・過去契約顧客の担当者情報、問い合わせ記録の一部、顧客企業従業員の勤怠記録の一部、資料請求・セミナー申込者情報、同社従業員・退職者情報など。原因は未知の脆弱性ではなく、開発用サーバの設定と情報管理の不備が重なったことによるもの。</li>
+</ul>
+
+<h3>資生堂グループ・ONE cosme - 肌測定システム／ECサイトの不正アクセス被害 <span class="badge-low">注意</span></h3>
+<table class="cve-table">
+<tr><th>発表</th><td>2026-11-20（報道）</td></tr>
+<tr><th>被害</th><td>資生堂グループ Facial Condition Analyzer 合計2,515件／「ONE cosme」最大1,154名</td></tr>
+<tr><th>出典</th><td>https://scan.netsecurity.ne.jp/article/2026/11/20/56858.html ・ https://scan.netsecurity.ne.jp/article/2026/11/20/56864.html</td></tr>
+</table>
+<ul>
+<li>資生堂グループの肌測定システム「Facial Condition Analyzer」への不正アクセスにより、合計2,515件の個人情報が漏えいしたことが公表された（11月20日付報道で件数が確定）。</li>
+<li>化粧品EC「ONE cosme」では不正アクセスにより最大1,154名の会員情報が取得された可能性があることが公表された。</li>
+<li>いずれも対象者への個別連絡と再発防止策の検討が進められている。</li>
+</ul>
+
+<h3>その他の公表 - インターネット調査システムへの不正アクセス（個人情報漏えいなしを確認）</h3>
+<ul>
+<li>インターネット調査システムへの不正アクセス事案について、調査の結果<b>個人情報の漏えいがないことを確認</b>したと11月20日に公表された（https://scan.netsecurity.ne.jp/article/2026/11/20/56859.html）。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
