@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-20 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-20 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.329 / v2.1.328</h2>
+<p>対象期間内に 2 つのバージョンが公開されました。<strong>v2.1.328</strong>（2026-11-19 10:20 JST 公開）と <strong>v2.1.329</strong>（2026-11-20 07:20 JST 公開）です。CI や自動化に影響する変更（<code>/code-review</code> の判定基準、スケジュールタスクの再設定、Code Mode のフック挙動）が含まれております。</p>
+
+<h3>🔧 新機能・改善（v2.1.329）</h3>
+<ul>
+  <li><strong>フックの可視化</strong>: フォルダのフックがどこで宣言されているかを示す信頼ダイアログの警告を追加。Claude Desktop など非対話ホストでは、管理設定のフック読み込み失敗時に会話内で警告を表示します。</li>
+  <li><strong><code>/tasks</code> の拡張</strong>: 現在のセッションのスケジュールタスク、<code>/loop</code> の wakeup、ゴール、会話のフォークを一覧に表示。<code>x</code> で確認のうえ1件ずつ停止できます。ヘッダーとフッターのバックグラウンド件数は、シェル・モニタ・MCP 呼び出し・エージェント・ワークフロー・スケジュールタスクをまとめた単一の数値に統一されました。</li>
+  <li><strong><code>/mcp</code> の診断性向上</strong>: リモート HTTP MCP サーバーが接続を拒否した際の JSON-RPC エラーメッセージを「Server message」行として表示。</li>
+  <li><strong>マーケットプレイス更新の可視化</strong>: <code>/status</code> に「Marketplace auto-update」行を追加し、自動更新されない管理対象マーケットプレイスとその理由を明示。</li>
+  <li><strong>Code Mode と OpenTelemetry の併用</strong>: テレメトリのイベント・メトリクスを有効にしたまま Code Mode を有効化可能に。スクリプト内の各ツール呼び出しがイベントを送信します（トレーシング有効時は引き続き無効）。</li>
+  <li><strong>[VSCode]</strong>: 信頼プロンプトを拒否した後、メッセージボックス上に「Review trust」リンクを表示し、ウィンドウを再読み込みせずにプロンプトを再表示できます。</li>
+</ul>
+
+<h3>🔧 新機能・改善（v2.1.328）</h3>
+<ul>
+  <li><strong>auto モードの適用拡大</strong>: Amazon Bedrock、Google Cloud の Agent Platform、Microsoft Foundry、Claude apps gateway 上の Opus 4.6 / Sonnet 4.6 でも auto モードが利用可能に。権限モード未指定の対話セッションは auto モードで開始されます。</li>
+  <li><strong><code>mcp_tool</code> フックの <code>"onFailure": "block"</code></strong>: command / HTTP フックと同様に、MCP ツールフックの呼び出し失敗時にアクションをブロックできます。</li>
+  <li><strong><code>CLAUDE_CODE_DISABLE_DEFERRED_TOOL_RESUME</code></strong>: フックが保留したツール呼び出しを <code>claude -p --resume</code> / <code>--continue</code> で実行させないための環境変数を追加。</li>
+  <li><strong>OpenTelemetry の取りこぼし警告</strong>: エクスポータにエンドポイントが未設定でデータが失われる恐れがある場合、<code>/status</code> と <code>claude doctor</code> で通知します。</li>
+  <li><strong>セルフホストランナー</strong>: <code>--repository-folder</code>、<code>--hook-label</code>、<code>--metadata key=value</code> を追加。オーケストレーターの <code>/metrics</code> にはキュー待ち時間の理由別メトリクスと、ランナー起動を断念した回数のメトリクスを追加しました。</li>
+</ul>
+
+<h3>🐛 主な変更・修正</h3>
+<ul>
+  <li><strong><code>/code-review</code> の判定基準変更</strong>: 対象未指定時は既定ブランチとの差分全体をレビューし、多コミットブランチで diff を失う不具合も修正。多くのモデルではバグと CLAUDE.md 違反のみを報告し、各指摘を Important / Pre-existing / Nit で分類、サマリー末尾に修正案を提示するようになりました（再利用性・簡素化の指摘は <code>/simplify</code> に分離）。<code>gh pr diff</code> が失敗した場合はレビューせず停止します。</li>
+  <li><strong>スケジュールタスクの移行</strong>: 新しくサインインしたセッションでは、旧バージョンで保存されたタスクの多くが再設定を要します（自セッションの <code>--resume</code> では引き続き実行可能）。「Exit and stop tasks」はセッションのスケジュールタスクを終了させ、resume 時に再実行されません。</li>
+  <li><strong>auto モードの高速化</strong>: 大規模リポジトリでの待ち時間を減らすため <code>git status</code> の実行頻度を低減。変更を破棄しうる git コマンドは、作業ツリー確認までブロックされる場合があります。</li>
+  <li><strong>Code Mode の安全性</strong>: PreToolUse フックのエラーでスクリプトのツール呼び出しを拒否しない挙動に変更（拒否が必要な場合は <code>"onFailure": "block"</code> を設定）。256 MiB を超える行範囲の読み取りはメモリ枯渇防止のため拒否されます。</li>
+  <li><strong>macOS の computer use</strong>: 新しい安全規則を適用し、一部の操作は拒否、一部アプリはアクセス範囲を縮小。起動が 30 秒で完了しないアプリは諦めるようになりました。</li>
+  <li><strong>2.1.326 の自動リトライを撤回</strong>: <code>max_tokens</code> エラーで示された上限への自動リトライを削除。出力トークンが少ないモデルをゲートウェイ越しに使う場合は <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS</code> を設定してください。</li>
+  <li><strong>その他</strong>: Gateway 起動時に <code>access_control.allow_cidrs</code> が空である旨を毎回通知（公開インターネットへの露出禁止を明示）、チームメイトのペインを <code>/bin/sh</code> 経由で起動、<code>/bug</code> は送信前に Yes/No を確認、サブエージェントは既定で自身のサブエージェントを待機、サンドボックス起動失敗時の報告方法を変更。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.2+canary.20261119T064637Z</h2>
+<p>2026-11-19 16:54 JST に canary リリース <strong>v0.23.2+canary.20261119T064637Z</strong> が公開されました。圧縮（コンパクション）とプロンプトキャッシュ周りの整備、プラグインカタログの追加が中心です。安定版の最新は <strong>v0.23.2</strong>（2026-11-17 05:59 JST 公開）で、対象期間内の新規安定版リリースはありません。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プラグインカタログ</strong>: Remedigenius を追加。</li>
+  <li><strong>圧縮の効率化</strong>: キャッシュ期限切れ時のコンパクションが、会話のウォームプレフィックス上で要約を生成するようになりました。</li>
+  <li><strong>キャッシュ管理の再構成</strong>: <code>prompt_cache_lifecycle</code> をパッケージ化し、保守性を向上。</li>
+</ul>
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>圧縮処理で失敗した排他アーカイブを確実に後始末するよう修正。</li>
+  <li><code>search_files</code> の grep フォールバックで、インラインの <code>(?i)</code> プレフィックスを尊重するよう修正。</li>
+  <li>Gateway の accept 処理で、失敗したフレームを再試行前に解放。accept 送信中に報告されるピアリセットの再試行、プライベートフックが利用できない場合の accept ガードのスキップにも対応。</li>
+  <li>ターミナルのセッションエクスポートを noclobber 配下に保持。Desktop の gateway ユニットで systemd がクォートしたコピーパスを照合できるよう修正。</li>
+  <li>プロンプトキャッシュのアンロード時刻を返信完了時点から計測するよう修正。2スペック規則以前に保存されたクロックを OpenAI スペックとして復元。キュー済みキャッシュエッジジョブが再ルーティングされたキーをスキップしないよう修正。</li>
+  <li>TUI でスイープ中にセッション上限が無効化された場合、上限ループが停止するよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.2%2Bcanary.20261119T064637Z">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.6 / v2026.11.10-beta.1</h2>
+<p>対象期間内に安定版 <strong>v2026.11.6</strong>（2026-11-20 02:26 JST 公開）とベータ版 <strong>v2026.11.10-beta.1</strong>（2026-11-20 00:45 JST 公開）が登場しました。安定版はアップグレード経路の信頼性と Gateway の省メモリ化、ベータ版はエージェントテンプレートと ID トンネルが主な柱です。</p>
+<h3>🔧 v2026.11.6（安定版）</h3>
+<ul>
+  <li><strong>アップグレードの円滑化</strong>: 2026.11.5 のアップデータを現行のリリース経路へ橋渡しし、Windows でステージ済みプラグイン依存関係を正しく検証。</li>
+  <li><strong>会話の耐障害性</strong>: 設定編集をまたいでもサブエージェントとバックグラウンドターンが継続し、Gateway 再起動で送信が中断された場合も最終回答を配信。</li>
+  <li><strong>Gateway の軽量化</strong>: 起動時のメモリ負荷と常駐メモリを削減（制約の厳しいホスト向け）。未使用のローカル認証情報ランタイムを遅延読み込みし、プラグインのツール探索が Gateway をブロックしないよう改善。</li>
+  <li><strong>長いモデルターンの信頼性</strong>: append-only のプロバイダ履歴、Responses ツール引数のバイト列、長大でツール多用の Claude CLI ターンの最終応答を保持。</li>
+  <li><strong>会話の継続性</strong>: コンパクション中も読み込み済み履歴を表示し、iOS の Talk ターンが従来の 30 秒打ち切りを超えて継続可能に。</li>
+  <li><strong>ChatGPT 連携</strong>: 「Sign in with ChatGPT」の表記と Business 利用ガイダンスを更新し、新しい ChatGPT モデル向けの Codex サポートを更新。推論リレー経由のモデルカタログ取得を復旧。</li>
+</ul>
+<h3>🔧 v2026.11.10-beta.1（ベータ版）</h3>
+<ul>
+  <li><strong>エージェントテンプレート</strong>: ClawHub パッケージからエージェントを直接追加可能に。単一の CLAW.md マニフェストと同梱スキルフォルダをネイティブの信頼フローで検証します。</li>
+  <li><strong>OpenClaw ID</strong>: ID トンネル経由でノードを接続し、Access から承認。オーナー端末を自身の ID に紐付けられます。</li>
+  <li><strong>ブラウザハンドオフ</strong>: エージェントを停止せずに Browser パネルからブラウザを直接引き継ぎ。</li>
+  <li><strong>チャット操作</strong>: 実行を止めずに保留中のステアリングメッセージを送信、キュー済みメッセージの編集、アプリ再起動をまたいだ下書き保持に対応。</li>
+  <li><strong>更新と状態移行</strong>: 自動更新スケジュールの設定と、受信リリース自身による更新前リハーサル。Gateway 状態の移行は稼働中ストアを直接書き換えず、起動時に copy-and-swap で実施。</li>
+  <li><strong>永続実行</strong>: macOS で Gateway 再起動をまたいでバックグラウンドコマンドを継続。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.6">v2026.11.6</a> · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.10-beta.1">v2026.11.10-beta.1</a></p>
+
+<h2>🐋 Orca — v1.4.265 / v1.4.264 / Android 0.0.68</h2>
+<p>対象期間内に <strong>v1.4.265</strong>（2026-11-20 08:41 JST 公開）、<strong>v1.4.264</strong>（2026-11-19 19:35 JST 公開）、<strong>Android 0.0.68</strong>（2026-11-20 06:15 JST 公開）が公開されました。デスクトップ版の主役は「ボットを一級のチームメイトとして扱う」改善です。</p>
+<h3>🔧 v1.4.265</h3>
+<ul>
+  <li><strong>ボットセッションにツールと識別子を付与</strong>: 管理対象エージェントセッションが Claude と Codex に限定されず、必要なツールと識別子を備えて起動します。</li>
+  <li><strong>ボットによる共有</strong>: Agent CLI の呼び出し元が、オーナーと同じ Sharing を利用可能に。</li>
+  <li><strong>Slack スレッドの可視化</strong>: スレッド上でボットが現在何に取り組んでいるかを表示し、長い回答は分割されずにまとめて届きます。</li>
+  <li><strong>Gmail トリガーの精度</strong>: 表示名ではなく実際の送信元アドレスでマッチング。</li>
+  <li><strong>接続時の説明強化</strong>: アクセス確認ダイアログが、許可する内容を接続前に明示します。</li>
+</ul>
+<h3>🔧 v1.4.264</h3>
+<ul>
+  <li><strong>チャットコマンドのワークスペース解決</strong>: Chat UI のエージェントがワークスペース外のフォルダから Orca コマンドを実行した際、フォーカス中のワークスペースではなく当該チャットのワークスペースを使うよう修正。解決できない場合は、対象未指定のブラウザコマンドを拒否します。</li>
+</ul>
+<h3>🔧 Android 0.0.68</h3>
+<ul>
+  <li><strong>Chat / CLI の選択</strong>: New Tab シートでサーフェスを選択可能に。選択は端末が記憶し、Chat で動かないエージェントは CLI で開きます。</li>
+  <li><strong>履歴の探索</strong>: Agent History にエージェント別・並び順のフィルタ、プロジェクト全体の検索、再起動後の中断チャットの再開提案を追加。</li>
+  <li><strong>未読表示</strong>: ワークスペースのエージェント行とセッションタブ（折りたたみグループを含む）に未読ベルを表示。</li>
+  <li><strong>引用</strong>: エージェントの返信中のテキストを選択して Quote すると、下書きに取り込めます。チャットでは <code>/fork</code> と <code>/usage</code> が利用可能に。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>☕ Spring Boot — v4.2.0 / v4.1.3 / v4.0.10</h2>
+<p>2026-11-20 07:00 JST に 3 系統のメンテナンスリリースが同時公開されました。v4.2.0 では転送ヘッダー処理の精緻化と Apache Pulsar サポートの非推奨化が入っております。</p>
+<ul>
+  <li><strong>新機能</strong>: 転送ヘッダー（forwarded header）サポートの refinement、Apache Pulsar サポートの非推奨化。</li>
+  <li><strong>主な修正</strong>: 4.0 で改称された一部プロパティを Properties migrator が移行しない問題、<code>#52800</code> 以降クラウドプラットフォーム上でリアクティブ Web サーバーが転送ヘッダーを使わなくなる問題、並行アクセス時に「Zip file closed」が発生しうるクラス読み込み、<code>TransactionManagerCustomizers</code> が自動構成の <code>PulsarTransactionManager</code> をカスタマイズしない問題、Docker Compose の JDBC URL で PostgreSQL のデータベース名が URL エンコードされない問題、ポート未指定時にエンコード済み AMQP URI がデコードされない問題、SAML2 の SP メタデータでシングルログアウトバインディングを省略すると失敗する問題など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/spring-projects/spring-boot/releases">Spring Boot Releases</a></p>
+
+<h2>🤖 Claude API / SDK — TypeScript SDK v1.11.0</h2>
+<p>2026-11-20 04:23 JST に <code>@anthropic-ai/sdk</code> の <strong>v1.11.0</strong> が公開されました。Admin API に Claude Code の管理設定が追加され、プラグイン方式の Admin API には <code>sandbox_egress_restricted</code> エラーが加わっています。クライアント側では大規模イベントのストリーミング性能が改善されました。</p>
+<p>🔗 <a href="https://github.com/anthropics/anthropic-sdk-typescript/releases">anthropic-sdk-typescript Releases</a></p>
+
+<h2>☁️ AWS — Lambda の実行時間拡大と Aurora DSQL の書き込み性能向上</h2>
+<p>対象期間内に多数のアップデートが公開されました。実務影響の大きいものを抜粋いたします。</p>
+<ul>
+  <li><strong>AWS Lambda の 30 分タイムアウト</strong>: オンデマンドの Event Functions で関数タイムアウトを 30 分に拡大。同期・非同期・イベントソースマッピングの各呼び出しで従来の 15 分上限を倍にします（Lambda Managed Instances 上で提供）。</li>
+  <li><strong>Lambda durable functions の OpenTelemetry 対応</strong>: 永続実行のトレースを Amazon CloudWatch や他の標準的な可観測性ツールへ送信可能に。最大1年動作する多段ワークフローのボトルネック特定と障害原因の追跡が容易になります。</li>
+  <li><strong>Amazon Aurora DSQL の書き込み性能</strong>: ストレージ層の改良により、多くのトランザクションワークロードで書き込みスループットが最大 50% 向上。タイムスタンプや ULID / UUIDv7 など単調増加の主キーを持つテーブルでは効果が大きく、監査ログのテーブルでは挿入数が最大 200% 増加したとのことです。</li>
+  <li><strong>Amazon Route 53 のプライベートエンドポイント向けヘルスチェック</strong>: プライベートなエンドポイントに対するヘルスチェックに対応しました。</li>
+  <li><strong>AWS Marketplace のエージェント型決済</strong>: x402 プロトコルによるエージェント型決済に対応。AI エージェントが商品を発見し、リクエスト単位で米ドル決済を行えます。既存の AWS 請求に合算され、暗号資産ウォレットは不要です（Amazon Bedrock AgentCore の payments 機能を利用）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">AWS What's New</a></p>
+
+<h2>☁️ Azure — PostgreSQL 19 のパブリックプレビュー</h2>
+<ul>
+  <li><strong>Azure Database for PostgreSQL の PostgreSQL 19（プレビュー）</strong>: Flexible Server の East Asia リージョンで PostgreSQL 19 のパブリックプレビューを提供開始。ポータルと Azure CLI から新規サーバーをプロビジョニングし、メジャーバージョンの互換性を検証できます。</li>
+  <li><strong>Azure VM のゾーン耐性（プレビュー）</strong>: 単一ゾーンの障害から復旧できるゾーン耐性機能をパブリックプレビューで提供。</li>
+  <li><strong>Azure Database for PostgreSQL の Database Agent（プレビュー）</strong>: データベース運用を支援するエージェント機能をパブリックプレビューで提供。</li>
+</ul>
+<p>🔗 <a href="https://azure.microsoft.com/updates">Azure Updates</a></p>
+
+<h2>☁️ GCP — セキュリティ情報と BigQuery の AI 機能拡充</h2>
+<p>2026-11-19 付の Google Cloud リリースノートより、実務影響のある項目を抜粋いたします。</p>
+<ul>
+  <li><strong>⚠️ セキュリティ（GCP-2026-084）</strong>: Dataform、BigQuery Studio、Colab Enterprise のワークスペースディレクトリ処理と Git 連携にパストラバーサル脆弱性が発見されました。該当環境は速やかな対応をご検討くださいませ。</li>
+  <li><strong>BigQuery の AI インデックス</strong>: <code>CREATE AI INDEX</code> 文で AI インデックスを作成し、<code>AI.SEARCH</code> 関数でテーブル列を自然言語検索できます。埋め込みの生成やモデル管理を自前で行う必要がありません（プレビュー）。</li>
+  <li><strong>BigQuery の生成 AI 関数</strong>: <code>gemini-4-neon</code> モデルをサポート（一般提供）。</li>
+  <li><strong>Agent Registry</strong>: MCP ツールのプロトコルレベルメタデータに対応。IAP ポリシーヒントによるツール有効化、human-in-the-loop 制御、プロバイダのメタデータ属性を扱えます（プレビュー）。</li>
+  <li><strong>Cloud Load Balancing</strong>: リージョン外部／内部 Application Load Balancer とクロスリージョン内部 ALB で、認可ポリシーの <code>DENY_BY_DEFAULT</code> アクションが一般提供。転送ルールに付与すると、明示的に許可しない限り全リクエストを遮断する既定拒否のセキュリティ基線を確立できます。</li>
+  <li><strong>BigQuery Migration Service</strong>: 移行元データウェアハウスから BigQuery への移行について、スキーマ・集計メトリクス・行レベルデータの一致を検証するサービス（プレビュー）。</li>
+</ul>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes">Google Cloud release notes</a></p>
+
+<h2>⚡ Next.js / ⚛️ React / その他のスタック</h2>
+<p><strong>Next.js</strong> は canary チャネルのみ更新され（最新 <strong>v16.5.0-canary.57</strong>／2026-11-20 08:46 JST 公開）、安定版の新規リリースは確認されませんでした。安定版の最新は v16.4.6（2026-11-10 05:27 JST 公開）です。</p>
+<p><strong>React</strong> の最新リリースは v19.3.1（2026-10-15 02:06 JST 公開）で、対象期間内の新規リリースは確認されませんでした。</p>
+<p class="empty-notice"><strong>Python</strong>（最新は 3.15.2）、<strong>Django</strong>（最新は 6.1.3／2026-11-04 00:21 JST 公開）、<strong>Java</strong>、<strong>Hono</strong>（最新は v4.13.19／2026-11-16 21:58 JST 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
