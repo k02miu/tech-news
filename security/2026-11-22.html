@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-22 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-22 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>@fastify/express・@fastify/middie - パススコープのミドルウェア回避により保護ルートへ到達（CVE-2026-124626 ほか計5件、各 CVSSv3.1 9.1） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（NVD 登録）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-124626 / CVE-2026-129504 / CVE-2026-133120 / CVE-2026-133867（@fastify/express）、CVE-2026-133250（@fastify/middie）</td></tr>
+<tr><th>影響</th><td>@fastify/express 4.0.10 未満（4.0.0〜4.0.9）／@fastify/middie 9.3.8 未満（9.3.7 以下）</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.1（Critical、各）</td></tr>
+<tr><th>出典</th><td>https://nvd.nist.gov/vuln/detail/CVE-2026-124626 ほか</td></tr>
+</table>
+<ul>
+<li>Fastify 上で Express ミドルウェアを動かす互換レイヤー <b>@fastify/express</b> と、Fastify のミドルウェアエンジン <b>@fastify/middie</b> に、パススコープのミドルウェアがスキップされる不備が複数見つかった。5件はいずれも CVSSv3.1 で「9.1（Critical）」と評価されている。</li>
+<li>ルーターが配送に用いるパスと、ミドルウェアのマッチャが判定するパスが食い違う場合（動的セグメントやワイルドカードの空値、先頭スラッシュを持たないリクエストターゲット、正規表現マウントとパラメータ付きプレフィックスの組み合わせ、バックスラッシュや二重パーセントのデコード差など）に、ルーターはハンドラへ配送する一方でミドルウェアは実行されない。<b>認証・認可・レート制限をパススコープのミドルウェアで実装している構成では、未認証のクライアントが保護対象のハンドラへ到達し得る</b>。細工したリクエストや非既定のオプションは不要。</li>
+<li>対策は <b>@fastify/express 4.0.10</b>、<b>@fastify/middie 9.3.8</b> 以降への更新。</li>
+</ul>
+
+<h3>WordPressプラグイン2件 - 未認証のリモートコード実行と管理者権限昇格（CVE-2026-120539 / CVE-2026-125294、各 CVSSv3.1 9.8） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（NVD 登録、Wordfence 採番）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-120539（Restrictions for BuddyPress）／CVE-2026-125294（Nexter Blocks Pro）</td></tr>
+<tr><th>影響</th><td>Restrictions for BuddyPress 1.5.4 以下／Nexter Blocks Pro 5.0.10 以下</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.8（Critical、各）</td></tr>
+<tr><th>出典</th><td>https://nvd.nist.gov/vuln/detail/CVE-2026-120539 ほか</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-120539</b>（Restrictions for BuddyPress）は、攻撃者制御のリクエストURIをダブルクォート文字列内のPHP式へ連結し eval() で評価するため、URLパスに <code>{${...}}</code> 形式のペイロードを送るだけで<b>未認証の遠隔コード実行</b>が成立する。影響する条件は既定で有効かつログイン判定より前に評価され、設定変更は不要。サイト側に BuddyPress と Paid Memberships Pro が有効である必要がある。</li>
+<li><b>CVE-2026-125294</b>（Nexter Blocks Pro）は、新規登録処理のパラメータ検査がASCII基準の拒否リストである一方、データベースの照合順序がアクセント非依存（utf8mb4_unicode_ci 系）であるため、Unicodeの類似文字（例「ẇp_çapabilities」）で <code>wp_capabilities</code> を上書きでき、<b>未認証で管理者権限のアカウントを登録</b>される。nonce はログイン／登録ブロックを含むページに公開されるため、既定構成かつユーザー登録が有効な環境で到達可能。</li>
+<li>いずれも該当プラグインの更新・無効化を検討されたい。</li>
+</ul>
+
+<h3>Python「pypdf」7.0.0未満 - 資源枯渇・情報漏えいの脆弱性（CVE-2026-134364 / 134366 / 134367、各 CVSSv4.0 8.7） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（NVD 登録）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134364（3.7.1〜7.0.0未満）／CVE-2026-134366／CVE-2026-134367（XFAフォーム）</td></tr>
+<tr><th>影響</th><td>pypdf 7.0.0 未満（一部は 2.4.2／3.7.1 以降が対象）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.7（High、各）</td></tr>
+<tr><th>出典</th><td>https://nvd.nist.gov/vuln/detail/CVE-2026-134366 ほか</td></tr>
+</table>
+<ul>
+<li>PDF処理ライブラリ pypdf に3件。<b>CVE-2026-134366</b> と <b>CVE-2026-134367</b> は XFA フォームの処理で大量のメモリを消費させられ、資源枯渇（DoS）に至る。<b>CVE-2026-134364</b> は配置情報を推測され得る情報漏えい。</li>
+<li>サーバ側で利用者から受け取ったPDFを解析する構成は影響を受けやすい。7.0.0 以降への更新が推奨される。</li>
+</ul>
+
+<h3>OSS基盤の脆弱性 - Rclone／SurrealDB／OpenRemote／Admidio（最大 CVSSv4.0 9.3） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（NVD 登録、VulnCheck 採番）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134352（Rclone）／CVE-2026-134292（SurrealDB）／CVE-2026-134287（OpenRemote）／CVE-2026-134258・CVE-2026-134262（Admidio）</td></tr>
+<tr><th>影響</th><td>Rclone 1.51.0〜1.76.0未満／SurrealDB 1.0.0〜4.0.0未満／OpenRemote core 1.34.0未満／Admidio 5.0.0〜5.0.18未満</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.2〜9.3（Critical）ほか</td></tr>
+<tr><th>出典</th><td>https://nvd.nist.gov/vuln/detail/CVE-2026-134352 ほか</td></tr>
+</table>
+<ul>
+<li><b>Rclone</b>（CVE-2026-134352、9.2）: <code>serve sftp --auth-proxy</code> のキャッシュキー生成が認証方式を含まないため、被害者の公開鍵（base64）を知る攻撃者が同一クライアントIPからパスワードとして送ることでキャッシュを再利用され、読み書き可能なVFSアクセスを得る。1.76.0 で修正。</li>
+<li><b>SurrealDB</b>（CVE-2026-134292、9.3）: 組込JavaScriptエンジンの <code>surrealdb.functions</code> ブリッジが関数ケイパビリティ検査を迂回し、権限を剥奪された利用者が組込関数を実行できる。ほかにも MCPサーバのSQLインジェクション（CVE-2026-134293、8.8）、ストレージ層のパストラバーサル、認可バイパスなど多数が同時に公開された。4.0.0 で修正。</li>
+<li><b>OpenRemote</b>（CVE-2026-134287、9.2）: MQTTの <code>UserAssetProvisioningMQTTHandler</code> が秘密鍵の所持を検証しないため、未認証の攻撃者が既知の機器の公開証明書を送るだけで機器になりすませる。1.34.0 で修正。</li>
+<li><b>Admidio</b>（CVE-2026-134258、9.3／CVE-2026-134262、9.2）: ファイル名変更（renameFile）のパストラバーサルでスクリプト入りSVGを公開領域へ移動させ格納型XSSに至る問題と、ロール名の未エスケープによる格納型XSS（管理者のCSRFトークンを窃取し権限昇格）。5.0.18 で修正。</li>
+</ul>
+
+<h3>ルーター・CPU - D-Link「DIR-600L」にスタックバッファオーバーフロー（CVE-2026-133993、PoC公開）／AMD Zeppelin のセキュアブート回避（CVE-2026-74127、CVSSv4.0 9.4） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（NVD 登録）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-133993（D-Link DIR-600L）／CVE-2026-74127（AMD Zeppelin）</td></tr>
+<tr><th>影響</th><td>D-Link DIR-600L ファームウェア 2.17b02／AMD Zeppelin（Zen1/Zen+）プロセッサの PSP Boot ROM</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.3（D-Link、PoC公開）／CVSSv4.0 9.4（AMD）</td></tr>
+<tr><th>出典</th><td>https://nvd.nist.gov/vuln/detail/CVE-2026-133993 ほか</td></tr>
+</table>
+<ul>
+<li><b>D-Link DIR-600L</b>（CVE-2026-133993）は gena.cgi の GENA Subscription Handler（FUN_0040efb0）で引数 <code>service</code> を操作するとスタックベースのバッファオーバーフローが成立する。遠隔から攻撃可能で<b>エクスプロイトが公開済み</b>。保守終了に近い機種であり、利用の見直しを含めた対応が望ましい。</li>
+<li><b>AMD Zeppelin</b>（CVE-2026-74127）は、PSP Boot ROM の暗号署名検証の不備により、SPIフラッシュへのローカルアクセスを持つ攻撃者が<b>セキュアブート認証を回避</b>し、PSPの最高権限で未署名コードを実行し得る。機密性・完全性の喪失とホスト起動チェーンの改変、永続的な可用性の喪失につながる。</li>
+</ul>
+
+<h3>Claude Code・OpenClaw・Hermes Agent - 対象期間内にセキュリティ関連の新規リリースなし</h3>
+<ul>
+<li>Claude Code は v2.1.330（2026-11-20 22:32 UTC 公開）が最新で、対象期間内の新規リリースおよびセキュリティ特化の記載は確認されなかった。OpenClaw は 2026.11.10-beta.1（11月19日公開）、Hermes Agent は v0.23.3（11月19日公開）が最新で、いずれも対象期間内の新規リリースは確認されなかった。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>早稲田大学 - 「MyWaseda」のユーザー情報管理システムが侵害、のべ3,261件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-21（Security NEXT 報道）／侵害は 2026-08-31</td></tr>
+<tr><th>被害</th><td>のべ3,261件（うち教職員・学生・卒業生に関する81件）</td></tr>
+<tr><th>出典</th><td>https://www.security-next.com/192578</td></tr>
+</table>
+<ul>
+<li>早稲田大学は、ポータルサイト「MyWaseda」のログインに用いるユーザー情報を管理するシステムが第三者によって侵害され、管理していたユーザー情報の一部が外部に流出したことを明らかにした。PHPの脆弱性へ対応するためシステムの状況を確認していたところ、<b>2026年8月31日</b>に行われた侵害の痕跡を確認。さらに調査を進めた結果、システムに侵入され一部の情報を取得されていたことが判明した。</li>
+<li>窃取されたのは、職員などの氏名・メールアドレス・教職員番号・所属部署名・資格名・暗号化されたパスワードなどの<b>のべ3,261件</b>。うち教職員・学生・卒業生に関する81件については、氏名のほか資格名・メールアドレス・暗号化されたパスワードなどが含まれる。</li>
+<li>大学は外部協力のもと、侵入経路やさらなる情報取得の有無、影響範囲について詳細な調査を進め、関係機関への報告を行うとしている。大学・教育機関は学認系のSSO基盤を狙った攻撃が続いており、認証基盤の点検が望ましい。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
