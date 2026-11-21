@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-21 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-21 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.330</h2>
+<p>2026-11-21 07:38 JST に <strong>v2.1.330</strong> が公開されました。Anthropic の Enterprise Admin Console で管理される組織へのサインイン対応、セルフホストランナーの運用性向上、VS Code 拡張の設定追加が中心です。日本時間の早朝公開のため、対象期間内のリリースは本バージョンのみとなります。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>組織サインイン</strong>: Anthropic の Enterprise Admin Console で管理される組織へサインイン可能に。<code>claude auth login</code> の後、組織の設定が適用され、そのクラウドプロバイダーまたはゲートウェイが使用されます。</li>
+  <li><strong>easel（組み込みモッド）</strong>: 依頼時にグラフを描画する組み込み機能を追加。MCP のメトリクス結果の下にも表示されます。Pro / Max、および利用可能な場合は Team / Enterprise の macOS・Linux で提供され、<code>/config</code> で自動描画を無効化できます。</li>
+  <li><strong>サインインリンクの完全表示</strong>: 短縮リンクがエラーになる場合やスクリプトが値を読み取る場合に、完全なリンクを出力する <code>CLAUDE_CODE_FULL_SIGN_IN_LINK=1</code> を追加。</li>
+  <li><strong>セルフホストランナー</strong>: リポジトリ内の任意フォルダを作業開始地点にする <code>--start-dir</code> / <code>SELF_HOSTED_RUNNER_START_DIR</code> を追加。あわせて、プラグインマーケットプレイスの取得失敗や Anthropic 管理 git によるプラグインリポジトリの拒否を通知するようになりました。</li>
+  <li><strong>プラグイン CLI の JSON 出力</strong>: <code>claude plugin install --json</code> の結果に <code>commandPrinted</code>（インストールコマンドが stderr に書き込んだ場合 true）と <code>commandFailed</code>（異常終了・kill・タイムアウト時）を追加。</li>
+  <li><strong>ランナーのメトリクス</strong>: <code>claude_code_self_hosted_runner_order_to_registered_seconds</code> と <code>claude_code_self_hosted_runner_order_to_first_session_seconds</code> を <code>/metrics</code> に追加し、作業指示から登録・セッション引き渡しまでの遅延を計測可能に。</li>
+  <li><strong>[VSCode]</strong>: 会話の最後の応答以降を分岐する <code>/fork</code>、実行中ワークフローをエージェントマップで開く <code>/workflows</code>、Escape で停止しない <code>claudeCode.escapeStopsClaude</code>、メッセージを固定しない <code>claudeCode.pinPrompt</code>、コンテキスト表示の閾値 <code>claudeCode.contextUsageThreshold</code> を追加。「Open in Side Bar」に <code>prompt</code> 引数、セッショングループのメニューに Move up / Move down を追加しました。</li>
+</ul>
+
+<h3>🐛 主な変更・修正</h3>
+<ul>
+  <li><strong><code>max_tokens</code> 自動リトライの復活</strong>: v2.1.329 で削除された、<code>max_tokens</code> がモデルまたはゲートウェイの上限を超えた際の自動リトライが復元されました。</li>
+  <li><strong>スケジュールタスクの期間延長</strong>: セッションが継続している間、定期スケジュールタスクと <code>/loop</code> の実行期間が 7 日から最大 30 日に延長され、終了時期も明示されるようになりました（本リリース以前に作成したタスクは 7 日のまま）。</li>
+  <li><strong><code>rm</code> の承認強化</strong>: ルート、ホーム、トップレベルフォルダ、作業フォルダを対象とする <code>rm</code> コマンドが承認を求めるようになり、応答できる人がいない場合は拒否されます。</li>
+  <li><strong>MCP 拒否の範囲</strong>: <code>deniedMcpServers</code> の名前指定は、その名前の claude.ai コネクタのみを隠す挙動に変更。同 URL の他コネクタも遮断するには正確な URL を指定します。</li>
+  <li><strong>モデル名の扱い</strong>: 「sonnet」「haiku」を含む未認識のモデル名は他と同様に短いシステムプロンプトを使用。<code>CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=0</code> で全モデルに完全版を適用できます。</li>
+  <li><strong>モデル設定の継承</strong>: <code>model</code> 設定付きスキル（<code>context: fork</code> を除く）は、サブエージェント・フォーク・コンパクション・<code>/recap</code> をセッションのモデルのまま実行。サブエージェントのフォールバックも引き継がれ、そのサブエージェントが起動するエージェントはフォールバックの Bedrock リージョンを使用します。</li>
+  <li><strong>トークン消費の削減</strong>: Claude apps gateway にサインインしたターミナルセッションでは、サブエージェントの進捗サマリーが会話全体ではなく短いメモから生成されるようになりました。</li>
+  <li><strong>セルフホストランナー</strong>: <code>spawn-runner</code> フックが並行起動可能に（<code>--hook-concurrency</code>、既定 4）。Bash コマンドは不要な場合にファイル差分を省略し、チェックアウトフックがステータス 108 で終了した際は他ランナーを試さず即座に開始を中止します。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.3</h2>
+<p>2026-11-20 09:34 JST に安定版 <strong>v0.23.3</strong> が公開されました。v0.23.2 以降にマージされた約 370 の PR をまとめたパッチリリースで、CLI・インストーラ・Microsoft Store アプリ・Docker・Hermes Cloud に配布されます。詳細なキュレーション済みノートは v0.24.0 で提供予定です。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>規模</strong>: v0.23.2 からの対象ウィンドウで 1,657 の非マージコミット、3,948 ファイルの変更（+222,379 / −96,154）、370 のマージ済み PR、60 のクローズ済み Issue を収録。</li>
+  <li><strong>プロンプトキャッシュ制御</strong>: 長いツール実行中のウォーム維持、アイドル会話の 1 時間キャッシュ期限切れ前のコンパクション、Nous Portal の 1 時間ライフサイクル対応、<code>prompt_caching.cache_ttl</code> の既定 <code>auto</code> 化。</li>
+  <li><strong>コンパクション改善</strong>: 破棄したツール結果をアーカイブするように。プロアクティブなツール結果プルーニングは既定で有効化。</li>
+  <li><strong>初回セットアップ</strong>: 質問 1 つで完了する CLI セットアップ（無料枠を含む）を追加。</li>
+  <li><strong>モデル対応</strong>: OpenRouter と Nous Portal で GPT-6.2 Astra / Sol（+ Pro）を利用可能に。</li>
+  <li><strong>その他</strong>: Bot Chat のコンポーザー上部に「Waiting on teammates」表示、Linux AppImage のエージェントペイロードをビルド単位の安定コピーから実行、永続化インターフェースの背後にストレージ層を分割（SQLite バックエンド）、oauthlib / opentelemetry / tornado のセキュリティ更新、プラグインカタログの追加。</li>
+</ul>
+<h3>🐛 更新方法</h3>
+<ul>
+  <li>Microsoft Store 版は Store 経由で更新。インストーラ版デスクトップアプリは次回バンドル版で更新されます。</li>
+  <li>CLI は <code>hermes update</code> またはインストーラのワンライナー再実行。Docker / Hermes Cloud は <code>nousresearch/hermes-agent:stable</code>（または <code>:latest</code>）。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.3">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.11.6</strong>（2026-11-20 02:26 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.266 / v1.4.267</h2>
+<p>対象期間内に 2 つのリリースが公開されました。<strong>v1.4.266</strong>（2026-11-20 17:25 JST 公開）が Orca Bots の正式な第一級機能化を含む大型アップデート、<strong>v1.4.267</strong>（2026-11-21 06:31 JST 公開）がその安定性修正パッチです。</p>
+<h3>🔧 新機能・改善（v1.4.266）</h3>
+<ul>
+  <li><strong>Orca Bots（ベータ）が第一級のチームメイトに</strong>: 管理対象のエージェントセッションが Claude / Codex に限定されず、それぞれ必要なツールとアイデンティティで開始。Bot はオーナーと同様に共有（Sharing）を利用でき、Slack スレッドと Gmail トリガーの追従精度が向上、接続時の権限警告も明確化されました。</li>
+  <li><strong>Antigravity のサインイン方法選択</strong>: Gemini API キーまたは Google Agent Platform（ADC）でサインイン可能に。チャット・クォータ・選択アカウントが一致します。</li>
+  <li><strong>エージェントの同梱</strong>: ホストに未導入の場合、OpenCode・Cursor・Copilot・Grok・Kimi Code・OMP を Orca 自身がインストール。ネイティブチャット系エージェントには CLI 更新も提示されます。</li>
+  <li><strong>画像プレビュー</strong>: 貼り付け・ドロップした画像のプレビュー表示、Codex CLI の画像プレビューに対応。</li>
+  <li><strong>ペアリング環境向けの改善</strong>: SSH・ペアリング先ホストの localhost リンクをそのホストの Orca ブラウザで開けるようになり、リモート HTML プレビューで動画・音声を再生可能。ペアリング先クライアントからサーバーの通知設定を読み書きできます。</li>
+  <li><strong>軽量化</strong>: セッション保存は未変更エントリを同一のまま保持し、ホスト状態の処理は変更のあったホストのみに限定。Windows のツールは System32 の絶対パスから起動。Linux ではパスワードなしキーリングを先に試行します。</li>
+  <li><strong>UI 改善</strong>: サイドバーで Bots と Projects を並び替え可能に。コメント欄を積み上げ型コンポーザーに拡張し、アイテムを移動しながら閲覧可能に。Activity のカードからオープンな質問へ直接返信できます。</li>
+</ul>
+<h3>🐛 主な修正（v1.4.267）</h3>
+<ul>
+  <li>ステータスバーの安定性を改善。</li>
+  <li>完了したターンが正しく確定するようチャットの挙動を調整。</li>
+  <li>サイドバーの Bots 紹介カードを簡素化し、任意の幅に収まるよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Lambda が Python 3.15 に対応</strong>: Event Functions で一般提供、Web Functions ではパブリックプレビュー。Web Functions としては初の Python ランタイムで、これまで Node.js のみだった Web アプリ・API 構築が Python でも可能になりました。</li>
+  <li><strong>AWS Lambda が Node.js 26 に対応</strong>: マネージドランタイムおよびベースコンテナイメージ（Event Functions のみ）として利用可能。Node.js 26 は最新の LTS リリースです。</li>
+  <li><strong>Amazon EC2 T9g インスタンス（Graviton5）が一般提供</strong>: 低コストなバースト可能インスタンス。第 6 世代 Nitro カードを採用し、前世代 T4g 比で最大 45% 優れた価格性能比を実現するとのことです。</li>
+  <li><strong>Amazon S3 の読み取りレートが最大 2 倍に</strong>: 汎用バケットで 1 秒あたり 5,500 から少なくとも 11,000 GET/HEAD リクエストに対応。プレフィックスを分散させるとスループットを最大化できます。</li>
+  <li><strong>Amazon S3 Vectors のメタデータ上限を拡大</strong>: ベクトルあたりのフィルタ可能メタデータが 2 KB から 40 KB に。RAG やエージェント、セマンティック検索で絞り込み条件を増やせます。</li>
+  <li><strong>Amazon EventBridge Custom event bus が Webhook Events に対応</strong>: SaaS や AI エージェント、独自連携から HTTPS でイベントを送信可能に。受信用の API エンドポイントやコンピュートを自前で運用する必要がなくなります。</li>
+  <li><strong>Amazon Aurora MySQL 8.4.12 が一般提供</strong>: セキュリティ強化とバグ修正を含みます。既知の CVE 修正のためにもアップグレードが推奨されています。</li>
+  <li><strong>Amazon CloudWatch の PromQL クエリ期間を 30 日に拡大</strong>: OpenTelemetry メトリクスに対する PromQL クエリが 7 日から 30 日に延長され、30 日ローリングの SLO を単一リクエストで評価できます。</li>
+</ul>
+<h3>☁️ Google Cloud</h3>
+<ul>
+  <li><strong>Java ランタイムのセキュリティ更新（GCP-2026-082）</strong>: App Engine（standard / flexible）、Cloud Run、Cloud Run functions、Buildpacks の Java 17 以降に重要なセキュリティ修正が含まれます（17.0.21.1+2、21.0.13.1+2、25.0.5.1+2）。自動ベースイメージ更新が無効な環境では再ビルドと再デプロイが必要です。一時的な <code>JDK_JAVA_OPTIONS</code> の緩和フラグを設定している場合は削除してください。</li>
+</ul>
+<h3>⚛️ Claude API / SDK</h3>
+<ul>
+  <li><strong>anthropic-sdk-python v2.12.0</strong>（2026-11-21 00:56 JST 公開）: <code>image_dimensions_too_large</code> エラーコードを追加。Amazon Bedrock では <code>user_profile_id</code> をヘッダーではなくリクエストボディで送信するよう修正（Bedrock はボディのみを参照するため、従来はプロファイル ID が適用されていませんでした）。プロファイル非対応モデルに ID を付けると 400 エラーになる点に注意が必要です。</li>
+</ul>
+<p class="empty-notice"><strong>Microsoft Azure</strong>（公式アップデートフィードが取得できず確認できませんでした）、<strong>Next.js</strong>（安定版リリースなし。canary のみ）、<strong>React</strong>、<strong>Python</strong>（最新は 3.15.2、2026-10-25 公開）、<strong>Django</strong>、<strong>Spring Boot</strong>（v4.2.0 は 2026-11-20 07:00 JST 公開で対象期間外）、<strong>Hono</strong>（最新 v4.13.19、2026-11-16 公開）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
