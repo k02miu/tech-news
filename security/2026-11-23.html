@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-23 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-23 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<h2>🔴 スタック関連</h2>
+
+<h3>Python「Gunicorn」純Python ASGIパーサ - リクエストスマグリングとメモリ枯渇（CVE-2026-134821 ／ CVE-2026-134820） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-23（NVD 登録、JST 07:17）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134821（メモリ枯渇・DoS）／CVE-2026-134820（HTTPリクエストスマグリング）</td></tr>
+<tr><th>影響</th><td>Gunicorn 25.2.0 以上 27.0.0 未満</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.7（High）／6.3（Medium）</td></tr>
+<tr><th>出典</th><td>https://github.com/benoitc/gunicorn/pull/3789 ほか</td></tr>
+</table>
+<ul>
+<li><b>CVE-2026-134821</b>（8.7）: 純Python実装の ASGI HTTP/1 パーサが、プロトコル行・ヘッダ・チャンクサイズ行・トレーラをサイズ上限なくバッファリングする。未認証の遠隔攻撃者が CRLF を欠いたデータを送り続けるだけでワーカーのメモリを肥大化させ、CPU も消費させてサービス運用妨害に至る。</li>
+<li><b>CVE-2026-134820</b>（6.3）: 同じ ASGI パーサで、空白を詰めた Transfer-Encoding／Content-Length ヘッダ、符号付きの Content-Length 値、不正なチャンク終端などでリクエストのフレーミングを desync させられる。前段プロキシをすり抜けて ASGI アプリケーションへリクエストを密輸し得る。<b>対策は 27.0.0 以降への更新</b>。</li>
+</ul>
+
+<h3>Node.js／npm 4件 - simple-git と binary-parser は任意コード実行（各 CVSSv4.0 9.2） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-23（NVD 登録、JST 07:17）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134815（simple-git）／CVE-2026-134814（binary-parser）／CVE-2026-134812（msgpackr）／CVE-2026-134813（Faye websocket-driver ほか）</td></tr>
+<tr><th>影響</th><td>simple-git 4.1.0 未満／binary-parser 2.3.1 未満／msgpackr 2.1.4 未満／websocket-driver 0.8.0 未満・permessage-deflate 0.2.0 未満・websocket-extensions 0.2.0 未満</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.2／9.2／8.7／8.7</td></tr>
+<tr><th>出典</th><td>https://github.com/steveukx/git-js/releases ほか</td></tr>
+</table>
+<ul>
+<li><b>simple-git</b>（CVE-2026-134815、9.2）: <code>allowUnsafePack</code> ガードを <code>--exec</code> オプションで回避でき、push 以外の git 操作でも任意コマンドを実行される。<code>listRemote()</code> や <code>raw()</code> に渡る引数を攻撃者が左右できる場合、ls-remote／archive／fetch-pack／send-pack 経由でホスト上のコマンド実行に至る。</li>
+<li><b>binary-parser</b>（CVE-2026-134814、9.2）: <code>Context.generateOption()</code> が文字列型オプションを検証せずに連結するため、パーサ定義を制御できる攻撃者が <code>length</code>／<code>lengthInBytes</code>／<code>key</code>／<code>tag</code>／<code>offset</code> や <code>namely()</code> の別名に細工をして、パーサのコンパイル時に Node.js プロセスで任意の JavaScript を実行できる。</li>
+<li><b>msgpackr</b>（CVE-2026-134812、8.7）: <code>UnpackrStream</code>／<code>decodeIter</code> が不完全な値を繰り返し再デコードする挙動を突かれ、小さな要素を小分けに流すだけで二次的な計算量となり Node.js のイベントループを停止させられる。</li>
+<li><b>Faye websocket-driver ほか</b>（CVE-2026-134813、8.7）: permessage-deflate ネゴシエーション時に <code>maxLength</code> 適用前にメッセージを全展開するため、圧縮率の高いメッセージで解凍爆弾（decompression bomb）となりサーバプロセスがメモリ枯渇でクラッシュする。</li>
+</ul>
+
+<h3>Python「Gradio」「graphql-core」 - 認証バイパスと DoS <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-23（NVD 登録、JST 07:17）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134825（Gradio）／CVE-2026-134795（graphql-core）</td></tr>
+<tr><th>影響</th><td>Gradio 6.27.0 以上 6.32.0 未満／graphql-core 3.2.12〜3.2.13 および 3.3.0rc1〜3.3.1</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.3（High）／6.9（Medium）</td></tr>
+<tr><th>出典</th><td>https://github.com/gradio-app/gradio/pull/14050 ほか</td></tr>
+</table>
+<ul>
+<li><b>Gradio</b>（CVE-2026-134825、8.3）: <code>ssr_mode</code> 有効時、内部の Node SSR サーバを経由したリクエストがループバック判定を通過する。偽の <code>Host: localhost</code> ヘッダを送るだけで、運営者がローカルに保存した Hugging Face トークンを未認証で利用され、バケットの一覧取得・記録やアセットの読み出し・書き込みを行われる。</li>
+<li><b>graphql-core</b>（CVE-2026-134795、6.9）: コメントを連続させた文書で、<code>Lexer.lookahead</code> が <code>max_tokens</code> 制限の判定より前に全文を字句解析してしまう。認証不要で CPU とメモリを文書サイズに比例して消費させる DoS が成立する。</li>
+</ul>
+
+<h3>MCPサーバ2件 - 引数注入と read-only モードのバイパス <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-23（NVD 登録、JST 07:17）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134817（mcp-server-kubernetes）／CVE-2026-134803（DBHub）</td></tr>
+<tr><th>影響</th><td>mcp-server-kubernetes 4.2.0 未満／DBHub 1.7.0 未満</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 7.1／7.2（High）</td></tr>
+<tr><th>出典</th><td>https://github.com/Flux159/mcp-server-kubernetes/pull/390 ほか</td></tr>
+</table>
+<ul>
+<li><b>mcp-server-kubernetes</b>（CVE-2026-134817、7.1）: <code>exec_in_pod</code>／<code>kubectl_patch</code>／<code>kubectl_logs</code> などで、位置オペランドにダッシュ始まりの値を渡すと kubectl のフラグとして解釈される。SSE や Streamable HTTP で接続する遠隔の MCP クライアントが <code>--filename</code> のような値を注入し、サーバホストのファイルを読み出せる。</li>
+<li><b>DBHub</b>（CVE-2026-134803、7.2）: read-only 制限付きの <code>execute_sql</code> にのみ制限された MCP クライアントが、バックスラッシュでエスケープした引用符を用いて <code>scanSingleQuotedString</code> の解析を誤らせ、<code>transaction_read_only</code> の解除や COMMIT を含む積み重ねステートメントを隠して write や DDL を実行できる。MySQL／MariaDB／PostgreSQL のデータを改変・削除され得る。</li>
+</ul>
+
+<h3>その他のOSS・インフラ - N-able MailAssure／Weblate／Portainer／Kirby ほか <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>公開</th><td>2026-11-23（NVD 登録、JST 04:16〜07:17）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-134624／CVE-2026-134838／CVE-2026-134804／CVE-2026-134765／CVE-2026-134816／CVE-2026-134837</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.3／9.1／8.7／8.7／8.2／5.1</td></tr>
+<tr><th>出典</th><td>https://me.n-able.com/s/security-advisory/aArVy0000002mrlKAA ほか</td></tr>
+</table>
+<ul>
+<li><b>N-able MailAssure (SpamExperts)</b>（CVE-2026-134624、9.3）: リレー設定時の LDAP 同期接続チェックで接続先を制限していない。認証済みの API ユーザーが、任意の内部ホスト・ポートへの到達性を判定し、内部サービスへ細工したデータを送りつけられる。</li>
+<li><b>Weblate</b>（CVE-2026-134838、9.1）: <code>reset_password</code> ビューが大文字小文字を区別しない Unicode メール照合を用いるため、ドットなし i などの畳み込み変種を使う類似メールボックスを支配する攻撃者が、被害者の再設定リンクを受け取ってパスワードを再設定し、アカウントを乗っ取れる。</li>
+<li><b>Portainer</b>（CVE-2026-134804、8.7）: WebSocket の attach／exec エンドポイントで認可が不十分。同一環境を共有する Standard ユーザーが、漏えいしたコンテナ ID や exec ID を使い他ユーザーのコンテナへ接続し、対話的な root シェルを取得できる。2.39.9／2.45.4／3.1.0 で修正。</li>
+<li><b>Kirby</b>（CVE-2026-134765、8.7）: <code>Upload::processChunk()</code> の競合状態により、アップロード権限を持つ認証済みユーザーが同名の並行チャンクアップロードで無害な SVG をスクリプト入り SVG に差し替え、SVG サニタイズを回避して格納型 XSS を成立させられる。</li>
+<li><b>sigstore-js</b>（CVE-2026-134816、8.2）: <code>@sigstore/oci</code> がクロスオリジンの 307／308 リダイレクトで OAuth2 パスワードグラントのリクエスト本文を再送してしまい、信頼済みトークンサービスをオープンリダイレクトなどで攻撃者ホストへ向けさせると、レジストリの資格情報（ユーザー名・パスワード）が漏えいする。</li>
+<li><b>Frappe</b>（CVE-2026-134837、5.1）: Dashboard Chart の <code>custom_options</code> に <code>__proto__</code> キーを保存でき、管理者を含む誰かがダッシュボードを表示した際に <code>Object.assign</code> 経由でプロトタイプ汚染が発生する。15.126.0／16.55.0 で修正。</li>
+</ul>
+
+<h3>開発ツールの動向 - Claude Code・OpenClaw・Hermes Agent とも対象期間内の新規リリースなし <span class="badge-medium">Medium</span></h3>
+<ul>
+<li>Claude Code は v2.1.330（2026-11-20 22:32 UTC 公開）が最新で、対象期間内の新規リリースおよびセキュリティ特化の記載は確認されなかった。</li>
+<li>OpenClaw は v2026.11.6（11月19日）、Hermes Agent は v0.23.3（11月19日、依存関係 oauthlib／opentelemetry／tornado のセキュリティ更新を含む）が最新で、いずれも対象期間内の新規安定版・canary は確認されなかった。</li>
+</ul>
+
+<hr>
+
+<h2>📊 トレンドインシデント</h2>
+
+<h3>プレイド「KARTE」不正アクセス - 被害企業が延べ約2,200社に拡大、金融・小売・メディアへ波及 <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社プレイド（および KARTE 導入企業）</td></tr>
+<tr><th>発生日</th><td>2026-11-13（不正アクセス検知）／11-20 各社公表</td></tr>
+<tr><th>出典</th><td>https://plaid.co.jp/news/20261120/ ほか</td></tr>
+</table>
+<ul>
+<li>マーケティング支援サービス「KARTE」が不正アクセスを受けた。プレイドによると、攻撃者は 11月13日未明にサーバの脆弱性を悪用してデータベース接続用の認証情報を窃取してデータを読み出し、さらに同認証情報でアカウントを乗っ取り管理画面にも不正アクセスした。同社は13日 8:59 に検知し、15:23 ごろまでに認証情報の無効化・攻撃元の遮断を完了。KARTE は全サービスを停止しており、段階的な再開目標を <b>2027年1月中旬</b>としている。</li>
+<li>プレイドの11月20日の調査結果では、連携データの一部が漏えいした企業が <b>570社</b>、解析データが <b>487社</b>、キャッシュデータが最大 <b>409社</b>、外部連携に使う認証情報が <b>754社</b>。1社が複数分類に該当する場合もあり、<b>情報漏えいの規模は延べ約2,200社</b>。契約が終了した企業の情報も対象に含まれていた。プレイド自身についても、KARTE 利用のメールアドレス 79,249件と連絡先 45,816件の漏えいを確認している。</li>
+<li>導入企業の公表が相次いでいる。<b>三菱UFJ銀行</b>（一部顧客情報、11/18）、<b>三井住友銀行</b>（最大約1,400万件、生年月日・年齢帯・性別・電話番号の登録有無など。氏名・口座番号・暗証番号・インターネットバンキング情報は含まれない）、<b>丸井グループ</b>（延べ約1,733万件。マルイウェブチャネル約883万件＋エポスカード約850万件、うち約6万件は年収・キャッシング限度額が漏えいの可能性）、<b>ZOZO</b>（ZOZOTOWN 会員 約1,518万人〈退会者含む〉、WEAR by ZOZO 約1,393万人。系列合計で延べ約2,918万人分）、<b>毎日新聞社</b>（約14万人分の姓、年齢約7万件など）、<b>オプテージ</b>（mineo、最大142万件）などが報じ・公表されている。</li>
+<li>いずれもカード情報・ログインパスワードは KARTE で管理しておらず漏えいに含まれないとされ、本件に起因する二次被害は現時点で確認されていない。プレイドは対象企業に11月24日から詳細データを順次提供する予定。</li>
+</ul>
+
+<h3>ピーチ・アビエーション - 委託先ユミルリンク「Cuenote FC」経由で顧客899万7,106件が漏えい <span class="badge-critical">重大</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ピーチ・アビエーション（委託先: ユミルリンク）</td></tr>
+<tr><th>発生日</th><td>2026-10-18（委託先での発生）／11-20 公表</td></tr>
+<tr><th>出典</th><td>https://www.flypeach.com/application/files/3617/9515/4415/20261120_INFO_JP.pdf</td></tr>
+</table>
+<ul>
+<li>ピーチは11月20日、メール配信の委託先であるユミルリンクの「Cuenote FC」が不正アクセスを受け、顧客の個人情報 <b>899万7,106件</b> が漏えいしたと発表した。対象は氏名・生年月日・性別・住所・電話番号・メールアドレス・旅程の7項目。カード情報・パスポート情報は含まれず、予約や運航への影響もないとしている。</li>
+<li>漏えいには、メールマガジン等の受信者のほか、運航の乱れで空港で返金を申し込んだ一部の顧客も含まれる。空港の補償申請フォームも Cuenote FC を利用していたため。ユミルリンク全体では情報が出力されたシステムが49、延べ <b>5,162万8,280件</b> に広がっており、ピーチ分はその一部にあたる。</li>
+</ul>
+
+<h3>アララ「アララメッセージ」不正アクセス - 西宮市・尼崎市のメールアドレス計4万2,179件 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>西宮市・尼崎市（委託先: TKC → アララ）</td></tr>
+<tr><th>発生日</th><td>2026-10-28〜31（アララへの不正アクセス）／件数判明 11-20 報道</td></tr>
+<tr><th>出典</th><td>https://www.nishi.or.jp/shisei/koho/kishahappyoshiryo/2026/202611/R081104_suma-toshin.html ほか</td></tr>
+</table>
+<ul>
+<li>西宮市は、オンライン申請サービス「にしのみやスマート申請」に登録された市民のメールアドレス <b>2万5,115件</b> が流出したと発表した。尼崎市も <b>1万7,064件</b> の漏えいを明らかにした。氏名・住所・申請内容などは含まれない。</li>
+<li>原因は、両市の委託事業者 TKC が利用するメール配信サービス「アララメッセージ」への不正アクセス。アララ社では10月28日〜31日に不正アクセスが行われ、11月6日時点で 81,329,467件のメールアドレス等が持ち出されたとしている。阪神地域の伊丹市・三田市・猪名川町、および宮崎市でも同様の可能性が指摘されている。</li>
+</ul>
+
+<h3>メルカリ - Notion AI の委託先「Fireworks AI」侵害で最大3,796名分が流出か <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>メルカリ・メルペイ・メルコイン（委託先: Notion → Fireworks AI）</td></tr>
+<tr><th>発生日</th><td>2026-10-23（Fireworks AI への不正アクセス）／11-20 公表</td></tr>
+<tr><th>出典</th><td>https://about.mercari.com/press/news/articles/20261120_incidentreport/</td></tr>
+</table>
+<ul>
+<li>メルカリは11月20日、Notion AI の処理の一部を委託していた Fireworks AI の環境が不正アクセスを受け、グループの利用記録の一部が影響を受けた可能性があると発表した。従業員が10月5日〜24日に Notion AI へ入力した内容の一部が対象。</li>
+<li>流出のおそれがあるのは、顧客1,522名分、取引先従業員571人分、派遣・退職済み従業員1,534人分、採用応募者169名分の合計 <b>3,796名</b>（4区分の単純合計）。マイナンバー等は含まれない。記録に含まれた認証情報の無効化・再発行は完了し、関係当局へも報告済み。</li>
+</ul>
+
+<h3>デジタル庁「GSS」ファイル共有サービス - 会議資料などの漏えいの可能性 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>デジタル庁（ガバメントソリューションサービス GSS）</td></tr>
+<tr><th>発生日</th><td>2026-07-30〜11-12（アクセス期間）／11-20 公表</td></tr>
+<tr><th>出典</th><td>https://www.digital.go.jp/press/a966ee61-478c-4194-8f13-f97599fae986</td></tr>
+</table>
+<ul>
+<li>デジタル庁は11月20日、政府機関向けファイル共有サービス（GSS）で一部のファイルが外部に漏えいした可能性があると発表した。正規の共有相手以外によるアクセスが <b>7月30日</b> から行われていたと確認され、11月12日に検知して同日サービスを停止し外部通信を遮断した。会議資料などの大容量ファイルが対象で、個人情報が含まれる可能性も想定されるという。</li>
+<li>GSS では9月11日にも VPN 機器の脆弱性を突かれ政府職員の個人情報約24万6,000件が漏えいした可能性、10月22日にもホームページ運営の一部で最大1万3,323件が漏えいした可能性が公表されており、短期間に事案が続いている。</li>
+</ul>
+
+<h3>六花亭オンラインショップ 続報 - クレジットカードの不正利用1件を確認 <span class="badge-high">重要</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>株式会社六花亭（北海道帯広市、菓子メーカー）</td></tr>
+<tr><th>発生日</th><td>2026-10-21〜11-18（改ざん期間）／11-21 第二報</td></tr>
+<tr><th>出典</th><td>https://www.rokkatei.co.jp/news/info/20261121-25796/</td></tr>
+</table>
+<ul>
+<li>六花亭は11月21日、「六花亭オンラインショップ」の不正アクセス問題で、クレジットカードの不正利用を <b>1件</b> 確認したと発表した。不正利用は20日に顧客からの申し出で判明した。11月18日の第一報では「流出の可能性」にとどまっていたが、実際の被害が確認された形となる。</li>
+<li>改ざんされた決済画面のプログラムにより、カード番号の全桁・名義人・有効期限・セキュリティコード（約8,000件）が抜き取られた可能性がある。第二報では、氏名・郵便番号・住所・電話番号・メールアドレスも流出した可能性があると新たに公表された。オンラインショップは安全性が確認できるまで停止中。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
