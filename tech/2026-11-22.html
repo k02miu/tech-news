@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-22 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-22 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは <strong>v2.1.330</strong>（2026-11-21 07:38 JST 公開）です。組織サインイン対応、easel によるグラフ描画、セルフホストランナーの機能追加を含む版が直近のリリースとなります。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a></p>
+
+<h2>🤖 Hermes Agent</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v0.23.3</strong>（2026-11-20 09:34 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">GitHub Releases</a></p>
+
+<h2>🐙 OpenClaw</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新版は <strong>v2026.11.6</strong>（2026-11-20 02:26 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">GitHub Releases</a></p>
+
+<h2>🐋 Orca — v1.4.268 / v1.4.269</h2>
+<p>対象期間内に 2 つのリリースが公開されました。<strong>v1.4.268</strong>（2026-11-21 12:50 JST 公開）が Bots の対応エージェント拡大と Slack 連携の強化、<strong>v1.4.269</strong>（2026-11-22 02:57 JST 公開）が対応エージェントのさらなる追加とモバイルアプリの追従を中心としたアップデートです。</p>
+
+<h3>🔧 新機能・改善（v1.4.268）</h3>
+<ul>
+  <li><strong>Bots が対応するエージェントを拡大</strong>: Cursor、GitHub Copilot、Hermes 上で Bots を実行可能に。OpenCode 2.x の Bots には常設インストラクションが適用され、新しい Bot には識別カードが付与されます。Soul &amp; Memory のエディタも刷新されました。</li>
+  <li><strong>画像・ファイルの送信</strong>: Bot チャット、グループチャット、アイテムのコメントに画像とファイルを添付可能に。ペアリング先コンピュータ上の Bot にも送信でき、Slack のリクエストに付いた画像は画像としてエージェントへ届きます。</li>
+  <li><strong>Slack 連携の拡充</strong>: <code>orca slack post --at</code> による予約投稿、ならびに <code>pin</code> / <code>canvas</code> / <code>list</code> / <code>scheduled</code> コマンドを追加。Slack 接続はコピーしたトークンをそのまま利用でき、メンションは名前として表示されます。</li>
+  <li><strong>軽量化・応答性改善</strong>: アニメーションが約 1 秒に 1 回の描画から滑らかに戻り、スピナーとパルスのフレーム数も削減。認証情報の読み取りをメインスレッドから分離し、自動ヒーププロファイルを廃止。ディスク残量が少なくなるとワークスペースの整理を提案します。</li>
+  <li><strong>ワーカーとチャットの信頼性</strong>: クラッシュや再起動で切れたチャットを継続可能に。ワーカーの最終レポートが起動元のエージェントを起こすようになり、チャット内のワーカー名からワーカーを開けます。</li>
+  <li><strong>リモートホストのページ注釈</strong>: ブラウザの注釈機能がリモートホスト上でも動作します。</li>
+</ul>
+
+<h3>🔧 新機能・改善（v1.4.269）</h3>
+<ul>
+  <li><strong>Bots が 8 つのエージェントに追加対応</strong>: Kiro、Kimi Code、Auggie、Gemini CLI、Kilo Code、MiMo Code、Droid、Goose 上で Bots を実行可能に。Chat からも Kiro・Auggie・Goose を開け、Kiro のチャットはユーザー自身のフックを実行します。</li>
+  <li><strong>モバイルアプリの機能拡充</strong>: エージェントへの質問回答、Google / Composio のセットアップカードの処理、Needs you でのツール承認とアクセスリクエストの確認、エージェントのツール・Webhook 管理、<code>+</code> からの新規チャット開始、グループのスレッドとアイテムの閲覧に対応（対応するモバイルビルドが必要）。</li>
+  <li><strong>Antigravity の選択肢</strong>: Google アカウントのユーザーは Orca 内蔵の Google サインインと agy エージェントを選択可能に。agy は設定画面に専用の Sign in を持ちます。</li>
+  <li><strong>アイドル時の Mac を静かに</strong>: アイドル状態の Mac ターミナルの CPU 使用量を削減し、macOS と Linux では Git 処理をバックグラウンドのプロセスワーカー上で開始。</li>
+  <li><strong>チャットの可読性</strong>: 古いメッセージにカレンダー日付を表示。一時停止中のキューで Resume が目立つようになり、設定により Full access がブロックされた Claude チャットはその旨と最も近い許可モードを表示します。</li>
+  <li><strong>Bots のチーム連携</strong>: グループルームで Bot が <code>@名前</code> で他メンバーを指名すると、そのメンバーがターンを引き継ぎます。結果は自分のコンピュータ上のパスではなくリンクや添付として共有され、Slack メッセージ内のローカルパスは読めるラベルに変換されます。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">GitHub Releases</a></p>
+
+<h2>🔧 その他のトピック</h2>
+<h3>⚡ Next.js — v16.5.0-canary.60</h3>
+<ul>
+  <li>2026-11-22 08:43 JST に canary <strong>v16.5.0-canary.60</strong> が公開されました。Switchyard にアプリの <code>route.go</code> パスとワーカーを伝える変更（#102101）、Turbopack がアプリディレクトリのエントリをファイルシステム非依存の順序で解決する修正（#102186）、Route Handler の AI SDK ストリーミング例のドキュメント更新（#102192）が含まれます。安定版の新規リリースはありません。</li>
+</ul>
+
+<h3>☁️ AWS</h3>
+<ul>
+  <li><strong>AWS Quick がプラグインに対応</strong>（2026-11-21 11:58 JST）: エージェント・スキル・コネクタ・フローをひとまとめにしたプラグインを追加。AWS 公式の Calendar and Meetings Assistant や Sales Development など 100 以上のスキル・プラグインを用意し、チーム独自のプラグインもチャットで説明するだけで組み立てられます。</li>
+  <li><strong>Amazon CloudWatch Omni が Azure のテレメトリに対応</strong>（2026-11-21 10:10 JST）: Azure リソースログ、Azure Monitor のプラットフォームメトリクス、VNet フローログ、Application Insights のトレースを収集可能に。Microsoft Entra ID テナントを AWS アカウントとリージョンに接続するだけで、AWS と Azure のテレメトリを 1 か所で監視できます。</li>
+  <li><strong>AWS Quick の新 Web 体験</strong>（2026-11-21 09:27 JST）: Web アプリでデスクトップ版と同じエージェント・スキル・コネクタを利用可能に。会話・エージェント・ファイルは Web・デスクトップ・モバイルで同期し、ブラウザを閉じても Web から起動・予約したエージェントは動作を継続します。ブラウザ拡張と Microsoft 365 アドインも更新されました。</li>
+  <li><strong>Web Search on Amazon Bedrock が対応言語を拡張</strong>（2026-11-21 09:17 JST）: スペイン語・フランス語・ドイツ語・イタリア語・日本語と非米国英語を追加し、任意の <code>country</code> 指定にも対応。既存顧客はコード変更なしで新言語を利用でき、料金は言語によらず同一です。</li>
+</ul>
+
+<p class="empty-notice"><strong>Microsoft Azure</strong>（公式アップデートフィードを取得できず確認できませんでした）、<strong>Google Cloud</strong>（最新のリリースノートは 2026-11-20 付で対象期間外）、<strong>React</strong>（最新 v19.3.1 は 2026-10-14 公開）、<strong>Python</strong>、<strong>Django</strong>（最新 6.1.3、2026-11-03 公開）、<strong>Spring Boot</strong>（最新 v4.2.0 は 2026-11-20 07:00 JST 公開で対象期間外）、<strong>Hono</strong>（最新 v4.13.19）、<strong>Claude API / SDK</strong>（anthropic-sdk-python 最新 2.12.0 は 2026-11-21 00:57 JST 公開で対象期間外）については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
