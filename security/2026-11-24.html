@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-24 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-24 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>React 19系 — サーバー関数エンドポイントのDoS（CVE-2026-130165、<span class="badge-high">High 8.2</span>）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-130165</td></tr>
+  <tr><th>深刻度</th><td>CVSSv4.0 8.2 High</td></tr>
+  <tr><th>影響</th><td>react-server-dom-webpack / react-server-dom-parcel / react-server-dom-turbopack（19.0.9、19.1.10、19.2.9、19.3.1 未満）</td></tr>
+  <tr><th>修正</th><td>19.0.9 / 19.1.10 / 19.2.9 / 19.3.1</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 22:20 UTC（JST 11-24 07:20）。React Server Components の各バンドラ連携パッケージに、サーバー関数エンドポイントへ細工したHTTPリクエストを送るだけでメモリ枯渇（OOM）や過大なCPU消費を起こせるサービス拒否が成立する。</li>
+  <li>認証不要で遠隔から到達でき、稼働中のアプリを停止させ得る。公式のセキュリティリリースで修正版が公開済み。</li>
+</ul>
+
+<h3>Hermes Agent — Bot Desktopの環境変数注入によるエージェント機でのコード実行（CVE-2026-130164、<span class="badge-high">High 7.8</span>）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-130164（GHSA-p22p-9ph6-gmrh）</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 7.8 High（AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H）</td></tr>
+  <tr><th>影響</th><td>Hermes Agent v0.21.6 〜 v0.23.1</td></tr>
+  <tr><th>修正</th><td>v0.23.2（現行安定版は v0.23.3）</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 21:16 UTC（JST 11-24 06:16）。<code>terminal.backend</code> が docker もしくは ssh のとき、Bot Desktop がバックエンド内の書き込み可能な <code>env</code> ファイルを鍵・値の検証なしに読み取り、エージェント機側で起動するプロセスの環境変数へ無条件にマージしていた（CWE-15／CWE-426）。</li>
+  <li>バックエンド内で動く依存関係やスクリプトは、<code>LD_PRELOAD</code>（macOSは <code>DYLD_INSERT_LIBRARIES</code>）などを仕込み、ブラウザハーネス等の次回起動時にゲートウェイ実行ユーザー権限でコードを実行できる。プロバイダ鍵・トークン・セッション履歴が窃取され得る。</li>
+  <li>修正の v0.23.2 では、読み取るキーをランチャが書く6件のみに限定し値を検証、バックエンド内の画面が発行した値はエージェント機側プロセスへマージしないよう変更。暫定回避は <code>bot_desktop.placement: gateway</code> の指定、または既定の <code>local</code> バックエンドの使用。</li>
+</ul>
+
+<h3>Spring Data Elasticsearch — @Query のSpEL式インジェクションで任意コード実行（CVE-2026-123886、<span class="badge-high">High 8.8</span>）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-123886</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 8.8 High</td></tr>
+  <tr><th>影響</th><td>Spring Data Elasticsearch（文字列ベース @Query と位置プレースホルダを併用するリポジトリ）</td></tr>
+  <tr><th>修正</th><td>Spring のセキュリティリリース参照</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 11:16 UTC（JST 20:16）。文字列ベースの <code>@Query</code> メソッドで、位置プレースホルダの置換が SpEL 式の評価より先に行われるため、引数に SpEL 式を混入させると宣言クエリが SpEL を使っていなくても式が評価される。</li>
+  <li>未信頼入力を引数に渡すリポジトリメソッドがある場合、遠隔の攻撃者がアプリケーション権限で任意コードを実行し得る。Java／SpringBoot 構成は該当メソッドの有無を確認のうえ更新が必要。</li>
+</ul>
+
+<h3>Azure／Microsoft クラウド 11月更新 — Critical 多数（CVE-2026-62841 ほか）</h3>
+<table class="cve-table">
+  <tr><th>対象</th><td>Azure Event Grid／M365 Copilot／SharePoint／Azure Portal／Azure Machine Learning／Azure Site Recovery／Azure DevTest Labs／Microsoft Clarity／Azure AI Foundry／Azure Managed Instance for Apache Cassandra</td></tr>
+  <tr><th>深刻度</th><td>最大 CVSSv3.1 10.0 Critical（Azure Event Grid）</td></tr>
+  <tr><th>出典</th><td>MSRC Update Guide（2026-11-23 公開）</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 22:19〜22:23 UTC（JST 11-24 07:19〜07:23）。MSRC の一斉公開分で、Critical だけでも CVE-2026-62841（Azure Event Grid、認証不備 10.0）、CVE-2026-50691（M365 Copilot、認可不備 9.9）、CVE-2026-70193（SharePoint、パストラバーサルでコード実行 9.9）、CVE-2026-70305（Azure Portal、XSS 9.6）、CVE-2026-118285（Azure Machine Learning、SSRF 9.6）、CVE-2026-118286（Azure Site Recovery、アクセス制御不備 9.1）、CVE-2026-69899（Azure DevTest Labs、なりすましによる認証バイパス 9.1）、CVE-2026-113824（Microsoft Clarity、認可バイパス 9.1）など。</li>
+  <li>High では CVE-2026-69437（Azure AI Foundry、認可欠如で情報漏えい 8.6）、CVE-2026-81962（Azure Machine Learning、認可不備 8.6）、CVE-2026-65817（Azure Managed Instance for Apache Cassandra、OSコマンドインジェクション 8.3）など。Azure 利用者は該当サービスの更新状況を確認のこと。</li>
+</ul>
+
+<h3>AWS — AWS-LC の境界外書き込みと SSM Agent の既定鍵（CVE-2026-134056、CVE-2026-134069）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-134056（<span class="badge-high">8.3</span>）／CVE-2026-134069（<span class="badge-high">8.2</span>）</td></tr>
+  <tr><th>影響</th><td>AWS-LC 5.7.0 未満・AWS-LC-FIPS 各系／Amazon SSM Agent 3.3.5226.0 未満（AWS提供 Windows Server AMI）</td></tr>
+  <tr><th>修正</th><td>AWS-LC 5.7.0、AWS-LC-FIPS 4.2.0・3.6.0・2.0.18／SSM Agent 3.3.5226.0 以降の AMI へ差し替え</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 20:17〜22:20 UTC（JST 11-24 05:17〜07:20）。AWS-LC はパディング付きブロック暗号（CBC／ECB＋PKCS7）の複数回呼び出しで最小出力バッファを扱う際に境界外書き込みがあり、細工した暗号文でクラッシュやメモリ破損を招く。</li>
+  <li>SSM Agent は同一 AMI 由来の全インスタンスで共有される登録鍵により、非管理者のローカル利用者がインスタンスの既定ホスト管理構成（DHMC）ロール資格情報を取得し得る。インプレース更新では鍵が置き換わらないため、2026-09-09 以降の AMI から起動したインスタンスへの差し替えが必要。</li>
+</ul>
+
+<h3>Synology DiskStation Manager — OAuth API のコマンドインジェクション（CVE-2026-120382、<span class="badge-critical">Critical 9.8</span>）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-120382</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.8 Critical</td></tr>
+  <tr><th>影響</th><td>DSM 7.1.1-42962-10、7.2.1-69057-14、7.2.2-72806-11、7.3.2-86009-6、7.4.1-90080-2 未満</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 08:17 UTC（JST 17:17）。OAuth API のコマンド引数デリミタ中和不備により、遠隔の攻撃者が任意ファイルの読み書きとサービス運用妨害を行い得る。NAS は外部公開・VPN 経由の到達性を確認のうえ速やかな更新を。</li>
+</ul>
+
+<h3>XO (Xen Orchestra) — REST 認証バイパス（CVE-2026-133469、<span class="badge-critical">Critical 9.8</span>）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-133469</td></tr>
+  <tr><th>深刻度</th><td>CVSSv3.1 9.8 Critical</td></tr>
+  <tr><th>影響</th><td>6.9.2 未満および 6.10.1 未満</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 17:17 UTC（JST 11-24 02:17）。REST の Cookie 解析が <code>authenticationToken=j:%7B%7D</code> を <code>{}</code> として扱い、文字列を要求しないトークンプロバイダへそのまま渡す。空オブジェクトが未フィルタ検索となり最初のトークンで認証が成立、以降のトークン発行エンドポイントから再利用可能なログイントークンを窃取される。</li>
+</ul>
+
+<h3>Cribl — 認証済みユーザーからのコード実行（CVE-2026-115899、<span class="badge-critical">9.3</span> ほか）</h3>
+<table class="cve-table">
+  <tr><th>CVE</th><td>CVE-2026-115899（9.3）／CVE-2026-115873（8.7）／CVE-2026-115900（8.7）／CVE-2026-115901（8.5）</td></tr>
+  <tr><th>影響</th><td>Leader／Worker／REST Collector／Edge を含む Cribl デプロイ</td></tr>
+</table>
+<ul>
+  <li>NVD登録 2026-11-23 09:17 UTC（JST 18:17）。読取専用（GroupRead）権限の攻撃者が Leader API へ到達し、入れ子コンパイラを突いて式制限を回避、Leader サービスアカウント権限でコード実行に至る。上流APIのページネーションデータを制御できる場合の Worker 権限でのコード実行（CVE-2026-115899）や、Worker 配布資格情報を用いた heartbeat 経由の攻撃も含む。</li>
+</ul>
+
+<h3>その他の Critical／High（新規登録分）</h3>
+<table class="cve-table">
+  <tr><th>CVE-2026-135208</th><td>Kerberos Agent 3.14.4 未満 — JWT がハードコード鍵 <code>TOBECHANGED</code> にフォールバックし、管理者トークンを偽造できる認証バイパス（9.3）</td></tr>
+  <tr><th>CVE-2026-135211</th><td>BISHENG 3.0.0 未満 — <code>/api/v2/workflow/invoke</code> の認証欠如。Code ノードのコードを差し替え exec で遠隔コード実行（9.2）</td></tr>
+  <tr><th>CVE-2026-135161</th><td>Interstellar 6.3.0 未満 — wisp-js が loopback／プライベートIPを許可し、認証なしで内部・クラウドメタデータへ到達するSSRF（9.2）</td></tr>
+  <tr><th>CVE-2026-135174</th><td>Softaculous Virtualizor 3.2.9 未満 — OAuth メール経由のSQLiで管理者として不正ログイン（9.2）</td></tr>
+  <tr><th>CVE-2026-135171</th><td>Wing FTP Server 8.2.8 未満 — セッションIDが予測可能で管理者セッションを乗っ取り（9.2）</td></tr>
+  <tr><th>CVE-2026-135157</th><td>Future AGI 1.51.0 未満 — ACSView.post の認証バイパスで他組織アカウントを乗っ取り（8.6）</td></tr>
+  <tr><th>CVE-2026-135300</th><td>Pomerium 0.30.0〜0.34.0 未満 — MCP トークンエンドポイントが <code>client_secret_basic</code> の秘密検証を省略。傍受した認可コード／リフレッシュトークンでアクセストークンを取得（9.1）</td></tr>
+  <tr><th>CVE-2026-134882</th><td>TOTOLINK A7100RU — <code>/cgi-bin/cstecgi.cgi</code> の exportOvpn でOSコマンドインジェクション（10.0、遠隔攻撃可）</td></tr>
+  <tr><th>CVE-2026-93584</th><td>OTRS 2024.3.1〜2026.8.1 — Survey エンドポイントの未認証SQLインジェクション（8.6）</td></tr>
+  <tr><th>CVE-2026-132779</th><td>NGINX Plus／Open Source — TLS 1.3 early data 利用時、細工した接続でワーカーがループしCPUコアを占有（6.9）</td></tr>
+  <tr><th>CVE-2026-135436</th><td>KindleEar 3.0.0〜3.5.3（Python）— レシピのアップロードで <code>exec()</code> 実行、コンテナ内ルート権限のRCE（8.7）</td></tr>
+  <tr><th>CVE-2026-134841</th><td>pgjdbc（PostgreSQL JDBC Driver）— クエリパーサの引用解釈不備により正しく引用した文字列がSQLとして実行され得る（8.1、ほか計8件）</td></tr>
+  <tr><th>CVE-2026-135249</th><td>MISP — 認証前に圧縮ボディ（gzip/brotli/zstd）を無制限展開する圧縮ボムDoS。ほか認可バイパス・XSS等を一括修正（8.7ほか多数）</td></tr>
+  <tr><th>CVE-2026-133632</th><td>astro-airflow-mcp 0.5.0〜0.9.1 — カレントディレクトリの <code>json.py</code> を import するテレメトリ経由で任意コード実行（7.8）</td></tr>
+  <tr><th>CVE-2026-134465</th><td>mcp-server-git 2026.10.28 未満 — <code>--repository</code> 制限を入れ子の <code>.git</code> ポインタで回避（5.8）</td></tr>
+  <tr><th>CVE-2026-134492</th><td>mcp-server-fetch 2026.10.10〜2026.11.11 — IPv6 サイトローカル（fec0::/10）を公開扱いしSSRFガードを回避（2.3）</td></tr>
+  <tr><th>CVE-2026-107784</th><td>Python tarfile — Windows で「ドライブありルートなし」のメンバー名・リンク先を拒否せず、展開先外へ書き込み（6.3）</td></tr>
+  <tr><th>CVE-2026-60076〜60079</th><td>Apache IoTDB 2.0.5〜2.0.12 未満 — 資源制限の欠如によるヒープ枯渇DoS（Java）</td></tr>
+  <tr><th>CVE-2026-116005 ほか</th><td>Apache Perl（mod_perl）1.99_01〜2.0.13 — 固定長スタックバッファオーバーフロー等。2.0.14 で修正</td></tr>
+  <tr><th>CVE-2026-134730 ほか</th><td>xuxueli xxl-job 3.5.0/3.5.1-SNAPSHOT（Java）— グループ管理のCSRF、ログの情報漏えい等（5.3〜5.5）</td></tr>
+</table>
+
+<h3>OSS／エージェント基盤のリリース</h3>
+<table class="cve-table">
+  <tr><th>Hermes Agent</th><td>canary v0.23.3+canary.20261123T065600Z（2026-11-23 公開、commit 249dc60）。プラグインカタログ追加が中心でセキュリティ項目の記載なし。ただし上記 CVE-2026-130164 の修正版は v0.23.2 のため、安定版 v0.23.3 適用で対応済み。</td></tr>
+  <tr><th>OpenClaw</th><td>v2026.11.10-beta.2（2026-11-23 公開）。権限境界の保持（再起動・ネイティブUIクライアントを跨いだ受理済み要求者の権限維持）、SecretRef の平文置換防止、Webhook 本文の上限 1 MiB 化など、権限・秘密情報の扱いに関わる修正を含む。</td></tr>
+  <tr><th>Claude Code</th><td>v2.1.331（2026-11-23 公開）。ローカル／WebSocket MCP サーバの不正応答で最大30分ハングする不具合、stdin/HTTP MCP の <code>PreToolUse</code> フックが 16 MiB 超でスキップされる不具合（拒否に変更）等を修正。セキュリティ特化の記載・CVEはなし。</td></tr>
+</table>
+
+<hr>
+<p class="empty-notice">Next.js／Hono／Django／GCP に直接関連する新規セキュリティ情報は本対象期間では確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<p>対象期間内（2026-11-23 08:00 〜 2026-11-24 08:00 JST）に、日本国内企業・官公庁・大学・医療機関等による新規の被害公表は、一次ソース（企業公式発表、JPCERT/CC、IPA、JVN、Security NEXT、ScanNetSecurity 等）を確認した範囲では見つかりませんでした。勤労感謝の日を含む連休中のため、報道・公表が少ない状況です。</p>
+
+<h3>継続監視中の主な案件（期間外・既報の進展）</h3>
+<table class="cve-table">
+  <tr><th>KARTE</th><td>プレイド「KARTE」の不正アクセスで、三菱UFJ銀行・三井住友銀行（最大約1,400万件）・丸井グループ（延べ約1,733万件）・ZOZO（約1,518万人）・毎日新聞（約14万人）・オプテージ（最大142万件）ほか、影響企業は延べ約2,200社。サービス再開は2027年1月中旬が目標。</td></tr>
+  <tr><th>理化学研究所</th><td>スーパーコンピュータ「富岳」「理究」への不正アクセス第2報。利用者4,222名の情報、秘密鍵430件に持ち出しの痕跡。</td></tr>
+  <tr><th>ピーチ・アビエーション</th><td>委託先ユミルリンク「Cuenote FC」経由で顧客899万7,106件が漏えい。</td></tr>
+  <tr><th>デジタル庁 GSS</th><td>ファイル共有サービスで会議資料等の外部漏えいの可能性。7月30日〜11月12日に正規共有相手以外のアクセス。</td></tr>
+  <tr><th>メルカリ</th><td>Notion AI 委託先 Fireworks AI の侵害で最大3,796名分が流出か。</td></tr>
+</table>
+<p class="empty-notice">これらの続報（被害範囲・復旧・犯行声明等）が新たに公表された場合は、翌朝刊で改めてお伝えしますわ。</p>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
