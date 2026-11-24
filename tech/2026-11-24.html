@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-24 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-24 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.331</h2>
+<p>2026-11-24 06:40 JST 公開。マルチクラウド環境での Code Mode 対応拡大、Claude apps gateway の運用系オプション追加、VSCode 拡張の編集支援強化が中心のリリースですわ。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>Code Mode の対応環境拡大</strong>: Amazon Bedrock、Google Cloud の Agent Platform、Microsoft Foundry、AWS 上の Claude Platform のターミナルセッションで Code Mode が利用可能に。</li>
+  <li><strong>gateway のグループ読み取り</strong>: <code>oidc.groups_jsonpath</code> を追加。JSONPath（RFC 9535）のサブセットで、オブジェクト配列の該当エントリからグループを読み取れます。</li>
+  <li><strong><code>claude doctor</code> の接続診断</strong>: API 到達可否と HTTP ステータスまたはエラー内容、実施しなかった場合はその理由を表示するセクションを追加。</li>
+  <li><strong>音声入力の停止通知</strong>: タップモードの音声ディクテーションが15秒間の無認識、または2分の上限で自動停止した際に通知。</li>
+  <li><strong><code>CLAUDE_CODE_DISABLE_RESPONSE_COMPRESSION</code></strong>: 圧縮レスポンスを途中で切るプロキシ向けに非圧縮応答を要求。セルフホストランナーや Remote Control では未推奨。</li>
+  <li><strong>トレース属性の拡充</strong>: <code>claude_code.llm_request</code> スパンに <code>gen_ai.usage.*</code>、<code>gen_ai.response.model</code>、<code>gen_ai.operation.name</code> を追加。<code>gen_ai.usage.input_tokens</code> はプロンプトキャッシュ分を含みます。</li>
+  <li><strong>プラグインの <code>optionalDependencies</code></strong>: マニフェストで任意依存を宣言でき、単独で無効化・アンインストール可能に。</li>
+  <li><strong>VSCode 拡張</strong>: 「Add Cell to Chat」（セルと出力／エラーを添付）、「Fix with Claude Code」クイックフィックス、Source Control の変更ファイル右クリック「Add to Chat」、「Resolve Merge Conflicts」を追加。</li>
+</ul>
+
+<h3>🔁 主な変更</h3>
+<ul>
+  <li><code>/ide</code> の自動接続停止や <code>/clear</code>・<code>/compact</code>・<code>/rewind</code> の確認で「Yes」を先頭に表示（初期選択は従来どおり No）。</li>
+  <li><code>PermissionDenied</code> フックの <code>retry: true</code> は、利用者がその呼び出しを要求した場合に限り再実行する挙動に変更。</li>
+  <li>2026-11-30 以降、マネージド設定の <code>extraKnownMarketplaces</code> のプラグインマーケットプレイスが既定で自動更新に。除外するには <code>"autoUpdate": false</code> を設定。</li>
+  <li>Windows: レジストリのマネージド設定は <code>HKLM</code> ポリシーが <code>managed-settings.json</code> より優先されるため、アップグレード前に確認が必要。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-331">ソースへのリンク</a></p>
+
+<h2>🤖 Hermes Agent — canary.20261123T065600Z-v0.23.3</h2>
+<p>2026-11-23 17:05 JST 公開のカナリアビルドです。安定版の最新は v0.23.3（2026-11-20 09:34 JST 公開）で、本カナリアはプラグインカタログの拡充とリリースパイプラインの整備が主な内容ですわ。</p>
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プラグインカタログの追加</strong>: creatorplaybooks、valetudo、deny-record、polytropos-router、katara（メモリプロバイダ）、beeper-platform、utcp-bridge、rook-agent-utils、stats（Hermes Stats ダッシュボード）、Hermes for UniFi、HybridOps recovery、tmux-watch など多数のコミュニティプラグインを登録。</li>
+  <li><strong>リリース基盤</strong>: コミットクレームを <code>stable-release.yml</code> に組み込み、ネイティブビルドの検証レッグを読み取り専用で実行。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.7 / v2026.11.10-beta.2</h2>
+<p>対象期間内に安定版 v2026.11.7（2026-11-23 10:33 JST 公開）とベータ版 v2026.11.10-beta.2（2026-11-23 21:48 JST 公開）の2件が公開されました。いずれも「中断からの復旧」と「Gateway の応答性」に重点が置かれています。</p>
+
+<h3>🔧 v2026.11.7 の主な内容</h3>
+<ul>
+  <li><strong>会話の復旧</strong>: Gateway 再起動をまたいで中断された応答と子エージェントの結果を失わずに復元。</li>
+  <li><strong>自動化の信頼性</strong>: 自動化のオーナー会話から失敗を修復でき、復旧済み・意図的スキップと真の失敗を区別。</li>
+  <li><strong>更新処理の堅牢化</strong>: スキーマ変更・DB ビジー・復旧状態の保持があっても Git／パッケージ更新を完了。</li>
+  <li><strong>Gateway の応答性</strong>: 低速なファイルシステム操作や大きな復旧パック処理中も、チャットやヘルスチェックが応答し続けるよう改善。</li>
+  <li><strong>ブラウザペアリング</strong>: Gateway ホストで承認する短いコードによる別ブラウザのペアリングに対応。</li>
+  <li><strong>ChatGPT カタログ</strong>: 新規サブスクリプションモデルを OpenClaw のリリースを待たずに検出可能に。</li>
+  <li><strong>破壊的変更（SDK）</strong>: セッションキー付き <code>setActiveEmbeddedRun(...)</code> の登録方法と、<code>chatAbortControllers</code>／<code>chatQueuedTurns</code> への直接アクセスが変更されました。</li>
+</ul>
+
+<h3>🔧 v2026.11.10-beta.2 の主な内容</h3>
+<ul>
+  <li><strong>更新の復旧</strong>: パッケージ置換が中断しても OpenClaw を実行可能な状態に保ち、クラッシュや再起動後も次の更新を安全に完了。</li>
+  <li><strong>バックグラウンド処理</strong>: 完了したサブエージェント結果を保持し、Gateway 再起動・親ターンの中断後も配信を再開。</li>
+  <li><strong>初回会話の高速化</strong>: モデルカタログ読み込み中でも最初のチャットを受け付け、長い履歴を Gateway メモリに全保持せず圧縮。</li>
+  <li><strong>プラグインのサイド質問</strong>: プラグインがセッションのライブコンテキストをフォークし、独自ツールとポリシー制御下でバックグラウンド作業を実行可能に。</li>
+  <li><strong>Webhook</strong>: 最大 1 MiB のボディを受け付け、拒否理由を報告し、Gmail 通知のバッチを分配。</li>
+  <li><strong>修正</strong>: SecretRef 値が平文で上書きされる問題、再起動復旧をまたぐ権限境界、チャット配信の取りこぼしなどを修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+
+<h2>🐋 Orca — v1.4.272 / Android v0.0.69</h2>
+<p>デスクトップ版 v1.4.272（2026-11-23 21:35 JST 公開）と Android v0.0.69（2026-11-24 08:42 JST 公開、iOS 0.0.69 と同一コードベース）が公開されました。中断復旧とモバイルからのエージェント操作が主眼ですわ。</p>
+
+<h3>🔧 デスクトップ v1.4.272</h3>
+<ul>
+  <li><strong>Bots の復旧強化</strong>: 利用上限で停止した会話がアカウント切替や再起動後に自動継続。クラッシュ・再起動で中断したチャットや、ターミナルを失ったワーカーも保存済み会話へ復帰。</li>
+  <li><strong>ブラウザツールの共通化</strong>: 1Password などの拡張が SSH ワークスペースタブやペアリング済みサーバーのタブで動作。デスクトップからのファイルドラッグ＆ドロップ、エージェントによる各ホストパスでのアップロード／ダウンロードに対応。</li>
+  <li><strong>サイドチャット</strong>: 対応エージェントで <code>/btw</code> または <code>/side</code> により下書きをサイドチャットとして開始。<code>composer</code> のワーカー数は稼働中のみを反映。</li>
+  <li><strong>メモリ節約</strong>: Memory Saver が非表示の「This device」ブラウザタブをアンロードし、必要時に復元。アイドル状態の WSL ディストロも停止・復帰可能に。</li>
+  <li><strong>モバイル連携</strong>: 対応モバイルビルドでグループルームへの写真投稿、<strong>Needs you</strong> からの複数マシン横断の要求処理、エージェントの Chats タブからのチャット削除が可能に。</li>
+  <li><strong>Bots（ベータ）</strong>: Slack スレッドから失敗ターンを <strong>Resume</strong> で再試行、GitHub／Linear／Discord への返信はワーカー稼働中でもターン完了時に送信。</li>
+</ul>
+
+<h3>🔧 Android v0.0.69</h3>
+<ul>
+  <li>スマートフォンからエージェントのオートメーション、Webhook、ツール、コネクタ、設定を編集可能に（設定画面はデスクトップと同等）。</li>
+  <li>Slack・Linear・GitHub・Google・Composio をエージェントの Connectors から接続し、ツールのサインインやアドレス・ヘッダー・コマンドの編集が可能。</li>
+  <li>エージェントの soul の閲覧、メモリ編集、スキルの管理に対応。リンク共有や Who can ask へのメンバー追加も可能に。</li>
+  <li>グループルームにスレッドと統合 Items リストを追加。<strong>Needs you</strong> にツール承認・アクセス要求・再サインインが必要なコネクタを集約。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+
+<h2>⚡ Next.js — v16.5.0-canary.62</h2>
+<p>2026-11-24 08:47 JST 公開のカナリア版です。Switchyard 周辺のワーカー識別と Content-Type 推測の廃止、Turbopack のサーバー HMR 差分計算の改善、<code>nextTick</code> 由来マイクロタスクより先に <code>setImmediate</code> が走る不具合の修正などが含まれます。</p>
+<p>🔗 <a href="https://github.com/vercel/next.js/releases">ソースへのリンク</a></p>
+
+<h2>☁️ AWS</h2>
+<ul>
+  <li><strong>AWS WAF の料金体系簡素化</strong>: Web ACL・ルール・ルールグループ購読・キャパシティ課金を廃止し、「保護対象リソース」「検査リクエスト」「保護レベル」の3軸に。各 Web ACL に 2,500 WCU まで無償枠を確保（従来1,500）。</li>
+  <li><strong>LLM／MCP／A2A エンドポイントの自動検出と保護</strong>: Amazon Bedrock Guardrails を活用し、AWS WAF で AI エンドポイントの検出と防御を自動化。</li>
+  <li><strong>Amazon CloudFront</strong>: オリジンへの HTTP/2 接続をサポート。あわせて AWS European Sovereign Cloud でも利用可能に。</li>
+  <li><strong>Amazon Aurora Serverless for MySQL</strong>: 最大 384 ACU まで対応。</li>
+  <li><strong>Amazon EC2 G7</strong>: metal サイズを提供開始。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<h2>☁️ Google Cloud</h2>
+<ul>
+  <li><strong>Node.js 26 / Python 3.15 ランタイムが GA</strong>: App Engine（standard／flexible）、Cloud Run、Cloud Run functions で一般提供。Python 3.15 は Cloud Run functions（1st gen）では未対応。</li>
+  <li><strong>BigQuery</strong>: <code>reservation_override_mode</code> と <code>disable_on_demand_billing</code> が GA。<code>ALTER PROJECT/ORGANIZATION SET OPTIONS</code> で、クエリが割当予約を上書きしてオンデマンド課金に回ることを制御可能に。</li>
+  <li><strong>Filestore</strong>: ゾーナルサービスタイアの小容量インスタンスが GA（100 GiB から 1 GiB 刻みで拡張可能）。</li>
+</ul>
+<p>🔗 <a href="https://cloud.google.com/release-notes">ソースへのリンク</a></p>
+
+<p class="empty-notice"><strong>Azure</strong>、<strong>React</strong>（最新は v19.3.1、2026-10-14 公開）、<strong>Python</strong>本体、<strong>Django</strong>、<strong>Java</strong>、<strong>Spring Boot</strong>、<strong>Hono</strong>、<strong>Claude API／SDK</strong> については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
