@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-25 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-25 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Siemens製品 11月アップデート — 新規アドバイザリ12件（Node2Shell・Java4Shell・NGINX2Root・PHP2Shell ほか）</h3>
+<table class="cve-table">
+  <tr><th>影響</th><td>Siemens の各種製品（SIMATIC SCADA／PCS 7、Industrial Edge、Mendix Studio Pro の MCP Server、meta-iot2050、Simcenter Femap、ROS# など）</td></tr>
+  <tr><th>公開</th><td>JVNVU#98354779 ／ 2026-11-05 公開・2026-11-24 09:00 JST 最終更新</td></tr>
+  <tr><th>内容</th><td>新規12件・更新17件のアドバイザリが追加された。<code>SSA-242944</code> / <code>SSA-045512</code> / <code>SSA-678870</code> の「Node2Shell（Broccoli2Shell）」、<code>SSA-810379</code> / <code>SSA-272816</code> の「Java4Shell」、<code>SSA-935812</code> の「NGINX2Root」、<code>SSA-566435</code> / <code>SSA-166980</code> / <code>SSA-566512</code> の「PHP2Shell」といった共通脆弱性クラスのほか、<code>SSA-105852</code> Simcenter Femap の境界外読み取り、<code>SSA-435267</code> ROS# 2.3.1 未満のコードインジェクション、<code>SSA-710379</code> Mendix Studio Pro MCP Server の複数脆弱性、<code>SSA-724261</code> meta-iot2050 のコマンドインジェクション、<code>SSA-970803</code> SIMATIC SCADA／PCS 7 の認証不備など。</td></tr>
+</table>
+<p>対策は各 SSA アドバイザリを参照。産業制御・エンジニアリング環境を運用している場合は優先度を上げて確認が望ましい。</p>
+
+<h3>Synology DSM／BeeStation OS — nginx 由来の CVE-2026-123007 も修正対象（続報）</h3>
+<table class="cve-table">
+  <tr><th>影響</th><td>Synology 製 NAS 向け OS「DiskStation Manager（DSM）」および「BeeStation OS」</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-120382 <span class="badge-critical">Critical 9.8</span>（OAuth API の引数処理不備。未認証で任意ファイルの読み書き・DoS）／ CVE-2026-123007（nginx に起因する脆弱性）</td></tr>
+  <tr><th>修正版</th><td>DSM 7.4.1-90080 Update 2 ／ DSM 7.3.2-86009 Update 6（2026-11-20 公開）</td></tr>
+</table>
+<p>CVE-2026-120382 は 11-24 朝刊で既報。今回は Security NEXT（2026-11-24）が、同アップデートで nginx 由来の CVE-2026-123007 にも対処していると報じたもの。アドバイザリは Synology_SA_26_21／SA_26_20。</p>
+
+<h3>Xen Orchestra（XO）— 認証バイパス CVE-2026-133469 が攻撃で悪用（進展）</h3>
+<table class="cve-table">
+  <tr><th>影響</th><td>XenServer／XCP-ng の管理ツール「Xen Orchestra（XO）」</td></tr>
+  <tr><th>CVE</th><td>CVE-2026-133469 <span class="badge-critical">Critical 9.8</span></td></tr>
+  <tr><th>内容</th><td>認証トークンの入力検証不備により、既存の有効なトークンを持つユーザーになりすましが可能。管理者権限を取得されると、管理下の仮想基盤で任意コードを実行されたり、XCP-ng ホストを root 権限で乗っ取られるおそれがある。Vates は 2026-11-10 にアドバイザリ（VSA-2026-062／063）を公開、CVE は 11-23 に採番。すでにサイバー攻撃で悪用されている。</td></tr>
+</table>
+<p>11-24 朝刊で既報だが、その後に「実際に悪用されている」ことが明らかになったもの。アップデートの適用が急がれる。</p>
+
+<h3>Hermes Agent v0.23.4（2026-11-24 17:17 JST 公開）— セキュリティ特化の記載なし</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>v0.23.3 以降の約229 PR（1,122 non-merge コミット、1,316 ファイル、+96,873/−6,703）をまとめたパッチリリース。CLI・インストーラ、Microsoft Store アプリ、Docker、Hermes Cloud 向け。CVE 付番やセキュリティ特化の記載はない。</td></tr>
+  <tr><th>同時公開</th><td>canary v0.23.3+canary.20261124T064706Z（同日 17:06 JST）</td></tr>
+  <tr><th>更新方法</th><td>CLI は <code>hermes update</code>、またはインストーラの再実行。Docker／Hermes Cloud は <code>nousresearch/hermes-agent:stable</code>。</td></tr>
+</table>
+
+<h3>OpenClaw 2026.11.10-beta.3（2026-11-24 12:28 JST 公開）— REST APIの資格情報保護を強化</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>プレリリース（commit 3d2d379、署名検証済み）。SecretRef ベースの資格情報を設定編集時に保持、Signal の view-once 添付をダウンロードしない、更新中断からの回復（スキーマ変更・再起動を跨ぐ）、完了済みサブエージェント回答の保持、大規模会話履歴の圧縮時のメモリ削減などを含む。セキュリティ特化の記載・CVE はないが、権限・秘密情報の扱いに関わる修正を含む。</td></tr>
+</table>
+
+<h3>その他（2026-11-24 夜の新着通知より）</h3>
+<table class="cve-table">
+  <tr><th>ASUSTOR</th><td>NAS 向け OS「ADM」に8件。CVE-2026-120944（RCE、8.6）、CVE-2026-120943（7.7）、CVE-2026-134898（8.7）、CVE-2026-134895（8.2）ほか。影響は ADM 4.1.0〜4.3.3.RY62／5.0.0〜5.1.4.RM62。</td></tr>
+  <tr><th>Symfony</th><td>12件。CVE-2026-133780／133781（ビルド時 RCE、7.3）、CVE-2026-135801（WAF バイパス）、CVE-2026-135802〜135804、CVE-2026-133774〜133779 ほか。</td></tr>
+  <tr><th>Unblu Spark</th><td>CVE-2026-78338（CVSS 6.3）。</td></tr>
+</table>
+
+<hr>
+<p class="empty-notice">Next.js／Hono／Django／GCP／Azure／AWS／React／SpringBoot に直接関連する新規セキュリティ情報は、本対象期間では確認されませんでした。</p>
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>JAXA 地球観測データ公開システムに不正アクセス — 利用者2,000名のアカウント情報が漏えい（2026-11-24 公表）</h3>
+<table class="cve-table">
+  <tr><th>組織</th><td>宇宙航空研究開発機構（JAXA）第一宇宙技術部門</td></tr>
+  <tr><th>内容</th><td>地球観測衛星等のデータを提供する公開系情報システムが 11-18 に不正アクセスを受け、利用者2,000名分のアカウント名と暗号化されたパスワードが漏えいした。11-18 10:20頃から13:00頃に Web サーバからネットワーク探索とみられる通信、13:15頃に運用者が把握していないアカウントが認証サーバに作成され、ネットワークスイッチへのログイン試行（失敗）もあった。15時過ぎに不審な挙動を確認し、16:30までに Web サーバを停止して経路を遮断した。</td></tr>
+  <tr><th>補足</th><td>原因はコマンドインジェクションの脆弱性とされ、バックドアも設置されていたとの報道がある。保存されている観測データはいずれも公開情報で、アクセスされた痕跡はないという。システムは停止中で復旧時期は未定。</td></tr>
+</table>
+
+<h3>タワーレコード オンライン に不正アクセス — 会員情報 約1,100万件が流出（2026-11-21 公表・11-24 報道）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>11-19 17:10 に不正アクセスを確認し、サービスを停止して緊急メンテナンスを実施。ログイン情報 1,021万4,652件（メールアドレス・会員ID・パスワードのハッシュ値）、会員情報 278万4,514件（氏名・フリガナ・ニックネーム・生年月日・性別・郵便番号）、配送先情報 77万6,953件（住所・宛名・電話番号）。退会後3年以内の会員も対象。クレジットカード情報は含まれない。</td></tr>
+  <tr><th>対応</th><td>注文済み商品は 11-23 から順次出荷。通販サイトのサービス停止は継続し、マーケットプレイスの再開時期は未定。対象顧客へメールで連絡。</td></tr>
+</table>
+
+<h3>ミスタードーナツ「ミスドネットオーダー」が侵害 — サービス停止（2026-11-24 報道）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>ダスキンが運営するオンライン注文サービスが 11-15 に侵害を受け、システムを停止してアクセスを遮断。緊急メンテナンスを実施して調査を進めている。会員から受け付けた注文は、店頭やカスタマーセンターで変更・キャンセルに対応。</td></tr>
+</table>
+
+<h3>読売巨人軍 ファンクラブ会員情報が流出（2026-11-24 報道）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>公式ファンクラブ「CLUB GIANTS」の会員情報を管理するシステムが外部から繰り返し攻撃を受けた。11-12 にサーバ容量がひっ迫しアクセス不能となり調査したところ、11-13 にメールアドレス 80万7,030件の流出を確認。その後、氏名1万6,998件、住所1万2,831件、電話番号1万5,434件、性別1,664件、生年月日1,665件、ハッシュ化パスワード274件の流出も判明した。11-13 に個人情報保護委員会へ報告済み。</td></tr>
+</table>
+
+<h3>KARTE（プレイド）関連の続報 — カウネット第2報 ほか（2026-11-24 公表）</h3>
+<table class="cve-table">
+  <tr><th>カウネット</th><td>コクヨグループ。11-24 の第2報で、漏えいは重複を除き30万525件（メールアドレス27万1,607件、顧客番号2万9,445件、電話番号2万5,492件）と判明。クレジットカード番号・パスワードは対象外。初報で対象としていた顧客名称・カウネットエージェントは訂正された。</td></tr>
+  <tr><th>サントリーウエルネス</th><td>健康アプリ「Comado」で最大94万7,667件（ニックネーム・性別・年齢・購入商品名・識別ID・支払方法の区分）。氏名・メール・カード・パスワード等は対象外。11-19 公表。</td></tr>
+  <tr><th>クラシル</th><td>節約アプリ「レシチャレ」で最大約32万件（ユーザーID・利用店舗名・おすすめ商品名等）、「クラシルチラシ」でアカウントのメールアドレス約1,300件。契約終了済みの KARTE 環境に残っていたデータも漏えい対象に含まれていた。11-20 公表。</td></tr>
+  <tr><th>ティンパンアレイ</th><td>ワールドの連結子会社。古着通販「RAGTAG Online」の会員最大37万人分（会員ID・性別・年齢・メールアドレス・電話番号・LINE ID・生年月日）。氏名・住所・パスワード・カード情報は対象外。</td></tr>
+</table>
+<p>プレイドの調査では、連携データの一部が漏えいした企業は570社、外部連携用の認証情報が漏えいした企業は754社。KARTE は全サービス停止中で、再開目標は2027年1月中旬。</p>
+
+<h3>日本マクドナルド 公式アプリのDBに不正アクセス（2026-11-20 公表）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>公式アプリのデータベース内の顧客関連情報の一部に第三者の不正アクセスが確認された。対象は商品購入履歴、システム上の顧客管理用ID、IPアドレス、携帯端末の位置情報。氏名・メール・電話・住所・クレジットカード情報は含まれない。認証情報の無効化、関連システムの調査、個人情報保護委員会への報告を進めている。</td></tr>
+</table>
+
+<h3>アイル SaaS検証環境に不正アクセス — 顧客情報・API認証情報の一部が流出（2026-11-22 公表）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>東証プライム上場。11-18 に SaaS 系サービスの開発・検証環境への侵害を確認。検証用デモデータ、検証用アカウント情報、開発・検証担当者情報のほか、取引先担当者情報、実在する会員・注文情報、外部システム連携に用いる API 認証情報の一部が取得された可能性がある。本番環境（CROSS MALL／CROSS POINT 等）への侵入は確認されていない。11-10 公表の CROSS POINT API キー悪用事案とは別件。</td></tr>
+</table>
+
+<h3>ベストコ（学習塾「ベスト個別」）不正アクセス — 約14万件に漏えいの恐れ（2026-11-21 公表）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>11-20 に利用システムへの不正アクセスを確認。在籍者情報 最大5万196件（保護者・子の氏名、住所、電話番号、メールアドレス、成績、入塾状況、口座番号・口座名義・月謝金額・入出金履歴、教育情報アプリのID・パスワード）と、過去の問い合わせ情報 最大9万5,937件。クレジットカード情報は含まれない。教育情報アプリのパスワード変更を呼びかけている。</td></tr>
+</table>
+
+<h3>ニトリホールディングス 不正アクセス — 最大3,762万件が流出の可能性</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>11-06 に管理システムへの不正アクセスを確認し、11-09 に公表。その後のログ解析で、10月中旬〜下旬にも第三者によるアクセスがあった可能性が判明した。個人・法人会員の会員番号、氏名、メールアドレス、住所、電話番号、生年月日、性別、および注文データが対象。ログインパスワードとクレジットカード情報は含まれない。件数は調査により変動する可能性がある。</td></tr>
+</table>
+
+<h3>広島県 県内高校の修学旅行中に生徒の個人情報を紛失（2026-11-24 報道）</h3>
+<table class="cve-table">
+  <tr><th>内容</th><td>2026-10-09、修学旅行の移動中、教員が新幹線のホームでリュックサックを紛失。生徒226人分の氏名・性別・保護者連絡先、生徒108人分の健康調査表（治療中の病気・受診履歴・服薬状況・アレルギー）、教職員69人分の緊急連絡網、生徒約100人分の写真を保存した iPad、教員の個人手帳が含まれていた。警察・鉄道会社に照会したが未発見。</td></tr>
+</table>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
