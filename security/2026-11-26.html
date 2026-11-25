@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-26 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-26 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Drupal コア - インストーラの未認証サイト乗っ取り・リモートコード実行（CVE-2026-132165／132166、悪用確認済み） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Drupal core（10.6.22未満 / 11.0.0〜11.3.22未満 / 11.4.0〜11.4.13未満）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-132165（RCE・Highly critical）、CVE-2026-132166（Gadget chain・Moderately critical）</td></tr>
+<tr><th>深刻度</th><td>Drupal 独自評価 5段階で最高の「Highly critical」（20/25、Exploit: 既存）</td></tr>
+<tr><th>対策</th><td>10.6.22 / 11.3.22 / 11.4.13 へ更新。インストーラ（install.php）の保護も推奨</td></tr>
+</table>
+<ul>
+<li>Drupal に同梱される <code>install.php</code> の不備により、一定条件下で未認証の第三者が Drupal の再インストールを試行でき、サイト乗っ取りやリモートコード実行に至る（SA-CORE-2026-017）。</li>
+<li>Anthropic の OSS 脆弱性検出ツールが発見（ANT-2026-GMRPK0BU）。<strong>2026-11-19 19:00 UTC 時点で実サイトでの悪用が報告</strong>されており、米 CISA は 11-24 付で KEV（悪用が確認された脆弱性カタログ）に追加、FCEB 機関に 11-27 を期限とする対策と侵害調査を要求している。</li>
+<li>CVE-2026-132166 は単体では直接悪用できない「gadget chain」だが、サイトに別の安全でないデシリアライズ脆弱性が存在する場合に RCE の踏み台になり得る（SA-CORE-2026-018）。</li>
+</ul>
+
+<h3>Adobe Experience Manager（AEM）- コードインジェクション（CVE-2026-123266／132877、CVSSv3.1 9.9）ほか計100件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Adobe Experience Manager（AEM）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-123266／CVE-2026-132877（コードインジェクション、9.9）、XXE（9.6）ほか</td></tr>
+<tr><th>深刻度</th><td>Critical 3件／High 4件／Medium 92件／Low 1件（計100件）</td></tr>
+<tr><th>対策</th><td>Adobe のセキュリティアドバイザリ APSB26-104 に従い更新</td></tr>
+</table>
+<ul>
+<li>Adobe は 2026-11-24（現地時間）に AEM のセキュリティアップデートを公開し、計100件の脆弱性に対処した。</li>
+<li>上位2件のコードインジェクションは低権限の攻撃者から任意コード実行に至るおそれがあり、スコープ変更を伴う（CVSSv3.1 9.9）。XML 外部実体参照（XXE）は権限昇格に悪用され得る（9.6）。</li>
+<li>内訳の94件はクロスサイトスクリプティング（XSS）で、テンプレートエンジンの処理・認可不備によるセキュリティ機能バイパスも修正された。Java 製 CMS を運用する環境は優先的な確認が望まれる。</li>
+</ul>
+
+<h3>Apache JSPWiki 2.10〜3.0.0 - ログイン時のセッション固定（CVE-2026-78114、CVSSv4.0 10.0） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Apache JSPWiki 2.10〜3.0.0（全プラットフォーム）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-78114</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 10.0（Critical）</td></tr>
+<tr><th>対策</th><td>3.0.1（3.x）または 2.12.6（2.x）へ更新</td></tr>
+</table>
+<ul>
+<li>ログインフローにセッション固定（Session Fixation）の脆弱性。ユーザーが認証してもセッション識別子が置き換わらないため、攻撃者が事前に既知の識別子を被害者のブラウザに設定できれば、ログイン後も同一識別子で成りすませる。</li>
+<li>NVD 登録 2026-11-25（JST 20:17）。Java ベースの Wiki を外部公開している環境は更新または稼働停止を検討されたい。</li>
+</ul>
+
+<h3>Jenkins Script Security Plugin 1436.v1082791135e4 以下 - サンドボックス回避（CVE-2026-136835、CVSSv3.1 9.9） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Jenkins Script Security Plugin 1436.v1082791135e4 およびそれ以前</td></tr>
+<tr><th>CVE</th><td>CVE-2026-136835</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 9.9（Critical、スコープ変更）</td></tr>
+<tr><th>対策</th><td>修正版プラグインへ更新</td></tr>
+</table>
+<ul>
+<li>部分修飾クラス名で <code>@Builder</code> アノテーションを参照した際に、<code>builderStrategy</code> が任意クラスを指していても拒否しない不備がある。</li>
+<li>サンドボックス化されたスクリプト（Pipeline を含む）を定義・実行できる権限を持つ攻撃者が、スクリプトを評価するコンポーネントのクラスパス上に適切なクラスが存在する場合、サンドボックス外でコードを実行できる。NVD 登録 2026-11-26（JST 02:17）。</li>
+</ul>
+
+<h3>MongoDB ドライバ（C / Python）- TLS 失効確認の不備（CVE-2026-135224 CVSSv4.0 9.3、CVE-2026-135146 9.1） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>MongoDB C Driver（CVE-2026-135224）／MongoDB Python Driver（CVE-2026-135146）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-135224（9.3）、CVE-2026-135146（9.1）</td></tr>
+<tr><th>対策</th><td>MongoDB の修正版ドライバへ更新</td></tr>
+</table>
+<ul>
+<li>いずれも TLS の証明書失効確認（OCSP／CRL）の検証不備。接続先エンドポイントを運用する未認証の攻撃者が、失効済みだが有効期限内の証明書を用いることで接続を受理させられる。</li>
+<li>結果としてデータベース通信の内容やアプリケーション資格情報・セッションデータが漏えいし、攻撃者の応答が正規のものとみなされるおそれがある。NVD 登録 2026-11-26（JST 02:17・03:18）。Python アプリで MongoDB を用いる構成は更新を確認されたい。</li>
+</ul>
+
+<h3>Mozilla Thunderbird 161／153.8 - OpenPGP 署名付きメールの送信元詐称（CVE-2026-136226、Critical） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Thunderbird 161 未満 / 153.8 未満</td></tr>
+<tr><th>CVE</th><td>CVE-2026-136226（Critical）、CVE-2026-136227（High）</td></tr>
+<tr><th>対策</th><td>Thunderbird 161 / 153.8 へ更新</td></tr>
+</table>
+<ul>
+<li>OpenPGP 署名付きメールのヘッダ処理の不備により、署名検証に用いた送信元とは異なる送信元を画面上に表示させられる。受信者が攻撃者の公開鍵を受け入れている場合、正当に署名された別送信元のメールであるかのように見せかけられる。</li>
+<li>細工したメールを開くことで、認証済み IMAP 接続を通じて任意の IMAP コマンドを実行され得る CVE-2026-136227 も修正（High）。Thunderbird 161 で115件、153.8 で91件の脆弱性を修正。</li>
+</ul>
+
+<h3>Mozilla Firefox 161 - 110件の脆弱性を修正（High 59件） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Firefox 161 未満（ESR も更新）</td></tr>
+<tr><th>深刻度</th><td>Critical なし／High 59件／Moderate 30件／Low 21件</td></tr>
+<tr><th>対策</th><td>Firefox 161 へ更新</td></tr>
+</table>
+<ul>
+<li>サンドボックス回避13件、権限昇格5件（WebGPU の整数オーバーフローを含む）、JavaScript エンジン等の Use After Free や不正ポインタ使用などを含む。NVD 登録 2026-11-25。</li>
+</ul>
+
+<h3>その他の注目（参考）</h3>
+<table class="cve-table">
+<tr><th>Tenda RX3</th><td>16.03.13.11_multi に認証不備・コマンドインジェクション等（CVE-2026-136547／136548／136549、各 CVSSv4.0 9.3〜CVSSv3.1 10.0、いずれも PoC 公開）。更新または利用見直しを推奨。</td></tr>
+<tr><th>Webmin</th><td>2.670 以下に47件が一括公開（Windows 既定資格情報 admin/admin の CVE-2026-134639 は CVSSv4.0 9.2）。最新版へ更新を。</td></tr>
+</table>
+
+<h3>開発ツールのリリース状況</h3>
+<ul>
+<li><strong>Claude Code v2.1.332</strong>（2026-11-25 公開）: スキル連携や各種不具合修正が中心で、セキュリティ特化の記載・CVE はなし。</li>
+<li><strong>OpenClaw v2026.11.10</strong>（2026-11-25 公開）: Deep Research・Knowledge・Browser handoff 等の機能追加が中心。セキュリティ特化の記載・CVE はなし（資格情報の保持や権限境界に関わる修正は含む）。</li>
+<li><strong>Hermes Agent v0.23.4</strong>（2026-11-24 公開）/ canary 2026-11-25: 機能・プラグインカタログ更新が中心で、セキュリティ特化の記載・CVE はなし。</li>
+</ul>
+
+<hr>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>京王電鉄 - ランサムウェア攻撃でグループ顧客・取引先 約1,063万人の個人情報流出のおそれ <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>京王電鉄および同社グループ</td></tr>
+<tr><th>発覚</th><td>2026-09-26 にグループネットワークへのランサムウェア攻撃を検知</td></tr>
+<tr><th>規模</th><td>顧客・取引先 約1,063万人（おそれ）／従業員・退職者・扶養家族 約1万2,000人</td></tr>
+<tr><th>一次情報</th><td>2026-11-24 に個人情報保護委員会へ確報を提出</td></tr>
+</table>
+<ul>
+<li>同社グループのネットワークがランサムウェアの被害を受け、拡大防止のためネットワークを遮断して調査を進めていた。今回、賃貸物件の契約者約150人、採用応募者約160人の氏名・住所・電話番号・応募書類、従業員・退職者・扶養家族 約1万2,000人の氏名・人事情報などが流出したことが判明した。</li>
+<li>グループの顧客・取引先 約1,063万人については、氏名・住所・電話番号・メールアドレスのほか、<strong>一部にマイナンバー、パスポートの写し・パスポート番号、クレジットカード番号、本人確認書類</strong>が含まれるおそれがある。</li>
+<li>鉄道・生活インフラを担う大手事業者へのランサムウェア被害であり、サプライチェーンへの波及も懸念される。（Security NEXT 2026-11-25）</li>
+</ul>
+
+<h3>DHC - オンラインショップに不正アクセス、会員情報の改ざん 5,096件・不正注文も</h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ディーエイチシー（DHC）</td></tr>
+<tr><th>発覚</th><td>2026-10-28 にオンラインショップで不正アクセスを確認</td></tr>
+<tr><th>規模</th><td>会員情報を改ざんされたアカウント 5,096件／不審な注文 27件／不正な新規会員登録 71件</td></tr>
+<tr><th>対策</th><td>不正アクセス元の遮断、悪用された脆弱性の修正、不正アカウントの無効化、会員情報の復元</td></tr>
+</table>
+<ul>
+<li>化粧品・健康食品の通販サイトで会員情報の改ざんに加え、不正な注文・新規会員登録が行われていたことが判明した。</li>
+<li>改ざんされたアカウントに登録された会員番号・届け先の氏名・住所・電話番号・購入履歴・クレジットカード番号の下4桁が第三者に閲覧された可能性がある。個人情報保護委員会への報告と対象顧客への連絡を進めている。（Security NEXT 2026-11-25）</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
