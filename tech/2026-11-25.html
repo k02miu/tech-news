@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-25 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-25 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — 新規リリースなし（最新 v2.1.331）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.331（2026-11-24 06:40 JST 公開）ですわ。RSS フィードの最終生成は 2026-11-25 08:26 JST ですが、新規エントリの追加はございませんでした。</p>
+<p>なお v2.1.331 の内容は、マルチクラウド環境での Code Mode 対応拡大（Amazon Bedrock、Google Cloud の Agent Platform、Microsoft Foundry、AWS 上の Claude Platform）、<code>claude doctor</code> への API 接続診断セクション追加、プラグインの <code>optionalDependencies</code> 対応、VSCode 拡張の編集支援強化などでした。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog">ソースへのリンク</a></p>
+
+<h2>🤖 Hermes Agent — v0.23.4</h2>
+<p>2026-11-24 17:17 JST 公開の安定版パッチリリースです。v0.23.3 以降にマージされた約229件の PR をまとめたもので、計測地点のコミット <code>8fc03744473</code> では 1,122 の非マージコミット、1,316 ファイルの変更（+96,873 / −6,703）を含みます。詳細なキュレーション済みリリースノートは v0.24.0 で公開される予定ですわ。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>モデル追加</strong>: Gemini 4 Hydrogen／Neon／Carbon を Nous Portal、OpenRouter、Vertex で利用可能に。</li>
+  <li><strong><code>hermes gateway migrate --backends</code></strong>: 旧 serve／dashboard バックエンドを gateway へ移行するコマンドを追加（ダッシュボードに System ページのカードも追加）。</li>
+  <li><strong><code>hermes plugins config</code></strong>: ターミナルからプラグイン設定を編集可能に。</li>
+  <li><strong>Desktop</strong>: サンドボックスのフォルダ・サイト要求に対する承認カード、クライアント識別情報の通知、ストリーミングとトランスクリプトの性能改善。</li>
+  <li><strong>運用まわり</strong>: TTY プロンプトなしの <code>hermes dashboard password</code>、スキル索引の説明長設定（<code>skills.index_desc_limit</code>）、マネージドスコープ設定をセキュリティ・URL 安全性の読み取りでも尊重。</li>
+  <li><strong>カナリア</strong>: 同日 17:06 JST に canary.20261124T064706Z-v0.23.3 も公開。neocore メモリプロバイダの追加、cron の morning brief を読み取り専用に保つ修正、プロファイル削除後にプラグインキャッシュが削除済みホームを再作成しない修正など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/v0.23.4">ソースへのリンク</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.8 / v2026.11.10-beta.3</h2>
+<p>安定版 v2026.11.8 が 2026-11-24 20:54 JST に、ベータ版 v2026.11.10-beta.3 が同日 12:28 JST に公開されました。v2026.11.8 は 210 の PR・86 名のコントリビュータによるパッチリリースで、チャット・更新・モデル・自動化の信頼性改善が中心ですわ。</p>
+
+<h3>🔧 v2026.11.8 の主な内容</h3>
+<ul>
+  <li><strong>インストールと初期設定</strong>: Kubernetes init コンテナの設定シード失敗時に起動を即停止、Docker イメージの pruning が 1Password シークレットリゾルバ等で使う SDK エイリアスを削除する問題、非既定 UID での <code>EACCES</code> 起動失敗などを修正。</li>
+  <li><strong>Web UI</strong>: 古いコメントが後続の入力後に現れる問題を、ストリーム出力を元の実行区間に固定して修正。設定のキーバリューマップ消失や、不正入力時に直前の値が無言で送信される問題も修正。</li>
+  <li><strong>モデル／プロバイダ</strong>: 廃止された MiniMax M2.5／M2.7 をカタログと OAuth 既定から削除し、PDF 抽出を <code>MiniMax-M3</code> へ移行。Anthropic の <code>credits_required</code> を課金エラーとして分類し、プロバイダフェイルオーバーが機能するよう修正。</li>
+  <li><strong>その他の領域</strong>: 更新・メンテナンス、メッセージング、メモリ、スキル、ネイティブアプリ、自動化・スケジューリング、ブラウザ／コンピュータ操作、プラグイン連携、セキュリティとプライバシーにわたる修正を収録。</li>
+</ul>
+
+<h3>🔧 v2026.11.10-beta.3 の主な内容</h3>
+<ul>
+  <li><strong>更新の復旧</strong>: スキーマ変更やマシン再起動をまたぐ中断でも、パッケージ更新・ソース更新を復旧可能に保つ。</li>
+  <li><strong>委任作業の信頼性</strong>: Gateway 再起動後や兄弟タスク実行中でも、完了したサブエージェントの回答を保持。</li>
+  <li><strong>長い会話の応答性</strong>: 大きな履歴の圧縮・表示時のメモリとメインスレッド負荷を削減。</li>
+  <li><strong>認証情報と添付</strong>: SecretRef ベースの認証情報を設定編集時も保持し、Signal の view-once 添付をダウンロードしないよう変更。</li>
+  <li><strong>プロバイダサインイン</strong>: ブラウザ経由で OpenCode Console／OpenCode Go にサインインし、利用可能なモデルを検出可能に。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+
+<h2>🐋 Orca — v1.4.274 / v1.4.273</h2>
+<p>v1.4.274 が 2026-11-25 07:52 JST に、v1.4.273 が 2026-11-24 19:20 JST に公開されました。</p>
+<h3>🔧 v1.4.274 の主な内容</h3>
+<ul>
+  <li><strong>App Rail を新規ユーザーで既定有効化</strong>: サイドバーを圧縮アイコンレールにまとめる App Rail が新規ユーザーの既定に。既存ユーザーは <strong>Settings &gt; Experimental &gt; App rail</strong> から有効化できます。</li>
+</ul>
+<h3>🔧 v1.4.273 の主な内容</h3>
+<ul>
+  <li><strong>ボット項目の可視性</strong>: ボットパネルに次回実行予定を表示。項目リンクは GitHub の PR／Issue をホバーでプレビューし、回答待ちの質問もラベルを保持。</li>
+  <li><strong>モバイル</strong>: Google／GitHub／Linear のアカウント操作、エージェントとグループの名前検索、コンピュータをまたぐグループ投稿に対応。</li>
+  <li><strong>ブラウザ</strong>: 低速回線でのストリームページのスクロール改善、キーボードでのセレクトメニュー操作、デスクトップでのページ PDF 印刷。</li>
+  <li><strong>ネイティブチャット</strong>: メッセージをまたぐ画像の閲覧、<code>/resume</code> 時のセッション履歴の即時読み込み。</li>
+  <li><strong>信頼性</strong>: DST 遷移をまたぐ固定時刻 cron の実行を一度だけに、未知の <code>--timezone</code> 名の拒否、長時間の実行結果ラベルの桁あふれ修正など。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+
+<h2>☁️ AWS — 複数のアップデート</h2>
+<p>対象期間内に以下の発表が確認されました。</p>
+<ul>
+  <li><strong>AWS CloudFormation</strong>: リソースカバレッジを大幅拡張し、206 の新規リソースタイプに対応（2026-11-25 05:00 JST）。</li>
+  <li><strong>Amazon OpenSearch Serverless</strong>: Africa（Cape Town）リージョンで利用可能に（2026-11-25 05:22 JST）。</li>
+  <li><strong>Amazon Bedrock</strong>: AWS GovCloud (US) で <code>bedrock-runtime</code> エンドポイントの OpenAI Daybreak Red 対応を追加（2026-11-25 06:27 JST）。</li>
+  <li><strong>Amazon RDS for SQL Server</strong>: インスタンスあたり最大 500 データベースに対応（2026-11-24 17:00 JST）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（最新の安定版は v16.4.6、canary は v16.5.0-canary.62 が 2026-11-24 08:47 JST 公開で対象期間の直前）、<strong>React</strong>（最新 v19.3.1、2026-10-15 公開）、<strong>Python / Django / Java / Spring Boot / Hono / Claude API・SDK</strong>、<strong>Azure / GCP</strong>については、対象期間内の公式アップデート・リリース・セキュリティアドバイザリは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
