@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-26 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-26 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.332</h2>
+<p>v2.1.332 が 2026-11-25 10:37 JST に公開されました。MCP サーバー由来のスキルを扱う新しい仕組みと、スキル読み込み時のフック、マルチクラウドでのモデル既定値の更新が中心ですわ。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>MCP サーバーのスキル（ベータ）</strong>: MCP サーバーが提供するスキルを <code>/</code> メニューに <code>server:skill</code> 形式で表示。既存スキルは従来の名前のままです。</li>
+  <li><strong><code>PreSkillShellCommand</code> フック</strong>: スキルやコマンドの読み込み時、そのインラインシェルコマンドを拒否できる新しいフックイベント。なお 2.1.331 以前では、この名前を記述した設定ファイルを開くと起動時にダイアログが出ます。</li>
+  <li><strong>セッション間メッセージ</strong>: 他セッションからの保留メッセージのプロンプトに「Always deliver」を追加。</li>
+  <li><strong>モデル不一致の可視化</strong>: フラグ付きメッセージのセッションが別モデルで動いている間、<code>/model</code> で選び直すまでフッターに表示し続ける行を追加。</li>
+  <li><strong>OpenTelemetry</strong>: 応答ログ有効時、SendUserMessage や Cowork のメッセージツール経由のテキストに対する <code>assistant_response</code> イベントを追加。</li>
+  <li><strong>VS Code / Desktop</strong>: セッションの一部が保存できなかった場合の警告（<code>/compact</code> での保存方法を案内）、再開セッションの過去メッセージが読み込まれなかった旨の通知、プラグイン管理行へのインストール済みバージョン表示を追加。</li>
+  <li><strong>モデル既定値の更新</strong>: Google Cloud の Agent Platform と Microsoft Foundry で <code>sonnet</code> エイリアスを Sonnet 5.5 に、Foundry の <code>opus</code> を Opus 5.5 に変更。Foundry の既定モデルも Sonnet 5.5 になりました（Amazon Bedrock の <code>sonnet</code> は Sonnet 4.5 のまま）。</li>
+  <li><strong>自動モード</strong>: Bedrock Mantle／Agent Platform／Foundry へ移されたターミナル・VS Code セッションで、モード未指定なら auto モードで開始するよう変更（<code>disableAutoMode</code> で無効化可能）。</li>
+  <li><strong><code>--model default</code></strong>: 指定モデルが使えない場合にエラー停止せず、古いモデルへフォールバックするよう変更。</li>
+  <li><strong>macOS の computer use</strong>: 新しい安全規則に更新され、一部の操作が拒否され、入力が遅くなる場合があります。<code>computer-use</code> は予約済みスキル名になりました。</li>
+  <li><strong>音声入力（タップモード）</strong>: マイクを維持する時間を延長（無音60秒または最大10分、従来は15秒／2分）。プロンプト送信時や編集開始時には停止します。</li>
+  <li><strong>自己ホストランナー</strong>: <code>CLAUDE_CODE_OAUTH_TOKEN</code> の接頭辞が <code>oat02-</code> も取るようになりました。プロキシ規則やログのマスク設定で <code>oat01-</code> を前提にしている場合は見直しが必要です。</li>
+</ul>
+
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li>破壊的な確認（エージェント視点の <code>/clear</code> など）で PgUp／Home が「No」に移動するよう変更。</li>
+  <li>Microsoft Foundry で Claude Sonnet 4／Opus 4／Opus 4.1 を retired 扱いにし、それらを指すピンには廃止の警告を表示。</li>
+  <li><code>awsCredentialExport</code> が無限待機せず 10 分でタイムアウトするよう修正。</li>
+  <li>Desktop の Code タブで、ゲートウェイ指定と併用する自前設定内の <code>claude</code> 以外で始まるモデル id や 200K 未満の <code>CLAUDE_CODE_AUTO_COMPACT_WINDOW</code> を無視するよう変更。</li>
+</ul>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-332">ソースへのリンク</a></p>
+
+<h2>🤖 Hermes Agent — canary.20261125T064800Z-v0.23.4</h2>
+<p>2026-11-25 17:02 JST にカナリアビルド canary.20261125T064800Z-v0.23.4 が公開されました。プラグインカタログの拡充と、cron まわりの不具合修正が中心ですわ。安定版の最新は v0.23.4（2026-11-24 17:17 JST 公開）です。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>プラグインカタログ</strong>: SolverForge Workbench、chinadoccheck、phone-bud、hermes-warden 0.1.6、igni、0g-provider、olostep、memory-fit、AirPrompter、gpu-monitor、vaultwarden-secret-source、fastpath、hermes-roi、bot-dashboard 1.3.0、deepseek-meter など多数を追加・更新。</li>
+  <li><strong>cron</strong>: 起動時の配信スナップショットを同時に保持するよう改善。</li>
+  <li><strong>リリース基盤</strong>: ダウンロードページのレンダラを共通化。</li>
+</ul>
+
+<h3>🐛 主な修正</h3>
+<ul>
+  <li>手動実行の全経路で、一時停止中ジョブの拒否メッセージを一本化。</li>
+  <li>cron のプラグイン参照を単一プロファイル内に限定。</li>
+  <li>cron の配信先設定を実行時ジョブの設定から取得し、<code>ctx.cron_delivery_platforms</code> として公開。</li>
+  <li><code>hermes doctor</code>: 代入語の判定を引用符除去前に行うよう修正、<code>.env</code> の PATH 行が継承 PATH を置き換える前に保持するよう修正、<code>~/.local/bin</code> が PATH に無い場合の警告を追加。</li>
+  <li>プロファイルの <code>.env</code> 変換を新しい一時ファイル経由で行うよう修正。</li>
+  <li>Todo の親子関係を復元時にサニタイズし、循環参照を切断。</li>
+  <li>Desktop: 読み取り専用の場所からの macOS アップデートを終了前に拒否。</li>
+</ul>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases/tag/canary.20261125T064800Z-v0.23.4">ソースへのリンク</a></p>
+
+<h2>🐙 OpenClaw — v2026.11.10 / v2026.11.9</h2>
+<p>v2026.11.10 が 2026-11-25 14:42 JST に、v2026.11.9 が同日 09:47 JST に公開されました。v2026.11.10 は 7,671 の PR・349 名のコントリビュータを束ねる大型リリースで、Deep Research・Knowledge・ブラウザ引き継ぎという三つの目玉機能が入っていますわ。</p>
+
+<h3>🔧 v2026.11.10 の主な内容</h3>
+<ul>
+  <li><strong>Deep Research</strong>: 複数の Web ソースやローカル文書を横断して調査し、引用付きレポートを返す機能。既定で有効（ポータブルエンジン、既存モデルと Web ツールを使用）。ソースが対立する場合は引用を並べて提示し、未解決点を明示します。Gateway 再起動をまたいだジョブ再開と、7日間のレポート保存に対応。Google のマネージド研究エンジンはオプトインです。</li>
+  <li><strong>Knowledge</strong>: 会話・会議・メモ・ファイルを、人物・プロジェクト・決定・根拠抜粋からなるローカル Markdown Vault に変換するメモリプロバイダ。オプトイン（<code>plugins.slots.memory</code> を <code>"knowledge"</code> に設定）。Gateway 再起動なしでホットリロードし、既存の <code>memory-core</code> データはそのまま保持。Control UI のエクスプローラとプロジェクト Timeline から検索・追跡でき、改訂・撤回・統合はローカル Git チェックポイントで履歴を残します。</li>
+  <li><strong>Browser handoff</strong>: エージェント操作中のブラウザタブでサインイン・2FA・CAPTCHA・機密フォームに当たった際、「Take control」で自動操作を一時停止して手動対応し、「Release control」で返せる機能（無入力5分で自動返却）。Chrome 設定やパスワードマネージャをエージェントに露出せずに開けます。</li>
+  <li><strong>Quick Start の常駐化</strong>: オンボーディング端末を閉じても Gateway をバックグラウンドサービスとして継続。npx／dlx 経由のセットアップでも、パッケージランナーのキャッシュ削除後にサービスが動作し続けます。</li>
+  <li><strong>プロバイダ設定の検証</strong>: Settings → Models で API キー保存時に即時検証し、成功なら確定・失敗なら理由を表示してフォームを開いたままにします。初回プロバイダ保存時はそのまま新しいチャットを開始できます。</li>
+  <li><strong>セットアップ改善</strong>: GitHub Copilot を既定プロバイダ一覧に追加、Ollama／LM Studio が起動済みでモデル未ロードの場合の誤判定を修正、<code>gateway install</code> 後は Gateway 起動まで待機。</li>
+</ul>
+
+<h3>🔧 v2026.11.9 の主な内容（パッチ）</h3>
+<ul>
+  <li><strong>プロンプトキャッシュ</strong>: Anthropic のセッションフォーク（Advisor レビューや <code>/btw</code>）が独自サフィックスでキャッシュチェックポイントを書かないよう修正。OpenAI Responses のフォークも親会話のキャッシュを再利用できるよう、キャッシュキー・ホストツール・reasoning 設定を揃えました。</li>
+  <li><strong>Tool Search 互換性</strong>: assistant メッセージの prefill を拒否する OpenAI 互換チャット補完プロバイダで、<code>web_search</code> などのディレクトリツール呼び出しが失敗する問題を修正。</li>
+  <li><strong>Claude CLI / ACP</strong>: 前面 Gateway・コンテナ・Windows で、OpenClaw 保存のサブスクリプショントークンを使うバックグラウンド Claude CLI 実行がシークレットファイルディスクリプタエラーで失敗する問題を修正。ACP クライアントで返答が途中で切れる問題も修正。</li>
+  <li><strong>ブラウザ</strong>: ヘッド付き Chrome の管理／アタッチ専用プロファイルで、バックグラウンドタブのスクリーンショットがタイムアウトし以降の取得を塞ぐ問題を修正。</li>
+  <li><strong>セキュリティ</strong>: セルフホスト Web ツールのエンドポイントについて、全リダイレクトホップで設定ホスト名を維持し他ホストへの転送を拒否。許可リストから外れた Discord DM 送信者が旧セッションバインディング経由でコマンド実行できた問題を修正。<code>env -S</code>／ネストした <code>env --split-string</code> 内の <code>BASH_ENV</code> などの起動変数検査漏れも修正。</li>
+  <li><strong>Codex</strong>: 同梱 Codex app-server を 0.172.0 に更新。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases">ソースへのリンク</a></p>
+
+<h2>🐋 Orca — android-v0.0.71（モバイル）</h2>
+<p>Android モバイル版 android-v0.0.71 が 2026-11-26 02:10 JST に公開されました。デスクトップ版は対象期間内の新規リリースがなく、最新版は v1.4.274（2026-11-25 07:52 JST 公開）です。</p>
+<h3>🔧 主な内容</h3>
+<ul>
+  <li><strong>モバイル</strong>: グループルームと項目コメントで <code>@</code> メニューが開くよう修正、長い URL をコメント吹き出し内で折り返し（チャット幅が広がる問題を解消）。</li>
+  <li><strong>ブラウザ</strong>: SSH ホストを含む任意の Settings ホストで、プロファイル単位の Cookie 削除に対応。ペアリング済みサーバーのポートをこのコンピュータへ転送し既定ブラウザで開く機能、タブをコンピュータ間で移動する機能、サーバー（ストリーム）ページのダウンロードをローカルへ保存する機能を追加。</li>
+  <li><strong>エージェント項目</strong>: 理由ダイアログ無しでの即時キャンセル、質問が開いている間にワーカーが起動しても「Needs you」を保持、項目リンクチップのホバーで GitHub プレビューカードを表示。</li>
+  <li><strong>信頼性・性能</strong>: クラッシュや再起動をまたいでペインのターン変更を1秒以内に保存しアイドルメールの流れを維持、チャット最新ターンのジャーナル読み取りを必要分に限定、プラグインの git 一時フォルダを掃除。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+
+<h2>☁️ AWS — 複数のアップデート</h2>
+<p>対象期間内に以下の発表が確認されました。</p>
+<ul>
+  <li><strong>AWS Lambda</strong>: Lambda durable functions で Lambda MicroVMs をオーケストレーションする拡張の開発者プレビューを発表（2026-11-26 05:00 JST）。最大1年の実行、チェックポイントと自動リトライを備え、信頼できない／AI 生成コードを VM レベルの分離で実行するソフトウェアファクトリや CI/CD ジョブに向きます。TypeScript 版 Durable Execution SDK の拡張として提供。</li>
+  <li><strong>Amazon CloudWatch Omni</strong>: PagerDuty 連携を追加し、アラートから自動でインシデントを作成（2026-11-26 05:00 JST）。</li>
+  <li><strong>Amazon Transcribe Turbo</strong>: 次世代音声認識モデルがパブリックプレビューに（2026-11-25 17:00 JST、US East Ohio）。精度向上、カスタム語彙、話者交代の自然な整形に対応。</li>
+  <li><strong>AWS IAM</strong>: トラステッド ID 伝播（TIP）を IAM フェデレーションと IAM Roles Anywhere へ拡張（2026-11-25 15:00 JST）。</li>
+  <li><strong>Amazon EC2</strong>: Graviton5 搭載の M9gd（ソウル）、C9gd（アイルランド・スペイン）、C9g（シドニー・アイルランド・スペイン・サンパウロ）、M9g（北カリフォルニア・カナダ中部・サンパウロ・ソウル）が各リージョンで利用可能に（2026-11-26 01:06〜02:10 JST）。</li>
+  <li><strong>AWS IoT Core</strong>: HTTP ルールアクション用に専用 IPv6 アドレス範囲を公開し、HTTPS エンドポイント側で AWS IoT Core からのリクエストのみ許可する構成が可能に（2026-11-25 17:00 JST）。</li>
+</ul>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/recent/">ソースへのリンク</a></p>
+
+<h2>⚡ Hono — v4.13.22（セキュリティ強化）</h2>
+<p>v4.13.22 が 2026-11-25 09:07 JST に公開されました。メンテナが「hardening changes のため更新を推奨」と明言しているリリースですわ。</p>
+<ul>
+  <li><strong>mount</strong>: ビルド出力にも不正パスガードを保持。</li>
+  <li><strong>basic-auth</strong>: <code>username</code>／<code>password</code> が文字列でない場合、セットアップ時にエラーを投げるよう変更（環境変数で渡している場合は未設定でないか確認が必要）。</li>
+  <li><strong>utils/mime</strong>: 継承プロパティ名の拡張子に対して <code>undefined</code> を返すよう修正。</li>
+  <li><strong>jsx</strong>: プレーンオブジェクトの子要素を配列として扱わないよう修正。</li>
+  <li><strong>SSE</strong>: <code>retry</code> 内の改行を拒否。</li>
+  <li><strong>utils/body</strong>: <code>parseBody()</code> で <code>constructor.prototype</code> 系のキーをスキップ。</li>
+  <li><strong>streaming</strong>: 同期版 <code>onError</code> コールバックを受け付けるよう修正。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.22">ソースへのリンク</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（最新の安定版は v16.4.6、canary は v16.5.0-canary.62 が 2026-11-24 08:47 JST 公開で対象期間の直前）、<strong>React</strong>（最新 v19.3.1、2026-10-15 公開）、<strong>Python / Django / Java / Spring Boot</strong>（Spring Boot 4.2.0 は 2026-11-20 公開）、<strong>Claude API・SDK</strong>（anthropic-sdk-python v2.14.0 は 2026-11-25 06:00 JST 公開で対象期間の直前）、<strong>GCP</strong>（公式リリースノートフィードの最新エントリは 2026-11-24）、<strong>Azure</strong>（公式アップデートフィードがプログラムから取得できず、対象期間内の新着を確認できませんでした）については、対象期間内の新規リリース・アップデートは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
