@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-27 セキュリティ朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.badge-critical { display: inline-block; background: #dc2626; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-high { display: inline-block; background: #ea580c; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-medium { display: inline-block; background: #ca8a04; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.badge-low { display: inline-block; background: #64748b; color: #fff; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.cve-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.2rem; font-size: 0.9rem; }
+.cve-table th { background: #f1f5f9; text-align: left; padding: 0.4rem 0.8rem; white-space: nowrap; width: 6rem; }
+.cve-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #e2e8f0; }
+.empty-notice { color: #64748b; font-style: italic; }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← セキュリティニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🛡️ 2026-11-27 セキュリティ朝刊</h1>
+  <p class="subtitle">対象期間: 前日08:00 〜 当日08:00 JST 公開分</p>
+</header>
+<main>
+<article>
+
+<!-- 🔴 スタック関連 セクション -->
+<h2>🔴 スタック関連</h2>
+
+<h3>Joomla 6.2.1／5.4.11 - 58件の脆弱性を修正、うち4件が Critical <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Joomla 6.2.1 未満（6.x系）／5.4.11 未満（5.x系）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-123214（インストーラ認証回避）、CVE-2026-129393（カスタムフィールド経由 RCE）、CVE-2026-127297（ログ生成の競合状態）ほか計58件</td></tr>
+<tr><th>深刻度</th><td>Critical 4件／ほか High・Medium（CVSSv3.1 ベース）</td></tr>
+<tr><th>対策</th><td>Joomla 6.2.1 または 5.4.11 へ更新。稼働サイトにインストーラ用ディレクトリが残存していないか確認</td></tr>
+</table>
+<ul>
+<li>開発チームは現地時間 2026-11-24、CVE ベースで58件のセキュリティ修正を含む <code>Joomla 6.2.1</code> / <code>5.4.11</code> を公開した。</li>
+<li><strong>CVE-2026-123214</strong> はインストーラの認証回避。稼働中のサイトでもインストール用ディレクトリが残存していれば、認証なしで設定を書き換えられる。</li>
+<li><strong>CVE-2026-129393</strong> はメディアを扱うカスタムフィールドで、フォーム定義の XML 生成時のエスケープ不備によりリモートからコード実行のおそれ。<strong>CVE-2026-127297</strong> はログ出力の競合状態で、保護ヘッダのない状態でログファイルが再生成され RCE に至り得る。</li>
+<li>Joomla は日本国内の企業サイト・自治体サイトでも広く使われており、優先的な更新が望まれる。（Security NEXT 2026-11-26／NVD 登録 2026-11-26）</li>
+</ul>
+
+<h3>@fastify/express・@fastify/middie - ミドルウェア認証バイパス（CVE-2026-135279、CVSSv3.1 9.1）ほか計6件 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>@fastify/express 4.0.14 未満、@fastify/middie 9.3.6〜9.3.9</td></tr>
+<tr><th>CVE</th><td>CVE-2026-135279（9.1）、CVE-2026-135280（7.4）、CVE-2026-135270（7.4）、CVE-2026-135264（7.4）、CVE-2026-135230（7.4）、CVE-2026-135205（7.4）</td></tr>
+<tr><th>深刻度</th><td>Critical 1件／High 5件</td></tr>
+<tr><th>対策</th><td>@fastify/express を 4.0.14 へ、@fastify/middie を 9.3.10 へ更新。併せて Fastify フック（preHandler）での認証強制を推奨</td></tr>
+</table>
+<ul>
+<li>Fastify 上で Express ミドルウェアを動かす <code>@fastify/express</code> に、パススコープのミドルウェア（認証等）をすり抜けてルートハンドラに到達できる不備が判明した。空の動的ルートパラメータや正規表現マウントの取り扱い不整合が原因。</li>
+<li>これまでに修正された <code>@fastify/middie</code>（パススコープ回避）とは異なる経路で、<strong>ルーティングされた Express アプリ内にマウントされたミドルウェア</strong>が対象となっており、過去の修正が不十分だったもの。攻撃者は認証や認可の制御を回避できる。</li>
+<li>回避策として、ルート／マウントパスを必ずスラッシュで開始する、文字列マウントを使う、あるいはルーティング後に走る <code>preHandler</code> フックで認証を強制することが挙げられている。Node.js／Next.js 系の自ホスト環境で Express 互換ミドルウェアを使う構成は影響を確認されたい。（NVD 登録 2026-11-26、OpenJS Foundation CNA）</li>
+</ul>
+
+<h3>Apache Airflow TaskFlow デコレータ - Jinja 二重レンダリングによるワーカー上 RCE（CVE-2026-120353） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>apache-airflow-providers-standard（1.22.0 未満）、cncf-kubernetes（11.0.0 未満）、common-sql（3.0.0 未満）、common-ai（1.2.0 未満）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-120353</td></tr>
+<tr><th>深刻度</th><td>タスクワーカー上での任意コマンド実行（接続パスワード・Variable の窃取）</td></tr>
+<tr><th>対策</th><td>各プロバイダを修正版へ更新</td></tr>
+</table>
+<ul>
+<li><code>@task.bash</code>／<code>@task.sql</code>／<code>@task.kubernetes_cmd</code> および <code>common.ai</code> 系デコレータ（<code>@task.llm</code> ほか）が、タスクランナーでレンダリング済みの値を <strong>再度 Jinja テンプレートとして評価</strong>してしまっていた。</li>
+<li>Dag の起動権限しか持たない利用者（run conf を渡せる者）、あるいは Dag がチケットや文書など外部テキストをプロンプト・引数として取り込む場合に、ワーカー上で任意コマンドを実行され、接続パスワードや Variables を読み取られるおそれがある。Python データ基盤を運用する環境は優先的な更新が推奨される。（Apache／NVD 登録 2026-11-26）</li>
+</ul>
+
+<h3>pulp_python - pull-through キャッシュの SSRF（CVE-2026-126984、CVSSv3.1 10.0） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>pulp_python（pull-through キャッシュ機能、<code>get_remote_artifact_url()</code>）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-126984</td></tr>
+<tr><th>深刻度</th><td>CVSSv3.1 10.0（Critical、スコープ変更・C:H/I:H）</td></tr>
+<tr><th>対策</th><td>修正版 pulp_python へ更新（pulp/pulp_python #1429 / #1484）</td></tr>
+</table>
+<ul>
+<li>クライアント要求の <code>redirect</code> クエリパラメータを、そのままダウンロード先 URL として使用していた。コンテンツアプリに到達できる攻撃者が URL を指定でき、リモートの認証情報が設定されている場合は資格情報がそのホストへ送信される。</li>
+<li>remote ポリシーが既定（immediate）の場合、取得したファイルがリポジトリに保存され、以降のクライアントに配信されてしまう。Python パッケージ配信基盤・社内 PyPI ミラーを公開している環境は影響を確認されたい。（Red Hat／NVD 登録 2026-11-26）</li>
+</ul>
+
+<h3>Eclipse Ditto - JavaScript ペイロードマッパーにおけるサンドボックス回避（CVE-2026-135203、CVSSv4.0 9.4） <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Eclipse Ditto 0.3.0-M1〜3.8.15、3.9.0〜3.9.9</td></tr>
+<tr><th>CVE</th><td>CVE-2026-135203</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 9.4（Critical）</td></tr>
+<tr><th>対策</th><td>修正版へ更新（GHSA-9mpq-m32x-4q7p）</td></tr>
+</table>
+<ul>
+<li>connectivity サービスの JavaScript ペイロードマッパーが、<code>ClassShutter</code> なしの Mozilla Rhino エンジンでユーザー提供スクリプトを実行していた。マッピングスクリプトがエンジンエラーを捕捉し、露出した Java 例外オブジェクトからリフレクション経由で任意の Java クラス・メソッドへ到達できる。</li>
+<li>接続の作成・変更権限（既定では Ditto DevOps レルム）を持つ利用者が、connectivity サービス内で任意コードを実行し、資格情報や Ditto クラスタへアクセスできる。IoT 基盤としての影響が大きい。（Eclipse／NVD 登録 2026-11-26）</li>
+</ul>
+
+<h3>Argo Workflows - アーティファクトドライバのパストラバーサル（CVE-2026-137566、CVSSv4.0 8.7） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Argo Workflows 3.0.0〜3.7.18、4.0.0〜4.0.12 未満、4.1.0〜4.1.4 未満</td></tr>
+<tr><th>CVE</th><td>CVE-2026-137566</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 8.7／CVSSv3.1 8.8（High）</td></tr>
+<tr><th>対策</th><td>v4.1.4／v4.0.12／v3.7.19 以降へ更新</td></tr>
+</table>
+<ul>
+<li>S3・GCS・Azure Blob の各アーティファクトドライバにパストラバーサル。バケットへのオブジェクト書き込み権限を持つ攻撃者、または悪意あるアーティファクトソースを供給できる者が、<code>../</code> を含むオブジェクトキーで executor Pod 内に任意ファイルを書き込み、コード実行に至る。</li>
+<li>汎用クラウドストレージをまたぐ CI/CD パイプラインを組む Kubernetes 環境は、該当バージョンの確認と更新が必要。（NVD 登録 2026-11-26）</li>
+</ul>
+
+<h3>Dell Enterprise SONiC - 製品固有13件・第三者由来778件の脆弱性に対応 <span class="badge-critical">Critical</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Dell Enterprise SONiC Distribution（ネットワークOS）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-103782（引数インジェクション、CVSSv3.1 9.9）、CVE-2026-103788（OSコマンドインジェクション、9.6）ほか</td></tr>
+<tr><th>深刻度</th><td>Critical レーティング（製品固有13件＋サードパーティ778件）</td></tr>
+<tr><th>対策</th><td>Dell のセキュリティアドバイザリ DSA-2026-451 に従い更新</td></tr>
+</table>
+<ul>
+<li>低権限でリモートから任意コマンド実行・ファイルシステムアクセスが可能な引数インジェクション（9.9）と、隣接ネットワークから認証不要で任意コマンドを実行できる OS コマンドインジェクション（9.6）が確認された。</li>
+<li>依存するサードパーティ製ソフトウェアを含めると修正は800件近くに及び、対象範囲が広い。（Security NEXT 2026-11-26／Dell DSA-2026-451）</li>
+</ul>
+
+<h3>NVIDIA AIStore - 認証不備（CVE-2026-65175）ほか計3件 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>NVIDIA AIStore（AI 向け分散ストレージ基盤）</td></tr>
+<tr><th>CVE</th><td>CVE-2026-65175（ストレージノード制御機能の認証・認可不備）、CVE-2026-100986（本来の保存領域外へのファイル追加）、CVE-2026-100985（パストラバーサル）</td></tr>
+<tr><th>深刻度</th><td>いずれもリモート・認証不要で悪用可能</td></tr>
+<tr><th>対策</th><td>NVIDIA セキュリティ速報（2026年11月）に従い更新</td></tr>
+</table>
+<ul>
+<li>公開インタフェースを通じて認証なしに管理機能へアクセスでき、データの改ざん・漏えい、サービス拒否に至るおそれ。他の2件もコード実行・権限昇格・情報漏えい・データ改ざんにつながる。（Security NEXT 2026-11-26／NVIDIA Security Bulletin）</li>
+</ul>
+
+<h3>WordPress プラグイン - 未認証 RCE・MCP 認可バイパスほか（複数） <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Product Input Fields for WooCommerce 2.1.0 以下、Secure MCP Server 1.5.8 以下、ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-104998（9.8 任意ファイルアップロード）、CVE-2026-131688（8.1 MCP 認可バイパス）ほか</td></tr>
+<tr><th>深刻度</th><td>Critical〜High</td></tr>
+<tr><th>対策</th><td>各プラグインを修正版へ更新</td></tr>
+</table>
+<ul>
+<li><strong>CVE-2026-104998</strong>：Product Input Fields for WooCommerce は、クライアント提供の multipart <code>Content-Type</code> のみを検証して <code>pif_temp</code> ディレクトリへ無害化なしに書き込むため、未認証で実行可能ファイルをアップロードし RCE に至る（Apache/mod_php 既定構成で稼働）。</li>
+<li><strong>CVE-2026-131688</strong>：Secure MCP Server for Claude / ChatGPT / Gemini / Cursor の WordPress プラグインは、有効な MCP ベアラトークン（スコープ制限付きの接続テスト用トークンを含む）を <code>admin-ajax.php</code> 等の任意エンドポイントへ送ることで、トークン発行者の Administrator 権限へ昇格できた。MCP 基盤を WordPress 上で運用する場合は要注意。</li>
+</ul>
+
+<h3>CISA KEV に10件を追加 - Mitel MiCollab・Juniper Session Smart・Xen Orchestra ほか</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>Mitel MiCollab、Juniper Networks Session Smart Conductor／Router、Xen Orchestra ほか</td></tr>
+<tr><th>CVE</th><td>CVE-2026-133323・133303・133275・133324・133311（Mitel MiCollab）、CVE-2026-103406（Juniper Session Smart）、CVE-2026-133469（Xen Orchestra）</td></tr>
+<tr><th>深刻度</th><td>悪用確認済み（KEV 収載）</td></tr>
+<tr><th>対策</th><td>各ベンダの修正版へ速やかに更新</td></tr>
+</table>
+<ul>
+<li>米 CISA は現地 2026-11-25、悪用が確認された脆弱性カタログ（KEV）に10件を追加した。Mitel「MiCollab」では音声・ビデオ会議機能の5件（OSコマンドインジェクション、XMLインジェクション、認証回避、任意ファイルアップロード等）が認証不要で悪用され、任意コマンド実行に至る。</li>
+<li>Juniper「Session Smart」ではリモートから root 権限で任意コマンド実行のおそれ（CVE-2026-103406）、Xen Orchestra では認証回避・管理者権限での操作（CVE-2026-133469）が確認されている。（Security NEXT 2026-11-26／CISA）</li>
+</ul>
+
+<h3>開発ツールのリリース状況</h3>
+<table class="cve-table">
+<tr><th>OpenClaw</th><td><strong>v2026.10.34</strong>（2026-11-26 10:37 JST 公開、extended-stable）。「重要なセキュリティ更新」を含む。Gateway のツール呼び出しでセッション権限モードを一貫適用、Discord DM のポリシー再確認、Signal の view-once 添付をアシスタント文脈から除外、新規トークンは平文で config に書かずチャネルシークレットストア経由で保存。</td></tr>
+<tr><th>Hermes Agent</th><td>対象期間内の新規リリースなし（最新は canary 20261125 系 v0.23.4、2026-11-25 公開）。</td></tr>
+<tr><th>Claude Code</th><td>対象期間内の新規リリースなし（最新は v2.1.332、2026-11-25 公開）。</td></tr>
+</table>
+
+<h3>国内 JVN - 東京消防庁公式アプリ・baserCMS ほか</h3>
+<table class="cve-table">
+<tr><th>対象</th><td>東京消防庁公式アプリ（Android）1.3.12 以下、baserCMS 5.4.1 以下</td></tr>
+<tr><th>CVE</th><td>CVE-2026-133530（パストラバーサル）、CVE-2026-116089／120268／120962／134903（SSRF・操作者ID偽装・XSS）</td></tr>
+<tr><th>深刻度</th><td>CVSSv4.0 1.8（東京消防庁）／最大 5.3（baserCMS）</td></tr>
+<tr><th>対策</th><td>東京消防庁アプリ 1.3.13 以降（2026-11-06 公開）、baserCMS 修正版（2026-11-12 公開）へ更新</td></tr>
+</table>
+<ul>
+<li>JVN#16383801（東京消防庁公式アプリ、2026-11-26 12:00 公開）と JVN#25972114（baserCMS、同日 12:00 公開）。いずれも修正版が提供されている。</li>
+</ul>
+
+<!-- 📊 トレンドインシデント セクション -->
+<h2>📊 トレンドインシデント</h2>
+
+<h3>ENEOS 公式アプリ - 侵害を検知しサービス停止 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>ENEOS（ENEOS 株式会社）</td></tr>
+<tr><th>発覚</th><td>2026-11-25 16:00 よりアプリのサービスを停止</td></tr>
+<tr><th>影響</th><td>「モバイルEneKey」による決済・配信クーポンが利用不可。ガソリンスタンドは平常営業、燃料油の供給・販売への影響なし</td></tr>
+<tr><th>一次情報</th><td>Security NEXT 2026-11-26（ENEOS 発表に基づく）</td></tr>
+</table>
+<ul>
+<li>公式アプリのシステムにおいて第三者によるアクセスを検知。被害拡大の防止と事実関係・情報流出の有無の確認のため、2026-11-25 16 時からアプリを停止している。</li>
+<li>ENEOS は利用者に対し「なりすまし」による連絡への注意を呼びかけている。石油元売りの大手インフラ事業者であり、アプリ停止が続く場合は給油インフラの顧客体験に影響し得る。</li>
+</ul>
+
+<h3>リンベル（東京都「赤ちゃんファースト」・中野区） - 不正アクセスの影響拡大 <span class="badge-high">High</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>リンベル株式会社（東京都・中野区の委託事業者）</td></tr>
+<tr><th>発覚</th><td>2026-11-11 にオンラインストアで不正アクセス、11-26 に中野区が関連案件を公表</td></tr>
+<tr><th>影響</th><td>オンラインストア会員 約72万人＋非会員 約177万人の個人情報漏えいのおそれ。東京都の交換済み QUO カード Pay 約1万2千人・約9千万円分が利用不能／残高減</td></tr>
+<tr><th>一次情報</th><td>中野区 2026-11-26 報道資料／東京都 2026-11-25 報道発表／piyolog</td></tr>
+</table>
+<ul>
+<li>リンベル公式オンラインストアへの不正アクセス（11-11 発生、11-12 確認）を発端に、東京都「赤ちゃんファースト」のポイント交換サイト（11-17 21 時に停止）や中野区「ファーストバースデーサポート事業」へ影響が波及した。</li>
+<li>中野区は 2026-11-26、再委託先のリンベルにおける個人情報漏えいのおそれと、電子ギフト「ナカペイポイント」の交換用コードの流出を公表。対象は 2024 年 4 月以降の申請 5,134 件で、申請者と子の氏名・住所・連絡先・アンケート回答内容・交換履歴などが含まれる可能性がある。</li>
+<li>東京都は 11-25、交換済み QUO カード Pay が使用できない・残高が減る事象を公表（コールセンター相談は 24 日までに 994 件）。利用不能分は再発行される。</li>
+</ul>
+
+<h3>富士ユナイトホールディングス（富士興産） - サーバ不正アクセスで個人情報流出 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>富士ユナイトホールディングスおよび子会社 富士興産</td></tr>
+<tr><th>発覚</th><td>2026-11-05 に第三者のアクセスを確認</td></tr>
+<tr><th>影響</th><td>サーバに保管していた個人情報を含むデータの一部が流出。同一サーバ内の他の個人情報も流出の可能性</td></tr>
+<tr><th>一次情報</th><td>Security NEXT 2026-11-26（同社発表に基づく）</td></tr>
+</table>
+<ul>
+<li>エネルギー事業・リサイクル事業を展開する同社と富士興産が運用するサーバで異常を検知し、調査の結果、第三者によるアクセスが 2026-11-05 に判明した。</li>
+<li>侵入経路を遮断しログ監視体制を強化。外部協力のもと調査を継続し、流出の可能性がある個人情報を特定して対象者へ個別通知する。</li>
+</ul>
+
+<h3>歯科医療人材マッチング「ハノワ」 - クラウド設定不備で最大4.7万件が閲覧可能 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>HANOWA（歯科医療人材マッチングサービス「ハノワ」）</td></tr>
+<tr><th>発覚</th><td>2026-10-14 に社内点検で判明</td></tr>
+<tr><th>影響</th><td>最大 4万7,683 人分の氏名・ニックネーム・メールアドレス・医院名、最大 1万311 人分の本人確認書類・免許証・口座確認書類の画像</td></tr>
+<tr><th>一次情報</th><td>Security NEXT 2026-11-26（HANOWA 発表に基づく）</td></tr>
+</table>
+<ul>
+<li>利用するクラウドにおいて閲覧制限の設定に不備があった。2019-06〜2020-06-17 は同サービスにログインした他利用者から、2020-06-18〜2026-10-16 は未ログインでも一定の操作により個人情報や提出書類画像が閲覧できる状態だった。</li>
+</ul>
+
+<h3>「第一生命」をかたるフィッシング - 不正アプリ導入を促すメールが急増 <span class="badge-medium">Medium</span></h3>
+<table class="cve-table">
+<tr><th>組織</th><td>第一生命（ブランド悪用）ほか幅広いブランド</td></tr>
+<tr><th>発覚</th><td>2026-11-25 にもメール配信を確認</td></tr>
+<tr><th>影響</th><td>無関係の不正 Android アプリのインストールを誘導。誘導先 URL は10件以上、うち AWS ドメインをそのまま悪用する例も</td></tr>
+<tr><th>一次情報</th><td>フィッシング対策協議会／Security NEXT 2026-11-26</td></tr>
+</table>
+<ul>
+<li>保険契約の継続手続きや満期保険金の受け取り、年末調整の控除証明書の案内などをもっともらしい口実に、偽サイトで不正アプリをインストールさせようとしていた。</li>
+<li>バーコード／アプリ導入を求める正規ブランドの通知であっても、メール・SMS のリンクからアプリを入れず、必ず正規のアプリストアを利用するよう呼びかけられている。</li>
+</ul>
+
+</article>
+</main>
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
