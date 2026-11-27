@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-11-27 技術ニュース朝刊</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="./">← 技術ニュース一覧</a> ·
+    <a href="../">ポータル</a>
+  </nav>
+  <h1>🔧 2026-11-27 技術ニュース朝刊</h1>
+  <p class="subtitle">対象期間: 前日09:00 〜 当日09:00 JST（過去24時間）</p>
+</header>
+
+<main>
+<article>
+
+<h2>🧠 Claude Code — v2.1.332（対象期間内の新規リリースなし）</h2>
+<p>対象期間内に新規リリースは確認されませんでした。最新バージョンは v2.1.332（2026-11-25 10:37 JST 公開）です。MCP サーバー由来スキル（ベータ）、<code>PreSkillShellCommand</code> フック、Sonnet 5.5／Opus 5.5 への既定モデル更新を含む内容でございますわ。</p>
+<p>🔗 <a href="https://code.claude.com/docs/en/changelog#2-1-332">ソースへのリンク</a></p>
+
+<h2>🤖 Hermes Agent — 対象期間内の新規リリースなし</h2>
+<p>対象期間内に新規リリースは確認されませんでした。安定版の最新は v0.23.4（2026-11-24 17:17 JST 公開）、カナリアの最新は canary.20261125T064800Z-v0.23.4（2026-11-25 17:02 JST 公開）です。</p>
+<p>🔗 <a href="https://github.com/NousResearch/hermes-agent/releases">ソースへのリンク</a></p>
+
+<h2>🐙 OpenClaw — v2026.10.34（extended-stable）</h2>
+<p>v2026.10.34 が 2026-11-26 10:37 JST に公開されました。LTS 相当の <code>extended-stable</code> 系列に対する保守パッチで、Gateway と公式 npm プラグインを 2026.10.33 から更新するものですわ。ネイティブアプリのリリースは含まれません。</p>
+
+<h3>🔧 新機能・改善</h3>
+<ul>
+  <li><strong>OpenAI / ClawRouter</strong>: GPT-6.2 Astra と Sol を選択可能に。OpenAI API キー経由および「Sign in with ChatGPT」Responses 経路でシステムプロンプトのキャッシュに対応しました。</li>
+  <li><strong>Tlon</strong>: グループ DM が独自の承認ポリシーを使うようになり、承認済みクラブの認可が Gateway 再起動をまたいで保持されます。</li>
+  <li><strong>アップデート復旧</strong>: データベースの読み取り処理と並行して更新が走った場合や、稼働中のチェックアウトを置き換えた場合でも Gateway がオフラインのまま残らないよう修正。Windows 更新のロールバック失敗後もサービスを復旧します。</li>
+  <li><strong>会話の継続性</strong>: 子エージェントの結果が揃うのを待たずに届け、前の実行完了後に届いた追加入力を受理します。</li>
+  <li><strong>チャネル配信</strong>: Telegram ポーリングの更新 ID リセットからの復帰、ダウンロード不能な添付が返信を塞がない対応、ネットワーク断後の Discord 全アカウント再接続を実施。</li>
+</ul>
+
+<h3>🐛 主な修正・挙動変更</h3>
+<ul>
+  <li><strong>MiniMax</strong>: 廃止された M2 系モデルの提供を停止（ライブ検出時も同様）。PDF テキスト抽出には MiniMax-M3 を使用します。設定で M2 を明示指定している場合は要変更です。</li>
+  <li><strong>アクセス制御</strong>: Gateway のツール呼び出しにセッションのパーミッションモードを一貫して適用し、バインド済み Discord DM を現行ポリシーで再検査、Signal の view-once 添付をアシスタントのコンテキストから除外。</li>
+  <li><strong>チャネル設定</strong>: 新しいトークンを config への平文書き込みではなく、チャネルのシークレットストア経由で保存するよう変更。</li>
+</ul>
+<p>🔗 <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.10.34">ソースへのリンク</a></p>
+
+<h2>🐋 Orca — v1.4.278 / v1.4.277</h2>
+<p>v1.4.277 が 2026-11-26 09:27 JST に、v1.4.278 が同日 19:47 JST に公開されました。両版とも Antigravity 対応の強化と Bots／チャット周りの使い勝手改善が中心でございますわ。</p>
+
+<h3>🔧 v1.4.278 の主な内容</h3>
+<ul>
+  <li><strong>長い応答のストリーミング</strong>: Claude と Codex の返信が少しずつ滑らかに伸びるようになり、ストリーミング中も入力が引っかからなくなりました。</li>
+  <li><strong>Antigravity を agy 上で実行</strong>: すべての Antigravity チャットが agy 経由になり、Orca を離れずに agy へサインインできます。Google が Antigravity を案内するようになったため Gemini CLI は削除されました。</li>
+  <li><strong>アプリ連携を6つ追加</strong>: ClickUp、Airtable、Todoist、Zapier、Granola、Intercom をワンクリックで接続可能に（Composio アカウント不要）。</li>
+  <li><strong>ダウンロードの保存先</strong>: サーバーワークスペース上で動くページからのダウンロードを、ストリーム処理でメモリを一定に保ったまま手元のコンピュータへ保存できます。</li>
+  <li><strong>Bots の整理</strong>: サイドバーや設定からボットをミュートでき、終了したチャットは「Show N older」に畳まれます。</li>
+  <li><strong>WSL と既定エージェント</strong>: New bot の Computer 選択から WSL ディストリを追加でき（実験的）、新規ボットは常に Claude ではなく既定エージェントで開始します。</li>
+  <li><strong>Slack の応答品質</strong>: 回答なしで終わったターンはその旨を明示し、ツールが既に実行済みなら警告します。</li>
+  <li><strong>軽量化・安定性</strong>: 非表示ワークスペースのターミナルを解放し、アイドル時の全 worktree 再チェック（30秒間隔）を停止。利用上限に達したチャットや自動化実行も再起動後に正常再開します。</li>
+</ul>
+
+<h3>🔧 v1.4.277 の主な内容</h3>
+<ul>
+  <li><strong>Antigravity（Agy）強化</strong>: 最初のメッセージ前でもチャットの <code>/</code> メニューにインストール済みプラグインスキルが表示され、Agy ターミナルで「Approve for me」を選択できます。</li>
+  <li><strong>Slack のボット会話管理</strong>: ボットにスレッド離脱を依頼でき、@mention で呼び戻せます。フォローアップは開始時のスレッドへ戻ります。</li>
+  <li><strong>エージェント毎の Google アカウント</strong>: 各エージェントが使う Google アカウントを選択でき、進行中のセットアップ中止やサインイン失敗理由の確認も可能に。</li>
+  <li><strong>モバイル</strong>: 画面を単一のリストスタイルに統一し、Google／GitHub／Linear へのサインイン、項目への質問回答、グループルームでのマイク利用に対応。</li>
+  <li><strong>ワークスペース整理</strong>: プロジェクトバッジでサイドバーのワークスペースを識別でき、削除しても安全なものをまとめて提示・確認のうえバックグラウンドで削除します。</li>
+</ul>
+<p>🔗 <a href="https://github.com/stablyai/orca/releases">ソースへのリンク</a></p>
+
+<h2>⚡ Hono — v4.13.23（セキュリティ修正）</h2>
+<p>v4.13.23 が 2026-11-27 06:24 JST に公開されました。3 件のセキュリティ問題に対する修正を含み、該当構成ではアップグレードが強く推奨されています。</p>
+<ul>
+  <li><strong>TrieRouter が <code>__proto__</code> を HTTP メソッドとして登録してしまう問題</strong>（GHSA-656w-x92q-369m）: Node.js の HTTP/2 や <code>hono/method-override</code> で任意のメソッド名を受け付ける場合に該当。当該リクエストで <code>Object.prototype</code> にプロパティが追加され、再起動まで同一プロセスの後続リクエストが失敗し得ました。継承プロパティを登録済みメソッドとして扱わないよう修正。</li>
+  <li><strong><code>except()</code> のパス判定漏れ</strong>（GHSA-586x-c76g-h528）: 制約付きパラメータに選択肢（alternation）を持つパス条件で、選択肢のいずれかで始まる／終わるだけのパスにも一致し、ミドルウェアが実行されない問題。パラメータの正規表現をグループ化して修正。</li>
+  <li><strong><code>getPath()</code> が先頭セグメントを落とす問題</strong>（GHSA-mhwf-w6q6-q58w）: スキームとホストの無い URL でパスの先頭セグメントが失われ、Bun 上でリバースプロキシのパス規則による保護をすり抜ける可能性がありました。</li>
+</ul>
+<p>🔗 <a href="https://github.com/honojs/hono/releases/tag/v4.13.23">ソースへのリンク</a></p>
+
+<h2>☁️ AWS — RDS for PostgreSQL のマイナーバージョン対応</h2>
+<p>2026-11-27 02:00 JST、Amazon RDS for PostgreSQL が最新マイナーバージョン 18.7、17.12、16.16、15.20、14.25 に対応したと発表されました。従来バージョンの CVE 対応とコミュニティ側の修正を取り込むため、アップグレードが推奨されています。自動マイナーバージョンアップグレードの有効化や、AWS Organizations の Upgrade Rollout Policy による段階的展開、Blue/Green デプロイによるダウンタイム最小化が利用できます。</p>
+<p>🔗 <a href="https://aws.amazon.com/about-aws/whats-new/2026/11/amazon-rds-postgresql-18-7-17-12-16-16-15-20-14-25/">ソースへのリンク</a></p>
+
+<h2>☁️ GCP — Managed Service for Apache Airflow のアップグレード診断</h2>
+<p>2026-11-26（米国太平洋時間）のリリースノートで、Managed Airflow に「Agentic upgrade check」が追加されました。環境をアップグレードする前に、Google Cloud コンソール上で Managed Airflow Agent に問い合わせることで、選択した Airflow ビルド／イメージで DAG に必要な変更点を事前に確認できます。</p>
+<p>🔗 <a href="https://docs.cloud.google.com/release-notes#November_26_2026">ソースへのリンク</a></p>
+
+<p class="empty-notice"><strong>Next.js</strong>（安定版の最新は v16.4.6、2026-11-09 公開。canary は v16.5.0-canary.69 が 2026-11-27 04:20 JST 公開）、<strong>React</strong>（最新 v19.3.1、2026-10-15 公開）、<strong>Python / Django / Java / Spring Boot</strong>（Spring Boot 4.2.0 は 2026-11-20 公開）、<strong>Claude API・SDK</strong>（anthropic-sdk-python v2.14.0 は 2026-11-25 06:00 JST 公開）、<strong>Azure</strong>（公式アップデートの最新は 2026-11-26 08:14 JST 公開で対象期間の直前）については、対象期間内の新規リリース・アップデートは確認されませんでした。</p>
+
+</article>
+</main>
+
+<footer>
+  <p><a href="https://github.com/k02miu/tech-news" target="_blank" rel="noopener noreferrer">k02miu/tech-news</a> · Generated by Hermes Agent cron</p>
+</footer>
+</body>
+</html>
